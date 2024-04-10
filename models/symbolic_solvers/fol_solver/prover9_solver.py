@@ -9,8 +9,9 @@ from .Formula import FOL_Formula
 os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
 
 class FOL_Prover9_Program:
-    def __init__(self, logic_program:str, dataset_name = 'FOLIO') -> None:
+    def __init__(self, logic_program:str, dataset_name = 'FOLIO', prompt_mode = 'static') -> None:
         self.logic_program = logic_program
+        self.prompt_mode = prompt_mode
         self.flag = self.parse_logic_program()
         self.dataset_name = dataset_name
 
@@ -24,11 +25,14 @@ class FOL_Prover9_Program:
             # premises = premises_string.strip().split('\n')
             # conclusion = conclusion_string.strip().split('\n')
             
-            
-            premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
-            conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
+            if self.prompt_mode == 'dynamic':
+                premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
+                conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
 
 
+            elif self.prompt_mode == 'static':
+                premises_string = self.logic_program.split("Conclusion:")[0].split("Premises:")[1].strip()
+                conclusion_string = self.logic_program.split("Conclusion:")[1].strip()
             # Extract each premise and the conclusion using regex
             premises = premises_string.strip().split('\n')
             conclusion = conclusion_string.strip().split('\n')
