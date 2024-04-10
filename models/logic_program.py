@@ -6,6 +6,7 @@ from tqdm import tqdm
 from collections import OrderedDict
 from typing import Dict, List, Tuple
 from utils import OpenAIModel
+import sys
 import argparse
 
 task_description = ("Given a set of Natural Language Premises and a Natural Language Question. "
@@ -18,7 +19,7 @@ task_description = ("Given a set of Natural Language Premises and a Natural Lang
 "5) expr1 implies expr2: expr1 → expr2\n"
 "6) expr1 if and only if expr2: expr1 ↔ expr2\n"
 "7) logical universal quantification: ∀x\n"
-"8) logical existential quantification: ∃x")
+"8) logical existential quantification: ∃x\n------\n")
 
 
 
@@ -41,6 +42,7 @@ class LogicProgramGenerator:
                                 'ProofWriter': self.prompt_proofwriter,
                                 'LogicalDeduction': self.prompt_logicaldeduction, 
                                 'AR-LSAT': self.prompt_arlsat}
+            self.batch_logic_program_generation = self.static_batch_logic_program_generation
             
         elif self.prompt_mode == 'dynamic':
             self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
@@ -49,6 +51,7 @@ class LogicProgramGenerator:
                                 'ProofWriter': self.prompt_proofwriter,
                                 'LogicalDeduction': self.prompt_logicaldeduction, 
                                 'AR-LSAT': self.prompt_arlsat}
+            self.batch_logic_program_generation = self.dynamic_batch_logic_program_generation
             
         self.load_prompt_templates()
     
@@ -60,7 +63,7 @@ class LogicProgramGenerator:
             self.prompt_template = f.read()
 
     def static_prompt_folio(self, test_data):
-        problem = test_data['context']
+        problem = ' '.join(test_data['context'])
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
         return full_prompt
@@ -171,7 +174,7 @@ class LogicProgramGenerator:
                 print('Error in generating logic programs for example: ', example['id'], e)
 
         # save outputs        
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
             
     '''
@@ -213,8 +216,12 @@ class LogicProgramGenerator:
                                 'options': sample['options'],
                                 'raw_logic_programs': programs}
                         outputs.append(output)
+                    except KeyboardInterrupt:
+                        sys.exit()
                     except:
                         print('Error in generating logic programs for example: ', sample['id'])
+                        
+
 
         # remove examples with duplicate ids from the result
         outputs = list({output['id']: output for output in outputs}.values())
@@ -224,7 +231,7 @@ class LogicProgramGenerator:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
             
     def dynamic_batch_logic_program_generation(self, batch_size = 10):
@@ -263,8 +270,10 @@ class LogicProgramGenerator:
                                 'options': sample['options'],
                                 'raw_logic_programs': programs}
                         outputs.append(output)
-                    except Exception as e:
-                        print('Error in generating logic programs for example: ', sample['id'], e)
+                    except KeyboardInterrupt:
+                        sys.exit()
+                    except:
+                        print('Error in generating logic programs for example: ', sample['id'])
 
         # # remove examples with duplicate ids from the result
         # outputs = list({output['id']: output for output in outputs}.values())
@@ -276,7 +285,7 @@ class LogicProgramGenerator:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
 def parse_args():
@@ -284,7 +293,7 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, default='static')
+    parser.add_argument('--prompt_mode', type=str)
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='text-davinci-003')
@@ -296,4 +305,4 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
     logic_program_generator = LogicProgramGenerator(args)
-    logic_program_generator.dynamic_batch_logic_program_generation()
+    logic_program_generator.batch_logic_program_generation()

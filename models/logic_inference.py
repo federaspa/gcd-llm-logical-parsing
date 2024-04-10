@@ -17,6 +17,7 @@ class LogicInferenceEngine:
         self.model_name = args.model_name
         self.save_path = args.save_path
         self.backup_strategy = args.backup_strategy
+        self.prompt_mode = args.prompt_mode
 
         self.dataset = self.load_logic_programs()
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
@@ -29,7 +30,7 @@ class LogicInferenceEngine:
         self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.args.backup_LLM_result_path)
 
     def load_logic_programs(self):
-        with open(os.path.join('./outputs/logic_programs', f'{self.dataset_name}_{self.split}_{self.model_name}.json')) as f:
+        with open(os.path.join('./outputs/logic_programs', f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json')) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
@@ -38,11 +39,11 @@ class LogicInferenceEngine:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_backup-{self.backup_strategy}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_backup-{self.backup_strategy}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
     def safe_execute_program(self, id, logic_program):
-        program = self.program_executor(logic_program, self.dataset_name)
+        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
@@ -91,6 +92,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--prompt_mode', type=str)
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')

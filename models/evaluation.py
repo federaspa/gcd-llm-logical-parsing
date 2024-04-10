@@ -108,6 +108,7 @@ def parse_args():
     parser.add_argument("--dataset_name", type=str)
     parser.add_argument("--model_name", type=str, default='text-davinci-003')
     parser.add_argument("--split", type=str, default='dev')
+    parser.add_argument('--prompt_mode', type=str)
     parser.add_argument("--backup", type=str, default='random')
     args = parser.parse_args()
     return args
@@ -115,6 +116,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     result_path = f'./outputs/logic_inference'
-    result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_backup-{args.backup}.json')
+    result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
     # evaluate_QA(result_file)
     full_evaluation(result_file)
