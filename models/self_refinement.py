@@ -25,8 +25,7 @@ class SelfRefinementEngine:
         self.logic_programs = self.load_logic_programs()
         # self.reasoning_results = self.load_inference_results()
 
-        program_executor_map = {'AR-LSAT': LSAT_Z3_Program,
-                                'FOLIO': FOL_Prover9_Program,
+        program_executor_map = {'FOLIO': FOL_Prover9_Program,
                                 'FOLIOv2': FOL_Prover9_Program}
         self.program_executor = program_executor_map[self.dataset_name]
         self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.args.backup_LLM_result_path)

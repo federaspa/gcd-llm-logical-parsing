@@ -39,26 +39,20 @@ class LogicProgramGenerator:
             self.prompt_creator = {'FOLIO': self.static_prompt_folio,
                                 'FOLIOv2': self.static_prompt_folio,
                                 'ProntoQA': self.prompt_prontoqa,
-                                'ProofWriter': self.prompt_proofwriter,
-                                'LogicalDeduction': self.prompt_logicaldeduction, 
-                                'AR-LSAT': self.prompt_arlsat}
+                                'ProofWriter': self.prompt_proofwriter}
             self.batch_logic_program_generation = self.static_batch_logic_program_generation
             
         elif self.prompt_mode == 'dynamic':
             self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
                                 'FOLIOv2': self.dynamic_prompt_folio,
                                 'ProntoQA': self.prompt_prontoqa,
-                                'ProofWriter': self.prompt_proofwriter,
-                                'LogicalDeduction': self.prompt_logicaldeduction, 
-                                'AR-LSAT': self.prompt_arlsat}
+                                'ProofWriter': self.prompt_proofwriter}
             self.batch_logic_program_generation = self.dynamic_batch_logic_program_generation
             
         self.load_prompt_templates()
     
     def load_prompt_templates(self):
         prompt_file = f'./models/prompts/{self.dataset_name}.txt'
-        if self.dataset_name == 'AR-LSAT' and self.model_name == 'gpt-4':
-            prompt_file = f'./models/prompts/{self.dataset_name}-long.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
 
@@ -109,14 +103,6 @@ class LogicProgramGenerator:
         prompt += '\n"""\n###\n'   
             
         return prompt
-
-    def prompt_arlsat(self, test_data):
-        problem = test_data['context']
-        question = test_data['question'].strip()
-        choices_str = '\n'.join([f'({choice.strip()}' for choice in test_data['options']]).strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-        full_prompt = full_prompt.replace('[[CHOICES]]', choices_str)
-        return full_prompt
     
     def prompt_prontoqa(self, test_data):
         problem = test_data['context']
@@ -129,14 +115,6 @@ class LogicProgramGenerator:
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
         return full_prompt
-    
-    def prompt_logicaldeduction(self, test_data):
-        problem = test_data['context']
-        question = test_data['question'].strip()
-        choices_str = '\n'.join([f'({choice.strip()}' for choice in test_data['options']]).strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-        full_prompt = full_prompt.replace('[[CHOICES]]', choices_str)
-        return full_prompt
 
     def load_raw_dataset(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
@@ -147,35 +125,6 @@ class LogicProgramGenerator:
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}_examples.json')) as f:
             dynamic_examples = json.load(f)
         return dynamic_examples
-
-    def logic_program_generation(self):
-        # load raw dataset
-        raw_dataset = self.load_raw_dataset(self.split)
-        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-
-        outputs = []
-        for example in tqdm(raw_dataset):
-            # create prompt
-            try:
-                full_prompt = self.prompt_creator[self.dataset_name](example)
-                output = self.openai_api.generate(full_prompt)
-                # print(full_prompt)
-                programs = [output]
-
-                # create output
-                output = {'id': example['id'], 
-                        'context': example['context'],
-                        'question': example['question'], 
-                        'answer': example['answer'],
-                        'options': example['options'],
-                        'raw_logic_programs': programs}
-                outputs.append(output)
-            except Exception as e:
-                print('Error in generating logic programs for example: ', example['id'], e)
-
-        # save outputs        
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
             
     '''
     Updated version of logic_program_generation; speed up the generation process by batching
