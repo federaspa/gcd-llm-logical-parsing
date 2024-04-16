@@ -23,7 +23,7 @@ class GPT3_Reasoning_Graph_Baseline:
     
     def prompt_LSAT(self, in_context_example, test_example):
         full_prompt = in_context_example
-        context = '\n'.join(test_example['context']).strip()
+        context = '\n'.join(test_example['context']).strip() if type(test_example['context']) == list else test_example['context'].strip()
         question = test_example['question'].strip()
         options = '\n'.join([opt.strip() for opt in test_example['options']])
         full_prompt = full_prompt.replace('[[CONTEXT]]', context)
