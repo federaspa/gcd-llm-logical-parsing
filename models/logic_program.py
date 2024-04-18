@@ -209,11 +209,7 @@ class LogicProgramGenerator(PromptGenerator):
             
             elif self.prompt_mode == 'dynamic':
                 full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
-            
-            for i, full_prompt in enumerate(full_prompts):
-                with open(f'./program_test/prompt_{i}.txt', 'w') as f:
-                    f.write(full_prompt)
-            
+                        
             try:
                 batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description, self.response_format)
                 # create output
