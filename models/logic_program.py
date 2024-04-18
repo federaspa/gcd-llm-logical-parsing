@@ -59,11 +59,8 @@ class PromptGenerator:
         return full_prompt
 
     def dynamic_prompt_folio_text(self, test_data, train_data):
-            
-        prompt = self.task_description
         
-        if prompt.splitlines()[-1] != '':
-            prompt += '\n'
+        prompt = ""
 
         if train_data:
             for story in train_data:
@@ -105,10 +102,7 @@ class PromptGenerator:
     
     def dynamic_prompt_folio_json(self, test_data, train_data):
         
-        prompt = self.task_description
-                
-        if prompt.splitlines()[-1] != '':
-            prompt += '\n'
+        prompt = ""
         
         if train_data:
             for story in train_data:   
@@ -182,13 +176,6 @@ class LogicProgramGenerator(PromptGenerator):
             self.response_format = { "type": "json_object" }
         else:
             self.response_format = { "type": "text" }
-        
-        if self.prompt_mode == 'static':
-            self.batch_logic_program_generation = self.static_batch_logic_program_generation
-            
-        elif self.prompt_mode == 'dynamic':
-            self.batch_logic_program_generation = self.dynamic_batch_logic_program_generation
-            
 
     def load_raw_dataset(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
@@ -197,62 +184,8 @@ class LogicProgramGenerator(PromptGenerator):
   
     '''
     Updated version of logic_program_generation; speed up the generation process by batching
-    '''
-    def static_batch_logic_program_generation(self, batch_size = 10):
-        # load raw dataset
-        raw_dataset = self.load_raw_dataset(self.split)
-        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-
-        outputs = []
-        # split dataset into chunks
-        dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
-        for chunk in tqdm(dataset_chunks):
-            # create prompt
-            full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
-            try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts, self.response_format)
-                # create output
-                for sample, output in zip(chunk, batch_outputs):
-                    programs = [output]
-                    output = {'id': sample['id'], 
-                            'context': sample['context'],
-                            'question': sample['question'], 
-                            'answer': sample['answer'],
-                            'options': sample['options'],
-                            'raw_logic_programs': programs}
-                    outputs.append(output)
-            except:
-                # generate one by one if batch generation fails
-                for sample, full_prompt in zip(chunk, full_prompts):
-                    try:
-                        output = self.openai_api.generate(full_prompt, self.response_format)
-                        programs = [output]
-                        output = {'id': sample['id'], 
-                                'context': sample['context'],
-                                'question': sample['question'], 
-                                'answer': sample['answer'],
-                                'options': sample['options'],
-                                'raw_logic_programs': programs}
-                        outputs.append(output)
-                    except KeyboardInterrupt:
-                        sys.exit()
-                    except:
-                        print('Error in generating logic programs for example: ', sample['id'])
-                        
-
-
-        # remove examples with duplicate ids from the result
-        outputs = list({output['id']: output for output in outputs}.values())
-        print(f"Generated {len(outputs)} examples.")
-        
-        # save outputs
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
-        
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
-            
-    def dynamic_batch_logic_program_generation(self, batch_size = 10):
+    '''     
+    def batch_logic_program_generation(self, batch_size = 10):
         # load raw dataset
         raw_dataset = self.load_raw_dataset(self.split)
         dynamic_examples = self.load_dynamic_examples(self.split)
@@ -261,10 +194,15 @@ class LogicProgramGenerator(PromptGenerator):
         # split dataset into chunks
         dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
         for chunk in tqdm(dataset_chunks):
-            # create prompt
-            full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
+            
+            if self.prompt_mode == 'static':
+                full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
+            
+            elif self.prompt_mode == 'dynamic':
+                full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
+            
             try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts, self.response_format)
+                batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description, self.response_format)
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     programs = [output]
@@ -279,7 +217,7 @@ class LogicProgramGenerator(PromptGenerator):
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
                     try:
-                        output = self.openai_api.generate(full_prompt, self.response_format)
+                        output = self.openai_api.generate(full_prompt, self.task_description, self.response_format)
                         programs = [output]
                         output = {'id': sample['id'], 
                                 'context': sample['context'],
@@ -303,7 +241,7 @@ class LogicProgramGenerator(PromptGenerator):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
 def parse_args():
@@ -315,7 +253,7 @@ def parse_args():
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)
-    parser.add_argument('--model_name', type=str, default='text-davinci-003')
+    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()

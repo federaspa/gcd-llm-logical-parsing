@@ -56,10 +56,11 @@ class OpenAIModel:
         self.stop_words = stop_words
 
     # used for chat-gpt and gpt-4
-    def chat_generate(self, input_string, response_format, temperature = 0.0):
+    def chat_generate(self, input_string, task_description, response_format, temperature = 0.0):
         response = chat_completions_with_backoff(
                 model = self.model_name,
                 messages=[
+                        {"role": "system", "content": task_description},
                         {"role": "user", "content": input_string}
                     ],
                 max_tokens = self.max_new_tokens,
@@ -71,17 +72,18 @@ class OpenAIModel:
         generated_text = response['choices'][0]['message']['content'].strip()
         return generated_text
 
-    def generate(self, input_string, response_format, temperature = 0.0):
+    def generate(self, input_string, task_description, response_format, temperature = 0.0):
         if self.model_name in ['gpt-4', 'gpt-3.5-turbo']:
-            return self.chat_generate(input_string, response_format, temperature)
+            return self.chat_generate(input_string, task_description, response_format, temperature)
         else:
             raise Exception("Model name not recognized")
     
-    def batch_chat_generate(self, messages_list, response_format, temperature = 0.0):
+    def batch_chat_generate(self, messages_list, task_description, response_format, temperature = 0.0):
         open_ai_messages_list = []
         for message in messages_list:
             open_ai_messages_list.append(
-                [{"role": "user", "content": message}]
+                [{"role": "system", "content": task_description},
+                 {"role": "user", "content": message}]
             )
         predictions = asyncio.run(
             dispatch_openai_chat_requests(
@@ -90,22 +92,8 @@ class OpenAIModel:
         )
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
 
-    def batch_generate(self, messages_list, response_format, temperature = 0.0):
+    def batch_generate(self, messages_list, task_description, response_format, temperature = 0.0):
         if self.model_name in ['gpt-4', 'gpt-3.5-turbo']:
-            return self.batch_chat_generate(messages_list, response_format, temperature)
+            return self.batch_chat_generate(messages_list, task_description, response_format, temperature)
         else:
             raise Exception("Model name not recognized")
-
-    def generate_insertion(self, input_string, suffix, temperature = 0.0):
-        response = completions_with_backoff(
-            model = self.model_name,
-            prompt = input_string,
-            suffix= suffix,
-            temperature = temperature,
-            max_tokens = self.max_new_tokens,
-            top_p = 1.0,
-            frequency_penalty = 0.0,
-            presence_penalty = 0.0
-        )
-        generated_text = response['choices'][0]['text'].strip()
-        return generated_text
