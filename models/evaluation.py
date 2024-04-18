@@ -98,9 +98,19 @@ def full_evaluation(result_file):
         all_samples = json.load(f)
 
     executable_samples = [sample for sample in all_samples if sample['flag'] == 'success']
-    print(f"Overall accuracy: {evaluate_QA(all_samples)}")
+    non_executable_samples = [sample for sample in all_samples if sample['flag'] != 'success']
+    
+    parsing_errors = [sample for sample in all_samples if sample['flag'] == 'parsing error']
+    execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
+    
     print(f'Executable rate (Exe_Rate): {len(executable_samples)/len(all_samples)}')
-    print(f"Executable accuracy (Exe_Acc): {evaluate_QA(executable_samples)}")
+    print(f'Parsing errors rate: {len(parsing_errors)/len(all_samples)}')
+    print(f'Execution errors rate: {len(execution_errors)/len(all_samples)}')
+    print()
+    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)}")
+    print(f"Accuracy of backup: {evaluate_QA(non_executable_samples)}")
+    print(f'Overall accuracy: {evaluate_QA(all_samples)}')
+    
 
 
 def parse_args():
@@ -111,12 +121,13 @@ def parse_args():
     parser.add_argument("--split", type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
     parser.add_argument("--backup", type=str, default='random')
+    parser.add_argument("--result_path", type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
     return args
 
 if __name__ == "__main__":
     args = parse_args()
-    result_path = f'./outputs/logic_inference'
+    result_path = args.result_path
     if args.self_refine_round > 0:
         result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
     else:
