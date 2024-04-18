@@ -52,8 +52,17 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
 
-    def static_prompt_folio(self, test_data):
+    def static_prompt_folio_text(self, test_data):
         problem = ' '.join(test_data['context'])
+        question = test_data['question'].strip()
+        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
+        return full_prompt
+    
+
+    def static_prompt_folio_json(self, test_data):
+        
+        context = [f"\"{c}\"" for c in test_data['context']]
+        problem = "[" + ','.join(context) + "]"
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
         return full_prompt
@@ -201,6 +210,10 @@ class LogicProgramGenerator(PromptGenerator):
             elif self.prompt_mode == 'dynamic':
                 full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
             
+            for i, full_prompt in enumerate(full_prompts):
+                with open(f'./program_test/prompt_{i}.txt', 'w') as f:
+                    f.write(full_prompt)
+            
             try:
                 batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description, self.response_format)
                 # create output
@@ -231,10 +244,6 @@ class LogicProgramGenerator(PromptGenerator):
                     except:
                         print('Error in generating logic programs for example: ', sample['id'])
 
-        # # remove examples with duplicate ids from the result
-        # outputs = list({output['id']: output for output in outputs}.values())
-            # print(full_prompts[0])
-            # break
         print(f"Generated {len(outputs)} examples.")
         
         # save outputs
