@@ -9,44 +9,43 @@ from utils import OpenAIModel
 import sys
 import argparse
 
-
-
-class LogicProgramGenerator:
+class PromptGenerator:
     def __init__(self, args):
         self.args = args
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.model_name = args.model_name
-        self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
-
-        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.response_mode = args.response_mode
         
-        if args.response_format == 'json':
+        if self.response_mode == 'json':
             self.response_format = { "type": "json_object" }
-        else:
+        
+            if self.prompt_mode == 'static':
+                self.prompt_creator = {'FOLIO': self.static_prompt_folio_json,
+                                    'FOLIOv2': self.static_prompt_folio_json}
+                
+            elif self.prompt_mode == 'dynamic':
+                self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio_json,
+                                    'FOLIOv2': self.dynamic_prompt_folio_json}
+                
+                
+        elif self.response_mode == 'text':
             self.response_format = { "type": "text" }
         
-        if self.prompt_mode == 'static':
-            self.prompt_creator = {'FOLIO': self.static_prompt_folio,
-                                'FOLIOv2': self.static_prompt_folio,
-                                'ProntoQA': self.prompt_prontoqa,
-                                'ProofWriter': self.prompt_proofwriter}
-            self.batch_logic_program_generation = self.static_batch_logic_program_generation
-            
-        elif self.prompt_mode == 'dynamic':
-            self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
-                                'FOLIOv2': self.dynamic_prompt_folio,
-                                'ProntoQA': self.prompt_prontoqa,
-                                'ProofWriter': self.prompt_proofwriter}
-            self.batch_logic_program_generation = self.dynamic_batch_logic_program_generation
+            if self.prompt_mode == 'static':
+                self.prompt_creator = {'FOLIO': self.static_prompt_folio_text,
+                                    'FOLIOv2': self.static_prompt_folio_text}
+                
+            elif self.prompt_mode == 'dynamic':
+                self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio_text,
+                                    'FOLIOv2': self.dynamic_prompt_folio_text}
             
         self.load_prompt_templates()
-    
+            
     def load_prompt_templates(self):
-        prompt_file = f'./models/prompts/{self.dataset_name}.txt'
-        task_description_file = f'.models/task_descriptions/{self.dataset_name}.txt'
+        prompt_file = f'./models/prompts/{self.dataset_name}_{self.response_mode}.txt'
+        task_description_file = f'./models/task_descriptions/{self.dataset_name}_{self.response_mode}.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
             
@@ -59,9 +58,12 @@ class LogicProgramGenerator:
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
         return full_prompt
 
-    def dynamic_prompt_folio(self, test_data, train_data):
+    def dynamic_prompt_folio_text(self, test_data, train_data):
             
         prompt = self.task_description
+        
+        if prompt.splitlines()[-1] != '':
+            prompt += '\n'
 
         if train_data:
             for story in train_data:
@@ -98,31 +100,101 @@ class LogicProgramGenerator:
         prompt += 'Natural Language Question:\n"""\n'
         prompt += test_data['question']
         prompt += '\n"""\n###\n'   
-            
+                    
         return prompt
     
-    def prompt_prontoqa(self, test_data):
-        problem = test_data['context']
-        question = test_data['question'].strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-        return full_prompt
-    
-    def prompt_proofwriter(self, test_data):
-        problem = test_data['context']
-        question = test_data['question'].strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-        return full_prompt
-
-    def load_raw_dataset(self, split):
-        with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
-            raw_dataset = json.load(f)
-        return raw_dataset
+    def dynamic_prompt_folio_json(self, test_data, train_data):
+        
+        prompt = self.task_description
+                
+        if prompt.splitlines()[-1] != '':
+            prompt += '\n'
+        
+        if train_data:
+            for story in train_data:   
+                
+                prompt += "{\"Natural Language Premises\":["
+                for premise in story['context'][:-1]:
+                    prompt += f"\"{premise}\","
+                
+                prompt += f"\"{story['context'][-1]}\"],"
+                
+                prompt += '\"Natural Language Question\":'
+                prompt += "\"" + story['question'] + "\"}"
+                prompt += "\n###\n" 
+                
+                
+                prompt += "{\"First-Order-Logic Predicates\":["
+                if 'predicates_fol' in story.keys():
+                    for pred in story['predicates_fol'][:-1]:
+                        
+                        prompt += f"\"{pred}\","
+                        
+                prompt += f"\"{story['predicates_fol'][-1]}\"],"
+                
+                prompt += "\"First-Order-Logic Premises\":["
+                for nl, fol in list(zip(story['context'], story['context_fol']))[:-1]:
+                    
+                    prompt += "\"" + fol + " ::: " + nl + "\","
+                    
+                prompt += "\"" + story['context_fol'][-1] + " ::: " + story['context'][-1] + "\"],"
+                    
+                prompt += "\"First-Order-Logic Question\":"
+                prompt += "\"" + story['question_fol'] + "\"}"
+                prompt += '\n------\n'
+            
+            
+        prompt += "{\"Natural Language Premises\":["
+        for premise in test_data['context'][:-1]:
+            prompt += f"\"{premise}\","
+        
+        prompt += f"\"{test_data['context'][-1]}\"],"
+        
+        prompt += '\"Natural Language Question\":'
+        prompt += "\"" + test_data['question'] + "\"}"
+        prompt += "\n###\n" 
+        
+        return prompt
     
     def load_dynamic_examples(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}_examples.json')) as f:
             dynamic_examples = json.load(f)
         return dynamic_examples
+    
+
+class LogicProgramGenerator(PromptGenerator):
+    def __init__(self, args):
+        
+        super().__init__(args)
+        
+        self.args = args
+        self.data_path = args.data_path
+        self.dataset_name = args.dataset_name
+        self.split = args.split
+        self.model_name = args.model_name
+        self.save_path = args.save_path
+        self.prompt_mode = args.prompt_mode
+        self.response_mode = args.response_mode
+
+        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        
+        if self.response_mode == 'json':
+            self.response_format = { "type": "json_object" }
+        else:
+            self.response_format = { "type": "text" }
+        
+        if self.prompt_mode == 'static':
+            self.batch_logic_program_generation = self.static_batch_logic_program_generation
             
+        elif self.prompt_mode == 'dynamic':
+            self.batch_logic_program_generation = self.dynamic_batch_logic_program_generation
+            
+
+    def load_raw_dataset(self, split):
+        with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
+            raw_dataset = json.load(f)
+        return raw_dataset
+  
     '''
     Updated version of logic_program_generation; speed up the generation process by batching
     '''
@@ -240,7 +312,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
-    parser.add_argument('--response_format', type=str, choices=['text', 'json'], default='text')
+    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='text-davinci-003')
