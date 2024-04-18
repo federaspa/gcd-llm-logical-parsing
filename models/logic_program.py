@@ -9,18 +9,6 @@ from utils import OpenAIModel
 import sys
 import argparse
 
-task_description = ("Given a set of Natural Language Premises and a Natural Language Question. "
-"The task is extract the First-Order-Logic Predicates, and parse the Premises and Question into First-Order-Logic formulas.\n"
-"The grammar of the first-order logic formular is defined as follows:\n"
-"1) logical conjunction of expr1 and expr2: expr1 ∧ expr2\n"
-"2) logical disjunction of expr1 and expr2: expr1 ∨ expr2\n"
-"3) logical exclusive disjunction of expr1 and expr2: expr1 ⊕ expr2\n"
-"4) logical negation of expr1: ¬expr1\n"
-"5) expr1 implies expr2: expr1 → expr2\n"
-"6) expr1 if and only if expr2: expr1 ↔ expr2\n"
-"7) logical universal quantification: ∀x\n"
-"8) logical existential quantification: ∃x\n------\n")
-
 
 
 class LogicProgramGenerator:
@@ -34,6 +22,11 @@ class LogicProgramGenerator:
         self.prompt_mode = args.prompt_mode
 
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        
+        if args.response_format == 'json':
+            self.response_format = { "type": "json_object" }
+        else:
+            self.response_format = { "type": "text" }
         
         if self.prompt_mode == 'static':
             self.prompt_creator = {'FOLIO': self.static_prompt_folio,
@@ -53,8 +46,12 @@ class LogicProgramGenerator:
     
     def load_prompt_templates(self):
         prompt_file = f'./models/prompts/{self.dataset_name}.txt'
+        task_description_file = f'.models/task_descriptions/{self.dataset_name}.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
+            
+        with open(task_description_file, 'r') as f:
+            self.task_description = f.read()
 
     def static_prompt_folio(self, test_data):
         problem = ' '.join(test_data['context'])
@@ -64,7 +61,7 @@ class LogicProgramGenerator:
 
     def dynamic_prompt_folio(self, test_data, train_data):
             
-        prompt = task_description
+        prompt = self.task_description
 
         if train_data:
             for story in train_data:
@@ -141,7 +138,7 @@ class LogicProgramGenerator:
             # create prompt
             full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
             try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts)
+                batch_outputs = self.openai_api.batch_generate(full_prompts, self.response_format)
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     programs = [output]
@@ -156,7 +153,7 @@ class LogicProgramGenerator:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
                     try:
-                        output = self.openai_api.generate(full_prompt)
+                        output = self.openai_api.generate(full_prompt, self.response_format)
                         programs = [output]
                         output = {'id': sample['id'], 
                                 'context': sample['context'],
@@ -195,7 +192,7 @@ class LogicProgramGenerator:
             # create prompt
             full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
             try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts)
+                batch_outputs = self.openai_api.batch_generate(full_prompts, self.response_format)
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     programs = [output]
@@ -210,7 +207,7 @@ class LogicProgramGenerator:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
                     try:
-                        output = self.openai_api.generate(full_prompt)
+                        output = self.openai_api.generate(full_prompt, self.response_format)
                         programs = [output]
                         output = {'id': sample['id'], 
                                 'context': sample['context'],
@@ -243,6 +240,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--response_format', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='text-davinci-003')
