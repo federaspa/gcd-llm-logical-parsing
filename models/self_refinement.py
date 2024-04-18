@@ -126,6 +126,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')
     parser.add_argument('--model_name', type=str, default='text-davinci-003')
@@ -138,6 +139,10 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    
+    if args.response_mode == 'json':
+        raise NotImplementedError("JSON response mode is not supported for self-refinement.")
+    
     for round in range(1, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
         engine = SelfRefinementEngine(args, round)
