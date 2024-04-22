@@ -18,6 +18,7 @@ class LogicInferenceEngine:
         self.save_path = args.save_path
         self.backup_strategy = args.backup_strategy
         self.prompt_mode = args.prompt_mode
+        self.response_mode = args.response_mode
         self.self_refine_round = args.self_refine_round
 
         self.dataset = self.load_logic_programs()
@@ -31,9 +32,9 @@ class LogicInferenceEngine:
     def load_logic_programs(self):
         
         if self.self_refine_round > 0:
-            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
         else:
-            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
         with open(os.path.join('./outputs/logic_programs', programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
@@ -45,19 +46,19 @@ class LogicInferenceEngine:
             
             
         if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_backup-{self.backup_strategy}.json'
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}_backup-{self.backup_strategy}.json'
         else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_backup-{self.backup_strategy}.json'
+            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}_backup-{self.backup_strategy}.json'
         
         with open(os.path.join(self.save_path, save_file), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
     def safe_execute_program(self, id, logic_program):
-        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
+        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode, self.response_mode)
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'parsing error', ''
+            return answer, 'parsing error', program.parsing_error_message
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
@@ -81,7 +82,7 @@ class LogicInferenceEngine:
 
             # create output
             output = {'id': example['id'], 
-                    'context': example['context'],
+                    # 'context': example['context'],
                     'question': example['question'], 
                     'answer': example['answer'],
                     'flag': flag,
@@ -103,11 +104,12 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--response_mode', type=str)
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')
-    parser.add_argument('--model_name', type=str, default='text-davinci-003')
+    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--timeout', type=int, default=60)
     args = parser.parse_args()
     return args

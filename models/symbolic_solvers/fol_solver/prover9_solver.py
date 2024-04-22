@@ -1,4 +1,5 @@
 import re
+import json
 from nltk.inference.prover9 import *
 from nltk.sem.logic import NegatedExpression
 from .fol_prover9_parser import Prover9_FOL_Formula
@@ -9,34 +10,37 @@ from .Formula import FOL_Formula
 os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
 
 class FOL_Prover9_Program:
-    def __init__(self, logic_program:str, dataset_name = 'FOLIO', prompt_mode = 'static') -> None:
+    def __init__(self, logic_program:str, dataset_name = 'FOLIOv2', prompt_mode = 'static', response_mode = 'text') -> None:
         self.logic_program = logic_program
         self.prompt_mode = prompt_mode
-        self.flag = self.parse_logic_program()
+        self.response_mode = response_mode
+        self.flag, self.parsing_error_message = self.parse_logic_program()
         self.dataset_name = dataset_name
 
     def parse_logic_program(self):
         try:        
-            # # Split the string into premises and conclusion
-            # premises_string = self.logic_program.split("Conclusion:")[0].split("Premises:")[1].strip()
-            # conclusion_string = self.logic_program.split("Conclusion:")[1].strip()
-
-            # # Extract each premise and the conclusion using regex
-            # premises = premises_string.strip().split('\n')
-            # conclusion = conclusion_string.strip().split('\n')
-            
-            if self.prompt_mode == 'dynamic':
+               
+               
+            if self.response_mode == 'text':
+                # if self.prompt_mode == 'dynamic':
                 premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
                 conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
 
 
-            elif self.prompt_mode == 'static':
-                premises_string = self.logic_program.split("Conclusion:")[0].split("Premises:")[1].strip()
-                conclusion_string = self.logic_program.split("Conclusion:")[1].strip()
-            # Extract each premise and the conclusion using regex
-            premises = premises_string.strip().split('\n')
-            conclusion = conclusion_string.strip().split('\n')
-
+                # elif self.prompt_mode == 'static':
+                #     premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
+                #     conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
+                    
+                # Extract each premise and the conclusion using regex
+                premises = premises_string.strip().split('\n')
+                conclusion = conclusion_string.strip().split('\n')
+                
+            elif self.response_mode == 'json':
+                
+                response = json.loads(self.logic_program)
+                premises = response['First-Order-Logic Premises']
+                conclusion = response['First-Order-Logic Question'].split('\u2618') ### This is a string, not a list, so we need to split it into a list to make it consistent with the text mode
+                
             premises = [premise for premise in premises if re.sub(r'(?:[\',\",\`,\-,\s*])','', premise)]
             conclusion = [conc for conc in conclusion if re.sub(r'(?:[\',\"\`,\-,\s*])','', conc)]
             
@@ -49,17 +53,25 @@ class FOL_Prover9_Program:
             for premise in self.logic_premises:
                 fol_rule = FOL_Formula(premise)
                 if fol_rule.is_valid == False:
-                    return False
+                    return False, f'Invalid FOL premise.: {premise}'
                 prover9_rule = Prover9_FOL_Formula(fol_rule)
                 self.prover9_premises.append(prover9_rule.formula)
 
             fol_conclusion = FOL_Formula(self.logic_conclusion)
             if fol_conclusion.is_valid == False:
-                return False
+                return False, f'Invalid FOL question.: {fol_conclusion}'
             self.prover9_conclusion = Prover9_FOL_Formula(fol_conclusion).formula
-            return True
-        except:
-            return False
+            return True, ''
+        
+        except Exception as e:
+            print()
+            print()
+            print(self.logic_program)
+            print()
+            print(e)
+            print()
+            print()
+            return False, str(e)
 
     def execute_program(self):
         try:

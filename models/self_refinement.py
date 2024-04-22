@@ -129,7 +129,7 @@ def parse_args():
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')
-    parser.add_argument('--model_name', type=str, default='text-davinci-003')
+    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--timeout', type=int, default=60)
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--stop_words', type=str, default='------')

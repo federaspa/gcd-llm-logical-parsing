@@ -108,7 +108,7 @@ def full_evaluation(result_file):
     print(f'Execution errors rate: {len(execution_errors)/len(all_samples)}')
     print()
     print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)}")
-    print(f"Accuracy of backup: {evaluate_QA(non_executable_samples)}")
+    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)}")
     print(f'Overall accuracy: {evaluate_QA(all_samples)}')
     
 
@@ -117,9 +117,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_name", type=str)
     parser.add_argument('--self_refine_round', type=int, default=0)
-    parser.add_argument("--model_name", type=str, default='text-davinci-003')
+    parser.add_argument("--model_name", type=str, default='gpt-3.5-turbo')
     parser.add_argument("--split", type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--response_mode', type=str)
     parser.add_argument("--backup", type=str, default='random')
     parser.add_argument("--result_path", type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
@@ -129,8 +130,8 @@ if __name__ == "__main__":
     args = parse_args()
     result_path = args.result_path
     if args.self_refine_round > 0:
-        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
+        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
     else:
-        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
+        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
     # evaluate_QA(result_file)
     full_evaluation(result_file)

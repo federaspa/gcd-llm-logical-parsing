@@ -116,45 +116,45 @@ class PromptGenerator:
         if train_data:
             for story in train_data:   
                 
-                prompt += "{\"Natural Language Premises\":["
+                prompt += "{\\\"Natural Language Premises\\\":["
                 for premise in story['context'][:-1]:
-                    prompt += f"\"{premise}\","
+                    prompt += f"\\\"{premise}\\\","
                 
-                prompt += f"\"{story['context'][-1]}\"],"
+                prompt += f"\\\"{story['context'][-1]}\\\"],"
                 
-                prompt += '\"Natural Language Question\":'
-                prompt += "\"" + story['question'] + "\"}"
+                prompt += '\\\"Natural Language Question\\\":'
+                prompt += "\\\"" + story['question'] + "\\\"}"
                 prompt += "\n###\n" 
                 
                 
-                prompt += "{\"First-Order-Logic Predicates\":["
+                prompt += "{\\\"First-Order-Logic Predicates\\\":["
                 if 'predicates_fol' in story.keys():
                     for pred in story['predicates_fol'][:-1]:
                         
-                        prompt += f"\"{pred}\","
+                        prompt += f"\\\"{pred}\\\","
                         
-                prompt += f"\"{story['predicates_fol'][-1]}\"],"
+                prompt += f"\\\"{story['predicates_fol'][-1]}\\\"],"
                 
-                prompt += "\"First-Order-Logic Premises\":["
+                prompt += "\\\"First-Order-Logic Premises\\\":["
                 for nl, fol in list(zip(story['context'], story['context_fol']))[:-1]:
                     
-                    prompt += "\"" + fol + " ::: " + nl + "\","
+                    prompt += "\\\"" + fol + " ::: " + nl + "\\\","
                     
-                prompt += "\"" + story['context_fol'][-1] + " ::: " + story['context'][-1] + "\"],"
+                prompt += "\\\"" + story['context_fol'][-1] + " ::: " + story['context'][-1] + "\\\"],"
                     
-                prompt += "\"First-Order-Logic Question\":"
-                prompt += "\"" + story['question_fol'] + "\"}"
+                prompt += "\\\"First-Order-Logic Question\\\":"
+                prompt += "\\\"" + story['question_fol'] + "\\\"}"
                 prompt += '\n------\n'
             
             
-        prompt += "{\"Natural Language Premises\":["
+        prompt += "{\\\"Natural Language Premises\\\":["
         for premise in test_data['context'][:-1]:
-            prompt += f"\"{premise}\","
+            prompt += f"\\\"{premise}\\\","
         
-        prompt += f"\"{test_data['context'][-1]}\"],"
+        prompt += f"\\\"{test_data['context'][-1]}\\\"],"
         
-        prompt += '\"Natural Language Question\":'
-        prompt += "\"" + test_data['question'] + "\"}"
+        prompt += '\\\"Natural Language Question\\\":'
+        prompt += "\\\"" + test_data['question'] + "\\\"}"
         prompt += "\n###\n" 
         
         return prompt
