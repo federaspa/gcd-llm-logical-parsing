@@ -18,6 +18,14 @@ class PromptGenerator:
         self.prompt_mode = args.prompt_mode
         self.response_mode = args.response_mode
         
+        
+        self.task_description = ("Given a set of Natural Language Premises and a Natural Language Question.\n" 
+                                "The task is extract the First-Order-Logic Predicates\n"
+                                "------")
+        
+        
+        
+        
         if self.response_mode == 'json':
             self.response_format = { "type": "json_object" }
         
@@ -44,18 +52,20 @@ class PromptGenerator:
         self.load_prompt_templates()
             
     def load_prompt_templates(self):
-        prompt_file = f'./models/prompts/{self.dataset_name}_{self.response_mode}.txt'
-        task_description_file = f'./models/task_descriptions/{self.dataset_name}_{self.response_mode}.txt'
+        prompt_file = f'./models/prompts/predicates_{self.dataset_name}_{self.response_mode}.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
-            
-        with open(task_description_file, 'r') as f:
-            self.task_description = f.read()
+
 
     def static_prompt_folio_text(self, test_data):
-        problem = '\n'.join(test_data['context'])
+        problem = ' '.join(test_data['context'])
         question = test_data['question'].strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
+        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)    
+       
+        # print(full_prompt)
+        
+        # raise Exception('surprise!')
+        
         return full_prompt
     
 
@@ -82,21 +92,11 @@ class PromptGenerator:
                 prompt += story['question']
                 prompt += '\n"""\n###\n'   
                 
-                
                 if 'predicates_fol' in story.keys():
                     prompt += 'First-Order-Logic Predicates:\n"""\n'
                     for pred in story['predicates_fol']:
                         prompt += pred + '\n'
                     prompt += '"""\n'
-                
-                prompt += 'First-Order-Logic Premises:\n"""\n'
-                for nl, fol in zip(story['context'], story['context_fol']):
-                    prompt += fol + ' ::: ' + nl + '\n'
-                prompt += '"""\n'
-                    
-                prompt += 'First-Order-Logic Question:\n"""\n'
-                prompt += story['question_fol']
-                prompt += '\n"""\n'
                 prompt += '------\n'
             
         prompt += 'Natural Language Premises:\n"""\n'
@@ -106,6 +106,10 @@ class PromptGenerator:
         prompt += 'Natural Language Question:\n"""\n'
         prompt += test_data['question']
         prompt += '\n"""\n###\n'   
+        
+        # print(prompt)
+        
+        # raise Exception('surprise!')
                     
         return prompt
     
@@ -130,17 +134,7 @@ class PromptGenerator:
                         
                         prompt += f"\\\"{pred}\\\","
                         
-                prompt += f"\\\"{story['predicates_fol'][-1]}\\\"],"
-                
-                prompt += "\\\"First-Order-Logic Premises\\\":["
-                for nl, fol in list(zip(story['context'], story['context_fol']))[:-1]:
-                    
-                    prompt += "\\\"" + fol + " ::: " + nl + "\\\","
-                    
-                prompt += "\\\"" + story['context_fol'][-1] + " ::: " + story['context'][-1] + "\\\"],"
-                    
-                prompt += "\\\"First-Order-Logic Question\\\":"
-                prompt += "\\\"" + story['question_fol'] + "\\\"}"
+                prompt += "\\\"" + story['predicates_fol'][-1] + "\\\"]\\\"}"
                 prompt += '\n------\n'
             
             
@@ -219,7 +213,7 @@ class LogicProgramGenerator(PromptGenerator):
                             'question': sample['question'], 
                             'answer': sample['answer'],
                             'options': sample['options'],
-                            'raw_logic_programs': programs}
+                            'raw_logic_predicates': programs}
                     outputs.append(output)
             except:
                 # generate one by one if batch generation fails
@@ -232,7 +226,7 @@ class LogicProgramGenerator(PromptGenerator):
                                 'question': sample['question'], 
                                 'answer': sample['answer'],
                                 'options': sample['options'],
-                                'raw_logic_programs': programs}
+                                'raw_logic_predicates': programs}
                         outputs.append(output)
                     except KeyboardInterrupt:
                         sys.exit()
@@ -255,7 +249,7 @@ def parse_args():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
-    parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--save_path', type=str, default='./outputs/logic_predicates')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')

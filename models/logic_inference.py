@@ -15,6 +15,7 @@ class LogicInferenceEngine:
         self.dataset_name = args.dataset_name
         self.split = args.split
         self.model_name = args.model_name
+        self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.backup_strategy = args.backup_strategy
         self.prompt_mode = args.prompt_mode
@@ -35,7 +36,7 @@ class LogicInferenceEngine:
             programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
         else:
             programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
-        with open(os.path.join('./outputs/logic_programs', programs_file)) as f:
+        with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
@@ -127,6 +128,7 @@ def parse_args():
     parser.add_argument('--prompt_mode', type=str)
     parser.add_argument('--response_mode', type=str)
     parser.add_argument('--self_refine_round', type=int, default=0)
+    parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')

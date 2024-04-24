@@ -18,6 +18,22 @@ class PromptGenerator:
         self.prompt_mode = args.prompt_mode
         self.response_mode = args.response_mode
         
+        
+        self.task_description = ("Given a set of Natural Language Premises, a Natural Language Question, and a set of First-Order-Logic Predicates\n" 
+                                "The task is to parse the Premises and Question into First-Order-Logic formulas.\n"
+                                "The grammar of the first-order logic formular is defined as follows:\n"
+                                "1) logical conjunction of expr1 and expr2: expr1 ∧ expr2\n"
+                                "2) logical disjunction of expr1 and expr2: expr1 ∨ expr2\n"
+                                "3) logical exclusive disjunction of expr1 and expr2: expr1 ⊕ expr2\n"
+                                "4) logical negation of expr1: ¬expr1\n"
+                                "5) expr1 implies expr2: expr1 → expr2\n"
+                                "6) expr1 if and only if expr2: expr1 ↔ expr2\n"
+                                "7) logical universal quantification: ∀x\n"
+                                "8) logical existential quantification: ∃x")
+        
+        
+        
+        
         if self.response_mode == 'json':
             self.response_format = { "type": "json_object" }
         
@@ -44,18 +60,21 @@ class PromptGenerator:
         self.load_prompt_templates()
             
     def load_prompt_templates(self):
-        prompt_file = f'./models/prompts/{self.dataset_name}_{self.response_mode}.txt'
-        task_description_file = f'./models/task_descriptions/{self.dataset_name}_{self.response_mode}.txt'
+        prompt_file = f'./models/prompts/program_from_preds_{self.dataset_name}_{self.response_mode}.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
-            
-        with open(task_description_file, 'r') as f:
-            self.task_description = f.read()
+
 
     def static_prompt_folio_text(self, test_data):
-        problem = ' '.join(test_data['context'])
+        problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
-        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
+        predicates = '\n'.join(test_data['predicates_fol'])
+        full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question).replace('[[PREDICATES]]', predicates)
+       
+        # print(full_prompt)
+        
+        # raise Exception('surprise!')
+        
         return full_prompt
     
 
@@ -80,14 +99,15 @@ class PromptGenerator:
                 
                 prompt += 'Natural Language Question:\n"""\n'
                 prompt += story['question']
-                prompt += '\n"""\n###\n'   
+                prompt += '\n"""\n'
                 
-                
-                prompt += 'First-Order-Logic Predicates:\n"""\n'
                 if 'predicates_fol' in story.keys():
+                    prompt += 'First-Order-Logic Predicates:\n"""\n'
                     for pred in story['predicates_fol']:
                         prompt += pred + '\n'
-                prompt += '"""\n'
+                    prompt += '"""\n'   
+                
+                prompt += '###\n'
                 
                 prompt += 'First-Order-Logic Premises:\n"""\n'
                 for nl, fol in zip(story['context'], story['context_fol']):
@@ -105,58 +125,54 @@ class PromptGenerator:
         
         prompt += 'Natural Language Question:\n"""\n'
         prompt += test_data['question']
-        prompt += '\n"""\n###\n'   
-                    
-        return prompt
-    
-    def dynamic_prompt_folio_json(self, test_data, train_data):
-        
-        prompt = self.task_description
-        
-        if train_data:
-            for story in train_data:   
-                
-                prompt += 'Natural Language Premises:\n"""\n'
-                prompt += '\n'.join(story['context'])
-                prompt += '\n"""\n'
-                
-                prompt += 'Natural Language Question:\n"""\n'
-                prompt += story['question']
-                prompt += '\n"""\n###\n'   
-                
-                prompt += "{\\\"First-Order-Logic Predicates\\\":["
-                if 'predicates_fol' in story.keys():
-                    for pred in story['predicates_fol'][:-1]:
-                        
-                        prompt += f"\\\"{pred}\\\","
-                        
-                prompt += f"\\\"{story['predicates_fol'][-1]}\\\"],"
-                
-                prompt += "\\\"First-Order-Logic Premises\\\":["
-                for nl, fol in list(zip(story['context'], story['context_fol']))[:-1]:
-                    
-                    prompt += "\\\"" + fol + " ::: " + nl + "\\\","
-                    
-                prompt += "\\\"" + story['context_fol'][-1] + " ::: " + story['context'][-1] + "\\\"],"
-                    
-                prompt += "\\\"First-Order-Logic Question\\\":"
-                prompt += "\\\"" + story['question_fol'] + "\\\"}"
-                prompt += '\n------\n'
-            
-            
-        prompt += 'Natural Language Premises:\n"""\n'
-        prompt += '\n'.join(test_data['context'])
         prompt += '\n"""\n'
         
-        prompt += 'Natural Language Question:\n"""\n'
-        prompt += test_data['question']
-        prompt += '\n"""\n###\n'   
-        
-        # print(prompt)
-        
-        # raise Exception('surprise!')
-        
+        if 'predicates_fol' in test_data.keys():
+            prompt += 'First-Order-Logic Predicates:\n"""\n'
+            for pred in test_data['predicates_fol']:
+                prompt += pred + '\n'
+            prompt += '"""\n###\n'
+           
         return prompt
+    
+    # def dynamic_prompt_folio_json(self, test_data, train_data):
+        
+    #     prompt = self.task_description
+        
+    #     if train_data:
+    #         for story in train_data:   
+                
+    #             prompt += 'Natural Language Premises:\n"""\n'
+    #             prompt += '\n'.join(story['context'])
+    #             prompt += '\n"""\n'
+                
+    #             prompt += 'Natural Language Question:\n"""\n'
+    #             prompt += story['question']
+    #             prompt += '\n"""\n###\n'   
+                
+    #             prompt += "{\\\"First-Order-Logic Predicates\\\":["
+    #             if 'predicates_fol' in story.keys():
+    #                 for pred in story['predicates_fol'][:-1]:
+                        
+    #                     prompt += f"\\\"{pred}\\\","
+                        
+    #             prompt += "\\\"" + story['predicates_fol'][-1] + "\\\"]\\\"}"
+    #             prompt += '\n------\n'
+            
+            
+    #     prompt += 'Natural Language Premises:\n"""\n'
+    #     prompt += '\n'.join(test_data['context'])
+    #     prompt += '\n"""\n'
+        
+    #     prompt += 'Natural Language Question:\n"""\n'
+    #     prompt += test_data['question']
+    #     prompt += '\n"""\n###\n'   
+        
+    #     # print(prompt)
+        
+    #     # raise Exception('surprise!')
+        
+    #     return prompt
     
     def load_dynamic_examples(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}_examples.json')) as f:
@@ -255,7 +271,7 @@ def parse_args():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str)
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
-    parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--save_path', type=str, default='./outputs/logic_programs_from_preds')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')

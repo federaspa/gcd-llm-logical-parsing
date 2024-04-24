@@ -1,5 +1,5 @@
-Given a set of Natural Language Premises and a Natural Language Question. 
-The task is extract the First-Order-Logic Predicates, and parse the Premises and Question into First-Order-Logic formulas.
+Given a set of Natural Language Premises, a Natural Language Question, and a set of First-Order-Logic Predicates.
+The task is to parse the Premises and Question into First-Order-Logic formulas.
 The grammar of the first-order logic formular is defined as follows:
 1) logical conjunction of expr1 and expr2: expr1 ∧ expr2
 2) logical disjunction of expr1 and expr2: expr1 ∨ expr2
@@ -22,7 +22,6 @@ Natural Language Question:
 """
 Rina doesn't want to be addicted to caffeine or is unaware that caffeine is a drug.
 """
-###
 First-Order-Logic Predicates:
 """
 IsDependentOn(x, y) ::: x is dependent on y.
@@ -31,6 +30,7 @@ WantToBeAddictedTo(x, y) ::: x wants to be addicted to y.
 AwareThatDrug(x, y) ::: x is aware that y is a drug.
 Student(x) ::: x is a student.
 """
+###
 First-Order-Logic Premises:
 """
 ∀x (DrinkRegularly(x, coffee) → IsDependentOn(x, caffeine)) ::: All people who regularly drink coffee are dependent on caffeine.
@@ -55,7 +55,6 @@ Natural Language Question:
 """
 Miroslav Venhoda loved music.
 """
-###
 First-Order-Logic Predicates:
 """
 Czech(x) ::: x is czech
@@ -65,6 +64,7 @@ Musician(x) ::: x is a musician
 Love(x, y) ::: x loves y
 PublishedBook(x, y) ::: x published the book y
 """
+###
 First-Order-Logic Premises:
 """
 Czech(miroslav) ∧ ChoralConductor(miroslav) ∧ SpecializeInPerformanceOf(miroslav, renaissanceMusic) ∧ SpecializeInPerformanceOf(miroslav, baroqueMusic) ::: Miroslav Venhoda was a Czech choral conductor who specialized in the performance of Renaissance and Baroque music.
@@ -84,5 +84,9 @@ Natural Language Premises:
 Natural Language Question:
 """
 [[QUESTION]]
+"""
+First-Order-Logic Predicates:
+"""
+[[PREDICATES]]
 """
 ###
