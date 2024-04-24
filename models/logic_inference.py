@@ -75,7 +75,27 @@ class LogicInferenceEngine:
         
         for example in tqdm(self.dataset):
             # execute the logic program
-            answer, flag, error_message = self.safe_execute_program(example['id'], example['raw_logic_programs'][0].strip())
+            
+            program = example['raw_logic_programs'][0].strip()
+            
+            try:
+                if self.response_mode == 'json':
+                    if 'error' in json.loads(program):
+                        error_count += 1
+                        
+                        output = {'id': example['id'], 
+                                # 'context': example['context'],
+                                'question': example['question'], 
+                                'answer': example['answer'],
+                                'flag': 'generation error',
+                                'error': json.loads(program)['error'],
+                                'predicted_answer': None}
+                        outputs.append(output)
+                        continue
+            except Exception as e:
+                print(f'error in response keys but exception: {e}')
+            
+            answer, flag, error_message = self.safe_execute_program(example['id'], program)
             if not flag == 'success':
                 error_count += 1
                 # print(error_message)
@@ -86,6 +106,7 @@ class LogicInferenceEngine:
                     'question': example['question'], 
                     'answer': example['answer'],
                     'flag': flag,
+                    'error': error_message,
                     'predicted_answer': answer}
             outputs.append(output)
         

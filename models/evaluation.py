@@ -101,9 +101,11 @@ def full_evaluation(result_file):
     non_executable_samples = [sample for sample in all_samples if sample['flag'] != 'success']
     
     parsing_errors = [sample for sample in all_samples if sample['flag'] == 'parsing error']
+    generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
     print(f'Executable rate (Exe_Rate): {len(executable_samples)/len(all_samples)}')
+    print(f'Generation errors rate: {len(generation_errors)/len(all_samples)}')
     print(f'Parsing errors rate: {len(parsing_errors)/len(all_samples)}')
     print(f'Execution errors rate: {len(execution_errors)/len(all_samples)}')
     print()

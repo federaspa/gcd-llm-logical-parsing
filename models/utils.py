@@ -60,7 +60,7 @@ class OpenAIModel:
         response = chat_completions_with_backoff(
                 model = self.model_name,
                 messages=[
-                        {"role": "system", "content": task_description},
+                        # {"role": "system", "content": task_description},
                         {"role": "user", "content": input_string}
                     ],
                 max_tokens = self.max_new_tokens,
@@ -82,7 +82,8 @@ class OpenAIModel:
         open_ai_messages_list = []
         for message in messages_list:
             open_ai_messages_list.append(
-                [{"role": "system", "content": task_description},
+                [
+                    # {"role": "system", "content": task_description},
                  {"role": "user", "content": message}]
             )
         predictions = asyncio.run(

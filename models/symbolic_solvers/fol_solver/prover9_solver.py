@@ -53,13 +53,19 @@ class FOL_Prover9_Program:
             for premise in self.logic_premises:
                 fol_rule = FOL_Formula(premise)
                 if fol_rule.is_valid == False:
-                    return False, f'Invalid FOL premise.: {premise}'
+                    try:
+                        return False, f'Invalid FOL premise.: {premise}'
+                    except Exception:
+                        return False, f'Invalid FOL premise.'
                 prover9_rule = Prover9_FOL_Formula(fol_rule)
                 self.prover9_premises.append(prover9_rule.formula)
 
             fol_conclusion = FOL_Formula(self.logic_conclusion)
             if fol_conclusion.is_valid == False:
-                return False, f'Invalid FOL question.: {fol_conclusion}'
+                try:
+                    return False, f'Invalid FOL question.: {fol_conclusion}'
+                except Exception:
+                    return False, f'Invalid FOL question.'
             self.prover9_conclusion = Prover9_FOL_Formula(fol_conclusion).formula
             return True, ''
         

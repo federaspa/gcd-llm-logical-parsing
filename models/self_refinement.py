@@ -21,6 +21,7 @@ class SelfRefinementEngine:
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
+        self.response_mode = args.response_mode
 
         self.logic_programs = self.load_logic_programs()
         # self.reasoning_results = self.load_inference_results()
@@ -34,7 +35,7 @@ class SelfRefinementEngine:
         prefix = ""
         if self.current_round > 1:
             prefix = f'self-refine-{self.current_round-1}_'
-        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json')) as f:
+        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json')) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
@@ -42,17 +43,17 @@ class SelfRefinementEngine:
     def load_prompt(self, program, error_message):
         program = program.strip()
         error_message = error_message.strip()
-        with open(f'./models/prompts/self-correct-{self.dataset_name}_{self.prompt_mode}.txt', 'r') as f:
+        with open(f'./models/prompts/self-correct-{self.dataset_name}_{self.response_mode}.txt', 'r') as f:
             prompt_template = f.read()
         full_prompt = prompt_template.replace('[[PROGRAM]]', program).replace('[[ERROR MESSAGE]]', error_message)
         return full_prompt
 
     def safe_execute_program(self, id, logic_program, debug = False):
-        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
+        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode, self.response_mode)
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'parsing error', ''
+            return answer, 'parsing error', program.parsing_error_message
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
@@ -81,24 +82,10 @@ class SelfRefinementEngine:
             logic_program = example['raw_logic_programs'][0].strip()
             answer, status, error_message = self.safe_execute_program(example['id'], logic_program)
 
-            if status == 'execution error':
-                if not error_message == 'No Output': # this is not execution error, but parsing error
-                    # perform self-correction based on the error message
-                    full_prompt = self.load_prompt(logic_program, error_message)
-                    revised_program = self.openai_api.generate(full_prompt).strip()
-                    programs = [revised_program]
-                    output = {'id': example['id'], 
-                            'context': example['context'],
-                            'question': example['question'], 
-                            'answer': example['answer'],
-                            # 'options': example['options'],
-                            'raw_logic_programs': programs}
-                    outputs.append(output)
-                else:
-                    outputs.append(example)
-            elif status == 'parsing error':
+            if status != 'success':
+            # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
-                full_prompt = self.load_prompt(logic_program, 'Parsing Error')
+                full_prompt = self.load_prompt(logic_program, error_message)
                 revised_program = self.openai_api.generate(full_prompt).strip()
                 programs = [revised_program]
                 output = {'id': example['id'], 
@@ -110,13 +97,12 @@ class SelfRefinementEngine:
                 outputs.append(output)
             else:
                 outputs.append(example)
-
         # save results
         if not os.path.exists('./outputs/logic_programs'):
             os.makedirs('./outputs/logic_programs')
 
         # save outputs
-        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
     
