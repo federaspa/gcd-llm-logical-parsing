@@ -1,0 +1,2489 @@
+[
+  {
+    "id": 0,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TalentShows(x) -> Engaged(x))",
+      "all x.(TalentShows(x) | Inactive(x))",
+      "all x.(Chaperone(x) -> -Students(x))",
+      "all x.(Inactive(x) -> Chaperone(x))",
+      "all x.(AcademicCareer(x) -> Students(x))",
+      "((Engaged(Bonnie) & Students(Bonnie) & -(-Engaged(Bonnie) & -Students(Bonnie))) | (-(Engaged(Bonnie) & Students(Bonnie)) & -Engaged(Bonnie) & -Students(Bonnie)))"
+    ],
+    "goal": "Engaged(Bonnie)"
+  },
+  {
+    "id": 1,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TalentShows(x) -> Engaged(x))",
+      "all x.(TalentShows(x) | Inactive(x))",
+      "all x.(Chaperone(x) -> -Students(x))",
+      "all x.(Inactive(x) -> Chaperone(x))",
+      "all x.(AcademicCareer(x) -> Students(x))",
+      "((Engaged(Bonnie) & Students(Bonnie) & -(-Engaged(Bonnie) & -Students(Bonnie))) | (-(Engaged(Bonnie) & Students(Bonnie)) & -Engaged(Bonnie) & -Students(Bonnie)))"
+    ],
+    "goal": "(((((AcademicCareer(Bonnie) & -Chaperone(Bonnie)) | (-AcademicCareer(Bonnie) & Chaperone(Bonnie))) -> AcademicCareer(Bonnie)) & -Inactive(Bonnie)) | (-(((AcademicCareer(Bonnie) & -Chaperone(Bonnie)) | (-AcademicCareer(Bonnie) & Chaperone(Bonnie))) -> AcademicCareer(Bonnie)) & Inactive(Bonnie)))"
+  },
+  {
+    "id": 2,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TalentShows(x) -> Engaged(x))",
+      "all x.(TalentShows(x) | Inactive(x))",
+      "all x.(Chaperone(x) -> -Students(x))",
+      "all x.(Inactive(x) -> Chaperone(x))",
+      "all x.(AcademicCareer(x) -> Students(x))",
+      "((Engaged(Bonnie) & Students(Bonnie) & -(-Engaged(Bonnie) & -Students(Bonnie))) | (-(Engaged(Bonnie) & Students(Bonnie)) & -Engaged(Bonnie) & -Students(Bonnie)))"
+    ],
+    "goal": "[[ERROR]]"
+  },
+  {
+    "id": 3,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Meeting(x) -> AppearInCompany(x))",
+      "all x.(LunchInCompany(x) -> Meetings(x))",
+      "all x.(LunchInCompany(x) | LunchAtHome(x))",
+      "all x.(LunchAtHome(x) -> WorkRemotelyFromHome(x))",
+      "all x.(InOtherCountries(x) -> WorkRemotelyFromHome(x))",
+      "all x.(Manager(x) -> -WorkRemotelyFromHome(x))",
+      "((Manager(James) & -AppearInCompany(James)) | (-Manager(James) & AppearInCompany(James)))"
+    ],
+    "goal": "LunchInCompany(James)"
+  },
+  {
+    "id": 4,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Meeting(x) -> AppearInCompany(x))",
+      "all x.(LunchInCompany(x) -> Meetings(x))",
+      "all x.(LunchInCompany(x) | LunchAtHome(x))",
+      "all x.(LunchAtHome(x) -> WorkRemotelyFromHome(x))",
+      "all x.(InOtherCountries(x) -> WorkRemotelyFromHome(x))",
+      "all x.(Manager(x) -> -WorkRemotelyFromHome(x))",
+      "((Manager(James) & -AppearInCompany(James)) | (-Manager(James) & AppearInCompany(James)))"
+    ],
+    "goal": "-LunchInCompany(James)"
+  },
+  {
+    "id": 5,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Meeting(x) -> AppearInCompany(x))",
+      "all x.(LunchInCompany(x) -> Meetings(x))",
+      "all x.(LunchInCompany(x) | LunchAtHome(x))",
+      "all x.(LunchAtHome(x) -> WorkRemotelyFromHome(x))",
+      "all x.(InOtherCountries(x) -> WorkRemotelyFromHome(x))",
+      "all x.(Manager(x) -> -WorkRemotelyFromHome(x))",
+      "((Manager(James) & -AppearInCompany(James)) | (-Manager(James) & AppearInCompany(James)))"
+    ],
+    "goal": "(((Manager(James) & -InOtherCountries(James)) | (-Manager(James) & InOtherCountries(James))) -> ((LunchAtHome(James) & -WorkRemotelyFromHome(James)) | (-LunchAtHome(James) & WorkRemotelyFromHome(James))))"
+  },
+  {
+    "id": 6,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(OccurMonkeypoxVirus(x) & GetMonkeypox(x))",
+      "exists x.(Animal(x) & OccurMonkeypoxVirus(x))",
+      "all x.(Human(x) -> Mammal(x))",
+      "all x.(Mammal(x) -> Animal(x))",
+      "exists x.(GetMonkeypox(x) & (Fever(x) | Headache(x) | MusclePain(x) | Tired(x)))",
+      "all x.((Human(x) & Flu(x)) -> Tired(x))"
+    ],
+    "goal": "exists x.Animal(x)"
+  },
+  {
+    "id": 7,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(OccurMonkeypoxVirus(x) & GetMonkeypox(x))",
+      "exists x.(Animal(x) & OccurMonkeypoxVirus(x))",
+      "all x.(Human(x) -> Mammal(x))",
+      "all x.(Mammal(x) -> Animal(x))",
+      "exists x.(GetMonkeypox(x) & (Fever(x) | Headache(x) | MusclePain(x) | Tired(x)))",
+      "all x.((Human(x) & Flu(x)) -> Tired(x))"
+    ],
+    "goal": "all x.(Human(x) -> -Flu(x))"
+  },
+  {
+    "id": 8,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(OccurMonkeypoxVirus(x) & GetMonkeypox(x))",
+      "exists x.(Animal(x) & OccurMonkeypoxVirus(x))",
+      "all x.(Human(x) -> Mammal(x))",
+      "all x.(Mammal(x) -> Animal(x))",
+      "exists x.(GetMonkeypox(x) & (Fever(x) | Headache(x) | MusclePain(x) | Tired(x)))",
+      "all x.((Human(x) & Flu(x)) -> Tired(x))"
+    ],
+    "goal": "exists x.(GetMonkeypox(x) & Coughing(x))"
+  },
+  {
+    "id": 9,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WildTurkey(x) -> (Eastern(x) | Osceola(x) | Goulds(x) | Merriams(x) | Riogrande(x) | Ocellated(x)))",
+      "-(WildTurkey(Tom) & Eastern(Tom))",
+      "-(WildTurkey(Tom) & Osceola(Tom))",
+      "(WildTurkey(Tom) -> -(Goulds(Tom) | Merriams(Tom) | Riogrande(Tom)))",
+      "WildTurkey(Tom)"
+    ],
+    "goal": "Ocellated(Tom)"
+  },
+  {
+    "id": 10,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WildTurkey(x) -> (Eastern(x) | Osceola(x) | Goulds(x) | Merriams(x) | Riogrande(x) | Ocellated(x)))",
+      "-(WildTurkey(Tom) & Eastern(Tom))",
+      "-(WildTurkey(Tom) & Osceola(Tom))",
+      "(WildTurkey(Tom) -> -(Goulds(Tom) | Merriams(Tom) | Riogrande(Tom)))",
+      "WildTurkey(Tom)"
+    ],
+    "goal": "Eastern(Tom)"
+  },
+  {
+    "id": 11,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WildTurkey(x) -> (Eastern(x) | Osceola(x) | Goulds(x) | Merriams(x) | Riogrande(x) | Ocellated(x)))",
+      "-(WildTurkey(Tom) & Eastern(Tom))",
+      "-(WildTurkey(Tom) & Osceola(Tom))",
+      "(WildTurkey(Tom) -> -(Goulds(Tom) | Merriams(Tom) | Riogrande(Tom)))",
+      "WildTurkey(Tom)"
+    ],
+    "goal": "WildTurkey(Joey)"
+  },
+  {
+    "id": 12,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Japanese(x) & VideoGameCompany(x) & Game(Thelegendofzelda) & Created(x,Thelegendofzelda))",
+      "all x y.((Game(x) & InTop10(x) & Created(x,y)) -> Japanese(y))",
+      "all x.((Game(x) & SellsMoreThan(x,Onemillioncopies)) -> Top10(x))",
+      "SellsMoreThan(Thelegendofzelda,Onemillioncopies)"
+    ],
+    "goal": "Top10(Thelegendofzelda)"
+  },
+  {
+    "id": 13,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Japanese(x) & VideoGameCompany(x) & Game(Thelegendofzelda) & Created(x,Thelegendofzelda))",
+      "all x y.((Game(x) & InTop10(x) & Created(x,y)) -> Japanese(y))",
+      "all x.((Game(x) & SellsMoreThan(x,Onemillioncopies)) -> Top10(x))",
+      "SellsMoreThan(Thelegendofzelda,Onemillioncopies)"
+    ],
+    "goal": "all x.((Created(Fifa22,x) -> Japanese(x)) & VideoGameCompany(x))"
+  },
+  {
+    "id": 14,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Japanese(x) & VideoGameCompany(x) & Game(Thelegendofzelda) & Created(x,Thelegendofzelda))",
+      "all x y.((Game(x) & InTop10(x) & Created(x,y)) -> Japanese(y))",
+      "all x.((Game(x) & SellsMoreThan(x,Onemillioncopies)) -> Top10(x))",
+      "SellsMoreThan(Thelegendofzelda,Onemillioncopies)"
+    ],
+    "goal": "-Top10(Thelegendofzelda)"
+  },
+  {
+    "id": 15,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Square(x) -> FourSides(x))",
+      "all x.(FourSides(x) -> IsShape(x))"
+    ],
+    "goal": "all x.(Square(x) -> IsShape(x))"
+  },
+  {
+    "id": 16,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Rabbit(x) -> Cute(x))",
+      "exists x.Turtle(x)",
+      "all x.(Rabbit(x) | Squirrel(x))",
+      "all x.(Skittish(x) -> -Still(x))",
+      "all x.(Squirrel(x) -> Skittish(x))",
+      "Still(Rock)"
+    ],
+    "goal": "Turtle(Rock)"
+  },
+  {
+    "id": 17,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Rabbit(x) -> Cute(x))",
+      "exists x.Turtle(x)",
+      "all x.(Rabbit(x) | Squirrel(x))",
+      "all x.(Skittish(x) -> -Still(x))",
+      "all x.(Squirrel(x) -> Skittish(x))",
+      "Still(Rock)"
+    ],
+    "goal": "-Turtle(Rock)"
+  },
+  {
+    "id": 18,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Rabbit(x) -> Cute(x))",
+      "exists x.Turtle(x)",
+      "all x.(Rabbit(x) | Squirrel(x))",
+      "all x.(Skittish(x) -> -Still(x))",
+      "all x.(Squirrel(x) -> Skittish(x))",
+      "Still(Rock)"
+    ],
+    "goal": "(Turtle(Rock) | Cute(Rock))"
+  },
+  {
+    "id": 19,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Rabbit(x) -> Cute(x))",
+      "exists x.Turtle(x)",
+      "all x.(Rabbit(x) | Squirrel(x))",
+      "all x.(Skittish(x) -> -Still(x))",
+      "all x.(Squirrel(x) -> Skittish(x))",
+      "Still(Rock)"
+    ],
+    "goal": "(((-(Turtle(Rock) & Squirrel(Rock)) -> Cute(Rock)) & -Skittish(Rock)) | (-(-(Turtle(Rock) & Squirrel(Rock)) -> Cute(Rock)) & Skittish(Rock)))"
+  },
+  {
+    "id": 20,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Rabbit(x) -> Cute(x))",
+      "exists x.Turtle(x)",
+      "all x.(Rabbit(x) | Squirrel(x))",
+      "all x.(Skittish(x) -> -Still(x))",
+      "all x.(Squirrel(x) -> Skittish(x))",
+      "Still(Rock)"
+    ],
+    "goal": "(((Cute(Rock) & Still(Rock)) -> Turtle(Rock)) & Skittish(Rock))"
+  },
+  {
+    "id": 21,
+    "flag": "success",
+    "assumptions": [
+      "(NetflixShow(StrangerThings) & Popular(StrangerThings))",
+      "all x.((NetflixShow(x) & Popular(x)) -> BingeWatch(Karen,x))",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) <-> Download(Karen,x))",
+      "-Download(Karen,BlackMirror)",
+      "NetflixShow(BlackMirror)",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) -> Share(x,Lisa))"
+    ],
+    "goal": "Share(StrangerThings,Lisa)"
+  },
+  {
+    "id": 22,
+    "flag": "success",
+    "assumptions": [
+      "(NetflixShow(StrangerThings) & Popular(StrangerThings))",
+      "all x.((NetflixShow(x) & Popular(x)) -> BingeWatch(Karen,x))",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) <-> Download(Karen,x))",
+      "-Download(Karen,BlackMirror)",
+      "NetflixShow(BlackMirror)",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) -> Share(x,Lisa))"
+    ],
+    "goal": "Popular(BlackMirror)"
+  },
+  {
+    "id": 23,
+    "flag": "success",
+    "assumptions": [
+      "(NetflixShow(StrangerThings) & Popular(StrangerThings))",
+      "all x.((NetflixShow(x) & Popular(x)) -> BingeWatch(Karen,x))",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) <-> Download(Karen,x))",
+      "-Download(Karen,BlackMirror)",
+      "NetflixShow(BlackMirror)",
+      "all x.((NetflixShow(x) & BingeWatch(Karen,x)) -> Share(x,Lisa))"
+    ],
+    "goal": "Share(BlackMirror,Lisa)"
+  },
+  {
+    "id": 24,
+    "flag": "success",
+    "assumptions": [
+      "CapitalOf(Beijing,Prx)",
+      "MostPopulousNationalCapitalCity(Beijing)",
+      "InNorthernChina(Beijing)",
+      "(Hosted(Beijing,Summer2008olympic) & Hosted(Beijing,Summer2008paralympicgames))",
+      "(Hosted(Beijing,Summerolympic) & Hosted(Beijing,Winterolympic) & Hosted(Beijing,Summerparalympicgames) & Hosted(Beijing,Winterparalympicgames))",
+      "exists x.(BeijingUniversity(x) & ConsistentlyRankAmongTheBest(x))"
+    ],
+    "goal": "(Hosted(Beijing,Summer2008olympic) & Hosted(Beijing,Winterolympic))"
+  },
+  {
+    "id": 25,
+    "flag": "success",
+    "assumptions": [
+      "CapitalOf(Beijing,Prx)",
+      "MostPopulousNationalCapitalCity(Beijing)",
+      "InNorthernChina(Beijing)",
+      "(Hosted(Beijing,Summer2008olympic) & Hosted(Beijing,Summer2008paralympicgames))",
+      "(Hosted(Beijing,Summerolympic) & Hosted(Beijing,Winterolympic) & Hosted(Beijing,Summerparalympicgames) & Hosted(Beijing,Winterparalympicgames))",
+      "exists x.(BeijingUniversity(x) & ConsistentlyRankAmongTheBest(x))"
+    ],
+    "goal": "InSouthernChina(Beijing)"
+  },
+  {
+    "id": 26,
+    "flag": "success",
+    "assumptions": [
+      "CapitalOf(Beijing,Prx)",
+      "MostPopulousNationalCapitalCity(Beijing)",
+      "InNorthernChina(Beijing)",
+      "(Hosted(Beijing,Summer2008olympic) & Hosted(Beijing,Summer2008paralympicgames))",
+      "(Hosted(Beijing,Summerolympic) & Hosted(Beijing,Winterolympic) & Hosted(Beijing,Summerparalympicgames) & Hosted(Beijing,Winterparalympicgames))",
+      "exists x.(BeijingUniversity(x) & ConsistentlyRankAmongTheBest(x))"
+    ],
+    "goal": "SecondLargestChineseCity(Beijing)"
+  },
+  {
+    "id": 27,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Alien(x) -> Extraterrestrial(x))",
+      "all x.(FromMars(x) -> Alien(x))",
+      "all x.(Extraterrestrial(x) -> -Human(x))",
+      "all x.(FromEarth(x) -> Human(x))",
+      "(-FromEarth(Marvin) & -FromMars(Marvin))",
+      "(-FromEarth(Marvin) -> Extraterrestrial(Marvin))"
+    ],
+    "goal": "Alien(Marvin)"
+  },
+  {
+    "id": 28,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Alien(x) -> Extraterrestrial(x))",
+      "all x.(FromMars(x) -> Alien(x))",
+      "all x.(Extraterrestrial(x) -> -Human(x))",
+      "all x.(FromEarth(x) -> Human(x))",
+      "(-FromEarth(Marvin) & -FromMars(Marvin))",
+      "(-FromEarth(Marvin) -> Extraterrestrial(Marvin))"
+    ],
+    "goal": "(-Human(Marvin) & -FromMars(Marvin))"
+  },
+  {
+    "id": 29,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Alien(x) -> Extraterrestrial(x))",
+      "all x.(FromMars(x) -> Alien(x))",
+      "all x.(Extraterrestrial(x) -> -Human(x))",
+      "all x.(FromEarth(x) -> Human(x))",
+      "(-FromEarth(Marvin) & -FromMars(Marvin))",
+      "(-FromEarth(Marvin) -> Extraterrestrial(Marvin))"
+    ],
+    "goal": "(-FromMars(Marvin) -> Human(Marvin))"
+  },
+  {
+    "id": 30,
+    "flag": "success",
+    "assumptions": [
+      "all x.((GrandSlamChampion(x) & -OscarNominatedActor(x)) | (-GrandSlamChampion(x) & OscarNominatedActor(x)))",
+      "all x.(GrandSlamChampion(x) -> ProfessionalTennisPlayer(x))",
+      "all x.(OscarNominatedActor(x) -> Celebrity(x))",
+      "all x.(ProfessionalTennisPlayer(x) -> Athlete(x))",
+      "all x.(Celebrity(x) -> WellPaid(x))",
+      "all x.(Athlete(x) -> Famous(x))",
+      "all x.(WellPaid(x) -> LivesInTaxHaven(x))",
+      "((Famous(Djokovic) & Athlete(Djokovic)) -> LivesInTaxHaven(Djokovic))"
+    ],
+    "goal": "GrandSlamChampion(Djokovic)"
+  },
+  {
+    "id": 31,
+    "flag": "success",
+    "assumptions": [
+      "all x.((GrandSlamChampion(x) & -OscarNominatedActor(x)) | (-GrandSlamChampion(x) & OscarNominatedActor(x)))",
+      "all x.(GrandSlamChampion(x) -> ProfessionalTennisPlayer(x))",
+      "all x.(OscarNominatedActor(x) -> Celebrity(x))",
+      "all x.(ProfessionalTennisPlayer(x) -> Athlete(x))",
+      "all x.(Celebrity(x) -> WellPaid(x))",
+      "all x.(Athlete(x) -> Famous(x))",
+      "all x.(WellPaid(x) -> LivesInTaxHaven(x))",
+      "((Famous(Djokovic) & Athlete(Djokovic)) -> LivesInTaxHaven(Djokovic))"
+    ],
+    "goal": "LivesInTaxHaven(Djokovic)"
+  },
+  {
+    "id": 32,
+    "flag": "success",
+    "assumptions": [
+      "all x.((GrandSlamChampion(x) & -OscarNominatedActor(x)) | (-GrandSlamChampion(x) & OscarNominatedActor(x)))",
+      "all x.(GrandSlamChampion(x) -> ProfessionalTennisPlayer(x))",
+      "all x.(OscarNominatedActor(x) -> Celebrity(x))",
+      "all x.(ProfessionalTennisPlayer(x) -> Athlete(x))",
+      "all x.(Celebrity(x) -> WellPaid(x))",
+      "all x.(Athlete(x) -> Famous(x))",
+      "all x.(WellPaid(x) -> LivesInTaxHaven(x))",
+      "((Famous(Djokovic) & Athlete(Djokovic)) -> LivesInTaxHaven(Djokovic))"
+    ],
+    "goal": "-LivesInTaxHaven(Djokovic)"
+  },
+  {
+    "id": 33,
+    "flag": "success",
+    "assumptions": [
+      "(ProfessionalWrestlingStable(Diamondmine) & FormedIn(Diamondmine,Wwe))",
+      "Leads(Roderickstrong,Diamondmine)",
+      "(Includes(Diamondmine,Creedbrothers) & Includes(Diamondmine,Ivynile))",
+      "HasFeud(Imperium,Diamondmine)"
+    ],
+    "goal": "exists x.(Leads(Roderickstrong,x) & ProfessionalWrestlingStable(x))"
+  },
+  {
+    "id": 34,
+    "flag": "success",
+    "assumptions": [
+      "(ProfessionalWrestlingStable(Diamondmine) & FormedIn(Diamondmine,Wwe))",
+      "Leads(Roderickstrong,Diamondmine)",
+      "(Includes(Diamondmine,Creedbrothers) & Includes(Diamondmine,Ivynile))",
+      "HasFeud(Imperium,Diamondmine)"
+    ],
+    "goal": "Leads(Roderickstrong,Creedbrothers)"
+  },
+  {
+    "id": 35,
+    "flag": "success",
+    "assumptions": [
+      "(ProfessionalWrestlingStable(Diamondmine) & FormedIn(Diamondmine,Wwe))",
+      "Leads(Roderickstrong,Diamondmine)",
+      "(Includes(Diamondmine,Creedbrothers) & Includes(Diamondmine,Ivynile))",
+      "HasFeud(Imperium,Diamondmine)"
+    ],
+    "goal": "all x.((ProfessionalWrestlingStable(x) & Includes(x,Ivynile)) -> -HasFeud(Imperium,x))"
+  },
+  {
+    "id": 36,
+    "flag": "success",
+    "assumptions": [
+      "MusicPiece(Symphony9)",
+      "all x y.((MusicPiece(x) & Writtenby(x,y)) -> Composer(y))",
+      "Writtenby(Symphony9,Beethoven)",
+      "Premiered(Viennamusicsociety,Symphony9)",
+      "Orchestra(Viennamusicsociety)",
+      "Lead(Beethoven,Viennamusicsociety)",
+      "all x y.((Orchestra(x) & Lead(y,x)) -> Conductor(y))"
+    ],
+    "goal": "Composer(Beethoven)"
+  },
+  {
+    "id": 37,
+    "flag": "success",
+    "assumptions": [
+      "MusicPiece(Symphony9)",
+      "all x y.((MusicPiece(x) & Writtenby(x,y)) -> Composer(y))",
+      "Writtenby(Symphony9,Beethoven)",
+      "Premiered(Viennamusicsociety,Symphony9)",
+      "Orchestra(Viennamusicsociety)",
+      "Lead(Beethoven,Viennamusicsociety)",
+      "all x y.((Orchestra(x) & Lead(y,x)) -> Conductor(y))"
+    ],
+    "goal": "exists x y.(Orchestra(x) & MusicPiece(y) & Premiered(x,y))"
+  },
+  {
+    "id": 38,
+    "flag": "success",
+    "assumptions": [
+      "MusicPiece(Symphony9)",
+      "all x y.((MusicPiece(x) & Writtenby(x,y)) -> Composer(y))",
+      "Writtenby(Symphony9,Beethoven)",
+      "Premiered(Viennamusicsociety,Symphony9)",
+      "Orchestra(Viennamusicsociety)",
+      "Lead(Beethoven,Viennamusicsociety)",
+      "all x y.((Orchestra(x) & Lead(y,x)) -> Conductor(y))"
+    ],
+    "goal": "-Conductor(Beethoven)"
+  },
+  {
+    "id": 39,
+    "flag": "success",
+    "assumptions": [
+      "all x.(ZahaHadidDesignStyle(x) -> Timeless(x))",
+      "all x.(MassProductDesign(x) -> -Timeless(x))",
+      "all x.(ZahaHadidDesignStyle(x) | KellyWearstlerDesignStyle(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Evocative(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Dreamy(x))",
+      "((Timeless(ADesignByMax) -> MassProductDesign(ADesignByMax)) & Evocative(ADesignByMax))"
+    ],
+    "goal": "MassProductDesign(ADesignByMax)"
+  },
+  {
+    "id": 40,
+    "flag": "success",
+    "assumptions": [
+      "all x.(ZahaHadidDesignStyle(x) -> Timeless(x))",
+      "all x.(MassProductDesign(x) -> -Timeless(x))",
+      "all x.(ZahaHadidDesignStyle(x) | KellyWearstlerDesignStyle(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Evocative(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Dreamy(x))",
+      "((Timeless(ADesignByMax) -> MassProductDesign(ADesignByMax)) & Evocative(ADesignByMax))"
+    ],
+    "goal": "(Evocative(ADesignByMax) & Dreamy(ADesignByMax))"
+  },
+  {
+    "id": 41,
+    "flag": "success",
+    "assumptions": [
+      "all x.(ZahaHadidDesignStyle(x) -> Timeless(x))",
+      "all x.(MassProductDesign(x) -> -Timeless(x))",
+      "all x.(ZahaHadidDesignStyle(x) | KellyWearstlerDesignStyle(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Evocative(x))",
+      "all x.(KellyWearstlerDesignStyle(x) -> Dreamy(x))",
+      "((Timeless(ADesignByMax) -> MassProductDesign(ADesignByMax)) & Evocative(ADesignByMax))"
+    ],
+    "goal": "((Evocative(ADesignByMax) & -Dreamy(ADesignByMax)) | (-Evocative(ADesignByMax) & Dreamy(ADesignByMax)))"
+  },
+  {
+    "id": 42,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RankedHighlyByWomenTennisAssociation(x) -> AmongMostActivePlayersInMajorTennis(x))",
+      "all x.(LostToIgaŚwiątek(x) -> RankedHighlyByWomenTennisAssociation(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) -> LostToIgaŚwiątek(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) | MaleTennisPlayersAtRolandGarros2022(x))",
+      "all x.(MaleTennisPlayersAtRolandGarros2022(x) -> LostToRafaelNadal(x))",
+      "((RankedHighlyByWomenTennisAssociation(CocoGauff) | LostToRafaelNadal(CocoGauff)) -> -MaleTennisPlayersAtRolandGarros2022(CocoGauff))"
+    ],
+    "goal": "AmongMostActivePlayersInMajorTennis(CocoGauff)"
+  },
+  {
+    "id": 43,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RankedHighlyByWomenTennisAssociation(x) -> AmongMostActivePlayersInMajorTennis(x))",
+      "all x.(LostToIgaŚwiątek(x) -> RankedHighlyByWomenTennisAssociation(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) -> LostToIgaŚwiątek(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) | MaleTennisPlayersAtRolandGarros2022(x))",
+      "all x.(MaleTennisPlayersAtRolandGarros2022(x) -> LostToRafaelNadal(x))",
+      "((RankedHighlyByWomenTennisAssociation(CocoGauff) | LostToRafaelNadal(CocoGauff)) -> -MaleTennisPlayersAtRolandGarros2022(CocoGauff))"
+    ],
+    "goal": "LostToRafaelNadal(CocoGauff)"
+  },
+  {
+    "id": 44,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RankedHighlyByWomenTennisAssociation(x) -> AmongMostActivePlayersInMajorTennis(x))",
+      "all x.(LostToIgaŚwiątek(x) -> RankedHighlyByWomenTennisAssociation(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) -> LostToIgaŚwiątek(x))",
+      "all x.(FemaleTennisPlayersAtRolandGarros2022(x) | MaleTennisPlayersAtRolandGarros2022(x))",
+      "all x.(MaleTennisPlayersAtRolandGarros2022(x) -> LostToRafaelNadal(x))",
+      "((RankedHighlyByWomenTennisAssociation(CocoGauff) | LostToRafaelNadal(CocoGauff)) -> -MaleTennisPlayersAtRolandGarros2022(CocoGauff))"
+    ],
+    "goal": "(-LostToIgaŚwiątek(CocoGauff) | -AmongMostActivePlayersInMajorTennis(CocoGauff))"
+  },
+  {
+    "id": 45,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Cat(x) -> Mammal(x))",
+      "exists x.(Pet(x) & -Mammal(x))"
+    ],
+    "goal": "all x.(Pet(x) -> -Cat(x))"
+  },
+  {
+    "id": 46,
+    "flag": "success",
+    "assumptions": [
+      "(Season(Spring) | Season(Summer) | Season(Fall) | Season(Winter))",
+      "all x.(WantlongVacation(x) -> Love(x,Summer))",
+      "Love(Emma,Summer)",
+      "-Love(Mia,Emma)",
+      "WantlongVacation(James)"
+    ],
+    "goal": "Love(James,Summer)"
+  },
+  {
+    "id": 47,
+    "flag": "success",
+    "assumptions": [
+      "(Season(Spring) | Season(Summer) | Season(Fall) | Season(Winter))",
+      "all x.(WantlongVacation(x) -> Love(x,Summer))",
+      "Love(Emma,Summer)",
+      "-Love(Mia,Emma)",
+      "WantlongVacation(James)"
+    ],
+    "goal": "Love(James,Fall)"
+  },
+  {
+    "id": 48,
+    "flag": "success",
+    "assumptions": [
+      "(Season(Spring) | Season(Summer) | Season(Fall) | Season(Winter))",
+      "all x.(WantlongVacation(x) -> Love(x,Summer))",
+      "Love(Emma,Summer)",
+      "-Love(Mia,Emma)",
+      "WantlongVacation(James)"
+    ],
+    "goal": "Love(Mia,Spring)"
+  },
+  {
+    "id": 49,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Digital(x) -> -Analog(x))",
+      "all x.(PrintedText(x) -> Analog(x))",
+      "all x.(StreamingService(x) -> Digital(x))",
+      "all x.(HardcoverBook(x) -> PrintedText(x))",
+      "(StreamingService(Y1984) -> HardcoverBook(Y1984))"
+    ],
+    "goal": "PrintedText(Y1984)"
+  },
+  {
+    "id": 50,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Digital(x) -> -Analog(x))",
+      "all x.(PrintedText(x) -> Analog(x))",
+      "all x.(StreamingService(x) -> Digital(x))",
+      "all x.(HardcoverBook(x) -> PrintedText(x))",
+      "(StreamingService(Y1984) -> HardcoverBook(Y1984))"
+    ],
+    "goal": "StreamingService(Y1984)"
+  },
+  {
+    "id": 51,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Digital(x) -> -Analog(x))",
+      "all x.(PrintedText(x) -> Analog(x))",
+      "all x.(StreamingService(x) -> Digital(x))",
+      "all x.(HardcoverBook(x) -> PrintedText(x))",
+      "(StreamingService(Y1984) -> HardcoverBook(Y1984))"
+    ],
+    "goal": "-StreamingService(Y1984)"
+  },
+  {
+    "id": 52,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RomanceLanguage(x) -> IndoEuropeanLanguage(x))",
+      "all x.(RomanceLanguage(x) -> MemberOf(x,Romancefamily))",
+      "all x y z.((MemberOf(x,z) & MemberOf(y,z)) -> (Related(x,y) & Related(y,x)))",
+      "(RomanceLanguage(French) & RomanceLanguage(Spanish))",
+      "Related(German,Spanish)",
+      "all x.-Related(Basque,x)"
+    ],
+    "goal": "RomanceLanguage(Basque)"
+  },
+  {
+    "id": 53,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RomanceLanguage(x) -> IndoEuropeanLanguage(x))",
+      "all x.(RomanceLanguage(x) -> MemberOf(x,Romancefamily))",
+      "all x y z.((MemberOf(x,z) & MemberOf(y,z)) -> (Related(x,y) & Related(y,x)))",
+      "(RomanceLanguage(French) & RomanceLanguage(Spanish))",
+      "Related(German,Spanish)",
+      "all x.-Related(Basque,x)"
+    ],
+    "goal": "RomanceLanguage(German)"
+  },
+  {
+    "id": 54,
+    "flag": "success",
+    "assumptions": [
+      "all x.(RomanceLanguage(x) -> IndoEuropeanLanguage(x))",
+      "all x.(RomanceLanguage(x) -> MemberOf(x,Romancefamily))",
+      "all x y z.((MemberOf(x,z) & MemberOf(y,z)) -> (Related(x,y) & Related(y,x)))",
+      "(RomanceLanguage(French) & RomanceLanguage(Spanish))",
+      "Related(German,Spanish)",
+      "all x.-Related(Basque,x)"
+    ],
+    "goal": "IndoEuropeanLanguage(French)"
+  },
+  {
+    "id": 55,
+    "flag": "success",
+    "assumptions": [
+      "IsStriker(RobertLewandowski)",
+      "all x.(IsStriker(x) -> IsSoccerPlayer(x))",
+      "LeftTeam(RobertLewandowski,BayernMunchen)",
+      "all x y.(LeftTeam(x,y) -> -PlaysForTeam(x,y))"
+    ],
+    "goal": "IsSoccerPlayer(RobertLewandowski)"
+  },
+  {
+    "id": 56,
+    "flag": "success",
+    "assumptions": [
+      "IsStriker(RobertLewandowski)",
+      "all x.(IsStriker(x) -> IsSoccerPlayer(x))",
+      "LeftTeam(RobertLewandowski,BayernMunchen)",
+      "all x y.(LeftTeam(x,y) -> -PlaysForTeam(x,y))"
+    ],
+    "goal": "PlaysForTeam(RobertLewandowski,BayernMunchen)"
+  },
+  {
+    "id": 57,
+    "flag": "success",
+    "assumptions": [
+      "IsStriker(RobertLewandowski)",
+      "all x.(IsStriker(x) -> IsSoccerPlayer(x))",
+      "LeftTeam(RobertLewandowski,BayernMunchen)",
+      "all x y.(LeftTeam(x,y) -> -PlaysForTeam(x,y))"
+    ],
+    "goal": "IsSoccerStar(RobertLewandowski)"
+  },
+  {
+    "id": 58,
+    "flag": "success",
+    "assumptions": [
+      "CityIn(Billings,Montana)",
+      "(CityIn(Butte,Montana) & CityIn(Helena,Montana) & CityIn(Missoula,Montana))",
+      "exists x.(CityIn(Whitesulphursprings,x) & CityIn(Butte,x))",
+      "-CityIn(Pierre,Montana)",
+      "all x.(CityIn(Butte,x) -> -CityIn(Pierre,x))"
+    ],
+    "goal": "exists x.(CityIn(Butte,x) & CityIn(Pierre,x))"
+  },
+  {
+    "id": 59,
+    "flag": "success",
+    "assumptions": [
+      "CityIn(Billings,Montana)",
+      "(CityIn(Butte,Montana) & CityIn(Helena,Montana) & CityIn(Missoula,Montana))",
+      "exists x.(CityIn(Whitesulphursprings,x) & CityIn(Butte,x))",
+      "-CityIn(Pierre,Montana)",
+      "all x.(CityIn(Butte,x) -> -CityIn(Pierre,x))"
+    ],
+    "goal": "exists x.(CityIn(Pierre,x) & CityIn(Bismarck,x))"
+  },
+  {
+    "id": 60,
+    "flag": "success",
+    "assumptions": [
+      "CityIn(Billings,Montana)",
+      "(CityIn(Butte,Montana) & CityIn(Helena,Montana) & CityIn(Missoula,Montana))",
+      "exists x.(CityIn(Whitesulphursprings,x) & CityIn(Butte,x))",
+      "-CityIn(Pierre,Montana)",
+      "all x.(CityIn(Butte,x) -> -CityIn(Pierre,x))"
+    ],
+    "goal": "CityIn(Missoula,Montana)"
+  },
+  {
+    "id": 61,
+    "flag": "success",
+    "assumptions": [
+      "all x.(((InternationalStudent(x) -> F1(x)) & -J1(x)) | (-(InternationalStudent(x) -> F1(x)) & J1(x)))",
+      "all x.(((InternationalStudent(x) & F1(x) & WantWorkInUS(x)) -> Apply(x,Cpt)) | Apply(x,Opt))",
+      "InternationalStudent(Mike)",
+      "(WantWorkInUS(Mike) -> Apply(Mike,Cpt))"
+    ],
+    "goal": "F1(Mike)"
+  },
+  {
+    "id": 62,
+    "flag": "success",
+    "assumptions": [
+      "all x.(((InternationalStudent(x) -> F1(x)) & -J1(x)) | (-(InternationalStudent(x) -> F1(x)) & J1(x)))",
+      "all x.(((InternationalStudent(x) & F1(x) & WantWorkInUS(x)) -> Apply(x,Cpt)) | Apply(x,Opt))",
+      "InternationalStudent(Mike)",
+      "(WantWorkInUS(Mike) -> Apply(Mike,Cpt))"
+    ],
+    "goal": "J1(Mike)"
+  },
+  {
+    "id": 63,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Cow(x) -> Bovine(x))",
+      "exists x.(Pet(x) & Cow(x))",
+      "all x.(Bovine(x) -> Domesticated(x))",
+      "all x.(Domesticated(x) -> -Aligator(x))",
+      "Aligator(Ted)"
+    ],
+    "goal": "Pet(Ted)"
+  },
+  {
+    "id": 64,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Cow(x) -> Bovine(x))",
+      "exists x.(Pet(x) & Cow(x))",
+      "all x.(Bovine(x) -> Domesticated(x))",
+      "all x.(Domesticated(x) -> -Aligator(x))",
+      "Aligator(Ted)"
+    ],
+    "goal": "(Pet(Ted) & Cow(Ted))"
+  },
+  {
+    "id": 65,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Cow(x) -> Bovine(x))",
+      "exists x.(Pet(x) & Cow(x))",
+      "all x.(Bovine(x) -> Domesticated(x))",
+      "all x.(Domesticated(x) -> -Aligator(x))",
+      "Aligator(Ted)"
+    ],
+    "goal": "(Cow(Ted) -> -Pet(Ted))"
+  },
+  {
+    "id": 66,
+    "flag": "None goal or assumptions",
+    "assumptions": null,
+    "goal": null
+  },
+  {
+    "id": 67,
+    "flag": "None goal or assumptions",
+    "assumptions": null,
+    "goal": null
+  },
+  {
+    "id": 68,
+    "flag": "None goal or assumptions",
+    "assumptions": null,
+    "goal": null
+  },
+  {
+    "id": 69,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(MemberOf(x,Pappys) & BritishSitcom(Badults) & Series(Badults) & Starring(Badults,x))",
+      "(PilotedIn(Badults,July2013) & PilotedOn(Badults,Bbcthree))",
+      "WorkingTitle(Thesecretdudesociety,Badults)",
+      "(ScriptEditor(Andrewcollins) & ScriptEditor(Andrewcollins,Badults))"
+    ],
+    "goal": "exists x.(ScriptEditorFor(Andrewcollins,x) & Series(x) & WorkingTitle(Thesecretdudesociety,x))"
+  },
+  {
+    "id": 70,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(MemberOf(x,Pappys) & BritishSitcom(Badults) & Series(Badults) & Starring(Badults,x))",
+      "(PilotedIn(Badults,July2013) & PilotedOn(Badults,Bbcthree))",
+      "WorkingTitle(Thesecretdudesociety,Badults)",
+      "(ScriptEditor(Andrewcollins) & ScriptEditor(Andrewcollins,Badults))"
+    ],
+    "goal": "all x y.((MemberOf(x,Pappys) & Starring(y,x)) -> -(PilotedOn(y,Bbctwo) | PilotedOn(y,Bbcthree)))"
+  },
+  {
+    "id": 71,
+    "flag": "success",
+    "assumptions": [
+      "all x.(GrowthCompanies’Stocks(x) -> PriceVolatile(x))",
+      "all x.(PriceVolatile(x) -> -SuitableForRetirementRund(x))",
+      "exists x.(Companies’Stocks(x) & GrowthCompanies’Stocks(x))",
+      "all x.(MatureCompanies’Stocks(x) -> SuitableForRetirementRund(x))",
+      "MatureCompanies’Stocks(KO)"
+    ],
+    "goal": "Companies’Stocks(KO)"
+  },
+  {
+    "id": 72,
+    "flag": "success",
+    "assumptions": [
+      "all x.(GrowthCompanies’Stocks(x) -> PriceVolatile(x))",
+      "all x.(PriceVolatile(x) -> -SuitableForRetirementRund(x))",
+      "exists x.(Companies’Stocks(x) & GrowthCompanies’Stocks(x))",
+      "all x.(MatureCompanies’Stocks(x) -> SuitableForRetirementRund(x))",
+      "MatureCompanies’Stocks(KO)"
+    ],
+    "goal": "(Companies’Stocks(KO) & GrowthCompanies’Stocks(KO))"
+  },
+  {
+    "id": 73,
+    "flag": "success",
+    "assumptions": [
+      "all x.(GrowthCompanies’Stocks(x) -> PriceVolatile(x))",
+      "all x.(PriceVolatile(x) -> -SuitableForRetirementRund(x))",
+      "exists x.(Companies’Stocks(x) & GrowthCompanies’Stocks(x))",
+      "all x.(MatureCompanies’Stocks(x) -> SuitableForRetirementRund(x))",
+      "MatureCompanies’Stocks(KO)"
+    ],
+    "goal": "(((GrowthCompanies’Stocks(KO) | PriceVolatile(KO)) -> -Companies’Stocks(KO)) | -PriceVolatile(KO))"
+  },
+  {
+    "id": 74,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Vehicleregistrationplate(x,Istanbul) -> Beginwith(x,Number34))",
+      "all x.(-Beginwith(x,Number34) -> -FromIstanbul(x))",
+      "Vehicleregistrationplate(Joe,Istanbul)",
+      "Beginwith(Tom,Number35)",
+      "all x.(Beginwith(x,Number35) -> -Beginwith(x,Number34))"
+    ],
+    "goal": "Beginwith(Joe,Number34)"
+  },
+  {
+    "id": 75,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Vehicleregistrationplate(x,Istanbul) -> Beginwith(x,Number34))",
+      "all x.(-Beginwith(x,Number34) -> -FromIstanbul(x))",
+      "Vehicleregistrationplate(Joe,Istanbul)",
+      "Beginwith(Tom,Number35)",
+      "all x.(Beginwith(x,Number35) -> -Beginwith(x,Number34))"
+    ],
+    "goal": "Vehicleregistrationplate(Tom,Istanbul)"
+  },
+  {
+    "id": 76,
+    "flag": "success",
+    "assumptions": [
+      "all x.(StudentJobs(x) -> Tuition(x))",
+      "all x.(Takeout(x) -> StudentJobs(x))",
+      "all x.(Takeout(x) | DiningHall(x))",
+      "all x.(DiningHall(x) -> NotPicky(x))",
+      "all x.(DiningHall(x) -> Eating(x))",
+      "((StudentJobs(Mary) & Tuition(Mary)) -> -(NotPicky(Mary) | Tuition(Mary)))"
+    ],
+    "goal": "Tuition(Mary)"
+  },
+  {
+    "id": 77,
+    "flag": "success",
+    "assumptions": [
+      "all x.(StudentJobs(x) -> Tuition(x))",
+      "all x.(Takeout(x) -> StudentJobs(x))",
+      "all x.(Takeout(x) | DiningHall(x))",
+      "all x.(DiningHall(x) -> NotPicky(x))",
+      "all x.(DiningHall(x) -> Eating(x))",
+      "((StudentJobs(Mary) & Tuition(Mary)) -> -(NotPicky(Mary) | Tuition(Mary)))"
+    ],
+    "goal": "(NotPicky(Mary) & Eating(Mary))"
+  },
+  {
+    "id": 78,
+    "flag": "success",
+    "assumptions": [
+      "all x.(StudentJobs(x) -> Tuition(x))",
+      "all x.(Takeout(x) -> StudentJobs(x))",
+      "all x.(Takeout(x) | DiningHall(x))",
+      "all x.(DiningHall(x) -> NotPicky(x))",
+      "all x.(DiningHall(x) -> Eating(x))",
+      "((StudentJobs(Mary) & Tuition(Mary)) -> -(NotPicky(Mary) | Tuition(Mary)))"
+    ],
+    "goal": "((NotPicky(Mary) & -Eating(Mary)) | (-NotPicky(Mary) & Eating(Mary)))"
+  },
+  {
+    "id": 79,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bakery(x) -> -Spicy(x))",
+      "all x.(Cupcakes(x) -> Bakery(x))",
+      "all x.(Hotpot(x) -> Spicy(x))",
+      "all x.(ProductsOfBakedByMelissa(x) -> Cupcakes(x))",
+      "(((Spicy(DriedThaiChilies) | Bakery(DriedThaiChilies)) -> Hotpot(DriedThaiChilies)) | Spicy(DriedThaiChilies))"
+    ],
+    "goal": "ProductsOfBakedByMelissa(DriedThaiChilies)"
+  },
+  {
+    "id": 80,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bakery(x) -> -Spicy(x))",
+      "all x.(Cupcakes(x) -> Bakery(x))",
+      "all x.(Hotpot(x) -> Spicy(x))",
+      "all x.(ProductsOfBakedByMelissa(x) -> Cupcakes(x))",
+      "(((Spicy(DriedThaiChilies) | Bakery(DriedThaiChilies)) -> Hotpot(DriedThaiChilies)) | Spicy(DriedThaiChilies))"
+    ],
+    "goal": "-ProductsOfBakedByMelissa(DriedThaiChilies)"
+  },
+  {
+    "id": 81,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bakery(x) -> -Spicy(x))",
+      "all x.(Cupcakes(x) -> Bakery(x))",
+      "all x.(Hotpot(x) -> Spicy(x))",
+      "all x.(ProductsOfBakedByMelissa(x) -> Cupcakes(x))",
+      "(((Spicy(DriedThaiChilies) | Bakery(DriedThaiChilies)) -> Hotpot(DriedThaiChilies)) | Spicy(DriedThaiChilies))"
+    ],
+    "goal": "Hotpot(DriedThaiChilies)"
+  },
+  {
+    "id": 82,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bakery(x) -> -Spicy(x))",
+      "all x.(Cupcakes(x) -> Bakery(x))",
+      "all x.(Hotpot(x) -> Spicy(x))",
+      "all x.(ProductsOfBakedByMelissa(x) -> Cupcakes(x))",
+      "(((Spicy(DriedThaiChilies) | Bakery(DriedThaiChilies)) -> Hotpot(DriedThaiChilies)) | Spicy(DriedThaiChilies))"
+    ],
+    "goal": "(-ProductsOfBakedByMelissa(DriedThaiChilies) & -Bakery(DriedThaiChilies))"
+  },
+  {
+    "id": 83,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bakery(x) -> -Spicy(x))",
+      "all x.(Cupcakes(x) -> Bakery(x))",
+      "all x.(Hotpot(x) -> Spicy(x))",
+      "all x.(ProductsOfBakedByMelissa(x) -> Cupcakes(x))",
+      "(((Spicy(DriedThaiChilies) | Bakery(DriedThaiChilies)) -> Hotpot(DriedThaiChilies)) | Spicy(DriedThaiChilies))"
+    ],
+    "goal": "(Cupcake(DriedThaiChilies) & ProductsOfBakedByMelissa(DriedThaiChilies))"
+  },
+  {
+    "id": 84,
+    "flag": "success",
+    "assumptions": [
+      "all x.(YelpRecommendation(x) -> -NegativeReview(x))",
+      "all x.(RatingGreaterThan9(x) -> YelpRecommendation(x))",
+      "exists x.(NoTakeOutService(x) & NegativeReview(x))",
+      "all x.(PopularAmongLocalResidents(x) -> RatingGreaterThan9(x))",
+      "((RatingGreaterThan9(Subway) & -PopularAmongLocalResidents(Subway)) | (-RatingGreaterThan9(Subway) & PopularAmongLocalResidents(Subway)))"
+    ],
+    "goal": "NoTakeOutService(Subway)"
+  },
+  {
+    "id": 85,
+    "flag": "success",
+    "assumptions": [
+      "all x.(YelpRecommendation(x) -> -NegativeReview(x))",
+      "all x.(RatingGreaterThan9(x) -> YelpRecommendation(x))",
+      "exists x.(NoTakeOutService(x) & NegativeReview(x))",
+      "all x.(PopularAmongLocalResidents(x) -> RatingGreaterThan9(x))",
+      "((RatingGreaterThan9(Subway) & -PopularAmongLocalResidents(Subway)) | (-RatingGreaterThan9(Subway) & PopularAmongLocalResidents(Subway)))"
+    ],
+    "goal": "-(NoTakeOutService(Subway) & NegativeReview(Subway))"
+  },
+  {
+    "id": 86,
+    "flag": "success",
+    "assumptions": [
+      "all x.(YelpRecommendation(x) -> -NegativeReview(x))",
+      "all x.(RatingGreaterThan9(x) -> YelpRecommendation(x))",
+      "exists x.(NoTakeOutService(x) & NegativeReview(x))",
+      "all x.(PopularAmongLocalResidents(x) -> RatingGreaterThan9(x))",
+      "((RatingGreaterThan9(Subway) & -PopularAmongLocalResidents(Subway)) | (-RatingGreaterThan9(Subway) & PopularAmongLocalResidents(Subway)))"
+    ],
+    "goal": "((-(NoTakeOutService(Subway) & NegativeReview(Subway)) -> PopularAmongLocalResidents(Subway)) & NoTakeOutService(Subway))"
+  },
+  {
+    "id": 87,
+    "flag": "success",
+    "assumptions": [
+      "all x y.((SuperheroMovie(x) & GoodGuy(y) & AppearsIn(y,x)) -> Wins(y))",
+      "SuperheroMovie(SurprisingAdventuresofSirDigbyChickenCaesar)",
+      "[[ERROR]]",
+      "Fights(SirDigby,SirDigby)",
+      "[[ERROR]]",
+      "NamedAfter(SurprisingAdventuresofSirDigbyChickenCaesar,SirDigby)",
+      "all x y.((Fights(x,y) & Wins(x)) -> -Wins(y))"
+    ],
+    "goal": "all x y.((SuperheroMovie(x) & AppearsIn(y,x)) -> GoodGuy(y))"
+  },
+  {
+    "id": 88,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Book(x) -> Knowledge(x))",
+      "all x y.(ReadBook(x,y) -> GainKnowledge(x))",
+      "all x.(GainKnowledge(x) -> Smarter(x))",
+      "(ReadBook(Harry,Walden) & Book(Walden))"
+    ],
+    "goal": "Knowledge(Walden)"
+  },
+  {
+    "id": 89,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Book(x) -> Knowledge(x))",
+      "all x y.(ReadBook(x,y) -> GainKnowledge(x))",
+      "all x.(GainKnowledge(x) -> Smarter(x))",
+      "(ReadBook(Harry,Walden) & Book(Walden))"
+    ],
+    "goal": "Smarter(Harry)"
+  },
+  {
+    "id": 90,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Book(x) -> Knowledge(x))",
+      "all x y.(ReadBook(x,y) -> GainKnowledge(x))",
+      "all x.(GainKnowledge(x) -> Smarter(x))",
+      "(ReadBook(Harry,Walden) & Book(Walden))"
+    ],
+    "goal": "all x.(Smarter(x) -> GainKnowledge(x))"
+  },
+  {
+    "id": 91,
+    "flag": "success",
+    "assumptions": [
+      "all x.(((NLP(x) -> NLG(x)) & -NLU(x)) | (-(NLP(x) -> NLG(x)) & NLU(x)))",
+      "all x.((NLP(x) & OutputSequence(x)) -> NLG(x))",
+      "NLP(MachineTranslation)",
+      "OutputSequence(MachineTranslation)"
+    ],
+    "goal": "NLG(MachineTranslation)"
+  },
+  {
+    "id": 92,
+    "flag": "success",
+    "assumptions": [
+      "all x.(((NLP(x) -> NLG(x)) & -NLU(x)) | (-(NLP(x) -> NLG(x)) & NLU(x)))",
+      "all x.((NLP(x) & OutputSequence(x)) -> NLG(x))",
+      "NLP(MachineTranslation)",
+      "OutputSequence(MachineTranslation)"
+    ],
+    "goal": "NLU(MachineTranslation)"
+  },
+  {
+    "id": 93,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(ManagedBuilding(x) & AllowPet(x))",
+      "all x.(ManagedBuilding(x) -> RequireDeposit(x))",
+      "all x.(Rent2000(x) <-> -DepositNoMoreThan1500(x))",
+      "all x.(Rent2000(x) <-> DepositNoLessThan2000(x))",
+      "Cat(Fluffy)",
+      "all x.(Cat(x) -> Pet(x))",
+      "ManagedBuilding(OliveGarden)",
+      "Rent2000(OliveGarden)",
+      "all x.(TomRent(x) <-> (ManagedBuilding(x) & AllowPet(x) & DepositNoMoreThan1500(x)))"
+    ],
+    "goal": "TomRent(OliveGarden)"
+  },
+  {
+    "id": 94,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(ManagedBuilding(x) & AllowPet(x))",
+      "all x.(ManagedBuilding(x) -> RequireDeposit(x))",
+      "all x.(Rent2000(x) <-> -DepositNoMoreThan1500(x))",
+      "all x.(Rent2000(x) <-> DepositNoLessThan2000(x))",
+      "Cat(Fluffy)",
+      "all x.(Cat(x) -> Pet(x))",
+      "ManagedBuilding(OliveGarden)",
+      "Rent2000(OliveGarden)",
+      "all x.(TomRent(x) <-> (ManagedBuilding(x) & AllowPet(x) & DepositNoMoreThan1500(x)))"
+    ],
+    "goal": "AllowPet(OliveGarden)"
+  },
+  {
+    "id": 95,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(ManagedBuilding(x) & AllowPet(x))",
+      "all x.(ManagedBuilding(x) -> RequireDeposit(x))",
+      "all x.(Rent2000(x) <-> -DepositNoMoreThan1500(x))",
+      "all x.(Rent2000(x) <-> DepositNoLessThan2000(x))",
+      "Cat(Fluffy)",
+      "all x.(Cat(x) -> Pet(x))",
+      "ManagedBuilding(OliveGarden)",
+      "Rent2000(OliveGarden)",
+      "all x.(TomRent(x) <-> (ManagedBuilding(x) & AllowPet(x) & DepositNoMoreThan1500(x)))"
+    ],
+    "goal": "DepositNoLessThan2000(OliveGarden)"
+  },
+  {
+    "id": 96,
+    "flag": "success",
+    "assumptions": [
+      "all x.(AnimalsLovedByTourists(x) -> MaxFavoriteAnimals(x))",
+      "all x.(AnimalsFromAustralia(x) -> AnimalsLovedByTourists(x))",
+      "all x.(Quokka(x) -> AnimalsFromAustralia(x))",
+      "all x.(MaxFavoriteAnimals(x) -> VeryFluffy(x))",
+      "all x.(MaxFavoriteAnimals(x) -> LoveToSleep(x))",
+      "(VeryFluffy(Koala) -> -Quokka(Koala))"
+    ],
+    "goal": "LoveToSleep(Koala)"
+  },
+  {
+    "id": 97,
+    "flag": "success",
+    "assumptions": [
+      "all x.(AnimalsLovedByTourists(x) -> MaxFavoriteAnimals(x))",
+      "all x.(AnimalsFromAustralia(x) -> AnimalsLovedByTourists(x))",
+      "all x.(Quokka(x) -> AnimalsFromAustralia(x))",
+      "all x.(MaxFavoriteAnimals(x) -> VeryFluffy(x))",
+      "all x.(MaxFavoriteAnimals(x) -> LoveToSleep(x))",
+      "(VeryFluffy(Koala) -> -Quokka(Koala))"
+    ],
+    "goal": "(LoveToSleep(Koala) & Quokka(Koala))"
+  },
+  {
+    "id": 98,
+    "flag": "success",
+    "assumptions": [
+      "all x.(AnimalsLovedByTourists(x) -> MaxFavoriteAnimals(x))",
+      "all x.(AnimalsFromAustralia(x) -> AnimalsLovedByTourists(x))",
+      "all x.(Quokka(x) -> AnimalsFromAustralia(x))",
+      "all x.(MaxFavoriteAnimals(x) -> VeryFluffy(x))",
+      "all x.(MaxFavoriteAnimals(x) -> LoveToSleep(x))",
+      "(VeryFluffy(Koala) -> -Quokka(Koala))"
+    ],
+    "goal": "(((Quokka(Koala) -> LoveToSleep(Koala)) & -VeryFluffy(Koala)) | (-(Quokka(Koala) -> LoveToSleep(Koala)) & VeryFluffy(Koala)))"
+  },
+  {
+    "id": 99,
+    "flag": "success",
+    "assumptions": [
+      "all x.((Kind(x) & -Evil(x)) | (-Kind(x) & Evil(x)))",
+      "all x.(Ugly(x) -> -Handsome(x))",
+      "all x.(Evil(x) -> Ugly(x))",
+      "all x.(Gentleman(x) -> Handsome(x))",
+      "all x.(CEO(x) -> Gentleman(x))",
+      "Gentleman(Harry)"
+    ],
+    "goal": "CEO(Harry)"
+  },
+  {
+    "id": 100,
+    "flag": "success",
+    "assumptions": [
+      "all x.((Kind(x) & -Evil(x)) | (-Kind(x) & Evil(x)))",
+      "all x.(Ugly(x) -> -Handsome(x))",
+      "all x.(Evil(x) -> Ugly(x))",
+      "all x.(Gentleman(x) -> Handsome(x))",
+      "all x.(CEO(x) -> Gentleman(x))",
+      "Gentleman(Harry)"
+    ],
+    "goal": "(Kind(Harry) | CEO(Harry))"
+  },
+  {
+    "id": 101,
+    "flag": "success",
+    "assumptions": [
+      "all x.((Kind(x) & -Evil(x)) | (-Kind(x) & Evil(x)))",
+      "all x.(Ugly(x) -> -Handsome(x))",
+      "all x.(Evil(x) -> Ugly(x))",
+      "all x.(Gentleman(x) -> Handsome(x))",
+      "all x.(CEO(x) -> Gentleman(x))",
+      "Gentleman(Harry)"
+    ],
+    "goal": "((((Evil(Harry) & Ugly(Harry) & -(-Evil(Harry) & -Ugly(Harry))) | (-(Evil(Harry) & Ugly(Harry)) & -Evil(Harry) & -Ugly(Harry))) -> -Kind(Harry)) & -CEO(Harry))"
+  },
+  {
+    "id": 102,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TwinTriplet(x) -> Playing(x))",
+      "all x.(SameAge(x) -> TwinTriplet(x))",
+      "all x.(Complain(x) -> SameAge(x))",
+      "all x.(NotHome(x) -> -StrongBonds(x))",
+      "all x.(Playing(x) -> NotHome(x))",
+      "((TwinTriplet(Luke) & StrongBonds(Luke) & -(-TwinTriplet(Luke) & -StrongBonds(Luke))) | (-(TwinTriplet(Luke) & StrongBonds(Luke)) & -TwinTriplet(Luke) & -StrongBonds(Luke)))"
+    ],
+    "goal": "Playing(Luke)"
+  },
+  {
+    "id": 103,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TwinTriplet(x) -> Playing(x))",
+      "all x.(SameAge(x) -> TwinTriplet(x))",
+      "all x.(Complain(x) -> SameAge(x))",
+      "all x.(NotHome(x) -> -StrongBonds(x))",
+      "all x.(Playing(x) -> NotHome(x))",
+      "((TwinTriplet(Luke) & StrongBonds(Luke) & -(-TwinTriplet(Luke) & -StrongBonds(Luke))) | (-(TwinTriplet(Luke) & StrongBonds(Luke)) & -TwinTriplet(Luke) & -StrongBonds(Luke)))"
+    ],
+    "goal": "Complain(Luke)"
+  },
+  {
+    "id": 104,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TwinTriplet(x) -> Playing(x))",
+      "all x.(SameAge(x) -> TwinTriplet(x))",
+      "all x.(Complain(x) -> SameAge(x))",
+      "all x.(NotHome(x) -> -StrongBonds(x))",
+      "all x.(Playing(x) -> NotHome(x))",
+      "((TwinTriplet(Luke) & StrongBonds(Luke) & -(-TwinTriplet(Luke) & -StrongBonds(Luke))) | (-(TwinTriplet(Luke) & StrongBonds(Luke)) & -TwinTriplet(Luke) & -StrongBonds(Luke)))"
+    ],
+    "goal": "-(TwinTriplet(Luke) | Complain(Luke))"
+  },
+  {
+    "id": 105,
+    "flag": "success",
+    "assumptions": [
+      "Cost205(Gre)",
+      "all x.(Cost205(x) -> CostBelow300(x))",
+      "all x.(Hardship(x) -> FinancialAid(x))",
+      "all x.((SingleParent(x) | FewResources(x)) -> Hardship(x))",
+      "SingleParent(Tom)",
+      "FewResources(Tom)"
+    ],
+    "goal": "FinancialAid(Tom)"
+  },
+  {
+    "id": 106,
+    "flag": "success",
+    "assumptions": [
+      "Cost205(Gre)",
+      "all x.(Cost205(x) -> CostBelow300(x))",
+      "all x.(Hardship(x) -> FinancialAid(x))",
+      "all x.((SingleParent(x) | FewResources(x)) -> Hardship(x))",
+      "SingleParent(Tom)",
+      "FewResources(Tom)"
+    ],
+    "goal": "CostBelow300(Gre)"
+  },
+  {
+    "id": 107,
+    "flag": "None goal or assumptions",
+    "assumptions": null,
+    "goal": null
+  },
+  {
+    "id": 108,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Spill(x) -> -Tidy(x))",
+      "all x.(Foodie(x) -> Spill(x))",
+      "all x.(OnlyChild(x) -> Tidy(x))",
+      "all x.(BusyParents(x) -> OnlyChild(x))",
+      "all x.(HighIncome(x) -> BusyParents(x))",
+      "[[ERROR]]"
+    ],
+    "goal": "Tidy(Peter)"
+  },
+  {
+    "id": 109,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Spill(x) -> -Tidy(x))",
+      "all x.(Foodie(x) -> Spill(x))",
+      "all x.(OnlyChild(x) -> Tidy(x))",
+      "all x.(BusyParents(x) -> OnlyChild(x))",
+      "all x.(HighIncome(x) -> BusyParents(x))",
+      "[[ERROR]]"
+    ],
+    "goal": "(Foodie(Peter) | HighIncome(Peter))"
+  },
+  {
+    "id": 110,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Spill(x) -> -Tidy(x))",
+      "all x.(Foodie(x) -> Spill(x))",
+      "all x.(OnlyChild(x) -> Tidy(x))",
+      "all x.(BusyParents(x) -> OnlyChild(x))",
+      "all x.(HighIncome(x) -> BusyParents(x))",
+      "[[ERROR]]"
+    ],
+    "goal": "[[ERROR]]"
+  },
+  {
+    "id": 111,
+    "flag": "success",
+    "assumptions": [
+      "all x.(FirTree(x) -> Evergreen(x))",
+      "exists x.(ObjectOfWorship(x) & FirTree(x))"
+    ],
+    "goal": "exists x.(Evergreen(x) & -ObjectOfWorship(x))"
+  },
+  {
+    "id": 112,
+    "flag": "success",
+    "assumptions": [
+      "((MountainRange(Picurismountains) & In(Picurismountains,Newmexico)) | In(Picurismountains,Texas))",
+      "Visited(Juandeonate,Picurismountains)",
+      "(In(Hardingpegmatitemine,Picurismountains) & Mine(Hardingpegmatitemine) & Donated(Hardingpegmatitemine))",
+      "all x y.((Mine(x) & Donated(x) & In(x,y) & MountainRange(y)) -> -In(y,Texas))"
+    ],
+    "goal": "exists x.(Visited(Juandeonate,x) & MountainRange(x) & In(x,Newmexico))"
+  },
+  {
+    "id": 113,
+    "flag": "success",
+    "assumptions": [
+      "((MountainRange(Picurismountains) & In(Picurismountains,Newmexico)) | In(Picurismountains,Texas))",
+      "Visited(Juandeonate,Picurismountains)",
+      "(In(Hardingpegmatitemine,Picurismountains) & Mine(Hardingpegmatitemine) & Donated(Hardingpegmatitemine))",
+      "all x y.((Mine(x) & Donated(x) & In(x,y) & MountainRange(y)) -> -In(y,Texas))"
+    ],
+    "goal": "exists x.(Visited(Juandeonate,x) & MountainRange(x) & In(x,Texas))"
+  },
+  {
+    "id": 114,
+    "flag": "success",
+    "assumptions": [
+      "((MountainRange(Picurismountains) & In(Picurismountains,Newmexico)) | In(Picurismountains,Texas))",
+      "Visited(Juandeonate,Picurismountains)",
+      "(In(Hardingpegmatitemine,Picurismountains) & Mine(Hardingpegmatitemine) & Donated(Hardingpegmatitemine))",
+      "all x y.((Mine(x) & Donated(x) & In(x,y) & MountainRange(y)) -> -In(y,Texas))"
+    ],
+    "goal": "all x.((MountainRange(x) & In(Hardingpegmatitemine,x)) -> -In(x,Newmexico))"
+  },
+  {
+    "id": 115,
+    "flag": "success",
+    "assumptions": [
+      "all x y.((IsMan(x) & IsMan(y) & Taller(x,y)) -> CanBlock(x,y))",
+      "all x.((IsMan(x) & SameClass(x,Michael) & -Be(x,Michael)) -> Taller(Michael,x))",
+      "all x y z.((Taller(x,y) & Taller(y,z)) -> Taller(x,z))",
+      "(IsMan(Peter) & Taller(Peter,Michael))",
+      "all x.(-JumpWhenShooting(x) -> CanBlock(Michael,x))",
+      "-CanBlock(Michael,Windy)",
+      "all x.(JumpWhenShooting(x) -> GreatShooter(x))"
+    ],
+    "goal": "exists x.(IsMan(x) & SameClass(x,Michael) & -Be(x,Michael) & -Taller(Peter,x))"
+  },
+  {
+    "id": 116,
+    "flag": "success",
+    "assumptions": [
+      "all x y.((IsMan(x) & IsMan(y) & Taller(x,y)) -> CanBlock(x,y))",
+      "all x.((IsMan(x) & SameClass(x,Michael) & -Be(x,Michael)) -> Taller(Michael,x))",
+      "all x y z.((Taller(x,y) & Taller(y,z)) -> Taller(x,z))",
+      "(IsMan(Peter) & Taller(Peter,Michael))",
+      "all x.(-JumpWhenShooting(x) -> CanBlock(Michael,x))",
+      "-CanBlock(Michael,Windy)",
+      "all x.(JumpWhenShooting(x) -> GreatShooter(x))"
+    ],
+    "goal": "GreatShooter(Windy)"
+  },
+  {
+    "id": 117,
+    "flag": "success",
+    "assumptions": [
+      "all x y.((IsMan(x) & IsMan(y) & Taller(x,y)) -> CanBlock(x,y))",
+      "all x.((IsMan(x) & SameClass(x,Michael) & -Be(x,Michael)) -> Taller(Michael,x))",
+      "all x y z.((Taller(x,y) & Taller(y,z)) -> Taller(x,z))",
+      "(IsMan(Peter) & Taller(Peter,Michael))",
+      "all x.(-JumpWhenShooting(x) -> CanBlock(Michael,x))",
+      "-CanBlock(Michael,Windy)",
+      "all x.(JumpWhenShooting(x) -> GreatShooter(x))"
+    ],
+    "goal": "CanBlock(Peter,Windy)"
+  },
+  {
+    "id": 118,
+    "flag": "success",
+    "assumptions": [
+      "(Cove(Barutin) & NameAfter(Barutin,Settlement) & Locate(Settlement,Bulgaria))",
+      "Locate(Barutin,Snow)",
+      "(Locate(Snow,Shetland) & Locate(Greenwich,Shetland) & Locate(Deception,Shetland))",
+      "Locate(Shetland,Antarctica)",
+      "all x y z.((Locate(x,y) & Locate(y,z)) -> Locate(x,z))"
+    ],
+    "goal": "all x.(Locate(x,Antarctica) -> NameAfter(Barutin,x))"
+  },
+  {
+    "id": 119,
+    "flag": "success",
+    "assumptions": [
+      "(Cove(Barutin) & NameAfter(Barutin,Settlement) & Locate(Settlement,Bulgaria))",
+      "Locate(Barutin,Snow)",
+      "(Locate(Snow,Shetland) & Locate(Greenwich,Shetland) & Locate(Deception,Shetland))",
+      "Locate(Shetland,Antarctica)",
+      "all x y z.((Locate(x,y) & Locate(y,z)) -> Locate(x,z))"
+    ],
+    "goal": "exists x y.(Cove(x) & NameAfter(x,y) & Locate(y,Bulgaria))"
+  },
+  {
+    "id": 120,
+    "flag": "success",
+    "assumptions": [
+      "(Cove(Barutin) & NameAfter(Barutin,Settlement) & Locate(Settlement,Bulgaria))",
+      "Locate(Barutin,Snow)",
+      "(Locate(Snow,Shetland) & Locate(Greenwich,Shetland) & Locate(Deception,Shetland))",
+      "Locate(Shetland,Antarctica)",
+      "all x y z.((Locate(x,y) & Locate(y,z)) -> Locate(x,z))"
+    ],
+    "goal": "-Locate(Barutin,Antarctica)"
+  },
+  {
+    "id": 121,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Affection(x) & Love(x))",
+      "exists x.(Love(x) & Positive(x))"
+    ],
+    "goal": "exists x.(Affection(x) & Positive(x))"
+  },
+  {
+    "id": 122,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TransportMultiplePassengers(x) -> -Empty(x))",
+      "all x.(Airline(x) -> TransportMultiplePassengers(x))",
+      "all x.(Plane(x) -> Empty(x))",
+      "all x.(Boeing707(x) -> Plane(x))",
+      "(-Airline(Greyhound) -> -(Airline(Greyhound) | Plane(Greyhound)))"
+    ],
+    "goal": "Airline(Greyhound)"
+  },
+  {
+    "id": 123,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TransportMultiplePassengers(x) -> -Empty(x))",
+      "all x.(Airline(x) -> TransportMultiplePassengers(x))",
+      "all x.(Plane(x) -> Empty(x))",
+      "all x.(Boeing707(x) -> Plane(x))",
+      "(-Airline(Greyhound) -> -(Airline(Greyhound) | Plane(Greyhound)))"
+    ],
+    "goal": "Boeing707(Greyhound)"
+  },
+  {
+    "id": 124,
+    "flag": "success",
+    "assumptions": [
+      "all x.(TransportMultiplePassengers(x) -> -Empty(x))",
+      "all x.(Airline(x) -> TransportMultiplePassengers(x))",
+      "all x.(Plane(x) -> Empty(x))",
+      "all x.(Boeing707(x) -> Plane(x))",
+      "(-Airline(Greyhound) -> -(Airline(Greyhound) | Plane(Greyhound)))"
+    ],
+    "goal": "-Boeing707(Greyhound)"
+  },
+  {
+    "id": 125,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Mammal(x) -> Animal(x))",
+      "all x.(Monkey(x) -> Mammal(x))",
+      "all x.(Monkey(x) | Bird(x))",
+      "all x.(Bird(x) -> Fly(x))",
+      "all x.(Animal(x) -> Breathe(x))",
+      "all x.(Fly(x) -> HaveWings(x))",
+      "(((-Fly(Rock) & -Bird(Rock)) -> -Fly(Rock)) & -Breathe(Rock))"
+    ],
+    "goal": "Monkey(Rock)"
+  },
+  {
+    "id": 126,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Mammal(x) -> Animal(x))",
+      "all x.(Monkey(x) -> Mammal(x))",
+      "all x.(Monkey(x) | Bird(x))",
+      "all x.(Bird(x) -> Fly(x))",
+      "all x.(Animal(x) -> Breathe(x))",
+      "all x.(Fly(x) -> HaveWings(x))",
+      "(((-Fly(Rock) & -Bird(Rock)) -> -Fly(Rock)) & -Breathe(Rock))"
+    ],
+    "goal": "HaveWings(Rock)"
+  },
+  {
+    "id": 127,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Mammal(x) -> Animal(x))",
+      "all x.(Monkey(x) -> Mammal(x))",
+      "all x.(Monkey(x) | Bird(x))",
+      "all x.(Bird(x) -> Fly(x))",
+      "all x.(Animal(x) -> Breathe(x))",
+      "all x.(Fly(x) -> HaveWings(x))",
+      "(((-Fly(Rock) & -Bird(Rock)) -> -Fly(Rock)) & -Breathe(Rock))"
+    ],
+    "goal": "-HaveWings(Rock)"
+  },
+  {
+    "id": 128,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Wedding(x) -> Child(x))",
+      "all x.(Paris(x) -> Wedding(x))",
+      "all x.(July(x) -> Paris(x))",
+      "exists x.(July(x) & WellAttended(x))",
+      "(Child(John) -> -(Paris(John) & Wedding(John)))",
+      "(((WellAttended(John) -> July(John)) & -Paris(John)) | (-(WellAttended(John) -> July(John)) & Paris(John)))"
+    ],
+    "goal": "WellAttended(John)"
+  },
+  {
+    "id": 129,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Wedding(x) -> Child(x))",
+      "all x.(Paris(x) -> Wedding(x))",
+      "all x.(July(x) -> Paris(x))",
+      "exists x.(July(x) & WellAttended(x))",
+      "(Child(John) -> -(Paris(John) & Wedding(John)))",
+      "(((WellAttended(John) -> July(John)) & -Paris(John)) | (-(WellAttended(John) -> July(John)) & Paris(John)))"
+    ],
+    "goal": "-WellAttended(John)"
+  },
+  {
+    "id": 130,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Wedding(x) -> Child(x))",
+      "all x.(Paris(x) -> Wedding(x))",
+      "all x.(July(x) -> Paris(x))",
+      "exists x.(July(x) & WellAttended(x))",
+      "(Child(John) -> -(Paris(John) & Wedding(John)))",
+      "(((WellAttended(John) -> July(John)) & -Paris(John)) | (-(WellAttended(John) -> July(John)) & Paris(John)))"
+    ],
+    "goal": "Child(John)"
+  },
+  {
+    "id": 131,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Wedding(x) -> Child(x))",
+      "all x.(Paris(x) -> Wedding(x))",
+      "all x.(July(x) -> Paris(x))",
+      "exists x.(July(x) & WellAttended(x))",
+      "(Child(John) -> -(Paris(John) & Wedding(John)))",
+      "(((WellAttended(John) -> July(John)) & -Paris(John)) | (-(WellAttended(John) -> July(John)) & Paris(John)))"
+    ],
+    "goal": "-(WellAttended(John) | July(John))"
+  },
+  {
+    "id": 132,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mammal(x) & Have(x,Teeth))",
+      "-Have(Platypus,Teeth)",
+      "Mammal(Platypus)",
+      "Have(Humans,Teeth)"
+    ],
+    "goal": "(Mammal(Platypus) & -Have(Platypus,Teeth))"
+  },
+  {
+    "id": 133,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mammal(x) & Have(x,Teeth))",
+      "-Have(Platypus,Teeth)",
+      "Mammal(Platypus)",
+      "Have(Humans,Teeth)"
+    ],
+    "goal": "Reptile(Platypus)"
+  },
+  {
+    "id": 134,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mammal(x) & Have(x,Teeth))",
+      "-Have(Platypus,Teeth)",
+      "Mammal(Platypus)",
+      "Have(Humans,Teeth)"
+    ],
+    "goal": "Mammal(Humans)"
+  },
+  {
+    "id": 135,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Plunger(x) -> Suck(x))",
+      "all x.(Vacuum(x) -> Suck(x))",
+      "all x.(Vampire(x) -> Suck(x))",
+      "Vacuum(Space)",
+      "(HouseHoldApp(Duster) & -Suck(Duster))"
+    ],
+    "goal": "Suck(Space)"
+  },
+  {
+    "id": 136,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Plunger(x) -> Suck(x))",
+      "all x.(Vacuum(x) -> Suck(x))",
+      "all x.(Vampire(x) -> Suck(x))",
+      "Vacuum(Space)",
+      "(HouseHoldApp(Duster) & -Suck(Duster))"
+    ],
+    "goal": "Vampire(Space)"
+  },
+  {
+    "id": 137,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Plunger(x) -> Suck(x))",
+      "all x.(Vacuum(x) -> Suck(x))",
+      "all x.(Vampire(x) -> Suck(x))",
+      "Vacuum(Space)",
+      "(HouseHoldApp(Duster) & -Suck(Duster))"
+    ],
+    "goal": "all x.(HouseHoldApp(x) -> Suck(x))"
+  },
+  {
+    "id": 138,
+    "flag": "success",
+    "assumptions": [
+      "(MLAlgorithm(SupervisedLearning) | MLAlgorithm(UnsupervisedLearning) | MLAlgorithm(ReinforcementLearning))",
+      "-RequireLabelledData(UnsupervisedLearning)",
+      "(TrainTextSumModel(SupervisedLearning) | TrainTextSumModel(UnsupervisedLearning) | TrainTextSumModel(ReinforcementLearning))",
+      "-TrainTextSumModel(ReinforcementLearning)",
+      "all x.((MLAlgorithm(x) & TrainTextSumModel(x)) -> RequireLabelledData(x))"
+    ],
+    "goal": "TrainTextSumModel(SupervisedLearning)"
+  },
+  {
+    "id": 139,
+    "flag": "success",
+    "assumptions": [
+      "(MLAlgorithm(SupervisedLearning) | MLAlgorithm(UnsupervisedLearning) | MLAlgorithm(ReinforcementLearning))",
+      "-RequireLabelledData(UnsupervisedLearning)",
+      "(TrainTextSumModel(SupervisedLearning) | TrainTextSumModel(UnsupervisedLearning) | TrainTextSumModel(ReinforcementLearning))",
+      "-TrainTextSumModel(ReinforcementLearning)",
+      "all x.((MLAlgorithm(x) & TrainTextSumModel(x)) -> RequireLabelledData(x))"
+    ],
+    "goal": "TrainTextSumModel(UnsupervisedLearning)"
+  },
+  {
+    "id": 140,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Funny(x) -> Popular(x))",
+      "all x.(Ugly(x) -> -Popular(x))",
+      "all x.(Love(Children,x) -> Funny(x))",
+      "all x.(Simpsons(x) -> Love(Children,x))",
+      "all x.(Yellow(x) -> Simpsons(x))",
+      "((Simpsons(Ben) & -Funny(Ben)) | (-Simpsons(Ben) & Funny(Ben)))"
+    ],
+    "goal": "Love(Children,Ben)"
+  },
+  {
+    "id": 141,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Funny(x) -> Popular(x))",
+      "all x.(Ugly(x) -> -Popular(x))",
+      "all x.(Love(Children,x) -> Funny(x))",
+      "all x.(Simpsons(x) -> Love(Children,x))",
+      "all x.(Yellow(x) -> Simpsons(x))",
+      "((Simpsons(Ben) & -Funny(Ben)) | (-Simpsons(Ben) & Funny(Ben)))"
+    ],
+    "goal": "(Ugly(Ben) | Yellow(Ben))"
+  },
+  {
+    "id": 142,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Funny(x) -> Popular(x))",
+      "all x.(Ugly(x) -> -Popular(x))",
+      "all x.(Love(Children,x) -> Funny(x))",
+      "all x.(Simpsons(x) -> Love(Children,x))",
+      "all x.(Yellow(x) -> Simpsons(x))",
+      "((Simpsons(Ben) & -Funny(Ben)) | (-Simpsons(Ben) & Funny(Ben)))"
+    ],
+    "goal": "((Yellow(Ben) & Ugly(Ben) & -(-Yellow(Ben) & -Ugly(Ben))) | (-(Yellow(Ben) & Ugly(Ben)) & -Yellow(Ben) & -Ugly(Ben)))"
+  },
+  {
+    "id": 143,
+    "flag": "success",
+    "assumptions": [
+      "all x y.(BreedingBack(x,y) -> ArtificiallySelect(x))",
+      "exists x y.(HeckCattle(x) & Aurochs(y) & BreedingBack(x,y))",
+      "all x.(HeckCattle(x) -> Animal(x))",
+      "all x.(Aurochs(x) -> Animal(x))",
+      "exists x y.(Animal(x) & Animal(y) & BreedingBack(x,y) & Extinct(y))"
+    ],
+    "goal": "exists x.(HeckCattle(x) & ArtificiallySelect(x))"
+  },
+  {
+    "id": 144,
+    "flag": "success",
+    "assumptions": [
+      "all x y.(BreedingBack(x,y) -> ArtificiallySelect(x))",
+      "exists x y.(HeckCattle(x) & Aurochs(y) & BreedingBack(x,y))",
+      "all x.(HeckCattle(x) -> Animal(x))",
+      "all x.(Aurochs(x) -> Animal(x))",
+      "exists x y.(Animal(x) & Animal(y) & BreedingBack(x,y) & Extinct(y))"
+    ],
+    "goal": "all x.(Aurochs(x) -> Extinct(x))"
+  },
+  {
+    "id": 145,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Student(x) -> Human(x))",
+      "all x.(Study(x) -> Student(x))",
+      "all x.(Study(x) | Teach(x))",
+      "all x.(Young(x) -> -Teach(x))",
+      "(-Teach(Jerry) & -Manager(Jerry))",
+      "(Young(Rose) | Student(Rose))"
+    ],
+    "goal": "Young(Jerry)"
+  },
+  {
+    "id": 146,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Student(x) -> Human(x))",
+      "all x.(Study(x) -> Student(x))",
+      "all x.(Study(x) | Teach(x))",
+      "all x.(Young(x) -> -Teach(x))",
+      "(-Teach(Jerry) & -Manager(Jerry))",
+      "(Young(Rose) | Student(Rose))"
+    ],
+    "goal": "-Young(Jerry)"
+  },
+  {
+    "id": 147,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Student(x) -> Human(x))",
+      "all x.(Study(x) -> Student(x))",
+      "all x.(Study(x) | Teach(x))",
+      "all x.(Young(x) -> -Teach(x))",
+      "(-Teach(Jerry) & -Manager(Jerry))",
+      "(Young(Rose) | Student(Rose))"
+    ],
+    "goal": "(Human(Rose) | Manager(Rose))"
+  },
+  {
+    "id": 148,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Student(x) -> Human(x))",
+      "all x.(Study(x) -> Student(x))",
+      "all x.(Study(x) | Teach(x))",
+      "all x.(Young(x) -> -Teach(x))",
+      "(-Teach(Jerry) & -Manager(Jerry))",
+      "(Young(Rose) | Student(Rose))"
+    ],
+    "goal": "(Human(Rose) | Manager(Jerry))"
+  },
+  {
+    "id": 149,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Student(x) -> Human(x))",
+      "all x.(Study(x) -> Student(x))",
+      "all x.(Study(x) | Teach(x))",
+      "all x.(Young(x) -> -Teach(x))",
+      "(-Teach(Jerry) & -Manager(Jerry))",
+      "(Young(Rose) | Student(Rose))"
+    ],
+    "goal": "-(Student(Rose) & Human(Jerry))"
+  },
+  {
+    "id": 150,
+    "flag": "success",
+    "assumptions": [
+      "(PublishingHouse(Newvessel) & SpecializesIn(Newvessel,Translatingforeignliteratureintoenglish))",
+      "all x.((Book(x) & PublishedBy(x,Newvesselpress)) -> In(x,English))",
+      "(Book(Neapolitanchronicles) & PublishedBy(Neapolitanchronicles,Newvesselpress))",
+      "TranslatedFrom(Neapolitanchronicles,Italian)",
+      "(Book(Palaceofflies) & PublishedBy(Palaceofflies,Newvesselpress))"
+    ],
+    "goal": "(Book(Neapolitanchronicles) & In(Neapolitanchronicles,English))"
+  },
+  {
+    "id": 151,
+    "flag": "success",
+    "assumptions": [
+      "(PublishingHouse(Newvessel) & SpecializesIn(Newvessel,Translatingforeignliteratureintoenglish))",
+      "all x.((Book(x) & PublishedBy(x,Newvesselpress)) -> In(x,English))",
+      "(Book(Neapolitanchronicles) & PublishedBy(Neapolitanchronicles,Newvesselpress))",
+      "TranslatedFrom(Neapolitanchronicles,Italian)",
+      "(Book(Palaceofflies) & PublishedBy(Palaceofflies,Newvesselpress))"
+    ],
+    "goal": "PublishedBy(Harrrypotter,Newvesselpress)"
+  },
+  {
+    "id": 152,
+    "flag": "success",
+    "assumptions": [
+      "(PublishingHouse(Newvessel) & SpecializesIn(Newvessel,Translatingforeignliteratureintoenglish))",
+      "all x.((Book(x) & PublishedBy(x,Newvesselpress)) -> In(x,English))",
+      "(Book(Neapolitanchronicles) & PublishedBy(Neapolitanchronicles,Newvesselpress))",
+      "TranslatedFrom(Neapolitanchronicles,Italian)",
+      "(Book(Palaceofflies) & PublishedBy(Palaceofflies,Newvesselpress))"
+    ],
+    "goal": "TranslatedFrom(Palaceofflies,Italian)"
+  },
+  {
+    "id": 153,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Desktop(x) -> WorkHome(x))",
+      "all x.(HomeOffice(x) -> Desktop(x))",
+      "all x.(WorkHome(x) -> Tidying(x))",
+      "all x.(WorkHome(x) -> OfficeStore(x))",
+      "all x.(Tidying(x) -> -Late(x))",
+      "((Late(Remy) & Tidying(Remy) & -(-Late(Remy) & -Tidying(Remy))) | (-(Late(Remy) & Tidying(Remy)) & -Late(Remy) & -Tidying(Remy)))"
+    ],
+    "goal": "OfficeStore(Remy)"
+  },
+  {
+    "id": 154,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Desktop(x) -> WorkHome(x))",
+      "all x.(HomeOffice(x) -> Desktop(x))",
+      "all x.(WorkHome(x) -> Tidying(x))",
+      "all x.(WorkHome(x) -> OfficeStore(x))",
+      "all x.(Tidying(x) -> -Late(x))",
+      "((Late(Remy) & Tidying(Remy) & -(-Late(Remy) & -Tidying(Remy))) | (-(Late(Remy) & Tidying(Remy)) & -Late(Remy) & -Tidying(Remy)))"
+    ],
+    "goal": "(HomeOffice(Remy) & OfficeStore(Remy))"
+  },
+  {
+    "id": 155,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Desktop(x) -> WorkHome(x))",
+      "all x.(HomeOffice(x) -> Desktop(x))",
+      "all x.(WorkHome(x) -> Tidying(x))",
+      "all x.(WorkHome(x) -> OfficeStore(x))",
+      "all x.(Tidying(x) -> -Late(x))",
+      "((Late(Remy) & Tidying(Remy) & -(-Late(Remy) & -Tidying(Remy))) | (-(Late(Remy) & Tidying(Remy)) & -Late(Remy) & -Tidying(Remy)))"
+    ],
+    "goal": "((Late(Remy) | OfficeStore(Remy)) -> -(Tidying(Remy) | HomeOffice(Remy)))"
+  },
+  {
+    "id": 156,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Human(x) -> Mortal(x))",
+      "all x.(Greek(x) -> Human(x))"
+    ],
+    "goal": "exists x.(Greek(x) & Mortal(x))"
+  },
+  {
+    "id": 157,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WorkLibrary(x) -> -ComputerScience(x))",
+      "all x.(PartTime(x) -> WorkLibrary(x))",
+      "all x.(Database(x) -> ComputerScience(x))",
+      "all x.(ProfessorDavid(x) -> Database(x))",
+      "all x.(WorkInLab(x) -> ProfessorDavid(x))",
+      "WorkInLab(James)",
+      "(-PartTime(Jack) & -WorkInLab(Jack))"
+    ],
+    "goal": "PartTime(James)"
+  },
+  {
+    "id": 158,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WorkLibrary(x) -> -ComputerScience(x))",
+      "all x.(PartTime(x) -> WorkLibrary(x))",
+      "all x.(Database(x) -> ComputerScience(x))",
+      "all x.(ProfessorDavid(x) -> Database(x))",
+      "all x.(WorkInLab(x) -> ProfessorDavid(x))",
+      "WorkInLab(James)",
+      "(-PartTime(Jack) & -WorkInLab(Jack))"
+    ],
+    "goal": "-PartTime(James)"
+  },
+  {
+    "id": 159,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WorkLibrary(x) -> -ComputerScience(x))",
+      "all x.(PartTime(x) -> WorkLibrary(x))",
+      "all x.(Database(x) -> ComputerScience(x))",
+      "all x.(ProfessorDavid(x) -> Database(x))",
+      "all x.(WorkInLab(x) -> ProfessorDavid(x))",
+      "WorkInLab(James)",
+      "(-PartTime(Jack) & -WorkInLab(Jack))"
+    ],
+    "goal": "((Database(James) & -PartTime(James)) | (-Database(James) & PartTime(James)))"
+  },
+  {
+    "id": 160,
+    "flag": "success",
+    "assumptions": [
+      "all x.(WorkLibrary(x) -> -ComputerScience(x))",
+      "all x.(PartTime(x) -> WorkLibrary(x))",
+      "all x.(Database(x) -> ComputerScience(x))",
+      "all x.(ProfessorDavid(x) -> Database(x))",
+      "all x.(WorkInLab(x) -> ProfessorDavid(x))",
+      "WorkInLab(James)",
+      "(-PartTime(Jack) & -WorkInLab(Jack))"
+    ],
+    "goal": "Database(Jack)"
+  },
+  {
+    "id": 161,
+    "flag": "success",
+    "assumptions": [
+      "(LikesMusic(George) -> WantsToCompose(George))",
+      "(AccesstoProgram(George) -> CanCompose(George))",
+      "((WantsToCompose(George) & CanCompose(George)) -> WillCompose(George))"
+    ],
+    "goal": "((LikesMusic(George) & AccesstoProgram(George)) -> WillCompose(George))"
+  },
+  {
+    "id": 162,
+    "flag": "success",
+    "assumptions": [
+      "(LikesMusic(George) -> WantsToCompose(George))",
+      "(AccesstoProgram(George) -> CanCompose(George))",
+      "((WantsToCompose(George) & CanCompose(George)) -> WillCompose(George))"
+    ],
+    "goal": "(-WantsToCompose(George) -> -WillCompose(George))"
+  },
+  {
+    "id": 163,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Hawk(x) -> -Lands(x))",
+      "exists x.(Bird(x) & Hawk(x))"
+    ],
+    "goal": "all x.(Bird(x) -> Lands(x))"
+  },
+  {
+    "id": 164,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mondayat8(x) & RoseGivenOutOnTv(x))",
+      "all x.(RoseGivenOutOnTv(x) -> OnBachelor(x))",
+      "all x.(OnBachelor(x) -> PortrayLiveOfRealPeople(x))",
+      "all x.(PortrayLiveOfRealPeople(x) -> RealityTVShow(x))",
+      "-RealityTVShow(Breakingbad)"
+    ],
+    "goal": "Mondayat8(Breakingbad)"
+  },
+  {
+    "id": 165,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mondayat8(x) & RoseGivenOutOnTv(x))",
+      "all x.(RoseGivenOutOnTv(x) -> OnBachelor(x))",
+      "all x.(OnBachelor(x) -> PortrayLiveOfRealPeople(x))",
+      "all x.(PortrayLiveOfRealPeople(x) -> RealityTVShow(x))",
+      "-RealityTVShow(Breakingbad)"
+    ],
+    "goal": "(Mondayat8(Breakingbad) & RoseGivenOutOnTv(Breakingbad))"
+  },
+  {
+    "id": 166,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(Mondayat8(x) & RoseGivenOutOnTv(x))",
+      "all x.(RoseGivenOutOnTv(x) -> OnBachelor(x))",
+      "all x.(OnBachelor(x) -> PortrayLiveOfRealPeople(x))",
+      "all x.(PortrayLiveOfRealPeople(x) -> RealityTVShow(x))",
+      "-RealityTVShow(Breakingbad)"
+    ],
+    "goal": "(RoseGivenOutOnTv(Breakingbad) -> Mondayat8(Breakingbad))"
+  },
+  {
+    "id": 167,
+    "flag": "success",
+    "assumptions": [
+      "(From(HeinrichScmidt,NaziGermany) & Politician(HeinrichScmidt))",
+      "(Member(HeinrichScmidt,PrussianStateParliament) & Member(HeinrichScmidt,NaziReichstag))"
+    ],
+    "goal": "(From(HeinrichScmidt,NaziGermany) | From(HeinrichScmidt,Russia))"
+  },
+  {
+    "id": 168,
+    "flag": "success",
+    "assumptions": [
+      "(From(HeinrichScmidt,NaziGermany) & Politician(HeinrichScmidt))",
+      "(Member(HeinrichScmidt,PrussianStateParliament) & Member(HeinrichScmidt,NaziReichstag))"
+    ],
+    "goal": "exists x.(From(x,NaziGermany) & Politician(x) & Member(x,PrussianStateParliament) & Member(x,NaziReichstag))"
+  },
+  {
+    "id": 169,
+    "flag": "success",
+    "assumptions": [
+      "(From(HeinrichScmidt,NaziGermany) & Politician(HeinrichScmidt))",
+      "(Member(HeinrichScmidt,PrussianStateParliament) & Member(HeinrichScmidt,NaziReichstag))"
+    ],
+    "goal": "all x.(Politician(x) -> -Member(x,NaziReichstag))"
+  },
+  {
+    "id": 170,
+    "flag": "success",
+    "assumptions": [
+      "all x.(DeadlyDiseases(x) -> SurvivalRateIsLow(x))",
+      "all x.(SevereCancer(x) -> DeadlyDiseases(x))",
+      "all x.(BileDuctCancer(x) -> SevereCancer(x))",
+      "all x.(Cholangiocarcinoma(x) -> BileDuctCancer(x))",
+      "all x.(MildFlu(x) -> -SurvivalRateIsLow(x))",
+      "((BileDuctCancer(ColorectalCancer) | SurvivalRateIsLow(ColorectalCancer)) -> -BileDuctCancer(ColorectalCancer))"
+    ],
+    "goal": "SevereCancer(ColorectalCancer)"
+  },
+  {
+    "id": 171,
+    "flag": "success",
+    "assumptions": [
+      "all x.(DeadlyDiseases(x) -> SurvivalRateIsLow(x))",
+      "all x.(SevereCancer(x) -> DeadlyDiseases(x))",
+      "all x.(BileDuctCancer(x) -> SevereCancer(x))",
+      "all x.(Cholangiocarcinoma(x) -> BileDuctCancer(x))",
+      "all x.(MildFlu(x) -> -SurvivalRateIsLow(x))",
+      "((BileDuctCancer(ColorectalCancer) | SurvivalRateIsLow(ColorectalCancer)) -> -BileDuctCancer(ColorectalCancer))"
+    ],
+    "goal": "(((BileDuctCancer(ColorectalCancer) | Cholangiocarcinoma(ColorectalCancer)) -> BileDuctCancer(ColorectalCancer)) & MildFlu(ColorectalCancer))"
+  },
+  {
+    "id": 172,
+    "flag": "success",
+    "assumptions": [
+      "all x.(DeadlyDiseases(x) -> SurvivalRateIsLow(x))",
+      "all x.(SevereCancer(x) -> DeadlyDiseases(x))",
+      "all x.(BileDuctCancer(x) -> SevereCancer(x))",
+      "all x.(Cholangiocarcinoma(x) -> BileDuctCancer(x))",
+      "all x.(MildFlu(x) -> -SurvivalRateIsLow(x))",
+      "((BileDuctCancer(ColorectalCancer) | SurvivalRateIsLow(ColorectalCancer)) -> -BileDuctCancer(ColorectalCancer))"
+    ],
+    "goal": "(((-MildFlu(ColorectalCancer) | -Cholangiocarcinoma(ColorectalCancer)) -> BileDuctCancer(ColorectalCancer)) | Cholangiocarcinoma(ColorectalCancer))"
+  },
+  {
+    "id": 173,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Salad(x) -> HealthyHabits(x))",
+      "all x.(HealthyChildhood(x) -> Salad(x))",
+      "all x.(Nutritional(x) -> HealthyChildhood(x))",
+      "all x.(GoodRelationship(x) -> -HealthyHabits(x))",
+      "all x.(Gym(x) -> Nutritional(x))",
+      "(((HealthyChildhood(Taylor) & GoodRelationship(Taylor)) | -HealthyChildhood(Taylor)) & -GoodRelationship(Marcy))"
+    ],
+    "goal": "Salad(Taylor)"
+  },
+  {
+    "id": 174,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Salad(x) -> HealthyHabits(x))",
+      "all x.(HealthyChildhood(x) -> Salad(x))",
+      "all x.(Nutritional(x) -> HealthyChildhood(x))",
+      "all x.(GoodRelationship(x) -> -HealthyHabits(x))",
+      "all x.(Gym(x) -> Nutritional(x))",
+      "(((HealthyChildhood(Taylor) & GoodRelationship(Taylor)) | -HealthyChildhood(Taylor)) & -GoodRelationship(Marcy))"
+    ],
+    "goal": "Gym(Taylor)"
+  },
+  {
+    "id": 175,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Salad(x) -> HealthyHabits(x))",
+      "all x.(HealthyChildhood(x) -> Salad(x))",
+      "all x.(Nutritional(x) -> HealthyChildhood(x))",
+      "all x.(GoodRelationship(x) -> -HealthyHabits(x))",
+      "all x.(Gym(x) -> Nutritional(x))",
+      "(((HealthyChildhood(Taylor) & GoodRelationship(Taylor)) | -HealthyChildhood(Taylor)) & -GoodRelationship(Marcy))"
+    ],
+    "goal": "-(HealthyChildhood(Taylor) | Gym(Taylor))"
+  },
+  {
+    "id": 176,
+    "flag": "success",
+    "assumptions": [
+      "SportingEvent(Olympics)",
+      "LastOlympics(Tokyo)",
+      "MostMedals(UnitedStates,Tokyo)"
+    ],
+    "goal": "SportingEvent(Champs)"
+  },
+  {
+    "id": 177,
+    "flag": "success",
+    "assumptions": [
+      "SportingEvent(Olympics)",
+      "LastOlympics(Tokyo)",
+      "MostMedals(UnitedStates,Tokyo)"
+    ],
+    "goal": "-LastOlympics(Tokyo)"
+  },
+  {
+    "id": 178,
+    "flag": "success",
+    "assumptions": [
+      "SportingEvent(Olympics)",
+      "LastOlympics(Tokyo)",
+      "MostMedals(UnitedStates,Tokyo)"
+    ],
+    "goal": "exists x.(LastOlympics(x) & MostMedals(UnitedStates,x))"
+  },
+  {
+    "id": 179,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Horse(x) -> Hooves(x))",
+      "all x.(Human(x) -> -Hooves(x))"
+    ],
+    "goal": "exists x.(Human(x) & Horse(x))"
+  },
+  {
+    "id": 180,
+    "flag": "success",
+    "assumptions": [
+      "FlyTo(Susan,Lga)",
+      "all x y.((FlyFrom(x,y) & -FlyTo(x,y)) | (-FlyFrom(x,y) & FlyTo(x,y)))",
+      "FlyFrom(John,Lga)"
+    ],
+    "goal": "FlyFrom(Susan,Lga)"
+  },
+  {
+    "id": 181,
+    "flag": "success",
+    "assumptions": [
+      "FlyTo(Susan,Lga)",
+      "all x y.((FlyFrom(x,y) & -FlyTo(x,y)) | (-FlyFrom(x,y) & FlyTo(x,y)))",
+      "FlyFrom(John,Lga)"
+    ],
+    "goal": "FlyTo(John,Lga)"
+  },
+  {
+    "id": 182,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Nice(x) -> -Mean(x))",
+      "exists x.(Grumpy(x) & Mean(x))",
+      "all x.(AnimalLover(x) -> Nice(x))",
+      "all x.(PetOwner(x) -> AnimalLover(x))",
+      "PetOwner(Tom)"
+    ],
+    "goal": "Grumpy(Tom)"
+  },
+  {
+    "id": 183,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Nice(x) -> -Mean(x))",
+      "exists x.(Grumpy(x) & Mean(x))",
+      "all x.(AnimalLover(x) -> Nice(x))",
+      "all x.(PetOwner(x) -> AnimalLover(x))",
+      "PetOwner(Tom)"
+    ],
+    "goal": "-(Grumpy(Tom) & Mean(Tom))"
+  },
+  {
+    "id": 184,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Nice(x) -> -Mean(x))",
+      "exists x.(Grumpy(x) & Mean(x))",
+      "all x.(AnimalLover(x) -> Nice(x))",
+      "all x.(PetOwner(x) -> AnimalLover(x))",
+      "PetOwner(Tom)"
+    ],
+    "goal": "(-(Grumpy(Tom) & Mean(Tom)) -> -(Grumpy(Tom) | AnimalLover(Tom)))"
+  },
+  {
+    "id": 185,
+    "flag": "success",
+    "assumptions": [
+      "all x.(IsPodcast(x) -> -IsNovel(x))",
+      "all x.exists y.((BornIn(x,y) & IsCity(y) & IsAmerican(y)) -> IsAmerican(x))",
+      "all x y.((IsNovel(x) & WrittenBy(x,y)) -> WritesNovel(y))",
+      "(IsAmerican(Dani_Shapiro) & IsWriter(Dani_Shapiro))",
+      "WrittenBy(Family_History,Dani_Shapiro)",
+      "(IsNovel(Family_History) & WrittenIn(Family_History,Y2003))",
+      "(IsPodcast(Family_Secrets) & CreatedBy(Family_Secrets,Dani_Shapiro))",
+      "(IsCity(Boston) & IsAmerican(Boston))"
+    ],
+    "goal": "WritesNovel(Dani_Shapiro)"
+  },
+  {
+    "id": 186,
+    "flag": "success",
+    "assumptions": [
+      "all x.(IsPodcast(x) -> -IsNovel(x))",
+      "all x.exists y.((BornIn(x,y) & IsCity(y) & IsAmerican(y)) -> IsAmerican(x))",
+      "all x y.((IsNovel(x) & WrittenBy(x,y)) -> WritesNovel(y))",
+      "(IsAmerican(Dani_Shapiro) & IsWriter(Dani_Shapiro))",
+      "WrittenBy(Family_History,Dani_Shapiro)",
+      "(IsNovel(Family_History) & WrittenIn(Family_History,Y2003))",
+      "(IsPodcast(Family_Secrets) & CreatedBy(Family_Secrets,Dani_Shapiro))",
+      "(IsCity(Boston) & IsAmerican(Boston))"
+    ],
+    "goal": "IsNovel(Family_Secrets)"
+  },
+  {
+    "id": 187,
+    "flag": "success",
+    "assumptions": [
+      "all x.(IsPodcast(x) -> -IsNovel(x))",
+      "all x.exists y.((BornIn(x,y) & IsCity(y) & IsAmerican(y)) -> IsAmerican(x))",
+      "all x y.((IsNovel(x) & WrittenBy(x,y)) -> WritesNovel(y))",
+      "(IsAmerican(Dani_Shapiro) & IsWriter(Dani_Shapiro))",
+      "WrittenBy(Family_History,Dani_Shapiro)",
+      "(IsNovel(Family_History) & WrittenIn(Family_History,Y2003))",
+      "(IsPodcast(Family_Secrets) & CreatedBy(Family_Secrets,Dani_Shapiro))",
+      "(IsCity(Boston) & IsAmerican(Boston))"
+    ],
+    "goal": "BornIn(Dani_Shapiro,Boston)"
+  },
+  {
+    "id": 188,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(BasketballPlayer(x) & -American(x))",
+      "all x.(BasketballPlayer(x) -> Tall(x))",
+      "all x.(Tall(x) -> WearLargeShoes(x))",
+      "all x.(WearLargeShoes(x) -> WearLargeClothes(x))",
+      "-WearLargeClothes(Yuri)"
+    ],
+    "goal": "American(Yuri)"
+  },
+  {
+    "id": 189,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(BasketballPlayer(x) & -American(x))",
+      "all x.(BasketballPlayer(x) -> Tall(x))",
+      "all x.(Tall(x) -> WearLargeShoes(x))",
+      "all x.(WearLargeShoes(x) -> WearLargeClothes(x))",
+      "-WearLargeClothes(Yuri)"
+    ],
+    "goal": "-(American(Yuri) & BasketballPlayer(Yuri))"
+  },
+  {
+    "id": 190,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(BasketballPlayer(x) & -American(x))",
+      "all x.(BasketballPlayer(x) -> Tall(x))",
+      "all x.(Tall(x) -> WearLargeShoes(x))",
+      "all x.(WearLargeShoes(x) -> WearLargeClothes(x))",
+      "-WearLargeClothes(Yuri)"
+    ],
+    "goal": "(American(Yuri) & BasketballPlayer(Yuri))"
+  },
+  {
+    "id": 191,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(BasketballPlayer(x) & -American(x))",
+      "all x.(BasketballPlayer(x) -> Tall(x))",
+      "all x.(Tall(x) -> WearLargeShoes(x))",
+      "all x.(WearLargeShoes(x) -> WearLargeClothes(x))",
+      "-WearLargeClothes(Yuri)"
+    ],
+    "goal": "(-WearLargeShoes(Yuri) -> (American(Yuri) & BasketballPlayer(Yuri)))"
+  },
+  {
+    "id": 192,
+    "flag": "success",
+    "assumptions": [
+      "exists x.(BasketballPlayer(x) & -American(x))",
+      "all x.(BasketballPlayer(x) -> Tall(x))",
+      "all x.(Tall(x) -> WearLargeShoes(x))",
+      "all x.(WearLargeShoes(x) -> WearLargeClothes(x))",
+      "-WearLargeClothes(Yuri)"
+    ],
+    "goal": "(-(American(Yuri) & BasketballPlayer(Yuri)) -> BasketballPlayer(Yuri))"
+  },
+  {
+    "id": 193,
+    "flag": "success",
+    "assumptions": [
+      "all x.(((Event(x) -> Happy(x)) & -Sad(x)) | (-(Event(x) -> Happy(x)) & Sad(x)))",
+      "exists x.(Event(x) & Happy(x))"
+    ],
+    "goal": "all x.(Event(x) -> Sad(x))"
+  },
+  {
+    "id": 194,
+    "flag": "success",
+    "assumptions": [
+      "Winner(Maurier,Steinhauer)",
+      "Participate(Maurier,Steinhauer)",
+      "exists x.(LeaderBoard(Maurier,x) & SixWayTie(x) & Belgium(x))",
+      "(Belgium(Descampe) & LeaderBoard(Maurier,Descampe))",
+      "all x.(LeaderBoard(Maurier,x) -> Participate(Maurier,x))"
+    ],
+    "goal": "-Winner(Maurier,Steinhauer)"
+  },
+  {
+    "id": 195,
+    "flag": "success",
+    "assumptions": [
+      "Winner(Maurier,Steinhauer)",
+      "Participate(Maurier,Steinhauer)",
+      "exists x.(LeaderBoard(Maurier,x) & SixWayTie(x) & Belgium(x))",
+      "(Belgium(Descampe) & LeaderBoard(Maurier,Descampe))",
+      "all x.(LeaderBoard(Maurier,x) -> Participate(Maurier,x))"
+    ],
+    "goal": "SixWayTie(Descampe)"
+  },
+  {
+    "id": 196,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bark(x) -> -Like(Jane,x))",
+      "all x.(Dog(x) -> Bark(x))",
+      "all x.(Jump(x) -> Like(Jane,x))",
+      "all x.(HaveLegs(x) -> Jump(x))",
+      "all x.(Terricolous(x) -> HaveLegs(x))",
+      "((-Jump(Kiki) & -HaveLegs(Kiki)) -> (Terricolous(Kiki) | HaveLegs(Kiki)))"
+    ],
+    "goal": "Terricolous(Kiki)"
+  },
+  {
+    "id": 197,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bark(x) -> -Like(Jane,x))",
+      "all x.(Dog(x) -> Bark(x))",
+      "all x.(Jump(x) -> Like(Jane,x))",
+      "all x.(HaveLegs(x) -> Jump(x))",
+      "all x.(Terricolous(x) -> HaveLegs(x))",
+      "((-Jump(Kiki) & -HaveLegs(Kiki)) -> (Terricolous(Kiki) | HaveLegs(Kiki)))"
+    ],
+    "goal": "(Bark(Kiki) & Dog(Kiki))"
+  },
+  {
+    "id": 198,
+    "flag": "success",
+    "assumptions": [
+      "all x.(Bark(x) -> -Like(Jane,x))",
+      "all x.(Dog(x) -> Bark(x))",
+      "all x.(Jump(x) -> Like(Jane,x))",
+      "all x.(HaveLegs(x) -> Jump(x))",
+      "all x.(Terricolous(x) -> HaveLegs(x))",
+      "((-Jump(Kiki) & -HaveLegs(Kiki)) -> (Terricolous(Kiki) | HaveLegs(Kiki)))"
+    ],
+    "goal": "(-Bark(Kiki) & -Dog(Kiki))"
+  },
+  {
+    "id": 199,
+    "flag": "success",
+    "assumptions": [
+      "(BornIn(Ailton,Y1995) & CommonlyKnownAs(Ailton,Ailton))",
+      "(FootballPlayer(Ailton) & LoanedTo(Ailton,Braga))",
+      "(Brazilian(Ailtonsilva) & Footballplayer(Ailtonsilva) & PlaysFor(Ailtonsilva,Nautico))",
+      "(FootballClub(Nautico) & FootballClub(Braga))",
+      "FootballClub(Fluminense)"
+    ],
+    "goal": "all x.(PlaysFor(x,Nautico) -> -Brazilian(x))"
+  },
+  {
+    "id": 200,
+    "flag": "success",
+    "assumptions": [
+      "(BornIn(Ailton,Y1995) & CommonlyKnownAs(Ailton,Ailton))",
+      "(FootballPlayer(Ailton) & LoanedTo(Ailton,Braga))",
+      "(Brazilian(Ailtonsilva) & Footballplayer(Ailtonsilva) & PlaysFor(Ailtonsilva,Nautico))",
+      "(FootballClub(Nautico) & FootballClub(Braga))",
+      "FootballClub(Fluminense)"
+    ],
+    "goal": "all x.(FootballClub(x) -> -PlaysFor(Ailtonsilva,x))"
+  },
+  {
+    "id": 201,
+    "flag": "success",
+    "assumptions": [
+      "(BornIn(Ailton,Y1995) & CommonlyKnownAs(Ailton,Ailton))",
+      "(FootballPlayer(Ailton) & LoanedTo(Ailton,Braga))",
+      "(Brazilian(Ailtonsilva) & Footballplayer(Ailtonsilva) & PlaysFor(Ailtonsilva,Nautico))",
+      "(FootballClub(Nautico) & FootballClub(Braga))",
+      "FootballClub(Fluminense)"
+    ],
+    "goal": "all x.(FootballClub(x) -> -LoanedTo(Ailton,x))"
+  },
+  {
+    "id": 202,
+    "flag": "success",
+    "assumptions": [
+      "(BornIn(Ailton,Y1995) & CommonlyKnownAs(Ailton,Ailton))",
+      "(FootballPlayer(Ailton) & LoanedTo(Ailton,Braga))",
+      "(Brazilian(Ailtonsilva) & Footballplayer(Ailtonsilva) & PlaysFor(Ailtonsilva,Nautico))",
+      "(FootballClub(Nautico) & FootballClub(Braga))",
+      "FootballClub(Fluminense)"
+    ],
+    "goal": "PlaysFor(Ailtonsilva,Fluminense)"
+  },
+  {
+    "id": 203,
+    "flag": "success",
+    "assumptions": [
+      "(BornIn(Ailton,Y1995) & CommonlyKnownAs(Ailton,Ailton))",
+      "(FootballPlayer(Ailton) & LoanedTo(Ailton,Braga))",
+      "(Brazilian(Ailtonsilva) & Footballplayer(Ailtonsilva) & PlaysFor(Ailtonsilva,Nautico))",
+      "(FootballClub(Nautico) & FootballClub(Braga))",
+      "FootballClub(Fluminense)"
+    ],
+    "goal": "exists x.(FootballClub(x) & LoanedTo(Ailtonsilva,x))"
+  }
+]
