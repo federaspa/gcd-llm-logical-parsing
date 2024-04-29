@@ -73,14 +73,17 @@ class PromptGenerator:
 
         if train_data:
             for story in train_data:
+                # print(story)
                 
                 prompt += 'Natural Language Premises:\n"""\n'
                 prompt += '\n'.join(story['context'])
                 prompt += '\n"""\n'
                 
-                prompt += 'Natural Language Question:\n"""\n'
-                prompt += story['question']
-                prompt += '\n"""\n###\n'   
+                if 'question_fol' in story.keys():
+                    prompt += 'Natural Language Question:\n"""\n'
+                    prompt += story['question']
+                    prompt += '\n"""\n'
+                prompt += '###\n'   
                 
                 
                 if 'predicates_fol' in story.keys():
@@ -94,9 +97,10 @@ class PromptGenerator:
                     prompt += fol + ' ::: ' + nl + '\n'
                 prompt += '"""\n'
                     
-                prompt += 'First-Order-Logic Question:\n"""\n'
-                prompt += story['question_fol']
-                prompt += '\n"""\n'
+                if 'question_fol' in story.keys():
+                    prompt += 'First-Order-Logic Question:\n"""\n'
+                    prompt += story['question_fol']
+                    prompt += '\n"""\n'
                 prompt += '------\n'
             
         prompt += 'Natural Language Premises:\n"""\n'
@@ -106,6 +110,9 @@ class PromptGenerator:
         prompt += 'Natural Language Question:\n"""\n'
         prompt += test_data['question']
         prompt += '\n"""\n###\n'   
+                    
+        # print(prompt)
+        # raise Exception('hi!')
                     
         return prompt
     
@@ -218,7 +225,7 @@ class LogicProgramGenerator(PromptGenerator):
                             'context': sample['context'],
                             'question': sample['question'], 
                             'answer': sample['answer'],
-                            'options': sample['options'],
+                            # 'options': sample['options'],
                             'raw_logic_programs': programs}
                     outputs.append(output)
             except:
@@ -231,13 +238,13 @@ class LogicProgramGenerator(PromptGenerator):
                                 'context': sample['context'],
                                 'question': sample['question'], 
                                 'answer': sample['answer'],
-                                'options': sample['options'],
+                                # 'options': sample['options'],
                                 'raw_logic_programs': programs}
                         outputs.append(output)
                     except KeyboardInterrupt:
                         sys.exit()
-                    except:
-                        print('Error in generating logic programs for example: ', sample['id'])
+                    # except:
+                    #     print('Error in generating logic programs for example: ', sample['id'])
 
         print(f"Generated {len(outputs)} examples.")
         
@@ -248,6 +255,58 @@ class LogicProgramGenerator(PromptGenerator):
         with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
+
+class Cheater:
+
+    def __init__(self, args):
+            
+        self.args = args
+        self.data_path = args.data_path
+        self.dataset_name = args.dataset_name
+        self.split = args.split
+        self.model_name = args.model_name
+        self.save_path = args.save_path
+        self.prompt_mode = args.prompt_mode
+        self.response_mode = args.response_mode
+    
+    
+    def load_raw_dataset(self, split):
+        with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
+            raw_dataset = json.load(f)
+        return raw_dataset
+    
+    def cheat(self):
+        
+        raw_dataset = self.load_raw_dataset(self.split)
+        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
+        outputs = []
+        # split dataset into chunks
+    
+        for sample in raw_dataset:
+            
+            premises = '\n'.join(sample['context_fol'])
+            programs = "First-Order-Logic Premises:\n\"\"\"\n" + premises
+            
+            programs += '\"\"\"'
+            
+            if 'question_fol' in sample.keys():
+                question = sample['question_fol']
+                programs += "\nFirst-Order-Logic Question:\n\"\"\"\n" + question + "\n\"\"\""
+        
+            output = {'id': sample['id'], 
+                    # 'context': sample['context'],
+                    'question': sample['question'], 
+                    'answer': sample['answer'],
+                    # 'options': sample['options'],
+                    'raw_logic_programs': [programs]}
+            outputs.append(output)
+
+        if not os.path.exists(self.save_path):
+            os.makedirs(self.save_path)
+        
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'), 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
+                    
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
@@ -260,10 +319,16 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
+    parser.add_argument('--cheat', type=str)
     args = parser.parse_args()
     return args
 
 if __name__ == '__main__':
     args = parse_args()
-    logic_program_generator = LogicProgramGenerator(args)
-    logic_program_generator.batch_logic_program_generation()
+    
+    if args.cheat:
+        cheater = Cheater(args)
+        cheater.cheat()
+    else:
+        logic_program_generator = LogicProgramGenerator(args)
+        logic_program_generator.batch_logic_program_generation()
