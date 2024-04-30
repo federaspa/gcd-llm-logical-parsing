@@ -287,7 +287,7 @@ class Cheater:
             premises = '\n'.join(sample['context_fol'])
             programs = "First-Order-Logic Premises:\n\"\"\"\n" + premises
             
-            programs += '\"\"\"'
+            programs += '\n\"\"\"'
             
             if 'question_fol' in sample.keys():
                 question = sample['question_fol']
@@ -312,7 +312,7 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)

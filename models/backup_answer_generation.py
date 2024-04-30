@@ -3,19 +3,19 @@ import random
 import os
 
 class Backup_Answer_Generator:
-    def __init__(self, dataset_name, backup_strategy, backup_LLM_result_path) -> None:
+    def __init__(self, dataset_name, backup_strategy, backup_result_path) -> None:
         self.dataset_name = dataset_name
         self.backup_strategy = backup_strategy
-        self.backup_LLM_result_path = backup_LLM_result_path
-        if self.backup_strategy == 'LLM':
-            with open(backup_LLM_result_path, 'r') as f:
+        self.backup_result_path = backup_result_path
+        if self.backup_strategy in ['Direct', 'CoT']:
+            with open(backup_result_path, 'r') as f:
                 LLM_result = json.load(f)
             self.backup_results = {sample['id'] : sample['predicted_answer'] for sample in LLM_result}
 
     def get_backup_answer(self, id):
         if self.backup_strategy == 'random':
             return self.random_backup()
-        elif self.backup_strategy == 'LLM':
+        elif self.backup_strategy in ['Direct', 'CoT']:
             return self.LLM_backup(id)
         
     def random_backup(self):

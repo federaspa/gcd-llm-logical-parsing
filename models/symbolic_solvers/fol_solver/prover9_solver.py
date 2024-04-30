@@ -70,13 +70,13 @@ class FOL_Prover9_Program:
             return True, ''
         
         except Exception as e:
-            print()
-            print()
-            print(self.logic_program)
-            print()
-            print(e)
-            print()
-            print()
+            # print()
+            # print()
+            # print(self.logic_program)
+            # print()
+            # print(e)
+            # print()
+            # print()
             return False, str(e)
 
     def execute_program(self):

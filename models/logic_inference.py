@@ -18,6 +18,7 @@ class LogicInferenceEngine:
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.backup_strategy = args.backup_strategy
+        self.backup_path = args.backup_LLM_result_path
         self.prompt_mode = args.prompt_mode
         self.response_mode = args.response_mode
         self.self_refine_round = args.self_refine_round
@@ -28,7 +29,10 @@ class LogicInferenceEngine:
                                 'ProntoQA': Pyke_Program, 
                                 'ProofWriter': Pyke_Program}
         self.program_executor = program_executor_map[self.dataset_name]
-        self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.args.backup_LLM_result_path)
+        
+        self.backup_result_path = os.path.join(self.backup_path, f'{self.backup_strategy}_{self.dataset_name}_{self.split}_{self.model_name}.json')
+        
+        self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.backup_result_path)
 
     def load_logic_programs(self):
         
@@ -99,7 +103,7 @@ class LogicInferenceEngine:
             answer, flag, error_message = self.safe_execute_program(example['id'], program)
             if not flag == 'success':
                 error_count += 1
-                # print(error_message)
+                # print(example['id'])
 
             # create output
             output = {'id': example['id'], 
@@ -125,13 +129,13 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str)
-    parser.add_argument('--response_mode', type=str)
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
-    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
-    parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')
+    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
+    parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--timeout', type=int, default=60)
     args = parser.parse_args()

@@ -18,6 +18,7 @@ class SelfRefinementEngine:
         self.model_name = args.model_name
         self.dataset_name = args.dataset_name
         self.backup_strategy = args.backup_strategy
+        self.backup_path = args.backup_LLM_result_path
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
@@ -29,7 +30,10 @@ class SelfRefinementEngine:
         program_executor_map = {'FOLIO': FOL_Prover9_Program,
                                 'FOLIOv2': FOL_Prover9_Program}
         self.program_executor = program_executor_map[self.dataset_name]
-        self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.args.backup_LLM_result_path)
+        
+        self.backup_result_path = os.path.join(self.backup_path, f'{self.backup_strategy}_{self.dataset_name}_{self.split}_{self.model_name}.json')
+        
+        self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.backup_result_path)
 
     def load_logic_programs(self):
         prefix = ""
@@ -86,7 +90,7 @@ class SelfRefinementEngine:
             # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
                 full_prompt = self.load_prompt(logic_program, error_message)
-                revised_program = self.openai_api.generate(full_prompt).strip()
+                revised_program = self.openai_api.generate(full_prompt, '', { "type": "text" }).strip()
                 programs = [revised_program]
                 output = {'id': example['id'], 
                         'context': example['context'],
@@ -111,10 +115,10 @@ def parse_args():
     parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str)
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
     parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
-    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'LLM'])
-    parser.add_argument('--backup_LLM_result_path', type=str, default='../baselines/results')
+    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
+    parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--timeout', type=int, default=60)
     parser.add_argument('--api_key', type=str)
