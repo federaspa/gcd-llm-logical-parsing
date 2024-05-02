@@ -13,18 +13,18 @@ class ExampleExtractionEngine:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.source_split = args.source_split
-        self.traget_split = args.traget_split
+        self.target_split = args.target_split
         self.max_examples = args.max_examples
         # self.save_path = args.save_path
         self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2")
 
         self.source_dataset, self.target_dataset = self.load_data()
         
-        self.save_path = os.path.join(self.data_path, self.dataset_name, f'{self.traget_split}_examples.json')
+        self.save_path = os.path.join(self.data_path, self.dataset_name, f'{self.target_split}_examples.json')
         
     def load_data(self):
         source_path = os.path.join(self.data_path, self.dataset_name, f'{self.source_split}.json')
-        target_path = os.path.join(self.data_path, self.dataset_name, f'{self.traget_split}.json')
+        target_path = os.path.join(self.data_path, self.dataset_name, f'{self.target_split}.json')
         
         with open(source_path, 'r') as f:
             source_dataset = json.load(f)
@@ -47,10 +47,20 @@ class ExampleExtractionEngine:
         
         for source_story in self.source_dataset:
             
+            seen_source_stories = set()
+            
+            if source_story['story_id'] in seen_source_stories:
+                continue
+            
+            if 'question_fol' not in source_story.keys():
+                continue
+            
             source_sentence = ' '.join(source_story['context'])
             source_sentence += f" {source_story['question']}"
             
             source_sentences.append(source_sentence)
+            
+            seen_source_stories.add(source_story['story_id'])
         
         for target_story in tqdm(self.target_dataset):
             
@@ -73,7 +83,6 @@ class ExampleExtractionEngine:
             
             sorted_stories[target_story['id']] = [self.source_dataset[i[0]] for i in sorted_indexes[:max_examples]]
         
-        
         with open(self.save_path, 'w') as f:
             json.dump(sorted_stories, f, indent=2, ensure_ascii=False)
             
@@ -84,7 +93,7 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--source_split', type=str, default='train')
-    parser.add_argument('--traget_split', type=str, default='dev')
+    parser.add_argument('--target_split', type=str, default='dev')
     parser.add_argument('--max_examples', type=int, default=3)
     # parser.add_argument('--save_path', type=str, default='./outputs/dynamic_examples')
     args = parser.parse_args()

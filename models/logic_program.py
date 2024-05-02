@@ -203,7 +203,8 @@ class LogicProgramGenerator(PromptGenerator):
     def batch_logic_program_generation(self, batch_size = 10):
         # load raw dataset
         raw_dataset = self.load_raw_dataset(self.split)
-        dynamic_examples = self.load_dynamic_examples(self.split)
+        if self.prompt_mode == 'dynamic':
+            dynamic_examples = self.load_dynamic_examples(self.split)
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
         outputs = []
         # split dataset into chunks

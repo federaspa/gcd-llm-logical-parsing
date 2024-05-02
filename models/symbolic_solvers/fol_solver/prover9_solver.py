@@ -14,7 +14,7 @@ class FOL_Prover9_Program:
         self.logic_program = logic_program
         self.prompt_mode = prompt_mode
         self.response_mode = response_mode
-        self.flag, self.parsing_error_message = self.parse_logic_program()
+        self.flag, self.formula_error, self.parsing_error_index = self.parse_logic_program()
         self.dataset_name = dataset_name
 
     def parse_logic_program(self):
@@ -50,24 +50,20 @@ class FOL_Prover9_Program:
 
             # convert to prover9 format
             self.prover9_premises = []
-            for premise in self.logic_premises:
+            for premise_index,premise in enumerate(self.logic_premises):
                 fol_rule = FOL_Formula(premise)
                 if fol_rule.is_valid == False:
-                    try:
-                        return False, f'Invalid FOL premise.: {premise}'
-                    except Exception:
-                        return False, f'Invalid FOL premise.'
+
+                    return False, premise, premise_index
                 prover9_rule = Prover9_FOL_Formula(fol_rule)
                 self.prover9_premises.append(prover9_rule.formula)
 
             fol_conclusion = FOL_Formula(self.logic_conclusion)
             if fol_conclusion.is_valid == False:
-                try:
-                    return False, f'Invalid FOL question.: {fol_conclusion}'
-                except Exception:
-                    return False, f'Invalid FOL question.'
+
+                return False, self.logic_conclusion, 0
             self.prover9_conclusion = Prover9_FOL_Formula(fol_conclusion).formula
-            return True, ''
+            return True, None, None
         
         except Exception as e:
             # print()
@@ -77,7 +73,7 @@ class FOL_Prover9_Program:
             # print(e)
             # print()
             # print()
-            return False, str(e)
+            return False, None, None
 
     def execute_program(self):
         try:

@@ -12,6 +12,7 @@ from backup_answer_generation import Backup_Answer_Generator
 class LogicInferenceEngine:
     def __init__(self, args):
         self.args = args
+        self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
         self.model_name = args.model_name
@@ -24,6 +25,8 @@ class LogicInferenceEngine:
         self.self_refine_round = args.self_refine_round
 
         self.dataset = self.load_logic_programs()
+        self.ground_truth = self.load_ground_truth()
+        
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
                                 'FOLIOv2': FOL_Prover9_Program,
                                 'ProntoQA': Pyke_Program, 
@@ -33,6 +36,26 @@ class LogicInferenceEngine:
         self.backup_result_path = os.path.join(self.backup_path, f'{self.backup_strategy}_{self.dataset_name}_{self.split}_{self.model_name}.json')
         
         self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.backup_result_path)
+
+    def load_ground_truth(self):
+        with open(os.path.join(self.data_path, self.dataset_name, f'{self.split}.json'), 'r') as f:
+            ground_truth_raw = json.load(f)
+            
+        ground_truth = {
+            point['id']: {
+                'context_fol': point['context_fol']
+            }
+        for point in ground_truth_raw
+        }
+            
+        for point in ground_truth_raw:
+            if 'question_fol' in point:
+                key = point['id']
+                ground_truth[key].update({
+                'question_fol': point['question_fol']
+                })
+
+        return ground_truth
 
     def load_logic_programs(self):
         
@@ -48,8 +71,6 @@ class LogicInferenceEngine:
     def save_results(self, outputs):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
-            
-            
         if self.self_refine_round > 0:
             save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}_backup-{self.backup_strategy}.json'
         else:
@@ -63,16 +84,16 @@ class LogicInferenceEngine:
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'parsing error', program.parsing_error_message
+            return answer, 'parsing error', program.formula_error, program.parsing_error_index
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
         if answer is None:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'execution error', error_message
+            return answer, 'execution error', None, None
         # successfully executed
         answer = program.answer_mapping(answer)
-        return answer, 'success', ''
+        return answer, 'success', None, None
 
     def inference_on_dataset(self):
         outputs = []
@@ -82,25 +103,7 @@ class LogicInferenceEngine:
             # execute the logic program
             
             program = example['raw_logic_programs'][0].strip()
-            
-            try:
-                if self.response_mode == 'json':
-                    if 'error' in json.loads(program):
-                        error_count += 1
-                        
-                        output = {'id': example['id'], 
-                                # 'context': example['context'],
-                                'question': example['question'], 
-                                'answer': example['answer'],
-                                'flag': 'generation error',
-                                'error': json.loads(program)['error'],
-                                'predicted_answer': None}
-                        outputs.append(output)
-                        continue
-            except Exception as e:
-                print(f'error in response keys but exception: {e}')
-            
-            answer, flag, error_message = self.safe_execute_program(example['id'], program)
+            answer, flag, formula_error, error_index = self.safe_execute_program(example['id'], program)
             if not flag == 'success':
                 error_count += 1
                 # print(example['id'])
@@ -111,8 +114,13 @@ class LogicInferenceEngine:
                     'question': example['question'], 
                     'answer': example['answer'],
                     'flag': flag,
-                    'error': error_message,
+                    # 'error': error_message,
                     'predicted_answer': answer}
+            if formula_error:
+                output.update({
+                    'wrong_formula': formula_error,
+                    'correct_formula': self.ground_truth[example['id']]['context_fol'][error_index]
+                })
             outputs.append(output)
         
         print(f"Error count: {error_count}")
@@ -127,6 +135,7 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')

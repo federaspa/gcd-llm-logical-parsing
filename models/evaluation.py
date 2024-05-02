@@ -89,7 +89,10 @@ def evaluate_QA(QA_results):
         total_em += em_score
         count += 1
     
-    avg_em = total_em / count
+    if count:
+        avg_em = total_em / count
+    else:
+        avg_em = 0
     # print(f"Accuracy: {avg_em}")
     return avg_em
 
