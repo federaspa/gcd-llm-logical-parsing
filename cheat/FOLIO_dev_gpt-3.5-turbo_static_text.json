@@ -20,7 +20,7 @@
     "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (TalentShows(x) → Engaged(x))\n∀x (TalentShows(x) ∨ Inactive(x))\n∀x (Chaperone(x) → ¬Students(x))\n∀x (Inactive(x) → Chaperone(x))\n∀x (AcademicCareer(x) → Students(x))\n(Engaged(bonnie) ∧ Students(bonnie)) ⊕ (¬Engaged(bonnie) ∧ ¬Students(bonnie))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nChaperone(bonnie) ⊕ TalentShows(bonnie) → AcademicCareer(bonnie) ∧ Inactive(bonnie))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (TalentShows(x) → Engaged(x))\n∀x (TalentShows(x) ∨ Inactive(x))\n∀x (Chaperone(x) → ¬Students(x))\n∀x (Inactive(x) → Chaperone(x))\n∀x (AcademicCareer(x) → Students(x))\n(Engaged(bonnie) ∧ Students(bonnie)) ⊕ (¬Engaged(bonnie) ∧ ¬Students(bonnie))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nChaperone(bonnie) ⊕ TalentShows(bonnie) → AcademicCareer(bonnie) ∧ Inactive(bonnie)\n\"\"\""
     ]
   },
   {
@@ -37,14 +37,6 @@
     "answer": "C",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\n∀x (Meeting(x) → AppearInCompany(x))\n∀x (LunchInCompany(x) → Meetings(x))\n∀x (LunchInCompany(x) ∨ LunchAtHome(x))\n∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))\n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))\n∀x (Manager(x) → ¬WorkRemotelyFromHome(x))\nManager(james) ⊕ AppearInCompany(james)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬LunchInCompany(james)\n\"\"\""
-    ]
-  },
-  {
-    "id": 5,
-    "question": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Meeting(x) → AppearInCompany(x))\n∀x (LunchInCompany(x) → Meetings(x))\n∀x (LunchInCompany(x) ∨ LunchAtHome(x))\n∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))\n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))\n∀x (Manager(x) → ¬WorkRemotelyFromHome(x))\nManager(james) ⊕ AppearInCompany(james)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n(Manager(james) ⊕ InOtherCountries(james)) → (LunchAtHome(james) ⊕ WorkRemotelyFromHome(james))\n\"\"\""
     ]
   },
   {
@@ -216,27 +208,11 @@
     ]
   },
   {
-    "id": 27,
-    "question": "Marvin is an alien.",
-    "answer": "B",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Alien(x) → Extraterrestrial(x))\n∀x (FromMars(x) → Alien(x))\n∀x (Extraterrestrial(x) → ¬Human(x))\n∀x (FromEarth(x) → Human(x))\n¬FromEarth(marvin) ∧ ¬FromMars(marvin)\n¬FromEarth(marvin) → Extraterrestrial(marvin)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nAlien(marvin)\n\"\"\""
-    ]
-  },
-  {
     "id": 28,
     "question": "Marvin is neither a human nor from Mars.",
     "answer": "A",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\n∀x (Alien(x) → Extraterrestrial(x))\n∀x (FromMars(x) → Alien(x))\n∀x (Extraterrestrial(x) → ¬Human(x))\n∀x (FromEarth(x) → Human(x))\n¬FromEarth(marvin) ∧ ¬FromMars(marvin)\n¬FromEarth(marvin) → Extraterrestrial(marvin)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬Human(marvin) ∧ ¬FromMars(marvin)\n\"\"\""
-    ]
-  },
-  {
-    "id": 29,
-    "question": "If Marvin is not from Mars, then Marvin is a human.",
-    "answer": "C",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Alien(x) → Extraterrestrial(x))\n∀x (FromMars(x) → Alien(x))\n∀x (Extraterrestrial(x) → ¬Human(x))\n∀x (FromEarth(x) → Human(x))\n¬FromEarth(marvin) ∧ ¬FromMars(marvin)\n¬FromEarth(marvin) → Extraterrestrial(marvin)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬FromMars(marvin) → Human(marvin)\n\"\"\""
     ]
   },
   {
@@ -340,7 +316,7 @@
     "question": "Coco Gauff is among the most active players in major tennis.",
     "answer": "A",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaŚwiątek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaŚwiątek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nAmongMostActivePlayersInMajorTennis(cocoGauff)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaSwiatek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaSwiatek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nAmongMostActivePlayersInMajorTennis(cocoGauff)\n\"\"\""
     ]
   },
   {
@@ -348,15 +324,15 @@
     "question": "Coco Gauff has lost to Rafael Nadal.",
     "answer": "C",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaŚwiątek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaŚwiątek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nLostToRafaelNadal(cocoGauff)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaSwiatek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaSwiatek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nLostToRafaelNadal(cocoGauff)\n\"\"\""
     ]
   },
   {
     "id": 44,
-    "question": "Coco Gauff is not a player who lost to Iga Świątek or one of the most active players in major tennis.",
+    "question": "Coco Gauff is not a player who lost to Iga Swiatek or one of the most active players in major tennis.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaŚwiątek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaŚwiątek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬LostToIgaŚwiątek(cocoGauff) ∨ ¬AmongMostActivePlayersInMajorTennis(cocoGauff)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (RankedHighlyByWomenTennisAssociation(x) → AmongMostActivePlayersInMajorTennis(x))\n∀x (LostToIgaSwiatek(x) → RankedHighlyByWomenTennisAssociation(x))\n∀x (FemaleTennisPlayersAtRolandGarros2022(x) → LostToIgaSwiatek(x)) \n∀x (FemaleTennisPlayersAtRolandGarros2022(x) ∨ MaleTennisPlayersAtRolandGarros2022(x)) \n∀x (MaleTennisPlayersAtRolandGarros2022(x) → LostToRafaelNadal(x))\nRankedHighlyByWomenTennisAssociation(cocoGauff) ∨ LostToRafaelNadal(cocoGauff) → ¬MaleTennisPlayersAtRolandGarros2022(cocoGauff)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬LostToIgaSwiatek(cocoGauff) ∨ ¬AmongMostActivePlayersInMajorTennis(cocoGauff)\n\"\"\""
     ]
   },
   {
@@ -373,14 +349,6 @@
     "answer": "A",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\nSeason(spring) ∨ Season(summer) ∨ Season(fall) ∨ Season(winter)\n∀x (WantlongVacation(x) → Love(x, summer))\nLove(emma, summer)\n¬Love(mia, emma)\nWantlongVacation(james)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nLove(james, summer)\n\"\"\""
-    ]
-  },
-  {
-    "id": 47,
-    "question": "James's favorite season is fall.",
-    "answer": "B",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nSeason(spring) ∨ Season(summer) ∨ Season(fall) ∨ Season(winter)\n∀x (WantlongVacation(x) → Love(x, summer))\nLove(emma, summer)\n¬Love(mia, emma)\nWantlongVacation(james)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nLove(james, fall)\n\"\"\""
     ]
   },
   {
@@ -528,35 +496,11 @@
     ]
   },
   {
-    "id": 66,
-    "question": "A private Ivy League research university moved to New Haven.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nPrivateIvyLeagueResearchUniversity(yale)\nMovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)\nValuedAt(yalesendowment, y42.3billion)\n∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))\nResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∃x (PrivateIvyLeagueResearchUniversity(x) ∧ MovedTo(x, newhaven))\n\"\"\""
-    ]
-  },
-  {
-    "id": 67,
-    "question": "Yale University has the largest university endowment of any educational institution.",
-    "answer": "C",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nPrivateIvyLeagueResearchUniversity(yale)\nMovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)\nValuedAt(yalesendowment, y42.3billion)\n∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))\nResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nLargestUniversityEndowmentOf(yale, anyeducationalinstitution)\n\"\"\""
-    ]
-  },
-  {
-    "id": 68,
-    "question": "Pierson College is a residential college at Yale.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nPrivateIvyLeagueResearchUniversity(yale)\nMovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)\nValuedAt(yalesendowment, y42.3billion)\n∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))\nResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege)\n\"\"\""
-    ]
-  },
-  {
     "id": 69,
     "question": "Andrew Collins was the script editor for a series with the working title \"The Secret Dude Society\".",
     "answer": "A",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∃x (MemberOf(x, pappys) ∧ BritishSitcom(badults) ∧ Series(badults) ∧ Starring(badults, x))\nPilotedIn(badults, july2013) ∧ PilotedOn(badults, bbcthree)\nWorkingTitle(thesecretdudesociety, badults)\nScriptEditor(andrewcollins) ∧ ScriptEditorFor(andrewcollins, badults)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∃x (ScriptEditorFor(andrewcollins, x) ∧ Series(x) ∧ WorkingTitle(thesecretdudesociety, x))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∃x (MemberOf(x, pappys) ∧ BritishSitcom(badults) ∧ Series(badults) ∧ Starring(badults, x))\nPilotedIn(badults, july2013) ∧ PilotedOn(badults, bbcthree)\nWorkingTitle(thesecretdudesociety, badults)\nScriptEditFor(andrewcollins, badults) ∧ ScriptEditor(andrewcollins)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∃x (ScriptEditFor(andrewcollins, x) ∧ Series(x) ∧ WorkingTitle(thesecretdudesociety, x))\n\"\"\""
     ]
   },
   {
@@ -564,7 +508,7 @@
     "question": "No members of Pappy's have starred for a show piloting on BBC Two or BBC Three.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∃x (MemberOf(x, pappys) ∧ BritishSitcom(badults) ∧ Series(badults) ∧ Starring(badults, x))\nPilotedIn(badults, july2013) ∧ PilotedOn(badults, bbcthree)\nWorkingTitle(thesecretdudesociety, badults)\nScriptEditor(andrewcollins) ∧ ScriptEditorFor(andrewcollins, badults)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x ∀y (MemberOf(x, pappys) ∧ Starring(y, x) → ¬(PilotedOn(y, bbctwo) ∨ PilotedOn(y, bbcthree)))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∃x (MemberOf(x, pappys) ∧ BritishSitcom(badults) ∧ Series(badults) ∧ Starring(badults, x))\nPilotedIn(badults, july2013) ∧ PilotedOn(badults, bbcthree)\nWorkingTitle(thesecretdudesociety, badults)\nScriptEditFor(andrewcollins, badults) ∧ ScriptEditor(andrewcollins)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x ∀y (MemberOf(x, pappys) ∧ Starring(y, x) → ¬(PilotedOn(y, bbctwo) ∨ PilotedOn(y, bbcthree)))\n\"\"\""
     ]
   },
   {
@@ -572,23 +516,23 @@
     "question": "KO is a company stock.",
     "answer": "C",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthCompanies’Stocks(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (Companies’Stocks(x) ∧ GrowthCompanies’Stocks(x))\n ∀x (MatureCompanies’Stocks(x) → SuitableForRetirementRund(x))\n MatureCompanies’Stocks(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nCompanies’Stocks(kO)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthStocksOfCompanies(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (StocksOfCompanies(x) ∧ GrowthStocksOfCompanies(x))\n ∀x (StocksOfMatureCompanies(x) → SuitableForRetirementRund(x))\n StocksOfMatureCompanies(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nStocksOfCompanies(kO)\n\"\"\""
     ]
   },
   {
     "id": 72,
-    "question": "KO is a company stock and a growth company’s stock.",
+    "question": "KO is a company stock and a growth stock of a company.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthCompanies’Stocks(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (Companies’Stocks(x) ∧ GrowthCompanies’Stocks(x))\n ∀x (MatureCompanies’Stocks(x) → SuitableForRetirementRund(x))\n MatureCompanies’Stocks(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nCompanies’Stocks(kO) ∧ GrowthCompanies’Stocks(kO)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthStocksOfCompanies(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (StocksOfCompanies(x) ∧ GrowthStocksOfCompanies(x))\n ∀x (StocksOfMatureCompanies(x) → SuitableForRetirementRund(x))\n StocksOfMatureCompanies(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nStocksOfCompanies(kO) ∧ GrowthStocksOfCompanies(kO)\n\"\"\""
     ]
   },
   {
     "id": 73,
-    "question": "If KO is a growth company’s stock or if its price is volatile, then KO is neither a company’s stock nor is its price volatile.",
+    "question": "If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile.",
     "answer": "A",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthCompanies’Stocks(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (Companies’Stocks(x) ∧ GrowthCompanies’Stocks(x))\n ∀x (MatureCompanies’Stocks(x) → SuitableForRetirementRund(x))\n MatureCompanies’Stocks(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nGrowthCompanies’Stocks(kO) ∨ PriceVolatile(kO) → ¬Companies’Stocks(kO) ∨ ¬PriceVolatile(kO)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (GrowthStocksOfCompanies(x) → PriceVolatile(x))\n ∀x (PriceVolatile(x) → ¬SuitableForRetirementRund(x)) \n ∃x (StocksOfCompanies(x) ∧ GrowthStocksOfCompanies(x))\n ∀x (StocksOfMatureCompanies(x) → SuitableForRetirementRund(x))\n StocksOfMatureCompanies(kO)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nGrowthStocksOfCompanies(kO) ∨ PriceVolatile(kO) → ¬StocksOfCompanies(kO) ∨ ¬PriceVolatile(kO)\n\"\"\""
     ]
   },
   {
@@ -700,7 +644,7 @@
     "question": "Sir Digby’s nemesis loses.",
     "answer": "A",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x ∀y (SuperheroMovie(x) ∧ GoodGuy(y) ∧ AppearsIn(y, x) → Wins(y))\nSuperheroMovie(surprisingAdventuresofSirDigbyChickenCaesar)\n∀x ∀y (GoodGuy(x) ∧ Fights(x, y) ⟷ BadGuy(y) ∧ Fights(y, x))\nFights(sirDigby, sirDigbyNemesis)\n∀x ∀y (SuperheroMovie(x), NamedAfter(x, y) → GoodGuy(y))\nNamedAfter(surprisingAdventuresofSirDigbyChickenCaesar, sirDigby)\n∀x ∀y (Fights(x, y) ∧ Wins(x) → ¬Wins(y))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x ∀y (SuperheroMovie(x) ∧ AppearsIn(y, x) → GoodGuy(y))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x ∀y (SuperheroMovie(x) ∧ GoodGuy(y) ∧ AppearsIn(y, x) → Wins(y))\nSuperheroMovie(surprisingAdventuresofSirDigbyChickenCaesar)\n∀x ∀y ((GoodGuy(x) ∧ Fights(x, y) → BadGuy(y) ∧ Fights(y, x)) ∧ (BadGuy(y) ∧ Fights(y, x) → GoodGuy(x) ∧ Fights(x, y)))\nFights(sirDigby, sirDigbyNemesis)\n∀x ∀y (SuperheroMovie(x)  ∧  NamedAfter(x, y) → GoodGuy(y))\nNamedAfter(surprisingAdventuresofSirDigbyChickenCaesar, sirDigby)\n∀x ∀y (Fights(x, y) ∧ Wins(x) → ¬Wins(y))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x ∀y (SuperheroMovie(x) ∧ AppearsIn(y, x) → GoodGuy(y))\n\"\"\""
     ]
   },
   {
@@ -784,14 +728,6 @@
     ]
   },
   {
-    "id": 98,
-    "question": "If a koala is a quokka, then the koala either loves to sleep or is very fluffy.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (AnimalsLovedByTourists(x) → MaxFavoriteAnimals(x))\n ∀x (AnimalsFromAustralia(x) → AnimalsLovedByTourists(x))\n ∀x (Quokka(x) → AnimalsFromAustralia(x))\n ∀x (MaxFavoriteAnimals(x) → VeryFluffy(x)) \n ∀x (MaxFavoriteAnimals(x) → LoveToSleep(x))\n VeryFluffy(koala) → ¬Quokka(koala)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nQuokka(koala) → LoveToSleep(koala) ⊕ VeryFluffy(koala)\n\"\"\""
-    ]
-  },
-  {
     "id": 99,
     "question": "Harry is a CEO.",
     "answer": "C",
@@ -860,7 +796,7 @@
     "question": "There is no financial aid available for the GRE test.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nCost205(gre)\n∀x (Cost205(x) → CostBelow300(x))\n∀x (Hardship(x) → FinancialAid(x))\n∀x (SingleParent(x) ∨ FewResources(x) → Hardship(x))\nSingleParent(tom)\nFewResources(tom)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬(∃x (FinancialAid(x)))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\nCost205(gre)\n∀x (Cost205(x) → CostBelow300(x))\n∀x (Hardship(x) → FinancialAid(x))\n∀x (SingleParent(x) ∨ FewResources(x) → Hardship(x))\nSingleParent(tom)\nFewResources(tom)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬∃x (FinancialAid(x))\n\"\"\""
     ]
   },
   {
@@ -868,7 +804,7 @@
     "question": "Peter tidies his space consistently and enjoys the process of cleaning.",
     "answer": "C",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nTidy(peter)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nTidy(peter)\n\"\"\""
     ]
   },
   {
@@ -876,7 +812,7 @@
     "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try or belongs to a household with a high net income.",
     "answer": "B",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nFoodie(peter) ∨ HighIncome(peter)\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nFoodie(peter) ∨ HighIncome(peter)\n\"\"\""
     ]
   },
   {
@@ -884,7 +820,7 @@
     "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try and belong to a household with a high net income or he is a foodie who goes out frequently to find new food restaurants to try nor belongs to a household with a high net income.",
     "answer": "A",
     "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n(Foodie(peter) ∧ HighIncome(peter)) ∨ ¬Foodie(peter) ∧ ¬HighIncome(peter))\n\"\"\""
+      "First-Order-Logic Premises:\n\"\"\"\n∀x (Spill(x) → ¬Tidy(x))\n∀x (Foodie(x) → Spill(x))\n∀x (OnlyChild(x) → Tidy(x))\n∀x (BusyParents(x) → OnlyChild(x))\n∀x (HighIncome(x) → BusyParents(x))\n(Spill(peter) ∧ OnlyChild(peter)) ∨ ¬Spill(peter) ∧ ¬OnlyChild(peter)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n(Foodie(peter) ∧ HighIncome(peter)) ∨ (¬Foodie(peter) ∧ ¬HighIncome(peter))\n\"\"\""
     ]
   },
   {
@@ -896,27 +832,11 @@
     ]
   },
   {
-    "id": 112,
-    "question": "Juan de Onate visited a mountain range in New Mexico.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nMountainRange(picurismountains) ∧ In(picurismountains, newmexico) ∨ In(picurismountains, texas)\nVisited(juandeonate, picurismountains)\nIn(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)\n∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∃x (Visited(juandeonate, x) ∧ MountainRange(x) ∧ In(x, newmexico))\n\"\"\""
-    ]
-  },
-  {
     "id": 113,
     "question": "Juan de Onate visited a mountain range in Texas.",
     "answer": "C",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\nMountainRange(picurismountains) ∧ In(picurismountains, newmexico) ∨ In(picurismountains, texas)\nVisited(juandeonate, picurismountains)\nIn(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)\n∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∃x (Visited(juandeonate, x) ∧ MountainRange(x) ∧ In(x, texas))\n\"\"\""
-    ]
-  },
-  {
-    "id": 114,
-    "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
-    "answer": "B",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nMountainRange(picurismountains) ∧ In(picurismountains, newmexico) ∨ In(picurismountains, texas)\nVisited(juandeonate, picurismountains)\nIn(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)\n∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x (MountainRange(x) ∧ In(hardingpegmatitemine, x) → ¬In(x, newmexico))\n\"\"\""
     ]
   },
   {
@@ -997,14 +917,6 @@
     "answer": "A",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\n∀x (TransportMultiplePassengers(x) → ¬Empty(x))\n∀x (Airline(x) → TransportMultiplePassengers(x))\n∀x (Plane(x) → Empty(x))\n∀x (Boeing707(x) → Plane(x))\n¬Airline(greyhound) → ¬(Airline(greyhound) ∨ Plane(greyhound))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n¬Boeing707(greyhound)\n\"\"\""
-    ]
-  },
-  {
-    "id": 125,
-    "question": "Rock is a monkey.",
-    "answer": "C",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x  (Mammal (x)→  Animal (x))\n∀x  (Monkey (x)→  Mammal (x))\n∀x ( Monkey (x) ∨  Bird (x))\n∀x  (Bird (x)→  Fly (x))\n∀x  (Animal (x)→  Breathe (x))\n∀x  (Fly (x)→  HaveWings (x))\n¬ Fly (rock) ∧ ¬ Bird (rock) → ¬ Fly (rock) ∧ ¬ Breathe (rock) \n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nMonkey(rock)\n\"\"\""
     ]
   },
   {
@@ -1101,22 +1013,6 @@
     "answer": "B",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\n∀x (Plunger(x) → Suck(x))\n∀x (Vacuum(x) → Suck(x))\n∀x (Vampire(x) → Suck(x))\nVacuum(space)\nHouseHoldApp(duster) ∧ ¬ Suck(duster)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\n∀x (HouseHoldApp(x) → Suck(x))\n\"\"\""
-    ]
-  },
-  {
-    "id": 138,
-    "question": "Supervised learning is used to train the state-of-the-art text summarization model.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nMLAlgorithm(supervisedLearning) ∨ MLAlgorithm(unsupervisedLearning) ∨ MLAlgorithm(reinforcementLearning)\n¬RequireLabelledData(unsupervisedLearning)\nTrainTextSumModel(supervisedLearning) ∨ TrainTextSumModel(unsupervisedLearning) ∨ TrainTextSumModel(reinforcementLearning)\n¬TrainTextSumModel(reinforcementLearning)\n∀x ((MLAlgorithm(x) ∧ TrainTextSumModel(x)) → RequireLabelledData(x))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nTrainTextSumModel(supervisedLearning)\n\"\"\""
-    ]
-  },
-  {
-    "id": 139,
-    "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
-    "answer": "B",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\nMLAlgorithm(supervisedLearning) ∨ MLAlgorithm(unsupervisedLearning) ∨ MLAlgorithm(reinforcementLearning)\n¬RequireLabelledData(unsupervisedLearning)\nTrainTextSumModel(supervisedLearning) ∨ TrainTextSumModel(unsupervisedLearning) ∨ TrainTextSumModel(reinforcementLearning)\n¬TrainTextSumModel(reinforcementLearning)\n∀x ((MLAlgorithm(x) ∧ TrainTextSumModel(x)) → RequireLabelledData(x))\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nTrainTextSumModel(unsupervisedLearning)\n\"\"\""
     ]
   },
   {
@@ -1365,14 +1261,6 @@
     "answer": "C",
     "raw_logic_programs": [
       "First-Order-Logic Premises:\n\"\"\"\n∀x (DeadlyDiseases(x) → SurvivalRateIsLow(x))\n∀x (SevereCancer(x) → DeadlyDiseases(x))\n∀x (BileDuctCancer(x) → SevereCancer(x))\n∀x (Cholangiocarcinoma(x) → BileDuctCancer(x))\n∀x (MildFlu(x) → ¬SurvivalRateIsLow(x)) \nBileDuctCancer(colorectalCancer) ∨ SurvivalRateIsLow(colorectalCancer) → ¬BileDuctCancer(colorectalCancer)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nSevereCancer(colorectalCancer)\n\"\"\""
-    ]
-  },
-  {
-    "id": 171,
-    "question": "If colorectal cancer is a bile duct cancer or a Cholangiocarcinoma, then colorectal cancer is a bile duct cancer and a mild flu.",
-    "answer": "A",
-    "raw_logic_programs": [
-      "First-Order-Logic Premises:\n\"\"\"\n∀x (DeadlyDiseases(x) → SurvivalRateIsLow(x))\n∀x (SevereCancer(x) → DeadlyDiseases(x))\n∀x (BileDuctCancer(x) → SevereCancer(x))\n∀x (Cholangiocarcinoma(x) → BileDuctCancer(x))\n∀x (MildFlu(x) → ¬SurvivalRateIsLow(x)) \nBileDuctCancer(colorectalCancer) ∨ SurvivalRateIsLow(colorectalCancer) → ¬BileDuctCancer(colorectalCancer)\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nBileDuctCancer(colorectalCancer) ∨ Cholangiocarcinoma(colorectalCancer) → BileDuctCancer(colorectalCancer) ∧ MildFlu(colorectalCancer)\n\"\"\""
     ]
   },
   {
