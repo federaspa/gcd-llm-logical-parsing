@@ -130,7 +130,7 @@ def parse_args():
     parser.add_argument('--save_path', type=str, default='./results')
     parser.add_argument('--demonstration_path', type=str, default='./icl_examples')
     parser.add_argument('--api_key', type=str)
-    parser.add_argument('--model_name', type=str)
+    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--mode', type=str)
     parser.add_argument('--max_new_tokens', type=int)
