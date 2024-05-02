@@ -3,15 +3,14 @@ import re
 
 class FOL_Parser:
     def __init__(self) -> None:
-        self.op_ls = ['⊕', '∨', '∧', '→', '↔', '∀', '∃', '¬', '(', ')', ',']
+        self.op_ls = ['⊕', '∨', '∧', '→', '↔', '∀', '∃', '¬', '(', ')', ',', '=']
 
-        self.sym_reg = re.compile(r'[^⊕∨∧→↔∀∃¬(),]+')
+        self.sym_reg = re.compile(r'[^⊕∨∧→↔∀∃¬(),=]+')
 
         # modified a bit. 
         self.cfg_template = """
-        S -> F | Q F | '¬' S | '(' S ')'
-        Q -> QUANT VAR | QUANT VAR Q
-        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L
+        S -> F | QUANT VAR S | '¬' S
+        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | TERM '=' TERM | QUANT VAR F
         OP -> '⊕' | '∨' | '∧' | '→' | '↔'
         L -> '¬' PRED '(' TERMS ')' | PRED '(' TERMS ')'
         TERMS -> TERM | TERM ',' TERMS
