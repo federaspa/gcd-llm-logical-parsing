@@ -22,7 +22,6 @@ class SelfRefinementEngine:
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.response_mode = args.response_mode
 
         self.logic_programs = self.load_logic_programs()
         # self.reasoning_results = self.load_inference_results()
@@ -39,7 +38,7 @@ class SelfRefinementEngine:
         prefix = ""
         if self.current_round > 1:
             prefix = f'self-refine-{self.current_round-1}_'
-        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json')) as f:
+        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json')) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
@@ -47,13 +46,13 @@ class SelfRefinementEngine:
     def load_prompt(self, program, error_message):
         program = program.strip()
         error_message = error_message.strip()
-        with open(f'./models/prompts/self-correct-{self.dataset_name}_{self.response_mode}.txt', 'r') as f:
+        with open(f'./models/prompts/self-correct-{self.dataset_name}.txt', 'r') as f:
             prompt_template = f.read()
         full_prompt = prompt_template.replace('[[PROGRAM]]', program).replace('[[ERROR MESSAGE]]', error_message)
         return full_prompt
 
     def safe_execute_program(self, id, logic_program, debug = False):
-        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode, self.response_mode)
+        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
@@ -106,7 +105,7 @@ class SelfRefinementEngine:
             os.makedirs('./outputs/logic_programs')
 
         # save outputs
-        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
+        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
     
@@ -116,7 +115,6 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
-    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
@@ -130,8 +128,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     
-    if args.response_mode == 'json':
-        raise NotImplementedError("JSON response mode is not supported for self-refinement.")
     
     for round in range(1, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")

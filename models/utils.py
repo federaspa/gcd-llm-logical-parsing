@@ -15,7 +15,6 @@ def chat_completions_with_backoff(**kwargs):
 async def dispatch_openai_chat_requests(
     messages_list: list[list[dict[str,Any]]],
     model: str,
-    response_format: str,
     temperature: float,
     max_tokens: int,
     top_p: float,
@@ -26,7 +25,6 @@ async def dispatch_openai_chat_requests(
     Args:
         messages_list: List of messages to be sent to OpenAI ChatCompletion API.
         model: OpenAI model to use.
-        response_format: Response format to use for the model.
         temperature: Temperature to use for the model.
         max_tokens: Maximum number of tokens to generate.
         top_p: Top p to use for the model.
@@ -38,7 +36,6 @@ async def dispatch_openai_chat_requests(
         openai.ChatCompletion.acreate(
             model=model,
             messages=x,
-            response_format=response_format,
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
@@ -56,15 +53,14 @@ class OpenAIModel:
         self.stop_words = stop_words
 
     # used for chat-gpt and gpt-4
-    def chat_generate(self, input_string, task_description, response_format, temperature = 0.0):
+    def chat_generate(self, input_string, task_description, temperature = 0.0):
         response = chat_completions_with_backoff(
                 model = self.model_name,
                 messages=[
-                        # {"role": "system", "content": task_description},
+                        {"role": "system", "content": task_description},
                         {"role": "user", "content": input_string}
                     ],
                 max_tokens = self.max_new_tokens,
-                response_format = response_format,
                 temperature = temperature,
                 top_p = 1.0,
                 stop = self.stop_words
@@ -72,29 +68,29 @@ class OpenAIModel:
         generated_text = response['choices'][0]['message']['content'].strip()
         return generated_text
 
-    def generate(self, input_string, task_description, response_format, temperature = 0.0):
+    def generate(self, input_string, task_description, temperature = 0.0):
         if self.model_name in ['gpt-4', 'gpt-3.5-turbo']:
-            return self.chat_generate(input_string, task_description, response_format, temperature)
+            return self.chat_generate(input_string, task_description, temperature)
         else:
             raise Exception("Model name not recognized")
     
-    def batch_chat_generate(self, messages_list, task_description, response_format, temperature = 0.0):
+    def batch_chat_generate(self, messages_list, task_description, temperature = 0.0):
         open_ai_messages_list = []
         for message in messages_list:
             open_ai_messages_list.append(
                 [
-                    # {"role": "system", "content": task_description},
+                {"role": "system", "content": task_description},
                  {"role": "user", "content": message}]
             )
         predictions = asyncio.run(
             dispatch_openai_chat_requests(
-                    open_ai_messages_list, self.model_name, response_format, temperature, self.max_new_tokens, 1.0, self.stop_words
+                    open_ai_messages_list, self.model_name, temperature, self.max_new_tokens, 1.0, self.stop_words
             )
         )
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
 
-    def batch_generate(self, messages_list, task_description, response_format, temperature = 0.0):
+    def batch_generate(self, messages_list, task_description, temperature = 0.0):
         if self.model_name in ['gpt-4', 'gpt-3.5-turbo']:
-            return self.batch_chat_generate(messages_list, task_description, response_format, temperature)
+            return self.batch_chat_generate(messages_list, task_description, temperature)
         else:
             raise Exception("Model name not recognized")

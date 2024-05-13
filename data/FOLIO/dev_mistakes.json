@@ -83,11 +83,11 @@
     "context_fol": [
       "∀x (Meeting(x) → AppearInCompany(x))",
       "∀x (LunchInCompany(x) → Meetings(x))",
-      "∀x (LunchInCompany(x) ∨ LunchAtHome(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
       "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
       "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
       "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
-      "Manager(james) ⊕ AppearInCompany(james)"
+      "Manager(james) ⊕ ¬AppearInCompany(james)"
     ],
     "question": "James has lunch in the company.",
     "question_fol": "LunchInCompany(james)",
@@ -108,11 +108,11 @@
     "context_fol": [
       "∀x (Meeting(x) → AppearInCompany(x))",
       "∀x (LunchInCompany(x) → Meetings(x))",
-      "∀x (LunchInCompany(x) ∨ LunchAtHome(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
       "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
       "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
       "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
-      "Manager(james) ⊕ AppearInCompany(james)"
+      "Manager(james) ⊕ ¬AppearInCompany(james)"
     ],
     "question": "James does not have lunch in the company.",
     "question_fol": "¬LunchInCompany(james)",
@@ -133,14 +133,14 @@
     "context_fol": [
       "∀x (Meeting(x) → AppearInCompany(x))",
       "∀x (LunchInCompany(x) → Meetings(x))",
-      "∀x (LunchInCompany(x) ∨ LunchAtHome(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
       "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
       "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
       "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
       "Manager(james) ⊕ ¬AppearInCompany(james)"
     ],
     "question": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.",
-    "question_fol": "(Manager(james) ⊕ InOtherCountries(james)) → (LunchAtHome(james) ⊕ ¬WorkRemotelyFromHome(james))",
+    "question_fol": "Manager(james) → ¬WorkRemotelyFromHome(james)",
     "answer": "A"
   },
   {
@@ -624,7 +624,7 @@
     ],
     "question": "Marvin is an alien.",
     "question_fol": "Alien(marvin)",
-    "answer": "B"
+    "answer": "C"
   },
   {
     "id": 28,
@@ -670,7 +670,7 @@
     ],
     "question": "If Marvin is not from Mars, then Marvin is a human.",
     "question_fol": "¬FromMars(marvin) → Human(marvin)",
-    "answer": "C"
+    "answer": "B"
   },
   {
     "id": 30,

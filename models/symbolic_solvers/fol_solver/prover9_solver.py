@@ -10,10 +10,9 @@ from .Formula import FOL_Formula
 os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
 
 class FOL_Prover9_Program:
-    def __init__(self, logic_program:str, dataset_name = 'FOLIOv2', prompt_mode = 'static', response_mode = 'text') -> None:
+    def __init__(self, logic_program:str, dataset_name = 'FOLIOv2', prompt_mode = 'static') -> None:
         self.logic_program = logic_program
         self.prompt_mode = prompt_mode
-        self.response_mode = response_mode
         self.flag, self.formula_error, self.parsing_error_index = self.parse_logic_program()
         self.dataset_name = dataset_name
 
@@ -21,26 +20,19 @@ class FOL_Prover9_Program:
         try:        
                
                
-            if self.response_mode == 'text':
                 # if self.prompt_mode == 'dynamic':
-                premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
-                conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
+            premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
+            conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
 
 
-                # elif self.prompt_mode == 'static':
-                #     premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
-                #     conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
-                    
-                # Extract each premise and the conclusion using regex
-                premises = premises_string.strip().split('\n')
-                conclusion = conclusion_string.strip().split('\n')
+            # elif self.prompt_mode == 'static':
+            #     premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
+            #     conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
                 
-            elif self.response_mode == 'json':
-                
-                response = json.loads(self.logic_program)
-                premises = response['First-Order-Logic Premises']
-                conclusion = response['First-Order-Logic Question'].split('\u2618') ### This is a string, not a list, so we need to split it into a list to make it consistent with the text mode
-                
+            # Extract each premise and the conclusion using regex
+            premises = premises_string.strip().split('\n')
+            conclusion = conclusion_string.strip().split('\n')
+                  
             premises = [premise for premise in premises if re.sub(r'(?:[\',\",\`,\-,\s*])','', premise)]
             conclusion = [conc for conc in conclusion if re.sub(r'(?:[\',\"\`,\-,\s*])','', conc)]
             
@@ -100,6 +92,7 @@ class FOL_Prover9_Program:
                 else:
                     return 'Unknown', ''
         except Exception as e:
+            print(str(e))
             return None, str(e)
         
     def answer_mapping(self, answer):

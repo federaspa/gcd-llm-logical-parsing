@@ -1,0 +1,29 @@
+root ::= par
+
+par ::= ctlblock par1 | text par1 | text
+par1             ::= ctlblock par2 | text par2 | text
+par2             ::= ctlblock text | text
+
+
+ctlblock       ::= "<control>" ctlunit "</control>"
+ctlunit        ::= ctlblock ctlunit1 | startstatetag ctlunit1 | endstatetag ctlunit1 | acttag ctlunit1 | condtag ctlunit1 | text ctlunit1 | text
+ctlunit1        ::= ctlblock ctlunit2 | startstatetag ctlunit2 | endstatetag ctlunit2 | acttag ctlunit2 | condtag ctlunit2 | text ctlunit2 | text
+ctlunit2        ::= ctlblock ctlunit3 | startstatetag ctlunit3 | endstatetag ctlunit3 | acttag ctlunit3 | condtag ctlunit3 | text ctlunit3 | text
+ctlunit3        ::= ctlblock ctlunit4 | startstatetag ctlunit4 | endstatetag ctlunit4 | acttag ctlunit4 | condtag ctlunit4 | text ctlunit4 | text
+ctlunit4        ::= ctlblock ctlunit5 | startstatetag ctlunit5 | endstatetag ctlunit5 | acttag ctlunit5 | condtag ctlunit5 | text ctlunit5 | text
+ctlunit5        ::= ctlblock text | startstatetag text | endstatetag text | acttag text | condtag text | text
+
+
+startstatetag ::= "<startstate>" text "</startstate>"
+endstatetag   ::= "<endstate>" text "</endstate>"
+condtag        ::= "<condition>" condunit "</condition>"
+condunit       ::= condtag condunit1 | text condunit1 | text
+condunit1       ::= condtag condunit2 | text condunit2 | text
+condunit3       ::= condtag text | text
+
+acttag         ::= "<action>" actunit "</action>"
+actunit        ::= condtag actunit1 | text actunit1 | text
+actunit1        ::= condtag actunit2 | text actunit2 | text
+actunit2        ::= condtag text | text
+
+text            ::= [^\n]* | "\n"

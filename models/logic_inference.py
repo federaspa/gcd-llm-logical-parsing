@@ -21,7 +21,6 @@ class LogicInferenceEngine:
         self.backup_strategy = args.backup_strategy
         self.backup_path = args.backup_LLM_result_path
         self.prompt_mode = args.prompt_mode
-        self.response_mode = args.response_mode
         self.self_refine_round = args.self_refine_round
 
         self.dataset = self.load_logic_programs()
@@ -60,9 +59,9 @@ class LogicInferenceEngine:
     def load_logic_programs(self):
         
         if self.self_refine_round > 0:
-            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
+            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
         else:
-            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}.json'
+            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
         with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
@@ -72,15 +71,15 @@ class LogicInferenceEngine:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}_backup-{self.backup_strategy}.json'
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_backup-{self.backup_strategy}.json'
         else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_{self.response_mode}_backup-{self.backup_strategy}.json'
+            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}_backup-{self.backup_strategy}.json'
         
         with open(os.path.join(self.save_path, save_file), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
     def safe_execute_program(self, id, logic_program):
-        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode, self.response_mode)
+        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
@@ -139,7 +138,6 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
-    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')

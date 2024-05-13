@@ -83,11 +83,11 @@
     "context_fol": [
       "∀x (Meeting(x) → AppearInCompany(x))",
       "∀x (LunchInCompany(x) → Meetings(x))",
-      "∀x (LunchInCompany(x) ∨ LunchAtHome(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
       "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
       "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
       "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
-      "Manager(james) ⊕ AppearInCompany(james)"
+      "Manager(james) ⊕ ¬AppearInCompany(james)"
     ],
     "question": "James has lunch in the company.",
     "question_fol": "LunchInCompany(james)",
@@ -108,15 +108,40 @@
     "context_fol": [
       "∀x (Meeting(x) → AppearInCompany(x))",
       "∀x (LunchInCompany(x) → Meetings(x))",
-      "∀x (LunchInCompany(x) ∨ LunchAtHome(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
       "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
       "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
       "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
-      "Manager(james) ⊕ AppearInCompany(james)"
+      "Manager(james) ⊕ ¬AppearInCompany(james)"
     ],
     "question": "James does not have lunch in the company.",
     "question_fol": "¬LunchInCompany(james)",
     "answer": "C"
+  },
+  {
+    "id": 5,
+    "story_id": 0,
+    "context": [
+      "All employees who schedule a meeting with their customers will appear in the company today. ",
+      "Everyone who has lunch in the company schedules meetings with their customers. ",
+      "Employees will either have lunch in the company or have lunch at home.",
+      "If an employee has lunch at home, then he/she is working remotely from home.",
+      "All employees who are in other countries work remotely from home. ",
+      "No managers work remotely from home. ",
+      "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+    ],
+    "context_fol": [
+      "∀x (Meeting(x) → AppearInCompany(x))",
+      "∀x (LunchInCompany(x) → Meetings(x))",
+      "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
+      "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
+      "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
+      "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
+      "Manager(james) ⊕ ¬AppearInCompany(james)"
+    ],
+    "question": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.",
+    "question_fol": "Manager(james) → ¬WorkRemotelyFromHome(james)",
+    "answer": "A"
   },
   {
     "id": 6,
@@ -579,6 +604,29 @@
     "answer": "C"
   },
   {
+    "id": 27,
+    "story_id": 0,
+    "context": [
+      "All aliens are extraterrestrial.",
+      "If someone is from Mars, then they are aliens.",
+      "No extraterrestrial is human.",
+      "Everyone from Earth is a human.",
+      "Marvin cannot be from Earth and from Mars.",
+      "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+    ],
+    "context_fol": [
+      "∀x (Alien(x) → Extraterrestrial(x))",
+      "∀x (FromMars(x) → Alien(x))",
+      "∀x (Extraterrestrial(x) → ¬Human(x))",
+      "∀x (FromEarth(x) → Human(x))",
+      "¬FromEarth(marvin) ∧ ¬FromMars(marvin)",
+      "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+    ],
+    "question": "Marvin is an alien.",
+    "question_fol": "Alien(marvin)",
+    "answer": "C"
+  },
+  {
     "id": 28,
     "story_id": 0,
     "context": [
@@ -600,6 +648,29 @@
     "question": "Marvin is neither a human nor from Mars.",
     "question_fol": "¬Human(marvin) ∧ ¬FromMars(marvin)",
     "answer": "A"
+  },
+  {
+    "id": 29,
+    "story_id": 0,
+    "context": [
+      "All aliens are extraterrestrial.",
+      "If someone is from Mars, then they are aliens.",
+      "No extraterrestrial is human.",
+      "Everyone from Earth is a human.",
+      "Marvin cannot be from Earth and from Mars.",
+      "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+    ],
+    "context_fol": [
+      "∀x (Alien(x) → Extraterrestrial(x))",
+      "∀x (FromMars(x) → Alien(x))",
+      "∀x (Extraterrestrial(x) → ¬Human(x))",
+      "∀x (FromEarth(x) → Human(x))",
+      "¬FromEarth(marvin) ∧ ¬FromMars(marvin)",
+      "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+    ],
+    "question": "If Marvin is not from Mars, then Marvin is a human.",
+    "question_fol": "¬FromMars(marvin) → Human(marvin)",
+    "answer": "B"
   },
   {
     "id": 30,
