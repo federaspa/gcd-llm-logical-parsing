@@ -15,15 +15,9 @@ class PromptGenerator:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.prompt_mode = args.prompt_mode
                         
-        if self.prompt_mode == 'static':
-            self.prompt_creator = {'FOLIO': self.static_prompt_folio,
-                                'FOLIOv2': self.static_prompt_folio}
-            
-        elif self.prompt_mode == 'dynamic':
-            self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
-                                'FOLIOv2': self.dynamic_prompt_folio}
+        self.prompt_creator = {'FOLIO': self.prompt_folio,
+                            'FOLIOv2': self.prompt_folio}
             
         self.load_prompt_templates()
             
@@ -36,73 +30,12 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
 
-    def static_prompt_folio(self, test_data):
+    def prompt_folio(self, test_data):
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-        
-
-        # print(full_prompt)
-        # raise Exception('hi!')
                     
-                    
-        return full_prompt
-
-    def dynamic_prompt_folio(self, test_data, train_data):
-        
-        # prompt = self.task_description
-        prompt  = ''
-
-        if train_data:
-            for story in train_data:
-                # print(story)
-                
-                prompt += 'Natural Language Premises:\n"""\n'
-                prompt += '\n'.join(story['context'])
-                prompt += '\n"""\n'
-                
-                if 'question_fol' in story.keys():
-                    prompt += 'Natural Language Question:\n"""\n'
-                    prompt += story['question']
-                    prompt += '\n"""\n'
-                prompt += '###\n'   
-                
-                
-                if 'predicates_fol' in story.keys():
-                    prompt += 'First-Order-Logic Predicates:\n'
-                    for pred in story['predicates_fol']:
-                        prompt += pred + '\n'
-                    prompt += '\n\n'
-                
-                prompt += 'First-Order-Logic Premises:\n'
-                for nl, fol in zip(story['context'], story['context_fol']):
-                    prompt += fol + ' ::: ' + nl + '\n'
-                prompt += '\n'
-                    
-                if 'question_fol' in story.keys():
-                    prompt += 'First-Order-Logic Question:\n'
-                    prompt += story['question_fol']
-                    prompt += '\n'
-                prompt += '------\n'
-            
-        prompt += 'Natural Language Premises:\n"""\n'
-        prompt += '\n'.join(test_data['context'])
-        prompt += '\n"""\n'
-        
-        prompt += 'Natural Language Question:\n"""\n'
-        prompt += test_data['question']
-        prompt += '\n"""\n###\n'   
-                    
-        # print(prompt)
-        # raise Exception('hi!')
-                    
-        return prompt
-    
-    def load_dynamic_examples(self, split):
-        with open(os.path.join(self.data_path, self.dataset_name, f'{split}_examples.json')) as f:
-            dynamic_examples = json.load(f)
-        return dynamic_examples
-    
+        return full_prompt    
 
 class LogicProgramGenerator(PromptGenerator):
     def __init__(self, args):
@@ -115,7 +48,6 @@ class LogicProgramGenerator(PromptGenerator):
         self.split = args.split
         self.model_name = args.model_name
         self.save_path = args.save_path
-        self.prompt_mode = args.prompt_mode
 
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         
@@ -131,20 +63,15 @@ class LogicProgramGenerator(PromptGenerator):
     def batch_logic_program_generation(self, batch_size = 10):
         # load raw dataset
         raw_dataset = self.load_raw_dataset(self.split)
-        if self.prompt_mode == 'dynamic':
-            dynamic_examples = self.load_dynamic_examples(self.split)
+
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
         outputs = []
         # split dataset into chunks
         dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
         for chunk in tqdm(dataset_chunks):
             
-            if self.prompt_mode == 'static':
-                full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
-            
-            elif self.prompt_mode == 'dynamic':
-                full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
-                        
+            full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
+                         
             try:
                 batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
                 # create output
@@ -181,7 +108,7 @@ class LogicProgramGenerator(PromptGenerator):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
 
@@ -195,7 +122,6 @@ class Cheater:
         self.split = args.split
         self.model_name = args.model_name
         self.save_path = args.save_path
-        self.prompt_mode = args.prompt_mode
     
     
     def load_raw_dataset(self, split):
@@ -232,7 +158,7 @@ class Cheater:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
                     
 def parse_args():
@@ -240,7 +166,6 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
