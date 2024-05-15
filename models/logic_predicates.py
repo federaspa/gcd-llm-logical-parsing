@@ -2,9 +2,8 @@
 
 import json
 import os
+import re
 from tqdm import tqdm
-from collections import OrderedDict
-from typing import Dict, List, Tuple
 from utils import OpenAIModel
 import sys
 import argparse
@@ -22,8 +21,8 @@ class PromptGenerator:
         self.load_prompt_templates()
             
     def load_prompt_templates(self):
-        prompt_file = f'./models/prompts/{self.dataset_name}.txt'
-        task_description_file = f'./models/task_descriptions/{self.dataset_name}.txt'
+        prompt_file = f'./models/prompts/{self.dataset_name}_predicates.txt'
+        task_description_file = f'./models/task_descriptions/{self.dataset_name}_predicates.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
             
@@ -37,7 +36,7 @@ class PromptGenerator:
                     
         return full_prompt    
 
-class LogicProgramGenerator(PromptGenerator):
+class PredicatesGenerator(PromptGenerator):
     def __init__(self, args):
         
         super().__init__(args)
@@ -51,7 +50,16 @@ class LogicProgramGenerator(PromptGenerator):
 
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         
-
+        
+    def parse_predicates(self, raw_predicates):
+        
+    
+        predicates = raw_predicates.split('First-Order-Logic Predicates:\n')[1].split('\n')
+                
+        predicates = [predicate.strip() for predicate in predicates if re.sub(r'(?:[\',\",\`,\-,\s*])','', predicate)]
+            
+        return predicates
+    
     def load_raw_dataset(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
             raw_dataset = json.load(f)
@@ -65,7 +73,7 @@ class LogicProgramGenerator(PromptGenerator):
         raw_dataset = self.load_raw_dataset(self.split)
 
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        outputs = []
+        outputs = {}
         # split dataset into chunks
         dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
         for chunk in tqdm(dataset_chunks):
@@ -76,27 +84,34 @@ class LogicProgramGenerator(PromptGenerator):
                 batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
-                    programs = [output]
-                    output = {'id': sample['id'], 
-                            'context': sample['context'],
-                            'question': sample['question'], 
-                            'answer': sample['answer'],
-                            # 'options': sample['options'],
-                            'raw_logic_programs': programs}
-                    outputs.append(output)
+                    
+                    try:
+                        logic_predicates= self.parse_predicates(output)
+                        
+                    except:
+                        logic_predicates = output
+                    
+                    outputs[sample['id']] = { 
+                                'context': sample['context'],
+                                'question': sample['question'], 
+                                'logic_predicates': logic_predicates}
+
             except:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
                     try:
                         output = self.openai_api.generate(full_prompt, self.task_description)
-                        programs = [output]
-                        output = {'id': sample['id'], 
+                        
+                        try:
+                            logic_predicates= self.parse_predicates(output)
+                            
+                        except:
+                            logic_predicates = output
+                    
+                        outputs[sample['id']] = { 
                                 'context': sample['context'],
                                 'question': sample['question'], 
-                                'answer': sample['answer'],
-                                # 'options': sample['options'],
-                                'raw_logic_programs': programs}
-                        outputs.append(output)
+                                'logic_predicates': logic_predicates}
                     except KeyboardInterrupt:
                         sys.exit()
                     # except:
@@ -166,7 +181,7 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--save_path', type=str, default='./outputs/logic_predicates')
     parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
@@ -182,5 +197,5 @@ if __name__ == '__main__':
         cheater = Cheater(args)
         cheater.cheat()
     else:
-        logic_program_generator = LogicProgramGenerator(args)
+        logic_program_generator = PredicatesGenerator(args)
         logic_program_generator.batch_logic_program_generation()
