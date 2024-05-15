@@ -18,16 +18,9 @@ class FOL_Prover9_Program:
 
     def parse_logic_program(self):
         try:        
-               
-               
-                # if self.prompt_mode == 'dynamic':
+            # Extract premises and conclusion
             premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
             conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
-
-
-            # elif self.prompt_mode == 'static':
-            #     premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
-            #     conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
                 
             # Extract each premise and the conclusion using regex
             premises = premises_string.strip().split('\n')
@@ -62,7 +55,7 @@ class FOL_Prover9_Program:
             # print()
             # print(self.logic_program)
             # print()
-            # print(e)
+            print(e)
             # print()
             # print()
             return False, None, None
@@ -76,7 +69,7 @@ class FOL_Prover9_Program:
             #result = prover.prove(goal, assumptions)
             
             prover = Prover9Command(goal, assumptions, timeout=timeout)
-            result = prover.prove()
+            result = prover.prove(verbose=False)
             # print(prover.proof())
             if result:
                 return 'True', ''
@@ -92,7 +85,7 @@ class FOL_Prover9_Program:
                 else:
                     return 'Unknown', ''
         except Exception as e:
-            print(str(e))
+            # print(e)
             return None, str(e)
         
     def answer_mapping(self, answer):
@@ -106,119 +99,13 @@ class FOL_Prover9_Program:
             raise Exception("Answer not recognized")
         
 if __name__ == "__main__":
-    ## ¬∀x (Movie(x) → HappyEnding(x))
-    ## ∃x (Movie(x) → ¬HappyEnding(x))
-    # ground-truth: True
-    logic_program = """Premises:
-    ¬∀x (Movie(x) → HappyEnding(x)) ::: Not all movie has a happy ending.
-    Movie(titanic) ::: Titanic is a movie.
-    ¬HappyEnding(titanic) ::: Titanic does not have a happy ending.
-    Movie(lionKing) ::: Lion King is a movie.
-    HappyEnding(lionKing) ::: Lion King has a happy ending.
-    Conclusion:
-    ∃x (Movie(x) ∧ ¬HappyEnding(x)) ::: Some movie does not have a happy ending.
-    """
-
-    # ground-truth: True
-    logic_program = """Premises:
-    ∀x (Drinks(x) → Dependent(x)) ::: All people who regularly drink coffee are dependent on caffeine.
-    ∀x (Drinks(x) ⊕ Jokes(x)) ::: People either regularly drink coffee or joke about being addicted to caffeine.
-    ∀x (Jokes(x) → ¬Unaware(x)) ::: No one who jokes about being addicted to caffeine is unaware that caffeine is a drug. 
-    (Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina)) ::: Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug. 
-    ¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina)) ::: If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student.
-    Conclusion:
-    Jokes(rina) ⊕ Unaware(rina) ::: Rina is either a person who jokes about being addicted to caffeine or is unaware that caffeine is a drug.
-    """
-
-    # ground-truth: True
-    logic_program = """Premises:
-    ∀x (Drinks(x) → Dependent(x)) ::: All people who regularly drink coffee are dependent on caffeine.
-    ∀x (Drinks(x) ⊕ Jokes(x)) ::: People either regularly drink coffee or joke about being addicted to caffeine.
-    ∀x (Jokes(x) → ¬Unaware(x)) ::: No one who jokes about being addicted to caffeine is unaware that caffeine is a drug. 
-    (Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina)) ::: Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug. 
-    ¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina)) ::: If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student.
-    Conclusion:
-    ((Jokes(rina) ∧ Unaware(rina)) ⊕ ¬(Jokes(rina) ∨ Unaware(rina))) → (Jokes(rina) ∧ Drinks(rina)) ::: If Rina is either a person who jokes about being addicted to caffeine and a person who is unaware that caffeine is a drug, or neither a person who jokes about being addicted to caffeine nor a person who is unaware that caffeine is a drug, then Rina jokes about being addicted to caffeine and regularly drinks coffee.
-    """
-
-    # ground-truth: Unknown
-    logic_program = """Premises:
-    Czech(miroslav) ∧ ChoralConductor(miroslav) ∧ Specialize(miroslav, renaissance) ∧ Specialize(miroslav, baroque) ::: Miroslav Venhoda was a Czech choral conductor who specialized in the performance of Renaissance and Baroque music.
-    ∀x (ChoralConductor(x) → Musician(x)) ::: Any choral conductor is a musician.
-    ∃x (Musician(x) ∧ Love(x, music)) ::: Some musicians love music.
-    Book(methodOfStudyingGregorianChant) ∧ Author(miroslav, methodOfStudyingGregorianChant) ∧ Publish(methodOfStudyingGregorianChant, year1946) ::: Miroslav Venhoda published a book in 1946 called Method of Studying Gregorian Chant.
-    Conclusion:
-    Love(miroslav, music) ::: Miroslav Venhoda loved music.
-    """
-
-    # ground-truth: True
-    logic_program = """Premises:
-    Czech(miroslav) ∧ ChoralConductor(miroslav) ∧ Specialize(miroslav, renaissance) ∧ Specialize(miroslav, baroque) ::: Miroslav Venhoda was a Czech choral conductor who specialized in the performance of Renaissance and Baroque music.
-    ∀x (ChoralConductor(x) → Musician(x)) ::: Any choral conductor is a musician.
-    ∃x (Musician(x) ∧ Love(x, music)) ::: Some musicians love music.
-    Book(methodOfStudyingGregorianChant) ∧ Author(miroslav, methodOfStudyingGregorianChant) ∧ Publish(methodOfStudyingGregorianChant, year1946) ::: Miroslav Venhoda published a book in 1946 called Method of Studying Gregorian Chant.
-    Conclusion:
-    ∃y ∃x (Czech(x) ∧ Author(x, y) ∧ Book(y) ∧ Publish(y, year1946)) ::: A Czech person wrote a book in 1946.
-    """
-
-    # ground-truth: False
-    logic_program = """Premises:
-    Czech(miroslav) ∧ ChoralConductor(miroslav) ∧ Specialize(miroslav, renaissance) ∧ Specialize(miroslav, baroque) ::: Miroslav Venhoda was a Czech choral conductor who specialized in the performance of Renaissance and Baroque music.
-    ∀x (ChoralConductor(x) → Musician(x)) ::: Any choral conductor is a musician.
-    ∃x (Musician(x) ∧ Love(x, music)) ::: Some musicians love music.
-    Book(methodOfStudyingGregorianChant) ∧ Author(miroslav, methodOfStudyingGregorianChant) ∧ Publish(methodOfStudyingGregorianChant, year1946) ::: Miroslav Venhoda published a book in 1946 called Method of Studying Gregorian Chant.
-    Conclusion:
-    ¬∃x (ChoralConductor(x) ∧ Specialize(x, renaissance)) ::: No choral conductor specialized in the performance of Renaissance.
-    """
-
-    # ground-truth: Unknown
-    # Premises:\nall x.(perform_in_school_talent_shows_often(x) -> (attend_school_events(x) & very_engaged_with_school_events(x))) ::: If people perform in school talent shows often, then they attend and are very engaged with school events.\nall x.(perform_in_school_talent_shows_often(x) ^ (inactive_member(x) & disinterested_member(x))) ::: People either perform in school talent shows often or are inactive and disinterested members of their community.\nall x.(chaperone_high_school_dances(x) -> not student_attend_school(x)) ::: If people chaperone high school dances, then they are not students who attend the school.\nall x.((inactive_member(x) & disinterested_member(x)) -> chaperone_high_school_dances(x)) ::: All people who are inactive and disinterested members of their community chaperone high school dances.\nall x.((young_child(x) | teenager(x)) & wish_to_further_academic_careers(x) & wish_to_further_educational_opportunities(x) -> student_attend_school(x)) ::: All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.\n(attend_school_events(bonnie) & very_engaged_with_school_events(bonnie) & student_attend_school(bonnie)) ^ (not attend_school_events(bonnie) & not very_engaged_with_school_events(bonnie) & not student_attend_school(bonnie)) ::: Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school.\nConclusion:\nperform_in_school_talent_shows_often(bonnie) ::: Bonnie performs in school talent shows often."
-    logic_program = """Premises:
-    ∀x (TalentShows(x) → Engaged(x)) ::: If people perform in school talent shows often, then they attend and are very engaged with school events.
-    ∀x (TalentShows(x) ∨ Inactive(x)) ::: People either perform in school talent shows often or are inactive and disinterested members of their community.
-    ∀x (Chaperone(x) → ¬Students(x)) ::: If people chaperone high school dances, then they are not students who attend the school.
-    ∀x (Inactive(x) → Chaperone(x)) ::: All people who are inactive and disinterested members of their community chaperone high school dances.
-    ∀x (AcademicCareer(x) → Students(x)) ::: All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.
-    Conclusion:
-    TalentShows(bonnie) ::: Bonnie performs in school talent shows often.
-    """
-
-    # ground-truth: False
-    logic_program = """Premises:
-    MusicPiece(symphonyNo9) ::: Symphony No. 9 is a music piece.
-    ∀x ∃z (¬Composer(x) ∨ (Write(x,z) ∧ MusicPiece(z))) ::: Composers write music pieces.
-    Write(beethoven, symphonyNo9) ::: Beethoven wrote Symphony No. 9.
-    Lead(beethoven, viennaMusicSociety) ∧ Orchestra(viennaMusicSociety) ::: Vienna Music Society is an orchestra and Beethoven leads the Vienna Music Society.
-    ∀x ∃z (¬Orchestra(x) ∨ (Lead(z,x) ∧ Conductor(z))) ::: Orchestras are led by conductors.
-    Conclusion:
-    ¬Conductor(beethoven) ::: Beethoven is not a conductor."""
-
-    # ground-truth: True
-    logic_program = """Predicates:
-    JapaneseCompany(x) ::: x is a Japanese game company.
-    Create(x, y) ::: x created the game y.
-    Top10(x) ::: x is in the Top 10 list.
-    Sell(x, y) ::: x sold more than y copies.
-    Premises:
-    ∃x (JapaneseCompany(x) ∧ Create(x, legendOfZelda)) ::: A Japanese game company created the game the Legend of Zelda.
-    ∀x ∃z (¬Top10(x) ∨ (JapaneseCompany(z) ∧ Create(z,x))) ::: All games in the Top 10 list are made by Japanese game companies.
-    ∀x (Sell(x, oneMillion) → Top10(x)) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.
-    Sell(legendOfZelda, oneMillion) ::: The Legend of Zelda sold more than one million copies.
-    Conclusion:
-    Top10(legendOfZelda) ::: The Legend of Zelda is in the Top 10 list."""
-
-    logic_program = """Premises:
-    ∀x (Listed(x) → ¬NegativeReviews(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.
-    ∀x (GreaterThanNine(x) → Listed(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.
-    ∃x (¬TakeOut(x) ∧ NegativeReviews(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.
-    ∀x (Popular(x) → GreaterThanNine(x)) ::: All restaurants that are popular among local residents have ratings greater than 9.
-    GreaterThanNine(subway) ∨ Popular(subway) ::: Subway has a rating greater than 9 or is popular among local residents.
-    Conclusion:
-    TakeOut(subway) ∧ ¬NegativeReviews(subway) ::: Subway provides take-out service and does not receive many negative reviews."""
     
-    logic_program = "First-Order-Logic Predicates:\n\"\"\"\nInClub(x, club)\nPerformInTalentShowsOften(x)\nAttendSchoolEvents(x)\nEngagedWithSchoolEvents(x)\nInactiveMember(x)\nDisinterestedMember(x)\nChaperoneDances(x)\nStudent(x)\nYoungChild(x)\nTeenager(x)\nWishToFurtherAcademicCareers(x)\nEducationalOpportunities(x)\n\"\"\"\nFirst-Order-Logic Premises:\n\"\"\"\n∀x (InClub(x, club) ∧ PerformInTalentShowsOften(x) → Attend(x, schoolEvents) ∧ EngagedWithSchoolEvents(x)) ::: People in this club who perform in school talent shows often attend and are very engaged with school events.\n∀x (InClub(x, club) → (PerformInTalentShowsOften(x) ∨ InactiveMember(x) ∧ DisinterestedMember(x))) ::: People in this club either perform in school talent shows often or are inactive and disinterested community members.\n∀x (InClub(x, club) ∧ ChaperoneDances(x) → ¬Student(x)) ::: People in this club who chaperone high school dances are not students who attend the school.\n∀x (InactiveMember(x) ∧ DisinterestedMember(x) → ChaperoneDances(x)) ::: All people in this club who are inactive and disinterested members of their community chaperone high school dances.\n∀x (YoungChild(x) ∨ Teenager(x) → (WishToFurtherAcademicCareers(x) ∧ Student(x))) ::: All young children and teenagers in this club who wish to further their academic careers and educational opportunities are students who attend the school. \nInClub(bonnie, club) ∧ ((AttendSchoolEvents(bonnie) ∧ EngagedWithSchoolEvents(bonnie) ∧ Student(bonnie)) ∨ (¬AttendSchoolEvents(bonnie) ∧ ¬EngagedWithSchoolEvents(bonnie) ∧ ¬Student(bonnie))) ::: Bonnie is in this club and she either both attends and is very engaged with school events and is a student who attends the school or is not someone who both attends and is very engaged with school events and is not a student who attends the school.\n\"\"\"\nFirst-Order-Logic Question:\n\"\"\"\nPerformInTalentShowsOften(bonnie)\n\"\"\""
+    logic_program = """First-Order-Logic Premises:\n∀x (Animal(x) ∧ LovedByTourists(x) → Favorite(max, x)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Animal(x) ∧ FromAustralia(x) → LovedByTourists(x)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animal(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(max, x) → (Fluffy(x) ∧ LoveToSleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n\nFirst-Order-Logic Question:\nLoveToSleep(koala) ::: Koalas love to sleep."""
     
     prover9_program = FOL_Prover9_Program(logic_program)
+    
+    # print('\n'.join(prover9_program.prover9_premises))
+    # print(prover9_program.prover9_conclusion)
     answer, error_message = prover9_program.execute_program()
-    print(answer)
-    print(error_message)
+    # print(answer)
+    # print(error_message)
