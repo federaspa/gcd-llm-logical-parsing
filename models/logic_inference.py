@@ -42,7 +42,9 @@ class LogicInferenceEngine:
             
         ground_truth = {
             point['id']: {
-                'context_fol': point['context_fol']
+                'context': point['context'],
+                'context_fol': point['context_fol'],
+                'question': point['question'],
             }
         for point in ground_truth_raw
         }

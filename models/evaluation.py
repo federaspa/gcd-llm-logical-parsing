@@ -125,7 +125,6 @@ def parse_args():
     parser.add_argument("--model_name", type=str, default='gpt-3.5-turbo')
     parser.add_argument("--split", type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
-    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--backup', type=str, default='random', choices=['random', 'Direct', 'CoT'])
     parser.add_argument("--result_path", type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
@@ -135,8 +134,8 @@ if __name__ == "__main__":
     args = parse_args()
     result_path = args.result_path
     if args.self_refine_round > 0:
-        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
+        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
     else:
-        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
-    # evaluate_QA(result_file)
+        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
+
     full_evaluation(result_file)
