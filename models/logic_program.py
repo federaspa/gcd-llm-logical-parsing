@@ -57,7 +57,7 @@ class PromptGenerator:
 
     def dynamic_prompt_folio(self, test_data, train_data):
         
-        raise Exception('Dynamic prompt generation not implemented yet!')
+        # raise Exception('Dynamic prompt generation not implemented yet!')
         
         # prompt = self.task_description
         prompt  = ''
@@ -73,15 +73,17 @@ class PromptGenerator:
                 if 'question_fol' in story.keys():
                     prompt += 'Natural Language Question:\n"""\n'
                     prompt += story['question']
-                    prompt += '\n"""\n'
+                    prompt += '\n"""\n'                
+                
+                # if 'predicates_fol' in story.keys():
+                
+                prompt += 'First-Order-Logic Predicates:\n"""\n'
+                for pred in story['logic_predicates']:
+                    prompt += pred + '\n'
+                    
+                prompt += '\n"""\n'
+                    
                 prompt += '###\n'   
-                
-                
-                if 'predicates_fol' in story.keys():
-                    prompt += 'First-Order-Logic Predicates:\n'
-                    for pred in story['predicates_fol']:
-                        prompt += pred + '\n'
-                    prompt += '\n\n'
                 
                 prompt += 'First-Order-Logic Premises:\n'
                 for nl, fol in zip(story['context'], story['context_fol']):
@@ -101,6 +103,12 @@ class PromptGenerator:
         prompt += 'Natural Language Question:\n"""\n'
         prompt += test_data['question']
         prompt += '\n"""\n###\n'   
+        
+        test_predicates = self.predicates[str(test_data['id'])]['logic_predicates']
+        prompt += 'First-Order-Logic Predicates:\n"""\n'
+        for pred in test_predicates:
+            prompt += pred + '\n'
+        prompt += '\n"""\n'
                     
         # print(prompt)
         # raise Exception('hi!')
@@ -228,14 +236,22 @@ class Cheater:
     
         for sample in raw_dataset:
             
-            premises = '\n'.join(sample['context_fol'])
+            premises_list = sample['context_fol']
+            
+            if 'question_fol' in sample.keys():
+                question = sample['question_fol']
+            else:
+                question = premises_list.pop()
+            
+            premises = '\n'.join(premises_list)
             programs = "First-Order-Logic Premises:\n\"\"\"\n" + premises
             
             programs += '\n\"\"\"'
             
-            if 'question_fol' in sample.keys():
-                question = sample['question_fol']
-                programs += "\nFirst-Order-Logic Question:\n\"\"\"\n" + question + "\n\"\"\""
+
+            programs += "\nFirst-Order-Logic Question:\n\"\"\"\n" + question + "\n\"\"\""
+                
+            
         
             output = {'id': sample['id'], 
                     # 'context': sample['context'],
