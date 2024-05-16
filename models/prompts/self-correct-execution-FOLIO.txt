@@ -1,0 +1,57 @@
+First-Order-Logic Premises:
+"""
+Song(showyourlove) ∧ RecordedBy(showyourlove, btob4u) ∧ SouthKorean(btob4u) ∧ BoyBand(btob4u) ::: Show Your Love is a song recorded by the South Korean boy band BtoB 4u.
+ExtendedPlay(inside) ∧ LeadSingle(showyourlove) ∧ LeadSingleOf(showyourlove, inside) ::: The lead single of the extended play Inside is Show Your Love.
+Contains(showyourlove, hopefulmessage) ::: Show Your Love contains a hopeful message.
+Member(hyunsik, btob4u) ∧ Wrote(hyunsik, showyourlove) ::: BtoB 4u member Hyunsik wrote Show Your Love.
+"""
+First-Order-Logic Question:
+"""
+HasMusicVideo(showyourlove) ::: There is a music video for Show Your Love.
+"""
+Error Message:
+"(FATAL)\n%%ERROR: The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1.\n\n\nFatal error:  The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1"
+######
+Error Reason:
+In the one of the logic premises, the predicate LeadSingle appears before LeadSingleOf. Since a predicate cannot be a subset of another, this leads to an error.
+
+Correct Program:
+First-Order-Logic Premises:
+Song(showyourlove) ∧ RecordedBy(showyourlove, btob4u) ∧ SouthKorean(btob4u) ∧ BoyBand(btob4u) ::: Show Your Love is a song recorded by the South Korean boy band BtoB 4u.
+ExtendedPlay(inside) ∧ LeadSingle(showyourlove) ∧ EPLeadSingle(showyourlove, inside) ::: The lead single of the extended play Inside is Show Your Love.
+Contains(showyourlove, hopefulmessage) ::: Show Your Love contains a hopeful message.
+Member(hyunsik, btob4u) ∧ Wrote(hyunsik, showyourlove) ::: BtoB 4u member Hyunsik wrote Show Your Love.
+
+First-Order-Logic Question:
+HasMusicVideo(showyourlove) ::: There is a music video for Show Your Love.
+------
+First-Order-Logic Premises:
+"""
+∃x (JapaneseCompany(x) ∧ Create(x, legendOfZelda)) ::: A Japanese game company created the game the Legend of Zelda.
+∀x ∃z (¬Top10(x) ∨ (JapaneseCompany(z) ∧ Create(z,x))) ::: All games in the Top 10 list are made by Japanese game companies.
+∀x (Sell(x, oneMillion) → Top10(x)) ::: If a game sells one million copies, then it will be selected into the Top 10 list.
+SellMore(legendOfZelda, oneMillion) ::: The Legend of Zelda sold more than one million copies.
+"""
+First-Order-Logic Question:
+"""
+Top10(legendOfZelda) ::: The Legend of Zelda is in the Top 10 list.
+"""
+Error Message:
+"(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Sell/2, Sell/1.\n\n\nFatal error:  The following symbols are used with multiple arities: Sell/2, Sell/1"
+######
+Error Reason:
+In one of the logic premises, the predicate Sell appears. In the next one, SellMore appears. Since a predicate cannot be a subset of another, this leads to an error.
+
+First-Order-Logic Premises:
+∃x (JapaneseCompany(x) ∧ Create(x, legendOfZelda)) ::: A Japanese game company created the game the Legend of Zelda.
+∀x ∃z (¬Top10(x) ∨ (JapaneseCompany(z) ∧ Create(z,x))) ::: All games in the Top 10 list are made by Japanese game companies.
+∀x (SellExactly(x, oneMillion) → Top10(x)) ::: If a game sells one million copies, then it will be selected into the Top 10 list.
+SellMore(legendOfZelda, oneMillion) ::: The Legend of Zelda sold more than one million copies.
+
+First-Order-Logic Question:
+Top10(legendOfZelda) ::: The Legend of Zelda is in the Top 10 list.
+------
+[[PROGRAM]]
+>>> Error Message:
+[[ERROR MESSAGE]]
+>>> Corrected Program:
