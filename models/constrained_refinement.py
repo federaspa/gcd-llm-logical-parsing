@@ -27,7 +27,6 @@ class SelfRefinementEngine:
         self.logic_programs = self.load_logic_programs()
         self.ground_truth = self.load_ground_truth()
         self.predicates = self.load_predicates()
-        # self.reasoning_results = self.load_inference_results()
 
         self.parsing_error_prompt = {'FOLIO': self.parsing_prompt_folio,
                             'FOLIOv2': self.parsing_prompt_folio}
@@ -85,9 +84,10 @@ class SelfRefinementEngine:
 
     
     def load_prompt_templates(self):
-        parsing_prompt_file = f'./models/prompts/constrained-correct-{self.dataset_name}.txt'
-        execution_prompt_file = f'./models/prompts/self-correct-{self.dataset_name}.txt'
-        task_description_file = f'./models/task_descriptions/constrained-correct-{self.dataset_name}.txt'
+        parsing_prompt_file = f'./models/prompts/self-correct-parsing-{self.dataset_name}.txt'
+        execution_prompt_file = f'./models/prompts/self-correct-execution-{self.dataset_name}.txt'
+        task_description_parsing_file = f'./models/task_descriptions/self-correct-parsing-{self.dataset_name}.txt'
+        task_description_execution_file = f'./models/task_descriptions/self-correct-execution-{self.dataset_name}.txt'
         grammar_file = f'./models/grammars/{self.dataset_name}.gbnf'
         
         with open(parsing_prompt_file, 'r') as f:
@@ -96,8 +96,11 @@ class SelfRefinementEngine:
         with open(execution_prompt_file, 'r') as f:
             self.execution_prompt_template = f.read()
             
-        with open(task_description_file, 'r') as f:
-            self.task_description = f.read()
+        with open(task_description_parsing_file, 'r') as f:
+            self.task_description_parsing = f.read()
+            
+        with open(task_description_execution_file, 'r') as f:
+            self.task_description_execution = f.read()
             
         with open(grammar_file, 'r') as f:
             self.grammar_template = f.read()
@@ -149,7 +152,7 @@ class SelfRefinementEngine:
                 full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_statement, error, predicates)
                     
                 try:           
-                    response = self.constrained_model.invoke(full_prompt, self.task_description, grammar)
+                    response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
                 
                     response = response['choices'][0]['message']['content'].strip()
                                     
@@ -170,7 +173,7 @@ class SelfRefinementEngine:
             # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
                 full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
-                revised_program = self.openai_api.generate(full_prompt, '').strip()
+                revised_program = self.openai_api.generate(full_prompt, self.task_description_execution).strip()
                 programs = [revised_program]
                 output = {'id': example['id'], 
                         'context': example['context'],
@@ -198,6 +201,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
     parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
@@ -211,8 +215,9 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     
+    starting_round = args.self_refine_round + 1
     
-    for round in range(1, args.maximum_rounds+1):
+    for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
         engine = SelfRefinementEngine(args, round)
         engine.single_round_self_refinement()
