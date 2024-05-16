@@ -55,7 +55,7 @@ class FOL_Prover9_Program:
             # print()
             # print(self.logic_program)
             # print()
-            print(e)
+            # print(e)
             # print()
             # print()
             return False, None, None
