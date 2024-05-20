@@ -19,7 +19,7 @@ class FOL_Prover9_Program:
     def parse_logic_program(self):
         try:        
             # Extract premises and conclusion
-            premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Premises:")[1].strip()
+            premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Rules:")[1].strip()
             conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
                 
             # Extract each premise and the conclusion using regex
@@ -100,7 +100,7 @@ class FOL_Prover9_Program:
         
 if __name__ == "__main__":
     
-    logic_program = """First-Order-Logic Premises:\n∀x (Animal(x) ∧ LovedByTourists(x) → Favorite(max, x)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Animal(x) ∧ FromAustralia(x) → LovedByTourists(x)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animal(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(max, x) → (Fluffy(x) ∧ LoveToSleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n\nFirst-Order-Logic Question:\nLoveToSleep(koala) ::: Koalas love to sleep."""
+    logic_program = """First-Order-Logic Rules:\n∀x (Animal(x) ∧ LovedByTourists(x) → Favorite(max, x)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Animal(x) ∧ FromAustralia(x) → LovedByTourists(x)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animal(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(max, x) → (Fluffy(x) ∧ LoveToSleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n\nFirst-Order-Logic Question:\nLoveToSleep(koala) ::: Koalas love to sleep."""
     
     prover9_program = FOL_Prover9_Program(logic_program)
     

@@ -85,7 +85,7 @@ class PromptGenerator:
                     
                 prompt += '###\n'   
                 
-                prompt += 'First-Order-Logic Premises:\n'
+                prompt += 'First-Order-Logic Rules:\n'
                 for nl, fol in zip(story['context'], story['context_fol']):
                     prompt += fol + ' ::: ' + nl + '\n'
                 prompt += '\n'
@@ -244,7 +244,7 @@ class Cheater:
                 question = premises_list.pop()
             
             premises = '\n'.join(premises_list)
-            programs = "First-Order-Logic Premises:\n\"\"\"\n" + premises
+            programs = "First-Order-Logic Rules:\n\"\"\"\n" + premises
             
             programs += '\n\"\"\"'
             

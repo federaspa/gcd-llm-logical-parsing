@@ -33,7 +33,7 @@ class PromptGenerator:
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
-                    
+    
         return full_prompt    
 
 class PredicatesGenerator(PromptGenerator):
@@ -126,55 +126,6 @@ class PredicatesGenerator(PromptGenerator):
         with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
-
-class Cheater:
-
-    def __init__(self, args):
-            
-        self.args = args
-        self.data_path = args.data_path
-        self.dataset_name = args.dataset_name
-        self.split = args.split
-        self.model_name = args.model_name
-        self.save_path = args.save_path
-    
-    
-    def load_raw_dataset(self, split):
-        with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
-            raw_dataset = json.load(f)
-        return raw_dataset
-    
-    def cheat(self):
-        
-        raw_dataset = self.load_raw_dataset(self.split)
-        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        outputs = []
-        # split dataset into chunks
-    
-        for sample in raw_dataset:
-            
-            premises = '\n'.join(sample['context_fol'])
-            programs = "First-Order-Logic Premises:\n\"\"\"\n" + premises
-            
-            programs += '\n\"\"\"'
-            
-            if 'question_fol' in sample.keys():
-                question = sample['question_fol']
-                programs += "\nFirst-Order-Logic Question:\n\"\"\"\n" + question + "\n\"\"\""
-        
-            output = {'id': sample['id'], 
-                    # 'context': sample['context'],
-                    'question': sample['question'], 
-                    'answer': sample['answer'],
-                    # 'options': sample['options'],
-                    'raw_logic_programs': [programs]}
-            outputs.append(output)
-
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
-        
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
                     
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -186,16 +137,11 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
-    parser.add_argument('--cheat', type=str)
     args = parser.parse_args()
     return args
 
 if __name__ == '__main__':
     args = parse_args()
     
-    if args.cheat:
-        cheater = Cheater(args)
-        cheater.cheat()
-    else:
-        logic_program_generator = PredicatesGenerator(args)
-        logic_program_generator.batch_logic_program_generation()
+    logic_program_generator = PredicatesGenerator(args)
+    logic_program_generator.batch_logic_program_generation()
