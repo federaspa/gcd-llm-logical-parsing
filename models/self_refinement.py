@@ -9,6 +9,7 @@ import argparse
 from backup_answer_generation import Backup_Answer_Generator
 from utils import GrammarConstrainedModel
 from utils import OpenAIModel
+import sys
 
 class SelfRefinementEngine:
     def __init__(self, args, current_round):
@@ -116,6 +117,12 @@ class SelfRefinementEngine:
         
         grammar = self.grammar_template.replace('[[PREDICATES]]', ' | '.join(grammar_predicates))
         
+        print(full_prompt)
+        print('-'*50)
+        print(grammar)
+        
+        sys.exit(0)
+        
         return full_prompt, grammar
     
     
@@ -144,54 +151,27 @@ class SelfRefinementEngine:
             logic_program = example['raw_logic_programs'][0].strip()
             status, error, error_index = self.safe_execute_program(example['id'], logic_program)
 
-            # if status == 'parsing error':
+            if status == 'parsing error':
                 
-            #     try:           
+                try:           
                     
-            #         print(example['id'])
+                    print(example['id'])
                 
-            #         nl_statement = self.ground_truth[example['id']]['context'][error_index]
-            #         predicates = self.predicates[str(example['id'])]['logic_predicates']
+                    nl_statement = self.ground_truth[example['id']]['context'][error_index]
+                    predicates = self.predicates[str(example['id'])]['logic_predicates']
                     
-            #         full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_statement, error, predicates)
+                    full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_statement, error, predicates)
                         
-            #         # response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
-            #         response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
+                    # response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
+                    response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
                     
                 
-            #         # response = response['choices'][0]['message']['content'].strip()
+                    # response = response['choices'][0]['message']['content'].strip()
                                     
-            #         revised_program = logic_program.replace(error, response)
+                    revised_program = logic_program.replace(error, response)
                     
-            #     except:
-            #         revised_program = logic_program
-                
-            #     programs = [revised_program]
-            #     output = {'id': example['id'], 
-            #             'context': example['context'],
-            #             'question': example['question'], 
-            #             'answer': example['answer'],
-            #             # 'options': example['options'],
-            #             'raw_logic_programs': programs}
-            #     outputs.append(output)
-                
-            if status != 'success':
-            # if not error_message == 'No Output': # this is not execution error, but parsing error
-                # perform self-correction based on the error message
-                full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
-                response = self.openai_api.generate(full_prompt, self.task_description_execution).strip()
-                
-                revised_program = response.split('Correct Program:')[-1]
-                
-                # print('#'*50)
-                # print(logic_program)
-                # print('-'*50)
-                # print(error)
-                # print('-'*50)
-                # print(response)  
-                # print('#'*50)
-                
-                # raise ValueError('Execution error')
+                except:
+                    revised_program = logic_program
                 
                 programs = [revised_program]
                 output = {'id': example['id'], 
@@ -201,6 +181,34 @@ class SelfRefinementEngine:
                         # 'options': example['options'],
                         'raw_logic_programs': programs}
                 outputs.append(output)
+                
+            # if status != 'success':
+            # elif status == 'execution error':
+            # # if not error_message == 'No Output': # this is not execution error, but parsing error
+            #     # perform self-correction based on the error message
+            #     full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
+            #     response = self.openai_api.generate(full_prompt, self.task_description_execution).strip()
+                
+            #     revised_program = response.split('Correct Program:')[-1]
+                
+            #     # print('#'*50)
+            #     # print(logic_program)
+            #     # print('-'*50)
+            #     # print(error)
+            #     # print('-'*50)
+            #     # print(response)  
+            #     # print('#'*50)
+                
+            #     # raise ValueError('Execution error')
+                
+            #     programs = [revised_program]
+            #     output = {'id': example['id'], 
+            #             'context': example['context'],
+            #             'question': example['question'], 
+            #             'answer': example['answer'],
+            #             # 'options': example['options'],
+            #             'raw_logic_programs': programs}
+            #     outputs.append(output)
             else:
                 outputs.append(example)
         # save results

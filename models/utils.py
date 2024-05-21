@@ -109,7 +109,7 @@ class GrammarConstrainedModel:
                 model_path = "GCD/llms/nous-hermes-2-solar-10.7b.Q6_K.gguf", 
                 n_ctx = 2048,
                 n_gpu_layers = -1, 
-                n_batch = 2048):
+                n_batch = 512):
 
         """
         model_path: The path to the model. The default is "GCD/llms/nous-hermes-2-solar-10.7b.Q6_K.gguf".
@@ -129,11 +129,23 @@ class GrammarConstrainedModel:
             verbose = False
         )
 
-    def invoke(self, user, task_description, raw_grammar, max_tokens=100, echo=False, stop=['------', '###']):
+    def invoke(self, 
+               user, 
+               task_description, 
+               raw_grammar, 
+               max_tokens=50, 
+               temperature=0.0,
+               frequency_penalty=0.0,
+               repeat_penalty=0.0,
+               presence_penalty=0.0,
+               top_p=0.9,
+               top_k=0,
+               stop=['------', '###']):
 
         """
         user: The user input.
         task_description: The task description.
+        raw_grammar: The grammar to use for the model.
         max_tokens: The maximum number of tokens to generate.
         echo: Whether to echo the user input.
         stop: The stop words to use for the model.
@@ -146,9 +158,19 @@ class GrammarConstrainedModel:
             {"role": "system", "content": task_description},
             {"role": "user", "content": user}
             ],
-        # max_tokens=max_tokens,  # Generate up to 512 token
+        max_tokens = max_tokens,
+        
+        frequency_penalty = frequency_penalty,
+        repeat_penalty = repeat_penalty,
+        presence_penalty = presence_penalty,
+        
+        temperature=temperature,
+        
+        top_p=top_p,
+        top_k=top_k,
+        
         stop = stop,
-        grammar = grammar
+        grammar = grammar,
         )
         
         return result
