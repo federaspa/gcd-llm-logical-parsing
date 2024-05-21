@@ -94,7 +94,7 @@ def evaluate_QA(QA_results):
     else:
         avg_em = 0
     # print(f"Accuracy: {avg_em}")
-    return avg_em
+    return avg_em, total_em, count
 
 def full_evaluation(result_file):
     with open(result_file, 'r') as f:
@@ -107,14 +107,14 @@ def full_evaluation(result_file):
     generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
-    print(f'Executable rate (Exe_Rate): {len(executable_samples)/len(all_samples)}')
-    print(f'Generation errors rate: {len(generation_errors)/len(all_samples)}')
-    print(f'Parsing errors rate: {len(parsing_errors)/len(all_samples)}')
-    print(f'Execution errors rate: {len(execution_errors)/len(all_samples)}')
+    print(f'Executable rate (Exe_Rate): {len(executable_samples)}/{len(all_samples)} ({len(executable_samples)/len(all_samples)})')
+    print(f'Generation errors rate: {len(generation_errors)}/{len(all_samples)} ({len(generation_errors)/len(all_samples)})')
+    print(f'Parsing errors rate: {len(parsing_errors)}/{len(all_samples)} ({len(parsing_errors)/len(all_samples)})')
+    print(f'Execution errors rate: {len(execution_errors)}/{len(all_samples)} ({len(execution_errors)/len(all_samples)})')
     print()
-    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)}")
-    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)}")
-    print(f'Overall accuracy: {evaluate_QA(all_samples)}')
+    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)[1]}/{evaluate_QA(executable_samples)[2]} ({evaluate_QA(executable_samples)[0]})")
+    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)[1]}/{evaluate_QA(non_executable_samples)[2]} ({evaluate_QA(non_executable_samples)[0]})")
+    print(f'Overall accuracy: {evaluate_QA(all_samples)[1]}/{evaluate_QA(all_samples)[2]} ({evaluate_QA(all_samples)[0]})')
     
 
 

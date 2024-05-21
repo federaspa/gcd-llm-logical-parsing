@@ -134,12 +134,13 @@ class GrammarConstrainedModel:
                task_description, 
                raw_grammar, 
                max_tokens=50, 
-               temperature=0.0,
+               temperature=0.01,
                frequency_penalty=0.0,
-               repeat_penalty=0.0,
+               repeat_penalty=1.1,
                presence_penalty=0.0,
                top_p=0.9,
-               top_k=0,
+               min_p=0.1,
+               top_k=20,
                stop=['------', '###']):
 
         """
@@ -167,6 +168,8 @@ class GrammarConstrainedModel:
         temperature=temperature,
         
         top_p=top_p,
+        min_p=min_p,
+        
         top_k=top_k,
         
         stop = stop,

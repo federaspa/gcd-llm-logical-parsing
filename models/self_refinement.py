@@ -117,11 +117,11 @@ class SelfRefinementEngine:
         
         grammar = self.grammar_template.replace('[[PREDICATES]]', ' | '.join(grammar_predicates))
         
-        print(full_prompt)
-        print('-'*50)
-        print(grammar)
+        # print(full_prompt)
+        # print('-'*50)
+        # print(grammar)
         
-        sys.exit(0)
+        # sys.exit(0)
         
         return full_prompt, grammar
     
@@ -155,22 +155,32 @@ class SelfRefinementEngine:
                 
                 try:           
                     
-                    print(example['id'])
+                    print(logic_program)
+                    print("-"*50)
+                    # print(example['id'])
+                    # print(error_index)
                 
                     nl_statement = self.ground_truth[example['id']]['context'][error_index]
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
                     
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_statement, error, predicates)
                         
-                    # response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
-                    response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
+                    response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
+                    # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
                     
                 
-                    # response = response['choices'][0]['message']['content'].strip()
+                    response = response['choices'][0]['message']['content'].strip()
                                     
+                    print(error)
+                    print('-'*50)
+                    print(response)
                     revised_program = logic_program.replace(error, response)
                     
-                except:
+                    print("-"*50)
+                    print(revised_program)
+                    print("#"*50)
+                    
+                except Exception as e:
                     revised_program = logic_program
                 
                 programs = [revised_program]

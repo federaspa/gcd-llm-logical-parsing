@@ -17,7 +17,7 @@ class FOL_Prover9_Program:
         self.dataset_name = dataset_name
 
     def parse_logic_program(self):
-        try:        
+        # try:        
             # Extract premises and conclusion
             premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Rules:")[1].strip()
             conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
@@ -50,7 +50,7 @@ class FOL_Prover9_Program:
             self.prover9_conclusion = Prover9_FOL_Formula(fol_conclusion).formula
             return True, None, None
         
-        except Exception as e:
+        # except Exception as e:
             # print()
             # print()
             # print(self.logic_program)
@@ -58,7 +58,7 @@ class FOL_Prover9_Program:
             # print(e)
             # print()
             # print()
-            return False, None, None
+            # return False, None, None
 
     def execute_program(self):
         try:
