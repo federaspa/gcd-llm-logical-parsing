@@ -12,7 +12,7 @@ from utils import OpenAIModel
 import sys
 
 class SelfRefinementEngine:
-    def __init__(self, args, current_round):
+    def __init__(self, args, current_round, constrained_model):
         self.args = args
         self.data_path = args.data_path
         self.predicates_path = args.predicates_path
@@ -22,7 +22,7 @@ class SelfRefinementEngine:
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
-        self.constrained_model = GrammarConstrainedModel()
+        self.constrained_model = constrained_model
         
 
         self.logic_programs = self.load_logic_programs()
@@ -155,8 +155,8 @@ class SelfRefinementEngine:
                 
                 try:           
                     
-                    print(logic_program)
-                    print("-"*50)
+                    # print(logic_program)
+                    # print("-"*50)
                     # print(example['id'])
                     # print(error_index)
                 
@@ -171,14 +171,14 @@ class SelfRefinementEngine:
                 
                     response = response['choices'][0]['message']['content'].strip()
                                     
-                    print(error)
-                    print('-'*50)
-                    print(response)
+                    # print(error)
+                    # print('-'*50)
+                    # print(response)
                     revised_program = logic_program.replace(error, response)
                     
-                    print("-"*50)
-                    print(revised_program)
-                    print("#"*50)
+                    # print("-"*50)
+                    # print(revised_program)
+                    # print("#"*50)
                     
                 except Exception as e:
                     revised_program = logic_program
@@ -256,5 +256,5 @@ if __name__ == "__main__":
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
-        engine = SelfRefinementEngine(args, round)
+        engine = SelfRefinementEngine(args, round, constrained_model=GrammarConstrainedModel())
         engine.single_round_self_refinement()
