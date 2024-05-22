@@ -3,7 +3,6 @@ import openai
 import os
 import asyncio
 from typing import Any
-from langchain_community.llms import LlamaCpp
 from llama_cpp.llama import LlamaGrammar
 from llama_cpp import Llama
 # from langchain_core.prompts import PromptTemplate
@@ -106,9 +105,9 @@ class OpenAIModel:
 
 class GrammarConstrainedModel:
     def __init__(self,  
-                model_path = "GCD/llms/nous-hermes-2-solar-10.7b.Q6_K.gguf", 
+                model_path = "GCD/llms/nous-hermes-2-yi-34b.Q5_K_M.gguf", 
                 n_ctx = 2048,
-                n_gpu_layers = -1, 
+                n_gpu_layers = 45, 
                 n_batch = 512):
 
         """
@@ -126,7 +125,7 @@ class GrammarConstrainedModel:
             n_batch=n_batch,
             n_ctx = n_ctx,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose = False
+            verbose = True
         )
 
     def invoke(self, 
