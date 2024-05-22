@@ -105,9 +105,9 @@ class OpenAIModel:
 
 class GrammarConstrainedModel:
     def __init__(self,  
-                model_path = "GCD/llms/yi-34b-v3.Q4_K_M.gguf", 
+                model_path = "GCD/llms/nous-hermes-2-yi-34b.Q5_K_M.gguf", 
                 n_ctx = 2048,
-                n_gpu_layers = 10, 
+                n_gpu_layers = 45, 
                 n_batch = 512):
 
         """

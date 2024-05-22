@@ -181,6 +181,7 @@ class SelfRefinementEngine:
                     # print("#"*50)
                     
                 except Exception as e:
+                    print(f'Exception: {e}')
                     revised_program = logic_program
                 
                 programs = [revised_program]

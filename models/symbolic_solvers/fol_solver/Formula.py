@@ -15,7 +15,7 @@ class FOL_Formula:
 
         # Set the signal handler and a 5-second alarm
         signal.signal(signal.SIGALRM, handler)
-        signal.alarm(30)
+        signal.alarm(90)
         try:
             tree = self.parser.parse_text_FOL_to_tree(str_fol)
         except Exception as exc:
