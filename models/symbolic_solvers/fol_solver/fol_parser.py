@@ -10,7 +10,7 @@ class FOL_Parser:
         # modified a bit. 
         self.cfg_template = """
         S -> F | QUANT VAR S | '¬' S
-        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | TERM '=' TERM | QUANT VAR F
+        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | QUANT VAR F
         OP -> '⊕' | '∨' | '∧' | '→' | '↔'
         L -> '¬' PRED '(' TERMS ')' | PRED '(' TERMS ')'
         TERMS -> TERM | TERM ',' TERMS
@@ -134,19 +134,3 @@ class FOL_Parser:
         
         for child in tree:
             self.preorder_resolution(child, lvars, consts, preds)
-
-if __name__ == '__main__':
-    # str_fol = '\u2200x (Dog(x) \u2227 WellTrained(x) \u2227 Gentle(x) \u2192 TherapyAnimal(x))'
-    str_fol = '\u2200x (Athlete(x) \u2227 WinsGold(x, olympics) \u2192 OlympicChampion(x))'
-    # str_fol = '¬∀x ∃x(Movie(x) → HappyEnding(x))'
-    
-    parser = FOL_Parser()
-
-    tree = parser.parse_text_FOL_to_tree(str_fol)
-    print(tree)
-    tree.pretty_print()
-    
-    lvars, consts, preds = parser.symbol_resolution(tree)
-    print('lvars: ', lvars)
-    print('consts: ', consts)
-    print('preds: ', preds)

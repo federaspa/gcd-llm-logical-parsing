@@ -94,7 +94,7 @@ def evaluate_QA(QA_results):
     else:
         avg_em = 0
     # print(f"Accuracy: {avg_em}")
-    return avg_em
+    return avg_em, total_em, count
 
 def full_evaluation(result_file):
     with open(result_file, 'r') as f:
@@ -107,14 +107,14 @@ def full_evaluation(result_file):
     generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
-    print(f'Executable rate (Exe_Rate): {len(executable_samples)/len(all_samples)}')
-    print(f'Generation errors rate: {len(generation_errors)/len(all_samples)}')
-    print(f'Parsing errors rate: {len(parsing_errors)/len(all_samples)}')
-    print(f'Execution errors rate: {len(execution_errors)/len(all_samples)}')
+    print(f'Executable rate (Exe_Rate): {len(executable_samples)}/{len(all_samples)} ({len(executable_samples)/len(all_samples)})')
+    print(f'Generation errors rate: {len(generation_errors)}/{len(all_samples)} ({len(generation_errors)/len(all_samples)})')
+    print(f'Parsing errors rate: {len(parsing_errors)}/{len(all_samples)} ({len(parsing_errors)/len(all_samples)})')
+    print(f'Execution errors rate: {len(execution_errors)}/{len(all_samples)} ({len(execution_errors)/len(all_samples)})')
     print()
-    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)}")
-    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)}")
-    print(f'Overall accuracy: {evaluate_QA(all_samples)}')
+    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)[1]}/{evaluate_QA(executable_samples)[2]} ({evaluate_QA(executable_samples)[0]})")
+    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)[1]}/{evaluate_QA(non_executable_samples)[2]} ({evaluate_QA(non_executable_samples)[0]})")
+    print(f'Overall accuracy: {evaluate_QA(all_samples)[1]}/{evaluate_QA(all_samples)[2]} ({evaluate_QA(all_samples)[0]})')
     
 
 
@@ -125,7 +125,6 @@ def parse_args():
     parser.add_argument("--model_name", type=str, default='gpt-3.5-turbo')
     parser.add_argument("--split", type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
-    parser.add_argument('--response_mode', type=str, choices=['text', 'json'], default='text')
     parser.add_argument('--backup', type=str, default='random', choices=['random', 'Direct', 'CoT'])
     parser.add_argument("--result_path", type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
@@ -135,8 +134,8 @@ if __name__ == "__main__":
     args = parse_args()
     result_path = args.result_path
     if args.self_refine_round > 0:
-        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
+        result_file = os.path.join(result_path, f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
     else:
-        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_{args.response_mode}_backup-{args.backup}.json')
-    # evaluate_QA(result_file)
+        result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
+
     full_evaluation(result_file)

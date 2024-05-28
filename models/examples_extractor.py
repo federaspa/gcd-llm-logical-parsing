@@ -1,12 +1,20 @@
 import os
 import json
+import torch
+import openai
 import argparse
 
 import numpy as np
 
 from tqdm import tqdm
-from sentence_transformers import SentenceTransformer, util
+from dotenv import load_dotenv
+from sentence_transformers import util
 
+
+load_dotenv()  # take environment variables from .env.
+api_key = os.getenv("OPENAI_API_KEY")
+
+openai.api_key = api_key
 
 class ExampleExtractionEngine:
     def __init__(self, args):
@@ -15,8 +23,8 @@ class ExampleExtractionEngine:
         self.source_split = args.source_split
         self.target_split = args.target_split
         self.max_examples = args.max_examples
-        # self.save_path = args.save_path
-        self.sentence_model = SentenceTransformer("all-MiniLM-L6-v2")
+        
+        
 
         self.source_dataset, self.target_dataset = self.load_data()
         
@@ -67,9 +75,18 @@ class ExampleExtractionEngine:
             target_sentence = ' '.join(target_story['context'])
             target_sentence += f" {target_story['question']}"
             
-            
-            embeddings1 = self.sentence_model.encode(source_sentences, convert_to_tensor=True)
-            embeddings2 = self.sentence_model.encode(target_sentence, convert_to_tensor=True)
+            response_source = openai.Embedding.create(
+                input=source_sentences,
+                model="text-embedding-3-small"
+            )
+
+            response_target = openai.Embedding.create(
+                input=target_sentence,
+                model="text-embedding-3-small"
+            )
+
+            embeddings1 = torch.tensor([d.embedding for d in response_source.data])
+            embeddings2 = torch.tensor(response_target.data[0].embedding)
 
             cosine_scores = util.cos_sim(embeddings1, embeddings2)
                     

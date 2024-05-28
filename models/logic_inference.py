@@ -42,7 +42,9 @@ class LogicInferenceEngine:
             
         ground_truth = {
             point['id']: {
-                'context_fol': point['context_fol']
+                'context': point['context'],
+                'context_fol': point['context_fol'],
+                'question': point['question'],
             }
         for point in ground_truth_raw
         }
@@ -89,7 +91,7 @@ class LogicInferenceEngine:
         # not executable
         if answer is None:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'execution error', None, None
+            return answer, 'execution error', error_message, None
         # successfully executed
         answer = program.answer_mapping(answer)
         return answer, 'success', None, None
@@ -102,7 +104,8 @@ class LogicInferenceEngine:
             # execute the logic program
             
             program = example['raw_logic_programs'][0].strip()
-            answer, flag, formula_error, error_index = self.safe_execute_program(example['id'], program)
+            
+            answer, flag, error, error_index = self.safe_execute_program(example['id'], program)
             if not flag == 'success':
                 error_count += 1
                 # print(example['id'])
@@ -115,11 +118,16 @@ class LogicInferenceEngine:
                     'flag': flag,
                     # 'error': error_message,
                     'predicted_answer': answer}
-            if formula_error:
-                output.update({
-                    'wrong_formula': formula_error,
-                    'correct_formula': self.ground_truth[example['id']]['context_fol'][error_index]
-                })
+            if error:
+                if flag == 'parsing error':
+                    output.update({
+                        'wrong_formula': error,
+                        'correct_formula': self.ground_truth[example['id']]['context_fol'][error_index]
+                    })
+                elif flag == 'execution error':
+                    output.update({
+                        'error_message': error
+                    })
             outputs.append(output)
         
         print(f"Error count: {error_count}")
