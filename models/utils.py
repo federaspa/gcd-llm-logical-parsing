@@ -44,7 +44,8 @@ async def dispatch_openai_chat_requests(
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p,
-            stop = stop_words
+            stop = stop_words,
+            response_format={ "type": "json_object" }
         )
         for x in messages_list
     ]
@@ -65,6 +66,7 @@ class OpenAIModel:
                         {"role": "system", "content": task_description},
                         {"role": "user", "content": input_string}
                     ],
+                response_format={ "type": "json_object" },
                 max_tokens = self.max_new_tokens,
                 temperature = temperature,
                 top_p = 1.0,
@@ -105,9 +107,9 @@ class OpenAIModel:
 
 class GrammarConstrainedModel:
     def __init__(self,  
-                model_path = "GCD/llms/nous-hermes-2-yi-34b.Q5_K_M.gguf", 
+                model_path = "GCD/llms/Meta-Llama-3-8B-Instruct-Q6_K.gguf", 
                 n_ctx = 2048,
-                n_gpu_layers = 45, 
+                n_gpu_layers = -1, 
                 n_batch = 512):
 
         """
@@ -125,10 +127,10 @@ class GrammarConstrainedModel:
             n_batch=n_batch,
             n_ctx = n_ctx,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose = True
+            verbose = False
         )
         
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
 
     def invoke(self, 
                user, 
@@ -174,7 +176,7 @@ class GrammarConstrainedModel:
         top_k=top_k,
         
         stop = stop,
-        grammar = grammar,
+        grammar = grammar
         )
         
         return result

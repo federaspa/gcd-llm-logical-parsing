@@ -128,7 +128,9 @@ class SelfRefinementEngine:
     
     def execution_prompt_folio(self, program, status):
         
-        full_prompt = self.execution_prompt_template.replace('[[PROGRAM]]', program).replace('[[ERROR MESSAGE]]', status)
+        program_string = json.dumps(program).replace('{', '\\{').replace('}', '\\}')
+        
+        full_prompt = self.execution_prompt_template.replace('[[PROGRAM]]', program_string).replace('[[ERROR MESSAGE]]', status)
         
         return full_prompt
     
@@ -148,18 +150,13 @@ class SelfRefinementEngine:
     def single_round_self_refinement(self):
         outputs = []
         for example in tqdm(self.logic_programs):
-            logic_program = example['raw_logic_programs'][0].strip()
+            logic_program = example['raw_logic_programs']
             status, error, error_index = self.safe_execute_program(example['id'], logic_program)
 
             if status == 'parsing error':
                 
                 try:           
                     
-                    # print(logic_program)
-                    # print("-"*50)
-                    # print(example['id'])
-                    # print(error_index)
-                
                     nl_statement = self.ground_truth[example['id']]['context'][error_index]
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
                     
@@ -171,55 +168,43 @@ class SelfRefinementEngine:
                 
                     response = response['choices'][0]['message']['content'].strip()
                                     
-                    # print(error)
-                    # print('-'*50)
-                    # print(response)
-                    revised_program = logic_program.replace(error, response)
-                    
-                    # print("-"*50)
-                    # print(revised_program)
-                    # print("#"*50)
+                    revised_program_string = json.dumps(logic_program).replace(error, response)
+                
+                    revised_program = json.loads(revised_program_string)
                     
                 except Exception as e:
                     print(f'Exception: {e}')
                     revised_program = logic_program
                 
-                programs = [revised_program]
+                # programs = [revised_program]
                 output = {'id': example['id'], 
                         'context': example['context'],
                         'question': example['question'], 
                         'answer': example['answer'],
                         # 'options': example['options'],
-                        'raw_logic_programs': programs}
+                        'raw_logic_programs': revised_program}
                 outputs.append(output)
                 
             # if status != 'success':
-            # elif status == 'execution error':
-            # # if not error_message == 'No Output': # this is not execution error, but parsing error
-            #     # perform self-correction based on the error message
-            #     full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
-            #     response = self.openai_api.generate(full_prompt, self.task_description_execution).strip()
+            elif status == 'execution error':
+            # if not error_message == 'No Output': # this is not execution error, but parsing error
+                # perform self-correction based on the error message
+                full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
+                response_string = self.openai_api.generate(full_prompt, self.task_description_execution)
                 
-            #     revised_program = response.split('Correct Program:')[-1]
+                response = json.loads(response_string)
                 
-            #     # print('#'*50)
-            #     # print(logic_program)
-            #     # print('-'*50)
-            #     # print(error)
-            #     # print('-'*50)
-            #     # print(response)  
-            #     # print('#'*50)
+                revised_program = response['Correct Program']
                 
-            #     # raise ValueError('Execution error')
+                # programs = revised_program
                 
-            #     programs = [revised_program]
-            #     output = {'id': example['id'], 
-            #             'context': example['context'],
-            #             'question': example['question'], 
-            #             'answer': example['answer'],
-            #             # 'options': example['options'],
-            #             'raw_logic_programs': programs}
-            #     outputs.append(output)
+                output = {'id': example['id'], 
+                        'context': example['context'],
+                        'question': example['question'], 
+                        'answer': example['answer'],
+                        # 'options': example['options'],
+                        'raw_logic_programs': revised_program}
+                outputs.append(output)
             else:
                 outputs.append(example)
         # save results
@@ -254,8 +239,9 @@ if __name__ == "__main__":
     args = parse_args()
     
     starting_round = args.self_refine_round + 1
+    constrained_model=GrammarConstrainedModel()
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
-        engine = SelfRefinementEngine(args, round, constrained_model=GrammarConstrainedModel())
+        engine = SelfRefinementEngine(args, round, constrained_model = constrained_model)
         engine.single_round_self_refinement()
