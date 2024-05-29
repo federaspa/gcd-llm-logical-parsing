@@ -51,10 +51,12 @@ class PredicatesGenerator(PromptGenerator):
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         
         
-    def parse_predicates(self, raw_predicates):
+    def parse_predicates(self, string_predicates):
         
+        
+        raw_predicates = json.loads(string_predicates)
     
-        predicates = raw_predicates.split('First-Order-Logic Predicates:\n')[1].split('\n')
+        predicates = raw_predicates["First-Order-Logic Predicates"].split('\n')
                 
         predicates = [predicate.strip() for predicate in predicates if re.sub(r'(?:[\',\",\`,\-,\s*])','', predicate)]
             
@@ -95,25 +97,27 @@ class PredicatesGenerator(PromptGenerator):
                                 'context': sample['context'],
                                 'question': sample['question'], 
                                 'logic_predicates': logic_predicates}
-
+                    
+            except KeyboardInterrupt:
+                sys.exit()
+                        
             except:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
-                    try:
-                        output = self.openai_api.generate(full_prompt, self.task_description)
-                        
-                        try:
-                            logic_predicates= self.parse_predicates(output)
-                            
-                        except:
-                            logic_predicates = output
+
+                    output = self.openai_api.generate(full_prompt, self.task_description)
                     
-                        outputs[sample['id']] = { 
-                                'context': sample['context'],
-                                'question': sample['question'], 
-                                'logic_predicates': logic_predicates}
-                    except KeyboardInterrupt:
-                        sys.exit()
+                    try:
+                        logic_predicates= self.parse_predicates(output)
+                        
+                    except:
+                        logic_predicates = output
+                
+                    outputs[sample['id']] = { 
+                            'context': sample['context'],
+                            'question': sample['question'], 
+                            'logic_predicates': logic_predicates}
+
                     # except:
                     #     print('Error in generating logic programs for example: ', sample['id'])
 

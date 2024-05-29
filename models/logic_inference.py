@@ -103,7 +103,7 @@ class LogicInferenceEngine:
         for example in tqdm(self.dataset):
             # execute the logic program
             
-            program = example['raw_logic_programs'][0].strip()
+            program = example['raw_logic_programs']
             
             answer, flag, error, error_index = self.safe_execute_program(example['id'], program)
             if not flag == 'success':

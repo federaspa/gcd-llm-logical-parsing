@@ -31,7 +31,8 @@ class PromptGenerator:
             self.predicates = self.load_predicates_folio()
   
     def load_prompt_templates(self):
-        prompt_file = f'./models/prompts/{self.dataset_name}.txt'
+
+        prompt_file = f'./models/prompts/{self.dataset_name}_{self.prompt_mode}.txt'
         task_description_file = f'./models/task_descriptions/{self.dataset_name}.txt'
         with open(prompt_file, 'r') as f:
             self.prompt_template = f.read()
@@ -51,68 +52,36 @@ class PromptGenerator:
         
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question).replace('[[PREDICATES]]', predicates)
 
-        # print(full_prompt)
-        # raise Exception('hi!')
         return full_prompt
 
     def dynamic_prompt_folio(self, test_data, train_data):
         
-        # raise Exception('Dynamic prompt generation not implemented yet!')
+        prompt = self.prompt_template
         
-        # prompt = self.task_description
-        prompt  = ''
-
         if train_data:
-            for story in train_data:
-                # print(story)
+            for i,story in enumerate(train_data[:3]):
+                                
+                prompt = prompt.replace(f'[[NLPROBLEM{i+1}]]', '\n'.join(story['context']))
                 
-                prompt += 'Natural Language Premises:\n"""\n'
-                prompt += '\n'.join(story['context'])
-                prompt += '\n"""\n'
+                prompt = prompt.replace(f'[[NLQUESTION{i+1}]]', story['question'])
                 
+                prompt = prompt.replace(f'[[PREDICATES{i+1}]]', '\n'.join(story['logic_predicates']))
+        
                 if 'question_fol' in story.keys():
-                    prompt += 'Natural Language Question:\n"""\n'
-                    prompt += story['question']
-                    prompt += '\n"""\n'                
-                
-                # if 'predicates_fol' in story.keys():
-                
-                prompt += 'First-Order-Logic Predicates:\n"""\n'
-                for pred in story['logic_predicates']:
-                    prompt += pred + '\n'
-                    
-                prompt += '\n"""\n'
-                    
-                prompt += '###\n'   
-                
-                prompt += 'First-Order-Logic Rules:\n'
+                    prompt = prompt.replace(f'[[FOLQUESTION{i+1}]]', story['question_fol'])
+                else:
+                    prompt = prompt.replace(f',\n"First-Order-Logic Question": "[[FOLQUESTION{i+1}]]"', '')
+                            
+                fol_rules = ''
                 for nl, fol in zip(story['context'], story['context_fol']):
-                    prompt += fol + ' ::: ' + nl + '\n'
-                prompt += '\n'
+                    fol_rules += fol + ' ::: ' + nl + '\\n'
                     
-                if 'question_fol' in story.keys():
-                    prompt += 'First-Order-Logic Question:\n'
-                    prompt += story['question_fol']
-                    prompt += '\n'
-                prompt += '------\n'
+                prompt = prompt.replace(f'[[FOLRULES{i+1}]]', fol_rules)
+        
+        prompt = prompt.replace('[[PROBLEM]]', '\n'.join(test_data['context']))
+        prompt = prompt.replace('[[QUESTION]]', test_data['question'])
+        prompt = prompt.replace('[[PREDICATES]]', '\n'.join(self.predicates[str(test_data['id'])]['logic_predicates']))
             
-        prompt += 'Natural Language Premises:\n"""\n'
-        prompt += '\n'.join(test_data['context'])
-        prompt += '\n"""\n'
-        
-        prompt += 'Natural Language Question:\n"""\n'
-        prompt += test_data['question']
-        prompt += '\n"""\n###\n'   
-        
-        test_predicates = self.predicates[str(test_data['id'])]['logic_predicates']
-        prompt += 'First-Order-Logic Predicates:\n"""\n'
-        for pred in test_predicates:
-            prompt += pred + '\n'
-        prompt += '\n"""\n'
-                    
-        # print(prompt)
-        # raise Exception('hi!')
-                    
         return prompt
     
     def load_dynamic_examples(self, split):
@@ -167,7 +136,10 @@ class LogicProgramGenerator(PromptGenerator):
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     
-                    programs = [output]
+                    # programs = [output]
+                    
+                    programs = json.loads(output)
+                    
                     output = {'id': sample['id'], 
                             'context': sample['context'],
                             'question': sample['question'], 
@@ -175,27 +147,31 @@ class LogicProgramGenerator(PromptGenerator):
                             'raw_logic_programs': programs}
                     
                     if 'FOLIO' in self.dataset_name:
-                        output['predicates'] = '\n'.join(self.predicates[str(sample['id'])]['logic_predicates'])
+                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
                     
                     outputs.append(output)
+                    
+            except KeyboardInterrupt:
+                sys.exit()
+                
             except:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
-                    try:
-                        output = self.openai_api.generate(full_prompt, self.task_description)
-                        programs = [output]
-                        output = {'id': sample['id'], 
-                                'context': sample['context'],
-                                'question': sample['question'], 
-                                'answer': sample['answer'],
-                                'raw_logic_programs': programs}
-                        
-                        if 'FOLIO' in self.dataset_name:
-                            output['predicates'] = '\n'.join(self.predicates[str(sample['id'])]['logic_predicates'])
-                        
-                        outputs.append(output)
-                    except KeyboardInterrupt:
-                        sys.exit()
+
+                    output = self.openai_api.generate(full_prompt, self.task_description)
+                    # programs = [output]
+                    programs = json.loads(output)
+                    
+                    output = {'id': sample['id'], 
+                            'context': sample['context'],
+                            'question': sample['question'], 
+                            'answer': sample['answer'],
+                            'raw_logic_programs': programs}
+                    
+                    if 'FOLIO' in self.dataset_name:
+                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                    
+                    outputs.append(output)
                     # except:
                     #     print('Error in generating logic programs for example: ', sample['id'])
 
@@ -212,6 +188,8 @@ class LogicProgramGenerator(PromptGenerator):
 class Cheater:
 
     def __init__(self, args):
+            
+        raise NotImplementedError("This class is not implemented yet.")
             
         self.args = args
         self.data_path = args.data_path
