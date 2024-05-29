@@ -108,19 +108,9 @@
     "question": "James has lunch in the company.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x ∀y (ScheduleMeeting(x, y) → AppearInCompany(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (HaveLunchInCompany(x) → ScheduleMeeting(x, customer)) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (HaveLunchInCompany(x) ∨ HaveLunchAtHome(x)) ::: Employees will either have lunch in the company or have lunch at home. \nHaveLunchAtHome(x) → WorkRemotelyFromHome(x) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬WorkRemotelyFromHome(x)) ::: No managers work remotely from home. \n(James(james) ∧ AppearInCompany(james)) ⊕ ¬(Manager(james) ∨ AppearInCompany(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+      "First-Order-Logic Rules": "∀x ∀y (ScheduleMeeting(x, y) → AppearInCompany(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (HaveLunchInCompany(x) → ScheduleMeeting(x, customer)) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (HaveLunchInCompany(x) ∨ HaveLunchAtHome(x)) ::: Employees will either have lunch in the company or have lunch at home. \nHaveLunchAtHome(x) → WorkRemotelyFromHome(x) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬WorkRemotelyFromHome(x)) ::: No managers work remotely from home. \n(James(james) ∧ AppearInCompany(james)) ↔ (¬Manager(james) ∧ AppearInCompany(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
       "First-Order-Logic Question": "HaveLunchInCompany(james)"
-    },
-    "predicates": [
-      "ScheduleMeeting(x, y) ::: Employee x schedules a meeting with customer y.",
-      "AppearInCompany(x) ::: Employee x appears in the company today.",
-      "HaveLunchInCompany(x) ::: Employee x has lunch in the company.",
-      "HaveLunchAtHome(x) ::: Employee x has lunch at home.",
-      "WorkRemotelyFromHome(x) ::: Employee x works remotely from home.",
-      "InOtherCountries(x) ::: Employee x is in other countries.",
-      "Manager(x) ::: x is a manager.",
-      "James(x) ::: x is James."
-    ]
+    }
   },
   {
     "id": 4,
@@ -250,21 +240,9 @@
     "question": "Symptons of Monkeypox include coughing.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, monkeypoxvirus) ::: Monkeypox is an infectious disease caused by the monkeypox virus.\nVirus(monkeypoxvirus) ∧ OccurIn(monkeypoxvirus, humans) ::: Monkeypox virus can occur in certain animals, including humans.\nHuman(humans) ∧ Mammal(humans) ::: Humans are mammals.\nMammal(x) → Animal(x) ::: Mammals are animals.\nSymptom(monkeypox, fever) ∧ Symptom(monkeypox, headache) ∧ Symptom(monkeypox, musclepains) ∧ Symptom(monkeypox, feelingtired) ::: Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\n∀x (Feel(x, tired) → Get(x, glu)) ::: People feel tired when they get a glu.\n",
+      "First-Order-Logic Rules": "InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, monkeypoxvirus) ::: Monkeypox is an infectious disease caused by the monkeypox virus.\nVirus(monkeypoxvirus) ∧ OccurIn(monkeypoxvirus, humans) ::: Monkeypox virus can occur in certain animals, including humans.\nHuman(humans) ∧ Mammal(humans) ::: Humans are mammals.\nMammal(x) → Animal(x) ::: Mammals are animals.\nSymptom(monkeypox, fever) ∧ Symptom(monkeypox, headache) ∧ Symptom(monkeypox, musclepains) ∧ Symptom(monkeypox, feelingtired) ::: Symptoms of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\n∀x (Feel(x, tired) → Get(x, glu)) ::: People feel tired when they get a glu.",
       "First-Order-Logic Question": "∃x Symptom(monkeypox, coughing)"
-    },
-    "predicates": [
-      "InfectiousDisease(x) ::: x is an infectious disease.",
-      "CausedBy(x, y) ::: x is caused by y.",
-      "Virus(x) ::: x is a virus.",
-      "OccurIn(x, y) ::: x can occur in y.",
-      "Animal(x) ::: x is an animal.",
-      "Human(x) ::: x is a human.",
-      "Mammal(x) ::: x is a mammal.",
-      "Symptom(x, y) ::: x includes symptom y.",
-      "Feel(x, y) ::: x feels y.",
-      "Get(x, y) ::: x gets y."
-    ]
+    }
   },
   {
     "id": 9,
@@ -358,15 +336,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Create(japanesegamecompany, legendofzelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Sell(x, morethanonemillion) → Select(x, Top10)) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSell(legendofzelda, morethanonemillion) ::: The Legend of Zelda sold more than one million copies.\n∀x (Game(x) → Japanese(Create(x, y))) ::: All games in the Top 10 list are made by Japanese game companies.\n",
       "First-Order-Logic Question": "Select(legendofzelda, Top10)"
-    },
-    "predicates": [
-      "Create(x, y) ::: x created the game y.",
-      "Game(x) ::: x is a game.",
-      "Japanese(x) ::: x is a Japanese person or company.",
-      "Top10(x) ::: x is in the Top 10 list.",
-      "Sell(x, y) ::: x sells y copies.",
-      "Select(x, y) ::: x is selected into the list y."
-    ]
+    }
   },
   {
     "id": 13,
@@ -381,16 +351,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Create(japanesegamecompany, legendofzelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Sell(x, morethanonemillion) → Select(x, Top10(x))) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSell(legendofzelda, morethanonemillion) ::: The Legend of Zelda sold more than one million copies.\n∀x (Top10(x) → Japanese(MadeBy(fifa22, x))) ::: All games in the Top 10 list are made by Japanese game companies.\n",
       "First-Order-Logic Question": "Japanese(MadeBy(fifa22, videogamecompany)) ::: FIFA 22 is made by a Japanese video game company."
-    },
-    "predicates": [
-      "Create(x, y) ::: x created the game y.",
-      "Japanese(x) ::: x is a Japanese person or company.",
-      "Game(x) ::: x is a game.",
-      "Top10(x) ::: x is in the Top 10 list.",
-      "Sell(x, y) ::: x sells y copies.",
-      "Select(x, y) ::: x is selected into the Top 10 list.",
-      "MadeBy(x, y) ::: x is made by y."
-    ]
+    }
   },
   {
     "id": 14,
@@ -405,15 +366,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Create(japanesegamecompany, legendofzelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Top10(x) → Japanese(create(x, japanesegamecompany))) ::: All games in the Top 10 list are made by Japanese game companies.\nSell(legendofzelda, morethanonemillion) → Select(legendofzelda, Top10) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSell(legendofzelda, morethanonemillion) ::: The Legend of Zelda sold more than one million copies.\n",
       "First-Order-Logic Question": "¬Select(legendofzelda, Top10)"
-    },
-    "predicates": [
-      "Create(x, y) ::: x created y.",
-      "Game(x) ::: x is a game.",
-      "Top10(x) ::: x is in the Top 10 list.",
-      "Japanese(x) ::: x is a Japanese game company.",
-      "Sell(x, y) ::: x sells y copies.",
-      "Select(x, y) ::: x is selected into list y."
-    ]
+    }
   },
   {
     "id": 15,
@@ -530,17 +483,7 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Rabbit(x) → Cute(x)) ::: All rabbits are cute.\n∃x Turtle(x) ::: Some turtles exist.\n∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x))) ::: An animal is either a rabbit or a squirrel.\n∀x (Skittish(x) → ¬Still(x)) ::: If something is skittish, then it is not still.\n∀x (Squirrel(x) → Skittish(x)) ::: All squirrels are skittish.\nStill(rock) ::: Rock is still.\n¬(Turtle(rock) ∧ Squirrel(rock)) → (Cute(rock) ∨ Skittish(rock)) ::: If Rock is not both a turtle and a squirrel, then Rock is either cute or skittish."
-    },
-    "predicates": [
-      "Cute(x) ::: x is a cute rabbit.",
-      "Turtle(x) ::: x is a turtle.",
-      "Exist(x) ::: x exists.",
-      "Animal(x) ::: x is an animal.",
-      "Rabbit(x) ::: x is a rabbit.",
-      "Squirrel(x) ::: x is a squirrel.",
-      "Skittish(x) ::: x is skittish.",
-      "Still(x) ::: x is still."
-    ]
+    }
   },
   {
     "id": 20,
@@ -629,17 +572,9 @@
     "question": "Karen will share \"Black Mirror\" to Lisa.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Popular(x) → BingeWatch(karen, x) ::: If a Netflix show is popular, Karen will binge-watch it.\nBingeWatch(karen, x) ↔ Download(karen, x) ::: If and only if Karen binge-watches a Netflix show, she will download it.\nNotDownload(blackmirror) ::: Karen does not download 'Black Mirror'.\nNetflixShow(blackmirror) ::: 'Black Mirror' is a Netflix show.\nBingeWatch(karen, x) → Share(karen, lisa, x) ::: If Karen binge-watches a Netflix show, she will share it to Lisa.\n",
-      "First-Order-Logic Question": "Share(blackmirror, lisa)"
-    },
-    "predicates": [
-      "Popular(x) ::: x is a popular Netflix show.",
-      "BingeWatch(x) ::: Karen binge-watches x.",
-      "Download(x) ::: Karen downloads x.",
-      "Share(x, y) ::: Karen shares x to y.",
-      "NetflixShow(x) ::: x is a Netflix show.",
-      "NotDownload(x) ::: Karen does not download x."
-    ]
+      "First-Order-Logic Rules": "Popular(x) → BingeWatch(karen, x) ::: If a Netflix show is popular, Karen will binge-watch it.\nBingeWatch(karen, x) ↔ Download(karen, x) ::: Karen will download a Netflix show if and only if she binge-watches it.\nNotDownload(blackmirror) ::: Karen does not download 'Black Mirror'.\nNetflixShow(blackmirror) ::: 'Black Mirror' is a Netflix show.\nBingeWatch(karen, x) → ShareWith(karen, lisa, x) ::: If Karen binge-watches a Netflix show, she will share it with Lisa.",
+      "First-Order-Logic Question": "ShareWith(blackmirror, lisa, karen)"
+    }
   },
   {
     "id": 24,
@@ -808,20 +743,9 @@
     "question": "Djokovic is a Grand Slam champion.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (GrandSlamChampion(x) ∨ OscarNominee(x)) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → TennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (TennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaid(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaid(x) → LiveIn(x, TaxHaven)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → LiveIn(djokovic, WellPaid) ::: If Djokovic is famous and is an athlete, then Djokovic lives in well paid.\n",
+      "First-Order-Logic Rules": "∀x (GrandSlamChampion(x) ∨ OscarNominee(x)) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → TennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (TennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaidPerson(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaidPerson(x) → LiveIn(x, TaxHaven)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → LiveIn(djokovic, TaxHaven) ::: If Djokovic is famous and is an athlete, then Djokovic lives in a tax haven.",
       "First-Order-Logic Question": "GrandSlamChampion(djokovic)"
-    },
-    "predicates": [
-      "GrandSlamChampion(x) ::: x is a Grand Slam champion.",
-      "OscarNominee(x) ::: x is an Oscar-nominated actor.",
-      "TennisPlayer(x) ::: x is a professional tennis player.",
-      "Celebrity(x) ::: x is a celebrity.",
-      "Athlete(x) ::: x is an athlete.",
-      "WellPaid(x) ::: x is well paid.",
-      "Famous(x) ::: x is famous.",
-      "TaxHaven(x) ::: x lives in a tax haven.",
-      "LiveIn(x, y) ::: x lives in y."
-    ]
+    }
   },
   {
     "id": 31,
@@ -868,20 +792,9 @@
     "question": "Djokovic does not live in a tax haven.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (GrandSlamChampion(x) ∨ OscarNominee(x)) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → ProfessionalTennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (ProfessionalTennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaid(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaid(x) → LiveIn(x, TaxHaven)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → LiveIn(djokovic, WellPaid) ::: If Djokovic is famous and is an athlete, then Djokovic lives in well paid.\n",
+      "First-Order-Logic Rules": "∀x (GrandSlamChampion(x) ∨ OscarNominee(x)) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → ProfessionalTennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (ProfessionalTennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaid(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaid(x) → LiveIn(x, TaxHaven)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → LiveIn(djokovic, WellPaid) ::: If Djokovic is famous and is an athlete, then Djokovic lives in well paid.",
       "First-Order-Logic Question": "¬LiveIn(djokovic, TaxHaven)"
-    },
-    "predicates": [
-      "GrandSlamChampion(x) ::: x is a Grand Slam champion.",
-      "OscarNominee(x) ::: x is an Oscar-nominated actor.",
-      "ProfessionalTennisPlayer(x) ::: x is a professional tennis player.",
-      "Celebrity(x) ::: x is a celebrity.",
-      "Athlete(x) ::: x is an athlete.",
-      "WellPaid(x) ::: x is well paid.",
-      "Famous(x) ::: x is famous.",
-      "TaxHaven(x) ::: x lives in a tax haven.",
-      "LiveIn(x, y) ::: x lives in y."
-    ]
+    }
   },
   {
     "id": 33,
@@ -895,15 +808,8 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Stable(diamondMine) ∧ FormedIn(diamondMine, wwe) ::: Diamond Mine is a professional wrestling stable, formed in WWE.\nLead(roderickStrong, diamondMine) ::: Roderick Strong leads Diamond Mine.\nInclude(diamondMine, creedBrothers) ∧ Include(diamondMine, ivyNile) ::: Diamond Mine includes the Creed Brothers, and Ivy Nile.\nFeud(imperium, diamondMine) ::: Imperium has a feud with Diamond Mine.",
-      "First-Order-Logic Question": "Lead(roderickStrong, stable)"
-    },
-    "predicates": [
-      "Stable(x) ::: x is a professional wrestling stable.",
-      "FormedIn(x, y) ::: x is formed in y.",
-      "Lead(x, y) ::: x leads y.",
-      "Include(x, y) ::: x includes y.",
-      "Feud(x, y) ::: x has a feud with y."
-    ]
+      "First-Order-Logic Question": "Lead(roderickStrong, diamondMine)"
+    }
   },
   {
     "id": 34,
@@ -991,19 +897,9 @@
     "question": "Some orchestras premiered music pieces.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "MusicPiece(symphony9) ::: Symphony No. 9 is a music piece.\n∀x (Composer(x) → Write(x, MusicPiece)) ::: Composers write music pieces.\nWrite(beethoven, symphony9) ::: Beethoven wrote Symphony No. 9.\nPremiere(viennamusicsociety, symphony9) ∧ Orchestra(viennamusicsociety) ::: Vienna Music Society premiered Symphony No. 9.\nLead(beethoven, viennamusicsociety) ::: Beethoven leads the Vienna Music Society.\n∀x (Orchestra(x) → ∃y (Conductor(y) ∧ Lead(y, x))) ::: Orchestras are led by conductors.\n",
-      "First-Order-Logic Question": "∃x (Orchestra(x) ∧ Premiered(x, MusicPiece))"
-    },
-    "predicates": [
-      "MusicPiece(x) ::: x is a music piece.",
-      "Write(x, y) ::: x writes y.",
-      "Composer(x) ::: x is a composer.",
-      "Premiere(x, y) ::: x premiered y.",
-      "Orchestra(x) ::: x is an orchestra.",
-      "Lead(x, y) ::: x leads y.",
-      "Conductor(x) ::: x is a conductor.",
-      "Premiered(x, y) ::: x premiered y."
-    ]
+      "First-Order-Logic Rules": "MusicPiece(symphony9) ::: Symphony No. 9 is a music piece.\n∀x (Composer(x) → Write(x, symphony9)) ::: Composers write music pieces.\nWrite(beethoven, symphony9) ::: Beethoven wrote Symphony No. 9.\nPremiere(viennamusicsociety, symphony9) ∧ Orchestra(viennamusicsociety) ::: Vienna Music Society premiered Symphony No. 9.\nLead(beethoven, viennamusicsociety) ::: Beethoven leads the Vienna Music Society.\n∀x (Orchestra(x) → ∃y (Conductor(y) ∧ Lead(y, x))) ::: Orchestras are led by conductors.",
+      "First-Order-Logic Question": "∃x (Orchestra(x) ∧ Premiere(x, symphony9))"
+    }
   },
   {
     "id": 38,
@@ -1048,18 +944,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (DesignStyle(x, zahaHadid) → Timeless(x)) ::: All of Zaha Hadid's design styles are timeless.\n∀x (MassProductDesign(x) → ¬Timeless(x)) ::: No mass product design is timeless.\nDesignStyle(zahaHadid, zahaHadid) ∨ DesignStyle(kellyWearstler, kellyWearstler) ::: Either Zaha Hadid's design style or Kelly Wearstler's design style.\n∀x (DesignStyle(x, kellyWearstler) → Evocative(x)) ::: All of Kelly Wearstler's design styles are evocative.\n∀x (DesignStyle(x, kellyWearstler) → Dreamy(x)) ::: All of Kelly Wearstler's design styles are dreamy.\nTimeless(designBy(max)) → (MassProductDesign(designBy(max)) ∧ Evocative(designBy(max))) ::: If a design by Max is timeless, then a design by Max is a mass product design and evocative.\n",
       "First-Order-Logic Question": "MassProductDesign(designBy(max))"
-    },
-    "predicates": [
-      "Timeless(x) ::: x is timeless.",
-      "DesignStyle(x, y) ::: x is a design style of y.",
-      "MassProductDesign(x) ::: x is a mass product design.",
-      "Evocative(x) ::: x is evocative.",
-      "Dreamy(x) ::: x is dreamy.",
-      "ZahaHadid(x) ::: x is Zaha Hadid.",
-      "KellyWearstler(x) ::: x is Kelly Wearstler.",
-      "Max(x) ::: x is Max.",
-      "DesignBy(x, y) ::: x is a design by y."
-    ]
+    }
   },
   {
     "id": 40,
@@ -1103,18 +988,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (DesignStyle(x) ∧ ZahaHadid(x) → Timeless(x)) ::: All of Zaha Hadid's design styles are timeless.\n∀x (MassProduct(x) → ¬Timeless(x)) ::: No mass product design is timeless.\n(ZahaHadid(designStyle) ∨ KellyWearstler(designStyle)) ::: Either Zaha Hadid's design style or Kelly Wearstler's design style.\n∀x (DesignStyle(x) ∧ KellyWearstler(x) → Evocative(x)) ::: All of Kelly Wearstler's design styles are evocative.\n∀x (DesignStyle(x) ∧ KellyWearstler(x) → Dreamy(x)) ::: All of Kelly Wearstler's design styles are dreamy.\n∀x (Timeless(designBy(Max, x)) → (MassProduct(designBy(Max, x)) ∧ Evocative(designBy(Max, x)))) ::: If a design by Max is timeless, then a design by Max is a mass product design and evocative.\n",
       "First-Order-Logic Question": "Evocative(designBy(Max, x)) ∨ Dreamy(designBy(Max, x))"
-    },
-    "predicates": [
-      "Timeless(x) ::: x's design style is timeless.",
-      "DesignStyle(x) ::: x is a design style.",
-      "MassProduct(x) ::: x is a mass product design.",
-      "ZahaHadid(x) ::: x is Zaha Hadid.",
-      "KellyWearstler(x) ::: x is Kelly Wearstler.",
-      "Evocative(x) ::: x's design style is evocative.",
-      "Dreamy(x) ::: x's design style is dreamy.",
-      "Max(x) ::: x is Max.",
-      "DesignBy(x, y) ::: x's design is by y."
-    ]
+    }
   },
   {
     "id": 42,
@@ -1272,18 +1146,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Season(spring) ∧ Season(summer) ∧ Season(fall) ∧ Season(winter) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.\n∀x (Student(x) ∧ LongVacation(x) → Love(x, summer)) ::: All students who want to have a long vacation love summer the most.\nFavoriteSeason(emma, summer) ::: Emma's favorite season is summer.\nFavoriteSeason(mia, y) ∧ ¬(y = summer) ∧ y = spring ::: Mia's favorite season is not the same as Emma's.\nLongVacation(james) ::: James wants to have a long vacation.",
       "First-Order-Logic Question": "FavoriteSeason(mia, spring)"
-    },
-    "predicates": [
-      "Season(x) ::: x is a season.",
-      "Spring(x) ::: x is Spring.",
-      "Summer(x) ::: x is Summer.",
-      "Fall(x) ::: x is Fall.",
-      "Winter(x) ::: x is Winter.",
-      "Student(x) ::: x is a student.",
-      "Love(x, y) ::: x loves y.",
-      "FavoriteSeason(x, y) ::: x's favorite season is y.",
-      "LongVacation(x) ::: x wants to have a long vacation."
-    ]
+    }
   },
   {
     "id": 49,
@@ -1400,19 +1263,9 @@
     "question": "German is a Romance language.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nFrench(french) ∧ Spanish(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x∃y (Related(basque, x)) ::: Basque is not related to any other language.\n",
-      "First-Order-Logic Question": "Romance(german)"
-    },
-    "predicates": [
-      "IndoEuropean(x) ::: x is an Indo-European language.",
-      "Romance(x) ::: x is a Romance language.",
-      "LanguageFamily(x) ::: x is a language family.",
-      "Related(x, y) ::: x is related to y.",
-      "French(x) ::: x is French.",
-      "Spanish(x) ::: x is Spanish.",
-      "German(x) ::: x is German.",
-      "Basque(x) ::: x is Basque."
-    ]
+      "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nFrench(french) ∧ Spanish(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x∃y (Related(basque, x)) ::: Basque is not related to any other language.",
+      "First-Order-Logic Question": "¬Romance(german)"
+    }
   },
   {
     "id": 54,
@@ -1639,14 +1492,7 @@
     "answer": "C",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Cow(x) → Bovine(x)) ::: All cows are bovines.\n∃x (Pet(x) ∧ Cow(x)) ::: Some pets are cows.\n∀x (Bovine(x) → Domesticated(x)) ::: If something is a bovine, then it is domesticated.\n∀x (Domesticated(x) → ¬Alligator(x)) ::: No domesticated animals are alligators.\nAlligator(ted) ::: Ted is an alligator."
-    },
-    "predicates": [
-      "Cow(x) ::: x is a cow.",
-      "Bovine(x) ::: x is a bovine.",
-      "Pet(x) ::: x is a pet.",
-      "Domesticated(x) ::: x is domesticated.",
-      "Alligator(x) ::: x is an alligator."
-    ]
+    }
   },
   {
     "id": 64,
@@ -1661,14 +1507,7 @@
     "answer": "B",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Cow(x) → Bovine(x)) ::: All cows are bovines.\n∃x (Pet(x) ∧ Cow(x)) ::: Some pets are cows.\n∀x (Bovine(x) → Domesticated(x)) ::: If something is a bovine, then it is domesticated.\n∀x (Domesticated(x) → ¬Alligator(x)) ::: No domesticated animals are alligators.\nAlligator(ted) ::: Ted is an alligator."
-    },
-    "predicates": [
-      "Bovine(x) ::: x is a bovine.",
-      "Cow(x) ::: x is a cow.",
-      "Pet(x) ::: x is a pet.",
-      "Domesticated(x) ::: x is domesticated.",
-      "Alligator(x) ::: x is an alligator."
-    ]
+    }
   },
   {
     "id": 65,
@@ -1705,17 +1544,8 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "SitcomSeries(badults) ∧ Starring(badults, pappys) ::: Badults is a British Sitcom series, starring members of Pappy's.\nPiloted(badults, july2013) ::: Badults piloted in July 2013 on BBC Three.\nWorkingTitle(badults, secretDudeSociety) ::: The Working title 'The Secret Dude Society' was used for Badults.\nScriptEditor(andrewcollins, badults) ::: Andrew Collins was the script editor for Badults.",
-      "First-Order-Logic Question": "ScriptEditor(andrewcollins, Series(thesecretdudesociety))"
-    },
-    "predicates": [
-      "British(x) ::: x is British.",
-      "SitcomSeries(x) ::: x is a sitcom series.",
-      "Starring(x, y) ::: x stars members of y.",
-      "Piloted(x, y) ::: x piloted in year y.",
-      "WorkingTitle(x, y) ::: x has the working title y.",
-      "ScriptEditor(x, y) ::: x is the script editor for y.",
-      "Series(x) ::: x is a series."
-    ]
+      "First-Order-Logic Question": "ScriptEditor(y,z)∧Starring(y,z)"
+    }
   },
   {
     "id": 70,
@@ -1755,19 +1585,9 @@
     "question": "KO is a company stock.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirementFund(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (Stock(x) ∧ Company(y) ∧ GrowthStock(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirementFund(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nCompany(ko) ∧ MatureCompany(ko) ::: KO is a stock of a mature company.\n",
+      "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirementFund(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (Stock(x) ∧ Company(y) ∧ GrowthStock(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirementFund(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nCompany(ko) ∧ MatureCompany(ko) ::: KO is a stock of a mature company.",
       "First-Order-Logic Question": "CompanyStock(ko)"
-    },
-    "predicates": [
-      "GrowthStock(x) ::: x is a growth stock of companies.",
-      "Volatile(x) ::: x is volatile.",
-      "SuitableForRetirementFund(x) ::: x is suitable for a retirement fund.",
-      "Stock(x) ::: x is a stock.",
-      "Company(x) ::: x is a company.",
-      "MatureCompany(x) ::: x is a mature company.",
-      "KO(x) ::: x is KO.",
-      "CompanyStock(x) ::: x is a company stock."
-    ]
+    }
   },
   {
     "id": 72,
@@ -1806,19 +1626,9 @@
     "question": "If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirement(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Stock(x) ∧ Company(y) ∧ OfCompany(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirement(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nKO(ko) ∧ Stock(ko) ∧ MatureCompany(company) ∧ OfCompany(ko, company) ::: KO is a stock of a mature company.\n",
+      "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirement(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Stock(x) ∧ Company(y) ∧ CompanyOf(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirement(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nKO(ko) ∧ Stock(ko) ∧ MatureCompany(company) ∧ CompanyOf(ko, company) ::: KO is a stock of a mature company.",
       "First-Order-Logic Question": "(GrowthStock(ko) ∨ Volatile(ko)) → ¬(Stock(ko) ∨ Volatile(ko))"
-    },
-    "predicates": [
-      "GrowthStock(x) ::: x is a growth stock of a company.",
-      "Volatile(x) ::: x is volatile.",
-      "SuitableForRetirement(x) ::: x is suitable for a retirement fund.",
-      "Stock(x) ::: x is a stock.",
-      "Company(x) ::: x is a company.",
-      "MatureCompany(x) ::: x is a mature company.",
-      "KO(x) ::: x is KO stock.",
-      "OfCompany(x, y) ::: x is a stock of company y."
-    ]
+    }
   },
   {
     "id": 74,
@@ -1998,16 +1808,7 @@
         "(Spicy(driedThaiChilies) ∨ Bakery(driedThaiChilies)) → (Hotpot(driedThaiChilies) ∨ Spicy(driedThaiChilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy."
       ],
       "First-Order-Logic Question": "¬Product(DriedThaiChilies, BakedByMelissa)"
-    },
-    "predicates": [
-      "Spicy(x) ::: x is spicy.",
-      "Bakery(x) ::: x is a bakery.",
-      "Cupcake(x) ::: x is a cupcake.",
-      "Hotpot(x) ::: x is a hotpot.",
-      "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is from Baked by Melissa.",
-      "DriedThaiChilies(x) ::: x is dried Thai chilies."
-    ]
+    }
   },
   {
     "id": 81,
@@ -2023,16 +1824,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "¬∃x (Bakery(x) ∧ Spicy(x)) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (Product(x, BakedByMelissa(x)) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(x) ∨ Bakery(x)) → (Hotpot(x) ∨ Spicy(x)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
       "First-Order-Logic Question": "Hotpot(DriedThaiChilies)"
-    },
-    "predicates": [
-      "Spicy(x) ::: x is spicy.",
-      "Bakery(x) ::: x is a bakery.",
-      "Cupcake(x) ::: x is a cupcake.",
-      "Hotpot(x) ::: x is a hotpot.",
-      "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is baked by Melissa.",
-      "DriedThaiChilies(x) ::: x is dried Thai chilies."
-    ]
+    }
   },
   {
     "id": 82,
@@ -2046,18 +1838,9 @@
     "question": "Dried Thai chilies are neither a product of Baked by Melissa nor a bakery.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬∃x (Bakery(x) ∧ Spicy(x)) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (BakedByMelissa(x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(x) ∨ Bakery(x)) → (Hotpot(x) ∨ Spicy(x)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
-      "First-Order-Logic Question": "¬(Product(DriedThaiChilies, BakedByMelissa) ∨ Bakery(DriedThaiChilies))"
-    },
-    "predicates": [
-      "Spicy(x) ::: x is spicy.",
-      "Bakery(x) ::: x is a bakery.",
-      "Cupcake(x) ::: x is a cupcake.",
-      "Hotpot(x) ::: x is a hotpot.",
-      "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is a product of Baked by Melissa.",
-      "DriedThaiChilies(x) ::: x is dried Thai chilies."
-    ]
+      "First-Order-Logic Rules": "¬∃x (Bakery(x) ∧ Spicy(x)) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (BakedByMelissaProduct(x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(x) ∨ Bakery(x)) → (Hotpot(x) ∨ Spicy(x)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
+      "First-Order-Logic Question": "¬(BakedByMelissaProduct(DriedThaiChilies) ∨ Bakery(DriedThaiChilies))"
+    }
   },
   {
     "id": 83,
@@ -2071,18 +1854,9 @@
     "question": "Dried Thai chilies are cupcakes and a product of Baked by Melissa.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬∃x (Bakery(x) ∧ Spicy(x)) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (BakedByMelissa(x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(x) ∨ Bakery(x)) → (Hotpot(x) ∨ Spicy(x)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.",
-      "First-Order-Logic Question": "Cupcake(DriedThaiChilies) ∧ Product(DriedThaiChilies, BakedByMelissa)"
-    },
-    "predicates": [
-      "Spicy(x) ::: x is spicy.",
-      "Bakery(x) ::: x is a bakery.",
-      "Cupcake(x) ::: x is a cupcake.",
-      "Hotpot(x) ::: x is a hotpot.",
-      "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is from Baked by Melissa.",
-      "DriedThaiChilies(x) ::: x is dried Thai chilies."
-    ]
+      "First-Order-Logic Rules": "¬∃x (Bakery(x) ∧ Spicy(x)) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (BakedByMelissaProduct(x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChiliesProduct(x) ∨ Bakery(x)) → (Hotpot(x) ∨ Spicy(x)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.",
+      "First-Order-Logic Question": "Cupcake(DriedThaiChiliesProduct) ∧ BakedByMelissaProduct(DriedThaiChiliesProduct)"
+    }
   },
   {
     "id": 84,
@@ -2175,18 +1949,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (SuperheroMovie(x) → Win(x)) ::: In superhero movies, the good guys always win.\nSuperheroMovie(surprisingadventuresofsirdigbychickencaesar) ::: The Surprising Adventures of Sir Digby Chicken Caesar is a superhero movie.\n∀x (GoodGuy(x) → Fight(x, badguys) ∧ Fight(badguys, x)) ::: Good guys fight bad guys and vice versa.\nFight(sirdigby, nemesis) ::: Sir Digby fights his nemesis.\n∀x (SuperheroMovie(x) ∧ NamedAfter(x, y) → GoodGuy(y)) ::: If a superhero movie is named after a character, that character is a good guy.\nNamedAfter(surprisingadventuresofsirdigbychickencaesar, sirdigby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is named after Sir Digby.\n∀x (Win(x) → Lose(fighting(x))) ::: If somebody wins a fight, the person they are fighting loses.\n∀x (SuperheroMovie(x) ∧ NamedAfter(x, y) → AppearIn(y, x)) ::: If a superhero movie is named after a character, that character appears in the movie.\n",
       "First-Order-Logic Question": "Lose(nemesis)"
-    },
-    "predicates": [
-      "GoodGuy(x) ::: x is a good guy.",
-      "Win(x) ::: x wins.",
-      "SuperheroMovie(x) ::: x is a superhero movie.",
-      "NamedAfter(x, y) ::: x is named after y.",
-      "Character(x) ::: x is a character.",
-      "Fight(x, y) ::: x fights y.",
-      "Lose(x) ::: x loses.",
-      "Nemesis(x, y) ::: x is the nemesis of y.",
-      "AppearIn(x, y) ::: x appears in y."
-    ]
+    }
   },
   {
     "id": 88,
@@ -2201,14 +1964,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "[BG] ContainKnowledge(books) ::: Books contain tons of knowledge.\n[BG] ∀x,y (Reads(x, y) → GainKnowledge(x)) ::: When a person reads a book, that person gains knowledge.\n[BG] ∀x (GainKnowledge(x) → BecomeSmarter(x)) ::: If a person gains knowledge, they become smarter.\nReads(harry, walden) ::: Harry read the book “Walden” by Henry Thoreau.\n",
       "First-Order-Logic Question": "ContainKnowledge(walden)"
-    },
-    "predicates": [
-      "ContainKnowledge(x) ::: x contains tons of knowledge.",
-      "Reads(x, y) ::: x reads the book y.",
-      "GainKnowledge(x) ::: x gains knowledge.",
-      "BecomeSmarter(x) ::: x becomes smarter.",
-      "Book(x) ::: x is a book."
-    ]
+    }
   },
   {
     "id": 89,
@@ -2246,16 +2002,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Contains(books, knowledge) ::: [BG] Books contain tons of knowledge.\n∀x∀y (Person(x) ∧ Book(y) ∧ Reads(x, y) → Gains(x, Knowledge(y))) ::: [BG] When a person reads a book, that person gains knowledge.\n∀x (Gains(x, y) → Smarter(x)) ::: [BG] If a person gains knowledge, they become smarter.\nReads(harry, walden) ::: Harry read the book “Walden” by Henry Thoreau.\n",
       "First-Order-Logic Question": "∀x (Smarter(x) → Gains(x, Knowledge))"
-    },
-    "predicates": [
-      "Contains(x, y) ::: x contains y.",
-      "Reads(x, y) ::: x reads book y.",
-      "Gains(x, y) ::: x gains knowledge from y.",
-      "Smarter(x) ::: x is smarter.",
-      "Person(x) ::: x is a person.",
-      "Book(x) ::: x is a book.",
-      "Knowledge(x) ::: x has knowledge."
-    ]
+    }
   },
   {
     "id": 91,
@@ -2268,16 +2015,9 @@
     "question": "Machine translation is a language generation task.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "NLP(languagegeneration) ∨ NLP(languageunderstanding) ::: Natural language processing tasks can be categorized as either language generation task or language understanding task.\n∀x (OutputIsText(x) → LanguageGeneration(x)) ::: If the output of a natural language processing task is a text sequence, then it is a language generation task.\nMachineTranslation(machineTranslation) ∧ NLP(machineTranslation) ::: Machine translation is a natural language processing task.\nOutputIsText(machineTranslation) ::: The output of machine translation is a text sequence.\n",
+      "First-Order-Logic Rules": "NLP(languagegeneration) ∨ NLP(languageunderstanding) ::: Natural language processing tasks can be categorized as either language generation task or language understanding task.\n∀x (OutputIsText(x) → LanguageGeneration(x)) ::: If the output of a natural language processing task is a text sequence, then it is a language generation task.\nMachineTranslation(machineTranslation) ∧ NLP(machineTranslation) ::: Machine translation is a natural language processing task.\nOutputIsText(machineTranslation) ::: The output of machine translation is a text sequence.",
       "First-Order-Logic Question": "MachineTranslation(machineTranslation) → LanguageGeneration(machineTranslation)"
-    },
-    "predicates": [
-      "LanguageGeneration(x) ::: x is a language generation task.",
-      "LanguageUnderstanding(x) ::: x is a language understanding task.",
-      "OutputIsText(x) ::: x is a text sequence.",
-      "NLP(x) ::: x is a natural language processing task.",
-      "MachineTranslation(x) ::: x is machine translation."
-    ]
+    }
   },
   {
     "id": 92,
@@ -2297,15 +2037,7 @@
         "Output(machineTranslation, textSequence) ::: The output of machine translation is a text sequence."
       ],
       "First-Order-Logic Question": "LanguageUnderstanding(machineTranslation) ::: Machine translation is a language understanding task."
-    },
-    "predicates": [
-      "LanguageGeneration(x) ::: x is a language generation task.",
-      "LanguageUnderstanding(x) ::: x is a language understanding task.",
-      "NLPTask(x) ::: x is a natural language processing task.",
-      "TextSequence(x) ::: x is a text sequence.",
-      "Output(x, y) ::: x is the output of y.",
-      "MachineTranslation(x) ::: x is machine translation."
-    ]
+    }
   },
   {
     "id": 93,
@@ -2323,24 +2055,9 @@
     "question": "Tom will rent an apartment in The Olive Garden.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Pet(cat) ::: Cats are pets.\n∃x (ManagedBuilding(x) ∧ Building(olivegarden, x)) ::: The Olive Garden is a managed building.\nRentAmount($2000, olivegarden) ::: The monthly rent at the Olive Garden is $2000.\nOwner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x (Pet(x) → ManagedBuilding(y) → AllowedToMoveInWith(tom, x)) ∧ SecurityDeposit(z) ∧ (Equal(z, $1500) ∨ MoreThan(z, $1500)) → RentApartment(tom) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan($2000, $1500) ::: 2000$ is more than $1500.\nDepositRequired(olivegarden) ::: A deposit is required to rent an apartment in a managed building.\n",
+      "First-Order-Logic Rules": "Pet(cat) ::: Cats are pets.\n∃x (ManagedBuilding(x) ∧ Building(olivegarden, x)) ::: The Olive Garden is a managed building.\nRentAmount($2000, olivegarden) ::: The monthly rent at the Olive Garden is $2000.\nOwner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x ((Pet(x) → ManagedBuilding(y) → AllowedToMoveInWith(tom, x)) ∧ SecurityDeposit(z) ∧ (Equal(z, $1500) ∨ MoreThan(z, $1500)) → RentApartment(tom)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan($2000, $1500) ::: 2000$ is more than $1500.\nDepositRequired(olivegarden) ::: A deposit is required to rent an apartment in a managed building.",
       "First-Order-Logic Question": "RentApartment(tom)"
-    },
-    "predicates": [
-      "Pet(x) ::: x is a pet.",
-      "ManagedBuilding(x) ::: x is a managed building.",
-      "RentApartment(x) ::: x rents an apartment.",
-      "DepositRequired(x) ::: x requires a deposit to rent an apartment.",
-      "SecurityDeposit(x) ::: x is a security deposit.",
-      "Equal(x, y) ::: x is equal to y.",
-      "MoreThan(x, y) ::: x is more than y.",
-      "Cat(x) ::: x is a cat.",
-      "Owner(x, y) ::: x is the owner of y.",
-      "Building(x, y) ::: x is a building named y.",
-      "RentAmount(x, y) ::: x is the monthly rent at building y.",
-      "MoveInWith(x, y) ::: x moves in with y.",
-      "AllowedToMoveInWith(x, y) ::: x is allowed to move in with y."
-    ]
+    }
   },
   {
     "id": 94,
@@ -2394,20 +2111,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Pet(x) → AllowedIn(x, managedbuilding)) ::: Pets are allowed in some managed buildings.\n∀x (RequireDeposit(x) → RentApartment(managedbuilding, x)) ::: A deposit is required to rent an apartment in a managed building.\n∀x (SecurityDeposit(x, onemonthsrent) ∨ MoreThan(x, onemonthsrent)) ::: The security deposit can be either equal to one month's rent or more.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x (Cat(x) → Pet(x)) ::: Cats are pets.\nManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.\nMonthlyRent(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, managedbuilding) ↔ (AllowedIn(fluffy, managedbuilding) ∧ SecurityDeposit(olivegarden, lessthan1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
       "First-Order-Logic Question": "SecurityDeposit(olivegarden, onemonthsrent) ∨ MoreThan(SecurityDeposit(olivegarden, onemonthsrent))"
-    },
-    "predicates": [
-      "Pet(x) ::: x is a pet.",
-      "AllowedIn(x, y) ::: x is allowed in y.",
-      "RequireDeposit(x) ::: x requires a deposit.",
-      "RentApartment(x, y) ::: x rents an apartment in y.",
-      "SecurityDeposit(x, y) ::: x is the security deposit for y.",
-      "Equal(x, y) ::: x is equal to y.",
-      "MoreThan(x, y) ::: x is more than y.",
-      "Cat(x) ::: x is a cat.",
-      "Owner(x, y) ::: x is the owner of y.",
-      "ManagedBuilding(x) ::: x is a managed building.",
-      "MonthlyRent(x, y) ::: x has a monthly rent of y."
-    ]
+    }
   },
   {
     "id": 96,
@@ -2422,19 +2126,9 @@
     "question": "Koalas love to sleep.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (LovedBy(x, tourists) → Favorite(x, max)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Australia(x) → LovedBy(x, tourists)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Australia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(x, max) ∧ Fluffy(x)) ::: All of Max's favorite animals are very fluffy.\n∀x (Favorite(x, max) ∧ Sleep(x)) ::: All of Max's favorite animals love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n",
+      "First-Order-Logic Rules": "∀x (LovedBy(x, tourists) → Favorite(x, max)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Australia(x) → LovedBy(x, tourists)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Australia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(x, max) ∧ Fluffy(x)) ::: All of Max's favorite animals are very fluffy.\n∀x (Favorite(x, max) ∧ Sleep(x)) ::: All of Max's favorite animals love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.",
       "First-Order-Logic Question": "Sleep(koala) ::: Koalas love to sleep."
-    },
-    "predicates": [
-      "LovedBy(x, y) ::: x is loved by y.",
-      "Favorite(x, y) ::: x is y's favorite.",
-      "Max ::: Max.",
-      "Australia(x) ::: x is from Australia.",
-      "Quokka(x) ::: x is a quokka.",
-      "Fluffy(x) ::: x is very fluffy.",
-      "Sleep(x) ::: x loves to sleep.",
-      "Koala(x) ::: x is a koala."
-    ]
+    }
   },
   {
     "id": 97,
@@ -2449,20 +2143,9 @@
     "question": "Koalas love to sleep and are quokka.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x ∀y (LovedBy(x, y) → FavoriteOf(x, max)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (FromAustralia(x) → LovedBy(x, tourists)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animals(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (FavoriteOf(x, max) → (Fluffy(x) ∧ Sleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) → Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n",
-      "First-Order-Logic Question": "Sleep(koala) ∧ Quokka(koala) ::: Koalas love to sleep and are quokka."
-    },
-    "predicates": [
-      "LovedBy(x, y) ::: x is loved by y.",
-      "FavoriteOf(x, y) ::: x is a favorite of y.",
-      "Max ::: Max is a person.",
-      "Animals(x) ::: x is an animal.",
-      "FromAustralia(x) ::: x is from Australia.",
-      "Quokka(x) ::: x is a quokka.",
-      "Fluffy(x) ::: x is very fluffy.",
-      "Sleep(x) ::: x loves to sleep.",
-      "Koala(x) ::: x is a koala."
-    ]
+      "First-Order-Logic Rules": "∀x ∀y (LovedBy(x, y) → FavoriteOf(x, max)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (FromAustralia(x) → LovedBy(x, tourists)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animals(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (FavoriteOf(x, max) → (Fluffy(x) ∧ Sleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) → Fluffy(x) ∧ ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.",
+      "First-Order-Logic Question": "Sleep(koala) ∧ Koala(koala) ::: Koalas love to sleep and are koalas."
+    }
   },
   {
     "id": 99,
@@ -2554,16 +2237,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x ((Twins(x) ∨ Triplets(x)) → SpendTimeWith(x, Siblings(x))) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → (Twins(x) ∨ Triplets(x))) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, FamilyMembers(x))) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, Siblings(x)) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∨ Triplets(luke)) ⊕ DevelopBonds(luke, FamilyMembers(luke)) ⊕ ¬(Twins(luke) ∨ Triplets(luke)) ∨ ¬DevelopBonds(luke, FamilyMembers(luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
       "First-Order-Logic Question": "SpendTimeWith(luke, Siblings(luke))"
-    },
-    "predicates": [
-      "Twins(x) ::: x is a twin.",
-      "Triplets(x) ::: x is a triplet.",
-      "SpendTimeWith(x, y) ::: x spends a lot of time hanging out with and playing with y.",
-      "Siblings(x, y) ::: x has siblings who are the same age as y.",
-      "Complain(x) ::: x complains often about annoying siblings.",
-      "DevelopBonds(x, y) ::: x develops strong bonds with y.",
-      "LiveAtHome(x) ::: x lives at home regularly."
-    ]
+    }
   },
   {
     "id": 103,
@@ -2580,16 +2254,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x ((Twins(x) ∨ Triplets(x)) → SpendTimeWith(x, Siblings(x))) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → (Twins(x) ∨ Triplets(x))) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, FamilyMembers(x))) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, Siblings(x)) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, FamilyMembers(luke))) ⊕ ¬(Twins(luke) ∨ DevelopBonds(luke, FamilyMembers(luke))) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
       "First-Order-Logic Question": "Complain(luke)"
-    },
-    "predicates": [
-      "Twins(x) ::: x is a twin.",
-      "Triplets(x) ::: x is a triplet.",
-      "SpendTimeWith(x, y) ::: x spends a lot of time hanging out with and playing with y.",
-      "Siblings(x, y) ::: x has siblings who are the same age as y.",
-      "Complain(x) ::: x complains often about annoying siblings.",
-      "DevelopBonds(x, y) ::: x develops strong bonds with y.",
-      "LiveAtHome(x) ::: x lives at home regularly."
-    ]
+    }
   },
   {
     "id": 104,
@@ -2606,17 +2271,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, Siblings(x))) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) ∧ Siblings(x, z) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → ∃y (Siblings(x, y) ∧ Siblings(x, z))) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, FamilyMembers(x))) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, Siblings(x)) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∨ Triplets(luke)) ⊕ DevelopBonds(luke, FamilyMembers(luke)) ⊕ ¬(Twins(luke) ∨ Triplets(luke) ∨ DevelopBonds(luke, FamilyMembers(luke))) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
       "First-Order-Logic Question": "¬(Twins(luke) ∨ Triplets(luke) ∨ Complain(luke))"
-    },
-    "predicates": [
-      "Twins(x) ::: x is a twin.",
-      "Triplets(x) ::: x is a triplet.",
-      "SpendTimeWith(x, y) ::: x spends a lot of time hanging out with and playing with y.",
-      "Siblings(x, y) ::: x has siblings who are the same age as y.",
-      "Complain(x) ::: x complains often about annoying siblings.",
-      "LiveAtHome(x) ::: x lives at home regularly.",
-      "DevelopBonds(x, y) ::: x develops strong bonds with y.",
-      "Luke(x) ::: x is Luke."
-    ]
+    }
   },
   {
     "id": 105,
@@ -2658,14 +2313,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Cost(205, gretest) ::: It costs US $205 to take the GRE test.\nProvideFinancialAid(applicant, economichardship) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (DifficultyCausedByLittleMoney(x) ∨ DifficultyCausedByFewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(tom'sdad, 1) ::: His dad has been out of work for more than a year.\n",
       "First-Order-Logic Question": "∃x (Cost(x, gretest) ∧ x < 300)"
-    },
-    "predicates": [
-      "Cost(x, y) ::: It costs x to take the GRE test.",
-      "ProvideFinancialAid(x, y) ::: ETS provides financial aid to x who prove economic hardship.",
-      "EconomicHardship(x) ::: x refers to difficulty caused by having too little money or too few resources.",
-      "SingleParent(x) ::: x lives in a single-parent family.",
-      "OutOfWork(x, y) ::: x has been out of work for more than y."
-    ]
+    }
   },
   {
     "id": 107,
@@ -2706,19 +2354,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (SpillFood(x) → (¬TidySpaces(x) ∧ ¬EnjoyCleaning(x))) ::: If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.\n∀x (Foodie(x) ∧ GoOut(x) → SpillFood(x)) ::: All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.\n∀x (OnlyChild(x) → (TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.\n∀x (BusyParents(x) → OnlyChild(x)) ::: If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.\n∀x (HighIncomeHousehold(x) → BusyParents(x)) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.\n(Person(peter) ∧ (SpillFood(peter) ∧ OnlyChild(peter))) ⊕ ¬((SpillFood(peter) ∨ OnlyChild(peter)) ::: Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings.\n",
       "First-Order-Logic Question": "TidySpaces(peter) ∧ EnjoyCleaning(peter)"
-    },
-    "predicates": [
-      "SpillFood(x) ::: x spills a lot of food on their clothing.",
-      "TidySpaces(x) ::: x tidies their spaces consistently.",
-      "EnjoyCleaning(x) ::: x enjoys the process of cleaning.",
-      "Foodie(x) ::: x is a foodie.",
-      "GoOut(x) ::: x goes out frequently to find new food restaurants to try.",
-      "OnlyChild(x) ::: x grew up as an only child with no siblings.",
-      "BusyParents(x) ::: x has parents who are very busy with their regular jobs.",
-      "HighIncomeHousehold(x) ::: x is a household with a high net income.",
-      "Person(x) ::: x is a person.",
-      "Peter ::: a specific person named Peter."
-    ]
+    }
   },
   {
     "id": 109,
@@ -2764,19 +2400,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (SpillFood(x) → (¬TidySpaces(x) ∧ ¬EnjoyCleaning(x))) ::: If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.\n∀x (Foodie(x) ∧ FindNewRestaurants(x) → SpillFood(x)) ::: All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.\n∀x (OnlyChild(x) → (TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.\n∀x (BusyParents(x) → OnlyChild(x)) ::: If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.\n∀x (HighIncomeHousehold(x) → BusyParents(BelongTo(x, y))) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.\nSpillFood(peter) ⊕ OnlyChild(peter) → (SpillFood(peter) ∧ OnlyChild(peter)) ∨ (¬SpillFood(peter) ∧ ¬OnlyChild(peter)) ::: Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings.\n",
       "First-Order-Logic Question": "((Foodie(peter) ∧ FindNewRestaurants(peter)) ∧ HighIncomeHousehold(BelongTo(peter, y))) ∨ ((Foodie(peter) ∧ FindNewRestaurants(peter)) ∧ ¬HighIncomeHousehold(BelongTo(peter, y)))"
-    },
-    "predicates": [
-      "SpillFood(x) ::: x spills a lot of food on their clothing.",
-      "TidySpaces(x) ::: x tidies their spaces consistently.",
-      "EnjoyCleaning(x) ::: x enjoys the process of cleaning.",
-      "Foodie(x) ::: x is a foodie.",
-      "FindNewRestaurants(x) ::: x goes out frequently to find new food restaurants to try.",
-      "OnlyChild(x) ::: x grew up as an only child with no siblings.",
-      "BusyParents(x) ::: x has parents who are very busy with their regular jobs.",
-      "HighIncomeHousehold(x) ::: x belongs to a household with a high net income.",
-      "BelongTo(x, y) ::: x belongs to y.",
-      "Peter(x) ::: x is Peter."
-    ]
+    }
   },
   {
     "id": 111,
@@ -2814,15 +2438,7 @@
         "∀x (MountainRange(x) ∧ Location(x, texas) → ¬∃y (HasMine(x, y) ∧ Donated(y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
       ],
       "First-Order-Logic Question": "∃x (MountainRange(x) ∧ Location(x, texas) ∧ Visited(juanDeOnate, x)) ::: Juan de Onate visited a mountain range in Texas."
-    },
-    "predicates": [
-      "MountainRange(x) ::: x is a mountain range.",
-      "Location(x, y) ::: x is located in y.",
-      "Visited(x, y) ::: x visited y.",
-      "Donated(x) ::: x was donated.",
-      "Mine(x) ::: x is a mine.",
-      "HasMine(x, y) ::: x has a mine in y."
-    ]
+    }
   },
   {
     "id": 115,
@@ -2840,16 +2456,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, then x is taller than z.\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\nMan(michael) ∧ ∀x (Shoot(x) ∧ ¬ Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬ Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
       "First-Order-Logic Question": "∃x (Man(x) ∧ Classmate(x, michael) ∧ Taller(michael, x) ∧ Taller(x, peter)) ::: Peter is shorter than a man in Michael's class."
-    },
-    "predicates": [
-      "Taller(x, y) ::: x is taller than y.",
-      "Block(x, y) ::: x can block y's shooting.",
-      "Man(x) ::: x is a man.",
-      "Classmate(x, y) ::: x is a classmate of y.",
-      "Shoot(x) ::: x is shooting.",
-      "Jump(x) ::: x is jumping.",
-      "GreatShooter(x) ::: x is a great shooter."
-    ]
+    }
   },
   {
     "id": 116,
@@ -2867,17 +2474,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, then x is taller than z.\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\nMan(michael) ∧ ∀x (Shoot(x) ∧ ¬ Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬ Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
       "First-Order-Logic Question": "GreatShooter(windy)"
-    },
-    "predicates": [
-      "Taller(x, y) ::: x is taller than y.",
-      "Block(x, y) ::: x can block y's shooting.",
-      "Man(x) ::: x is a man.",
-      "Classmate(x, y) ::: x is a classmate of y.",
-      "Shoot(x) ::: x is shooting.",
-      "Jump(x) ::: x is jumping.",
-      "Blockable(x, y) ::: x can be blocked by y.",
-      "GreatShooter(x) ::: x is a great shooter."
-    ]
+    }
   },
   {
     "id": 117,
@@ -2895,19 +2492,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, then x is taller than z.\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\nMan(michael) ∧ Shooter(x) ∧ ¬ Jump(x) → Block(michael, x) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬ Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Shooter(x) ∧ Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
       "First-Order-Logic Question": "Block(peter, windy)"
-    },
-    "predicates": [
-      "Taller(x, y) ::: x is taller than y.",
-      "Block(x, y) ::: x can block y's shooting.",
-      "Man(x) ::: x is a man.",
-      "Classmate(x, y) ::: x is a classmate of y.",
-      "Michael ::: Constant representing a person named Michael.",
-      "Peter ::: Constant representing a person named Peter.",
-      "Windy ::: Constant representing a person named Windy.",
-      "Jump(x) ::: x can jump.",
-      "Shooter(x) ::: x is a shooter.",
-      "GreatShooter(x) ::: x is a great shooter."
-    ]
+    }
   },
   {
     "id": 118,
@@ -3021,15 +2606,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
       "First-Order-Logic Question": "Airline(greyhound)"
-    },
-    "predicates": [
-      "Transport(x) ::: x can transport multiple passengers.",
-      "Empty(x) ::: x is empty.",
-      "Airline(x) ::: x is an airline.",
-      "Plane(x) ::: x is a plane.",
-      "Boeing707(x) ::: x is a Boeing 707.",
-      "Greyhound(x) ::: x is Greyhound."
-    ]
+    }
   },
   {
     "id": 123,
@@ -3045,15 +2622,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Transport(x) → ¬NotEmpty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
       "First-Order-Logic Question": "Boeing707(greyhound) ::: A Greyhound is a Boeing 707."
-    },
-    "predicates": [
-      "Transport(x) ::: x can transport multiple passengers.",
-      "NotEmpty(x) ::: x is not empty.",
-      "Airline(x) ::: x is an airline.",
-      "Plane(x) ::: x is a plane.",
-      "Boeing707(x) ::: x is a Boeing 707.",
-      "Greyhound(x) ::: x is a Greyhound."
-    ]
+    }
   },
   {
     "id": 124,
@@ -3069,15 +2638,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
       "First-Order-Logic Question": "¬(Greyhound(greyhound) ∧ Boeing707(greyhound)) ::: A Greyhound is not a Boeing 707."
-    },
-    "predicates": [
-      "Transport(x) ::: x can transport multiple passengers.",
-      "Empty(x) ::: x is empty.",
-      "Airline(x) ::: x is an airline.",
-      "Plane(x) ::: x is a plane.",
-      "Boeing707(x) ::: x is a Boeing 707.",
-      "Greyhound(x) ::: x is a Greyhound."
-    ]
+    }
   },
   {
     "id": 126,
@@ -3227,18 +2788,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (OccurIn(x, July) ∧ BelongTo(x, TravelToParisForHoneymoon(x))) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (HaveWedding(x) ∧ OccurIn(x, July) ∧ Attend(x)) ::: Some weddings in July are well-attended.\nHaveChild(john) → ¬(TravelToParisForHoneymoon(john) ∧ HaveWedding(john)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\n(WellAttended(john) → (HaveWedding(john) ∧ OccurIn(john, July))) ∨ (¬OccurIn(john, July) → TravelToParisForHoneymoon(john)) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.\n",
       "First-Order-Logic Question": "¬(WellAttended(john) ∨ TravelToParisForHoneymoon(john))"
-    },
-    "predicates": [
-      "HaveWedding(x) ::: x is a person who has a wedding.",
-      "HaveChild(x) ::: x is a person who has at least one child.",
-      "TravelToParisForHoneymoon(x) ::: x is a person who travels to Paris for their honeymoon.",
-      "BelongTo(x, y) ::: x belongs to y.",
-      "OccurIn(x, y) ::: x occurs in month y.",
-      "WellAttended(x) ::: x is a wedding that is well-attended.",
-      "July(x) ::: x occurs in July.",
-      "Attend(x) ::: x is well-attended.",
-      "John(x) ::: x is John."
-    ]
+    }
   },
   {
     "id": 132,
@@ -3253,12 +2803,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HaveTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HaveTeeth(x)) ::: Platypus have no teeth.\nPlatypus(platypus) ∧ Mammal(platypus) ::: Platypus are mammals.\nHaveTeeth(humans) ::: Humans have teeth.",
       "First-Order-Logic Question": "Platypus(platypus) ∧ Mammal(platypus) ∧ ¬∃x (Platypus(x) ∧ HaveTeeth(x)) ::: Platypus are mammals with no teeth."
-    },
-    "predicates": [
-      "HaveTeeth(x) ::: x has teeth.",
-      "Mammal(x) ::: x is a mammal.",
-      "Platypus(x) ::: x is a platypus."
-    ]
+    }
   },
   {
     "id": 133,
@@ -3271,16 +2816,9 @@
     "question": "Platypus are reptiles.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HaveTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HaveTeeth(x)) ::: Platypus have no teeth.\nPlatypus(platypus) ∧ Mammal(platypus) ::: Platypus are mammals.\nHuman(human) ∧ HaveTeeth(human) ::: Humans have teeth.\n",
-      "First-Order-Logic Question": "¬(Reptile(platypus))"
-    },
-    "predicates": [
-      "HaveTeeth(x) ::: x has teeth.",
-      "Mammal(x) ::: x is a mammal.",
-      "Platypus(x) ::: x is a platypus.",
-      "Human(x) ::: x is a human.",
-      "Reptile(x) ::: x is a reptile."
-    ]
+      "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HaveTeeth(x)) ::: Some mammals have teeth.\n∼∃x (Platypus(x) ∧ HaveTeeth(x)) ::: Platypus have no teeth.\nPlatypus(platypus) ∧ Mammal(platypus) ::: Platypus are mammals.\nHuman(human) ∧ HaveTeeth(human) ::: Humans have teeth.",
+      "First-Order-Logic Question": "∼(Reptile(platypus))"
+    }
   },
   {
     "id": 134,
@@ -3293,15 +2831,9 @@
     "question": "Humans are mammals.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HasTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HasTeeth(x)) ::: Platypus have no teeth.\nPlatypus(platypus) ∧ Mammal(platypus) ::: Platypus are mammals.\nHasTeeth(humans) ::: Humans have teeth.",
-      "First-Order-Logic Question": "Mammal(humans)"
-    },
-    "predicates": [
-      "HasTeeth(x) ::: x has teeth.",
-      "Mammal(x) ::: x is a mammal.",
-      "Platypus(x) ::: x is a platypus.",
-      "Human(x) ::: x is a human."
-    ]
+      "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HasTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HasTeeth(x)) ::: Platypus have no teeth.\nPlatypus(platypus) ∧ Mammal(platypus) ::: Platypus are mammals.\nHasTeeth(human) ::: Humans have teeth.",
+      "First-Order-Logic Question": "Mammal(human)"
+    }
   },
   {
     "id": 135,
@@ -3315,18 +2847,9 @@
     "question": "Space sucks.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Suck(plunger) ::: Plungers suck.\nSuck(vacuum) ::: Vacuums suck.\nSuck(vampire) ::: Vampires suck.\nSpace(space) ∧ Vacuum(space) ::: Space is a vacuum.\nHouseholdAppliance(duster) ∧ Duster(duster) ∧ ¬Suck(duster) ::: A duster is a household appliance that doesn't suck.\n",
+      "First-Order-Logic Rules": "Suck(plunger) ::: Plungers suck.\nSuck(vacuum) ::: Vacuums suck.\nSuck(vampire) ::: Vampires suck.\nSpace(space) ∧ Vacuum(space) ::: Space is a vacuum.\nHouseholdAppliance(duster) ∧ Duster(duster) ∧ ¬Suck(duster) ::: A duster is a household appliance that doesn't suck.",
       "First-Order-Logic Question": "Suck(space) ::: Space sucks."
-    },
-    "predicates": [
-      "Suck(x) ::: x sucks.",
-      "Plunger(x) ::: x is a plunger.",
-      "Vacuum(x) ::: x is a vacuum.",
-      "Vampire(x) ::: x is a vampire.",
-      "Space(x) ::: x is space.",
-      "HouseholdAppliance(x) ::: x is a household appliance.",
-      "Duster(x) ::: x is a duster."
-    ]
+    }
   },
   {
     "id": 136,
@@ -3342,16 +2865,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "Suck(plunger) ::: Plungers suck.\nSuck(vacuum) ::: Vacuums suck.\nSuck(vampire) ::: Vampires suck.\nSpace(space) ∧ Vacuum(space) ::: Space is a vacuum.\nHouseholdAppliance(duster) ∧ Duster(duster) ∧ ¬Suck(duster) ::: A duster is a household appliance that doesn't suck.",
       "First-Order-Logic Question": "Space(space) ↔ Vampire(space) ::: Space is a vampire."
-    },
-    "predicates": [
-      "Suck(x) ::: x sucks.",
-      "Plunger(x) ::: x is a plunger.",
-      "Vacuum(x) ::: x is a vacuum.",
-      "Vampire(x) ::: x is a vampire.",
-      "Space(x) ::: x is space.",
-      "HouseholdAppliance(x) ::: x is a household appliance.",
-      "Duster(x) ::: x is a duster."
-    ]
+    }
   },
   {
     "id": 137,
@@ -3365,18 +2879,9 @@
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Suck(plunger) ∧ Plunger(plunger) ::: Plungers suck.\nSuck(vacuum) ∧ Vacuum(vacuum) ::: Vacuums suck.\nSuck(vampire) ∧ Vampire(vampire) ::: Vampires suck.\nSpace(space) ∧ Vacuum(space) ::: Space is a vacuum.\nHouseholdAppliance(duster) ∧ Duster(duster) ∧ ¬Suck(duster) ::: A duster is a household appliance that doesn't suck.\n∀x (HouseholdAppliance(x) → Suck(x)) ::: If something is a household appliance, it sucks.\n",
+      "First-Order-Logic Rules": "Suck(plunger) ∧ Plunger(plunger) ::: Plungers suck.\nSuck(vacuum) ∧ Vacuum(vacuum) ::: Vacuums suck.\nSuck(vampire) ∧ Vampire(vampire) ::: Vampires suck.\nSpace(space) ∧ Vacuum(space) ::: Space is a vacuum.\nHouseholdAppliance(duster) ∧ Duster(duster) ∧ ¬Suck(duster) ::: A duster is a household appliance that doesn't suck.\n∀x (HouseholdAppliance(x) → Suck(x)) ::: If something is a household appliance, it sucks.",
       "First-Order-Logic Question": "∀x (HouseholdAppliance(x) → Suck(x))"
-    },
-    "predicates": [
-      "Suck(x) ::: x sucks.",
-      "Plunger(x) ::: x is a plunger.",
-      "Vacuum(x) ::: x is a vacuum.",
-      "Vampire(x) ::: x is a vampire.",
-      "Space(x) ::: x is space.",
-      "HouseholdAppliance(x) ::: x is a household appliance.",
-      "Duster(x) ::: x is a duster."
-    ]
+    }
   },
   {
     "id": 140,
@@ -3468,18 +2973,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "BreedingBack(x) ↔ (∃y,z (SelectiveBreeding(x, y) ∧ DomesticAnimal(y) ∧ Animal(z) ∧ Resemble(z, y))) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nSelectiveBreeding(heckcattle, aurochs) ∧ HeckCattle(heckcattle) ∧ Aurochs(aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heckcattle) ∧ Animal(aurochs) ::: Heck cattle are animals.\nAnimal(aurochs) ::: Aurochs are animals.\n∃x,y (Animal(x) ∧ BreedingBack(y) ∧ Resemble(x, y) ∧ Extinct(x)) ::: Some animals to be bred-back resemble animals that are extinct.",
       "First-Order-Logic Question": "∃x (HeckCattle(x) ∧ ArtificiallySelected(x)) ::: Some Heck cattle are artificially selected."
-    },
-    "predicates": [
-      "BreedingBack(x) ::: x is a form of artificial selection by the deliberate selective breeding of domestic animals.",
-      "SelectiveBreeding(x, y) ::: x is selectively bred to resemble y.",
-      "DomesticAnimal(x) ::: x is a domestic animal.",
-      "HeckCattle(x) ::: x is Heck cattle.",
-      "Aurochs(x) ::: x is an aurochs.",
-      "Animal(x) ::: x is an animal.",
-      "Resemble(x, y) ::: x resembles y.",
-      "Extinct(x) ::: x is extinct.",
-      "ArtificiallySelected(x) ::: x is artificially selected."
-    ]
+    }
   },
   {
     "id": 144,
@@ -3493,19 +2987,9 @@
     "question": "Aurochs are extinct.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "BreedingBack(breedingback) ∧ ∀x∀y (SelectiveBreeding(x, y) ∧ DomesticAnimal(x) → BreedingBack(y)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nSelectiveBreeding(heckcattle, aurochs) ∧ HeckCattle(heckcattle) ∧ Aurochs(aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heckcattle) ∧ Animal(aurochs) ::: Heck cattle are animals. Aurochs are animals.\n∃x∃y (Animal(x) ∧ BreedingBack(y) ∧ Resemble(x, y) ∧ Extinct(y)) ::: Some animals to be bred-back resemble animals that are extinct.\n",
+      "First-Order-Logic Rules": "BreedingBack(breedingback) ∧ ∀x∀y (SelectiveBreeding(x, y) ∧ DomesticAnimal(x) → BreedingBack(y)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nSelectiveBreeding(heckcattle, aurochs) ∧ HeckCattle(heckcattle) ∧ Aurochs(aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heckcattle) ∧ Animal(aurochs) ::: Heck cattle are animals. Aurochs are animals.\n∃x∃y (Animal(x) ∧ BreedingBack(y) ∧ Resemble(x, y) ∧ Extinct(y)) ::: Some animals to be bred-back resemble animals that are extinct.",
       "First-Order-Logic Question": "Extinct(aurochs)"
-    },
-    "predicates": [
-      "BreedingBack(x) ::: x is a form of artificial selection by deliberate selective breeding of domestic animals.",
-      "SelectiveBreeding(x, y) ::: x is selectively bred to resemble y.",
-      "DomesticAnimal(x) ::: x is a domestic animal.",
-      "HeckCattle(x) ::: x is Heck cattle.",
-      "Aurochs(x) ::: x is an aurochs.",
-      "Animal(x) ::: x is an animal.",
-      "Resemble(x, y) ::: x resembles y.",
-      "Extinct(x) ::: x is extinct."
-    ]
+    }
   },
   {
     "id": 145,
@@ -4058,21 +3542,9 @@
     "question": "Breaking Bad is a TV show in which roses are given out on Monday at 8 pm.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∃x (Roses(x) ∧ GivenOut(x, Monday8pm)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (Roses(x) ∧ GivenOut(x, TV) → Bachelor(x)) ::: Every rose given out on TV is on the Bachelor.\n∀x (Bachelor(x) → ∃y (Portray(x, y) ∧ RealPeople(y))) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Show(x) ∧ Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
+      "First-Order-Logic Rules": "∃x (Roses(x) ∧ GivenOut(x, Monday8pm)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (Roses(x) ∧ GivenOut(x, TV) → Bachelor(x)) ::: Every rose given out on TV is on the Bachelor.\n∀x (Bachelor(x) → ∃y (Portray(x, y) ∧ RealPeopleEntity(y))) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Show(x) ∧ Portray(x, RealPeopleConcept) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.",
       "First-Order-Logic Question": "TVShow(BreakingBad) ∧ ∃x (Roses(x) ∧ GivenOut(x, Monday8pm))"
-    },
-    "predicates": [
-      "GivenOut(x, y) ::: x is given out on TV at time y.",
-      "Roses(x) ::: x is a rose.",
-      "On(x, y) ::: x is on y.",
-      "TVShow(x) ::: x is a TV show.",
-      "Bachelor(x) ::: x is the Bachelor.",
-      "Portray(x, y) ::: x portrays y.",
-      "RealPeople(x) ::: x is a real person.",
-      "Show(x) ::: x is a show.",
-      "RealityTVShow(x) ::: x is a reality TV show.",
-      "BreakingBad ::: Breaking Bad."
-    ]
+    }
   },
   {
     "id": 166,
@@ -4088,21 +3560,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∃x∃y (Monday(y) ∧ Time(y) ∧ GivenOut(x, y) ∧ Rose(x)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (GivenOut(x, TVShow(bachelor)) → On(x, Bachelor)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(Bachelor, x) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
       "First-Order-Logic Question": "GivenOut(rose, Monday8pm) → On(BreakingBad, Monday8pm)"
-    },
-    "predicates": [
-      "GivenOut(x, y) ::: x is given out on TV at time y.",
-      "Rose(x) ::: x is a rose.",
-      "On(x, y) ::: x is on y.",
-      "TVShow(x) ::: x is a TV show.",
-      "Bachelor(x) ::: x is the Bachelor.",
-      "Portray(x, y) ::: x portrays the lives of y.",
-      "RealPeople(x) ::: x is a real person.",
-      "Show(x) ::: x is a show.",
-      "RealityTVShow(x) ::: x is a reality TV show.",
-      "BreakingBad(x) ::: x is Breaking Bad.",
-      "Monday(x) ::: x is Monday.",
-      "Time(x) ::: x is a time."
-    ]
+    }
   },
   {
     "id": 167,
@@ -4132,18 +3590,9 @@
     "question": "Some Nazi German politician was part of both the Prussian State Parliament and the Nazi Reichstag.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Nazi(heinrich) ∧ Politician(heinrich) ::: Heinrich Scmidt was a Nazi German politician.\nMember(heinrich, stateParliament) ∧ Member(heinrich, reichstag) ∧ PartOf(stateParliament, prussian) ∧ PartOf(reichstag, nazi) ::: Heeinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag.",
-      "First-Order-Logic Question": "∃x (Nazi(x) ∧ Member(x, stateParliament) ∧ Member(x, reichstag))"
-    },
-    "predicates": [
-      "Nazi(x) ::: x is a Nazi German politician.",
-      "German(x) ::: x is a German person.",
-      "Politician(x) ::: x is a politician.",
-      "Member(x, y) ::: x is a member of y.",
-      "PartOf(x, y) ::: x is part of y.",
-      "StateParliament(x) ::: x is the Prussian State Parliament.",
-      "Reichstag(x) ::: x is the Nazi Reichstag."
-    ]
+      "First-Order-Logic Rules": "NaziPolitician(heinrich) ∧ Politician(heinrich) ::: Heinrich Scmidt was a Nazi German politician.\nMember(heinrich, stateParliament) ∧ Member(heinrich, reichstag) ∧ PartOf(stateParliament, prussian) ∧ PartOf(reichstag, nazi) ::: Heinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag.",
+      "First-Order-Logic Question": "∃x (NaziPolitician(x) ∧ Member(x, stateParliament) ∧ Member(x, reichstag))"
+    }
   },
   {
     "id": 169,
@@ -4178,18 +3627,9 @@
     "question": "Colorectal cancer is a severe cancer",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (DeadlyDisease(x) → LowSurvivalRate(x)) ::: If something is a deadly disease, then its survival rate is low.\n∀x (SevereCancer(x) → DeadlyDisease(x)) ::: All severe cancers are deadly diseases.\n∀x (BileDuctCancer(x) → SevereCancer(x)) ::: Bile duct cancer is a severe cancer.\n∀x (Cholangiocarcinoma(x) → BileDuctCancer(x)) ::: All Cholangiocarcinoma is bile duct cancer.\n∀x (MildFlu(x) → ¬LowSurvivalRate(x)) ::: No one with mild flu has a low survival rate.\n∀x ((ColorectalCancer(x) ∧ BileDuctCancer(x) ∧ LowSurvivalRate(x)) → ¬BileDuctCancer(x)) ::: If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer.\n",
+      "First-Order-Logic Rules": "∀x (DeadlyDisease(x) → LowSurvivalRate(x)) ::: If something is a deadly disease, then its survival rate is low.\n∀x (SevereCancer(x) → DeadlyDisease(x)) ::: All severe cancers are deadly diseases.\n∀x (BileDuctCancer(x) → SevereCancer(x)) ::: Bile duct cancer is a severe cancer.\n∀x (Cholangiocarcinoma(x) → BileDuctCancer(x)) ::: All Cholangiocarcinoma is bile duct cancer.\n∀x (MildFlu(x) → ¬LowSurvivalRate(x)) ::: No one with mild flu has a low survival rate.\n∀x ((ColorectalCancer(x) ∧ BileDuctCancer(x) ∧ LowSurvivalRate(x)) → ¬BileDuctCancer(x)) ::: If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer.",
       "First-Order-Logic Question": "SevereCancer(ColorectalCancer) ::: Colorectal cancer is a severe cancer"
-    },
-    "predicates": [
-      "DeadlyDisease(x) ::: x is a deadly disease.",
-      "LowSurvivalRate(x) ::: x has a low survival rate.",
-      "SevereCancer(x) ::: x is a severe cancer.",
-      "BileDuctCancer(x) ::: x is a bile duct cancer.",
-      "Cholangiocarcinoma(x) ::: x is a Cholangiocarcinoma.",
-      "MildFlu(x) ::: x has mild flu.",
-      "ColorectalCancer(x) ::: x is a colorectal cancer."
-    ]
+    }
   },
   {
     "id": 172,
@@ -4484,15 +3924,7 @@
     "answer": "B",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (NiceTo(x) → ¬MeanTo(x)) ::: No one nice to animals is mean to animals.\n∃x (Grumpy(x) ∧ MeanTo(x)) ::: Some grumpy people are mean to animals.\n∀x (AnimalLover(x) → NiceTo(x)) ::: All animal lovers are nice to animals.\n∀x (Owns(x, y) → Love(x, y)) ::: If someone owns a pet, then they love animals.\nOwns(tom, pet) ::: Tom is a pet owner.\n¬(Grumpy(tom) ∧ MeanTo(tom)) → ¬(Grumpy(tom) ∨ AnimalLover(tom)) ⊕ ¬(Grumpy(tom) ∧ AnimalLover(tom)) ::: If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover."
-    },
-    "predicates": [
-      "NiceTo(x) ::: x is nice to animals.",
-      "MeanTo(x) ::: x is mean to animals.",
-      "Grumpy(x) ::: x is grumpy.",
-      "AnimalLover(x) ::: x is an animal lover.",
-      "Owns(x, y) ::: x owns y.",
-      "Love(x, y) ::: x loves y."
-    ]
+    }
   },
   {
     "id": 185,
@@ -4509,24 +3941,9 @@
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬Podcast(x) → Novel(x) ::: A podcast is not a novel.\n∀x (Person(x) ∧ BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x (Book(x) ∧ Novel(x) ∧ WrittenBy(y, x) → NovelWriter(y)) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(familyHistory, daniShapiro) ::: Family History is written by Dani Shapiro.\nNovel(familyHistory) ∧ Year(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmerican(boston) ::: Boston is an American city.",
+      "First-Order-Logic Rules": "¬Podcast(x) → Novel(x) ::: A podcast is not a novel.\n∀x (Person(x) ∧ BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x (Book(x) ∧ Novel(x) ∧ WrittenBy(y, x) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(familyHistory, daniShapiro) ::: Family History is written by Dani Shapiro.\nNovel(familyHistory) ∧ Year(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmerican(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "NovelWriter(daniShapiro) ::: Dani Shapiro is a novel writer."
-    },
-    "predicates": [
-      "Podcast(x) ::: x is a podcast.",
-      "Novel(x) ::: x is a novel.",
-      "BornInCity(x, y) ::: x is born in city y.",
-      "American(x) ::: x is American.",
-      "Book(x) ::: x is a book.",
-      "WrittenBy(x, y) ::: x is written by y.",
-      "Person(x) ::: x is a person.",
-      "NovelWriter(x) ::: x is a novel writer.",
-      "Writer(x) ::: x is a writer.",
-      "Created(x, y) ::: x created y.",
-      "Title(x, y) ::: x is titled y.",
-      "Year(x, y) ::: x is written in year y.",
-      "City(x) ::: x is a city."
-    ]
+    }
   },
   {
     "id": 186,
@@ -4543,22 +3960,9 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬Podcast(x) ::: A podcast is not a novel.\n∀x (BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x ((Book(x) ∧ Novel(x)) → (WrittenBy(y, x) → NovelWriter(y))) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ∧ Writer(daniShapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(familyHistory, daniShapiro) ∧ Title(familyHistory, familyHistory) ::: Family History is written by Dani Shapiro.\nNovel(familyHistory) ∧ PublishedIn(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ∧ Title(familySecrets, familySecrets) ∧ Podcast(familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nBornInCity(boston, americanCity) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬Podcast(x) ::: A podcast is not a novel.\n∀x (BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x ((Book(x) ∧ Novel(x)) → (WrittenBy(y, x) → NovelWriter(y))) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ∧ Writer(daniShapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(familyHistory, daniShapiro) ∧ Title(familyHistory, familyHistory) ::: Family History is written by Dani Shapiro.\nNovel(familyHistory) ∧ PublishedIn(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ∧ Title(familySecrets, familySecrets) ∧ Podcast(familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nBornInCity(boston, americanCity) ::: Boston is an American city.",
       "First-Order-Logic Question": "Novel(familySecrets)"
-    },
-    "predicates": [
-      "Podcast(x) ::: x is a podcast.",
-      "Novel(x) ::: x is a novel.",
-      "BornInCity(x, y) ::: x is born in the city y.",
-      "American(x) ::: x is American.",
-      "Book(x) ::: x is a book.",
-      "WrittenBy(x, y) ::: x is written by y.",
-      "Writer(x) ::: x is a writer.",
-      "NovelWriter(x) ::: x is a novel writer.",
-      "Created(x, y) ::: x created y.",
-      "Title(x, y) ::: x is titled y.",
-      "PublishedIn(x, y) ::: x is published in year y."
-    ]
+    }
   },
   {
     "id": 187,
@@ -4575,22 +3979,9 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬Podcast(x) → Novel(x) ::: A podcast is not a novel.\n∀x (Person(x) ∧ BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x (Book(x) ∧ Novel(x) ∧ WrittenBy(y, x) → NovelWriter(y)) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ∧ Writer(daniShapiro) ::: Dani Shapiro is an American writer.\nBook(familyHistory) ∧ WrittenBy(daniShapiro, familyHistory) ∧ Novel(familyHistory) ∧ PublishYear(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ∧ Podcast(familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬Podcast(x) → Novel(x) ::: A podcast is not a novel.\n∀x (Person(x) ∧ BornInCity(x, americanCity) → American(x)) ::: If a person is born in American City, the person is American.\n∀x (Book(x) ∧ Novel(x) ∧ WrittenBy(y, x) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(daniShapiro) ∧ Writer(daniShapiro) ::: Dani Shapiro is an American writer.\nBook(familyHistory) ∧ WrittenBy(daniShapiro, familyHistory) ∧ Novel(familyHistory) ∧ PublishYear(familyHistory, 2003) ::: Family History is a novel written in 2003.\nCreated(daniShapiro, familySecrets) ∧ Podcast(familySecrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "BornInCity(daniShapiro, boston)"
-    },
-    "predicates": [
-      "Podcast(x) ::: x is a podcast.",
-      "Novel(x) ::: x is a novel.",
-      "BornInCity(x, y) ::: x is born in city y.",
-      "American(x) ::: x is American.",
-      "Book(x) ::: x is a book.",
-      "WrittenBy(x, y) ::: x is written by y.",
-      "Person(x) ::: x is a person.",
-      "NovelWriter(x) ::: x is a novel writer.",
-      "Writer(x) ::: x is a writer.",
-      "Created(x, y) ::: x created y.",
-      "City(x) ::: x is a city."
-    ]
+    }
   },
   {
     "id": 188,
@@ -4890,19 +4281,9 @@
     "question": "Ailton Silva foes not play for a football club.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Person(AiltonSilva) ∧ BornIn(AiltonSilva, 1995) ∧ KnownAs(AiltonSilva, Ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(Ailton) ∧ Loan(Ailton, Braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(AiltonSilva) ∧ PlaysFor(AiltonSilva, Nautico) ::: Ailton Silva is a Brazillian footballer who plays for Nautico.\nClub(Nautico) ∧ Club(Braga) ::: Nautico is a football club along with Braga.\nClub(Fluminense) ::: Fluminense is a football club.",
-      "First-Order-Logic Question": "¬∃x (FootballPlayer(x) ∧ PlaysFor(x, Club))"
-    },
-    "predicates": [
-      "Person(x) ::: x is a person.",
-      "FootballPlayer(x) ::: x is a football player.",
-      "KnownAs(x, y) ::: x is commonly known as y.",
-      "BornIn(x, y) ::: x is born in year y.",
-      "Loan(x, y) ::: x was loaned out to y.",
-      "PlaysFor(x, y) ::: x plays for y.",
-      "Club(x) ::: x is a football club.",
-      "SameClub(x, y) ::: x and y are in the same football club."
-    ]
+      "First-Order-Logic Rules": "Person(AiltonSilva) ∧ BornIn(AiltonSilva, 1995) ∧ KnownAs(AiltonSilva, Ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(Ailton) ∧ Loan(Ailton, Braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(AiltonSilva) ∧ PlaysFor(AiltonSilva, Nautico) ::: Ailton Silva is a Brazillian footballer who plays for Nautico.\nClubCity(Nautico) ∧ ClubCity(Braga) ::: Nautico is a football club along with Braga.\nClub(Fluminense) ::: Fluminense is a football club.",
+      "First-Order-Logic Question": "¬∃x (FootballPlayer(x) ∧ ∃y (PlaysFor(x, y) ∧ ClubCity(y)))"
+    }
   },
   {
     "id": 201,
@@ -4969,17 +4350,8 @@
     "question": "Ailton Silva was loaned out to a football club.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Person(AiltonSilva) ∧ BornIn(AiltonSilva, 1995) ∧ KnownAs(AiltonSilva, Ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(Ailton) ∧ Loan(Ailton, Braga) ::: Ailton is a football player who was loaned out to Braga.\nPerson(AiltonSilva) ∧ FootballPlayer(AiltonSilva) ∧ PlaysFor(AiltonSilva, Nautico) ::: Ailton Silva is a Brazillian footballer who plays for Nautico.\nClub(Nautico) ∧ Club(Braga) ::: Nautico is a football club along with Braga.\nClub(Fluminense) ::: Fluminense is a football club.",
-      "First-Order-Logic Question": "Loan(AiltonSilva, Club)"
-    },
-    "predicates": [
-      "Person(x) ::: x is a person.",
-      "FootballPlayer(x) ::: x is a football player.",
-      "KnownAs(x, y) ::: x is commonly known as y.",
-      "BornIn(x, y) ::: x was born in year y.",
-      "Loan(x, y) ::: x was loaned out to y.",
-      "Club(x) ::: x is a football club.",
-      "PlaysFor(x, y) ::: x plays for y."
-    ]
+      "First-Order-Logic Rules": "Person(AiltonSilva) ∧ BornIn(AiltonSilva, 1995) ∧ KnownAs(AiltonSilva, Ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(Ailton) ∧ Loan(Ailton, Braga) ::: Ailton is a football player who was loaned out to Braga.\nPerson(AiltonSilva) ∧ FootballPlayer(AiltonSilva) ∧ PlaysFor(AiltonSilva, Nautico) ::: Ailton Silva is a Brazillian footballer who plays for Nautico.\nClubTogetherWith(Nautico, Braga) ::: Nautico is a football club along with Braga.\nClub(Fluminense) ::: Fluminense is a football club.",
+      "First-Order-Logic Question": "Loan(AiltonSilva, ClubTogetherWith)"
+    }
   }
 ]
