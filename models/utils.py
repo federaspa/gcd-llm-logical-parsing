@@ -107,13 +107,13 @@ class OpenAIModel:
 
 class GrammarConstrainedModel:
     def __init__(self,  
-                model_path = "GCD/llms/Meta-Llama-3-8B-Instruct-Q6_K.gguf", 
+                model_path, 
                 n_ctx = 2048,
                 n_gpu_layers = -1, 
                 n_batch = 512):
 
         """
-        model_path: The path to the model. The default is "GCD/llms/nous-hermes-2-solar-10.7b.Q6_K.gguf".
+        model_path: The path to the model.
         grammar_path: The path to the grammar. The default is "GCD/grammars/grammar_unrolled.gbnf".
         n_ctx: The context length of the model. The default is 1024, but you can change it to 512 if you have a smaller model.
         n_gpu_layers: The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.

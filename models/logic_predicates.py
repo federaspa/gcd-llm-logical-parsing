@@ -8,6 +8,12 @@ from utils import OpenAIModel
 import sys
 import argparse
 
+from dotenv import load_dotenv
+
+
+load_dotenv()  # take environment variables from .env.
+api_key = os.getenv("OPENAI_API_KEY")
+
 class PromptGenerator:
     def __init__(self, args):
         self.args = args
@@ -48,7 +54,7 @@ class PredicatesGenerator(PromptGenerator):
         self.model_name = args.model_name
         self.save_path = args.save_path
 
-        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
         
         
     def parse_predicates(self, string_predicates):
@@ -137,7 +143,6 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_predicates')
-    parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)

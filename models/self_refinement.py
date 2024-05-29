@@ -11,6 +11,12 @@ from utils import GrammarConstrainedModel
 from utils import OpenAIModel
 import sys
 
+from dotenv import load_dotenv
+
+
+load_dotenv()  # take environment variables from .env.
+api_key = os.getenv("OPENAI_API_KEY")
+
 class SelfRefinementEngine:
     def __init__(self, args, current_round, constrained_model):
         self.args = args
@@ -21,7 +27,7 @@ class SelfRefinementEngine:
         self.dataset_name = args.dataset_name
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.constrained_model = constrained_model
         
 
@@ -229,7 +235,7 @@ def parse_args():
     parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--timeout', type=int, default=60)
-    parser.add_argument('--api_key', type=str)
+    parser.add_argument('--model_path', type=str)
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
@@ -239,7 +245,9 @@ if __name__ == "__main__":
     args = parse_args()
     
     starting_round = args.self_refine_round + 1
-    constrained_model=GrammarConstrainedModel()
+    constrained_model=GrammarConstrainedModel(
+        model_path=args.model_path
+    )
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
