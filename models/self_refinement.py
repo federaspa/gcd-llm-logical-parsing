@@ -10,10 +10,6 @@ from backup_answer_generation import Backup_Answer_Generator
 from utils import GrammarConstrainedModel
 from utils import OpenAIModel
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
 
 class SelfRefinementEngine:
     def __init__(self, args, current_round, constrained_model):
@@ -25,7 +21,7 @@ class SelfRefinementEngine:
         self.dataset_name = args.dataset_name
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.constrained_model = constrained_model
         
 
@@ -177,7 +173,7 @@ class SelfRefinementEngine:
                     revised_program = json.loads(revised_program_string)
                     
                 except Exception as e:
-                    print(f'Exception for {example["id"]}: {e}')
+                    print(f'Exception: {e}')
                     revised_program = logic_program
                 
                 # programs = [revised_program]
@@ -230,8 +226,10 @@ def parse_args():
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
+    parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
-    parser.add_argument('--local_model_path', type=str, default='GCD/llms/Meta-Llama-3-8B-Instruct-Q6_K.gguf')
+    parser.add_argument('--timeout', type=int, default=60)
+    parser.add_argument('--api_key', type=str)
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
@@ -241,9 +239,7 @@ if __name__ == "__main__":
     args = parse_args()
     
     starting_round = args.self_refine_round + 1
-    constrained_model=GrammarConstrainedModel(
-        model_path=args.local_model_path,
-    )
+    constrained_model=GrammarConstrainedModel()
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")

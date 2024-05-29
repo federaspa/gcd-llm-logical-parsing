@@ -6,10 +6,6 @@ from tqdm import tqdm
 from utils import OpenAIModel
 import sys
 import argparse
-from dotenv import load_dotenv
-
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
 
 class PromptGenerator:
     def __init__(self, args):
@@ -107,7 +103,7 @@ class LogicProgramGenerator(PromptGenerator):
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
 
-        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         
         
     def load_raw_dataset(self, split):
@@ -257,6 +253,7 @@ def parse_args():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
