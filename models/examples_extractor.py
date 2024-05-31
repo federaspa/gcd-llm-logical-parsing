@@ -77,12 +77,12 @@ class ExampleExtractionEngine:
             
             response_source = openai.Embedding.create(
                 input=source_sentences,
-                model="text-embedding-3-small"
+                model="text-embedding-3-large"
             )
 
             response_target = openai.Embedding.create(
                 input=target_sentence,
-                model="text-embedding-3-small"
+                model="text-embedding-3-large"
             )
 
             embeddings1 = torch.tensor([d.embedding for d in response_source.data])
