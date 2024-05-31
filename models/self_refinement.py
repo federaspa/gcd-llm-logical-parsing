@@ -237,6 +237,7 @@ def parse_args():
     parser.add_argument('--timeout', type=int, default=60)
     parser.add_argument('--model_path', type=str)
     parser.add_argument('--stop_words', type=str, default='------')
+    parser.add_argument('--n_gpu_layers', type=int, default=0)
     parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
     return args
@@ -246,7 +247,8 @@ if __name__ == "__main__":
     
     starting_round = args.self_refine_round + 1
     constrained_model=GrammarConstrainedModel(
-        model_path=args.model_path
+        model_path=args.model_path,
+        n_gpu_layers=args.n_gpu_layers,
     )
     
     for round in range(starting_round, args.maximum_rounds+1):
