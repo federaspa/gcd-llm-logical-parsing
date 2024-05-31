@@ -179,4 +179,5 @@ class GrammarConstrainedModel:
         grammar = grammar
         )
         
-        return result
+
+        return result['choices'][0]['message']['content'].strip()

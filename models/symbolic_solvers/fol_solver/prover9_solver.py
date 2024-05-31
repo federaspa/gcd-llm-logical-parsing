@@ -13,7 +13,7 @@ class FOL_Prover9_Program:
     def __init__(self, logic_program:str, dataset_name = 'FOLIOv2', prompt_mode = 'static') -> None:
         self.logic_program = logic_program
         self.prompt_mode = prompt_mode
-        self.flag, self.formula_error, self.parsing_error_index = self.parse_logic_program()
+        self.flag, self.formula_error, self.nl_errror = self.parse_logic_program()
         self.dataset_name = dataset_name
 
     def parse_logic_program(self):
@@ -40,21 +40,29 @@ class FOL_Prover9_Program:
             self.logic_premises = [premise.split(':::')[0].strip() for premise in premises]
             self.logic_conclusion = conclusion[0].split(':::')[0].strip()
             
+            self.nl_premises = [premise.split(':::')[1].strip() for premise in premises]
+            self.nl_conclusion = conclusion[0].split(':::')[1].strip()
+            
 
             # convert to prover9 format
             self.prover9_premises = []
-            for premise_index,premise in enumerate(self.logic_premises):
+            for premise_index, (premise, nl_statement) in enumerate(zip(self.logic_premises, self.nl_premises)):
                 fol_rule = FOL_Formula(premise)
                 if fol_rule.is_valid == False:
+                    
+                    # print(self.logic_premises)
+                    # print(premise)
+                    # print(premise_index)
 
-                    return False, premise, premise_index
+                    return False, premise, nl_statement
+                
                 prover9_rule = Prover9_FOL_Formula(fol_rule)
                 self.prover9_premises.append(prover9_rule.formula)
 
             fol_conclusion = FOL_Formula(self.logic_conclusion)
             if fol_conclusion.is_valid == False:
 
-                return False, self.logic_conclusion, 0
+                return False, self.logic_conclusion, self.nl_conclusion
             self.prover9_conclusion = Prover9_FOL_Formula(fol_conclusion).formula
             return True, None, None
         

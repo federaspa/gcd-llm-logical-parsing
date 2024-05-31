@@ -10,6 +10,7 @@ from backup_answer_generation import Backup_Answer_Generator
 from utils import GrammarConstrainedModel
 from utils import OpenAIModel
 import sys
+import re
 
 from dotenv import load_dotenv
 
@@ -140,11 +141,11 @@ class SelfRefinementEngine:
         
         return full_prompt
     
-    def safe_execute_program(self, id, logic_program, debug = False):
+    def safe_execute_program(self, logic_program):
         program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
         # cannot parse the program
         if program.flag == False:
-            return 'parsing error', program.formula_error, program.parsing_error_index
+            return 'parsing error', program.formula_error, program.nl_errror
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
@@ -157,24 +158,23 @@ class SelfRefinementEngine:
         outputs = []
         for example in tqdm(self.logic_programs):
             logic_program = example['raw_logic_programs']
-            status, error, error_index = self.safe_execute_program(example['id'], logic_program)
+            status, error, nl_error = self.safe_execute_program(logic_program)
 
             if status == 'parsing error':
                 
                 try:           
                     
-                    nl_statement = self.ground_truth[example['id']]['context'][error_index]
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
-                    
-                    full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_statement, error, predicates)
+                              
+                    full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
                         
+                    print(full_prompt)
+
+
                     response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
                     # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
-                    
-                
-                    response = response['choices'][0]['message']['content'].strip()
-                                    
-                    revised_program_string = json.dumps(logic_program).replace(error, response)
+                                                        
+                    revised_program_string = json.dumps(logic_program, ensure_ascii=False).replace(error, response)
                 
                     revised_program = json.loads(revised_program_string)
                     
