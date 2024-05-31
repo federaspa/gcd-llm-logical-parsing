@@ -1042,7 +1042,7 @@
     "id": 46,
     "story_id": 0,
     "context": [
-      "[BG] There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+      "There are four seasons in a year: Spring, Summer, Fall, and Winter.",
       "All students who want to have a long vacation love summer the most.",
       "Emma's favorite season is summer.",
       "Mia's favorite season is not the same as Emma's. ",
@@ -1060,10 +1060,31 @@
     "answer": "A"
   },
   {
+    "id": 47,
+    "story_id": 0,
+    "context": [
+      "There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+      "All students who want to have a long vacation love summer the most.",
+      "Emma's favorite season is summer.",
+      "Mia's favorite season is not the same as Emma's. ",
+      "James wants to have a long vacation."
+    ],
+    "context_fol": [
+      "Season(spring) ∨ Season(summer) ∨ Season(fall) ∨ Season(winter)",
+      "∀x (WantlongVacation(x) → Love(x, summer))",
+      "Love(emma, summer)",
+      "∀x ∀y (Season(x) ∧ Season(y) ∧ Love(mia, x) ∧ Love(emma, y) → ¬Love(mia, y) ∧ ¬Love(emma, x))",
+      "WantlongVacation(james)"
+    ],
+    "question": "James's favorite season is fall.",
+    "question_fol": "Love(james, fall)",
+    "answer": "C"
+  },
+  {
     "id": 48,
     "story_id": 0,
     "context": [
-      "[BG] There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+      "There are four seasons in a year: Spring, Summer, Fall, and Winter.",
       "All students who want to have a long vacation love summer the most.",
       "Emma's favorite season is summer.",
       "Mia's favorite season is not the same as Emma's. ",
@@ -1431,6 +1452,69 @@
     ],
     "question": "If Ted is a cow, then Ted is not a pet.",
     "question_fol": "Cow(ted) → ¬Pet(ted)",
+    "answer": "A"
+  },
+  {
+    "id": 66,
+    "story_id": 0,
+    "context": [
+      "Yale University is a private Ivy League research university.",
+      "Yale University moved to New Haven in 1716.",
+      "Yale university's endowment was valued at $42.3 billion.",
+      "Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.",
+      "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+    ],
+    "context_fol": [
+      "PrivateIvyLeagueResearchUniversity(yale)",
+      "MovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)",
+      "ValuedAt(yalesendowment, y42.3billion)",
+      "∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))",
+      "ResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)"
+    ],
+    "question": "A private Ivy League research university moved to New Haven.",
+    "question_fol": "∃x (PrivateIvyLeagueResearchUniversity(x) ∧ MovedTo(x, newhaven))",
+    "answer": "A"
+  },
+  {
+    "id": 67,
+    "story_id": 0,
+    "context": [
+      "Yale University is a private Ivy League research university.",
+      "Yale University moved to New Haven in 1716.",
+      "Yale university's endowment was valued at $42.3 billion.",
+      "Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.",
+      "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+    ],
+    "context_fol": [
+      "PrivateIvyLeagueResearchUniversity(yale)",
+      "MovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)",
+      "ValuedAt(yalesendowment, y42.3billion)",
+      "∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))",
+      "ResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)"
+    ],
+    "question": "Yale University has the largest university endowment of any educational institution.",
+    "question_fol": "LargestUniversityEndowmentOf(yale, anyeducationalinstitution)",
+    "answer": "C"
+  },
+  {
+    "id": 68,
+    "story_id": 0,
+    "context": [
+      "Yale University is a private Ivy League research university.",
+      "Yale University moved to New Haven in 1716.",
+      "Yale university's endowment was valued at $42.3 billion.",
+      "Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.",
+      "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+    ],
+    "context_fol": [
+      "PrivateIvyLeagueResearchUniversity(yale)",
+      "MovedTo(yale, newhaven) ∧ MovedIn(yale, y1716)",
+      "ValuedAt(yalesendowment, y42.3billion)",
+      "∃x (OrganizedInto(yale, x) ∧ ConstituentCollegesandSchools(x) ∧ ((ResidentialCollege(x) ⊕ GraduateSchool(x)) ⊕ ProfessionalSchool(x)))",
+      "ResidentialCollege(benjaminfranklincollege) ∧ AtYale(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ AtYale(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ AtYale(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ AtYale(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ AtYale(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ AtYale(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ AtYale(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ AtYale(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ AtYale(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ AtYale(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ AtYale(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ AtYale(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege) ∧ AtYale(trumbullcollege)"
+    ],
+    "question": "Pierson College is a residential college at Yale.",
+    "question_fol": "ResidentialCollege(piersoncollege) ∧ AtYale(piersoncollege)",
     "answer": "A"
   },
   {
@@ -2068,6 +2152,29 @@
     "answer": "B"
   },
   {
+    "id": 98,
+    "story_id": 0,
+    "context": [
+      "If animals are loved by tourists, then they are Max's favorite animals. ",
+      "All animals from Australia are loved by tourists. ",
+      "All quokka are animals from Australia. ",
+      "All of Max's favorite animals are very fluffy.",
+      "All of Max's favorite animals love to sleep. ",
+      "If a koala is very fluffy, then the koala is not a quokka."
+    ],
+    "context_fol": [
+      "∀x (AnimalsLovedByTourists(x) → MaxFavoriteAnimals(x))",
+      " ∀x (AnimalsFromAustralia(x) → AnimalsLovedByTourists(x))",
+      " ∀x (Quokka(x) → AnimalsFromAustralia(x))",
+      " ∀x (MaxFavoriteAnimals(x) → VeryFluffy(x)) ",
+      " ∀x (MaxFavoriteAnimals(x) → LoveToSleep(x))",
+      " VeryFluffy(koala) → ¬Quokka(koala)"
+    ],
+    "question": "If a koala is a quokka, then the koala either loves to sleep or is very fluffy.",
+    "question_fol": "(Quokka(koala) → LoveToSleep(koala) ⊕ VeryFluffy(koala))",
+    "answer": "A"
+  },
+  {
     "id": 99,
     "story_id": 0,
     "context": [
@@ -2356,6 +2463,25 @@
     "answer": "C"
   },
   {
+    "id": 112,
+    "story_id": 0,
+    "context": [
+      "The Picuris Mountains are a mountain range in New Mexico or Texas.",
+      "Juan de Onate visited the Picuris Mountains.",
+      "The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
+      "There are no mountain ranges in texas that have mines which have been donated."
+    ],
+    "context_fol": [
+      "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ∨ In(picurismountains, texas))",
+      "Visited(juandeonate, picurismountains)",
+      "In(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)",
+      "∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))"
+    ],
+    "question": "Juan de Onate visited a mountain range in New Mexico.",
+    "question_fol": "∃x (Visited(juandeonate, x) ∧ MountainRange(x) ∧ In(x, newmexico))",
+    "answer": "A"
+  },
+  {
     "id": 113,
     "story_id": 0,
     "context": [
@@ -2365,7 +2491,7 @@
       "There are no mountain ranges in texas that have mines which have been donated."
     ],
     "context_fol": [
-      "MountainRange(picurismountains) ∧ In(picurismountains, newmexico) ∨ In(picurismountains, texas)",
+      "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ∨ In(picurismountains, texas))",
       "Visited(juandeonate, picurismountains)",
       "In(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)",
       "∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))"
@@ -2373,6 +2499,25 @@
     "question": "Juan de Onate visited a mountain range in Texas.",
     "question_fol": "∃x (Visited(juandeonate, x) ∧ MountainRange(x) ∧ In(x, texas))",
     "answer": "C"
+  },
+  {
+    "id": 114,
+    "story_id": 0,
+    "context": [
+      "The Picuris Mountains are a mountain range in New Mexico or Texas.",
+      "Juan de Onate visited the Picuris Mountains.",
+      "The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
+      "There are no mountain ranges in texas that have mines which have been donated."
+    ],
+    "context_fol": [
+      "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ∨ In(picurismountains, texas))",
+      "Visited(juandeonate, picurismountains)",
+      "In(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)",
+      "∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))"
+    ],
+    "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
+    "question_fol": "(∀x (MountainRange(x) ∧ In(hardingpegmatitemine, x)) → ¬In(x, newmexico))",
+    "answer": "B"
   },
   {
     "id": 115,
@@ -2588,6 +2733,31 @@
     ],
     "question": "A Greyhound is not a Boeing 707.",
     "question_fol": "¬Boeing707(greyhound)",
+    "answer": "A"
+  },
+  {
+    "id": 125,
+    "story_id": 0,
+    "context": [
+      "All mammals are animals.",
+      "All monkeys are mammals. ",
+      "An animal is either a monkey or a bird.",
+      "All birds fly.",
+      "All animals breathe.",
+      "If something can fly, then it has wings.",
+      "If Rock is neither a fly nor a bird, then Rock neither flies nor breathes."
+    ],
+    "context_fol": [
+      "∀x  (Mammal (x)→  Animal (x))",
+      "∀x  (Monkey (x)→  Mammal (x))",
+      "∀x ( Monkey (x) ∨  Bird (x))",
+      "∀x  (Bird (x)→  Fly (x))",
+      "∀x  (Animal (x)→  Breathe (x))",
+      "∀x  (Fly (x)→  HaveWings (x))",
+      "¬ Fly (rock) ∧ ¬ Bird (rock) → ¬ Fly (rock) ∧ ¬ Breathe (rock) "
+    ],
+    "question": "Rock is a monkey.",
+    "question_fol": "Monkey(rock)",
     "answer": "A"
   },
   {
@@ -2850,6 +3020,48 @@
     ],
     "question": "If something is a household appliance, it sucks.",
     "question_fol": "∀x (HouseHoldApp(x) → Suck(x))",
+    "answer": "B"
+  },
+  {
+    "id": 138,
+    "story_id": 0,
+    "context": [
+      "Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.",
+      "Unsupervised learning doesn't require labelled data.",
+      "The state-of-the-art text summarization model is trained with machine learning algorithms.",
+      "Reinforcement learning is not used to train the state-of-the-art text summarization model.",
+      "The Machine Learning algorithm for training text summarization model requires labelled data."
+    ],
+    "context_fol": [
+      "MLAlgorithm(supervisedLearning) ∨ MLAlgorithm(unsupervisedLearning) ∨ MLAlgorithm(reinforcementLearning)",
+      "¬RequireLabelledData(unsupervisedLearning)",
+      "TrainTextSumModel(supervisedLearning) ∨ TrainTextSumModel(unsupervisedLearning) ∨ TrainTextSumModel(reinforcementLearning)",
+      "¬TrainTextSumModel(reinforcementLearning)",
+      "∀x ((MLAlgorithm(x) ∧ TrainTextSumModel(x)) → RequireLabelledData(x))"
+    ],
+    "question": "Supervised learning is used to train the state-of-the-art text summarization model.",
+    "question_fol": "TrainTextSumModel(supervisedLearning)",
+    "answer": "A"
+  },
+  {
+    "id": 139,
+    "story_id": 0,
+    "context": [
+      "Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.",
+      "Unsupervised learning doesn't require labelled data.",
+      "The state-of-the-art text summarization model is trained with machine learning algorithms.",
+      "Reinforcement learning is not used to train the state-of-the-art text summarization model.",
+      "The Machine Learning algorithm for training text summarization model requires labelled data."
+    ],
+    "context_fol": [
+      "MLAlgorithm(supervisedLearning) ∨ MLAlgorithm(unsupervisedLearning) ∨ MLAlgorithm(reinforcementLearning)",
+      "¬RequireLabelledData(unsupervisedLearning)",
+      "TrainTextSumModel(supervisedLearning) ∨ TrainTextSumModel(unsupervisedLearning) ∨ TrainTextSumModel(reinforcementLearning)",
+      "¬TrainTextSumModel(reinforcementLearning)",
+      "∀x ((MLAlgorithm(x) ∧ TrainTextSumModel(x)) → RequireLabelledData(x))"
+    ],
+    "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
+    "question_fol": "TrainTextSumModel(unsupervisedLearning)",
     "answer": "B"
   },
   {

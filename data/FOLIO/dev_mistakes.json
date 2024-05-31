@@ -1063,7 +1063,7 @@
     "id": 47,
     "story_id": 0,
     "context": [
-      "[BG] There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+      "There are four seasons in a year: Spring, Summer, Fall, and Winter.",
       "All students who want to have a long vacation love summer the most.",
       "Emma's favorite season is summer.",
       "Mia's favorite season is not the same as Emma's. ",
@@ -1073,12 +1073,12 @@
       "Season(spring) ∨ Season(summer) ∨ Season(fall) ∨ Season(winter)",
       "∀x (WantlongVacation(x) → Love(x, summer))",
       "Love(emma, summer)",
-      "¬Love(mia, emma)",
+      "∀x ((Love(mia, x) → ¬Love(emma, x)) ∧ (Love(emma, x) → ¬Love(mia, x)))",
       "WantlongVacation(james)"
     ],
     "question": "James's favorite season is fall.",
     "question_fol": "Love(james, fall)",
-    "answer": "B"
+    "answer": "C"
   },
   {
     "id": 48,
@@ -2171,7 +2171,7 @@
       " VeryFluffy(koala) → ¬Quokka(koala)"
     ],
     "question": "If a koala is a quokka, then the koala either loves to sleep or is very fluffy.",
-    "question_fol": "Quokka(koala) → LoveToSleep(koala) ⊕ VeryFluffy(koala)",
+    "question_fol": "(Quokka(koala) → LoveToSleep(koala) ⊕ VeryFluffy(koala))",
     "answer": "A"
   },
   {
@@ -2472,7 +2472,7 @@
       "There are no mountain ranges in texas that have mines which have been donated."
     ],
     "context_fol": [
-      "MountainRange(picurismountains) ∧ In(picurismountains, newmexico) ∨ In(picurismountains, texas)",
+      "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ∨ In(picurismountains, texas))",
       "Visited(juandeonate, picurismountains)",
       "In(hardingpegmatitemine, picurismountains) ∧ Mine(hardingpegmatitemine) ∧ Donated(hardingpegmatitemine)",
       "∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))"
@@ -2516,7 +2516,7 @@
       "∀x ∀y (Mine(x) ∧ Donated(x) ∧ In(x, y) ∧ MountainRange(y) → ¬In(y, texas))"
     ],
     "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
-    "question_fol": "∀x (MountainRange(x) ∧ In(hardingpegmatitemine, x) → ¬In(x, newmexico))",
+    "question_fol": "(∀x (MountainRange(x) ∧ In(hardingpegmatitemine, x)) → ¬In(x, newmexico))",
     "answer": "B"
   },
   {
