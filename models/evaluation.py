@@ -2,7 +2,30 @@ import re
 import json
 import os
 import argparse
+from sklearn.metrics import f1_score, precision_score, recall_score
 
+text_to_index = {
+    'A': 0,
+    'B': 1,
+    'C': 2,
+    'D': 3,
+    'E': 4,
+    'F': 5,
+    'G': 6,
+    'H': 7
+}
+
+index_to_text = {
+    0: 'A',
+    1: 'B',
+    2: 'C',
+    3: 'D',
+    4: 'E',
+    5: 'F',
+    6: 'G',
+    7: 'H'
+}
+    
 # these functions are heavily influenced by the HF squad_metrics.py script
 def normalize_text(s):
     """Removing articles and punctuation, and standardizing whitespace are all typical text processing steps."""
@@ -24,34 +47,6 @@ def normalize_text(s):
 
     return white_space_fix(remove_articles(remove_punc(lower(s))))
 
-def compute_exact_match(prediction, truth):
-    return int(normalize_text(prediction) == normalize_text(truth))
-    # return prediction == truth
-
-def compute_f1(prediction, truth):
-    pred_tokens = normalize_text(prediction).split()
-    truth_tokens = normalize_text(truth).split()
-    
-    # if either the prediction or the truth is no-answer then f1 = 1 if they agree, 0 otherwise
-    if len(pred_tokens) == 0 or len(truth_tokens) == 0:
-        return int(pred_tokens == truth_tokens)
-    
-    common_tokens = set(pred_tokens) & set(truth_tokens)
-    
-    # if there are no common tokens then f1 = 0
-    if len(common_tokens) == 0:
-        return 0
-    
-    prec = len(common_tokens) / len(pred_tokens)
-    rec = len(common_tokens) / len(truth_tokens)
-    
-    return 2 * (prec * rec) / (prec + rec)
-
-def evaluate_sample(prediction, gold_answers):
-    em_score = max((compute_exact_match(prediction, answer)) for answer in gold_answers)
-    f1_score = max((compute_f1(prediction, answer)) for answer in gold_answers)
-    return em_score, f1_score
-
 def get_choice(answer_str):
     choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A)', 'B)', 'C)', 'D)', 'E)', 'F)', 'G)', 'H)', 
                'A.', 'B.', 'C.', 'D.', 'E.', 'F.', 'G.', 'H.']
@@ -63,38 +58,13 @@ def get_choice(answer_str):
        return answer_str.replace(':', '').replace('.', '').strip()
     return None
 
-def evaluate_QA(QA_results):
-    total_em = 0.0
-    count = 0
-    for sample in QA_results:
-        gold_answer = sample['answer'].replace('(', '').replace(')', '').strip()
-        answer_str = sample['predicted_answer'].strip() if sample['predicted_answer'] is not None else ''
-        prediction = get_choice(answer_str)
 
-        indicators = ['the correct option is', 'the correct answer is', 
-                      'The correct answer is', 'The correct option is',
-                      'Thus, the answer is']
-        if prediction is None:
-            for indicator in indicators:
-                if answer_str.find(indicator)>=0:
-                    answer_str = answer_str.split(indicator)[1].strip()
-                    prediction = get_choice(answer_str)
-                    break
-
-        # if prediction is None:
-        #     print(answer_str)
-        # print(f"prediction: {prediction} \t gold_answers: {gold_answer} \t match: {prediction == gold_answer}")
-        
-        em_score = 1.0 if prediction == gold_answer else 0.0
-        total_em += em_score
-        count += 1
+def evaluate_metrics(QA_results, average="weighted"):
     
-    if count:
-        avg_em = total_em / count
-    else:
-        avg_em = 0
-    # print(f"Accuracy: {avg_em}")
-    return avg_em, total_em, count
+    predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
+    gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
+    
+    return f1_score(gold_answers, predictions, average=average), precision_score(gold_answers, predictions, average=average), recall_score(gold_answers, predictions, average=average)
 
 def full_evaluation(result_file):
     with open(result_file, 'r') as f:
@@ -107,14 +77,32 @@ def full_evaluation(result_file):
     generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
+    print()
     print(f'Executable rate (Exe_Rate): {len(executable_samples)}/{len(all_samples)} ({len(executable_samples)/len(all_samples)})')
-    print(f'Generation errors rate: {len(generation_errors)}/{len(all_samples)} ({len(generation_errors)/len(all_samples)})')
     print(f'Parsing errors rate: {len(parsing_errors)}/{len(all_samples)} ({len(parsing_errors)/len(all_samples)})')
     print(f'Execution errors rate: {len(execution_errors)}/{len(all_samples)} ({len(execution_errors)/len(all_samples)})')
+    print('-'*75)
     print()
-    print(f"Accuracy of executable samples (Exe_Acc): {evaluate_QA(executable_samples)[1]}/{evaluate_QA(executable_samples)[2]} ({evaluate_QA(executable_samples)[0]})")
-    print(f"Accuracy of backup on non executable samples: {evaluate_QA(non_executable_samples)[1]}/{evaluate_QA(non_executable_samples)[2]} ({evaluate_QA(non_executable_samples)[0]})")
-    print(f'Overall accuracy: {evaluate_QA(all_samples)[1]}/{evaluate_QA(all_samples)[2]} ({evaluate_QA(all_samples)[0]})')
+    f1, precision, recall = evaluate_metrics(executable_samples)
+    print(f"Weighted F1: {f1}")
+    print(f"Weighted Precision: {precision}")
+    print(f"Weighted Recall: {recall}")
+    print('-'*75)
+    print()
+    
+    f1, precision, recall = evaluate_metrics(executable_samples, average=None)
+    
+    for i in range(len(f1)):
+        print(f'Choice {index_to_text[i]}')
+        print(f'F1: {f1[i]}')
+        print(f'Precision: {precision[i]}')
+        print(f'Recall: {recall[i]}')
+        print('-'*75)
+        print()
+    
+    # print(f'F1 scores for executable samples: {f1}')
+    # print(f'Precision scores for executable samples: {precision}')
+    # print(f'Recall scores for executable samples: {recall}')
     
 
 
