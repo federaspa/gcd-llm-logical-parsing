@@ -11,22 +11,21 @@
     "question": "If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 2,
     "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 3,
     "question": "James has lunch in the company.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 4,
@@ -46,26 +45,22 @@
     "id": 6,
     "question": "There is an animal.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Tired/1, Tired/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Tired/1, Tired/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 7,
     "question": "No one gets flu.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x Get(x, flu)",
-    "correct_formula": "∃x (OccurMonkeypoxVirus(x) ∧ GetMonkeypox(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 8,
     "question": "Symptons of Monkeypox include coughing.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Tired/1, Tired/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Tired/1, Tired/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 9,
@@ -85,19 +80,15 @@
     "id": 11,
     "question": "Joey is a wild turkey.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "Joey",
-    "correct_formula": "∀x (WildTurkey(x) → (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Riogrande(x) ∨ Ocellated(x)))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 12,
     "question": "The Legend of Zelda is in the Top 10 list.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x ((Game(x) ∧ Selected(x)) → Japanese(Created(japaneseGameCompany, x)))",
-    "correct_formula": "∀x ∀y (Game(x) ∧ InTop10(x) ∧ Created(x, y) → Japanese(y))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 13,
@@ -105,16 +96,16 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "A",
-    "wrong_formula": "∀x ((Sell(x, y) ∧ y > 1000000) → Selected(x))",
-    "correct_formula": "∀x ∀y (Game(x) ∧ InTop10(x) ∧ Created(x, y) → Japanese(y))"
+    "wrong_formula": "∀x (Top10(x) → Japanese(MadeBy(fifa22, x)))",
+    "correct_formula": "SellsMoreThan(thelegendofzelda, onemillioncopies)"
   },
   {
     "id": 14,
     "question": "The Legend of Zelda is not in the Top 10 list.",
     "answer": "B",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x ((Sell(x, y) ∧ y > 1000000) → Selected(x))",
+    "predicted_answer": "A",
+    "wrong_formula": "∀x (Game(x) ∧ Top10(x) → Japanese(create(x, y)))",
     "correct_formula": "∀x ∀y (Game(x) ∧ InTop10(x) ∧ Created(x, y) → Japanese(y))"
   },
   {
@@ -156,10 +147,8 @@
     "id": 20,
     "question": "If Rock is cute and still, then Rock is a turtle and skittish.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "(IfThen(Cute(rock) ∧ Still(rock), Turtle(rock) ∧ Skittish(rock)))",
-    "correct_formula": "∀x (Rabbit(x) → Cute(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 21,
@@ -167,7 +156,7 @@
     "answer": "A",
     "flag": "execution error",
     "predicted_answer": "B",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Download/1, Download/2.\n\n\nFatal error:  The following symbols are used with multiple arities: Download/1, Download/2"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: ShareShow/3, ShareShow/2.\n\n\nFatal error:  The following symbols are used with multiple arities: ShareShow/3, ShareShow/2"
   },
   {
     "id": 22,
@@ -222,25 +211,23 @@
     "id": 29,
     "question": "If Marvin is not from Mars, then Marvin is a human.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "NotAnd(FromEarth(marvin), FromMars(marvin))",
-    "correct_formula": "¬FromEarth(marvin) ∧ ¬FromMars(marvin)"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 30,
     "question": "Djokovic is a Grand Slam champion.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: WellPaid/1, WellPaid/0.\n\n\nFatal error:  The following symbols are used with multiple arities: WellPaid/1, WellPaid/0"
   },
   {
     "id": 31,
     "question": "Djokovic lives in a tax haven.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0.\n\n\nFatal error:  The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 32,
@@ -254,9 +241,8 @@
     "id": 33,
     "question": "Roderick strong leads a professional wrestling stable.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Stable/1, Stable/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Stable/1, Stable/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 34,
@@ -269,26 +255,22 @@
     "id": 35,
     "question": "Imperium doesn't have a feud with a professional wrestling stable that includes Ivy Nile.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Stable(x) ∧ Include(x, ivyNile) ∧ FeudWith(imperium, x))",
-    "correct_formula": "ProfessionalWrestlingStable(diamondmine) ∧ FormedIn(diamondmine, wwe)"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 36,
     "question": "Beethoven is a composer.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MusicPiece/1, MusicPiece/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MusicPiece/1, MusicPiece/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 37,
     "question": "Some orchestras premiered music pieces.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MusicPiece/1, MusicPiece/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MusicPiece/1, MusicPiece/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 38,
@@ -302,26 +284,24 @@
     "question": "A design by Max is a mass product design.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x (Timeless(Max(x)) → (MassProduct(Max(x)) ∧ Evocative(Max(x))))",
+    "predicted_answer": "B",
+    "wrong_formula": "Timeless(designBy(max)) → (MassProductDesign(designBy(max)) ∧ Evocative(designBy(max)))",
     "correct_formula": "Timeless(aDesignByMax) → MassProductDesign(aDesignByMax) ∧ Evocative(aDesignByMax)"
   },
   {
     "id": 40,
     "question": "A design by Max is evocative and dreamy.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Max/1, Max/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Max/1, Max/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 41,
     "question": "A design by Max is either evocative or dreamy.",
     "answer": "B",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "C",
-    "wrong_formula": "∀x (Timeless(DesignBy(max, x)) → (MassProductDesign(DesignBy(max, x)) ∧ Evocative(DesignBy(max, x))))",
-    "correct_formula": "Timeless(aDesignByMax) → MassProductDesign(aDesignByMax) ∧ Evocative(aDesignByMax)"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: DesignStyle/1, DesignStyle/0.\n\n\nFatal error:  The following symbols are used with multiple arities: DesignStyle/1, DesignStyle/0"
   },
   {
     "id": 42,
@@ -341,63 +321,52 @@
     "id": 44,
     "question": "Coco Gauff is not a player who lost to Iga Swiatek or one of the most active players in major tennis.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Male/1, Male/0, Female/1, Female/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Male/1, Male/0, Female/1, Female/0"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 45,
     "question": "No pets are cats.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Pet(x) ∧ Cat(x))",
-    "correct_formula": "∀x (Cat(x) → Mammal(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 46,
     "question": "James's favorite season is summer.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x (FavoriteSeason(mia, x) → ¬(x = FavoriteSeason(emma, x)))",
-    "correct_formula": "∀x ∀y (Season(x) ∧ Season(y) ∧ Love(mia, x) ∧ Love(emma, y) → ¬Love(mia, y) ∧ ¬Love(emma, x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 48,
     "question": "Mia's favorite season is spring.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x ((FavoriteSeason(mia, x) ∧ x ≠ FavoriteSeason(emma, x)) → FavoriteSeason(mia, x))",
+    "predicted_answer": "A",
+    "wrong_formula": "FavoriteSeason(mia, y) ∧ y ≠ summer ∧ y ≠ emma",
     "correct_formula": "∀x ∀y (Season(x) ∧ Season(y) ∧ Love(mia, x) ∧ Love(emma, y) → ¬Love(mia, y) ∧ ¬Love(emma, x))"
   },
   {
     "id": 49,
     "question": "1984 is printed text.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Digital(x) ∧ Analog(x))",
-    "correct_formula": "∀x (Digital(x) → ¬Analog(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 50,
     "question": "1984 is a streaming service.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x (Digital(x) ∧ Analog(x))",
-    "correct_formula": "∀x (Digital(x) → ¬Analog(x))"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 51,
     "question": "1984 is not a streaming service.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Digital(x) ∧ Analog(x))",
-    "correct_formula": "∀x (Digital(x) → ¬Analog(x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 52,
@@ -405,26 +374,22 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "A",
-    "wrong_formula": "Basque ∧ ∀x (Language(y) → NotRelated(basque, y))",
-    "correct_formula": "∀x (¬Related(basque, x))"
+    "wrong_formula": "French ∧ Spanish",
+    "correct_formula": "RomanceLanguage(french) ∧ RomanceLanguage(spanish)"
   },
   {
     "id": 53,
     "question": "German is a Romance language.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x Related(basque, x)",
-    "correct_formula": "∀x (¬Related(basque, x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 54,
     "question": "French is an Indo-European language.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x Related(basque, x)",
-    "correct_formula": "∀x (¬Related(basque, x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 55,
@@ -451,9 +416,8 @@
     "id": 58,
     "question": "Butte and Pierre are in the same state.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Montana/1, Montana/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Montana/1, Montana/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 59,
@@ -480,9 +444,8 @@
     "id": 62,
     "question": "Mike has a J1 visa.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: US/1, US/0.\n\n\nFatal error:  The following symbols are used with multiple arities: US/1, US/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 63,
@@ -516,10 +479,8 @@
     "id": 70,
     "question": "No members of Pappy's have starred for a show piloting on BBC Two or BBC Three.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (StarredFor(pappys, BBCTwo) ∨ StarredFor(pappys, BBCThree))",
-    "correct_formula": "∃x (MemberOf(x, pappys) ∧ BritishSitcom(badults) ∧ Series(badults) ∧ Starring(badults, x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 71,
@@ -527,15 +488,15 @@
     "answer": "C",
     "flag": "execution error",
     "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MatureCompany/1, MatureCompany/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MatureCompany/1, MatureCompany/0"
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 72,
     "question": "KO is a company stock and a growth stock of a company.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MatureCompany/1, MatureCompany/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MatureCompany/1, MatureCompany/0"
+    "predicted_answer": "C",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 73,
@@ -548,36 +509,39 @@
     "id": 74,
     "question": "Joe's license plate begins with the number 34.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: CityIstanbul/1, CityIstanbul/0.\n\n\nFatal error:  The following symbols are used with multiple arities: CityIstanbul/1, CityIstanbul/0"
   },
   {
     "id": 75,
     "question": "Tom's license plate is from Istanbul.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 76,
     "question": "Mary needs to earn money to help pay for her college tuition.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "C",
+    "wrong_formula": "∀x (Enjoy(x) → (SpendTime(x, eating) ∧ SpendTime(x, Friend(campusDiningHalls))))",
+    "correct_formula": "∀x (DiningHall(x) → Eating(x))"
   },
   {
     "id": 77,
     "question": "Mary is not a picky eater and spends a lot of her time eating and catching up with friends in the campus dining halls.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 78,
     "question": "Mary either is not a picky eater or, if she is, then she spends a lot of her time eating and catching up with friends in the campus dining halls.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 79,
@@ -585,35 +549,33 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Bakery(x) ∧ Spicy(x))",
-    "correct_formula": "∀x (Bakery(x) → ¬Spicy(x))"
+    "wrong_formula": "∀x (Product(BakedByMelissa(x), x) → Cupcake(x))",
+    "correct_formula": "∀x (ProductsOfBakedByMelissa(x) → Cupcakes(x))"
   },
   {
     "id": 80,
     "question": "Dried Thai chilies are not a product of Baked by Melissa.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Bakery(x) ∧ Spicy(x))",
-    "correct_formula": "∀x (Bakery(x) → ¬Spicy(x))"
+    "predicted_answer": "B",
+    "wrong_formula": "∀x (Product(BakedByMelissa(x), x) → Cupcake(x))",
+    "correct_formula": "∀x (ProductsOfBakedByMelissa(x) → Cupcakes(x))"
   },
   {
     "id": 81,
     "question": "Dried Thai chilies are a hotpot.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Bakery(x) ∧ Spicy(x))",
-    "correct_formula": "∀x (Bakery(x) → ¬Spicy(x))"
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 82,
     "question": "Dried Thai chilies are neither a product of Baked by Melissa nor a bakery.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Bakery(x) ∧ Spicy(x))",
-    "correct_formula": "∀x (Bakery(x) → ¬Spicy(x))"
+    "flag": "execution error",
+    "predicted_answer": "A",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 83,
@@ -621,8 +583,8 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Bakery(x) ∧ Spicy(x))",
-    "correct_formula": "∀x (Bakery(x) → ¬Spicy(x))"
+    "wrong_formula": "∀x (Product(BakedByMelissa(x), x) → Cupcake(x))",
+    "correct_formula": "∀x (ProductsOfBakedByMelissa(x) → Cupcakes(x))"
   },
   {
     "id": 84,
@@ -635,10 +597,8 @@
     "id": 85,
     "question": "Subway provides take-out service and does not receive many negative reviews.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x (Rating(x, y) ∧ y > 9 → Recommended(x))",
-    "correct_formula": "∀x (RatingGreaterThan9(x) → YelpRecommendation(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 86,
@@ -651,17 +611,19 @@
     "id": 87,
     "question": "Sir Digby’s nemesis loses.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "A",
+    "wrong_formula": "∀x (Win(x) → Lose(fighting(x)))",
+    "correct_formula": "∀x ∀y (Fights(x, y) ∧ Wins(x) → ¬Wins(y))"
   },
   {
     "id": 88,
     "question": "Walden contains knowledge.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x,y (Read(y, x) → GainKnowledge(y))",
-    "correct_formula": "∀x ∀y (ReadBook(x, y) → GainKnowledge(x))"
+    "predicted_answer": "C",
+    "wrong_formula": "[∀x (Book(x) → ContainKnowledge(x))]",
+    "correct_formula": "∀x (Book(x) → Knowledge(x))"
   },
   {
     "id": 89,
@@ -669,7 +631,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "C",
-    "wrong_formula": "ContainKnowledge(x) ∀x(Book(x) → ContainKnowledge(x))",
+    "wrong_formula": "[BG] ∀x (Book(x) → ContainsKnowledge(x))",
     "correct_formula": "∀x (Book(x) → Knowledge(x))"
   },
   {
@@ -677,60 +639,56 @@
     "question": "A person who is smarter has gained knowledge.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "ContainKnowledge(x) ∀x (Book(x) → ContainKnowledge(x))",
+    "predicted_answer": "C",
+    "wrong_formula": "[∀x (Book(x) → Contains(x, knowledge))]",
     "correct_formula": "∀x (Book(x) → Knowledge(x))"
   },
   {
     "id": 91,
     "question": "Machine translation is a language generation task.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "parsing error",
+    "predicted_answer": "B"
   },
   {
     "id": 92,
     "question": "Machine translation is a language understanding task.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 93,
     "question": "Tom will rent an apartment in The Olive Garden.",
     "answer": "B",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "Rent(tom, OliveGarden) ↔ (MoveInWith(tom, fluffy) ∧ ¬IsMoreThan(IsPrice(deposit, 1500), IsPrice(2000)))",
-    "correct_formula": "Rent2000(oliveGarden)"
+    "predicted_answer": "A",
+    "wrong_formula": "∀x (SecurityDeposit(x) → (Equal(x, RentAmount(y, month)) ∨ MoreThan(x, RentAmount(y, month))))",
+    "correct_formula": "∀x (Rent2000(x) ↔ ¬DepositNoMoreThan1500(x))"
   },
   {
     "id": 94,
     "question": "Tom is allowed to move in an apartment in The Olive Garden with Fluffy.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "∀x (RequireDeposit(x) → (Equal(x, Rent(x)) ∨ MoreThan(x, Rent(x))))",
-    "correct_formula": "∀x (Rent2000(x) ↔ ¬DepositNoMoreThan1500(x))"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: RentApartment/2, RentApartment/1.\n\n\nFatal error:  The following symbols are used with multiple arities: RentApartment/2, RentApartment/1"
   },
   {
     "id": 95,
     "question": "The security deposit at the Olive Garden is either $2000 or more.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "∀x (IsSecurityDeposit(x, Equal(1, IsRent(x))) ∨ IsSecurityDeposit(x, MoreThan(IsRent(x), 1)))",
+    "predicted_answer": "B",
+    "wrong_formula": "∀x (SecurityDeposit(x, Equal(oneMonthsRent)) ∨ SecurityDeposit(x, MoreThan(oneMonthsRent)))",
     "correct_formula": "∀x (Rent2000(x) ↔ ¬DepositNoMoreThan1500(x))"
   },
   {
     "id": 96,
     "question": "Koalas love to sleep.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Koala/1, Koala/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Koala/1, Koala/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 97,
@@ -738,7 +696,7 @@
     "answer": "B",
     "flag": "execution error",
     "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Koala/1, Koala/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Koala/1, Koala/0"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: KoalaMax/1, KoalaMax/0.\n\n\nFatal error:  The following symbols are used with multiple arities: KoalaMax/1, KoalaMax/0"
   },
   {
     "id": 99,
@@ -766,8 +724,8 @@
     "question": "Luke spends a lot of time hanging out and playing with his siblings.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → (HangOutWith(x, Siblings(x)) ∧ PlayWith(x, Siblings(x))))",
+    "predicted_answer": "C",
+    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → SpendTimeWith(x, Siblings(x)))",
     "correct_formula": "∀x (TwinTriplet(x) → Playing(x))"
   },
   {
@@ -775,8 +733,8 @@
     "question": "Luke complains often about annoying siblings.",
     "answer": "B",
     "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → (SpendTimeWith(x, Siblings(x))))",
+    "predicted_answer": "C",
+    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → SpendTimeWith(x, Siblings(x)))",
     "correct_formula": "∀x (TwinTriplet(x) → Playing(x))"
   },
   {
@@ -784,8 +742,8 @@
     "question": "Luke is neither a twin nor triplet nor complains often about annoying siblings.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → (SpendTimeWith(x, Siblings(x))))",
+    "predicted_answer": "A",
+    "wrong_formula": "∀x ((Twins(x) ∨ Triplets(x)) → SpendTimeWith(x, Siblings(x)))",
     "correct_formula": "∀x (TwinTriplet(x) → Playing(x))"
   },
   {
@@ -793,9 +751,9 @@
     "question": "Tom can apply for financial aid from ETS to take the GRE test.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "OutOfWork(dad, year > 1)",
-    "correct_formula": "SingleParent(tom)"
+    "predicted_answer": "B",
+    "wrong_formula": "∀x (Prove(EconomicHardship(x), Provide(ETS, financialAid, x)))",
+    "correct_formula": "∀x (Cost205(x) → CostBelow300(x))"
   },
   {
     "id": 106,
@@ -803,32 +761,32 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "C",
-    "wrong_formula": "∃x (Cost(x, GRE) ∧ x < 300)",
+    "wrong_formula": "∃x (Cost(x, GREtest) ∧ x < 300)",
     "correct_formula": "Cost205(gre)"
   },
   {
     "id": 107,
     "question": "There is no financial aid available for the GRE test.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "∀x (ProvideFinancialAid(x, y) → (Prove(x, EconomicHardship(y))))",
-    "correct_formula": "∀x (Cost205(x) → CostBelow300(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 108,
     "question": "Peter tidies his space consistently and enjoys the process of cleaning.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "B",
+    "wrong_formula": "∀x (HighIncomeHousehold(x) → BusyParents(Person(x)))",
+    "correct_formula": "∀x (HighIncome(x) → BusyParents(x))"
   },
   {
     "id": 109,
     "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try or belongs to a household with a high net income.",
     "answer": "B",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x (HighIncomeHousehold(x) → BusyParents(Belongs(x, households)))",
+    "predicted_answer": "B",
+    "wrong_formula": "∀x (HighIncomeHousehold(x) → BusyParents(Person(x)))",
     "correct_formula": "∀x (HighIncome(x) → BusyParents(x))"
   },
   {
@@ -849,25 +807,25 @@
     "id": 113,
     "question": "Juan de Onate visited a mountain range in Texas.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Donated/1, Donated/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Donated/1, Donated/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 115,
     "question": "Peter is shorter than a man in Michael's class.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "Man(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x))",
-    "correct_formula": "∀x (IsMan(x) ∧ SameClass(x, michael) ∧ ¬Be(x, michael) → Taller(michael, x))"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "(MAX_SECONDS)"
   },
   {
     "id": 116,
     "question": "Windy is a great shooter.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "B",
+    "wrong_formula": "Man(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x))",
+    "correct_formula": "∀x (IsMan(x) ∧ SameClass(x, michael) ∧ ¬Be(x, michael) → Taller(michael, x))"
   },
   {
     "id": 117,
@@ -927,7 +885,7 @@
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "A",
     "wrong_formula": "¬Airline(greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x))",
     "correct_formula": "¬Airline(greyhound) → ¬(Airline(greyhound) ∨ Plane(greyhound))"
   },
@@ -950,21 +908,24 @@
     "question": "John has a wedding that is well-attended.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 129,
     "question": "John does not have a wedding that is well-attended.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "A",
+    "wrong_formula": "∀x (OccurIn(wedding, july) ∧ BelongTo(wedding, TravelToParisForHoneymoon(x)))",
+    "correct_formula": "∀x (July(x) → Paris(x))"
   },
   {
     "id": 130,
     "question": "John has at least one child.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "B",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: TravelToParisForHoneymoonFor1/1, TravelToParisForHoneymoonFor1/0.\n\n\nFatal error:  The following symbols are used with multiple arities: TravelToParisForHoneymoonFor1/1, TravelToParisForHoneymoonFor1/0"
   },
   {
     "id": 131,
@@ -978,51 +939,51 @@
     "question": "Platypus are mammals with no teeth.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Platypus(x) ∧ HaveTeeth(x))",
-    "correct_formula": "¬Have(platypus, teeth)"
+    "predicted_answer": "B",
+    "wrong_formula": "[∃x (Mammal(x) ∧ HaveTeeth(x))]",
+    "correct_formula": "∃x (Mammal(x) ∧ Have(x, teeth))"
   },
   {
     "id": 133,
     "question": "Platypus are reptiles.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Platypus(x) ∧ HaveTeeth(x))",
-    "correct_formula": "¬Have(platypus, teeth)"
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 134,
     "question": "Humans are mammals.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Platypus(x) ∧ HaveTeeth(x))",
-    "correct_formula": "¬Have(platypus, teeth)"
+    "predicted_answer": "C",
+    "wrong_formula": "[∃x (Mammal(x) ∧ HasTeeth(x))]",
+    "correct_formula": "∃x (Mammal(x) ∧ Have(x, teeth))"
   },
   {
     "id": 135,
     "question": "Space sucks.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Vacuum/1, Vacuum/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Vacuum/1, Vacuum/0"
+    "flag": "parsing error",
+    "predicted_answer": "B",
+    "wrong_formula": "Space → Vacuum(x)",
+    "correct_formula": "Vacuum(space)"
   },
   {
     "id": 136,
     "question": "Space is a vampire.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Vampire/1, Vampire/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Vampire/1, Vampire/0"
+    "flag": "parsing error",
+    "predicted_answer": "B",
+    "wrong_formula": "Plunger(x) → Suck(x) ∧ Vacuum(x) → Suck(x) ∧ Vampire(x) → Suck(x) ∧ Space(x) → Vacuum(x) ∧ Duster(x) ∧ HouseholdAppliance(x) ∧ ¬Suck(x)",
+    "correct_formula": "∀x (Plunger(x) → Suck(x))"
   },
   {
     "id": 137,
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 140,
@@ -1043,75 +1004,67 @@
     "question": "Ben is either yellow and ugly or neither yellow nor ugly.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 143,
     "question": "Some Heck cattle are artificially selected.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "parsing error",
+    "predicted_answer": "B",
+    "wrong_formula": "BreedingBack(x) ↔ (∃y,z (SelectiveBreeding(x, y) ∧ DomesticAnimal(y) ∧ Animal(z) ∧ Extinct(z) ∧ Resemble(y, z)))",
+    "correct_formula": "∀x ∀y (BreedingBack(x, y) → ArtificiallySelect(x))"
   },
   {
     "id": 144,
     "question": "Aurochs are extinct.",
     "answer": "C",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "C",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "wrong_formula": "BreedingBack(x) ↔ (∃y,z (SelectiveBreeding(x, y) ∧ DomesticAnimal(y) ∧ Animal(z)))",
+    "correct_formula": "∀x ∀y (BreedingBack(x, y) → ArtificiallySelect(x))"
   },
   {
     "id": 145,
     "question": "Jerry is young.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x (Young(x) ∧ Teach(x))",
-    "correct_formula": "∀x (Young(x) → ¬Teach(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 146,
     "question": "Jerry is not young.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x (Young(x) ∧ Teach(x))",
-    "correct_formula": "∀x (Young(x) → ¬Teach(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 147,
     "question": "Rose is a human or a manager.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Young(x) ∧ Teach(x))",
-    "correct_formula": "∀x (Young(x) → ¬Teach(x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 148,
     "question": "Rose is a human or Jerry is a manager.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x (Young(x) ∧ Teach(x))",
-    "correct_formula": "∀x (Young(x) → ¬Teach(x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 149,
     "question": "It is not true that Rose is a student and Jerry is a human.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∃x (Young(x) ∧ Teach(x))",
-    "correct_formula": "∀x (Young(x) → ¬Teach(x))"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 150,
     "question": "Neapolitan Chronicles is an English book.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 151,
@@ -1146,7 +1099,7 @@
     "question": "If Remy either goes to bed late and wakes up every day after noon or visits the office supply store regularly, then Remy neither spends their free time tidying and organizing the spaces in their home nor has a fully stocked and impressive home office.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "wrong_formula": "∀x (Owns(x, largeDesktopMonitor) → (WorkRegularly(x) ∧ WorkOften(x) at Home))",
     "correct_formula": "∀x (Desktop(x) → WorkHome(x))"
   },
@@ -1161,37 +1114,29 @@
     "id": 157,
     "question": "James has a part-time job offered by the university.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∀x (LibraryWorker(x) ∧ ComputerScienceStudent(x))",
-    "correct_formula": "∀x (WorkLibrary(x) → ¬ComputerScience(x))"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 158,
     "question": "James does not have a part-time job offered by the university.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∃x (LibraryWorker(x) ∧ CSStudent(x))",
-    "correct_formula": "∀x (WorkLibrary(x) → ¬ComputerScience(x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 159,
     "question": "James either takes the database course or has a part-time job offered by the university.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "¬∀x (LibraryWorker(x) ∧ CSDeptStudent(x))",
-    "correct_formula": "∀x (WorkLibrary(x) → ¬ComputerScience(x))"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 160,
     "question": "Jack takes the database course.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "¬∀x (LibraryWorker(x) ∧ ComputerScienceStudent(x))",
-    "correct_formula": "∀x (WorkLibrary(x) → ¬ComputerScience(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 161,
@@ -1218,34 +1163,29 @@
     "id": 164,
     "question": "Breaking Bad is on Monday at 8 pm.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∀x (Bachelor(x) → Portray(x, realPeople(x)))",
-    "correct_formula": "∀x (OnBachelor(x) → PortrayLiveOfRealPeople(x))"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 165,
     "question": "Breaking Bad is a TV show in which roses are given out on Monday at 8 pm.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 166,
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
-    "wrong_formula": "∀x (Bachelor(x) → Portray(x, RealPeople(x)))",
-    "correct_formula": "∀x (OnBachelor(x) → PortrayLiveOfRealPeople(x))"
+    "predicted_answer": "B"
   },
   {
     "id": 167,
     "question": "Heinrich Schmidt was either German or Russian.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 168,
@@ -1258,10 +1198,8 @@
     "id": 169,
     "question": "No politicans are part of the Nazi Reichstag.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (Politician(x) ∧ PartOf(x, naziReichstag))",
-    "correct_formula": "From(heinrichScmidt, naziGermany) ∧ Politician(heinrichScmidt)"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 170,
@@ -1275,9 +1213,8 @@
     "id": 172,
     "question": "If colorectal cancer is not a mild flu and a Cholangiocarcinoma, then colorectal cancer is a bile duct cancer or a Cholangiocarcinoma.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "parsing error",
+    "predicted_answer": "B"
   },
   {
     "id": 173,
@@ -1304,22 +1241,24 @@
     "id": 176,
     "question": "The world championships is a sporting event.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "B"
   },
   {
     "id": 177,
     "question": "The last Olympic games were not in Tokyo.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "B"
+    "flag": "execution error",
+    "predicted_answer": "B",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 178,
     "question": "The United States won the most medals in the last Olympic games.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 179,
@@ -1332,15 +1271,19 @@
     "id": 180,
     "question": "Susan flies from LGA airport.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "A",
+    "wrong_formula": "Departure(x, y) ∧ Arrival(x, y) ⊕ ¬(x = y)",
+    "correct_formula": "∀x ∀y (FlyFrom(x, y) ⊕ FlyTo(x, y))"
   },
   {
     "id": 181,
     "question": "John flies to LGA airport.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "C",
+    "wrong_formula": "Departure(x, y) ∧ Arrival(x, y) ⊕ ¬(x = y)",
+    "correct_formula": "∀x ∀y (FlyFrom(x, y) ⊕ FlyTo(x, y))"
   },
   {
     "id": 182,
@@ -1367,9 +1310,8 @@
     "id": 185,
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 186,
@@ -1384,7 +1326,7 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "B",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -1399,7 +1341,7 @@
     "question": "Yuri is not an American basketball player.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 190,
@@ -1420,7 +1362,7 @@
     "question": "If Yuri is not an American basketball player, then Yuri is a basketball player.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 193,
@@ -1468,25 +1410,22 @@
     "id": 199,
     "question": "No one playing for Nautico is Brazilian.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "¬∃x (PlaysFor(x, nautico) ∧ Brazilian(x))",
-    "correct_formula": "BornIn(ailtonsilva, y1995) ∧ CommonlyKnownAs(ailtonsilva, ailton)"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 200,
     "question": "Ailton Silva foes not play for a football club.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 201,
     "question": "Ailton was not loaned out to a football club.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Club/1, Club/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Club/1, Club/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 202,
@@ -1500,6 +1439,6 @@
     "question": "Ailton Silva was loaned out to a football club.",
     "answer": "C",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   }
 ]
