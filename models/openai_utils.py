@@ -74,7 +74,7 @@ class OpenAIModel:
         return generated_text
 
     def generate(self, input_string, task_description, temperature = 0.0):
-        if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo']:
+        if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo', 'gpt-4o']:
             return self.chat_generate(input_string, task_description, temperature)
         else:
             raise Exception("Model name not recognized")
@@ -95,7 +95,7 @@ class OpenAIModel:
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
 
     def batch_generate(self, messages_list, task_description, temperature = 0.0):
-        if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo']:
+        if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo', 'gpt-4o']:
             return self.batch_chat_generate(messages_list, task_description, temperature)
         else:
             raise Exception("Model name not recognized")
