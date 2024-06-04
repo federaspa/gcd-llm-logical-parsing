@@ -3,7 +3,7 @@
 import json
 import os
 from tqdm import tqdm
-from utils import OpenAIModel
+from openai_utils import OpenAIModel
 import sys
 import argparse
 
@@ -65,7 +65,7 @@ class PromptGenerator:
         prompt = self.prompt_template
         
         if train_data:
-            for i,story in enumerate(train_data[:3]):
+            for i,story in enumerate(train_data[:5]):
                                 
                 prompt = prompt.replace(f'[[NLPROBLEM{i+1}]]', '\n'.join(story['context']))
                 
@@ -74,7 +74,9 @@ class PromptGenerator:
                 prompt = prompt.replace(f'[[PREDICATES{i+1}]]', '\n'.join(story['logic_predicates']))
         
                 if 'question_fol' in story.keys():
-                    prompt = prompt.replace(f'[[FOLQUESTION{i+1}]]', story['question_fol'])
+                    fol_question = story['question_fol'] + ' ::: ' + story['question']
+
+                    prompt = prompt.replace(f'[[FOLQUESTION{i+1}]]', fol_question)
                 else:
                     prompt = prompt.replace(f',\n"First-Order-Logic Question": "[[FOLQUESTION{i+1}]]"', '')
                             
@@ -87,7 +89,7 @@ class PromptGenerator:
         prompt = prompt.replace('[[PROBLEM]]', '\n'.join(test_data['context']))
         prompt = prompt.replace('[[QUESTION]]', test_data['question'])
         prompt = prompt.replace('[[PREDICATES]]', '\n'.join(self.predicates[str(test_data['id'])]['logic_predicates']))
-            
+
         return prompt
     
     def load_dynamic_examples(self, split):

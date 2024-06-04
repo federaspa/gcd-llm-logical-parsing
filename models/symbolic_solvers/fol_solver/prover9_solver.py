@@ -7,17 +7,17 @@ from .Formula import FOL_Formula
 
 # set the path to the prover9 executable
 # os.environ['PROVER9'] = '../Prover9/bin'
-os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
+os.environ['PROVER9'] = 'models/symbolic_solvers/Prover9/bin'
 
 class FOL_Prover9_Program:
     def __init__(self, logic_program:str, dataset_name = 'FOLIOv2', prompt_mode = 'static') -> None:
         self.logic_program = logic_program
         self.prompt_mode = prompt_mode
-        self.flag, self.formula_error, self.nl_errror = self.parse_logic_program()
+        self.flag, self.formula_error, self.nl_error = self.parse_logic_program()
         self.dataset_name = dataset_name
 
     def parse_logic_program(self):
-        try:        
+        try:
             # Extract premises and conclusion
             # premises_string = self.logic_program.split("First-Order-Logic Question:")[0].split("First-Order-Logic Rules:")[1].strip()
             # conclusion_string = self.logic_program.split("First-Order-Logic Question:")[1].strip()
@@ -39,7 +39,7 @@ class FOL_Prover9_Program:
             
             self.logic_premises = [premise.split(':::')[0].strip() for premise in premises]
             self.logic_conclusion = conclusion[0].split(':::')[0].strip()
-            
+
             self.nl_premises = [premise.split(':::')[1].strip() for premise in premises]
             self.nl_conclusion = conclusion[0].split(':::')[1].strip()
             

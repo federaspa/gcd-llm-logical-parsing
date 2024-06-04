@@ -85,7 +85,7 @@ class LogicInferenceEngine:
         # cannot parse the program
         if program.flag == False:
             answer = self.backup_generator.get_backup_answer(id)
-            return answer, 'parsing error', program.formula_error, program.parsing_error_index
+            return answer, 'parsing error', program.formula_error, program.nl_error
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
@@ -105,7 +105,7 @@ class LogicInferenceEngine:
             
             program = example['raw_logic_programs']
             
-            answer, flag, error, error_index = self.safe_execute_program(example['id'], program)
+            answer, flag, error, nl_error = self.safe_execute_program(example['id'], program)
             if not flag == 'success':
                 error_count += 1
                 # print(example['id'])
@@ -122,7 +122,7 @@ class LogicInferenceEngine:
                 if flag == 'parsing error':
                     output.update({
                         'wrong_formula': error,
-                        'correct_formula': self.ground_truth[example['id']]['context_fol'][error_index]
+                        'correct_formula': nl_error
                     })
                 elif flag == 'execution error':
                     output.update({

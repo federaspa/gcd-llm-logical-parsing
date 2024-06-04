@@ -7,8 +7,8 @@ from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
 from backup_answer_generation import Backup_Answer_Generator
-from utils import GrammarConstrainedModel
-from utils import OpenAIModel
+from gcd_utils import GrammarConstrainedModel
+from openai_utils import OpenAIModel
 import sys
 import re
 
@@ -145,7 +145,7 @@ class SelfRefinementEngine:
         program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
         # cannot parse the program
         if program.flag == False:
-            return 'parsing error', program.formula_error, program.nl_errror
+            return 'parsing error', program.formula_error, program.nl_error
         # execuate the program
         answer, error_message = program.execute_program()
         # not executable
@@ -162,20 +162,19 @@ class SelfRefinementEngine:
 
             if status == 'parsing error':
                 
-                try:           
+                try:
                     
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
-                              
-                    full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
-                        
-                    print(full_prompt)
 
+                    full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
 
                     response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
                     # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
-                                                        
+
+                    # print(response)
+
                     revised_program_string = json.dumps(logic_program, ensure_ascii=False).replace(error, response)
-                
+
                     revised_program = json.loads(revised_program_string)
                     
                 except Exception as e:

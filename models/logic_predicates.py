@@ -4,7 +4,7 @@ import json
 import os
 import re
 from tqdm import tqdm
-from utils import OpenAIModel
+from openai_utils import OpenAIModel
 import sys
 import argparse
 
