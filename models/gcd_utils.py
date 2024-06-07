@@ -23,7 +23,7 @@ class GrammarConstrainedModel:
             n_batch=n_batch,
             n_ctx = n_ctx,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose = True
+            verbose = False
         )
 
         # input("Press Enter to continue...")

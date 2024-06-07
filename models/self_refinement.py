@@ -161,9 +161,9 @@ class SelfRefinementEngine:
             status, error, nl_error = self.safe_execute_program(logic_program)
 
             if status == 'parsing error':
-                
+
                 try:
-                    
+
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
@@ -176,11 +176,12 @@ class SelfRefinementEngine:
                     revised_program_string = json.dumps(logic_program, ensure_ascii=False).replace(error, response)
 
                     revised_program = json.loads(revised_program_string)
-                    
+
                 except Exception as e:
-                    print(f'Exception: {e}')
+                    print(f'Exception for {example["id"]}: {e}')
                     revised_program = logic_program
-                
+
+
                 # programs = [revised_program]
                 output = {'id': example['id'], 
                         'context': example['context'],
