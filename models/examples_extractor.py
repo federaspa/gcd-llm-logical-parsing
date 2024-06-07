@@ -52,15 +52,12 @@ class ExampleExtractionEngine:
         max_examples = min(self.max_examples, len(self.source_dataset))
         
         source_sentences = []
+        seen_source_stories = set()
         
         for source_story in self.source_dataset:
             
-            seen_source_stories = set()
             
             if source_story['story_id'] in seen_source_stories:
-                continue
-            
-            if 'question_fol' not in source_story.keys():
                 continue
             
             source_sentence = ' '.join(source_story['context'])
@@ -69,20 +66,21 @@ class ExampleExtractionEngine:
             source_sentences.append(source_sentence)
             
             seen_source_stories.add(source_story['story_id'])
-        
+                    
         for target_story in tqdm(self.target_dataset):
             
             target_sentence = ' '.join(target_story['context'])
-            target_sentence += f" {target_story['question']}"
-            
+            target_sentence += f" {target_story['question']}"   
+
             response_source = openai.Embedding.create(
+                model="text-embedding-3-large",
                 input=source_sentences,
-                model="text-embedding-3-large"
+                
             )
 
             response_target = openai.Embedding.create(
-                input=target_sentence,
-                model="text-embedding-3-large"
+                model="text-embedding-3-large",
+                input=target_sentence
             )
 
             embeddings1 = torch.tensor([d.embedding for d in response_source.data])
