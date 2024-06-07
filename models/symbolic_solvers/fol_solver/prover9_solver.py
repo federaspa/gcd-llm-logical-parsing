@@ -40,9 +40,21 @@ class FOL_Prover9_Program:
             self.logic_premises = [premise.split(':::')[0].strip() for premise in premises]
             self.logic_conclusion = conclusion[0].split(':::')[0].strip()
 
-            self.nl_premises = [premise.split(':::')[1].strip() for premise in premises]
-            self.nl_conclusion = conclusion[0].split(':::')[1].strip()
-            
+            # self.nl_premises = [premise.split(':::')[1].strip() for premise in premises]
+            # self.nl_conclusion = conclusion[0].split(':::')[1].strip()
+            self.nl_premises = []
+
+            for premise in premises:
+                t = premise.split(':::')
+                if len(t) > 1:
+                    self.nl_premises.append(t[1].strip())
+                else:
+                    self.nl_premises.append('')
+
+            if len(conclusion[0].split(':::')) > 1:
+                self.nl_conclusion = conclusion[0].split(':::')[1].strip()
+            else:
+                self.nl_conclusion = ''
 
             # convert to prover9 format
             self.prover9_premises = []
