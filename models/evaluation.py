@@ -59,7 +59,7 @@ def get_choice(answer_str):
     return None
 
 
-def evaluate_metrics(QA_results, average="weighted"):
+def evaluate_metrics(QA_results, average="micro"):
     
     predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
     gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
