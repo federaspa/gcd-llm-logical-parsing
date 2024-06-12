@@ -66,15 +66,25 @@ def evaluate_metrics(QA_results, average="micro"):
     
     return f1_score(gold_answers, predictions, average=average), precision_score(gold_answers, predictions, average=average), recall_score(gold_answers, predictions, average=average)
 
+def evaluate_predicates(result_file):
+    gold_file_str = os.path.split(result_file)[1]
+    gold_ds = gold_file_str.split('_')[0] if 'self-refine' not in gold_file_str else gold_file_str.split('_')[1]
+    gold_split = gold_file_str.split('_')[1] if 'self-refine' not in gold_file_str else gold_file_str.split('_')[2]
+    gold_file = f'./data/{gold_ds}/{gold_split}.json'
+    
+    with open(gold_file, 'r') as f:
+        gold_samples = json.load(f)
+    pass
+
 def full_evaluation(result_file):
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
 
     executable_samples = [sample for sample in all_samples if sample['flag'] == 'success']
-    non_executable_samples = [sample for sample in all_samples if sample['flag'] != 'success']
+    # non_executable_samples = [sample for sample in all_samples if sample['flag'] != 'success']
     
     parsing_errors = [sample for sample in all_samples if sample['flag'] == 'parsing error']
-    generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
+    # generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
     print()
@@ -84,9 +94,9 @@ def full_evaluation(result_file):
     print('-'*75)
     print()
     f1, precision, recall = evaluate_metrics(executable_samples)
-    print(f"Weighted F1: {f1}")
-    print(f"Weighted Precision: {precision}")
-    print(f"Weighted Recall: {recall}")
+    print(f"Average F1: {f1}")
+    print(f"Average Precision: {precision}")
+    print(f"Average Recall: {recall}")
     print('-'*75)
     print()
     
@@ -98,12 +108,7 @@ def full_evaluation(result_file):
         print(f'Precision: {precision[i]}')
         print(f'Recall: {recall[i]}')
         print('-'*75)
-        print()
-    
-    # print(f'F1 scores for executable samples: {f1}')
-    # print(f'Precision scores for executable samples: {precision}')
-    # print(f'Recall scores for executable samples: {recall}')
-    
+        print()    
 
 
 def parse_args():
@@ -126,4 +131,5 @@ if __name__ == "__main__":
     else:
         result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.model_name}_{args.prompt_mode}_backup-{args.backup}.json')
 
+    # evaluate_predicates(result_file)
     full_evaluation(result_file)
