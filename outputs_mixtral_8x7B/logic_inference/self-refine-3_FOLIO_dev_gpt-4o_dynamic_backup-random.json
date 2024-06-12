@@ -172,7 +172,7 @@
     "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 25,
@@ -249,7 +249,7 @@
     "question": "Imperium doesn't have a feud with a professional wrestling stable that includes Ivy Nile.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 36,
@@ -284,14 +284,14 @@
     "question": "A design by Max is evocative and dreamy.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 41,
     "question": "A design by Max is either evocative or dreamy.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 42,
@@ -312,7 +312,7 @@
     "question": "Coco Gauff is not a player who lost to Iga Swiatek or one of the most active players in major tennis.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 45,
@@ -325,10 +325,9 @@
     "id": 46,
     "question": "James's favorite season is summer.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "C",
-    "wrong_formula": "∃y (Season(y) ∧ FavoriteSeason(emma, y) ∧ y = summer)",
-    "correct_formula": "Emma's favorite season is summer."
+    "flag": "execution error",
+    "predicted_answer": "B",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Season/2, Season/1.\n\n\nFatal error:  The following symbols are used with multiple arities: Season/2, Season/1"
   },
   {
     "id": 47,
@@ -342,7 +341,7 @@
     "question": "Mia's favorite season is spring.",
     "answer": "C",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 49,
@@ -369,8 +368,9 @@
     "id": 52,
     "question": "Basque is a Romance language.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "B"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 53,
@@ -383,8 +383,9 @@
     "id": 54,
     "question": "French is an Indo-European language.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 55,
@@ -467,10 +468,8 @@
     "id": 66,
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "ListOfColleges(y,y)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z",
-    "correct_formula": "A list of residential colleges at Yale."
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 67,
@@ -483,8 +482,9 @@
     "id": 68,
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "A",
+    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowment(Yaleuniversity, 42.3billion)\n                            ^"
   },
   {
     "id": 69,
@@ -533,7 +533,7 @@
     "question": "Tom's license plate is from Istanbul.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 76,
@@ -624,7 +624,7 @@
     "question": "Walden contains knowledge.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 89,
@@ -651,16 +651,15 @@
     "id": 92,
     "question": "Machine translation is a language understanding task.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 93,
     "question": "Tom will rent an apartment in The Olive Garden.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "C",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Pet/1, Pet/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Pet/1, Pet/0"
   },
   {
@@ -668,14 +667,16 @@
     "question": "Tom is allowed to move in an apartment in The Olive Garden with Fluffy.",
     "answer": "C",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 95,
     "question": "The security deposit at the Olive Garden is either $2000 or more.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "A",
+    "wrong_formula": "∀x∀y∀z∃z(Owner(x,y)∧Pet(y)∧ManagedBuilding(z)∧AllowedWithPet(z,y)",
+    "correct_formula": "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500."
   },
   {
     "id": 96,
@@ -751,9 +752,8 @@
     "id": 106,
     "question": "It cost below US $300 to take the GRE test.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: EconomicHardship/1, EconomicHardship/0.\n\n\nFatal error:  The following symbols are used with multiple arities: EconomicHardship/1, EconomicHardship/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 107,
@@ -823,9 +823,8 @@
     "id": 116,
     "question": "Windy is a great shooter.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "C",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 117,
@@ -852,8 +851,9 @@
     "id": 120,
     "question": "Barutin is not located in Antarctica.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "(MAX_SECONDS)"
   },
   {
     "id": 121,
@@ -881,7 +881,7 @@
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 125,
@@ -909,7 +909,7 @@
     "question": "John has a wedding that is well-attended.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "B"
   },
   {
     "id": 129,
@@ -964,32 +964,29 @@
     "id": 136,
     "question": "Space is a vampire.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 137,
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 138,
     "question": "Supervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: StateOfTheArtModel/1, StateOfTheArtModel/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 139,
     "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "B",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 140,
@@ -1115,7 +1112,7 @@
     "question": "James has a part-time job offered by the university.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 158,
@@ -1185,7 +1182,7 @@
     "question": "Heinrich Schmidt was either German or Russian.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 168,
@@ -1199,7 +1196,7 @@
     "question": "No politicans are part of the Nazi Reichstag.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 170,
@@ -1255,7 +1252,7 @@
     "question": "The United States won the most medals in the last Olympic games.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 179,
@@ -1312,7 +1309,7 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "B",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -1320,7 +1317,7 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {

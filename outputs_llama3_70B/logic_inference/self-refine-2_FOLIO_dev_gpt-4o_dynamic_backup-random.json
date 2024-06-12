@@ -327,8 +327,8 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "C",
-    "wrong_formula": "∃y (Season(y) ∧ FavoriteSeason(emma, y) ∧ y = summer)",
-    "correct_formula": "Emma's favorite season is summer."
+    "wrong_formula": "∀x (WantLongVacation(x) → ∃y (Season(y) ∧ LoveMost(x, y) ∧ y = summer))",
+    "correct_formula": "All students who want to have a long vacation love summer the most."
   },
   {
     "id": 47,
@@ -468,8 +468,8 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "A",
-    "wrong_formula": "ListOfColleges(y,y)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z)∧ListOfColleges(y,z",
+    "predicted_answer": "B",
+    "wrong_formula": "CollegeOf(yale, benjaminfranklin) ∧ CollegeOf(yale, berkeley) ∧ CollegeOf(yale, branford) ∧ CollegeOf(yale, davenport) ∧ CollegeOf(yale, ezrastiles) ∧ CollegeOf(yale, gracehopper) ∧ CollegeOf(yale, jonathanedwards) ∧ CollegeOf(yale, morse) ∧ CollegeOf(yale, paulimurray) ∧ CollegeOf(yale, pierson) ∧ CollegeOf(yale, saybrook) ∧ CollegeOf(yale, silliman) ∧ CollegeOf(yale, timothydwight) ∧ CollegeOf(yale, trumbull)",
     "correct_formula": "A list of residential colleges at Yale."
   },
   {
@@ -660,7 +660,7 @@
     "question": "Tom will rent an apartment in The Olive Garden.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Pet/1, Pet/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Pet/1, Pet/0"
   },
   {
@@ -674,8 +674,10 @@
     "id": 95,
     "question": "The security deposit at the Olive Garden is either $2000 or more.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "A",
+    "wrong_formula": "SecurityDeposit(olivegarden, 2000) ∨ MoreThan(2000, OneMonthRent(olivegarden))",
+    "correct_formula": "The security deposit at the Olive Garden is either $2000 or more."
   },
   {
     "id": 96,
@@ -759,8 +761,10 @@
     "id": 107,
     "question": "There is no financial aid available for the GRE test.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "C",
+    "wrong_formula": "∀x (Applicant(x) ∧ Prove(x, HasHardship(x)) → ProvideAid(ets, x))",
+    "correct_formula": "ETS provides financial aid to those GRE applicants who prove economic hardship."
   },
   {
     "id": 108,
@@ -965,7 +969,7 @@
     "question": "Space is a vampire.",
     "answer": "C",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "C",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -980,7 +984,7 @@
     "question": "Supervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "A",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "C",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: StateOfTheArtModel/1, StateOfTheArtModel/0"
   },
   {
@@ -988,7 +992,7 @@
     "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0"
   },
   {
@@ -1177,8 +1181,9 @@
     "id": 166,
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0.\n\n\nFatal error:  The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0"
   },
   {
     "id": 167,
@@ -1304,7 +1309,7 @@
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -1320,7 +1325,7 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "B",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
