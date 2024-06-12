@@ -172,7 +172,7 @@
     "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "A",
+    "predicted_answer": "C",
     "wrong_formula": "Host(beijing, 2008_summer_olympics) ∧ ∃y (Host(beijing, y) ∧ y = winter_olympics)",
     "correct_formula": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics."
   },
@@ -279,7 +279,7 @@
     "question": "A design by Max is a mass product design.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "∀x (Timeless(Max(x)) → (MassProduct(Max(x)) ∧ Evocative(Max(x))))",
     "correct_formula": "If a design by Max is timeless, then a design by Max is a mass product design and evocative."
   },
@@ -330,7 +330,7 @@
     "question": "James's favorite season is summer.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "A",
     "wrong_formula": "∀x ∀y ∀z ((FavoriteSeason(mia, y) ∧ FavoriteSeason(emma, z)) → ¬(y = z))",
     "correct_formula": "Mia's favorite season is not the same as Emma's."
   },
@@ -348,7 +348,7 @@
     "question": "Mia's favorite season is spring.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "∀x (Season(Spring(x)) ∨ Season(Summer(x)) ∨ Season(Fall(x)) ∨ Season(Winter(x)))",
     "correct_formula": "There are four seasons in a year: Spring, Summer, Fall, and Winter."
   },
@@ -481,15 +481,16 @@
     "id": 66,
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "B"
+    "flag": "execution error",
+    "predicted_answer": "C",
+    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowmentValue(Yale, 42.3billion)\n                       ^"
   },
   {
     "id": 67,
     "question": "Yale University has the largest university endowment of any educational institution.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "ResidentialCollege(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege)",
     "correct_formula": "A list of residential colleges at Yale."
   },
@@ -498,7 +499,7 @@
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "wrong_formula": "ListOfResidentialColleges(yale_university, benjamin_franklin_college) ∧ ListOfResidentialColleges(yale_university, berkeley_college) ∧ ListOfResidentialColleges(yale_university, branford_college) ∧ ListOfResidentialColleges(yale_university, davenport_college) ∧ ListOfResidentialColleges(yale_university, ezra_stiles_college) ∧ ListOfResidentialColleges(yale_university, grace_hopper_college) ∧ ListOfResidentialColleges(yale_university, jonathan_edwards_college) ∧ ListOfResidentialColleges(yale_university, morse_college) ∧ ListOfResidentialColleges(yale_university, pauli_murray_college) ∧ ListOfResidentialColleges(yale_university, pierson_college) ∧ ListOfResidentialColleges(yale_university, saybrook_college) ∧ ListOfResidentialColleges(yale_university, silliman_college) ∧ ListOfResidentialColleges(yale_university, timothy_dwight_college) ∧ ListOfResidentialColleges(yale_university, trumbull_college)",
     "correct_formula": "A list of residential colleges at Yale."
   },
@@ -619,7 +620,7 @@
     "question": "Subway provides take-out service and does not receive many negative reviews.",
     "answer": "A",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "C",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Subway/1, Subway/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Subway/1, Subway/0"
   },
   {
@@ -669,7 +670,7 @@
     "question": "Machine translation is a language understanding task.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -760,7 +761,7 @@
     "question": "Luke is neither a twin nor triplet nor complains often about annoying siblings.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "wrong_formula": "∀x ((TwinOrTriplet(x) ∧ StrongBondsWithFamily(x)) ∨ (¬TwinOrTriplet(x) ∧ ¬StrongBondsWithFamily(x))) → (x = luke)",
     "correct_formula": "Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members."
   },
@@ -769,7 +770,7 @@
     "question": "Tom can apply for financial aid from ETS to take the GRE test.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "wrong_formula": "∀x (Applicant(x, gre_test) ∧ Prove(x, EconomicHardship(x)) → Provide(ets, FinancialAid, x))",
     "correct_formula": "ETS provides financial aid to those GRE applicants who prove economic hardship."
   },
@@ -778,7 +779,7 @@
     "question": "It cost below US $300 to take the GRE test.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "∀x (EconomicHardship(x) ↔ (Difficulty(x) ∧ (CausedBy(x, LittleMoney(x)) ∨ CausedBy(x, FewResources(x)))))",
     "correct_formula": "Economic hardship refers to difficulty caused by having too little money or too few resources."
   },
@@ -787,7 +788,7 @@
     "question": "There is no financial aid available for the GRE test.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Hardship/1, Hardship/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Hardship/1, Hardship/0"
   },
   {
@@ -830,7 +831,7 @@
     "question": "Juan de Onate visited a mountain range in Texas.",
     "answer": "C",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "A",
     "wrong_formula": "∀x (MountainRange(x) ∧ In(x, texas) → ¬∃y (Mine(y) ∧ LocatedIn(y, x) ∧ Donated(y)))",
     "correct_formula": "There are no mountain ranges in Texas that have mines which have been donated."
   },
@@ -846,7 +847,7 @@
     "question": "Peter is shorter than a man in Michael's class.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "B",
     "error_message": "(MAX_SECONDS)"
   },
   {
@@ -854,7 +855,7 @@
     "question": "Windy is a great shooter.",
     "answer": "A",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "B",
     "error_message": "(MAX_SECONDS)"
   },
   {
@@ -915,7 +916,7 @@
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "¬Airline(greyhound) → ¬∃y (Greyhound(y) ∧ Plane(y))",
     "correct_formula": "If Greyhound is not an airline, then there are no Greyhound planes."
   },
@@ -1001,7 +1002,7 @@
     "question": "Space is a vampire.",
     "answer": "C",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -1009,7 +1010,7 @@
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "C",
+    "predicted_answer": "A",
     "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
@@ -1025,7 +1026,7 @@
     "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "B",
     "flag": "execution error",
-    "predicted_answer": "A",
+    "predicted_answer": "B",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0"
   },
   {
@@ -1054,7 +1055,7 @@
     "question": "Some Heck cattle are artificially selected.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "wrong_formula": "∃x (Animal(x) ∧ ArtificiallySelected(x) ∧ x = heck_cattle)",
     "correct_formula": "Some Heck cattle are artificially selected."
   },
@@ -1219,7 +1220,7 @@
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "answer": "A",
     "flag": "execution error",
-    "predicted_answer": "B",
+    "predicted_answer": "C",
     "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0.\n\n\nFatal error:  The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0"
   },
   {
