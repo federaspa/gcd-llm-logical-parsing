@@ -142,10 +142,10 @@ class LogicProgramGenerator(PromptGenerator):
         
         print('Job submitted with id: ', batch.id)
         
-        if not os.path.exists('active_requests'):
-            os.makedirs('active_requests')
+        if not os.path.exists('active_requests/programs'):
+            os.makedirs('active_requests/programs')
             
-        active_requests_path = os.path.join('active_requests', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+        active_requests_path = os.path.join('active_requests/programs', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
             
         if os.path.exists(active_requests_path):
             active_requests = json.load(open(active_requests_path))

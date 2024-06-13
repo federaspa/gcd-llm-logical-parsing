@@ -91,10 +91,10 @@ class PredicatesGenerator(PromptGenerator):
         
         print('Job submitted with id: ', batch.id)
         
-        if not os.path.exists('active_requests'):
-            os.makedirs('active_requests')
+        if not os.path.exists('active_requests/predicates'):
+            os.makedirs('active_requests/predicates')
             
-        active_requests_path = os.path.join('active_requests', f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+        active_requests_path = os.path.join('active_requests/predicates', f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
             
         if os.path.exists(active_requests_path):
             active_requests = json.load(open(active_requests_path))

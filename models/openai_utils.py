@@ -1,10 +1,16 @@
 import openai
+import backoff
 import os
 import json
 from typing import Any
 import time
 # from langchain_core.prompts import PromptTemplate
 # from langchain_core.messages import HumanMessage, SystemMessage
+
+@backoff.on_exception(backoff.expo, openai.error.RateLimitError)
+def chat_completions_with_backoff(**kwargs):
+    return openai.ChatCompletion.create(**kwargs)
+
 
 def make_batch_input_file(
     messages_dict: dict[list[dict[str,Any]]],
