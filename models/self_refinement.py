@@ -6,11 +6,8 @@ import os
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
-from backup_answer_generation import Backup_Answer_Generator
 from gcd_utils import GrammarConstrainedModel
 from openai_utils import OpenAIModel
-import sys
-import re
 
 from dotenv import load_dotenv
 
@@ -19,17 +16,19 @@ load_dotenv()  # take environment variables from .env.
 api_key = os.getenv("OPENAI_API_KEY")
 
 class SelfRefinementEngine:
-    def __init__(self, args, current_round, constrained_model):
+    def __init__(self, args, current_round, refiner):
         self.args = args
         self.data_path = args.data_path
         self.predicates_path = args.predicates_path
         self.split = args.split
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher
         self.dataset_name = args.dataset_name
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
-        self.constrained_model = constrained_model
+        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+                                    #   args.stop_words, args.max_new_tokens
+                                      )
+        self.refiner = refiner if refiner else self.openai_api
         
 
         self.logic_programs = self.load_logic_programs()
@@ -50,21 +49,17 @@ class SelfRefinementEngine:
                 
         self.load_prompt_templates()
         
-        # self.backup_result_path = os.path.join(self.backup_path, f'{self.backup_strategy}_{self.dataset_name}_{self.split}_{self.model_name}.json')
-        
-        # self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.backup_result_path)
-
     def load_logic_programs(self):
         prefix = ""
         if self.current_round > 1:
             prefix = f'self-refine-{self.current_round-1}_'
-        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json')) as f:
+        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
     
     def load_predicates(self):
-        with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json')) as f:
+        with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')) as f:
             predicates = json.load(f)
         return predicates
 
@@ -168,7 +163,7 @@ class SelfRefinementEngine:
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
 
-                    response = self.constrained_model.invoke(full_prompt, self.task_description_parsing, grammar)
+                    response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
                     # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
 
                     # print(response)
@@ -218,7 +213,7 @@ class SelfRefinementEngine:
             os.makedirs('./outputs/logic_programs')
 
         # save outputs
-        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
     
@@ -229,16 +224,13 @@ def parse_args():
     parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--self_refine_round', type=int, default=0)
-    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
-    parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
-    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
-    parser.add_argument('--timeout', type=int, default=60)
-    parser.add_argument('--model_path', type=str)
-    parser.add_argument('--stop_words', type=str, default='------')
+    parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
+    parser.add_argument('--refiner_path', type=str)
     parser.add_argument('--n_gpu_layers', type=int, default=0)
-    parser.add_argument('--max_new_tokens', type=int, default=1024)
+    # parser.add_argument('--stop_words', type=str, default='------')
+    # parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
     return args
 
@@ -246,12 +238,17 @@ if __name__ == "__main__":
     args = parse_args()
     
     starting_round = args.self_refine_round + 1
-    constrained_model=GrammarConstrainedModel(
-        model_path=args.model_path,
-        n_gpu_layers=args.n_gpu_layers,
-    )
+    
+    
+    if args.refiner_path:
+        refiner=GrammarConstrainedModel(
+            refiner_path=args.refiner_path,
+            n_gpu_layers=args.n_gpu_layers,
+        )
+    else:
+        refiner=None
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
-        engine = SelfRefinementEngine(args, round, constrained_model = constrained_model)
+        engine = SelfRefinementEngine(args, round, refiner = refiner)
         engine.single_round_self_refinement()

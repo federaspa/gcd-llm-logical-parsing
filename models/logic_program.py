@@ -17,24 +17,24 @@ class PromptGenerator:
     def __init__(self, args):
         self.args = args
         self.data_path = args.data_path
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher
         self.predicates_path = args.predicates_path
         self.dataset_name = args.dataset_name
         self.split = args.split
         self.prompt_mode = args.prompt_mode
                         
         if self.prompt_mode == 'static':
-            self.prompt_creator = {'FOLIO': self.static_prompt_folio,
-                                'FOLIOv2': self.static_prompt_folio}
+            self.prompt_creator = {'FOLIO': self.static_prompt,
+                                'FOLIOv2': self.static_prompt}
             
         elif self.prompt_mode == 'dynamic':
-            self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
-                                'FOLIOv2': self.dynamic_prompt_folio}
+            self.prompt_creator = {'FOLIO': self.dynamic_prompt,
+                                'FOLIOv2': self.dynamic_prompt}
             
         self.load_prompt_templates()
         
-        if 'FOLIO' in self.dataset_name:
-            self.predicates = self.load_predicates_folio()
+        # if 'FOLIO' in self.dataset_name:
+        self.predicates = self.load_predicates()
   
     def load_prompt_templates(self):
 
@@ -46,12 +46,12 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
             
-    def load_predicates_folio(self):
-        with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json')) as f:
+    def load_predicates(self):
+        with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')) as f:
             predicates = json.load(f)
         return predicates
     
-    def static_prompt_folio(self, test_data):
+    def static_prompt(self, test_data):
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         predicates = '\n'.join(self.predicates[str(test_data['id'])]['logic_predicates'])
@@ -60,7 +60,7 @@ class PromptGenerator:
 
         return full_prompt
 
-    def dynamic_prompt_folio(self, test_data, train_data):
+    def dynamic_prompt(self, test_data, train_data):
         
         prompt = self.prompt_template
         
@@ -107,11 +107,13 @@ class LogicProgramGenerator(PromptGenerator):
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
 
-        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+                                    #   args.stop_words, args.max_new_tokens
+                                      )
         
         
     def load_raw_dataset(self, split):
@@ -154,8 +156,8 @@ class LogicProgramGenerator(PromptGenerator):
                             'answer': sample['answer'],
                             'raw_logic_programs': programs}
                     
-                    if 'FOLIO' in self.dataset_name:
-                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                    # if 'FOLIO' in self.dataset_name:
+                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
                     
                     outputs.append(output)
                     
@@ -176,8 +178,8 @@ class LogicProgramGenerator(PromptGenerator):
                             'answer': sample['answer'],
                             'raw_logic_programs': programs}
                     
-                    if 'FOLIO' in self.dataset_name:
-                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                    # if 'FOLIO' in self.dataset_name:
+                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
                     
                     outputs.append(output)
                     # except:
@@ -189,7 +191,7 @@ class LogicProgramGenerator(PromptGenerator):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
 
@@ -203,7 +205,7 @@ class Cheater:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
     
@@ -250,7 +252,7 @@ class Cheater:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
                     
 def parse_args():
@@ -259,11 +261,11 @@ def parse_args():
     parser.add_argument('--predicates_path', type=str, default='./outputs/logic_predicates')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
-    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
-    parser.add_argument('--stop_words', type=str, default='------')
-    parser.add_argument('--max_new_tokens', type=int, default=1024)
+    parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
+    # parser.add_argument('--stop_words', type=str, default='------')
+    # parser.add_argument('--max_new_tokens', type=int, default=1024)
     parser.add_argument('--cheat', type=str)
     args = parser.parse_args()
     return args

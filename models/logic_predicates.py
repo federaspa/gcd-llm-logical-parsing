@@ -21,8 +21,8 @@ class PromptGenerator:
         self.dataset_name = args.dataset_name
         self.split = args.split
                         
-        self.prompt_creator = {'FOLIO': self.prompt_folio,
-                            'FOLIOv2': self.prompt_folio}
+        self.prompt_creator = {'FOLIO': self.prompter,
+                            'FOLIOv2': self.prompter}
             
         self.load_prompt_templates()
             
@@ -35,7 +35,7 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
 
-    def prompt_folio(self, test_data):
+    def prompter(self, test_data):
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
@@ -51,10 +51,10 @@ class PredicatesGenerator(PromptGenerator):
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
 
-        self.openai_api = OpenAIModel(api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.stop_words, args.max_new_tokens)
         
         
     def parse_predicates(self, string_predicates):
@@ -133,7 +133,7 @@ class PredicatesGenerator(PromptGenerator):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
                     
@@ -143,7 +143,7 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_predicates')
-    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
+    parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
