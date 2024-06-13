@@ -247,11 +247,16 @@ if __name__ == "__main__":
     
     
     if args.refiner_path:
+        
+        print(f"Using refiner model from {args.refiner_path}.")
+        
         refiner=GrammarConstrainedModel(
             refiner_path=args.refiner_path,
             n_gpu_layers=args.n_gpu_layers,
         )
     else:
+        
+        print(f"Using OpenAI model {args.sketcher_name} as refiner.")
         refiner=None
     
     for round in range(starting_round, args.maximum_rounds+1):
