@@ -17,7 +17,7 @@ class PromptGenerator:
     def __init__(self, args):
         self.args = args
         self.data_path = args.data_path
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.predicates_path = args.predicates_path
         self.dataset_name = args.dataset_name
         self.split = args.split
@@ -107,11 +107,11 @@ class LogicProgramGenerator(PromptGenerator):
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
 
-        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name, 
                                     #   args.stop_words, args.max_new_tokens
                                       )
         
@@ -120,11 +120,62 @@ class LogicProgramGenerator(PromptGenerator):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
             raw_dataset = json.load(f)
         return raw_dataset
+    
+    
+    def batch_logic_program_generation(self, batch_size = 10):
+        # load raw dataset
+        raw_dataset = self.load_raw_dataset(self.split)
+        if self.prompt_mode == 'dynamic':
+            dynamic_examples = self.load_dynamic_examples(self.split)
+        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
+        outputs = []
+        # split dataset into chunks
+            
+        if self.prompt_mode == 'static':
+            full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in raw_dataset}
+        
+        elif self.prompt_mode == 'dynamic':
+            full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in raw_dataset}
+                        
+        print(full_prompts[12])
+        
+        try:
+            batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
+            # create output
+            for sample, output in zip(raw_dataset, batch_outputs):
+                
+                # programs = [output]
+                
+                programs = json.loads(output)
+                
+                output = {'id': sample['id'], 
+                        'context': sample['context'],
+                        'question': sample['question'], 
+                        'answer': sample['answer'],
+                        'raw_logic_programs': programs}
+                
+                if 'FOLIO' in self.dataset_name:
+                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                
+                outputs.append(output)
+                
+        except KeyboardInterrupt:
+            sys.exit()
+
+        print(f"Generated {len(outputs)} examples.")
+        
+        # save outputs
+        if not os.path.exists(self.save_path):
+            os.makedirs(self.save_path)
+        
+        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
+    
   
     '''
     Updated version of logic_program_generation; speed up the generation process by batching
     '''     
-    def batch_logic_program_generation(self, batch_size = 10):
+    def batch_logic_program_generation_old(self, batch_size = 10):
         # load raw dataset
         raw_dataset = self.load_raw_dataset(self.split)
         if self.prompt_mode == 'dynamic':

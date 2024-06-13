@@ -1,27 +1,14 @@
-import backoff  # for exponential backoff
 import openai
 import os
-import asyncio
 from typing import Any
 # from langchain_core.prompts import PromptTemplate
 # from langchain_core.messages import HumanMessage, SystemMessage
 
-
-@backoff.on_exception(backoff.expo, openai.error.RateLimitError)
-def completions_with_backoff(**kwargs):
-    return openai.Completion.create(**kwargs)
-
-@backoff.on_exception(backoff.expo, openai.error.RateLimitError)
-def chat_completions_with_backoff(**kwargs):
-    return openai.ChatCompletion.create(**kwargs)
-
-async def dispatch_openai_chat_requests(
+def make_batch_requests_file(
     messages_list: list[list[dict[str,Any]]],
     model: str,
     temperature: float,
-    # max_tokens: int,
     top_p: float,
-    # stop_words: list[str]
 ) -> list[str]:
     """Dispatches requests to OpenAI API asynchronously.
     
@@ -35,6 +22,10 @@ async def dispatch_openai_chat_requests(
     Returns:
         List of responses from OpenAI API.
     """
+    
+    # for message in messages_list:
+        
+    
     async_responses = [
         openai.ChatCompletion.acreate(
             model=model,
@@ -47,7 +38,7 @@ async def dispatch_openai_chat_requests(
         )
         for x in messages_list
     ]
-    return await asyncio.gather(*async_responses)
+    # return await asyncio.gather(*async_responses)
 
 class OpenAIModel:
     def __init__(self, API_KEY, model_name, 
