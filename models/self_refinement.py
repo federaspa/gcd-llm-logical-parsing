@@ -28,7 +28,7 @@ class SelfRefinementEngine:
         self.openai_api = OpenAIModel(api_key, args.sketcher_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
-        self.refiner = refiner if refiner else self.openai_api
+        self.refiner = refiner if refiner else None
         
 
         self.logic_programs = self.load_logic_programs()
@@ -36,15 +36,15 @@ class SelfRefinementEngine:
         self.predicates = self.load_predicates()
 
         self.parsing_error_prompt = {'FOLIO': self.parsing_prompt_folio,
-                            'FOLIOv2': self.parsing_prompt_folio}
+                            'LogicNLI': self.parsing_prompt_folio}
         
         
         self.execution_error_prompt = {'FOLIO': self.execution_prompt_folio,
-                            'FOLIOv2': self.execution_prompt_folio}
+                            'LogicNLI': self.execution_prompt_folio}
             
 
         program_executor_map = {'FOLIO': FOL_Prover9_Program,
-                                'FOLIOv2': FOL_Prover9_Program}
+                                'LogicNLI': FOL_Prover9_Program}
         self.program_executor = program_executor_map[self.dataset_name]
                 
         self.load_prompt_templates()
@@ -163,8 +163,10 @@ class SelfRefinementEngine:
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
 
-                    response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
-                    # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
+                    if self.refiner:
+                        response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
+                    else:
+                        response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
 
                     # print(response)
 

@@ -24,7 +24,7 @@ class LogicInferenceEngine:
         self.ground_truth = self.load_ground_truth()
         
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
-                                'FOLIOv2': FOL_Prover9_Program,
+                                'LogicNLI': FOL_Prover9_Program,
                                 'ProntoQA': Pyke_Program, 
                                 'ProofWriter': Pyke_Program}
         self.program_executor = program_executor_map[self.dataset_name]

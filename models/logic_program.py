@@ -25,11 +25,15 @@ class PromptGenerator:
                         
         if self.prompt_mode == 'static':
             self.prompt_creator = {'FOLIO': self.static_prompt_folio,
-                                'FOLIOv2': self.static_prompt_folio}
+                                'FOLIOv2': self.static_prompt_folio,
+                                   'LogicNLI': self.static_prompt_folio
+                                   }
             
         elif self.prompt_mode == 'dynamic':
             self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
-                                'FOLIOv2': self.dynamic_prompt_folio}
+                                'FOLIOv2': self.dynamic_prompt_folio,
+                                'LogicNLI': self.dynamic_prompt_folio
+                                   }
             
         self.load_prompt_templates()
         

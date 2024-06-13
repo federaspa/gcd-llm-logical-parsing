@@ -22,7 +22,9 @@ class PromptGenerator:
         self.split = args.split
                         
         self.prompt_creator = {'FOLIO': self.prompt_folio,
-                            'FOLIOv2': self.prompt_folio}
+                            'FOLIOv2': self.prompt_folio,
+                               'LogicNLI': self.prompt_folio
+                               }
             
         self.load_prompt_templates()
             
@@ -54,7 +56,7 @@ class PredicatesGenerator(PromptGenerator):
         self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
 
-        self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name)
         
         
     def parse_predicates(self, string_predicates):
