@@ -143,3 +143,27 @@ class OpenAIModel:
             
             time.sleep(5)
             
+            
+            
+    # used for chat-gpt and gpt-4
+    def chat_generate(self, input_string, task_description, temperature = 0.0):
+        response = chat_completions_with_backoff(
+                model = self.model_name,
+                messages=[
+                        {"role": "system", "content": task_description},
+                        {"role": "user", "content": input_string}
+                    ],
+                response_format={ "type": "json_object" },
+                # max_tokens = self.max_new_tokens,
+                temperature = temperature,
+                top_p = 1.0,
+                # stop = self.stop_words
+        )
+        generated_text = response['choices'][0]['message']['content'].strip()
+        return generated_text
+
+    def generate(self, input_string, task_description, temperature = 0.0):
+        if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo', 'gpt-4o']:
+            return self.chat_generate(input_string, task_description, temperature)
+        else:
+            raise Exception("Model name not recognized")
