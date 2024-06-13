@@ -21,11 +21,11 @@ class SelfRefinementEngine:
         self.data_path = args.data_path
         self.predicates_path = args.predicates_path
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.dataset_name = args.dataset_name
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
         self.refiner = refiner if refiner else self.openai_api
@@ -191,14 +191,20 @@ class SelfRefinementEngine:
             # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
                 full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
-                response_string = self.openai_api.generate(full_prompt, self.task_description_execution)
-                
-                response = json.loads(response_string)
-                
-                revised_program = response['Correct Program']
-                
-                # programs = revised_program
-                
+
+                try:
+
+                    response_string = self.openai_api.generate(full_prompt, self.task_description_execution)
+
+                    response = json.loads(response_string)
+
+                    revised_program = response['Correct Program']
+
+                    # programs = revised_program
+                except Exception as e:
+                    print(f'Exception for {example["id"]}: {e}')
+                    revised_program = logic_program
+
                 output = {'id': example['id'], 
                         'context': example['context'],
                         'question': example['question'], 

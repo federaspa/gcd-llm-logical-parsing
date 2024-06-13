@@ -17,7 +17,7 @@ class PromptGenerator:
     def __init__(self, args):
         self.args = args
         self.data_path = args.data_path
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.predicates_path = args.predicates_path
         self.dataset_name = args.dataset_name
         self.split = args.split
@@ -107,11 +107,11 @@ class LogicProgramGenerator(PromptGenerator):
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
 
-        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
         
@@ -205,7 +205,7 @@ class Cheater:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
     

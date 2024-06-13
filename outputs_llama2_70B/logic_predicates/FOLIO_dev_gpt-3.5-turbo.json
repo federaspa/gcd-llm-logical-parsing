@@ -17,10 +17,11 @@
       "Disinterested(x) ::: x is a disinterested member of their community.",
       "Chaperone(x) ::: x chaperones high school dances.",
       "Student(x) ::: x is a student who attends the school.",
-      "Wish(x, y) ::: x wishes to further their academic career and educational opportunities.",
+      "Wish(x, y) ::: x wishes to further their y.",
       "Young(x) ::: x is a young child.",
       "Teenager(x) ::: x is a teenager.",
-      "Bonnie(x) ::: x is Bonnie."
+      "Academic(x) ::: x academic career.",
+      "Educational(x) ::: x educational opportunities."
     ]
   },
   "1": {
@@ -82,14 +83,16 @@
     ],
     "question": "James has lunch in the company.",
     "logic_predicates": [
-      "ScheduleMeeting(x, y) ::: x schedules a meeting with y.",
-      "AppearInCompany(x) ::: x appears in the company today.",
-      "HasLunchInCompany(x) ::: x has lunch in the company.",
-      "HasLunchAtHome(x) ::: x has lunch at home.",
-      "WorkRemotelyFromHome(x) ::: x works remotely from home.",
-      "InOtherCountries(x) ::: x is in other countries.",
+      "Schedule(x, y) ::: x schedules a meeting with y.",
+      "Appear(x, y) ::: x appears in y.",
       "Employee(x) ::: x is an employee.",
       "Customer(x) ::: x is a customer.",
+      "Company(x) ::: x is the company.",
+      "Today(x) ::: x is today.",
+      "HaveLunch(x, y) ::: x has lunch in y.",
+      "Home(x) ::: x is at home.",
+      "WorkRemotely(x) ::: x works remotely from home.",
+      "Country(x) ::: x is in another country.",
       "Manager(x) ::: x is a manager.",
       "James(x) ::: x is James."
     ]
@@ -106,13 +109,14 @@
     ],
     "question": "James does not have lunch in the company.",
     "logic_predicates": [
-      "Schedule(x, y) ::: Employee x schedules a meeting with customer y.",
-      "Appear(x, y) ::: Employee x appears in company y.",
-      "Lunch(x, y) ::: Employee x has lunch in place y.",
-      "WorkRemotely(x) ::: Employee x works remotely from home.",
-      "InCountry(x, y) ::: Employee x is in country y.",
-      "Manager(x) ::: Employee x is a manager.",
-      "HaveLunch(x, y) ::: Employee x has lunch at place y."
+      "ScheduleMeeting(x, y) ::: Employee x schedules a meeting with customer y.",
+      "AppearInCompany(x) ::: Employee x appears in the company today.",
+      "HaveLunchInCompany(x) ::: Person x has lunch in the company.",
+      "HaveLunchAtHome(x) ::: Person x has lunch at home.",
+      "WorkRemotelyFromHome(x) ::: Employee x works remotely from home.",
+      "InOtherCountries(x) ::: Employee x is in other countries.",
+      "Manager(x) ::: Person x is a manager.",
+      "James(x) ::: x is James."
     ]
   },
   "5": {
@@ -135,9 +139,8 @@
       "Today(x) ::: x is today.",
       "HaveLunch(x, y) ::: x has lunch in y.",
       "Home(x) ::: x is at home.",
-      "Remote(x) ::: x works remotely from home.",
-      "Country(x) ::: x is in another country.",
-      "Work(x, y) ::: x works in y.",
+      "RemoteWork(x) ::: x works remotely from home.",
+      "Country(x) ::: x is in other countries.",
       "Manager(x) ::: x is a manager.",
       "James(x) ::: x is James."
     ]
@@ -159,7 +162,7 @@
       "OccurIn(x, y) ::: x occurs in y.",
       "Animal(x) ::: x is an animal.",
       "Mammal(x) ::: x is a mammal.",
-      "Symptom(x, y) ::: x includes y as a symptom.",
+      "Symptoms(x, y) ::: x has symptoms y.",
       "Feel(x, y) ::: x feels y.",
       "Get(x, y) ::: x gets y."
     ]
@@ -202,7 +205,6 @@
       "Virus(x) ::: x is a virus.",
       "OccurIn(x, y) ::: x occurs in y.",
       "Animal(x) ::: x is an animal.",
-      "Human(x) ::: x is a human.",
       "Mammal(x) ::: x is a mammal.",
       "Symptom(x, y) ::: x is a symptom of y.",
       "Fever(x) ::: x has fever.",
@@ -245,6 +247,7 @@
     "question": "Tom is an Eastern wild turkey.",
     "logic_predicates": [
       "WildTurkey(x) ::: x is a wild turkey.",
+      "Type(x, y) ::: x is of type y.",
       "EasternWildTurkey(x) ::: x is an Eastern wild turkey.",
       "OsceolaWildTurkey(x) ::: x is an Osceola wild turkey.",
       "GouldsWildTurkey(x) ::: x is a Gould's wild turkey.",
@@ -265,15 +268,16 @@
     ],
     "question": "Joey is a wild turkey.",
     "logic_predicates": [
+      "WildTurkey(x) ::: x is a wild turkey.",
+      "Type(x, y) ::: x is of type y.",
       "Eastern(x) ::: x is an Eastern wild turkey.",
       "Osceola(x) ::: x is an Osceola wild turkey.",
       "Gould(x) ::: x is a Gould's wild turkey.",
       "Merriam(x) ::: x is a Merriam's wild turkey.",
       "RioGrande(x) ::: x is a Rio Grande wild turkey.",
       "Ocellated(x) ::: x is an Ocellated wild turkey.",
-      "Tom(x) ::: x is Tom.",
-      "Joey(x) ::: x is Joey.",
-      "WildTurkey(x) ::: x is a wild turkey."
+      "Tom ::: Tom is a wild turkey and not an Eastern wild turkey, not an Osceola wild turkey, not a Gould's wild turkey, not a Merriam's wild turkey, and not a Rio Grande wild turkey.",
+      "Joey ::: Joey is a wild turkey."
     ]
   },
   "12": {
@@ -285,12 +289,14 @@
     ],
     "question": "The Legend of Zelda is in the Top 10 list.",
     "logic_predicates": [
-      "Create(x, y) ::: x created y.",
+      "Create(x, y) ::: x created the game y.",
+      "Japanese(x) ::: x is a Japanese person or company.",
       "Game(x) ::: x is a game.",
-      "Japanese(x) ::: x is a Japanese.",
       "Top10(x) ::: x is in the Top 10 list.",
       "Sell(x, y) ::: x sells y copies.",
-      "Select(x, y) ::: x is selected into list y."
+      "Select(x, y) ::: x is selected into the Top 10 list.",
+      "LegendOfZelda ::: The Legend of Zelda.",
+      "MoreThanOneMillion(x) ::: x sells more than one million copies."
     ]
   },
   "13": {
@@ -307,7 +313,9 @@
       "Game(x) ::: x is a game.",
       "Top10(x) ::: x is in the Top 10 list.",
       "Sell(x, y) ::: x sells y copies.",
-      "Select(x, y) ::: x is selected into list y."
+      "Select(x, y) ::: x is selected into the Top 10 list.",
+      "LegendOfZelda ::: The Legend of Zelda.",
+      "FIFA22 ::: FIFA 22."
     ]
   },
   "14": {
@@ -319,9 +327,9 @@
     ],
     "question": "The Legend of Zelda is not in the Top 10 list.",
     "logic_predicates": [
-      "Create(x, y) ::: x created the game y.",
-      "Japanese(x) ::: x is a Japanese person or company.",
+      "Create(x, y) ::: x created y.",
       "Game(x) ::: x is a game.",
+      "Japanese(x) ::: x is a Japanese.",
       "Top10(x) ::: x is in the Top 10 list.",
       "Sell(x, y) ::: x sells y copies.",
       "Select(x, y) ::: x is selected into list y."
@@ -451,12 +459,12 @@
     "question": "Karen will share \"Stranger Things\" to Lisa.",
     "logic_predicates": [
       "Popular(x) ::: x is a popular Netflix show.",
-      "Show(x) ::: x is a Netflix show.",
+      "NetflixShow(x) ::: x is a Netflix show.",
       "BingeWatch(x) ::: Karen binge-watches x.",
       "Download(x) ::: Karen downloads x.",
       "Share(x, y) ::: Karen shares x to y.",
-      "Karen ::: Karen.",
-      "Lisa ::: Lisa."
+      "Show(x) ::: x is a show.",
+      "NotDownload(x) ::: Karen does not download x."
     ]
   },
   "22": {
@@ -471,12 +479,12 @@
     "question": "\"Black Mirror\" is popular.",
     "logic_predicates": [
       "Popular(x) ::: x is a popular Netflix show.",
+      "NetflixShow(x) ::: x is a Netflix show.",
       "BingeWatch(x) ::: Karen binge-watches x.",
       "Download(x) ::: Karen downloads x.",
-      "NetflixShow(x) ::: x is a Netflix show.",
       "Share(x, y) ::: Karen shares x to y.",
-      "Karen ::: Refers to the person Karen.",
-      "Lisa ::: Refers to the person Lisa."
+      "Karen ::: Karen is a person.",
+      "Lisa ::: Lisa is a person."
     ]
   },
   "23": {
@@ -495,8 +503,8 @@
       "BingeWatch(x) ::: Karen binge-watches x.",
       "Download(x) ::: Karen downloads x.",
       "Share(x, y) ::: Karen shares x to y.",
-      "Karen ::: Karen is a person.",
-      "Lisa ::: Lisa is a person."
+      "Karen ::: Karen.",
+      "Lisa ::: Lisa."
     ]
   },
   "24": {
@@ -516,7 +524,7 @@
       "Hosted(x, y) ::: x hosted the event y.",
       "City(x) ::: x is a city.",
       "University(x) ::: x is a university.",
-      "Rank(x, y, z) ::: x ranks among the best in y and z.",
+      "RankAmongBest(x, y, z) ::: x consistently ranks among the best in y and z.",
       "SummerOlympics(x) ::: x is the Summer Olympics.",
       "WinterOlympics(x) ::: x is the Winter Olympics."
     ]
@@ -536,7 +544,9 @@
       "MostPopulous(x) ::: x is the world's most populous national capital city.",
       "LocatedIn(x, y) ::: x is located in y.",
       "Hosted(x, y) ::: x hosted the event y.",
-      "RankAmongBest(x, y, z) ::: x's y consistently rank among the best in z."
+      "University(x) ::: x is a university.",
+      "RankAmongBest(x, y) ::: x consistently ranks among the best in y.",
+      "In(x, y) ::: x is in y."
     ]
   },
   "26": {
@@ -554,9 +564,10 @@
       "MostPopulous(x) ::: x is the world's most populous national capital city.",
       "LocatedIn(x, y) ::: x is located in y.",
       "Hosted(x, y) ::: x hosted the event y.",
-      "Hosts(x, y) ::: x has hosted the event y.",
-      "RankAmongBest(x, y, z) ::: x's y consistently rank among the best in z.",
-      "SecondLargestByPopulation(x, y) ::: x is the second largest city in terms of urban population in y."
+      "City(x) ::: x is a city.",
+      "University(x) ::: x is a university.",
+      "Rank(x, y) ::: x ranks among the best in y.",
+      "SecondLargest(x, y) ::: x is the second largest city by urban population in y."
     ]
   },
   "27": {
@@ -573,7 +584,7 @@
       "Alien(x) ::: x is an alien.",
       "Extraterrestrial(x) ::: x is extraterrestrial.",
       "FromMars(x) ::: x is from Mars.",
-      "Human(x) ::: x is human.",
+      "Human(x) ::: x is a human.",
       "FromEarth(x) ::: x is from Earth."
     ]
   },
@@ -629,14 +640,14 @@
     "question": "Djokovic is a Grand Slam champion.",
     "logic_predicates": [
       "GrandSlamChampion(x) ::: x is a Grand Slam champion.",
-      "OscarNominee(x) ::: x is an Oscar-nominated actor.",
+      "OscarNominatedActor(x) ::: x is an Oscar-nominated actor.",
       "ProfessionalTennisPlayer(x) ::: x is a professional tennis player.",
       "Celebrity(x) ::: x is a celebrity.",
       "Athlete(x) ::: x is an athlete.",
       "WellPaid(x) ::: x is well paid.",
-      "TaxHaven(x) ::: x lives in a tax haven.",
       "Famous(x) ::: x is famous.",
-      "LivesIn(x, y) ::: x lives in y."
+      "TaxHaven(x) ::: x lives in a tax haven.",
+      "LiveIn(x, y) ::: x lives in y."
     ]
   },
   "31": {
@@ -654,12 +665,12 @@
     "logic_predicates": [
       "GrandSlamChampion(x) ::: x is a Grand Slam champion.",
       "OscarNominee(x) ::: x is an Oscar-nominated actor.",
-      "TennisPlayer(x) ::: x is a professional tennis player.",
+      "ProfessionalTennisPlayer(x) ::: x is a professional tennis player.",
       "Celebrity(x) ::: x is a celebrity.",
       "Athlete(x) ::: x is an athlete.",
       "WellPaid(x) ::: x is well paid.",
-      "Famous(x) ::: x is famous.",
       "TaxHaven(x) ::: x lives in a tax haven.",
+      "Famous(x) ::: x is famous.",
       "LiveIn(x, y) ::: x lives in y."
     ]
   },
@@ -682,8 +693,8 @@
       "Celebrity(x) ::: x is a celebrity.",
       "Athlete(x) ::: x is an athlete.",
       "WellPaid(x) ::: x is well paid.",
-      "Famous(x) ::: x is famous.",
       "TaxHaven(x) ::: x lives in a tax haven.",
+      "Famous(x) ::: x is famous.",
       "LiveIn(x, y) ::: x lives in y."
     ]
   },
@@ -771,12 +782,11 @@
       "MusicPiece(x) ::: x is a music piece.",
       "Write(x, y) ::: x writes y.",
       "Composer(x) ::: x is a composer.",
-      "Author(x, y) ::: x is the author of y.",
-      "Premiere(x, y) ::: x premiered y.",
+      "Premiere(x, y) ::: x is premiered by y.",
       "Orchestra(x) ::: x is an orchestra.",
       "Lead(x, y) ::: x leads y.",
       "Conductor(x) ::: x is a conductor.",
-      "PremiereMusic(x) ::: x premiered music pieces."
+      "Premiered(x, y) ::: x is premiered by y."
     ]
   },
   "38": {
@@ -799,6 +809,7 @@
       "Lead(x, y) ::: x leads y.",
       "Conductor(x) ::: x is a conductor.",
       "Beethoven ::: Beethoven.",
+      "ViennaMusicSociety ::: Vienna Music Society.",
       "SymphonyNo9 ::: Symphony No. 9."
     ]
   },
@@ -813,14 +824,15 @@
     ],
     "question": "A design by Max is a mass product design.",
     "logic_predicates": [
-      "Timeless(x) ::: x's design style is timeless.",
-      "DesignStyle(x, y) ::: x's design style is y.",
-      "MassProductDesign(x) ::: x is a mass product design.",
-      "Evocative(x) ::: x's design style is evocative.",
-      "Dreamy(x) ::: x's design style is dreamy.",
+      "Timeless(x) ::: x is timeless.",
+      "DesignStyle(x, y) ::: x is a design style of y.",
       "ZahaHadid(x) ::: x is Zaha Hadid.",
+      "MassProductDesign(x) ::: x is a mass product design.",
       "KellyWearstler(x) ::: x is Kelly Wearstler.",
-      "Max(x) ::: x is Max."
+      "Evocative(x) ::: x is evocative.",
+      "Dreamy(x) ::: x is dreamy.",
+      "Max(x) ::: x is Max.",
+      "DesignBy(x, y) ::: x is designed by y."
     ]
   },
   "40": {
@@ -834,15 +846,14 @@
     ],
     "question": "A design by Max is evocative and dreamy.",
     "logic_predicates": [
-      "Timeless(x) ::: x is timeless.",
-      "DesignStyle(x, y) ::: x is a design style of y.",
+      "Timeless(x) ::: x's design style is timeless.",
+      "DesignStyle(x, y) ::: x's design style is y.",
+      "MassProduct(x) ::: x is a mass product design.",
+      "Evocative(x) ::: x's design style is evocative.",
+      "Dreamy(x) ::: x's design style is dreamy.",
       "ZahaHadid(x) ::: x is Zaha Hadid.",
-      "MassProductDesign(x) ::: x is a mass product design.",
       "KellyWearstler(x) ::: x is Kelly Wearstler.",
-      "Evocative(x) ::: x is evocative.",
-      "Dreamy(x) ::: x is dreamy.",
-      "Max(x) ::: x is Max.",
-      "DesignBy(x, y) ::: x is designed by y."
+      "Max(x) ::: x is Max."
     ]
   },
   "41": {
@@ -856,14 +867,15 @@
     ],
     "question": "A design by Max is either evocative or dreamy.",
     "logic_predicates": [
-      "Timeless(x) ::: x's design style is timeless.",
-      "DesignStyle(x, y) ::: x's design style is y.",
-      "MassProduct(x) ::: x is a mass product design.",
-      "Evocative(x) ::: x's design style is evocative.",
-      "Dreamy(x) ::: x's design style is dreamy.",
+      "Timeless(x) ::: x is timeless.",
+      "DesignStyle(x, y) ::: x is a design style of y.",
       "ZahaHadid(x) ::: x is Zaha Hadid.",
+      "MassProductDesign(x) ::: x is a mass product design.",
       "KellyWearstler(x) ::: x is Kelly Wearstler.",
-      "Max(x) ::: x is Max."
+      "Evocative(x) ::: x is evocative.",
+      "Dreamy(x) ::: x is dreamy.",
+      "Max(x) ::: x is Max.",
+      "DesignBy(x, y, z) ::: x is designed by y and is z."
     ]
   },
   "42": {
@@ -903,14 +915,14 @@
     "logic_predicates": [
       "RankedHighly(x) ::: x is ranked highly by the Women's Tennis Association.",
       "Active(x) ::: x is among the most active players in major tennis.",
+      "Player(x) ::: x is a player.",
       "LostTo(x, y) ::: x lost to y.",
       "Female(x) ::: x is a female.",
       "Male(x) ::: x is a male.",
       "TennisPlayer(x) ::: x is a tennis player.",
-      "At(x, y) ::: x is at location y.",
-      "RolandGarros2022 ::: Roland Garros 2022.",
-      "Player(x) ::: x is a player.",
-      "LostToRafaelNadal(x) ::: x lost to Rafael Nadal."
+      "AtTournament(x, y) ::: x is at tournament y.",
+      "RolandGarros(x) ::: x is at Roland Garros.",
+      "CocoGauff(x) ::: x is Coco Gauff."
     ]
   },
   "44": {
@@ -927,13 +939,16 @@
       "RankedHighly(x) ::: x is ranked highly by the Women's Tennis Association.",
       "Active(x) ::: x is among the most active players in major tennis.",
       "Player(x) ::: x is a tennis player.",
-      "LostTo(x, y) ::: x lost to y.",
       "Female(x) ::: x is a female.",
       "Male(x) ::: x is a male.",
-      "Tournament(x, y) ::: x is a tennis tournament.",
-      "RolandGarros(x) ::: x is at Roland Garros.",
-      "RafaelNadal(x) ::: x is Rafael Nadal.",
-      "CocoGauff(x) ::: x is Coco Gauff."
+      "LostTo(x, y) ::: x lost to y.",
+      "AtTournament(x, y) ::: x is at tournament y.",
+      "RolandGarros2022 ::: Roland Garros 2022.",
+      "PlayerType(x, y) ::: x is a y tennis player.",
+      "LostToRafaelNadal(x) ::: x lost to Rafael Nadal.",
+      "NotMaleRolandGarros2022(x) ::: x is not a male tennis player at Roland Garros 2022.",
+      "NotLostToIgaSwiatek(x) ::: x is not a player who lost to Iga Swiatek.",
+      "NotActive(x) ::: x is not one of the most active players in major tennis."
     ]
   },
   "45": {
@@ -966,7 +981,7 @@
       "Student(x) ::: x is a student.",
       "Love(x, y) ::: x loves y.",
       "FavoriteSeason(x, y) ::: x's favorite season is y.",
-      "WantLongVacation(x) ::: x wants to have a long vacation."
+      "LongVacation(x) ::: x wants to have a long vacation."
     ]
   },
   "47": {
@@ -987,6 +1002,7 @@
       "Student(x) ::: x is a student.",
       "Love(x, y) ::: x loves y.",
       "FavoriteSeason(x, y) ::: x's favorite season is y.",
+      "NotSame(x, y) ::: x's favorite season is not the same as y.",
       "WantLongVacation(x) ::: x wants to have a long vacation."
     ]
   },
@@ -1001,13 +1017,10 @@
     "question": "Mia's favorite season is spring.",
     "logic_predicates": [
       "Season(x) ::: x is a season.",
-      "Spring(x) ::: x is Spring.",
-      "Summer(x) ::: x is Summer.",
-      "Fall(x) ::: x is Fall.",
-      "Winter(x) ::: x is Winter.",
       "Student(x) ::: x is a student.",
       "Love(x, y) ::: x loves y.",
       "FavoriteSeason(x, y) ::: x's favorite season is y.",
+      "SameSeason(x, y) ::: x's favorite season is the same as y's.",
       "WantLongVacation(x) ::: x wants to have a long vacation."
     ]
   },
@@ -1021,14 +1034,13 @@
     ],
     "question": "1984 is printed text.",
     "logic_predicates": [
-      "DigitalMedia(x) ::: x is a digital media.",
-      "Analog(x) ::: x is an analog.",
-      "PrintedText(x) ::: x is a printed text.",
+      "DigitalMedia(x) ::: x is digital media.",
+      "Analog(x) ::: x is analog.",
+      "PrintedText(x) ::: x is printed text.",
       "StreamingService(x) ::: x is a streaming service.",
       "HardcoverBook(x) ::: x is a hardcover book.",
-      "1984 ::: 1984 is a specific object.",
-      "IsA(x, y) ::: x is a type of y.",
-      "IfThen(x, y) ::: If x then y."
+      "Object(x) ::: x is an object.",
+      "1984 ::: 1984 is a specific object."
     ]
   },
   "50": {
@@ -1080,14 +1092,14 @@
     ],
     "question": "Basque is a Romance language.",
     "logic_predicates": [
-      "Romance(x) ::: x is a Romance language.",
       "IndoEuropean(x) ::: x is an Indo-European language.",
+      "Romance(x) ::: x is a Romance language.",
       "LanguageFamily(x) ::: x is a language family.",
       "Related(x, y) ::: x is related to y.",
-      "French ::: French is a Romance language.",
-      "Spanish ::: Spanish is a Romance language.",
-      "German ::: German is related to Spanish.",
-      "Basque ::: Basque is not related to any other language."
+      "French(x) ::: x is French.",
+      "Spanish(x) ::: x is Spanish.",
+      "German(x) ::: x is German.",
+      "Basque(x) ::: x is Basque."
     ]
   },
   "53": {
@@ -1122,14 +1134,14 @@
     ],
     "question": "French is an Indo-European language.",
     "logic_predicates": [
-      "IndoEuropean(x) ::: x is an Indo-European language.",
       "Romance(x) ::: x is a Romance language.",
+      "IndoEuropean(x) ::: x is an Indo-European language.",
       "LanguageFamily(x) ::: x is a language family.",
       "Related(x, y) ::: x is related to y.",
-      "French(x) ::: x is French.",
-      "Spanish(x) ::: x is Spanish.",
-      "German(x) ::: x is German.",
-      "Basque(x) ::: x is Basque."
+      "French ::: French is a language.",
+      "Spanish ::: Spanish is a language.",
+      "German ::: German is a language.",
+      "Basque ::: Basque is a language."
     ]
   },
   "55": {
@@ -1144,7 +1156,7 @@
       "Striker(x) ::: x is a striker.",
       "SoccerPlayer(x) ::: x is a soccer player.",
       "PlayFor(x, y) ::: x plays for team y.",
-      "LeftTeam(x, y) ::: x left team y."
+      "Team(x) ::: x is a team."
     ]
   },
   "56": {
@@ -1173,8 +1185,8 @@
     "logic_predicates": [
       "Striker(x) ::: x is a striker.",
       "SoccerPlayer(x) ::: x is a soccer player.",
-      "Left(x, y) ::: x left y.",
-      "PlayFor(x, y) ::: x plays for y.",
+      "LeftTeam(x, y) ::: x left team y.",
+      "PlayFor(x, y) ::: x plays for team y.",
       "Star(x) ::: x is a star."
     ]
   },
@@ -1191,6 +1203,7 @@
       "City(x) ::: x is a city.",
       "State(x) ::: x is a state.",
       "In(x, y) ::: x is in y.",
+      "Include(x, y) ::: x includes the city of y.",
       "SameState(x, y) ::: x and y are in the same state."
     ]
   },
@@ -1207,6 +1220,7 @@
       "City(x) ::: x is a city.",
       "State(x) ::: x is a state.",
       "In(x, y) ::: x is in y.",
+      "Include(x, y) ::: x includes the city of y.",
       "SameState(x, y) ::: x and y are in the same state."
     ]
   },
@@ -1237,14 +1251,13 @@
     "question": "Mike has an F1 visa.",
     "logic_predicates": [
       "InternationalStudent(x) ::: x is an international student.",
-      "InUS(x) ::: x is in the US.",
-      "HasVisa(x, y) ::: x has a visa of type y.",
-      "NeedsToApplyFor(x, y) ::: x needs to apply for y.",
-      "WorkInUS(x) ::: x wants to work in the US.",
+      "USStudent(x) ::: x is a student in the US.",
+      "HasVisa(x, y) ::: x has a visa type y.",
       "F1Visa(x) ::: x has an F1 visa.",
       "J1Visa(x) ::: x has a J1 visa.",
-      "CPT(x) ::: x needs to apply for Curricular Practical Training.",
-      "OPT(x) ::: x needs to apply for Optional Practical Training."
+      "ApplyFor(x, y) ::: x needs to apply for y.",
+      "WorkIn(x, y) ::: x wants to work in y.",
+      "Mike ::: Name of the international student."
     ]
   },
   "62": {
@@ -1257,14 +1270,14 @@
     "question": "Mike has a J1 visa.",
     "logic_predicates": [
       "InternationalStudent(x) ::: x is an international student.",
-      "InUS(x) ::: x is in the US.",
+      "USStudent(x) ::: x is a student in the US.",
       "HasVisa(x, y) ::: x has a visa type y.",
-      "NeedsToApplyFor(x, y) ::: x needs to apply for y.",
-      "WorkInUS(x) ::: x wants to work in the US.",
       "F1Visa(x) ::: x has an F1 visa.",
       "J1Visa(x) ::: x has a J1 visa.",
-      "ApplyForCPT(x) ::: x needs to apply for CPT.",
-      "ApplyForOPT(x) ::: x needs to apply for OPT."
+      "ApplyFor(x, y) ::: x needs to apply for y.",
+      "WorkInUS(x) ::: x wants to work in the US.",
+      "CPT(x) ::: x needs to apply for CPT.",
+      "OPT(x) ::: x needs to apply for OPT."
     ]
   },
   "63": {
@@ -1311,8 +1324,8 @@
     ],
     "question": "If Ted is a cow, then Ted is not a pet.",
     "logic_predicates": [
-      "Cow(x) ::: x is a cow.",
       "Bovine(x) ::: x is a bovine.",
+      "Cow(x) ::: x is a cow.",
       "Pet(x) ::: x is a pet.",
       "Domesticated(x) ::: x is domesticated.",
       "Alligator(x) ::: x is an alligator."
@@ -1329,15 +1342,15 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "logic_predicates": [
       "University(x) ::: x is a university.",
-      "Private(x) ::: x is a private institution.",
-      "IvyLeague(x) ::: x is an Ivy League institution.",
-      "ResearchUniversity(x) ::: x is a research university.",
-      "Move(x, y) ::: x moved to location y.",
+      "Private(x) ::: x is a private.",
+      "IvyLeague(x) ::: x is an Ivy League.",
+      "Research(x) ::: x is a research.",
+      "Move(x, y) ::: x moved to y.",
       "Value(x, y) ::: x is valued at y.",
       "Organize(x, y) ::: x is organized into y.",
       "College(x) ::: x is a college.",
       "School(x) ::: x is a school.",
-      "List(x, [y1, y2, ...]) ::: x is a list of items [y1, y2, ...]."
+      "List(x, y) ::: x is a list of y."
     ]
   },
   "67": {
@@ -1352,10 +1365,10 @@
     "logic_predicates": [
       "University(x) ::: x is a university.",
       "Private(x) ::: x is a private institution.",
-      "IvyLeague(x) ::: x is an Ivy League institution.",
+      "IvyLeague(x) ::: x is an Ivy League university.",
       "Research(x) ::: x is a research university.",
       "Move(x, y) ::: x moved to location y.",
-      "Value(x, y) ::: x's value is y.",
+      "Value(x, y) ::: x is valued at y.",
       "Organize(x, y) ::: x is organized into y.",
       "College(x) ::: x is a college.",
       "School(x) ::: x is a school.",
@@ -1384,8 +1397,10 @@
       "Organize(x, y) ::: x is organized into y.",
       "College(x) ::: x is a college.",
       "School(x) ::: x is a school.",
-      "List(x, [y1, y2, ..., yn]) ::: x is a list of items [y1, y2, ..., yn].",
       "ResidentialCollege(x) ::: x is a residential college.",
+      "GraduateSchool(x) ::: x is a graduate school.",
+      "ProfessionalSchool(x) ::: x is a professional school.",
+      "List(x, y) ::: x is a list of y.",
       "BenjaminFranklinCollege(x) ::: x is Benjamin Franklin College.",
       "BerkeleyCollege(x) ::: x is Berkeley College.",
       "BranfordCollege(x) ::: x is Branford College.",
@@ -1450,13 +1465,11 @@
     ],
     "question": "KO is a company stock.",
     "logic_predicates": [
-      "GrowthStock(x) ::: x is a growth stock of a company.",
+      "GrowthStock(x) ::: x is a growth stock of companies.",
       "Volatile(x) ::: x is volatile.",
-      "StockPrice(x) ::: x is a stock price.",
       "SuitableForRetirementFund(x) ::: x is suitable for a retirement fund.",
-      "Company(x) ::: x is a company.",
-      "MatureCompany(x) ::: x is a mature company.",
-      "StockOfCompany(x, y) ::: x is a stock of company y."
+      "StockOfCompany(x, y) ::: x is a stock of company y.",
+      "MatureCompany(x) ::: x is a mature company."
     ]
   },
   "72": {
@@ -1472,10 +1485,10 @@
       "GrowthStock(x) ::: x is a growth stock of a company.",
       "Volatile(x) ::: x is volatile.",
       "SuitableForRetirementFund(x) ::: x is suitable for a retirement fund.",
-      "StockOfCompany(x, y) ::: x is a stock of company y.",
+      "Stock(x) ::: x is a stock.",
+      "Company(x) ::: x is a company.",
       "MatureCompany(x) ::: x is a mature company.",
-      "KO(x) ::: x is KO.",
-      "CompanyStock(x) ::: x is a company stock."
+      "CompanyStock(x, y) ::: x is a stock of company y."
     ]
   },
   "73": {
@@ -1491,9 +1504,11 @@
       "GrowthStock(x) ::: x is a growth stock of a company.",
       "Volatile(x) ::: x is volatile.",
       "SuitableForRetirement(x) ::: x is suitable for a retirement fund.",
-      "StockOfCompany(x, y) ::: x is a stock of company y.",
+      "StockOf(x, y) ::: x is a stock of company y.",
+      "Company(x) ::: x is a company.",
       "MatureCompany(x) ::: x is a mature company.",
-      "KO(x) ::: x is the stock KO."
+      "KO(x) ::: x is KO stock.",
+      "Not(x) ::: negation operator."
     ]
   },
   "74": {
@@ -1507,13 +1522,13 @@
     "question": "Joe's license plate begins with the number 34.",
     "logic_predicates": [
       "BeginWith(x, y) ::: x begins with the number y.",
-      "InCity(x, y) ::: x is from the city y.",
+      "From(x, y) ::: x is from location y.",
       "Plate(x) ::: x is a vehicle registration plate.",
-      "FromCity(x, y) ::: x is from the city y.",
+      "Istanbul(x) ::: x is in Istanbul.",
       "Joe(x) ::: x is Joe.",
       "Tom(x) ::: x is Tom.",
       "LicensePlate(x) ::: x is a license plate.",
-      "NotBeginWith(x, y) ::: x does not begin with the number y."
+      "BG(x, y) ::: Background information: x implies y."
     ]
   },
   "75": {
@@ -1545,13 +1560,12 @@
     ],
     "question": "Mary needs to earn money to help pay for her college tuition.",
     "logic_predicates": [
-      "Work(x) ::: x works in student jobs on campus.",
+      "WorkInStudentJobs(x) ::: x works in student jobs on campus.",
       "EarnMoney(x) ::: x needs to earn money to help pay for college tuition.",
       "OrderTakeout(x) ::: x orders takeout frequently in college.",
-      "Enjoy(x) ::: x enjoys the dining hall meals and recipes.",
-      "Picky(x) ::: x is a picky eater.",
-      "SpendTime(x) ::: x spends a lot of time eating and catching up with friends in campus dining halls.",
-      "Friend(x, y) ::: x is friends with y.",
+      "EnjoyDining(x) ::: x enjoys the dining hall meals and recipes.",
+      "PickyEater(x) ::: x is a picky eater.",
+      "SpendTimeEating(x) ::: x spends a lot of time eating and catching up with friends in campus dining halls.",
       "Mary(x) ::: x is Mary."
     ]
   },
@@ -1571,7 +1585,7 @@
       "OrderTakeout(x) ::: x orders takeout frequently in college.",
       "Enjoy(x) ::: x enjoys the dining hall meals and recipes.",
       "Picky(x) ::: x is a picky eater.",
-      "SpendTime(x, y) ::: x spends a lot of their time y.",
+      "SpendTime(x) ::: x spends a lot of time eating and catching up with friends in campus dining halls.",
       "Mary(x) ::: x is Mary."
     ]
   },
@@ -1648,7 +1662,7 @@
       "Cupcake(x) ::: x is a cupcake.",
       "Hotpot(x) ::: x is a hotpot.",
       "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is from Baked by Melissa.",
+      "BakedByMelissa(x) ::: x is baked by Melissa.",
       "DriedThaiChilies(x) ::: x is dried Thai chilies."
     ]
   },
@@ -1667,7 +1681,7 @@
       "Cupcake(x) ::: x is a cupcake.",
       "Hotpot(x) ::: x is a hotpot.",
       "Product(x, y) ::: x is a product of y.",
-      "BakedByMelissa(x) ::: x is from Baked by Melissa.",
+      "BakedByMelissa(x) ::: x is a product of Baked by Melissa.",
       "DriedThaiChilies(x) ::: x is dried Thai chilies."
     ]
   },
@@ -1703,9 +1717,10 @@
       "Listed(x) ::: x is listed in Yelp's recommendations.",
       "NotReceiveManyNegativeReviews(x) ::: x does not receive many negative reviews.",
       "RatingGreaterThan9(x) ::: x has a rating greater than 9.",
+      "NegativeReviews(x) ::: x receives many negative reviews.",
       "ProvideTakeOutService(x) ::: x provides take-out service.",
-      "ReceiveManyNegativeReviews(x) ::: x receives many negative reviews.",
-      "PopularAmongLocalResidents(x) ::: x is popular among local residents."
+      "PopularAmongLocalResidents(x) ::: x is popular among local residents.",
+      "Subway(x) ::: x is Subway."
     ]
   },
   "85": {
@@ -1719,13 +1734,11 @@
     "question": "Subway provides take-out service and does not receive many negative reviews.",
     "logic_predicates": [
       "Listed(x) ::: x is listed in Yelp's recommendations.",
-      "NotNegative(x) ::: x does not receive many negative reviews.",
+      "NegativeReviews(x) ::: x receives many negative reviews.",
       "Rating(x, y) ::: x has a rating of y.",
-      "Provide(x, y) ::: x provides y.",
-      "LocalResident(x) ::: x is a local resident.",
-      "Popular(x) ::: x is popular among local residents.",
-      "Subway(x) ::: x is Subway.",
-      "TakeOut(x) ::: x provides take-out service."
+      "ProvideTakeOut(x) ::: x provides take-out service.",
+      "PopularAmongLocals(x) ::: x is popular among local residents.",
+      "Subway(x) ::: x is Subway."
     ]
   },
   "86": {
@@ -1739,10 +1752,11 @@
     "question": "Subway does not provide take-out service.",
     "logic_predicates": [
       "Listed(x) ::: x is listed in Yelp's recommendations.",
-      "NotManyNegativeReviews(x) ::: x does not receive many negative reviews.",
-      "RatingGreaterThan9(x) ::: x has a rating greater than 9.",
-      "ProvideTakeOutService(x) ::: x provides take-out service.",
+      "NotNegative(x) ::: x does not receive many negative reviews.",
+      "Rating(x, y) ::: x has a rating of y.",
+      "ProvideTakeOut(x) ::: x provides take-out service.",
       "PopularAmongLocals(x) ::: x is popular among local residents.",
+      "Restaurant(x) ::: x is a restaurant.",
       "Subway(x) ::: x is Subway."
     ]
   },
@@ -1766,8 +1780,8 @@
       "Character(x) ::: x is a character.",
       "Fight(x, y) ::: x fights y.",
       "Lose(x) ::: x loses.",
-      "Nemesis(x, y) ::: x is the nemesis of y.",
-      "AppearIn(x, y) ::: x appears in y."
+      "AppearsIn(x, y) ::: x appears in y.",
+      "Nemesis(x, y) ::: x is the nemesis of y."
     ]
   },
   "88": {
@@ -1780,11 +1794,10 @@
     "question": "Walden contains knowledge.",
     "logic_predicates": [
       "ContainKnowledge(x) ::: x contains tons of knowledge.",
-      "Read(x, y) ::: x reads the book y.",
+      "Reads(x, y) ::: x reads the book y.",
       "GainKnowledge(x) ::: x gains knowledge.",
       "BecomeSmarter(x) ::: x becomes smarter.",
-      "Person(x) ::: x is a person.",
-      "Book(x) ::: x is a book."
+      "Reads(Harry, 'Walden') ::: Harry reads the book 'Walden'."
     ]
   },
   "89": {
@@ -1813,9 +1826,9 @@
     "question": "A person who is smarter has gained knowledge.",
     "logic_predicates": [
       "ContainKnowledge(x) ::: x contains tons of knowledge.",
-      "Read(x, y) ::: x reads the book y.",
+      "Reads(x, y) ::: x reads the book y.",
       "GainKnowledge(x) ::: x gains knowledge.",
-      "BecomeSmarter(x) ::: x becomes smarter.",
+      "Smarter(x) ::: x is smarter.",
       "Person(x) ::: x is a person.",
       "Book(x) ::: x is a book.",
       "Author(x, y) ::: x is the author of y."
@@ -1830,12 +1843,11 @@
     ],
     "question": "Machine translation is a language generation task.",
     "logic_predicates": [
-      "LanguageProcessingTask(x) ::: x is a natural language processing task.",
+      "LanguageGeneration(x) ::: x is a language generation task.",
+      "LanguageUnderstanding(x) ::: x is a language understanding task.",
       "CategorizedAs(x, y) ::: x can be categorized as y.",
-      "LanguageGenerationTask(x) ::: x is a language generation task.",
-      "LanguageUnderstandingTask(x) ::: x is a language understanding task.",
-      "Output(x, y) ::: x is the output of y.",
-      "TextSequence(x) ::: x is a text sequence.",
+      "OutputIsTextSequence(x) ::: x output is a text sequence.",
+      "NaturalLanguageProcessingTask(x) ::: x is a natural language processing task.",
       "MachineTranslation(x) ::: x is machine translation."
     ]
   },
@@ -1848,11 +1860,11 @@
     ],
     "question": "Machine translation is a language understanding task.",
     "logic_predicates": [
-      "LanguageGenerationTask(x) ::: x is a language generation task.",
-      "LanguageUnderstandingTask(x) ::: x is a language understanding task.",
-      "NLPTask(x) ::: x is a natural language processing task.",
-      "TextSequence(x) ::: x is a text sequence.",
-      "Output(x, y) ::: x is the output of y.",
+      "LanguageGeneration(x) ::: x is a language generation task.",
+      "LanguageUnderstanding(x) ::: x is a language understanding task.",
+      "CategorizedAs(x, y) ::: x can be categorized as y.",
+      "OutputIsTextSequence(x) ::: x output is a text sequence.",
+      "NaturalLanguageProcessingTask(x) ::: x is a natural language processing task.",
       "MachineTranslation(x) ::: x is machine translation."
     ]
   },
@@ -1871,15 +1883,16 @@
     "question": "Tom will rent an apartment in The Olive Garden.",
     "logic_predicates": [
       "Pet(x) ::: x is a pet.",
-      "AllowedIn(x, y) ::: x is allowed in building y.",
+      "AllowedIn(x, y) ::: x is allowed in y.",
       "ManagedBuilding(x) ::: x is a managed building.",
       "RequireDeposit(x) ::: x requires a deposit to rent.",
-      "RentApartment(x, y) ::: x rents an apartment in building y.",
+      "RentApartment(x, y) ::: x rents an apartment in y.",
       "Equal(x, y) ::: x is equal to y.",
       "MoreThan(x, y) ::: x is more than y.",
       "Cat(x) ::: x is a cat.",
       "Owner(x, y) ::: x is the owner of y.",
-      "Price(x, y) ::: x costs y."
+      "Location(x, y) ::: x is located in y.",
+      "RentAmount(x, y) ::: x is the monthly rent amount of y."
     ]
   },
   "94": {
@@ -1897,16 +1910,17 @@
     "question": "Tom is allowed to move in an apartment in The Olive Garden with Fluffy.",
     "logic_predicates": [
       "Pet(x) ::: x is a pet.",
-      "AllowedIn(x, y) ::: x is allowed in y.",
+      "AllowedIn(x, y) ::: x is allowed in building y.",
       "ManagedBuilding(x) ::: x is a managed building.",
       "RequireDeposit(x) ::: x requires a deposit to rent.",
-      "RentApartment(x) ::: x rents an apartment.",
+      "RentApartment(x, y) ::: x rents an apartment in building y.",
       "SecurityDeposit(x) ::: x is a security deposit.",
       "Equal(x, y) ::: x is equal to y.",
       "MoreThan(x, y) ::: x is more than y.",
       "Cat(x) ::: x is a cat.",
       "Owner(x, y) ::: x is the owner of y.",
-      "Price(x, y) ::: x is priced at y.",
+      "Building(x) ::: x is a building.",
+      "RentAmount(x, y) ::: x has a monthly rent of y.",
       "MoveInWith(x, y) ::: x moves in with y."
     ]
   },
@@ -1933,10 +1947,11 @@
       "MoreThan(x, y) ::: x is more than y.",
       "Cat(x) ::: x is a cat.",
       "Owner(x, y) ::: x is the owner of y.",
-      "Building(x, y) ::: x is a building named y.",
-      "MonthlyRent(x, y) ::: x is the monthly rent at building y.",
+      "Building(x, y) ::: x is a building.",
+      "MonthlyRent(x, y) ::: x has a monthly rent of y.",
       "MoveInWith(x, y) ::: x moves in with y.",
-      "SecurityDeposit(x, y) ::: x is the security deposit at building y."
+      "SecurityDeposit(x, y) ::: x is the security deposit of y.",
+      "Tom ::: a person named Tom."
     ]
   },
   "96": {
@@ -1973,8 +1988,9 @@
     "logic_predicates": [
       "LovedBy(x, y) ::: x is loved by y.",
       "Favorite(x, y) ::: x is y's favorite.",
-      "Max ::: Max.",
-      "AustraliaAnimal(x) ::: x is an animal from Australia.",
+      "Max(x) ::: x is Max.",
+      "Australia(x) ::: x is from Australia.",
+      "Animal(x) ::: x is an animal.",
       "Quokka(x) ::: x is a quokka.",
       "Fluffy(x) ::: x is very fluffy.",
       "Sleep(x) ::: x loves to sleep.",
@@ -1994,13 +2010,11 @@
     "logic_predicates": [
       "LovedBy(x, y) ::: x is loved by y.",
       "Favorite(x, y) ::: x is y's favorite.",
-      "From(x, y) ::: x is from y.",
-      "Fluffy(x) ::: x is very fluffy.",
-      "Sleep(x) ::: x loves to sleep.",
-      "Max ::: Max",
+      "Max ::: Max is a person.",
       "Australia(x) ::: x is from Australia.",
       "Quokka(x) ::: x is a quokka.",
-      "Koala(x) ::: x is a koala."
+      "Fluffy(x) ::: x is very fluffy.",
+      "Sleep(x) ::: x loves to sleep."
     ]
   },
   "99": {
@@ -2014,10 +2028,10 @@
     ],
     "question": "Harry is a CEO.",
     "logic_predicates": [
-      "Kind(x) ::: x is kind.",
-      "Evil(x) ::: x is evil.",
-      "Ugly(x) ::: x is ugly.",
-      "Handsome(x) ::: x is handsome.",
+      "Kind(x) ::: x is a kind man.",
+      "Evil(x) ::: x is an evil man.",
+      "Ugly(x) ::: x is an ugly person.",
+      "Handsome(x) ::: x is a handsome person.",
       "Gentleman(x) ::: x is a gentleman.",
       "CEO(x) ::: x is a CEO."
     ]
@@ -2038,7 +2052,8 @@
       "Ugly(x) ::: x is ugly.",
       "Handsome(x) ::: x is handsome.",
       "Gentleman(x) ::: x is a gentleman.",
-      "CEO(x) ::: x is a CEO."
+      "CEO(x) ::: x is a CEO.",
+      "Harry(x) ::: x is Harry."
     ]
   },
   "101": {
@@ -2077,7 +2092,8 @@
       "Siblings(x, y) ::: x has siblings who are the same age as y.",
       "Complain(x) ::: x complains often about annoying siblings.",
       "DevelopBonds(x, y) ::: x develops strong bonds with y.",
-      "LiveAtHome(x) ::: x lives at home regularly."
+      "LiveAtHomeRegularly(x) ::: x lives at home regularly.",
+      "FamilyMembers(x, y) ::: y is a family member of x."
     ]
   },
   "103": {
@@ -2116,9 +2132,9 @@
       "SpendTimeWith(x, y) ::: x spends a lot of time hanging out with and playing with y.",
       "Siblings(x, y) ::: x has siblings who are the same age as y.",
       "Complain(x) ::: x complains often about annoying siblings.",
-      "DevelopBonds(x, y) ::: x develops strong bonds with y.",
       "LiveAtHome(x) ::: x lives at home regularly.",
-      "FamilyMembers(x, y) ::: x has y as family members."
+      "DevelopBonds(x, y) ::: x develops strong bonds with y.",
+      "Luke(x) ::: x is Luke."
     ]
   },
   "105": {
@@ -2132,13 +2148,13 @@
     "question": "Tom can apply for financial aid from ETS to take the GRE test.",
     "logic_predicates": [
       "Cost(x, y) ::: It costs y to take the GRE test.",
-      "Provide(x, y, z) ::: x provides y to z.",
+      "ProvideFinancialAid(x, y) ::: x provides financial aid to y.",
       "Prove(x, y) ::: x proves y.",
       "EconomicHardship(x) ::: x refers to difficulty caused by having too little money or too few resources.",
       "LiveIn(x, y) ::: x lives in y.",
       "SingleParent(x) ::: x lives in a single-parent family.",
       "OutOfWork(x, y) ::: x has been out of work for y.",
-      "ApplyFor(x, y, z) ::: x applies for y from z."
+      "ApplyFor(x, y, z) ::: x can apply for financial aid from y to take the z test."
     ]
   },
   "106": {
@@ -2151,14 +2167,13 @@
     ],
     "question": "It cost below US $300 to take the GRE test.",
     "logic_predicates": [
-      "Cost(x, y) ::: It costs y to take the test x.",
+      "Cost(x, y) ::: It costs y to take x.",
       "Provide(x, y, z) ::: x provides y to z.",
-      "Prove(x, y) ::: x proves y.",
+      "Prove(x, y) ::: z proves y.",
       "EconomicHardship(x) ::: x refers to difficulty caused by having too little money or too few resources.",
       "LiveIn(x, y) ::: x lives in y.",
       "SingleParent(x) ::: x lives in a single-parent family.",
-      "OutOfWork(x, y) ::: x has been out of work for y.",
-      "BelowCost(x, y) ::: It costs below y to take the test x."
+      "OutOfWork(x, y) ::: x has been out of work for more than y."
     ]
   },
   "107": {
@@ -2171,12 +2186,15 @@
     ],
     "question": "There is no financial aid available for the GRE test.",
     "logic_predicates": [
-      "Cost(x, y) ::: It costs y to take the GRE test.",
+      "Cost(x, y) ::: It costs x to take the GRE test.",
       "Provide(x, y, z) ::: x provides y to z.",
+      "FinancialAid(x) ::: x is financial aid.",
+      "GREApplicant(x) ::: x is a GRE applicant.",
       "Prove(x, y) ::: x proves y.",
       "EconomicHardship(x) ::: x refers to difficulty caused by having too little money or too few resources.",
-      "Live(x, y) ::: x lives in y.",
-      "OutOfWork(x, y) ::: x has been out of work for more than y.",
+      "LiveIn(x, y) ::: x lives in y.",
+      "SingleParentFamily(x) ::: x is in a single-parent family.",
+      "OutOfWork(x, y) ::: x has been out of work for y.",
       "Available(x, y) ::: x is available for y."
     ]
   },
@@ -2195,7 +2213,7 @@
       "TidySpaces(x) ::: x tidies their spaces consistently.",
       "EnjoyCleaning(x) ::: x enjoys the process of cleaning.",
       "Foodie(x) ::: x is a foodie.",
-      "FindNewRestaurants(x) ::: x goes out frequently to find new food restaurants to try.",
+      "GoOut(x) ::: x goes out frequently to find new food restaurants to try.",
       "OnlyChild(x) ::: x grew up as an only child with no siblings.",
       "BusyParents(x) ::: x has parents who are very busy with their regular jobs.",
       "HighIncomeHousehold(x) ::: x is a household with a high net income.",
@@ -2218,12 +2236,13 @@
       "TidySpaces(x) ::: x tidies their spaces consistently.",
       "EnjoyCleaning(x) ::: x enjoys the process of cleaning.",
       "Foodie(x) ::: x is a foodie.",
-      "FindNewRestaurants(x) ::: x goes out frequently to find new food restaurants to try.",
+      "GoOut(x) ::: x goes out frequently to find new food restaurants to try.",
       "OnlyChild(x) ::: x grew up as an only child with no siblings.",
       "BusyParents(x) ::: x has parents who are very busy with their regular jobs.",
       "HighIncomeHousehold(x) ::: x belongs to a household with a high net income.",
       "Person(x) ::: x is a person.",
-      "Peter(x) ::: x is Peter."
+      "Peter(x) ::: x is Peter.",
+      "Belongs(x, y) ::: x belongs to y."
     ]
   },
   "110": {
@@ -2307,12 +2326,14 @@
     "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
     "logic_predicates": [
       "MountainRange(x) ::: x is a mountain range.",
-      "Location(x, y) ::: x is located in y.",
+      "In(x, y) ::: x is located in y.",
       "Visited(x, y) ::: x visited y.",
       "Donated(x) ::: x was donated.",
       "Mine(x) ::: x is a mine.",
-      "State(x) ::: x is a state.",
-      "HasMine(x, y) ::: x has a mine in y."
+      "LocatedIn(x, y) ::: x is located in y.",
+      "Has(x, y) ::: x has y.",
+      "NoMountainRangesInTexas(x) ::: x is a mountain range in Texas.",
+      "NotLocatedIn(x, y) ::: x is not located in y."
     ]
   },
   "115": {
@@ -2331,9 +2352,8 @@
       "Block(x, y) ::: x can block y's shooting.",
       "Man(x) ::: x is a man.",
       "Classmate(x, y) ::: x is a classmate of y.",
-      "Michael ::: a specific person named Michael.",
-      "Jump(x) ::: x can jump.",
-      "Shooter(x) ::: x is a shooter.",
+      "Shoot(x) ::: x is shooting.",
+      "Jump(x) ::: x is jumping.",
       "GreatShooter(x) ::: x is a great shooter.",
       "Shorter(x, y) ::: x is shorter than y."
     ]
@@ -2354,11 +2374,9 @@
       "Block(x, y) ::: x can block y's shooting.",
       "Man(x) ::: x is a man.",
       "Classmate(x, y) ::: x is a classmate of y.",
-      "Michael ::: a specific person named Michael.",
       "Shoot(x) ::: x is shooting.",
       "Jump(x) ::: x is jumping.",
-      "GreatShooter(x) ::: x is a great shooter.",
-      "Windy ::: a specific person named Windy."
+      "GreatShooter(x) ::: x is a great shooter."
     ]
   },
   "117": {
@@ -2379,7 +2397,7 @@
       "Classmate(x, y) ::: x is a classmate of y.",
       "Michael ::: Constant representing a person named Michael.",
       "Peter ::: Constant representing a person named Peter.",
-      "Jump(x) ::: x can jump when shooting.",
+      "Jump(x) ::: x jumps when shooting.",
       "Shooter(x) ::: x is a shooter.",
       "GreatShooter(x) ::: x is a great shooter.",
       "Windy ::: Constant representing a person named Windy."
@@ -2397,9 +2415,7 @@
     "logic_predicates": [
       "NamedAfter(x, y) ::: x is named after y.",
       "LocatedIn(x, y) ::: x is located in y.",
-      "On(x, y) ::: x is on y.",
       "Island(x) ::: x is an island.",
-      "Settlement(x) ::: x is a settlement.",
       "Coast(x, y) ::: x is on the coast of y.",
       "PartOf(x, y) ::: x is part of y."
     ]
@@ -2418,10 +2434,8 @@
       "LocatedIn(x, y) ::: x is located in y.",
       "On(x, y) ::: x is on y.",
       "PartOf(x, y) ::: x is part of y.",
-      "Cove(x) ::: x is a cove.",
-      "Settlement(x) ::: x is a settlement.",
-      "Island(x) ::: x is an island.",
-      "Continent(x) ::: x is a continent."
+      "Include(x, y) ::: x includes y.",
+      "ConsideredPartOf(x, y) ::: x is considered part of y."
     ]
   },
   "120": {
@@ -2435,15 +2449,12 @@
     "question": "Barutin is not located in Antarctica.",
     "logic_predicates": [
       "NamedAfter(x, y) ::: x is named after y.",
-      "LocatedAt(x, y) ::: x is located at y.",
+      "LocatedIn(x, y) ::: x is located in y.",
       "On(x, y) ::: x is on y.",
       "PartOf(x, y) ::: x is part of y.",
-      "LocatedIn(x, y) ::: x is located in y.",
       "Island(x) ::: x is an island.",
       "Settlement(x) ::: x is a settlement.",
-      "LocatedIn(x, y) ::: x is located in y.",
-      "LocatedIn(x, y) ::: x is located in y.",
-      "LocatedIn(x, y) ::: x is located in y."
+      "ConsideredPartOf(x, y) ::: x is considered part of y."
     ]
   },
   "121": {
@@ -2487,7 +2498,7 @@
     "question": "A Greyhound is a Boeing 707.",
     "logic_predicates": [
       "Transport(x) ::: x can transport multiple passengers.",
-      "NotEmpty(x) ::: x is not empty.",
+      "Empty(x) ::: x is empty.",
       "Airline(x) ::: x is an airline.",
       "Plane(x) ::: x is a plane.",
       "Boeing707(x) ::: x is a Boeing 707.",
@@ -2588,7 +2599,7 @@
     "logic_predicates": [
       "HaveWedding(x) ::: x has a wedding.",
       "HaveChild(x) ::: x has at least one child.",
-      "TravelToParisForHoneymoon(x) ::: x travels to Paris for their honeymoon.",
+      "TravelToParis(x) ::: x travels to Paris for their honeymoon.",
       "BelongTo(x, y) ::: x belongs to y.",
       "OccurIn(x, y) ::: x occurs in month y.",
       "WellAttended(x) ::: x is well-attended.",
@@ -2608,10 +2619,11 @@
     "logic_predicates": [
       "HaveWedding(x) ::: x has a wedding.",
       "HaveChild(x) ::: x has at least one child.",
-      "TravelToParisForHoneymoon(x) ::: x travels to Paris for their honeymoon.",
+      "TravelToParis(x) ::: x travels to Paris for their honeymoon.",
+      "WellAttended(x) ::: x has a wedding that is well-attended.",
+      "OccurInJuly(x) ::: x occurs in July.",
       "BelongTo(x, y) ::: x belongs to y.",
-      "OccurIn(x, y) ::: x occurs in y.",
-      "WellAttended(x) ::: x is well-attended.",
+      "Attend(x) ::: x is well-attended.",
       "Person(x) ::: x is a person."
     ]
   },
@@ -2630,10 +2642,10 @@
       "HaveChild(x) ::: x has at least one child.",
       "TravelToParisForHoneymoon(x) ::: x travels to Paris for their honeymoon.",
       "BelongTo(x, y) ::: x belongs to y.",
+      "OccurIn(x, y) ::: x occurs in y.",
       "WellAttended(x) ::: x is well-attended.",
-      "OccurIn(x, y) ::: x occurs in month y.",
-      "July(x) ::: x is in July.",
-      "Person(x) ::: x is a person."
+      "July(x) ::: x occurs in July.",
+      "Attend(x, y) ::: x attends y."
     ]
   },
   "131": {
@@ -2647,13 +2659,15 @@
     ],
     "question": "John has neither a wedding that is well-attended nor does he travel to Paris for his honeymoon.",
     "logic_predicates": [
-      "HaveWedding(x) ::: x has a wedding.",
-      "HaveChild(x) ::: x has at least one child.",
-      "TravelToParis(x) ::: x travels to Paris for their honeymoon.",
+      "HaveWedding(x) ::: x is a person who has a wedding.",
+      "HaveChild(x) ::: x is a person who has at least one child.",
+      "TravelToParisForHoneymoon(x) ::: x is a person who travels to Paris for their honeymoon.",
       "BelongTo(x, y) ::: x belongs to y.",
       "OccurIn(x, y) ::: x occurs in month y.",
-      "WellAttended(x) ::: x is well-attended.",
-      "Person(x) ::: x is a person."
+      "WellAttended(x) ::: x is a wedding that is well-attended.",
+      "July(x) ::: x occurs in July.",
+      "Attend(x) ::: x is well-attended.",
+      "John(x) ::: x is John."
     ]
   },
   "132": {
@@ -2680,7 +2694,7 @@
     ],
     "question": "Platypus are reptiles.",
     "logic_predicates": [
-      "HasTeeth(x) ::: x has teeth.",
+      "HaveTeeth(x) ::: x has teeth.",
       "Mammal(x) ::: x is a mammal.",
       "Platypus(x) ::: x is a platypus.",
       "Human(x) ::: x is a human.",
@@ -2696,7 +2710,7 @@
     ],
     "question": "Humans are mammals.",
     "logic_predicates": [
-      "HaveTeeth(x) ::: x has teeth.",
+      "HasTeeth(x) ::: x has teeth.",
       "Mammal(x) ::: x is a mammal.",
       "Platypus(x) ::: x is a platypus.",
       "Human(x) ::: x is a human."
@@ -2770,9 +2784,9 @@
     "question": "Supervised learning is used to train the state-of-the-art text summarization model.",
     "logic_predicates": [
       "Algorithm(x) ::: x is a Machine Learning algorithm.",
-      "SupervisedLearning(x) ::: x is supervised learning.",
-      "UnsupervisedLearning(x) ::: x is unsupervised learning.",
-      "ReinforcementLearning(x) ::: x is reinforcement learning.",
+      "SupervisedLearning(x) ::: x is categorized as supervised learning.",
+      "UnsupervisedLearning(x) ::: x is categorized as unsupervised learning.",
+      "ReinforcementLearning(x) ::: x is categorized as reinforcement learning.",
       "RequireLabelledData(x) ::: x requires labelled data.",
       "TrainedWith(x, y) ::: x is trained with y.",
       "StateOfTheArtModel(x) ::: x is the state-of-the-art text summarization model."
@@ -2813,7 +2827,7 @@
       "Popular(x) ::: x is a popular cartoon character.",
       "Ugly(x) ::: x is an ugly cartoon character.",
       "LovedByChildren(x) ::: x is loved by children.",
-      "FromTheSimpsons(x) ::: x is from The Simpsons.",
+      "FromTheSimpsons(x) ::: x is a character from The Simpsons.",
       "Yellow(x) ::: x is a yellow cartoon character."
     ]
   },
@@ -2866,15 +2880,14 @@
     "question": "Some Heck cattle are artificially selected.",
     "logic_predicates": [
       "BreedingBack(x) ::: x is a form of artificial selection by the deliberate selective breeding of domestic animals.",
-      "SelectiveBreeding(x, y) ::: x is the deliberate selective breeding of y.",
+      "SelectiveBreeding(x, y) ::: x is selectively bred to resemble y.",
       "DomesticAnimal(x) ::: x is a domestic animal.",
       "HeckCattle(x) ::: x is Heck cattle.",
-      "Resemble(x, y) ::: x resembles y.",
       "Aurochs(x) ::: x is an aurochs.",
       "Animal(x) ::: x is an animal.",
+      "Resemble(x, y) ::: x resembles y.",
       "Extinct(x) ::: x is extinct.",
-      "Selected(x) ::: x is selected.",
-      "Artificial(x) ::: x is artificially selected."
+      "Selected(x) ::: x is artificially selected."
     ]
   },
   "144": {
@@ -2931,7 +2944,9 @@
       "Human(x) ::: x is a human.",
       "Studies(x) ::: x studies.",
       "Teaches(x) ::: x teaches.",
-      "Young(x) ::: x is a young person.",
+      "Young(x) ::: x is young.",
+      "Jerry(x) ::: x is Jerry.",
+      "Rose(x) ::: x is Rose.",
       "Manager(x) ::: x is a manager."
     ]
   },
@@ -2951,9 +2966,9 @@
       "Studies(x) ::: x studies.",
       "Teaches(x) ::: x teaches.",
       "Young(x) ::: x is a young person.",
-      "Jerry(x) ::: x is Jerry.",
+      "Jerry ::: Jerry is a person.",
       "Manager(x) ::: x is a manager.",
-      "Rose(x) ::: x is Rose."
+      "Rose ::: Rose is a person."
     ]
   },
   "148": {
@@ -2991,9 +3006,8 @@
       "Study(x) ::: x studies.",
       "Teach(x) ::: x teaches.",
       "Young(x) ::: x is a young person.",
-      "Jerry(x) ::: x is Jerry.",
-      "Rose(x) ::: x is Rose.",
-      "Manager(x) ::: x is a manager."
+      "Manager(x) ::: x is a manager.",
+      "Rose(x) ::: x is Rose."
     ]
   },
   "150": {
@@ -3008,9 +3022,9 @@
     "logic_predicates": [
       "PublishingHouse(x) ::: x is a publishing house.",
       "SpecializeIn(x, y) ::: x specializes in y.",
-      "Translate(x, y, z) ::: x translates y into z.",
+      "Translate(x, y) ::: x translates y.",
       "Book(x) ::: x is a book.",
-      "PublishedIn(x, y) ::: x is published in y.",
+      "PublishedBy(x, y) ::: x is published by y.",
       "Language(x, y) ::: x is in language y."
     ]
   },
@@ -3029,7 +3043,7 @@
       "Translate(x, y, z) ::: x translates y into z.",
       "Book(x) ::: x is a book.",
       "PublishedIn(x, y) ::: x is published in y.",
-      "Language(x, y) ::: x is in language y."
+      "TranslatedFrom(x, y) ::: x is translated from y."
     ]
   },
   "152": {
@@ -3044,9 +3058,10 @@
     "logic_predicates": [
       "PublishingHouse(x) ::: x is a publishing house.",
       "SpecializeIn(x, y) ::: x specializes in y.",
-      "Translate(x, y) ::: x translates y.",
+      "Translate(x, y) ::: x is translated from language y.",
       "Book(x) ::: x is a book.",
-      "PublishedIn(x, y) ::: x is published in language y."
+      "PublishedBy(x, y) ::: x is published by y.",
+      "InLanguage(x, y) ::: x is in language y."
     ]
   },
   "153": {
@@ -3070,7 +3085,7 @@
       "VisitStore(x) ::: x visits the office supply store.",
       "GoToBedLate(x) ::: x goes to bed late.",
       "WakeUpLate(x) ::: x wakes up after noon.",
-      "Remy ::: Remy is a person."
+      "Remy(x) ::: x is Remy."
     ]
   },
   "154": {
@@ -3087,11 +3102,12 @@
       "Owns(x, y) ::: x owns y.",
       "WorkRegularlyAtHome(x) ::: x works regularly and often at home.",
       "LargeDesktopMonitor(x) ::: x owns a large desktop monitor at their home.",
-      "ImpressiveHomeOffice(x) ::: x has a fully stocked and impressive home office.",
+      "HomeOffice(x) ::: x has a fully stocked and impressive home office.",
       "TidyOrganize(x) ::: x spends their free time tidying and organizing the spaces in their home.",
-      "VisitOfficeStore(x) ::: x visits the office supply store regularly.",
+      "VisitStore(x) ::: x visits the office supply store regularly.",
       "GoToBedLate(x) ::: x goes to bed late.",
-      "WakeUpAfterNoon(x) ::: x wakes up every day after noon."
+      "WakeUpLate(x) ::: x wakes up every day after noon.",
+      "Person(x) ::: x is a person."
     ]
   },
   "155": {
@@ -3112,9 +3128,9 @@
       "FullyStocked(x) ::: x has a fully stocked home office.",
       "Impressive(x) ::: x has an impressive home office.",
       "Tidy(x) ::: x tidies and organizes spaces in their home.",
-      "VisitStore(x) ::: x visits the office supply store.",
+      "VisitStore(x) ::: x visits the office supply store regularly.",
       "Late(x) ::: x goes to bed late.",
-      "WakeLate(x) ::: x wakes up after noon.",
+      "WakeLate(x) ::: x wakes up every day after noon.",
       "Remy(x) ::: x is Remy."
     ]
   },
@@ -3142,14 +3158,14 @@
     ],
     "question": "James has a part-time job offered by the university.",
     "logic_predicates": [
-      "WorkLibrary(x) ::: x is a student who works in the library.",
+      "LibraryWorker(x) ::: x is a student who works in the library.",
       "CompSciDept(x) ::: x is from the computer science department.",
       "PartTimeJob(x) ::: x has a part-time job offered by the university.",
-      "TakeDatabaseCourse(x) ::: x takes the database course.",
-      "Instruct(x, y) ::: x is instructed by professor y.",
-      "WorkLab(x) ::: x is a student working in the lab.",
-      "James(x) ::: x is James.",
-      "Jack(x) ::: x is Jack."
+      "DatabaseCourse(x) ::: x takes the database course.",
+      "Instructed(x, y) ::: x is instructed by professor y.",
+      "LabWorker(x) ::: x is a student working in the lab.",
+      "Professor(x) ::: x is a professor.",
+      "Student(x) ::: x is a student."
     ]
   },
   "158": {
@@ -3165,7 +3181,7 @@
     "question": "James does not have a part-time job offered by the university.",
     "logic_predicates": [
       "WorkLibrary(x) ::: x is a student who works in the library.",
-      "CompSciDept(x) ::: x is from the computer science department.",
+      "ComputerScienceDept(x) ::: x is from the computer science department.",
       "PartTimeJob(x) ::: x has a part-time job offered by the university.",
       "TakeDatabaseCourse(x) ::: x takes the database course.",
       "Instructed(x, y) ::: x is instructed by professor y.",
@@ -3186,12 +3202,14 @@
     ],
     "question": "James either takes the database course or has a part-time job offered by the university.",
     "logic_predicates": [
-      "WorkLibrary(x) ::: x is a student who works in the library.",
+      "WorkLibrary(x) ::: x works in the library.",
       "ComputerScienceDept(x) ::: x is from the computer science department.",
       "PartTimeJob(x) ::: x has a part-time job offered by the university.",
-      "TakeDatabaseCourse(x) ::: x takes the database course.",
+      "DatabaseCourse(x) ::: x takes the database course.",
       "Instructed(x, y) ::: x is instructed by professor y.",
-      "WorkLab(x) ::: x is a student working in the lab.",
+      "Lab(x) ::: x is working in the lab.",
+      "Student(x) ::: x is a student.",
+      "Professor(x) ::: x is a professor.",
       "James(x) ::: x is James.",
       "Jack(x) ::: x is Jack."
     ]
@@ -3208,13 +3226,15 @@
     ],
     "question": "Jack takes the database course.",
     "logic_predicates": [
-      "NotFrom(x, y) ::: x is not from the y department.",
-      "WorkInLibrary(x) ::: x works in the library.",
-      "PartTimeJob(x) ::: x has a part-time job offered by the university.",
-      "TakeCourse(x, y) ::: x takes the y course.",
-      "FromDepartment(x, y) ::: x is from the y department.",
-      "Instructed(x, y) ::: x is instructed by professor y.",
-      "WorkingInLab(x) ::: x is working in the lab."
+      "LibraryWorker(x) ::: x is a student who works in the library.",
+      "ComputerScienceStudent(x) ::: x is a student from the computer science department.",
+      "PartTimeJobStudent(x) ::: x is a student who has a part-time job offered by the university.",
+      "DatabaseStudent(x) ::: x is a student who takes the database course.",
+      "Instructs(x, y) ::: x instructs students in y.",
+      "LabWorker(x) ::: x is a student working in the lab.",
+      "Professor(x) ::: x is a professor.",
+      "James(x) ::: x is James.",
+      "Jack(x) ::: x is Jack."
     ]
   },
   "161": {
@@ -3242,9 +3262,9 @@
     "logic_predicates": [
       "Likes(x, y) ::: x likes y.",
       "WantsToCompose(x) ::: x wants to compose.",
-      "CanCompose(x) ::: x can compose.",
-      "WillCompose(x) ::: x will compose.",
-      "HasAccess(x, y) ::: x has access to y."
+      "Composes(x) ::: x composes.",
+      "HasAccess(x, y) ::: x has access to y.",
+      "CanCompose(x) ::: x can compose."
     ]
   },
   "163": {
@@ -3274,8 +3294,8 @@
       "Roses(x) ::: x is a rose.",
       "On(x, y) ::: x is on y.",
       "TVShow(x) ::: x is a TV show.",
-      "Bachelor(x) ::: x is the Bachelor.",
-      "Portray(x, y) ::: x portrays the lives of y.",
+      "Bachelor(x) ::: x is on the Bachelor.",
+      "Portray(x, y) ::: x portrays y.",
       "RealPeople(x) ::: x is a real person.",
       "Show(x) ::: x is a show.",
       "RealityTVShow(x) ::: x is a reality TV show.",
@@ -3301,6 +3321,7 @@
       "Bachelor(x) ::: x is the Bachelor.",
       "Portray(x, y) ::: x portrays y.",
       "RealPeople(x) ::: x is a real person.",
+      "Show(x) ::: x is a show.",
       "RealityTVShow(x) ::: x is a reality TV show.",
       "BreakingBad(x) ::: x is Breaking Bad."
     ]
@@ -3316,17 +3337,16 @@
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "logic_predicates": [
       "GivenOut(x, y) ::: x is given out on TV at time y.",
-      "Rose(x) ::: x is a rose.",
-      "On(x, y) ::: x is on y.",
+      "Roses(x) ::: x is a rose.",
+      "On(x, y) ::: x is on the show y.",
       "TVShow(x) ::: x is a TV show.",
       "Bachelor(x) ::: x is on the Bachelor.",
       "Portray(x, y) ::: x portrays the lives of y.",
       "RealPeople(x) ::: x is a real person.",
-      "Show(x) ::: x is a show.",
       "RealityTVShow(x) ::: x is a reality TV show.",
       "BreakingBad(x) ::: x is Breaking Bad.",
-      "Monday(x) ::: x is on Monday.",
-      "Time(x) ::: x is at time y."
+      "Monday(x) ::: x is Monday.",
+      "Time(x) ::: x is 8 pm."
     ]
   },
   "167": {
@@ -3353,12 +3373,11 @@
     "question": "Some Nazi German politician was part of both the Prussian State Parliament and the Nazi Reichstag.",
     "logic_predicates": [
       "Nazi(x) ::: x is a Nazi German politician.",
-      "German(x) ::: x is a German person.",
       "Politician(x) ::: x is a politician.",
+      "German(x) ::: x is a German person.",
       "Member(x, y) ::: x is a member of y.",
-      "Parliament(x) ::: x is a parliament.",
-      "Reichstag(x) ::: x is the Nazi Reichstag.",
-      "PartOf(x, y) ::: x is part of y."
+      "StateParliament(x) ::: x is the Prussian State Parliament.",
+      "Reichstag(x) ::: x is the Nazi Reichstag."
     ]
   },
   "169": {
@@ -3368,10 +3387,11 @@
     ],
     "question": "No politicans are part of the Nazi Reichstag.",
     "logic_predicates": [
-      "Nazi(x) ::: x is a Nazi German.",
-      "Politician(x) ::: x is a politician.",
+      "Nazi(x) ::: x is a Nazi German politician.",
       "Member(x, y) ::: x is a member of y.",
-      "PartOf(x, y) ::: x is part of y."
+      "Politician(x) ::: x is a politician.",
+      "Parliament(x) ::: x is a member of the Prussian State Parliament.",
+      "Reichstag(x) ::: x is a member of the Nazi Reichstag."
     ]
   },
   "170": {
@@ -3428,10 +3448,11 @@
     "logic_predicates": [
       "EatSalad(x) ::: x eats salads regularly.",
       "Conscious(x) ::: x is very conscious about their health and eating habits.",
-      "GrewUpHealthConscious(x) ::: x grew up in health-conscious childhood homes.",
+      "GrewUpHealthHome(x) ::: x grew up in health-conscious childhood homes.",
       "FulfillNutritionalIntake(x) ::: x fulfills their nutritional daily intakes.",
       "GoodRelationship(x) ::: x has a good relationship with their parents.",
-      "VisitGym(x) ::: x visits the gym at least once a day."
+      "VisitGym(x) ::: x visits the gym at least once a day.",
+      "Taylor(x) ::: x is Taylor."
     ]
   },
   "174": {
@@ -3448,10 +3469,11 @@
     "logic_predicates": [
       "EatSalad(x) ::: x eats salads regularly.",
       "Conscious(x) ::: x is very conscious about their health and eating habits.",
-      "GrewUpHealthHome(x) ::: x grew up in a health-conscious childhood home.",
+      "GrewUpHealthConscious(x) ::: x grew up in health-conscious childhood homes.",
       "FulfillIntake(x) ::: x fulfills their nutritional daily intakes.",
       "GoodRelationship(x) ::: x has a good relationship with their parents.",
-      "VisitGym(x) ::: x visits the gym at least once a day."
+      "VisitGym(x) ::: x visits the gym at least once a day.",
+      "Taylor(x) ::: x is Taylor."
     ]
   },
   "175": {
@@ -3469,8 +3491,8 @@
       "EatSalads(x) ::: x eats salads regularly.",
       "Conscious(x) ::: x is very conscious about their health and eating habits.",
       "GrewUpHealthConscious(x) ::: x grew up in health-conscious childhood homes.",
-      "FulfillNutritionalIntakes(x) ::: x fulfills their nutritional daily intakes.",
-      "GoodRelationship(x) ::: x has good relationships with their parents.",
+      "FulfillIntakes(x) ::: x fulfills their nutritional daily intakes.",
+      "GoodRelationship(x) ::: x has a good relationship with their parents.",
       "VisitGym(x) ::: x visits the gym at least once a day.",
       "Taylor(x) ::: x is Taylor."
     ]
@@ -3502,9 +3524,9 @@
     "logic_predicates": [
       "SportingEvent(x) ::: x is a sporting event.",
       "OlympicGames(x) ::: x is the Olympic games.",
-      "Last(x) ::: x is the last event.",
+      "LastOlympicGames(x) ::: x is the last Olympic games.",
       "Location(x, y) ::: x was in location y.",
-      "WonMostMedals(x, y) ::: x won the most medals in event y."
+      "WinMostMedals(x, y) ::: x won the most medals in y."
     ]
   },
   "178": {
@@ -3518,8 +3540,8 @@
       "SportingEvent(x) ::: x is a sporting event.",
       "OlympicGames(x) ::: x is the Olympic games.",
       "LastOlympicGames(x) ::: x is the last Olympic games.",
-      "Location(x, y) ::: x was in location y.",
-      "WonMostMedals(x, y) ::: x won the most medals in event y."
+      "Location(x, y) ::: x was held in location y.",
+      "WinMostMedals(x, y) ::: x won the most medals in event y."
     ]
   },
   "179": {
@@ -3530,8 +3552,8 @@
     "question": "Some humans are horses.",
     "logic_predicates": [
       "Horse(x) ::: x is a horse.",
-      "Hooves(x) ::: x has hooves.",
-      "Human(x) ::: x is a human."
+      "Human(x) ::: x is a human.",
+      "Hooves(x) ::: x has hooves."
     ]
   },
   "180": {
@@ -3542,10 +3564,9 @@
     ],
     "question": "Susan flies from LGA airport.",
     "logic_predicates": [
-      "FliesTo(x, y) ::: x flies to airport y.",
-      "FliesFrom(x, y) ::: x flies from airport y.",
-      "Departure(x, y) ::: x is the departure airport for flight y.",
-      "Arrival(x, y) ::: x is the arrival airport for flight y.",
+      "Flies(x, y) ::: x flies to airport y.",
+      "DepartsFrom(x, y) ::: x departs from airport y.",
+      "ArrivesAt(x, y) ::: x arrives at airport y.",
       "Airport(x) ::: x is an airport."
     ]
   },
@@ -3574,8 +3595,8 @@
     ],
     "question": "Tom is a grumpy person.",
     "logic_predicates": [
-      "NiceTo(x, y) ::: x is nice to y.",
-      "MeanTo(x, y) ::: x is mean to y.",
+      "NiceTo(x) ::: x is nice to animals.",
+      "MeanTo(x) ::: x is mean to animals.",
       "Grumpy(x) ::: x is a grumpy person.",
       "AnimalLover(x) ::: x is an animal lover.",
       "Owns(x, y) ::: x owns y.",
@@ -3594,10 +3615,11 @@
     "logic_predicates": [
       "NiceTo(x) ::: x is nice to animals.",
       "MeanTo(x) ::: x is mean to animals.",
-      "Grumpy(x) ::: x is a grumpy person.",
+      "Grumpy(x) ::: x is grumpy.",
       "AnimalLover(x) ::: x is an animal lover.",
       "Owns(x, y) ::: x owns y.",
-      "Love(x, y) ::: x loves y."
+      "Love(x, y) ::: x loves y.",
+      "PetOwner(x) ::: x is a pet owner."
     ]
   },
   "184": {
@@ -3610,12 +3632,13 @@
     ],
     "question": "If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover.",
     "logic_predicates": [
-      "NiceToAnimals(x) ::: x is nice to animals.",
-      "MeanToAnimals(x) ::: x is mean to animals.",
+      "Nice(x) ::: x is nice to animals.",
+      "Mean(x) ::: x is mean to animals.",
       "Grumpy(x) ::: x is grumpy.",
       "AnimalLover(x) ::: x is an animal lover.",
-      "OwnsPet(x) ::: x owns a pet.",
-      "Love(x, y) ::: x loves y."
+      "Owns(x, y) ::: x owns y.",
+      "Love(x, y) ::: x loves y.",
+      "PetOwner(x) ::: x is a pet owner."
     ]
   },
   "185": {
@@ -3640,10 +3663,7 @@
       "Person(x) ::: x is a person.",
       "NovelWriter(x) ::: x is a novel writer.",
       "Writer(x) ::: x is a writer.",
-      "Created(x, y) ::: x created y.",
-      "Title(x, y) ::: x is titled y.",
-      "Year(x, y) ::: x is written in year y.",
-      "City(x) ::: x is a city."
+      "Create(x, y) ::: x creates y."
     ]
   },
   "186": {
@@ -3661,7 +3681,7 @@
     "logic_predicates": [
       "Podcast(x) ::: x is a podcast.",
       "Novel(x) ::: x is a novel.",
-      "BornInCity(x, y) ::: x is born in the city y.",
+      "BornInCity(x, y) ::: x is born in city y.",
       "American(x) ::: x is American.",
       "Book(x) ::: x is a book.",
       "WrittenBy(x, y) ::: x is written by y.",
@@ -3669,7 +3689,7 @@
       "Author(x, y) ::: x is the author of y.",
       "Created(x, y) ::: x created y.",
       "Title(x, y) ::: x is titled y.",
-      "PublishedIn(x, y) ::: x is published in year y.",
+      "Year(x, y) ::: x is written in year y.",
       "City(x) ::: x is a city."
     ]
   },
@@ -3688,14 +3708,14 @@
     "logic_predicates": [
       "Podcast(x) ::: x is a podcast.",
       "Novel(x) ::: x is a novel.",
-      "BornInCity(x, y) ::: x is born in city y.",
       "American(x) ::: x is American.",
+      "BornInCity(x, y) ::: x is born in city y.",
       "Book(x) ::: x is a book.",
       "WrittenBy(x, y) ::: x is written by y.",
-      "Person(x) ::: x is a person.",
-      "NovelWriter(x) ::: x is a novel writer.",
       "Writer(x) ::: x is a writer.",
       "Created(x, y) ::: x created y.",
+      "Author(x, y) ::: x is the author of y.",
+      "Year(x, y) ::: x is written in year y.",
       "City(x) ::: x is a city."
     ]
   },
@@ -3710,10 +3730,10 @@
     "question": "Yuri is an American.",
     "logic_predicates": [
       "BasketballPlayer(x) ::: x is a basketball player.",
-      "American(x) ::: x is American.",
+      "American(x) ::: x is an American.",
       "Tall(x) ::: x is tall.",
-      "WearLargeShoes(x) ::: x wears large shoes.",
-      "WearLargeClothes(x) ::: x wears large-sized clothes."
+      "WearsLargeShoes(x) ::: x wears large shoes.",
+      "WearsLargeClothes(x) ::: x wears large-sized clothes."
     ]
   },
   "189": {
@@ -3729,8 +3749,9 @@
       "BasketballPlayer(x) ::: x is a basketball player.",
       "American(x) ::: x is American.",
       "Tall(x) ::: x is tall.",
-      "WearsLargeShoes(x) ::: x wears large shoes.",
-      "WearsLargeClothes(x) ::: x wears large-sized clothes."
+      "WearLargeShoes(x) ::: x wears large shoes.",
+      "WearLargeClothes(x) ::: x wears large-sized clothes.",
+      "WearLargeSizeClothes(x) ::: x wears large-size clothes."
     ]
   },
   "190": {
@@ -3743,12 +3764,11 @@
     ],
     "question": "Yuri is an American basketball player.",
     "logic_predicates": [
-      "NotAmerican(x) ::: x is not American.",
       "BasketballPlayer(x) ::: x is a basketball player.",
+      "American(x) ::: x is American.",
       "Tall(x) ::: x is tall.",
-      "WearLargeShoes(x) ::: x wears large shoes.",
-      "WearLargeClothes(x) ::: x wears large-sized clothes.",
-      "American(x) ::: x is American."
+      "WearsLargeShoes(x) ::: x wears large shoes.",
+      "WearsLargeClothes(x) ::: x wears large-sized clothes."
     ]
   },
   "191": {
@@ -3761,11 +3781,12 @@
     ],
     "question": "If Yuri does not wear large shoes, then Yuri is an American basketball player.",
     "logic_predicates": [
+      "NotAmerican(x) ::: x is not American.",
       "BasketballPlayer(x) ::: x is a basketball player.",
-      "American(x) ::: x is American.",
       "Tall(x) ::: x is tall.",
       "WearLargeShoes(x) ::: x wears large shoes.",
-      "WearLargeClothes(x) ::: x wears large-sized clothes."
+      "WearLargeClothes(x) ::: x wears large-sized clothes.",
+      "American(x) ::: x is American."
     ]
   },
   "192": {
@@ -3810,9 +3831,9 @@
       "Participant(x, y) ::: x participated in the event y.",
       "LeaderboardTie(x) ::: x is in a tie on the leaderboard.",
       "From(x, y) ::: x is from the country y.",
-      "OnLeaderboard(x, y) ::: x is on the leaderboard of event y.",
-      "AllOnLeaderboardParticipated(x) ::: All people on the leaderboard of event x participated in event x.",
-      "NotWinner(x, y) ::: x is not the winner of event y."
+      "OnLeaderboard(x, y) ::: x is on the leaderboard of the event y.",
+      "Event(x) ::: x is an event.",
+      "Belgium(x) ::: x is from Belgium."
     ]
   },
   "195": {
@@ -3825,12 +3846,14 @@
     ],
     "question": "Descampe is in the six-way tie in the leaderboard of the 1992 du Maurier Classic.",
     "logic_predicates": [
-      "Winner(x, y) ::: x is the winner of the event y.",
-      "Participant(x, y) ::: x participated in the event y.",
+      "Winner(x, y) ::: x is the winner of the y.",
+      "Participant(x, y) ::: x participated in the y.",
       "LeaderboardTie(x) ::: x is in a tie on the leaderboard.",
-      "FromCountry(x, y) ::: x is from the country y.",
-      "OnLeaderboard(x, y) ::: x is on the leaderboard of event y.",
-      "AllOnLeaderboardParticipated(x) ::: All people on the leaderboard of event x participated in event x."
+      "From(x, y) ::: x is from y.",
+      "OnLeaderboard(x, y) ::: x is on the leaderboard of y.",
+      "AllOnLeaderboardParticipated(x) ::: All x on the leaderboard participated in the event.",
+      "SixWayTie(x) ::: x is in a six-way tie.",
+      "Belgium(x) ::: x is from Belgium."
     ]
   },
   "196": {
@@ -3865,7 +3888,7 @@
     "logic_predicates": [
       "Barks(x) ::: x is an animal that barks.",
       "Likes(x, y) ::: x likes y.",
-      "Dog(x) ::: x is a dog.",
+      "Dogs(x) ::: x is a dog.",
       "Jumps(x) ::: x is an animal that jumps.",
       "HasLegs(x) ::: x is an animal that has legs.",
       "Terricolous(x) ::: x is an animal that is terricolous."
@@ -3901,9 +3924,9 @@
     "question": "No one playing for Nautico is Brazilian.",
     "logic_predicates": [
       "Person(x) ::: x is a person.",
-      "Born(x, y) ::: x was born in year y.",
-      "KnownAs(x, y) ::: x is commonly known as y.",
       "FootballPlayer(x) ::: x is a football player.",
+      "KnownAs(x, y) ::: x is commonly known as y.",
+      "Born(x, y) ::: x was born in year y.",
       "Loan(x, y) ::: x was loaned out to y.",
       "Club(x) ::: x is a football club.",
       "PlaysFor(x, y) ::: x plays for y.",
@@ -3927,8 +3950,9 @@
       "Loan(x, y) ::: x was loaned out to y.",
       "PlaysFor(x, y) ::: x plays for y.",
       "Club(x) ::: x is a football club.",
-      "SameClub(x, y) ::: x and y are in the same football club.",
-      "NotPlayFor(x, y) ::: x does not play for y."
+      "Brazilian(x) ::: x is a Brazilian.",
+      "PlayForClub(x, y) ::: x plays for football club y.",
+      "NotPlayForClub(x) ::: x does not play for any football club."
     ]
   },
   "201": {
@@ -3948,9 +3972,7 @@
       "Loan(x, y) ::: x was loaned out to y.",
       "Club(x) ::: x is a football club.",
       "PlaysFor(x, y) ::: x plays for y.",
-      "Brazilian(x) ::: x is a Brazilian.",
-      "Team(x, y) ::: x is a team along with y.",
-      "NotLoan(x, y) ::: x was not loaned out to y."
+      "Country(x, y) ::: x is from country y."
     ]
   },
   "202": {
@@ -3986,12 +4008,11 @@
       "Person(x) ::: x is a person.",
       "FootballPlayer(x) ::: x is a football player.",
       "KnownAs(x, y) ::: x is commonly known as y.",
-      "Born(x, y) ::: x was born in year y.",
+      "BornIn(x, y) ::: x was born in year y.",
       "Loan(x, y) ::: x was loaned out to y.",
       "Club(x) ::: x is a football club.",
       "PlaysFor(x, y) ::: x plays for y.",
-      "Brazilian(x) ::: x is a Brazilian.",
-      "SameClub(x, y) ::: x and y are in the same football club."
+      "Country(x, y) ::: x is from country y."
     ]
   }
 }
