@@ -24,17 +24,17 @@ class PromptGenerator:
         self.prompt_mode = args.prompt_mode
                         
         if self.prompt_mode == 'static':
-            self.prompt_creator = {'FOLIO': self.static_prompt,
-                                'FOLIOv2': self.static_prompt}
+            self.prompt_creator = {'FOLIO': self.static_prompt_folio,
+                                'FOLIOv2': self.static_prompt_folio}
             
         elif self.prompt_mode == 'dynamic':
-            self.prompt_creator = {'FOLIO': self.dynamic_prompt,
-                                'FOLIOv2': self.dynamic_prompt}
+            self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
+                                'FOLIOv2': self.dynamic_prompt_folio}
             
         self.load_prompt_templates()
         
-        # if 'FOLIO' in self.dataset_name:
-        self.predicates = self.load_predicates()
+        if 'FOLIO' in self.dataset_name:
+            self.predicates = self.load_predicates_folio()
   
     def load_prompt_templates(self):
 
@@ -46,12 +46,12 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
             
-    def load_predicates(self):
+    def load_predicates_folio(self):
         with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')) as f:
             predicates = json.load(f)
         return predicates
     
-    def static_prompt(self, test_data):
+    def static_prompt_folio(self, test_data):
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         predicates = '\n'.join(self.predicates[str(test_data['id'])]['logic_predicates'])
@@ -60,7 +60,7 @@ class PromptGenerator:
 
         return full_prompt
 
-    def dynamic_prompt(self, test_data, train_data):
+    def dynamic_prompt_folio(self, test_data, train_data):
         
         prompt = self.prompt_template
         
@@ -156,8 +156,8 @@ class LogicProgramGenerator(PromptGenerator):
                             'answer': sample['answer'],
                             'raw_logic_programs': programs}
                     
-                    # if 'FOLIO' in self.dataset_name:
-                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                    if 'FOLIO' in self.dataset_name:
+                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
                     
                     outputs.append(output)
                     
@@ -178,8 +178,8 @@ class LogicProgramGenerator(PromptGenerator):
                             'answer': sample['answer'],
                             'raw_logic_programs': programs}
                     
-                    # if 'FOLIO' in self.dataset_name:
-                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+                    if 'FOLIO' in self.dataset_name:
+                        output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
                     
                     outputs.append(output)
                     # except:
