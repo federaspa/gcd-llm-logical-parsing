@@ -259,7 +259,7 @@ def parse_args():
     parser.add_argument('--predicates_path', type=str, default='./outputs/logic_predicates')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')

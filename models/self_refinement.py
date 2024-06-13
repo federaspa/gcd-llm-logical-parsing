@@ -6,11 +6,8 @@ import os
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
-from backup_answer_generation import Backup_Answer_Generator
 from gcd_utils import GrammarConstrainedModel
 from openai_utils import OpenAIModel
-import sys
-import re
 
 from dotenv import load_dotenv
 
@@ -50,10 +47,6 @@ class SelfRefinementEngine:
                 
         self.load_prompt_templates()
         
-        # self.backup_result_path = os.path.join(self.backup_path, f'{self.backup_strategy}_{self.dataset_name}_{self.split}_{self.model_name}.json')
-        
-        # self.backup_generator = Backup_Answer_Generator(self.dataset_name, self.backup_strategy, self.backup_result_path)
-
     def load_logic_programs(self):
         prefix = ""
         if self.current_round > 1:
@@ -229,13 +222,11 @@ def parse_args():
     parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='static')
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--self_refine_round', type=int, default=0)
-    parser.add_argument('--backup_strategy', type=str, default='random', choices=['random', 'Direct', 'CoT'])
-    parser.add_argument('--backup_LLM_result_path', type=str, default='./baselines/results')
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
-    parser.add_argument('--timeout', type=int, default=60)
     parser.add_argument('--model_path', type=str)
+    parser.add_argument('--timeout', type=int, default=60)
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--n_gpu_layers', type=int, default=0)
     parser.add_argument('--max_new_tokens', type=int, default=1024)
