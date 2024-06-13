@@ -56,7 +56,8 @@ class GrammarConstrainedModel:
         result = self.llm.create_chat_completion(
         messages=[
             {"role": "system", "content": task_description},
-            {"role": "user", "content": user}
+            {"role": "user", "content": user},
+            # {"role": "user", "content": task_description + "\nHere's some examples:\n------\n" + user}
             ],
         max_tokens = max_tokens,
 
