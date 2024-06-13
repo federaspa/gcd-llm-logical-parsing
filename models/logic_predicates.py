@@ -21,8 +21,8 @@ class PromptGenerator:
         self.dataset_name = args.dataset_name
         self.split = args.split
                         
-        self.prompt_creator = {'FOLIO': self.prompter,
-                            'FOLIOv2': self.prompter}
+        self.prompt_creator = {'FOLIO': self.prompt_folio,
+                            'FOLIOv2': self.prompt_folio}
             
         self.load_prompt_templates()
             
@@ -35,7 +35,7 @@ class PromptGenerator:
         with open(task_description_file, 'r') as f:
             self.task_description = f.read()
 
-    def prompter(self, test_data):
+    def prompt_folio(self, test_data):
         problem = '\n'.join(test_data['context'])
         question = test_data['question'].strip()
         full_prompt = self.prompt_template.replace('[[PROBLEM]]', problem).replace('[[QUESTION]]', question)
