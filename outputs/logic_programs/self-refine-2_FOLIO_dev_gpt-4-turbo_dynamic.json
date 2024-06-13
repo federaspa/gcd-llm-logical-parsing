@@ -82,8 +82,8 @@
     "answer": "B",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∀x (Weddings(x) → (GettingMarried(x) ∨ (Exists y (Friend(x, y) ∧ GettingMarried(y)))))",
-        "∀x (PreTeen(x) → ¬(GettingMarried(x) ∨ (Exists y (Friend(x, y) ∧ GettingMarried(y)))))",
+        "∀x((StudentSchool(x)∧YoungAspiringStudent(x)))",
+        "∀x((PerformTalentShow(x)∧AttendEngaged(x)))",
         "∀x (Celebrating(x) → Weddings(x))",
         "∀x (LargeGathering(x) → Celebrating(x))",
         "∀x (Outgoing(x) → LargeGathering(x))",
@@ -92,15 +92,7 @@
       "First-Order-Logic Question": [
         "Outgoing(Carol)"
       ]
-    },
-    "predicates": [
-      "PerformTalentShow(x) ::: x performs in school talent shows often.",
-      "AttendEngaged(x) ::: x attends and is very engaged with school events.",
-      "InactiveDisinterested(x) ::: x is an inactive and disinterested member of their community.",
-      "ChaperoneDance(x) ::: x chaperones high school dances.",
-      "StudentSchool(x) ::: x is a student who attends the school.",
-      "YoungAspiringStudent(x) ::: x is a young child or teenager who wishes to further their academic career and educational opportunities."
-    ]
+    }
   },
   {
     "id": 3,
@@ -829,22 +821,12 @@
         "HostSummerParalympics(beijing, 2008) ::: Beijing hosted the 2008 Summer Paralympics.",
         "HostBothSummerWinterOlympics(beijing) ::: Beijing has hosted both the Summer and Winter Olympics.",
         "HostBothSummerWinterParalympics(beijing) ::: Beijing has hosted both the Summer and Winter Paralympics.",
-        "∀y (UniversityRanking(beijing, y) ↔ y = asiapacific ∨ y = world) ::: Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+        "∀y(LocatedIn(y,x)→UniversityRanking(x,y))∧(UniversityRanking(x,y)↔¬MostPopulousCapital(x)) ::: Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
       ],
       "First-Order-Logic Question": [
         "HostSummerOlympics(beijing, 2008) ∧ HostBothSummerWinterOlympics(beijing) ::: Beijing has hosted both the 2008 Summer Olympics and a winter olympics."
       ]
-    },
-    "predicates": [
-      "Capital(x, y) ::: x is the capital of y.",
-      "MostPopulousCapital(x) ::: x is the world's most populous national capital city.",
-      "LocatedIn(x, y) ::: x is located in y.",
-      "HostSummerOlympics(x, y) ::: x hosted the Summer Olympics in year y.",
-      "HostSummerParalympics(x, y) ::: x hosted the Summer Paralympics in year y.",
-      "HostBothSummerWinterOlympics(x) ::: x has hosted both the Summer and Winter Olympics.",
-      "HostBothSummerWinterParalympics(x) ::: x has hosted both the Summer and Winter Paralympics.",
-      "UniversityRanking(x, y) ::: x's universities rank among the best in y."
-    ]
+    }
   },
   {
     "id": 25,
@@ -1568,23 +1550,16 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+        "∀x(Season(x)↔(¬Student(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
         "∀x (Student(x) ∧ WantLongVacation(x) → LoveMost(x, summer)) ::: All students who want to have a long vacation love summer the most.",
         "FavoriteSeason(emma, summer) ::: Emma's favorite season is summer.",
-        "∀x (FavoriteSeason(mia, x) → ¬(x = summer)) ::: Mia's favorite season is not the same as Emma's.",
+        "∀x(FavoriteSeason(x,y)→¬(FavoriteSeason(x,z))) ::: Mia's favorite season is not the same as Emma's.",
         "WantLongVacation(james) ::: James wants to have a long vacation."
       ],
       "First-Order-Logic Question": [
         "FavoriteSeason(james, summer) ::: James's favorite season is summer."
       ]
-    },
-    "predicates": [
-      "Season(x) ::: x is a season.",
-      "Student(x) ::: x is a student.",
-      "WantLongVacation(x) ::: x wants to have a long vacation.",
-      "LoveMost(x, y) ::: x loves y the most.",
-      "FavoriteSeason(x, y) ::: x's favorite season is y."
-    ]
+    }
   },
   {
     "id": 47,
@@ -1599,23 +1574,16 @@
     "answer": "C",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+        "∀x(Season(x)↔(¬Student(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
         "∀x (Student(x) ∧ WantLongVacation(x) → LoveMost(x, summer)) ::: All students who want to have a long vacation love summer the most.",
         "FavoriteSeason(emma, summer) ::: Emma's favorite season is summer.",
-        "∀x (x = mia → ¬(FavoriteSeason(x, summer))) ::: Mia's favorite season is not the same as Emma's.",
+        "∀x(Student(x)∧¬(FavoriteSeason(x,y))) ::: Mia's favorite season is not the same as Emma's.",
         "WantLongVacation(james) ::: James wants to have a long vacation."
       ],
       "First-Order-Logic Question": [
         "FavoriteSeason(james, fall) ::: James's favorite season is fall."
       ]
-    },
-    "predicates": [
-      "Season(x) ::: x is a season.",
-      "Student(x) ::: x is a student.",
-      "WantLongVacation(x) ::: x wants to have a long vacation.",
-      "LoveMost(x, y) ::: x loves y the most.",
-      "FavoriteSeason(x, y) ::: x's favorite season is y."
-    ]
+    }
   },
   {
     "id": 48,
@@ -1630,23 +1598,16 @@
     "answer": "C",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+        "∀x(Season(x)↔(¬Student(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
         "∀x (Student(x) ∧ WantLongVacation(x) → LoveMost(x, summer)) ::: All students who want to have a long vacation love summer the most.",
         "FavoriteSeason(emma, summer) ::: Emma's favorite season is summer.",
-        "∀x (x = mia → ¬(FavoriteSeason(x, summer))) ::: Mia's favorite season is not the same as Emma's.",
+        "∀x(Student(x)∧¬(FavoriteSeason(x,y))) ::: Mia's favorite season is not the same as Emma's.",
         "WantLongVacation(james) ::: James wants to have a long vacation."
       ],
       "First-Order-Logic Question": [
         "FavoriteSeason(mia, spring) ::: Mia's favorite season is spring."
       ]
-    },
-    "predicates": [
-      "Season(x) ::: x is a season.",
-      "Student(x) ::: x is a student.",
-      "WantLongVacation(x) ::: x wants to have a long vacation.",
-      "LoveMost(x, y) ::: x loves y the most.",
-      "FavoriteSeason(x, y) ::: x's favorite season is y."
-    ]
+    }
   },
   {
     "id": 49,
@@ -2187,19 +2148,12 @@
         "LocatedIn(yaleuniversity, newhaven)",
         "EndowmentValuedAt(yaleuniversity, 42.3billion)",
         "OrganizedInto(yaleuniversity, 27)",
-        "ResidentialCollege(benjaminfranklin) ∧ ResidentialCollege(berkeley) ∧ ResidentialCollege(branford) ∧ ResidentialCollege(davenport) ∧ ResidentialCollege(ezrastiles) ∧ ResidentialCollege(gracehopper) ∧ ResidentialCollege(jonathanedwards) ∧ ResidentialCollege(morse) ∧ ResidentialCollege(paulimurray) ∧ ResidentialCollege(pierson) ∧ ResidentialCollege(saybrook) ∧ ResidentialCollege(silliman) ∧ ResidentialCollege(timothydwight) ∧ ResidentialCollege(trumbull)"
+        "∀x(PrivateIvyLeagueResearchUniversity(x)∧LocatedIn(x,y)∧EndowmentValuedAt(x,z)∧OrganizedInto(x"
       ],
       "First-Order-Logic Question": [
         "∃x (PrivateIvyLeagueResearchUniversity(x) ∧ LocatedIn(x, newhaven))"
       ]
-    },
-    "predicates": [
-      "PrivateIvyLeagueResearchUniversity(x) ::: x is a private Ivy League research university.",
-      "LocatedIn(x, y) ::: x is located in y.",
-      "EndowmentValuedAt(x, y) ::: x's endowment is valued at y.",
-      "OrganizedInto(x, y) ::: x is organized into y constituent colleges and schools.",
-      "ResidentialCollege(x) ::: x is a residential college at Yale University."
-    ]
+    }
   },
   {
     "id": 67,
@@ -2216,24 +2170,14 @@
       "First-Order-Logic Rules": [
         "PrivateUniversity(yaleuniversity) ∧ IvyLeague(yaleuniversity) ∧ ResearchUniversity(yaleuniversity) ::: Yale University is a private Ivy League research university.",
         "Moved(yaleuniversity, newhaven) ::: Yale University moved to New Haven in 1716.",
-        "EndowmentValue(yaleuniversity, 42.3billion) ::: Yale university's endowment was valued at $42.3 billion.",
+        "EndowmentValue(yaleuniversity, Endowment_42_3_billion) ::: Yale university's endowment was valued at $42.3 billion.",
         "OrganizedInto(yaleuniversity, 27) ::: Yale University has been organized into 27 constituent colleges and schools.",
-        "ResidentialCollege(benjaminfranklin) ∧ ResidentialCollege(berkeley) ∧ ResidentialCollege(branford) ∧ ResidentialCollege(davenport) ∧ ResidentialCollege(ezrastiles) ∧ ResidentialCollege(gracehopper) ∧ ResidentialCollege(jonathanedwards) ∧ ResidentialCollege(morse) ∧ ResidentialCollege(paulimurray) ∧ ResidentialCollege(pierson) ∧ ResidentialCollege(saybrook) ∧ ResidentialCollege(silliman) ∧ ResidentialCollege(timothydwight) ∧ ResidentialCollege(trumbull) ::: A list of residential colleges at Yale."
+        "∀x(ResidentialCollege(x)→(ResidentialCollege(x,y))) ::: A list of residential colleges at Yale."
       ],
       "First-Order-Logic Question": [
         "LargestEndowment(yaleuniversity) ::: Yale University has the largest university endowment of any educational institution."
       ]
-    },
-    "predicates": [
-      "PrivateUniversity(x) ::: x is a private university.",
-      "IvyLeague(x) ::: x is an Ivy League university.",
-      "ResearchUniversity(x) ::: x is a research university.",
-      "Moved(x, y) ::: x moved to y.",
-      "EndowmentValue(x, y) ::: x's endowment was valued at y.",
-      "OrganizedInto(x, y) ::: x is organized into y constituent colleges and schools.",
-      "ResidentialCollege(x) ::: x is a residential college at Yale University.",
-      "LargestEndowment(x) ::: x has the largest university endowment of any educational institution."
-    ]
+    }
   },
   {
     "id": 68,
@@ -2250,7 +2194,7 @@
       "First-Order-Logic Rules": [
         "PrivateUniversity(yaleuniversity) ∧ IvyLeague(yaleuniversity) ∧ ResearchUniversity(yaleuniversity) ::: Yale University is a private Ivy League research university.",
         "Moved(yaleuniversity, newhaven) ::: Yale University moved to New Haven in 1716.",
-        "ValuedEndowment(yaleuniversity, 42.3billion) ::: Yale university's endowment was valued at $42.3 billion.",
+        "ValuedEndowment(yaleuniversity, FortyTwoPointThreeBillion) ::: Yale university's endowment was valued at $42.3 billion.",
         "OrganizedInto(yaleuniversity, 27) ::: Yale University has been organized into 27 constituent colleges and schools.",
         "ResidentialCollege(benjaminfranklin) ∧ PartOf(benjaminfranklin, yaleuniversity) ::: Benjamin Franklin College is a residential college at Yale.",
         "ResidentialCollege(berkeley) ∧ PartOf(berkeley, yaleuniversity) ::: Berkeley College is a residential college at Yale.",
@@ -2270,17 +2214,7 @@
       "First-Order-Logic Question": [
         "ResidentialCollege(pierson) ::: Pierson College is a residential college at Yale."
       ]
-    },
-    "predicates": [
-      "PrivateUniversity(x) ::: x is a private university.",
-      "IvyLeague(x) ::: x is an Ivy League university.",
-      "ResearchUniversity(x) ::: x is a research university.",
-      "Moved(x, y) ::: x moved to y.",
-      "ValuedEndowment(x, y) ::: x's endowment is valued at y.",
-      "OrganizedInto(x, y) ::: x is organized into y constituent colleges and schools.",
-      "ResidentialCollege(x) ::: x is a residential college.",
-      "PartOf(x, y) ::: x is part of y."
-    ]
+    }
   },
   {
     "id": 69,
@@ -3022,17 +2956,8 @@
         "NaturalLanguageProcessingTask(machineTranslation) ::: Machine translation is a natural language processing task.",
         "OutputTextSequence(machineTranslation) ::: The output of machine translation is a text sequence."
       ],
-      "First-Order-Logic Question": [
-        "LanguageUnderstandingTask(machineTranslation) ::: Machine translation is a language understanding task."
-      ]
-    },
-    "predicates": [
-      "Category(x, y) ::: x can be categorized as y.",
-      "OutputTextSequence(x) ::: the output of x is a text sequence.",
-      "LanguageGenerationTask(x) ::: x is a language generation task.",
-      "NaturalLanguageProcessingTask(x) ::: x is a natural language processing task.",
-      "LanguageUnderstandingTask(x) ::: x is a language understanding task."
-    ]
+      "First-Order-Logic Question": "LanguageUnderstandingTask(machineTranslation) ::: Machine translation is a language understanding task."
+    }
   },
   {
     "id": 93,
@@ -3056,25 +2981,14 @@
         "ManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.",
         "MonthlyRent(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.",
         "DepositRequired(olivegarden) ::: A deposit is required to rent an apartment in a managed building.",
-        "∃x (ManagedBuilding(x) ∧ Allowed(pet, x)) ::: Pets are allowed in some managed buildings.",
-        "∀x ∀y (Rent(tom, x) ↔ (Allowed(fluffy, x) ∧ ¬EqualOrMore(1500, y) ∧ ManagedBuilding(x))) ∧ MonthlyRent(x, y) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "∃x (ManagedBuilding(x) ∧ PetAllowed(x)) ::: Pets are allowed in some managed buildings.",
+        "∀x ∀y (Rent(tom, x) ↔ (PetAllowed(x) ∧ ¬EqualOrMore(1500, y) ∧ ManagedBuilding(x))) ∧ MonthlyRent(x, y) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
         "EqualOrMore(2000, 1500) ::: 2000$ is more than $1500."
       ],
       "First-Order-Logic Question": [
         "Rent(tom, olivegarden) ::: Tom will rent an apartment in The Olive Garden."
       ]
-    },
-    "predicates": [
-      "Pet(x) ::: x is a pet.",
-      "ManagedBuilding(x) ::: x is a managed building.",
-      "DepositRequired(x) ::: A deposit is required to rent an apartment in x.",
-      "EqualOrMore(x, y) ::: x is equal to or more than y.",
-      "Owns(x, y) ::: x owns y.",
-      "Cat(x) ::: x is a cat.",
-      "Rent(x, y) ::: x will rent an apartment in y.",
-      "Allowed(x, y) ::: x is allowed in y.",
-      "MonthlyRent(x, y) ::: The monthly rent at x is y dollars."
-    ]
+    }
   },
   {
     "id": 94,
@@ -3096,24 +3010,13 @@
         "Cat(fluffy) ∧ Owns(tom, fluffy) ∧ Pet(fluffy) ::: Fluffy is Tom's cat and cats are pets.",
         "ManagedBuilding(olivegarden) ∧ RequiresDeposit(olivegarden) ∧ SecurityDeposit(olivegarden, 2000) ::: The Olive Garden is a managed building with a required deposit and the monthly rent is $2000.",
         "∃x (ManagedBuilding(x) ∧ PetAllowed(x)) ::: Pets are allowed in some managed buildings.",
-        "∀x ∀y (RentApartment(tom, x, fluffy) ↔ (AllowedMoveIn(tom, x, fluffy) ∧ ¬GreaterThan(SecurityDeposit(x, y), 1500))) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "∀x∀y((ManagedBuilding(x)∧PetAllowed(x))) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
         "GreaterThan(2000, 1500) ::: 2000$ is more than $1500."
       ],
       "First-Order-Logic Question": [
         "AllowedMoveIn(tom, olivegarden, fluffy) ::: Tom is allowed to move in an apartment in The Olive Garden with Fluffy."
       ]
-    },
-    "predicates": [
-      "ManagedBuilding(x) ::: x is a managed building.",
-      "PetAllowed(x) ::: Pets are allowed in x.",
-      "RequiresDeposit(x) ::: A deposit is required to rent an apartment in x.",
-      "SecurityDeposit(x, y) ::: The security deposit for x is y.",
-      "Owns(x, y) ::: x owns y.",
-      "Pet(x) ::: x is a pet.",
-      "RentApartment(x, y, z) ::: x will rent an apartment in y if allowed to move in with z and the security deposit is no more than $1500.",
-      "GreaterThan(x, y) ::: x is greater than y.",
-      "AllowedMoveIn(x, y, z) ::: x is allowed to move in y with z."
-    ]
+    }
   },
   {
     "id": 95,
@@ -3518,16 +3421,9 @@
         "Unemployed(dad_of_tom, more_than_a_year) ::: His dad has been out of work for more than a year."
       ],
       "First-Order-Logic Question": [
-        "CostGRE(x) ∧ x < 300 ::: It cost below US $300 to take the GRE test."
+        "∃x(CostGRE(x) ∧ (¬ProvideAid(ETS, x))) ::: It cost below US $300 to take the GRE test."
       ]
-    },
-    "predicates": [
-      "CostGRE(x) ::: x is the cost to take the GRE test.",
-      "ProvideAid(x, y) ::: x provides financial aid to y.",
-      "EconomicHardship(x) ::: x has economic hardship.",
-      "SingleParentFamily(x) ::: x lives in a single-parent family.",
-      "Unemployed(x, y) ::: x has been unemployed for more than y."
-    ]
+    }
   },
   {
     "id": 107,
@@ -3704,19 +3600,12 @@
         "MountainRange(picurismountains) ∧ (LocatedIn(picurismountains, newmexico) ⊕ LocatedIn(picurismountains, texas)) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.",
         "Visited(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.",
         "MountainRange(picurismountains) ∧ HasMine(picurismountains, hardingpegmatitemine) ∧ DonatedMine(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
-        "∀x (MountainRange(x) ∧ LocatedIn(x, texas) → ¬∃y (HasMine(x, y) ∧ DonatedMine(y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
+        "∀x((MountainRange(x)∧LocatedIn(x,y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
       ],
       "First-Order-Logic Question": [
         "∃x (MountainRange(x) ∧ LocatedIn(x, newmexico) ∧ Visited(juandeonate, x)) ::: Juan de Onate visited a mountain range in New Mexico."
       ]
-    },
-    "predicates": [
-      "MountainRange(x) ::: x is a mountain range.",
-      "LocatedIn(x, y) ::: x is located in y.",
-      "Visited(x, y) ::: y visited x.",
-      "DonatedMine(x) ::: x is a mine that has been donated.",
-      "HasMine(x, y) ::: x has y as a mine."
-    ]
+    }
   },
   {
     "id": 113,
@@ -3762,20 +3651,12 @@
         "MountainRange(picurismountains, newmexico) ⊕ MountainRange(picurismountains, texas) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.",
         "Visit(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.",
         "Mine(hardingpegmatitemine, picurismountains) ∧ Donate(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
-        "∀x (MountainRange(x, texas) → ¬∃y (Mine(y, x) ∧ Donate(y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
+        "∀x(MountainRange(x,y)→¬(Mine(z,x))) ::: There are no mountain ranges in Texas that have mines which have been donated."
       ],
       "First-Order-Logic Question": [
         "¬Mine(hardingpegmatitemine, newmexico) ::: The Harding Pegmatite Mine is not located in a mountain range in New Mexico."
       ]
-    },
-    "predicates": [
-      "MountainRange(x, y) ::: x is a mountain range located in y.",
-      "Visit(x, y) ::: x visited y.",
-      "Mine(x, y) ::: x is a mine located in y.",
-      "Donate(x) ::: x has been donated.",
-      "NoDonatedMineInTexasMountains(x) ::: There are no mountain ranges in Texas that have mines which have been donated.",
-      "NotInNewMexico(x, y) ::: x is not located in a mountain range in y."
-    ]
+    }
   },
   {
     "id": 115,
@@ -3829,7 +3710,7 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
         "∀x ∀y (Taller(x, y) → Block(x, y))",
-        "Man(michael) ∧ ∀x (Man(x) ∧ x ≠ michael → Taller(michael, x))",
+        "Man(x)∧Man(y)∧¬(Taller(x,y))→CannotBlock(x,y)∨JumpShooting(y)∨GreatShooter(",
         "∀x ∀y ∀z ((Taller(x, y) ∧ Taller(y, z)) → Taller(x, z))",
         "Man(peter) ∧ Taller(peter, michael)",
         "∀x (¬JumpShooting(x) → Block(michael, x))",
@@ -3839,16 +3720,7 @@
       "First-Order-Logic Question": [
         "GreatShooter(windy)"
       ]
-    },
-    "predicates": [
-      "Taller(x, y) ::: x is taller than y.",
-      "Block(x, y) ::: x can block y's shooting.",
-      "Man(x) ::: x is a man.",
-      "JumpShooting(x) ::: x can jump when shooting.",
-      "CannotBlock(x, y) ::: x cannot block y's shooting.",
-      "Shooter(x) ::: x is a shooter.",
-      "GreatShooter(x) ::: x is a great shooter."
-    ]
+    }
   },
   {
     "id": 117,
@@ -4482,15 +4354,7 @@
       "First-Order-Logic Question": [
         "Vampire(space)"
       ]
-    },
-    "predicates": [
-      "Suck(x) ::: x sucks.",
-      "Vacuum(x) ::: x is a vacuum.",
-      "Vampire(x) ::: x is a vampire.",
-      "Space(x) ::: x is space.",
-      "Duster(x) ::: x is a duster.",
-      "HouseholdAppliance(x) ::: x is a household appliance."
-    ]
+    }
   },
   {
     "id": 137,
@@ -4695,20 +4559,13 @@
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
         "∀x (BreedingBack(x) → ArtificiallySelected(x)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.",
-        "BredBack(heckCattle, 1920s) ∧ Animal(heckCattle) ∧ Animal(aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.",
-        "∃x (Animal(x) ∧ ResembleExtinct(x)) ::: Some animals to be bred-back resemble animals that are extinct."
+        "BredBack(heckCattle, 1920s) ∧ IsAnimal(heckCattle) ∧ IsAnimal(aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.",
+        "∃x (IsAnimal(x) ∧ ResembleExtinct(x)) ::: Some animals to be bred-back resemble animals that are extinct."
       ],
       "First-Order-Logic Question": [
-        "∃x (Animal(x) ∧ x = heckCattle ∧ ArtificiallySelected(x)) ::: Some Heck cattle are artificially selected."
+        "∃x(IsAnimal(x) ∧ Resembles(x, aurochs) ∧ BreedingBack(x)) ::: Some Heck cattle are artificially selected."
       ]
-    },
-    "predicates": [
-      "BreedingBack(x) ::: x is a form of artificial selection by selective breeding of domestic animals.",
-      "BredBack(x, y) ::: x were bred-back in year y to resemble the aurochs.",
-      "Animal(x) ::: x is an animal.",
-      "ResembleExtinct(x) ::: x resembles animals that are extinct.",
-      "ArtificiallySelected(x) ::: x is artificially selected."
-    ]
+    }
   },
   {
     "id": 144,
@@ -5364,7 +5221,7 @@
     "answer": "C",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∃x ∃y (GiveOutRoses(x, y) ∧ x = monday ∧ y = 8pm) ::: On some Mondays at 8 pm, roses are given out on TV.",
+        "∃x∃y(GiveOutRoses(x,y)∧OnBachelor(x)∧ShowAtTime(x,y,z)∧PortrayRealPeople(x ::: On some Mondays at 8 pm, roses are given out on TV.",
         "∀x (RoseOnTV(x) → OnBachelor(x)) ::: Every rose given out on TV is on the Bachelor.",
         "∀x (OnBachelor(x) → PortrayRealPeople(x)) ::: Everything on the Bachelor portrays the lives of real people.",
         "∀x (PortrayRealPeople(x) → RealityTV(x)) ::: All shows portraying the lives of real people are reality TV shows.",
@@ -5373,15 +5230,7 @@
       "First-Order-Logic Question": [
         "ShowAtTime(breakingBad, monday, 8pm) ::: Breaking Bad is on Monday at 8 pm."
       ]
-    },
-    "predicates": [
-      "GiveOutRoses(x, y) ::: roses are given out on x at y.",
-      "RoseOnTV(x) ::: x is a rose given out on TV.",
-      "OnBachelor(x) ::: x is on the Bachelor.",
-      "PortrayRealPeople(x) ::: x portrays the lives of real people.",
-      "RealityTV(x) ::: x is a reality TV show.",
-      "ShowAtTime(x, y, z) ::: x is a show on at y at z."
-    ]
+    }
   },
   {
     "id": 165,
@@ -5434,16 +5283,9 @@
         "¬RealityShow(breakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "∀x (GiveRose(x, breakingBad, z) → (x = monday ∧ z = 8pm)) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
+        "∀x(GiveRose(x,y,z)→(OnBachelor(y))) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
       ]
-    },
-    "predicates": [
-      "GiveRose(x, y, z) ::: x gives out roses on y at z.",
-      "OnBachelor(x) ::: x is on the Bachelor.",
-      "PortrayRealPeople(x) ::: x portrays the lives of real people.",
-      "RealityShow(x) ::: x is a reality TV show.",
-      "Show(x) ::: x is a TV show."
-    ]
+    }
   },
   {
     "id": 167,
@@ -5535,19 +5377,8 @@
         "∀x (MildFlu(x) → ¬LowSurvivalRate(x)) ::: No one with mild flu has a low survival rate.",
         "∀x (ColorectalCancer(x) ∧ BileDuctCancer(x) ∧ LowSurvivalRate(x) → ¬BileDuctCancer(x)) ::: If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer."
       ],
-      "First-Order-Logic Question": [
-        "SevereCancer(colorectalCancer) ::: Colorectal cancer is a severe cancer."
-      ]
-    },
-    "predicates": [
-      "DeadlyDisease(x) ::: x is a deadly disease.",
-      "LowSurvivalRate(x) ::: x has a low survival rate.",
-      "SevereCancer(x) ::: x is a severe cancer.",
-      "BileDuctCancer(x) ::: x is bile duct cancer.",
-      "Cholangiocarcinoma(x) ::: x is cholangiocarcinoma, which is bile duct cancer.",
-      "MildFlu(x) ::: x is mild flu.",
-      "ColorectalCancer(x) ::: x is colorectal cancer."
-    ]
+      "First-Order-Logic Question": "SevereCancer(colorectalCancer) ::: Colorectal cancer is a severe cancer."
+    }
   },
   {
     "id": 172,
