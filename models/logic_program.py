@@ -111,7 +111,7 @@ class LogicProgramGenerator(PromptGenerator):
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
 
-        self.openai_api = OpenAIModel(api_key, args.sketcher_name, 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.dataset_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
         
@@ -129,47 +129,65 @@ class LogicProgramGenerator(PromptGenerator):
             dynamic_examples = self.load_dynamic_examples(self.split)
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
         outputs = []
-        # split dataset into chunks
             
         if self.prompt_mode == 'static':
             full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in raw_dataset}
         
         elif self.prompt_mode == 'dynamic':
             full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in raw_dataset}
-                        
-        print(full_prompts[12])
+            
+            
+        print(f"Sending batch job to OpenAI API.")
+        batch = self.openai_api.batch_generate(full_prompts, self.task_description)
         
-        try:
-            batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
-            # create output
-            for sample, output in zip(raw_dataset, batch_outputs):
+        print('Job submitted with id: ', batch.id)
+        
+        if not os.path.exists('active_requests'):
+            os.makedirs('active_requests')
+            
+        active_requests_path = os.path.join('active_requests', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+            
+        if os.path.exists(active_requests_path):
+            active_requests = json.load(open(active_requests_path))
                 
-                # programs = [output]
+            active_requests[f'batch_{batch.created_at}'] = batch.id
+            
+        else:
+            active_requests = {f'batch_{batch.created_at}': batch.id}
+            
+        with open((active_requests_path), 'w') as f:
+            json.dump(active_requests, f, indent=2, ensure_ascii=False)
+            
+            
+        # # create output
+        # for sample, output in zip(raw_dataset, batch_outputs):
+            
+        #     # programs = [output]
+            
+        #     programs = json.loads(output)
+            
+        #     output = {'id': sample['id'], 
+        #             'context': sample['context'],
+        #             'question': sample['question'], 
+        #             'answer': sample['answer'],
+        #             'raw_logic_programs': programs}
+            
+        #     if 'FOLIO' in self.dataset_name:
+        #         output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
+            
+        #     outputs.append(output)
                 
-                programs = json.loads(output)
-                
-                output = {'id': sample['id'], 
-                        'context': sample['context'],
-                        'question': sample['question'], 
-                        'answer': sample['answer'],
-                        'raw_logic_programs': programs}
-                
-                if 'FOLIO' in self.dataset_name:
-                    output['predicates'] = self.predicates[str(sample['id'])]['logic_predicates']
-                
-                outputs.append(output)
-                
-        except KeyboardInterrupt:
-            sys.exit()
+        # # except KeyboardInterrupt:
+        # #     sys.exit()
 
-        print(f"Generated {len(outputs)} examples.")
+        # print(f"Generated {len(outputs)} examples.")
         
-        # save outputs
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
+        # # save outputs
+        # if not os.path.exists(self.save_path):
+        #     os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
+        # with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
+        #     json.dump(outputs, f, indent=2, ensure_ascii=False)
     
   
     '''
