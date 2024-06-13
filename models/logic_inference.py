@@ -14,7 +14,7 @@ class LogicInferenceEngine:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.model_name = args.model_name
+        self.sketcher_name = args.sketcher_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
@@ -54,9 +54,9 @@ class LogicInferenceEngine:
     def load_logic_programs(self):
         
         if self.self_refine_round > 0:
-            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         else:
-            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            programs_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
@@ -66,9 +66,9 @@ class LogicInferenceEngine:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}_{self.prompt_mode}.json'
+            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         
         with open(os.path.join(self.save_path, save_file), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
@@ -142,8 +142,7 @@ def parse_args():
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
-    parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
-    parser.add_argument('--timeout', type=int, default=60)
+    parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     args = parser.parse_args()
     return args
 

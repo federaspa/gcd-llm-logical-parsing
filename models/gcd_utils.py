@@ -3,7 +3,7 @@ from llama_cpp import Llama
 
 class GrammarConstrainedModel:
     def __init__(self,
-                model_path,
+                refiner_path,
                 n_ctx = 2048,
                 n_gpu_layers = -1,
                 n_batch = 512):
@@ -18,7 +18,7 @@ class GrammarConstrainedModel:
 
         # Make sure the model path is correct for your system!
         self.llm = Llama(
-            model_path=model_path,
+            model_path=refiner_path,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
             n_ctx = n_ctx,

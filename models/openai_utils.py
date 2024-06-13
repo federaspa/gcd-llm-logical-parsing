@@ -19,9 +19,9 @@ async def dispatch_openai_chat_requests(
     messages_list: list[list[dict[str,Any]]],
     model: str,
     temperature: float,
-    max_tokens: int,
+    # max_tokens: int,
     top_p: float,
-    stop_words: list[str]
+    # stop_words: list[str]
 ) -> list[str]:
     """Dispatches requests to OpenAI API asynchronously.
     
@@ -40,9 +40,9 @@ async def dispatch_openai_chat_requests(
             model=model,
             messages=x,
             temperature=temperature,
-            max_tokens=max_tokens,
+            # max_tokens=max_tokens,
             top_p=top_p,
-            stop = stop_words,
+            # stop = stop_words,
             response_format={ "type": "json_object" }
         )
         for x in messages_list
@@ -50,11 +50,13 @@ async def dispatch_openai_chat_requests(
     return await asyncio.gather(*async_responses)
 
 class OpenAIModel:
-    def __init__(self, API_KEY, model_name, stop_words, max_new_tokens) -> None:
+    def __init__(self, API_KEY, model_name, 
+                #  stop_words, max_new_tokens
+                 ) -> None:
         openai.api_key = API_KEY
         self.model_name = model_name
-        self.max_new_tokens = max_new_tokens
-        self.stop_words = stop_words
+        # self.max_new_tokens = max_new_tokens
+        # self.stop_words = stop_words
 
     # used for chat-gpt and gpt-4
     def chat_generate(self, input_string, task_description, temperature = 0.0):
@@ -65,10 +67,10 @@ class OpenAIModel:
                         {"role": "user", "content": input_string}
                     ],
                 response_format={ "type": "json_object" },
-                max_tokens = self.max_new_tokens,
+                # max_tokens = self.max_new_tokens,
                 temperature = temperature,
                 top_p = 1.0,
-                stop = self.stop_words
+                # stop = self.stop_words
         )
         generated_text = response['choices'][0]['message']['content'].strip()
         return generated_text
@@ -89,7 +91,10 @@ class OpenAIModel:
             )
         predictions = asyncio.run(
             dispatch_openai_chat_requests(
-                    open_ai_messages_list, self.model_name, temperature, self.max_new_tokens, 1.0, self.stop_words
+                    open_ai_messages_list, self.model_name, temperature, 
+                    # self.max_new_tokens, 
+                    1.0, 
+                    # self.stop_words
             )
         )
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
