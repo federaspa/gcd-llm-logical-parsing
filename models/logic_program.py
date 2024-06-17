@@ -3,7 +3,7 @@
 import json
 import os
 from tqdm import tqdm
-from openai_utils import OpenAIModel
+from openai_utils import OpenAIModel, OpenAIAsyncModel
 import sys
 import argparse
 
@@ -114,12 +114,14 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
+        
+        if args.generation_mode == 'sync':
+            
+            self.openai_api = OpenAIModel(api_key, args.sketcher_name)
+            
+        elif args.generation_mode == 'async':
+            self.openai_api = OpenAIAsyncModel(api_key, args.sketcher_name, args.dataset_name)
 
-        self.openai_api = OpenAIModel(api_key, args.sketcher_name,
-                                    #   args.stop_words, args.max_new_tokens
-                                      )
-        
-        
     def load_raw_dataset(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
             raw_dataset = json.load(f)
@@ -199,6 +201,43 @@ class LogicProgramGenerator(PromptGenerator):
             json.dump(outputs, f, indent=2, ensure_ascii=False)
 
 
+    def batch_async_logic_program_generation(self):
+        # load raw dataset
+        raw_dataset = self.load_raw_dataset(self.split)
+        if self.prompt_mode == 'dynamic':
+            dynamic_examples = self.load_dynamic_examples(self.split)
+        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
+        outputs = []
+            
+        if self.prompt_mode == 'static':
+            full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in raw_dataset}
+        
+        elif self.prompt_mode == 'dynamic':
+            full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in raw_dataset}
+            
+            
+        print(f"Sending batch job to OpenAI API.")
+        batch = self.openai_api.batch_generate(full_prompts, self.task_description)
+        
+        print('Job submitted with id: ', batch.id)
+        
+        if not os.path.exists('active_requests/programs'):
+            os.makedirs('active_requests/programs')
+            
+        active_requests_path = os.path.join('active_requests/programs', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+            
+        if os.path.exists(active_requests_path):
+            active_requests = json.load(open(active_requests_path))
+                
+            active_requests[f'batch_{batch.created_at}'] = batch.id
+            
+        else:
+            active_requests = {f'batch_{batch.created_at}': batch.id}
+            
+        with open((active_requests_path), 'w') as f:
+            json.dump(active_requests, f, indent=2, ensure_ascii=False)
+            
+
 class Cheater:
 
     def __init__(self, args):
@@ -268,8 +307,7 @@ def parse_args():
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
-    # parser.add_argument('--stop_words', type=str, default='------')
-    # parser.add_argument('--max_new_tokens', type=int, default=1024)
+    parser.add_argument('--generation_mode', type=str, choices=['sync', 'async'], default='sync')
     parser.add_argument('--cheat', type=str)
     args = parser.parse_args()
     return args
@@ -282,4 +320,8 @@ if __name__ == '__main__':
         cheater.cheat()
     else:
         logic_program_generator = LogicProgramGenerator(args)
-        logic_program_generator.batch_logic_program_generation()
+        if args.generation_mode == 'sync':
+            logic_program_generator.batch_logic_program_generation()
+            
+        elif args.generation_mode == 'async':
+            logic_program_generator.batch_async_logic_program_generation()

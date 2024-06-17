@@ -4,14 +4,16 @@ import os
 import asyncio
 from typing import Any
 import time
+import json
+
 # from langchain_core.prompts import PromptTemplate
 # from langchain_core.messages import HumanMessage, SystemMessage
 
-@backoff.on_exception(backoff.expo, openai.error.RateLimitError)
+@backoff.on_exception(backoff.expo, openai.RateLimitError)
 def completions_with_backoff(**kwargs):
     return openai.Completion.create(**kwargs)
 
-@backoff.on_exception(backoff.expo, openai.error.RateLimitError)
+@backoff.on_exception(backoff.expo, openai.RateLimitError)
 def chat_completions_with_backoff(**kwargs):
     return openai.ChatCompletion.create(**kwargs)
 
@@ -81,9 +83,9 @@ class OpenAIModel:
         else:
             raise Exception("Model name not recognized")
     
-    def batch_chat_generate(self, messages_list, task_description, temperature = 0.0):
+    def batch_chat_generate(self, messages_dict, task_description, temperature = 0.0):
         open_ai_messages_list = []
-        for message in messages_list:
+        for message in messages_dict.values():
             open_ai_messages_list.append(
                 [
                 {"role": "system", "content": task_description},
@@ -99,13 +101,58 @@ class OpenAIModel:
         )
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
 
-    def batch_generate(self, messages_list, task_description, temperature = 0.0):
+    def batch_generate(self, messages_dict, task_description, temperature = 0.0):
         if self.model_name in ['gpt-4-turbo', 'gpt-3.5-turbo', 'gpt-4o']:
-            return self.batch_chat_generate(messages_list, task_description, temperature)
+            return self.batch_chat_generate(messages_dict, task_description, temperature)
         else:
             raise Exception("Model name not recognized")
         
-        
+       
+def make_batch_input_file(
+    messages_dict: dict[list[dict[str,Any]]],
+    model: str,
+    temperature: float,
+    top_p: float,
+) -> list[str]:
+    """Dispatches requests to OpenAI API asynchronously.
+    
+    Args:
+        messages_dict: Dict of messages to be sent to OpenAI API.
+        model: OpenAI model to use.
+        temperature: Temperature to use for the model.
+        max_tokens: Maximum number of tokens to generate.
+        top_p: Top p to use for the model.
+        stop_words: List of words to stop the model from generating.
+    Returns:
+        List of responses from OpenAI API.
+    """
+    
+    if not os.path.exists('./.tmp'):
+        os.makedirs('./.tmp')
+    
+    for message in messages_dict:
+        # append the task description to a jsonl file
+        with open('./.tmp/batch_requests.jsonl', 'a') as f:
+            f.write(
+                json.dumps(
+                    {
+                        "custom_id": str(message['custom_id']),
+                        "method": "POST",
+                        "url": "/v1/chat/completions",
+                        "body": {
+                            "model": model,
+                            "messages": message['messages'],
+                            "temperature": temperature,
+                            "top_p": top_p,
+                            "response_format": { "type": "json_object" }
+                        }
+                    }
+                )
+            )
+            f.write('\n') 
+            
+    return './.tmp/batch_requests.jsonl'            
+ 
 class DispatchOpenAIRequests:
     def __init__(self, API_KEY, model_name, dataset_name, client
                 #  stop_words, max_new_tokens
@@ -160,7 +207,7 @@ class DispatchOpenAIRequests:
         return batch_id
         
 
-class OpenAIModel:
+class OpenAIAsyncModel:
     def __init__(self, API_KEY, model_name, dataset_name,
                 #  stop_words, max_new_tokens
                  ) -> None:
