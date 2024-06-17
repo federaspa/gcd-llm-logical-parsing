@@ -31,7 +31,7 @@ class SelfRefinementEngine:
                                       )
         self.refiner = refiner if refiner else None
         
-        self.refiner_name = refiner.split('/')[-1].split('.')[0] if refiner else self.sketcher_name
+        self.refiner_name = args.refiner_path.split('/')[-1].split('.')[0] if refiner else self.sketcher_name
         
 
         self.logic_programs = self.load_logic_programs()
@@ -170,7 +170,7 @@ class SelfRefinementEngine:
 
                 try:
                     
-                    open('this')
+                    # open('this')
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
@@ -208,7 +208,7 @@ class SelfRefinementEngine:
 
                 try:
 
-                    open('this')
+                    # open('this')
 
                     response_string = self.openai_api.generate(full_prompt, self.task_description_execution, {"type": "json_object"})
 
@@ -231,11 +231,11 @@ class SelfRefinementEngine:
             else:
                 outputs.append(example)
         # save results
-        if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.sketcher_name)):
-            os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.sketcher_name))
+        if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.refiner_name)):
+            os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.refiner_name))
 
         # save outputs
-        save_path = os.path.join(self.load_dir, 'logic_programs', self.sketcher_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+        save_path = os.path.join(self.load_dir, 'logic_programs', self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
         # save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     
     if args.refiner_path:
         
-        print(f"Using refiner model from {args.refiner_path}.")
+        # print(f"Using refiner model from {args.refiner_path}.")
         
         refiner=GrammarConstrainedModel(
             refiner_path=args.refiner_path,
@@ -274,7 +274,7 @@ if __name__ == "__main__":
         
     else:
         
-        print(f"Using OpenAI model {args.sketcher_name} as refiner.")
+        # print(f"Using OpenAI model {args.sketcher_name} as refiner.")
         refiner=None
         args.refiner_name = args.sketcher_name
     
