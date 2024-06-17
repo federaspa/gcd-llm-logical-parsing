@@ -14,7 +14,11 @@ refiners = ['llama-2-7b',
             'Mixtral_8x22B',
             None
 ]
-load_dirs = ['outputs_1', 'outputs_2', 'outputs_3']
+load_dirs = [
+    # 'outputs_1', 
+    # 'outputs_2', 
+    'outputs_3'
+    ]
 
 def parse_args():
     parser = argparse.ArgumentParser()

@@ -19,7 +19,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "∀x (Weddings(x) → (GettingMarried(x) ∨ (Exists y (Friend(x, y) ∧ GettingMarried(y)))))",
+    "wrong_formula": "¬(PreTeen(Carol) ∧ Weddings(Carol)) → ¬(GettingMarried(Carol) ∨ (Exists y (Friend(Carol, y) ∧ GettingMarried(y))))",
     "correct_formula": ""
   },
   {
@@ -173,10 +173,8 @@
     "id": 24,
     "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀y (UniversityRanking(beijing, y) ↔ (LocatedIn(y, asiapacific) ∨ LocatedIn(y, world)))",
-    "correct_formula": "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 25,
@@ -329,28 +327,22 @@
     "id": 46,
     "question": "James's favorite season is summer.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter))",
-    "correct_formula": "There are four seasons in a year: Spring, Summer, Fall, and Winter."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 47,
     "question": "James's favorite season is fall.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (Season(x) ↔ (FavoriteSeason(spring, x) ∨ FavoriteSeason(summer, x) ∨ FavoriteSeason(fall, x) ∨ FavoriteSeason(winter, x)))",
-    "correct_formula": "There are four seasons in a year: Spring, Summer, Fall, and Winter."
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 48,
     "question": "Mia's favorite season is spring.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter))",
-    "correct_formula": "There are four seasons in a year: Spring, Summer, Fall, and Winter."
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 49,
@@ -475,17 +467,15 @@
     "id": 66,
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 67,
     "question": "Yale University has the largest university endowment of any educational institution.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "ResidentialCollege(benjaminfranklin) ∧ ResidentialCollege(berkeley) ∧ ResidentialCollege(branford) ∧ ResidentialCollege(davenport) ∧ ResidentialCollege(ezrastiles) ∧ ResidentialCollege(gracehopper) ∧ ResidentialCollege(jonathanedwards) ∧ ResidentialCollege(morse) ∧ ResidentialCollege(paulimurray) ∧ ResidentialCollege(pierson) ∧ ResidentialCollege(saybrook) ∧ ResidentialCollege(silliman) ∧ ResidentialCollege(timothydwight) ∧ ResidentialCollege(trumbull)",
-    "correct_formula": "A list of residential colleges at Yale."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 68,
@@ -674,10 +664,8 @@
     "id": 94,
     "question": "Tom is allowed to move in an apartment in The Olive Garden with Fluffy.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (ManagedBuilding(x) ∧ (PetAllowed(x) ∧ ¬GreaterThan(SecurityDeposit(x), 1500)) ↔ RentApartment(tom, x, fluffy))",
-    "correct_formula": "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 95,
@@ -760,10 +748,8 @@
     "id": 106,
     "question": "It cost below US $300 to take the GRE test.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "CostGRE(x) ∧ x < 300",
-    "correct_formula": "It cost below US $300 to take the GRE test."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 107,
@@ -804,10 +790,8 @@
     "id": 112,
     "question": "Juan de Onate visited a mountain range in New Mexico.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "∀x (MountainRange(x) ∧ LocatedIn(x, texas) → ¬∃y (HasMine(x, y) ∧ DonatedMine(y)))",
-    "correct_formula": "There are no mountain ranges in Texas that have mines which have been donated."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 113,
@@ -820,10 +804,8 @@
     "id": 114,
     "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (MountainRange(x, texas) → ¬∃y (Mine(y, x) ∧ Donate(y)))",
-    "correct_formula": "There are no mountain ranges in Texas that have mines which have been donated."
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 115,
@@ -838,7 +820,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Man(michael) ∧ ∀x (Man(x) ∧ ¬(x = michael) → Taller(michael, x))",
+    "wrong_formula": "Man(x)∧Shooter(x)∧Taller(x,y)→JumpShooting(x)∧GreatShooter(x)∧CannotBlock(y,",
     "correct_formula": ""
   },
   {
@@ -1029,7 +1011,7 @@
     "question": "Some Heck cattle are artificially selected.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 144,
@@ -1189,10 +1171,8 @@
     "id": 166,
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "∀x (GiveRose(x, breakingBad, z) → (x = monday ∧ z = 8pm))",
-    "correct_formula": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 167,

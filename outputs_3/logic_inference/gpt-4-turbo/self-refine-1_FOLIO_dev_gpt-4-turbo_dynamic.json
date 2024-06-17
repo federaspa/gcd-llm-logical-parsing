@@ -340,7 +340,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (Season(x) ↔ (FavoriteSeason(spring, x) ∨ FavoriteSeason(summer, x) ∨ FavoriteSeason(fall, x) ∨ FavoriteSeason(winter, x)))",
+    "wrong_formula": "∀x (Season(x) ↔ (x = spring ∨ x = summer ∨ x = fall ∨ x = winter))",
     "correct_formula": "There are four seasons in a year: Spring, Summer, Fall, and Winter."
   },
   {
@@ -476,7 +476,9 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
     "flag": "parsing error",
-    "predicted_answer": "N/A"
+    "predicted_answer": "N/A",
+    "wrong_formula": "ResidentialCollege(benjaminfranklin) ∧ ResidentialCollege(berkeley) ∧ ResidentialCollege(branford) ∧ ResidentialCollege(davenport) ∧ ResidentialCollege(ezrastiles) ∧ ResidentialCollege(gracehopper) ∧ ResidentialCollege(jonathanedwards) ∧ ResidentialCollege(morse) ∧ ResidentialCollege(paulimurray) ∧ ResidentialCollege(pierson) ∧ ResidentialCollege(saybrook) ∧ ResidentialCollege(silliman) ∧ ResidentialCollege(timothydwight) ∧ ResidentialCollege(trumbull)",
+    "correct_formula": ""
   },
   {
     "id": 67,
@@ -676,7 +678,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (ManagedBuilding(x) ∧ (PetAllowed(x) ∧ ¬GreaterThan(SecurityDeposit(x), 1500)) ↔ RentApartment(tom, x, fluffy))",
+    "wrong_formula": "∀x ∀y (RentApartment(tom, x, fluffy) ↔ (AllowedMoveIn(tom, x, fluffy) ∧ ¬GreaterThan(SecurityDeposit(x, y), 1500)))",
     "correct_formula": "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500."
   },
   {
@@ -822,7 +824,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Valid FOL Statement: ∀x (MountainRange(x, texas) → ¬∃y (Mine(y, x) ∧ Donate(y)))",
+    "wrong_formula": "∀x (MountainRange(x, texas) → ¬∃y (Mine(y, x) ∧ Donate(y)))",
     "correct_formula": "There are no mountain ranges in Texas that have mines which have been donated."
   },
   {
@@ -838,7 +840,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Man(michael) ∧ ∀x (Man(x) ∧ ¬(x = michael) → Taller(michael, x))",
+    "wrong_formula": "Man(michael) ∧ ∀x (Man(x) ∧ x ≠ michael → Taller(michael, x))",
     "correct_formula": ""
   },
   {
