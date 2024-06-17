@@ -66,17 +66,18 @@ class ExampleExtractionEngine:
             source_sentences.append(source_sentence)
             
             seen_source_stories.add(source_story['story_id'])
+
+        response_source = openai.Embedding.create(
+            model="text-embedding-3-large",
+            input=source_sentences,
+            
+        )
                     
         for target_story in tqdm(self.target_dataset, desc='Collecting similar examples'):
             
             target_sentence = ' '.join(target_story['context'])
             target_sentence += f" {target_story['question']}"   
 
-            response_source = openai.Embedding.create(
-                model="text-embedding-3-large",
-                input=source_sentences,
-                
-            )
 
             response_target = openai.Embedding.create(
                 model="text-embedding-3-large",
