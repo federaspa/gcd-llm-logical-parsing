@@ -114,8 +114,8 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.dataset_name,
 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
         

@@ -5,7 +5,6 @@ import os
 import re
 from tqdm import tqdm
 from openai_utils import OpenAIModel
-from datetime import datetime
 import sys
 import argparse
 
@@ -56,8 +55,8 @@ class PredicatesGenerator(PromptGenerator):
         self.split = args.split
         self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
-        self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.dataset_name)
 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name)
         
         
     def parse_predicates(self, string_predicates):
