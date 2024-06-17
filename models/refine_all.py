@@ -10,11 +10,11 @@ sketchers = ['gpt-3.5-turbo', 'gpt-4-turbo', 'gpt-4o']
 #             'GCD/llms/Meta-Llama-3-8B-Instruct.Q6_K.gguf']
 
 refiners = [
-    'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
-    'GCD/llms/mistral-7b-instruct-v0.2.Q6_K.gguf',
-    'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf'
-    'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
-    None
+    # 'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
+    # 'GCD/llms/mistral-7b-instruct-v0.2.Q6_K.gguf',
+    'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf',
+    # 'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
+    # None
 ]
 load_dirs = ['outputs_1', 'outputs_2', 'outputs_3']
 
