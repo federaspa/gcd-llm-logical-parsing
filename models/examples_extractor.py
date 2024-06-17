@@ -54,7 +54,7 @@ class ExampleExtractionEngine:
         source_sentences = []
         seen_source_stories = set()
         
-        for source_story in self.source_dataset:
+        for source_story in tqdm(self.source_dataset, desc='Processing stories and removing duplicates'):
             
             
             if source_story['story_id'] in seen_source_stories:
@@ -67,7 +67,7 @@ class ExampleExtractionEngine:
             
             seen_source_stories.add(source_story['story_id'])
                     
-        for target_story in tqdm(self.target_dataset):
+        for target_story in tqdm(self.target_dataset, desc='Collecting similar examples'):
             
             target_sentence = ' '.join(target_story['context'])
             target_sentence += f" {target_story['question']}"   

@@ -25,11 +25,15 @@ class PromptGenerator:
                         
         if self.prompt_mode == 'static':
             self.prompt_creator = {'FOLIO': self.static_prompt_folio,
-                                'FOLIOv2': self.static_prompt_folio}
+                                'FOLIOv2': self.static_prompt_folio,
+                                   'LogicNLI': self.static_prompt_folio
+                                   }
             
         elif self.prompt_mode == 'dynamic':
             self.prompt_creator = {'FOLIO': self.dynamic_prompt_folio,
-                                'FOLIOv2': self.dynamic_prompt_folio}
+                                'FOLIOv2': self.dynamic_prompt_folio,
+                                'LogicNLI': self.dynamic_prompt_folio
+                                   }
             
         self.load_prompt_templates()
         
@@ -110,8 +114,8 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
-
         self.openai_api = OpenAIModel(api_key, args.sketcher_name, args.dataset_name,
+
                                     #   args.stop_words, args.max_new_tokens
                                       )
         
@@ -205,7 +209,7 @@ class Cheater:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.save_path = args.save_path
         self.prompt_mode = args.prompt_mode
     

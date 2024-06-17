@@ -19,16 +19,19 @@ class SelfRefinementEngine:
     def __init__(self, args, current_round, refiner):
         self.args = args
         self.data_path = args.data_path
-        self.predicates_path = args.predicates_path
+        # self.predicates_path = args.predicates_path
+        self.load_dir = args.load_dir
         self.split = args.split
-        self.sketcher_name = args.sketcher
+        self.sketcher_name = args.sketcher_name
         self.dataset_name = args.dataset_name
         self.current_round = current_round
         self.prompt_mode = args.prompt_mode
-        self.openai_api = OpenAIModel(api_key, args.sketcher, 
+        self.openai_api = OpenAIModel(api_key, args.sketcher_name,
                                     #   args.stop_words, args.max_new_tokens
                                       )
-        self.refiner = refiner if refiner else self.openai_api
+        self.refiner = refiner if refiner else None
+        
+        self.refiner_name = args.refiner_path.split('/')[-1].split('.')[0] if refiner else self.sketcher_name
         
 
         self.logic_programs = self.load_logic_programs()
@@ -36,15 +39,15 @@ class SelfRefinementEngine:
         self.predicates = self.load_predicates()
 
         self.parsing_error_prompt = {'FOLIO': self.parsing_prompt_folio,
-                            'FOLIOv2': self.parsing_prompt_folio}
+                            'LogicNLI': self.parsing_prompt_folio}
         
         
         self.execution_error_prompt = {'FOLIO': self.execution_prompt_folio,
-                            'FOLIOv2': self.execution_prompt_folio}
+                            'LogicNLI': self.execution_prompt_folio}
             
 
         program_executor_map = {'FOLIO': FOL_Prover9_Program,
-                                'FOLIOv2': FOL_Prover9_Program}
+                                'LogicNLI': FOL_Prover9_Program}
         self.program_executor = program_executor_map[self.dataset_name]
                 
         self.load_prompt_templates()
@@ -52,14 +55,22 @@ class SelfRefinementEngine:
     def load_logic_programs(self):
         prefix = ""
         if self.current_round > 1:
-            prefix = f'self-refine-{self.current_round-1}_'
-        with open(os.path.join('./outputs/logic_programs', f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')) as f:
+            prefix = f'self-refine-{self.current_round-1}_'            
+            programs_path = os.path.join(self.load_dir, 'logic_programs', self.refiner_name, f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+            
+        else:
+            programs_path = os.path.join(self.load_dir, 'logic_programs', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+            
+        with open(programs_path) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
     
     def load_predicates(self):
-        with open(os.path.join(self.predicates_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')) as f:
+        
+        predicates_path = os.path.join(self.load_dir, 'logic_predicates', f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+        
+        with open(predicates_path) as f:
             predicates = json.load(f)
         return predicates
 
@@ -154,17 +165,20 @@ class SelfRefinementEngine:
         for example in tqdm(self.logic_programs):
             logic_program = example['raw_logic_programs']
             status, error, nl_error = self.safe_execute_program(logic_program)
-
+        
             if status == 'parsing error':
 
                 try:
-
+                    
+                    # open('this')
                     predicates = self.predicates[str(example['id'])]['logic_predicates']
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
 
-                    response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
-                    # response = self.openai_api.generate(full_prompt, self.task_description_parsing).strip()
+                    if self.refiner:
+                        response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
+                    else:
+                        response = self.openai_api.generate(full_prompt, self.task_description_parsing, {"type": "text"}).strip()
 
                     # print(response)
 
@@ -191,14 +205,22 @@ class SelfRefinementEngine:
             # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
                 full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
-                response_string = self.openai_api.generate(full_prompt, self.task_description_execution)
-                
-                response = json.loads(response_string)
-                
-                revised_program = response['Correct Program']
-                
-                # programs = revised_program
-                
+
+                try:
+
+                    # open('this')
+
+                    response_string = self.openai_api.generate(full_prompt, self.task_description_execution, {"type": "json_object"})
+
+                    response = json.loads(response_string)
+
+                    revised_program = response['Correct Program']
+
+                    # programs = revised_program
+                except Exception as e:
+                    print(f'Exception for {example["id"]}: {e}')
+                    revised_program = logic_program
+
                 output = {'id': example['id'], 
                         'context': example['context'],
                         'question': example['question'], 
@@ -209,11 +231,12 @@ class SelfRefinementEngine:
             else:
                 outputs.append(example)
         # save results
-        if not os.path.exists('./outputs/logic_programs'):
-            os.makedirs('./outputs/logic_programs')
+        if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.refiner_name)):
+            os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.refiner_name))
 
         # save outputs
-        save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
+        save_path = os.path.join(self.load_dir, 'logic_programs', self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+        # save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
     
@@ -229,8 +252,6 @@ def parse_args():
     parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--refiner_path', type=str)
     parser.add_argument('--n_gpu_layers', type=int, default=0)
-    # parser.add_argument('--stop_words', type=str, default='------')
-    # parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
     return args
 
@@ -241,12 +262,21 @@ if __name__ == "__main__":
     
     
     if args.refiner_path:
+        
+        # print(f"Using refiner model from {args.refiner_path}.")
+        
         refiner=GrammarConstrainedModel(
             refiner_path=args.refiner_path,
             n_gpu_layers=args.n_gpu_layers,
         )
+        
+        args.refiner_name = args.refiner_path.split('/')[-1].split('.')[0]
+        
     else:
+        
+        # print(f"Using OpenAI model {args.sketcher_name} as refiner.")
         refiner=None
+        args.refiner_name = args.sketcher_name
     
     for round in range(starting_round, args.maximum_rounds+1):
         print(f"Round {round} self-refinement")
