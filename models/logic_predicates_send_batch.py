@@ -6,7 +6,6 @@ import re
 from tqdm import tqdm
 from openai_utils import OpenAIModel
 from datetime import datetime
-import sys
 import argparse
 
 from dotenv import load_dotenv
@@ -77,65 +76,96 @@ class PredicatesGenerator(PromptGenerator):
     '''
     Updated version of logic_program_generation; speed up the generation process by batching
     '''     
+    
     def batch_logic_program_generation(self, batch_size = 10):
         # load raw dataset
         raw_dataset = self.load_raw_dataset(self.split)
-
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        outputs = {}
-        # split dataset into chunks
-        dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
-        for chunk in tqdm(dataset_chunks):
+        # outputs = []
             
-            full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
-                         
-            try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
-                # create output
-                for sample, output in zip(chunk, batch_outputs):
-                    
-                    try:
-                        logic_predicates= self.parse_predicates(output)
-                        
-                    except:
-                        logic_predicates = output
-                    
-                    outputs[sample['id']] = { 
-                                'context': sample['context'],
-                                'question': sample['question'], 
-                                'logic_predicates': logic_predicates}
-                    
-            except KeyboardInterrupt:
-                sys.exit()
-                        
-            except:
-                # generate one by one if batch generation fails
-                for sample, full_prompt in zip(chunk, full_prompts):
-
-                    output = self.openai_api.generate(full_prompt, self.task_description)
-                    
-                    try:
-                        logic_predicates= self.parse_predicates(output)
-                        
-                    except:
-                        logic_predicates = output
+        full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in raw_dataset}
                 
-                    outputs[sample['id']] = { 
-                            'context': sample['context'],
-                            'question': sample['question'], 
-                            'logic_predicates': logic_predicates}
-
-                    # except:
-                    #     print('Error in generating logic programs for example: ', sample['id'])
-
-        print(f"Generated {len(outputs)} examples.")
+            
+        print(f"Sending batch job to OpenAI API.")
+        batch = self.openai_api.batch_generate(full_prompts, self.task_description)
         
-        # save outputs
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
+        print('Job submitted with id: ', batch.id)
         
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
+        if not os.path.exists('active_requests/predicates'):
+            os.makedirs('active_requests/predicates')
+            
+        active_requests_path = os.path.join('active_requests/predicates', f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+            
+        if os.path.exists(active_requests_path):
+            active_requests = json.load(open(active_requests_path))
+                
+            active_requests[f'batch_{batch.created_at}'] = batch.id
+            
+        else:
+            active_requests = {f'batch_{batch.created_at}': batch.id}
+            
+        with open((active_requests_path), 'w') as f:
+            json.dump(active_requests, f, indent=2, ensure_ascii=False)
+            
+    # def batch_logic_program_generation(self, batch_size = 10):
+    #     # load raw dataset
+    #     raw_dataset = self.load_raw_dataset(self.split)
+
+    #     print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
+    #     outputs = {}
+    #     # split dataset into chunks
+    #     dataset_chunks = [raw_dataset[i:i + batch_size] for i in range(0, len(raw_dataset), batch_size)]
+    #     for chunk in tqdm(dataset_chunks):
+            
+    #         full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
+                         
+    #         try:
+    #             batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
+    #             # create output
+    #             for sample, output in zip(chunk, batch_outputs):
+                    
+    #                 try:
+    #                     logic_predicates= self.parse_predicates(output)
+                        
+    #                 except:
+    #                     logic_predicates = output
+                    
+    #                 outputs[sample['id']] = { 
+    #                             'context': sample['context'],
+    #                             'question': sample['question'], 
+    #                             'logic_predicates': logic_predicates}
+                    
+    #         except KeyboardInterrupt:
+    #             sys.exit()
+                        
+    #         except:
+    #             # generate one by one if batch generation fails
+    #             for sample, full_prompt in zip(chunk, full_prompts):
+
+    #                 output = self.openai_api.generate(full_prompt, self.task_description)
+                    
+    #                 try:
+    #                     logic_predicates= self.parse_predicates(output)
+                        
+    #                 except:
+    #                     logic_predicates = output
+                
+    #                 outputs[sample['id']] = { 
+    #                         'context': sample['context'],
+    #                         'question': sample['question'], 
+    #                         'logic_predicates': logic_predicates}
+
+    #                 # except:
+    #                 #     print('Error in generating logic programs for example: ', sample['id'])
+
+    #     print(f"Generated {len(outputs)} examples.")
+        
+    #     # save outputs
+    #     if not os.path.exists(self.save_path):
+    #         os.makedirs(self.save_path)
+        
+    #     with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'), 'w') as f:
+    #         json.dump(outputs, f, indent=2, ensure_ascii=False)
 
                     
 def parse_args():
