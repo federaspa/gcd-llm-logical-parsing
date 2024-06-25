@@ -37,8 +37,8 @@ class PromptGenerator:
             
         self.load_prompt_templates()
         
-        if 'FOLIO' in self.dataset_name:
-            self.predicates = self.load_predicates_folio()
+        # if 'FOLIO' in self.dataset_name:
+        self.predicates = self.load_predicates_folio()
   
     def load_prompt_templates(self):
 
@@ -142,13 +142,13 @@ class LogicProgramGenerator(PromptGenerator):
         for chunk in tqdm(dataset_chunks):
             
             if self.prompt_mode == 'static':
-                full_prompts = [self.prompt_creator[self.dataset_name](example) for example in chunk]
+                full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in chunk}
             
             elif self.prompt_mode == 'dynamic':
-                full_prompts = [self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk]
+                full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example, dynamic_examples[str(example['id'])]) for example in chunk}
                         
             try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description)
+                batch_outputs = self.openai_api.batch_generate(full_prompts, self.task_description, {"type": "json_object"})
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     
@@ -172,9 +172,9 @@ class LogicProgramGenerator(PromptGenerator):
                 
             except:
                 # generate one by one if batch generation fails
-                for sample, full_prompt in zip(chunk, full_prompts):
+                for sample, full_prompt in zip(chunk, full_prompts.values()):
 
-                    output = self.openai_api.generate(full_prompt, self.task_description)
+                    output = self.openai_api.generate(full_prompt, self.task_description, { "type": "json_object" })
                     # programs = [output]
                     programs = json.loads(output)
                     
@@ -217,7 +217,7 @@ class LogicProgramGenerator(PromptGenerator):
             
             
         print(f"Sending batch job to OpenAI API.")
-        batch = self.openai_api.batch_generate(full_prompts, self.task_description)
+        batch = self.openai_api.batch_generate(full_prompts, self.task_description, {"type": "json_object"})
         
         print('Job submitted with id: ', batch.id)
         

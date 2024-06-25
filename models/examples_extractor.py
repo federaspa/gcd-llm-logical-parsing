@@ -7,14 +7,15 @@ import argparse
 import numpy as np
 
 from tqdm import tqdm
+from openai import OpenAI
 from dotenv import load_dotenv
 from sentence_transformers import util
 
 
 load_dotenv()  # take environment variables from .env.
-api_key = os.getenv("OPENAI_API_KEY")
+API_KEY = os.getenv("OPENAI_API_KEY")
 
-openai.api_key = api_key
+client = OpenAI(api_key=API_KEY)
 
 class ExampleExtractionEngine:
     def __init__(self, args):
@@ -67,7 +68,7 @@ class ExampleExtractionEngine:
             
             seen_source_stories.add(source_story['story_id'])
 
-        response_source = openai.Embedding.create(
+        response_source = client.embeddings.create(
             model="text-embedding-3-large",
             input=source_sentences,
             
@@ -79,7 +80,7 @@ class ExampleExtractionEngine:
             target_sentence += f" {target_story['question']}"   
 
 
-            response_target = openai.Embedding.create(
+            response_target = client.embeddings.create(
                 model="text-embedding-3-large",
                 input=target_sentence
             )
