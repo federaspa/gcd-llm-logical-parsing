@@ -17,7 +17,7 @@ class GPT3_Reasoning_Graph_Baseline:
         self.demonstration_path = args.demonstration_path
         self.mode = args.mode
 
-        self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
+        self.openai_api = OpenAIModel(args.model_name, args.stop_words, args.max_new_tokens)
         self.prompt_creator = self.prompt_LSAT
         self.label_phrase = 'The correct option is:'
     
@@ -25,10 +25,10 @@ class GPT3_Reasoning_Graph_Baseline:
         full_prompt = in_context_example
         context = '\n'.join(test_example['context']).strip() if type(test_example['context']) == list else test_example['context'].strip()
         question = test_example['question'].strip()
-        options = '\n'.join([opt.strip() for opt in test_example['options']])
+        # options = '\n'.join([opt.strip() for opt in test_example['options']])
         full_prompt = full_prompt.replace('[[CONTEXT]]', context)
         full_prompt = full_prompt.replace('[[QUESTION]]', question)
-        full_prompt = full_prompt.replace('[[OPTIONS]]', options)
+        # full_prompt = full_prompt.replace('[[OPTIONS]]', options)
         return full_prompt
 
     def load_in_context_examples(self):
@@ -89,19 +89,40 @@ class GPT3_Reasoning_Graph_Baseline:
             # create prompt
             full_prompts = [self.prompt_creator(in_context_examples, example) for example in chunk]
             try:
-                batch_outputs = self.openai_api.batch_generate(full_prompts)
+                batch_outputs = self.openai_api.batch_generate(full_prompts, response_format={ "type": "json_object" })
                 # create output
                 for sample, output in zip(chunk, batch_outputs):
                     # get the answer
-                    dict_output = self.update_answer(sample, output)
+                    
+                    output = json.loads(output)
+                    
+                    # dict_output = self.update_answer(sample, output)                    
+                    generated_reasoning = output['reasoning']
+                    generated_answer = output['answer']
+                    
+                    
+                    dict_output = {'id': sample['id'], 
+                                    'question': sample['question'], 
+                                    'answer': sample['answer'], 
+                                    'predicted_reasoning': generated_reasoning,
+                                    'predicted_answer': generated_answer}
                     outputs.append(dict_output)
             except:
                 # generate one by one if batch generation fails
                 for sample, full_prompt in zip(chunk, full_prompts):
                     try:
-                        output = self.openai_api.generate(full_prompt)
+                        output = self.openai_api.generate(full_prompt, { "type": "json_object" })
                         # get the answer
-                        dict_output = self.update_answer(sample, output)
+                        output = json.loads(output)
+                        
+                        
+                        generated_reasoning = output['reasoning']
+                        generated_answer = output['answer']
+                        dict_output = {'id': sample['id'], 
+                                        'question': sample['question'], 
+                                        'answer': sample['answer'], 
+                                        'predicted_reasoning': generated_reasoning,
+                                        'predicted_answer': generated_answer}
                         outputs.append(dict_output)
                     except Exception as e:
                         print(e)
@@ -111,29 +132,28 @@ class GPT3_Reasoning_Graph_Baseline:
         with open(os.path.join(self.save_path, f'{self.mode}_{self.dataset_name}_{self.split}_{self.model_name}.json'), 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
     
-    def update_answer(self, sample, output):
-        label_phrase = self.label_phrase
-        generated_answer = output.split(label_phrase)[-1].strip()
-        generated_reasoning = output.split(label_phrase)[0].strip()
-        dict_output = {'id': sample['id'], 
-                        'question': sample['question'], 
-                        'answer': sample['answer'], 
-                        'predicted_reasoning': generated_reasoning,
-                        'predicted_answer': generated_answer}
-        return dict_output
+    # def update_answer(self, sample, output):
+    #     label_phrase = self.label_phrase
+    #     generated_answer = output.split(label_phrase)[-1].strip()
+    #     generated_reasoning = output.split(label_phrase)[0].strip()
+    #     dict_output = {'id': sample['id'], 
+    #                     'question': sample['question'], 
+    #                     'answer': sample['answer'], 
+    #                     'predicted_reasoning': generated_reasoning,
+    #                     'predicted_answer': generated_answer}
+    #     return dict_output
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='../data')
     parser.add_argument('--dataset_name', type=str)
-    parser.add_argument('--split', type=str)
+    parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--save_path', type=str, default='./results')
     parser.add_argument('--demonstration_path', type=str, default='./icl_examples')
-    parser.add_argument('--api_key', type=str)
     parser.add_argument('--model_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--stop_words', type=str, default='------')
     parser.add_argument('--mode', type=str)
-    parser.add_argument('--max_new_tokens', type=int)
+    parser.add_argument('--max_new_tokens', type=int, default=1024)
     args = parser.parse_args()
     return args
 
