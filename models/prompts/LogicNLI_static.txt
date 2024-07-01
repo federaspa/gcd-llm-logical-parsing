@@ -1,0 +1,105 @@
+Natural Language Problem:
+"""
+Nathalie is not blue.
+Gabriel is concerned.
+Nathalie is not concerned.
+Baird is concerned.
+Baird is serious.
+Quinlan is not entire.
+John is not fresh.
+John is blue.
+Gabriel is serious.
+Arthur is serious.
+Gabriel is not entire.
+Nathalie is not accurate.
+If there is someone who is either not concerned or fresh, then John is entire.
+Someone who is eithor not fresh or entire is always not serious.
+If John is not serious and Quinlan is fresh, then Baird is not entire.
+If Gabriel is not serious, then Quinlan is not blue and Gabriel is accurate.
+If Nathalie is not blue, then Collier is entire.
+If someone is fresh or he is not concerned, then he is not blue.
+If there is someone who is both serious and fresh, then Baird is not blue.
+If someone is concerned and serious, then he is entire, and vice versa.
+Nathalie being not fresh and Baird being serious imply that Nathalie is blue.
+If there is at least one people who is both not accurate and entire, then Collier is serious.
+It can be concluded that Gabriel is concerned once knowing that Baird is not blue.
+If someone is entire, then he is not serious, and vice versa.
+"""
+Natural Language Question:
+"""
+Arthur is blue.
+"""
+First-Order-Logic Predicates:
+"""
+Blue(x) ::: x is blue
+Serious(x) ::: x is serious
+Fresh(x) ::: x is fresh
+Entire(x) ::: x is entire
+Accurate(x) ::: x is accurate
+Concerned(x) ::: x is concerned"
+"""
+######
+\{
+"First-Order-Logic Rules": "¬Blue(nathalie) ::: Nathalie is not blue.\nConcerned(gabriel) ::: Gabriel is concerned.\n¬Concerned(nathalie) ::: Nathalie is not concerned.\nConcerned(baird) ::: Baird is concerned.\nSerious(baird) ::: Baird is serious.\n¬Entire(quinlan) ::: Quinlan is not entire.\n¬Fresh(john) ::: John is not fresh.\nBlue(john) ::: John is blue.\nSerious(gabriel) ::: Gabriel is serious.\nSerious(arthur) ::: Arthur is serious.\n¬Entire(gabriel) ::: Gabriel is not entire.\n¬Accurate(nathalie) ::: Nathalie is not accurate.\n(∃x (¬Concerned(x) ∨ Fresh(x))) → ((Entire(john))) ::: If there is someone who is either not concerned or fresh, then John is entire.\n(∀x (¬Fresh(x) ∨ Entire(x))) → (∀x (¬Serious(x))) ::: Someone who is eithor not fresh or entire is always not serious.\n((¬Serious(john) ∧ Fresh(quinlan))) → ((¬Entire(baird))) ::: If John is not serious and Quinlan is fresh, then Baird is not entire.\n((¬Serious(gabriel))) → ((¬Blue(quinlan) ∧ Accurate(gabriel))) ::: If Gabriel is not serious, then Quinlan is not blue and Gabriel is accurate.\n((¬Blue(nathalie))) → ((Entire(collier))) ::: If Nathalie is not blue, then Collier is entire.\n(∀x (Fresh(x) ∨ ¬Concerned(x))) → (∀x (¬Blue(x))) ::: If someone is fresh or he is not concerned, then he is not blue.\n(∃x (Serious(x) ∧ Fresh(x))) → ((¬Blue(baird))) ::: If there is someone who is both serious and fresh, then Baird is not blue.\n(∀x (Concerned(x) ∧ Serious(x))) ↔ (∀x (Entire(x))) ::: If someone is concerned and serious, then he is entire, and vice versa.\n((¬Fresh(nathalie) ∧ Serious(baird))) → ((Blue(nathalie))) ::: Nathalie being not fresh and Baird being serious imply that Nathalie is blue.\n(∃x (¬Accurate(x) ∧ Entire(x))) → ((Serious(collier))) ::: If there is at least one people who is both not accurate and entire, then Collier is serious.\n((¬Blue(baird))) → ((Concerned(gabriel))) ::: It can be concluded that Gabriel is concerned once knowing that Baird is not blue.\n(∀x (Entire(x))) ↔ (∀x (¬Serious(x))) ::: If someone is entire, then he is not serious, and vice versa.",
+"First-Order-Logic Question": "Blue(arthur) ::: Arthur is blue"
+\}
+------
+Natural Language Problem:
+"""
+Jerry is not excited.
+Lloyd is not excited.
+Jed is not courteous.
+Harris is various.
+Lloyd is not timid.
+Hope is various.
+Lloyd is not disgusted.
+Hope is excited.
+Harris is timid.
+Harris is not disgusted.
+Jonathan is disgusted.
+Jonathan is excited.
+If there is at least one people who is various, then Jonathan is not elderly and Vera is disgusted.
+If there is at least one people who is both not excited and not timid, then Jonathan is elderly.
+Someone being excited is equivalent to being various.
+It can be concluded that Jerry is disgusted once knowing that Lloyd is timid and Lloyd is various.
+If someone is not excited, then he is not disgusted.
+If there is at least one people who is not courteous, then Harris is elderly.
+If Jerry is courteous and Jerry is disgusted, then Vera is not elderly.
+If there is someone who is either timid or not elderly, then Jonathan is not various.
+Someone is courteous and not elderly if and only if he is not excited and not various.
+Someone who is both not disgusted and courteous is always elderly.
+If there is at least one people who is either not disgusted or not elderly, then Harris is not timid and Jed is not various.
+Harris being various implies that Vera is elderly and Lloyd is timid.
+"""
+Natural Language Question:
+"""
+Harris is not excited.
+"""
+First-Order-Logic Predicates:
+"""
+Courteous(x) ::: x is courteous
+Timid(x) ::: x is timid
+Excited(x) ::: x is excited
+Various(x) ::: x is various
+Disgusted(x) ::: x is disgusted
+Elderly(x) ::: x is an elderly person
+"""
+######
+\{
+"First-Order-Logic Rules": "¬Excited(jerry) ::: Jerry is not excited.\n¬Excited(lloyd) ::: Lloyd is not excited.\n¬Courteous(jed) ::: Jed is not courteous.\nVarious(harris) ::: Harris is various.\n¬Timid(lloyd) ::: Lloyd is not timid.\nVarious(hope) ::: Hope is various.\n¬Disgusted(lloyd) ::: Lloyd is not disgusted.\nExcited(hope) ::: Hope is excited.\nTimid(harris) ::: Harris is timid.\n¬Disgusted(harris) ::: Harris is not disgusted.\nDisgusted(jonathan) ::: Jonathan is disgusted.\nExcited(jonathan) ::: Jonathan is excited.\n(∃x (Various(x))) → ((¬Elderly(jonathan) ∧ Disgusted(vera))) ::: If there is at least one people who is various, then Jonathan is not elderly and Vera is disgusted.\n(∃x (¬Excited(x) ∧ ¬Timid(x))) → ((Elderly(jonathan))) ::: If there is at least one people who is both not excited and not timid, then Jonathan is elderly.\n(∀x (Excited(x))) ↔ (∀x (Various(x))) ::: Someone being excited is equivalent to being various.\n((Timid(lloyd) ∧ Various(lloyd))) → ((Disgusted(jerry))) ::: It can be concluded that Jerry is disgusted once knowing that Lloyd is timid and Lloyd is various.\n(∀x (¬Excited(x))) → (∀x (¬Disgusted(x))) ::: If someone is not excited, then he is not disgusted.\n(∃x (¬Courteous(x))) → ((Elderly(harris))) ::: If there is at least one people who is not courteous, then Harris is elderly.\n((Courteous(jerry) ∧ Disgusted(jerry))) → ((¬Elderly(vera))) ::: If Jerry is courteous and Jerry is disgusted, then Vera is not elderly.\n(∃x (Timid(x) ∨ ¬Elderly(x))) → ((¬Various(jonathan))) ::: If there is someone who is either timid or not elderly, then Jonathan is not various.\n(∀x (Courteous(x) ∧ ¬Elderly(x))) ↔ (∀x (¬Excited(x) ∧ ¬Various(x))) ::: Someone is courteous and not elderly if and only if he is not excited and not various.\n(∀x (¬Disgusted(x) ∧ Courteous(x))) → (∀x (Elderly(x))) ::: Someone who is both not disgusted and courteous is always elderly.\n(∃x (¬Disgusted(x) ∨ ¬Elderly(x))) → ((¬Timid(harris) ∧ ¬Various(jed))) ::: If there is at least one people who is either not disgusted or not elderly, then Harris is not timid and Jed is not various.\n((Various(harris))) → ((Elderly(vera) ∧ Timid(lloyd))) ::: Harris being various implies that Vera is elderly and Lloyd is timid.",
+"First-Order-Logic Question": "¬Excited(harris) ::: Harris is not excited."
+\}
+------
+Natural Language Problem:
+"""
+[[PROBLEM]]
+"""
+Natural Language Question:
+"""
+[[QUESTION]]
+"""
+First-Order-Logic Predicates:
+"""
+[[PREDICATES]]
+"""
+######
