@@ -207,7 +207,6 @@ class LogicProgramGenerator(PromptGenerator):
         if self.prompt_mode == 'dynamic':
             dynamic_examples = self.load_dynamic_examples(self.split)
         print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        outputs = []
             
         if self.prompt_mode == 'static':
             full_prompts = {example['id']: self.prompt_creator[self.dataset_name](example) for example in raw_dataset}
@@ -229,10 +228,10 @@ class LogicProgramGenerator(PromptGenerator):
         if os.path.exists(active_requests_path):
             active_requests = json.load(open(active_requests_path))
                 
-            active_requests[f'batch_{batch.created_at}'] = batch.id
+            active_requests[f'batch_{batch.created_at}_{self.predicates_path}'] = batch.id
             
         else:
-            active_requests = {f'batch_{batch.created_at}': batch.id}
+            active_requests = {f'batch_{batch.created_at}_{self.predicates_path}': batch.id}
             
         with open((active_requests_path), 'w') as f:
             json.dump(active_requests, f, indent=2, ensure_ascii=False)
