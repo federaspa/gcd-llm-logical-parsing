@@ -4,17 +4,22 @@ import argparse
 from logic_inference import LogicInferenceEngine
 
 sketchers = ['gpt-3.5-turbo', 'gpt-4-turbo', 'gpt-4o']
-refiners = ['llama-2-7b',
-            'llama-2-13b',
-            'upstage-llama-2-70b-instruct-v2',
-            'Meta-Llama-3-8B-Instruct',
-            'Meta-Llama-3-70B-Instruct-v2',
-            'mistral-7b-instruct-v0.2',
-            'mixtral-8x7b-instruct-v0.1'
-            'Mixtral_8x22B',
+refiners = [
+    # 'llama-2-7b',
+    # 'llama-2-13b',
+    # 'upstage-llama-2-70b-instruct-v2',
+    # 'Meta-Llama-3-8B-Instruct',
+    # 'Meta-Llama-3-70B-Instruct-v2',
+    # 'mistral-7b-instruct-v0.2',
+    # 'mixtral-8x7b-instruct-v0.1'
+    # 'Mixtral_8x22B',
             None
 ]
-load_dirs = ['outputs_1', 'outputs_2', 'outputs_3']
+load_dirs = [
+    # 'outputs_1', 
+    # 'outputs_2', 
+    'outputs_3'
+    ]
 
 def parse_args():
     parser = argparse.ArgumentParser()

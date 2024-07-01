@@ -7,14 +7,15 @@ import argparse
 import numpy as np
 
 from tqdm import tqdm
+from openai import OpenAI
 from dotenv import load_dotenv
 from sentence_transformers import util
 
 
 load_dotenv()  # take environment variables from .env.
-api_key = os.getenv("OPENAI_API_KEY")
+API_KEY = os.getenv("OPENAI_API_KEY")
 
-openai.api_key = api_key
+client = OpenAI(api_key=API_KEY)
 
 class ExampleExtractionEngine:
     def __init__(self, args):
@@ -52,6 +53,8 @@ class ExampleExtractionEngine:
         max_examples = min(self.max_examples, len(self.source_dataset))
         
         source_sentences = []
+        new_dataset = []
+        
         seen_source_stories = set()
         
         for source_story in tqdm(self.source_dataset, desc='Processing stories and removing duplicates'):
@@ -66,19 +69,22 @@ class ExampleExtractionEngine:
             source_sentences.append(source_sentence)
             
             seen_source_stories.add(source_story['story_id'])
+            
+            new_dataset.append(source_story)
+
+        response_source = client.embeddings.create(
+            model="text-embedding-3-large",
+            input=source_sentences,
+            
+        )
                     
         for target_story in tqdm(self.target_dataset, desc='Collecting similar examples'):
             
             target_sentence = ' '.join(target_story['context'])
             target_sentence += f" {target_story['question']}"   
 
-            response_source = openai.Embedding.create(
-                model="text-embedding-3-large",
-                input=source_sentences,
-                
-            )
 
-            response_target = openai.Embedding.create(
+            response_target = client.embeddings.create(
                 model="text-embedding-3-large",
                 input=target_sentence
             )
@@ -96,7 +102,7 @@ class ExampleExtractionEngine:
             sorted_indexes = np.argsort(cosine_scores, axis=0)[::-1]
             
             
-            sorted_stories[target_story['id']] = [self.source_dataset[i[0]] for i in sorted_indexes[:max_examples]]
+            sorted_stories[target_story['id']] = [new_dataset[i[0]] for i in sorted_indexes[:max_examples]]
         
         with open(self.save_path, 'w') as f:
             json.dump(sorted_stories, f, indent=2, ensure_ascii=False)

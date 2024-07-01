@@ -243,7 +243,12 @@ class SelfRefinementEngine:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
+<<<<<<< HEAD
     parser.add_argument('--load_dir', type=str, default='./outputs_1/')
+=======
+    parser.add_argument('--load_dir', type=str)
+    # parser.add_argument('--predicates_path', type=str, default='./outputs/logic_predicates')
+>>>>>>> bb8f9ae3f5928d1d8acbd2fdad8fdd0fb454dcb2
     parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
