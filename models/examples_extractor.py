@@ -53,6 +53,8 @@ class ExampleExtractionEngine:
         max_examples = min(self.max_examples, len(self.source_dataset))
         
         source_sentences = []
+        new_dataset = []
+        
         seen_source_stories = set()
         
         for source_story in tqdm(self.source_dataset, desc='Processing stories and removing duplicates'):
@@ -67,6 +69,8 @@ class ExampleExtractionEngine:
             source_sentences.append(source_sentence)
             
             seen_source_stories.add(source_story['story_id'])
+            
+            new_dataset.append(source_story)
 
         response_source = client.embeddings.create(
             model="text-embedding-3-large",
@@ -98,7 +102,7 @@ class ExampleExtractionEngine:
             sorted_indexes = np.argsort(cosine_scores, axis=0)[::-1]
             
             
-            sorted_stories[target_story['id']] = [self.source_dataset[i[0]] for i in sorted_indexes[:max_examples]]
+            sorted_stories[target_story['id']] = [new_dataset[i[0]] for i in sorted_indexes[:max_examples]]
         
         with open(self.save_path, 'w') as f:
             json.dump(sorted_stories, f, indent=2, ensure_ascii=False)
