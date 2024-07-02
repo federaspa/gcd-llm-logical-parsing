@@ -4,13 +4,13 @@ import argparse
 from logic_inference import LogicInferenceEngine
 
 sketchers = [
-    'gpt-3.5-turbo', 
+    # 'gpt-3.5-turbo', 
     # 'gpt-4-turbo', 
     'gpt-4o'
     ]
 refiners = [
-    'llama-2-7b',
-    'llama-2-13b',
+    # 'llama-2-7b',
+    # 'llama-2-13b',
     'upstage-llama-2-70b-instruct-v2',
     'Meta-Llama-3-8B-Instruct',
     'Meta-Llama-3-70B-Instruct-v2',
@@ -52,7 +52,7 @@ if __name__ == '__main__':
                     args.sketcher_name = sketcher
                     args.load_dir = load_dir
 
-                    for round in range(1, 4):
+                    for round in range(3, 4):
                         print(f"Round {round} self-refinement")
                         args.self_refine_round = round
                         engine = LogicInferenceEngine(args)
