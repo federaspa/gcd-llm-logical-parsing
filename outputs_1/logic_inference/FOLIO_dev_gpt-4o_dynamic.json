@@ -4,7 +4,7 @@
     "question": "Bonnie performs in school talent shows often.",
     "answer": "C",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 1,
@@ -123,9 +123,8 @@
     "id": 17,
     "question": "Rock is not a turtle.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 18,
@@ -250,10 +249,8 @@
     "id": 35,
     "question": "Imperium doesn't have a feud with a professional wrestling stable that includes Ivy Nile.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "∀x (WrestlingStable(x) ∧ FormedIn(x, wwe) → x = diamondmine)",
-    "correct_formula": "Diamond Mine is a professional wrestling stable, formed in WWE."
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 36,
@@ -484,9 +481,8 @@
     "id": 66,
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowment(Yale_university, 42.3_billion)\n                             ^"
+    "flag": "parsing error",
+    "predicted_answer": "N/A"
   },
   {
     "id": 67,
@@ -494,30 +490,31 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "ResidentialCollege(benjaminfranklincollege) ∧ ResidentialCollege(berkeleycollege) ∧ ResidentialCollege(branfordcollege) ∧ ResidentialCollege(davenportcollege) ∧ ResidentialCollege(ezrastilescollege) ∧ ResidentialCollege(gracehoppercollege) ∧ ResidentialCollege(jonathanedwardscollege) ∧ ResidentialCollege(morsecollege) ∧ ResidentialCollege(paulimurraycollege) ∧ ResidentialCollege(piersoncollege) ∧ ResidentialCollege(saybrookcollege) ∧ ResidentialCollege(sillimancollege) ∧ ResidentialCollege(timothydwightcollege) ∧ ResidentialCollege(trumbullcollege)",
-    "correct_formula": "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+    "wrong_formula": "ResidentialCollege(benjamin_franklin_college) ∧ ResidentialCollege(berkeley_college) ∧ ResidentialCollege(branford_college) ∧ ResidentialCollege(davenport_college) ∧ ResidentialCollege(ezra_stiles_college) ∧ ResidentialCollege(grace_hopper_college) ∧ ResidentialCollege(jonathan_edwards_college) ∧ ResidentialCollege(morse_college) ∧ ResidentialCollege(pauli_murray_college) ∧ ResidentialCollege(pierson_college) ∧ ResidentialCollege(saybrook_college) ∧ ResidentialCollege(silliman_college) ∧ ResidentialCollege(timothy_dwight_college) ∧ ResidentialCollege(trumbull_college)",
+    "correct_formula": "A list of residential colleges at Yale."
   },
   {
     "id": 68,
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowmentValue(Yale_university, 42.3_billion)\n                                  ^"
+    "flag": "parsing error",
+    "predicted_answer": "N/A"
   },
   {
     "id": 69,
     "question": "Andrew Collins was the script editor for a series with the working title \"The Secret Dude Society\".",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 70,
     "question": "No members of Pappy's have starred for a show piloting on BBC Two or BBC Three.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "∀x (MemberOf(x, pappys) → ¬∃y (Star(x, y) ∧ (Network(y, bbctwo) ∨ Network(y, bbcthree))))",
+    "correct_formula": "No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
   },
   {
     "id": 71,
@@ -551,10 +548,8 @@
     "id": 75,
     "question": "Tom's license plate is from Istanbul.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "FromIstanbul(Plate(joe))",
-    "correct_formula": "Joe's vehicle registration plate is from Istanbul."
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 76,
@@ -673,16 +668,17 @@
     "id": 92,
     "question": "Machine translation is a language understanding task.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 93,
     "question": "Tom will rent an apartment in The Olive Garden.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "B"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "∀x ∀y (SecurityDeposit(x, y) → EqualOrMore(y, MonthlyRent(x, 1)))",
+    "correct_formula": "The security deposit can be either equal to one month's rent or more."
   },
   {
     "id": 94,
@@ -690,8 +686,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "∀x ∀y ∀z (Owner(x, y) ∧ Pet(y) ∧ ManagedBuilding(z) ∧ AllowedIn(y, z) ∧ SecurityDeposit(z, d) ∧ d ≤ 1500 ↔ Rent(x, z))",
-    "correct_formula": "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500."
+    "wrong_formula": "∀x ∀y (SecurityDeposit(x, y) → EqualOrMore(y, MonthlyRent(x, 1)))",
+    "correct_formula": "The security deposit can be either equal to one month's rent or more."
   },
   {
     "id": 95,
@@ -699,7 +695,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "∀x ∀y (SecurityDeposit(x, y) → EqualOrMore(y, OneMonthRent(x)))",
+    "wrong_formula": "∀x ∀y (SecurityDeposit(x, y) → (EqualOrMore(y, MonthlyRent(x, 1)) ∨ EqualOrMore(y, MonthlyRent(x, 2))))",
     "correct_formula": "The security deposit can be either equal to one month's rent or more."
   },
   {
@@ -837,21 +833,22 @@
     "question": "The Harding Pegmatite Mine is not located in a mountain range in New Mexico.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 115,
     "question": "Peter is shorter than a man in Michael's class.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(MAX_SECONDS)"
   },
   {
     "id": 116,
     "question": "Windy is a great shooter.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 117,
@@ -895,7 +892,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Airline(Greyhound) → ¬∃x (Plane(x) ∧ Greyhound(x))",
+    "wrong_formula": "¬Airline(greyhound) → ¬∃y (Plane(y) ∧ Greyhound(y))",
     "correct_formula": "If Greyhound is not an airline, then there are no Greyhound planes."
   },
   {
@@ -921,28 +918,28 @@
     "question": "Rock is a monkey.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 126,
     "question": "Rock has wings.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 127,
     "question": "Rock does not have wings.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 128,
     "question": "John has a wedding that is well-attended.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "A"
   },
   {
     "id": 129,
@@ -990,25 +987,22 @@
     "id": 135,
     "question": "Space sucks.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 136,
     "question": "Space is a vampire.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 137,
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 138,
@@ -1022,8 +1016,9 @@
     "id": 139,
     "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "B"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0.\n\n\nFatal error:  The following symbols are used with multiple arities: UnsupervisedLearning/1, UnsupervisedLearning/0, StateOfTheArtModel/1, StateOfTheArtModel/0"
   },
   {
     "id": 140,
@@ -1044,7 +1039,7 @@
     "question": "Ben is either yellow and ugly or neither yellow nor ugly.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 143,
@@ -1206,9 +1201,8 @@
     "id": 165,
     "question": "Breaking Bad is a TV show in which roses are given out on Monday at 8 pm.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0.\n\n\nFatal error:  The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 166,
@@ -1229,16 +1223,15 @@
     "id": 168,
     "question": "Some Nazi German politician was part of both the Prussian State Parliament and the Nazi Reichstag.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 169,
     "question": "No politicans are part of the Nazi Reichstag.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 170,
@@ -1336,7 +1329,7 @@
     "question": "If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 185,
@@ -1350,7 +1343,7 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "B"
   },
   {
     "id": 187,

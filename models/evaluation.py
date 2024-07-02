@@ -28,7 +28,7 @@ index_to_text = {
     8: 'N/A'
 }
 
-def evaluate_metrics(QA_results, average="micro"):
+def evaluate_metrics(QA_results, average='macro'):
     
     predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
     gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
@@ -49,6 +49,14 @@ def get_backup_answers(samples, backup):
         
     return samples
 
+def partial_evaluation(result_file):
+    with open(result_file, 'r') as f:
+        all_samples = json.load(f)
+
+    precision, recall, f1, support = evaluate_metrics(all_samples)
+
+    return (precision, recall, f1, support)
+
 
 def full_evaluation(result_file, backup_file):
     with open(result_file, 'r') as f:
@@ -66,32 +74,39 @@ def full_evaluation(result_file, backup_file):
     # generation_errors = [sample for sample in all_samples if sample['flag'] == 'generation error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
     
-    # print()
-    # print(f'Executable rate (Exe_Rate): {len(executable_samples)}/{len(all_samples)} ({len(executable_samples)/len(all_samples)})')
-    # print(f'Parsing errors rate: {len(parsing_errors)}/{len(all_samples)} ({len(parsing_errors)/len(all_samples)})')
-    # print(f'Execution errors rate: {len(execution_errors)}/{len(all_samples)} ({len(execution_errors)/len(all_samples)})')
-    # print('-'*75)
-    # print()
+    print()
+    print(f'Executable rate (Exe_Rate): {len(executable_samples)}/{len(all_samples)} ({len(executable_samples)/len(all_samples)})')
+    print(f'Parsing errors rate: {len(parsing_errors)}/{len(all_samples)} ({len(parsing_errors)/len(all_samples)})')
+    print(f'Execution errors rate: {len(execution_errors)}/{len(all_samples)} ({len(execution_errors)/len(all_samples)})')
+    print('-'*75)
+    print()
     precision, recall, f1, support = evaluate_metrics(all_samples)
-    # print(f"Average F1: {f1}")
-    # # print(f"Average Precision: {precision}")
-    # # print(f"Average Recall: {recall}")
-    # # print(f"Average Support: {support}")
-    # print('-'*75)
-    # print()
+    print(f"Average F1: {f1}")
+    print(f"Average Precision: {precision}")
+    print(f"Average Recall: {recall}")
+    print('-'*75)
+    print()
     
-    return f1
-        # precision, recall, f1, support = evaluate_metrics(all_samples, average=None)
+    precision, recall, f1, support = evaluate_metrics(all_samples, average=None)
     
-    # for i in range(len(f1)):
-    #     print(f'Choice {index_to_text[i]}')
-    #     print(f'F1: {f1[i]}')
-    #     print(f'Precision: {precision[i]}')
-    #     print(f'Recall: {recall[i]}')
-    #     print(f'Support: {support[i]}')
-    #     print('-'*75)
-    #     print()    
+    for i in range(len(f1)):
+        print(f'Choice {index_to_text[i]}')
+        print(f'F1: {f1[i]}')
+        print(f'Precision: {precision[i]}')
+        print(f'Recall: {recall[i]}')
+        print('-'*75)
+        print()    
+    
+    return (precision, recall, f1, support)
 
+
+def get_res(metric):
+    mean = round(np.mean(metric), 2)
+    std = round(np.std(metric), 1)
+    
+    res = str(mean) + '^{\pm' + str(std) + '}'
+    
+    return res
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -108,7 +123,10 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     
+    precisions = []
     f1s = []
+    recalls = []
+    supports = []
     
     if args.load_dir:
         load_dirs = [args.load_dir]
@@ -129,20 +147,15 @@ if __name__ == "__main__":
         else:
             result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.sketcher_name}_{args.prompt_mode}.json')
 
-        f1 = full_evaluation(result_file, backup_file)*100
+        precision, recall, f1, support = partial_evaluation(result_file, backup_file)
+        precision, recall, f1, support = precision*100, recall*100, f1*100, support
         # evaluate_predicates(result_file)
+        precisions.append(precision)
         f1s.append(f1)
+        recalls.append(recall)
+        # supports.append(support)
         
-        # print(f1)
-        
-    #print mean and std
-    
-    mean = round(np.mean(f1s), 2)
-    std = round(np.std(f1s), 1)
-    
-    res = str(mean) + '^{\pm' + str(std) + '}'
-    
-    print(res)
-    
-    # print(f"Mean F1: {np.mean(f1s)}")
-    # print(f"Std F1: {np.std(f1s)}")
+    print(f"Precision: {get_res(precisions)}")
+    print(f"Recall: {get_res(recalls)}")
+    print(f"F1: {get_res(f1s)}")
+    # print(f1s)
