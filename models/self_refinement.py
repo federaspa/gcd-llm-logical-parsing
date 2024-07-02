@@ -165,16 +165,16 @@ class SelfRefinementEngine:
         for example in tqdm(self.logic_programs):
             logic_program = example['raw_logic_programs']
             status, error, nl_error = self.safe_execute_program(logic_program)
-        
+
+            predicates = example['predicates']
+
             if status == 'parsing error':
 
                 try:
                     
                     # open('this')
-                    predicates = self.predicates[str(example['id'])]['logic_predicates']
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
-
                     if self.refiner:
                         response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
                     else:
@@ -187,7 +187,7 @@ class SelfRefinementEngine:
                     revised_program = json.loads(revised_program_string)
 
                 except Exception as e:
-                    print(f'Exception for {example["id"]}: {e}')
+                    print(f'Exception for {example["id"]} for parsing: {e}')
                     revised_program = logic_program
 
 
@@ -197,7 +197,8 @@ class SelfRefinementEngine:
                         'question': example['question'], 
                         'answer': example['answer'],
                         # 'options': example['options'],
-                        'raw_logic_programs': revised_program}
+                        'raw_logic_programs': revised_program,
+                        'predicates': predicates}
                 outputs.append(output)
                 
             # if status != 'success':
@@ -214,11 +215,12 @@ class SelfRefinementEngine:
 
                     response = json.loads(response_string)
 
+                    assert 'Correct Program' in response.keys(), 'Correct Program not in response.keys()'
                     revised_program = response['Correct Program']
 
                     # programs = revised_program
                 except Exception as e:
-                    print(f'Exception for {example["id"]}: {e}')
+                    print(f'Exception for {example["id"]} for execution: {e}')
                     revised_program = logic_program
 
                 output = {'id': example['id'], 
@@ -226,10 +228,12 @@ class SelfRefinementEngine:
                         'question': example['question'], 
                         'answer': example['answer'],
                         # 'options': example['options'],
-                        'raw_logic_programs': revised_program}
+                        'raw_logic_programs': revised_program,
+                        'predicates': predicates}
                 outputs.append(output)
             else:
                 outputs.append(example)
+
         # save results
         if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.refiner_name)):
             os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.refiner_name))
@@ -251,7 +255,7 @@ def parse_args():
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--refiner_path', type=str)
-    parser.add_argument('--n_gpu_layers', type=int, default=0)
+    parser.add_argument('--n_gpu_layers', type=int)
     args = parser.parse_args()
     return args
 
