@@ -28,7 +28,7 @@ index_to_text = {
     8: 'N/A'
 }
 
-def evaluate_metrics(QA_results, average='macro'):
+def evaluate_metrics(QA_results, average='weighted'):
     
     predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
     gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
