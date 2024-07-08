@@ -121,15 +121,15 @@ class SelfRefinementEngine:
             
             
     def parsing_prompt_folio(self, nl_statement, sketch, predicates):
-        
+
         full_prompt = self.parsing_prompt_template.replace('[[NLSTATEMENT]]', nl_statement).replace('[[SKETCH]]', sketch).replace('[[PREDICATES]]', '\n'.join(predicates))
-        
+
         grammar_predicates = [predicate.split(':::')[0].split('(')[0].strip() for predicate in predicates]
-        
+
         grammar_predicates = [f'\"{predicate}\"' for predicate in grammar_predicates]
-        
+
         grammar = self.grammar_template.replace('[[PREDICATES]]', ' | '.join(grammar_predicates))
-        
+
         # print(full_prompt)
         # print('-'*50)
         # print(grammar)
@@ -180,11 +180,10 @@ class SelfRefinementEngine:
                     else:
                         response = self.openai_api.generate(full_prompt, self.task_description_parsing, {"type": "text"}).strip()
 
-                    # print(response)
-
                     revised_program_string = json.dumps(logic_program, ensure_ascii=False).replace(error, response)
 
                     revised_program = json.loads(revised_program_string)
+
 
                 except Exception as e:
                     print(f'Exception for {example["id"]} for parsing: {e}')

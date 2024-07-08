@@ -17,7 +17,7 @@ refiners = [
     'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
     'GCD/llms/mistral-7b-instruct-v0.2.Q6_K.gguf',
     'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf',
-    'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
+    # 'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
     None
 ]
 load_dirs = [
