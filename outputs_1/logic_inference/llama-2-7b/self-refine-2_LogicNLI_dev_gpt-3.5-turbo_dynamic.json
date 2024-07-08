@@ -1487,8 +1487,10 @@
     "id": 212,
     "question": "Lamont is not hollow.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
+    "correct_formula": "Someone being both combative and fearless is equivalent to being significant and not precious."
   },
   {
     "id": 213,
@@ -1522,8 +1524,10 @@
     "id": 217,
     "question": "Adler is significant.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
+    "correct_formula": "Someone being both combative and fearless is equivalent to being significant and not precious."
   },
   {
     "id": 218,
@@ -1559,8 +1563,8 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-    "correct_formula": "Someone being both combative and fearless is equivalent to being significant and not precious."
+    "wrong_formula": "(∀x (Significant(x)) → (∀x (¬Fearless(x)))",
+    "correct_formula": "Someone who is significant is always not fearless."
   },
   {
     "id": 223,
@@ -1575,8 +1579,8 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x (¬Soft(x) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-    "correct_formula": "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow."
+    "wrong_formula": "(∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
+    "correct_formula": "Someone being both combative and fearless is equivalent to being significant and not precious."
   },
   {
     "id": 225,
@@ -2040,9 +2044,10 @@
     "id": 290,
     "question": "Patricia is melodic.",
     "answer": "C",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '-'.\nnot Broad-minded(Patricia)\n         ^"
+    "wrong_formula": "((¬Stubborn(godwin) ∧ ¬Broad-minded(lyndon)) → (Melodic(patricia))",
+    "correct_formula": "It can be concluded that Patricia is melodic once knowing that Godwin is not stubborn and Lyndon is not broad-minded."
   },
   {
     "id": 291,
@@ -2251,8 +2256,10 @@
     "id": 319,
     "question": "Ernest is not gleaming.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∃x ((Precious(x) ∧ Hungry(x))) → (¬Gleaming(morgan))",
+    "correct_formula": "If there is someone who is both precious and hungry, then Morgan is not gleaming."
   },
   {
     "id": 320,
@@ -2279,8 +2286,10 @@
     "id": 323,
     "question": "Morgan is not recent.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∃x ((Precious(x) ∧ Hungry(x))) → (¬Gleaming(morgan))",
+    "correct_formula": "If there is someone who is both precious and hungry, then Morgan is not gleaming."
   },
   {
     "id": 324,
@@ -2293,8 +2302,10 @@
     "id": 325,
     "question": "Ernest is gleaming.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∃x ((Precious(x) ∧ Hungry(x))) → (¬Gleaming(morgan))",
+    "correct_formula": "If there is someone who is both precious and hungry, then Morgan is not gleaming."
   },
   {
     "id": 326,
@@ -2529,10 +2540,9 @@
     "id": 357,
     "question": "Tristin is not strong.",
     "answer": "B",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Graceful(x)",
-    "correct_formula": ""
+    "error_message": "Unexpected token: '-'.\nnot Broad-minded(Joseph)\n         ^"
   },
   {
     "id": 358,
@@ -2546,10 +2556,9 @@
     "id": 359,
     "question": "Peyton is not attractive.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Graceful(x) \\land Broad-minded(x)) \\rightarrow (Careful(x)))",
-    "correct_formula": "If someone is graceful and broad-minded, then he is careful, and vice versa."
+    "error_message": "Unexpected token: '-'.\nnot Broad-minded(Joseph)\n         ^"
   },
   {
     "id": 360,
@@ -2877,8 +2886,9 @@
     "id": 406,
     "question": "Gerald is not new.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Brandi/1, Brandi/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Brandi/1, Brandi/0"
   },
   {
     "id": 407,
@@ -2922,8 +2932,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x (BroadMinded(x) ∨ Civil(x) → ¬New(x))",
-    "correct_formula": "Someone who is either broad-minded or civil is always not new."
+    "wrong_formula": "(∀x (¬Asleep(x) ∨ ¬Awful(x) → BroadMinded(x))",
+    "correct_formula": "If someone is not asleep or not awful, then he is broad-minded."
   },
   {
     "id": 413,
@@ -3729,7 +3739,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3738,7 +3748,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3763,7 +3773,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3772,7 +3782,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3781,7 +3791,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3790,7 +3800,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3799,7 +3809,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3808,7 +3818,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3817,7 +3827,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3826,7 +3836,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3835,7 +3845,7 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3844,7 +3854,7 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
@@ -3853,15 +3863,16 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(x)∨¬Serious(x)→¬Blue(",
     "correct_formula": "It can be concluded that Brigham is not broad-minded once knowing that Lancelot is cultural or Unwin is not able."
   },
   {
     "id": 540,
     "question": "Morgan is broad-minded.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "Unexpected token: '-'.\nBroad-minded(Morgan)\n     ^"
   },
   {
     "id": 541,
@@ -3900,8 +3911,8 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((¬Wild(maurice) ∧ ¬Soft(patricia)) → ((Average(iver) ∧ Faithful(iver)))",
-    "correct_formula": "If Maurice is not wild and Patricia is not soft, then Iver is average and Iver is faithful."
+    "wrong_formula": "((∀x (Wild(x))) → ((Average(x) ∧ ¬Fearless(x)))",
+    "correct_formula": "As long as someone is wild, he is average and not fearless."
   },
   {
     "id": 546,
@@ -3972,8 +3983,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 556,
@@ -3981,17 +3992,16 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 557,
     "question": "Whitney is broad-minded.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Wicked(olive) ∧ Drab(katelynn)) ↔ ((Aggressive(joseph) ∧ ¬Broad-minded(montague)))",
-    "correct_formula": "Olive is wicked and Katelynn is drab if and only if Joseph is aggressive and Montague is not broad-minded."
+    "error_message": "Unexpected token: '-'.\nBroad-minded(Whitney)\n     ^"
   },
   {
     "id": 558,
@@ -4020,8 +4030,10 @@
     "id": 561,
     "question": "Joseph is drab.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∃x (¬Mushy(x))) → ((¬Aggressive(whitney) ∧ Impossible(cyril))",
+    "correct_formula": "If there is at least one people who is not mushy, then Whitney is not aggressive and Cyril is impossible."
   },
   {
     "id": 562,
@@ -4036,16 +4048,17 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 564,
     "question": "Ansel is not mushy.",
     "answer": "A",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '-'.\nBroad-minded(Joseph)\n     ^"
+    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
+    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
   },
   {
     "id": 565,
@@ -4060,8 +4073,8 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 567,
@@ -4069,8 +4082,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 568,
@@ -4078,15 +4091,16 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Aggressive(x) ∧ ¬Drab(x)) ↔ (¬Impossible(x))",
-    "correct_formula": "Someone is aggressive and not drab if and only if he is not impossible."
+    "wrong_formula": "((Wicked(olive) ∨ Broad-minded(cyril)) → (Aggressive(katelynn))",
+    "correct_formula": "Olive being wicked or Cyril being broad-minded implies that Katelynn is aggressive."
   },
   {
     "id": 569,
     "question": "Joseph is wicked.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "Unexpected token: '-'.\nBroad-minded(Joseph)\n     ^"
   },
   {
     "id": 570,
@@ -4787,7 +4801,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Godwin is bad.",
+    "wrong_formula": "Brigham is loving.",
     "correct_formula": ""
   },
   {
@@ -5089,8 +5103,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x (¬Mushy(x)) → (∀x (Supportive(x) ∧ ¬BroadMinded(x)))",
-    "correct_formula": "As long as someone is not mushy, he is supportive and not broad-minded."
+    "wrong_formula": "(∀x (BroadMinded(x)) → (∀x (Oval(x) ∧ ¬Supportive(x)))",
+    "correct_formula": "Someone who is broad-minded is always both oval and not supportive."
   },
   {
     "id": 712,
@@ -5130,8 +5144,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x (¬Mushy(x)) → (∀x (Supportive(x) ∧ ¬Broad-minded(x)))",
-    "correct_formula": "As long as someone is not mushy, he is supportive and not broad-minded."
+    "wrong_formula": "(∀x (Broad-minded(x)) → (∀x (Oval(x) ∧ ¬Supportive(x)))",
+    "correct_formula": "Someone who is broad-minded is always both oval and not supportive."
   },
   {
     "id": 717,
@@ -5940,7 +5954,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Fresh(x)∨Serious(x)∨Blue(x)∨Accurate(x)∨Concerned(x)∨Entire(x)→Accurate(x)∨Concerned(",
+    "wrong_formula": "Entire(x)→Fresh(x)∨Serious(x)∨Blue(x)∨Accurate(x)∨Concerned(x)∨Entire(x)∨Accurate(",
     "correct_formula": "It can be concluded that Aldrich is energetic once knowing that Aldrich is not poised or Burgess is straightforward."
   },
   {
@@ -6131,7 +6145,7 @@
     "answer": "A",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: IsAblePerson/1, IsAblePerson/0.\n\n\nFatal error:  The following symbols are used with multiple arities: IsAblePerson/1, IsAblePerson/0"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: IsAble/1, IsAble/0, Quincy/1, Quincy/0.\n\n\nFatal error:  The following symbols are used with multiple arities: IsAble/1, IsAble/0, Quincy/1, Quincy/0"
   },
   {
     "id": 859,
@@ -7294,8 +7308,8 @@
     "answer": "B",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(∀x ((Zany(x) ∧ ¬Shiny(x))) → (Fat(x))",
-    "correct_formula": "If someone is both zany and not shiny, then he is fat."
+    "wrong_formula": "(∃x ((¬Straightforward(x)) ∨ (¬Shiny(x))) → (Fat(tristan))",
+    "correct_formula": "If there is at least one people who is not straightforward or not shiny, then Tristan is fat."
   },
   {
     "id": 1025,
@@ -7749,8 +7763,10 @@
     "id": 1089,
     "question": "Rose is putrid.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(∀x ((¬Crowded(x) ∧ ¬Jolly(x))) → ((Putrid(x) ∧ ¬Strong(x)))",
+    "correct_formula": "If someone is not crowded and not jolly, then he is putrid and not strong."
   },
   {
     "id": 1090,
@@ -8288,8 +8304,10 @@
     "id": 1166,
     "question": "Lewis is not cultural.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "¬Concerned(x)↔¬Fresh(x)∨¬Entire(x)∨¬Accurate(x)∨¬Serious(x)∨¬Blue(x)∨¬Fresh(x",
+    "correct_formula": "Someone being neither cultural nor able is equivalent to being not expensive."
   },
   {
     "id": 1167,
@@ -8591,8 +8609,8 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Excited(stanley) ∩ Ugly(quinn))) → (¬Logical(silvia))",
-    "correct_formula": "Stanley being excited and Quinn being ugly imply that Silvia is not logical."
+    "wrong_formula": "(∀x (Dizzy(x) ∩ ¬Ugly(x))) ↔ (∀x (¬Warm-hearted(x) ∧ Logical(x)))",
+    "correct_formula": "If someone is dizzy and not ugly, then he is both not warm-hearted and logical, and vice versa."
   },
   {
     "id": 1210,
@@ -8673,18 +8691,18 @@
     "id": 1220,
     "question": "Montague is not teak.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "((Wicked(iver) ∧ Mushy(brandan)) → ((¬Broad-minded(brandan) ∧ ¬Asleep(unwin)))",
-    "correct_formula": "If Iver is wicked and Brandan is mushy, then Brandan is not broad-minded and Unwin is not asleep."
+    "error_message": "Unexpected token: '-'.\nnot Broad-minded(Unwin)\n         ^"
   },
   {
     "id": 1221,
     "question": "Montague is asleep.",
     "answer": "C",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '-'.\nnot Broad-minded(Unwin)\n         ^"
+    "wrong_formula": "((Wicked(iver) ∧ Mushy(brandan)) → ((¬Broad-minded(brandan) ∧ ¬Asleep(unwin)))",
+    "correct_formula": "If Iver is wicked and Brandan is mushy, then Brandan is not broad-minded and Unwin is not asleep."
   },
   {
     "id": 1222,
@@ -10043,8 +10061,8 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "(ZanyAndAverageIsEquivalentToNotJittery)",
-    "correct_formula": "Someone being both zany and average is equivalent to being not jittery."
+    "wrong_formula": "(CrosbyIsNotZanyImpliesAldrichIsHollowAndMaxIsSour)",
+    "correct_formula": "Crosby being not zany implies that Aldrich is hollow and Max is sour."
   },
   {
     "id": 1415,
@@ -10624,8 +10642,10 @@
     "id": 1497,
     "question": "Barrett is not combative.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "¬Blue(x)∨¬Serious(x)∨¬Fresh(x)∨¬Entire(x)∨¬Accurate(x)∨¬Concerned(x)→(¬Blue(x)",
+    "correct_formula": "If there is at least one people who is either recent or not bored, then Montague is combative and Dan is different."
   },
   {
     "id": 1498,
