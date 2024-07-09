@@ -18,14 +18,16 @@
     "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 3,
     "question": "James has lunch in the company.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "∀x (HaveLunch(x, Home(x)) → WorkRemotely(x))",
+    "correct_formula": "If an employee has lunch at home, then he/she is working remotely from home."
   },
   {
     "id": 4,
@@ -40,7 +42,7 @@
     "answer": "A",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "∀x ((HaveLunch(x, Home(x)) → Remote(x))",
+    "wrong_formula": "∀x ((HaveLunch(x, Home(x))) → Remote(x))",
     "correct_formula": "If an employee has lunch at home, then he/she is working remotely from home."
   },
   {
@@ -97,9 +99,8 @@
     "id": 13,
     "question": "FIFA 22 is made by a Japanese video game company.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Top10/1, Top10/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Top10/1, Top10/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 14,
@@ -107,7 +108,7 @@
     "answer": "B",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MoreThanOneMillion/1, MoreThanOneMillion/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MoreThanOneMillion/1, MoreThanOneMillion/0"
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 15,
@@ -155,8 +156,9 @@
     "id": 21,
     "question": "Karen will share \"Stranger Things\" to Lisa.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: NetflixShow/1, NetflixShow/0.\n\n\nFatal error:  The following symbols are used with multiple arities: NetflixShow/1, NetflixShow/0"
   },
   {
     "id": 22,
@@ -218,17 +220,15 @@
     "id": 30,
     "question": "Djokovic is a Grand Slam champion.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: WellPaid/1, WellPaid/0.\n\n\nFatal error:  The following symbols are used with multiple arities: WellPaid/1, WellPaid/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 31,
     "question": "Djokovic lives in a tax haven.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0.\n\n\nFatal error:  The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 32,
@@ -236,7 +236,7 @@
     "answer": "B",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: WellPaid/1, WellPaid/0.\n\n\nFatal error:  The following symbols are used with multiple arities: WellPaid/1, WellPaid/0"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0.\n\n\nFatal error:  The following symbols are used with multiple arities: TaxHaven/1, TaxHaven/0"
   },
   {
     "id": 33,
@@ -308,7 +308,7 @@
     "question": "Coco Gauff is among the most active players in major tennis.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 43,
@@ -321,8 +321,8 @@
     "id": 44,
     "question": "Coco Gauff is not a player who lost to Iga Swiatek or one of the most active players in major tennis.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "N/A"
   },
   {
     "id": 45,
@@ -335,9 +335,8 @@
     "id": 46,
     "question": "James's favorite season is summer.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0.\n\n\nFatal error:  The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 47,
@@ -345,15 +344,14 @@
     "answer": "C",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Summer/1, Summer/0, Fall/1, Fall/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Summer/1, Summer/0, Fall/1, Fall/0"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0, FallSeason/1, FallSeason/0.\n\n\nFatal error:  The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0, FallSeason/1, FallSeason/0"
   },
   {
     "id": 48,
     "question": "Mia's favorite season is spring.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0, SpringSeason/1, SpringSeason/0.\n\n\nFatal error:  The following symbols are used with multiple arities: SummerSeason/1, SummerSeason/0, SpringSeason/1, SpringSeason/0"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 49,
@@ -367,14 +365,14 @@
     "question": "1984 is a streaming service.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 51,
     "question": "1984 is not a streaming service.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "B"
   },
   {
     "id": 52,
@@ -389,7 +387,7 @@
     "answer": "C",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Romance/1, Romance/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Romance/1, Romance/0"
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 54,
@@ -444,9 +442,10 @@
     "id": 61,
     "question": "Mike has an F1 visa.",
     "answer": "C",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: F1Visa/1, F1Visa/0.\n\n\nFatal error:  The following symbols are used with multiple arities: F1Visa/1, F1Visa/0"
+    "wrong_formula": "ApplyFor(x,y)→HasVisa(x,y)∧ApplyFor(x,y)∨WorkIn(x,y)→ApplyFor(x,y)∨WorkIn(x,y",
+    "correct_formula": "InternationalStudent(x)→HasVisa(x,y)∧ApplyFor(x,y)∨WorkIn(x,y) needs to apply for CPT if he wants to work in the US."
   },
   {
     "id": 62,
@@ -480,17 +479,18 @@
     "id": 66,
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "ResearchUniversity(y)→College(y)∨College(y)→School(y)∨School(y)→List(y,y)∨List(y,y)→List(y,",
+    "correct_formula": "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
   },
   {
     "id": 67,
     "question": "Yale University has the largest university endowment of any educational institution.",
     "answer": "C",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "Organize(y,y)∧College(y)∨School(y)∨ResidentialCollege(y)∨List(y,y)∨Endowment(y,y)∨Constituent(y",
-    "correct_formula": ""
+    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowmentValue(Yale, 42.3)\n                       ^"
   },
   {
     "id": 68,
@@ -498,7 +498,7 @@
     "answer": "A",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowmentValue(Yale, 42.3)\n                       ^"
+    "error_message": "Unexpected token: '.'.  Expected token ')'.\nEndowmentValue(Yale, 42.3Billion)\n                       ^"
   },
   {
     "id": 69,
@@ -518,24 +518,23 @@
     "id": 71,
     "question": "KO is a company stock.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "GrowthStock(y)→CompanyStock(y)∧SuitableForRetirementFund(y)∧MatureCompanyStock(y)∧KO(y)∧Company(y)∧CompanySto",
-    "correct_formula": "Some stocks of some companies are growth stocks of companies."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 72,
     "question": "KO is a company stock and a growth stock of a company.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 73,
     "question": "If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Company/1, Company/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Company/1, Company/0"
   },
   {
     "id": 74,
@@ -556,14 +555,14 @@
     "question": "Mary needs to earn money to help pay for her college tuition.",
     "answer": "C",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 77,
     "question": "Mary is not a picky eater and spends a lot of her time eating and catching up with friends in the campus dining halls.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 78,
@@ -576,16 +575,15 @@
     "id": 79,
     "question": "Dried Thai chilies are a product of Baked by Melissa.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "N/A"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 80,
     "question": "Dried Thai chilies are not a product of Baked by Melissa.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: DriedThaiChilies/1, DriedThaiChilies/0.\n\n\nFatal error:  The following symbols are used with multiple arities: DriedThaiChilies/1, DriedThaiChilies/0"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 81,
@@ -598,9 +596,10 @@
     "id": 82,
     "question": "Dried Thai chilies are neither a product of Baked by Melissa nor a bakery.",
     "answer": "A",
-    "flag": "execution error",
+    "flag": "parsing error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: DriedThaiChilies/1, DriedThaiChilies/0.\n\n\nFatal error:  The following symbols are used with multiple arities: DriedThaiChilies/1, DriedThaiChilies/0"
+    "wrong_formula": "(DriedThaiChilies() ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies))",
+    "correct_formula": "If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy."
   },
   {
     "id": 83,
@@ -620,10 +619,8 @@
     "id": 85,
     "question": "Subway provides take-out service and does not receive many negative reviews.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Listed(x)→NotNegative(x)∧Rating(x,y)∧Provide(x,y)∧Popular(x)∧TakeOut(x)∧Restaurant(x)∧",
-    "correct_formula": "All restaurants with a rating greater than 9 are listed in Yelp’s recommendations."
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 86,
@@ -637,7 +634,7 @@
     "question": "Sir Digby’s nemesis loses.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 88,
@@ -673,9 +670,8 @@
     "id": 92,
     "question": "Machine translation is a language understanding task.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 93,
@@ -695,10 +691,8 @@
     "id": 95,
     "question": "The security deposit at the Olive Garden is either $2000 or more.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "RequireDeposit(x)→AllowedIn(x,y)∧RentApartment(x,y)∧MoreThan(x,y)∧Pet(x)∧Owner(x,y)∧",
-    "correct_formula": "The security deposit can be either equal to one month's rent or more."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 96,
@@ -711,16 +705,16 @@
     "id": 97,
     "question": "Koalas love to sleep and are quokka.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Koala/1, Koala/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Koala/1, Koala/0"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 98,
     "question": "If a koala is a quokka, then the koala either loves to sleep or is very fluffy.",
     "answer": "A",
-    "flag": "success",
-    "predicted_answer": "A"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 99,
@@ -734,37 +728,37 @@
     "question": "Harry is kind or a CEO.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 101,
     "question": "If Harry is either both evil and ugly, or neither evil nor ugly, then Harry is neither kind nor a CEO.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 102,
     "question": "Luke spends a lot of time hanging out and playing with his siblings.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "(Twins(Luke) ∨ Triplets(Luke)) ∧ DevelopBonds(Luke, FamilyMembers(Luke)) ∨ (¬Twins(Luke) ∧ ¬Triplets(Luke)) ∧ ¬DevelopBonds(Luke, FamilyMembers(Luke))",
-    "correct_formula": "Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 103,
     "question": "Luke complains often about annoying siblings.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "parsing error",
+    "predicted_answer": "N/A",
+    "wrong_formula": "(Twins(luke) ∧ DevelopBonds(luke, FamilyMembers(luke))) ∨ (¬Twins(luke) ∧ ¬DevelopBonds(luke, FamilyMembers(luke)))",
+    "correct_formula": "Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members."
   },
   {
     "id": 104,
     "question": "Luke is neither a twin nor triplet nor complains often about annoying siblings.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 105,
@@ -777,10 +771,8 @@
     "id": 106,
     "question": "It cost below US $300 to take the GRE test.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "ProvideAid(x,y)→TakeTest(x,y)∧EconomicHardship(y)∧Prove(y,y)∧Have(x,y)∧Difficulty(y,",
-    "correct_formula": "ETS provides financial aid to those GRE applicants who prove economic hardship."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 107,
@@ -801,7 +793,7 @@
     "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try or belongs to a household with a high net income.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "B"
   },
   {
     "id": 110,
@@ -898,22 +890,23 @@
     "id": 123,
     "question": "A Greyhound is a Boeing 707.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "B"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Greyhound/1, Greyhound/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Greyhound/1, Greyhound/0"
   },
   {
     "id": 124,
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 125,
     "question": "Rock is a monkey.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 126,
@@ -933,10 +926,8 @@
     "id": 128,
     "question": "John has a wedding that is well-attended.",
     "answer": "B",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "BelongTo(x,y)→OccurIn(x,y)→HaveChild(x)→WellAttended(x)→HaveWedding(x)→Person(x)→TravelToParisFor",
-    "correct_formula": "All weddings that occur in July belong to people who travel to Paris for their honeymoon."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 129,
@@ -956,18 +947,15 @@
     "id": 131,
     "question": "John has neither a wedding that is well-attended nor does he travel to Paris for his honeymoon.",
     "answer": "A",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "BelongTo(x,y)→OccurIn(x,y)→WellAttended(x)→July(x)→HaveChild(x)→HaveWedding(x)→TravelToParis",
-    "correct_formula": "All weddings that occur in July belong to people who travel to Paris for their honeymoon."
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 132,
     "question": "Platypus are mammals with no teeth.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "parsing error",
+    "predicted_answer": "N/A"
   },
   {
     "id": 133,
@@ -987,24 +975,23 @@
     "id": 135,
     "question": "Space sucks.",
     "answer": "A",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "A"
   },
   {
     "id": 136,
     "question": "Space is a vampire.",
     "answer": "C",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "flag": "success",
+    "predicted_answer": "C"
   },
   {
     "id": 137,
     "question": "If something is a household appliance, it sucks.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 138,
@@ -1021,7 +1008,7 @@
     "answer": "B",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UsedToTrain/2, UsedToTrain/1.\n\n\nFatal error:  The following symbols are used with multiple arities: UsedToTrain/2, UsedToTrain/1"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: UnsupervisedLearn/1, UnsupervisedLearn/0.\n\n\nFatal error:  The following symbols are used with multiple arities: UnsupervisedLearn/1, UnsupervisedLearn/0"
   },
   {
     "id": 140,
@@ -1055,8 +1042,9 @@
     "id": 144,
     "question": "Aurochs are extinct.",
     "answer": "C",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 145,
@@ -1125,8 +1113,9 @@
     "id": 154,
     "question": "Remy has a fully stocked and impressive home office and also visits the office supply store regularly.",
     "answer": "B",
-    "flag": "success",
-    "predicted_answer": "C"
+    "flag": "execution error",
+    "predicted_answer": "N/A",
+    "error_message": "'NoneType' object has no attribute 'rstrip'"
   },
   {
     "id": 155,
@@ -1197,26 +1186,24 @@
     "answer": "C",
     "flag": "parsing error",
     "predicted_answer": "N/A",
-    "wrong_formula": "BreakingBad(x)→On(x,y)∧Monday(y)∧Time(y)∧Portray(x,y)∧RealPeople(x)∧Show(x)∧RealityTVShow",
-    "correct_formula": "Breaking Bad is on Monday at 8 pm."
+    "wrong_formula": "GivenOut(x,y)→On(x,y)∧Portray(x,y)∧RealPeople(x)∧Show(x)∧TVShow(x)∧Bachelor(x)∧Bre",
+    "correct_formula": "Everything on the Bachelor portrays the lives of real people."
   },
   {
     "id": 165,
     "question": "Breaking Bad is a TV show in which roses are given out on Monday at 8 pm.",
     "answer": "B",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "GivenOut(x,y)→Roses(x)∧On(x,y)∧TVShow(x)∧Bachelor(x)∧Portray(x,y)∧RealPeople(x)∧",
-    "correct_formula": "On some Mondays at 8 pm, roses are given out on TV."
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0.\n\n\nFatal error:  The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0"
   },
   {
     "id": 166,
     "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
     "answer": "A",
-    "flag": "parsing error",
+    "flag": "execution error",
     "predicted_answer": "N/A",
-    "wrong_formula": "On(x,y)→GivenOut(x,y)→Roses(x)→TVShow(x)→Portray(x,y)→RealPeople(x)→Show(x)→Reality",
-    "correct_formula": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0.\n\n\nFatal error:  The following symbols are used with multiple arities: BreakingBad/1, BreakingBad/0"
   },
   {
     "id": 167,
@@ -1287,14 +1274,14 @@
     "answer": "B",
     "flag": "execution error",
     "predicted_answer": "N/A",
-    "error_message": "'NoneType' object has no attribute 'rstrip'"
+    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: LocationOf/1, LocationOf/2, LastOlympicEvent/1, LastOlympicEvent/0.\n\n\nFatal error:  The following symbols are used with multiple arities: LocationOf/1, LocationOf/2, LastOlympicEvent/1, LastOlympicEvent/0"
   },
   {
     "id": 178,
     "question": "The United States won the most medals in the last Olympic games.",
     "answer": "A",
     "flag": "success",
-    "predicted_answer": "C"
+    "predicted_answer": "A"
   },
   {
     "id": 179,
@@ -1350,7 +1337,7 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "A"
+    "predicted_answer": "C"
   },
   {
     "id": 187,
@@ -1441,7 +1428,7 @@
     "question": "No one playing for Nautico is Brazilian.",
     "answer": "B",
     "flag": "success",
-    "predicted_answer": "B"
+    "predicted_answer": "C"
   },
   {
     "id": 200,
@@ -1454,9 +1441,8 @@
     "id": 201,
     "question": "Ailton was not loaned out to a football club.",
     "answer": "B",
-    "flag": "execution error",
-    "predicted_answer": "N/A",
-    "error_message": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Club/1, Club/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Club/1, Club/0"
+    "flag": "success",
+    "predicted_answer": "B"
   },
   {
     "id": 202,
@@ -1469,9 +1455,7 @@
     "id": 203,
     "question": "Ailton Silva was loaned out to a football club.",
     "answer": "C",
-    "flag": "parsing error",
-    "predicted_answer": "N/A",
-    "wrong_formula": "Person(ailtonSilva) ∧ Born(ailtonSilva, 1995) ∧ KnownAs(ailtonSilva, ailton) ∧ FootballPlayer(ailtonSilva) ∧ Loan(ailtonSilva, braga) ∧ Brazilian(ailtonSilva) ∧ PlaysFor(ailtonSilva, nautico) ∧ ClubWithEntity(nautico) ∧ ClubWithEntity(braga)",
-    "correct_formula": "Ailton Silva, born in 1995, is commonly known as Ailton. Ailton is a football player who was loaned out to Braga. Ailton Silva is a Brazillian footballer who plays for Nautico."
+    "flag": "success",
+    "predicted_answer": "C"
   }
 ]
