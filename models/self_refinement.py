@@ -175,6 +175,22 @@ class SelfRefinementEngine:
                     # open('this')
 
                     full_prompt, grammar = self.parsing_error_prompt[self.dataset_name](nl_error, error, predicates)
+
+                except Exception as e:
+                    print(f'Exception for {example["id"]} for parsing prompt generation: {e}')
+                    revised_program = logic_program
+                    # programs = [revised_program]
+                    output = {'id': example['id'],
+                            'context': example['context'],
+                            'question': example['question'],
+                            'answer': example['answer'],
+                            # 'options': example['options'],
+                            'raw_logic_programs': revised_program,
+                            'predicates': predicates}
+                    outputs.append(output)
+                    continue
+
+                try:
                     if self.refiner:
                         response = self.refiner.invoke(full_prompt, self.task_description_parsing, grammar)
                     else:
@@ -186,7 +202,7 @@ class SelfRefinementEngine:
 
 
                 except Exception as e:
-                    print(f'Exception for {example["id"]} for parsing: {e}')
+                    print(f'Exception for {example["id"]} for parsing response generation: {e}')
                     revised_program = logic_program
 
 
@@ -219,7 +235,7 @@ class SelfRefinementEngine:
 
                     # programs = revised_program
                 except Exception as e:
-                    print(f'Exception for {example["id"]} for execution: {e}')
+                    print(f'Exception for {example["id"]} for execution response: {e}')
                     revised_program = logic_program
 
                 output = {'id': example['id'], 
