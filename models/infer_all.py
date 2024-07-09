@@ -17,12 +17,12 @@ refiners = [
     'mistral-7b-instruct-v0',
     'mixtral-8x7b-instruct-v0',
     # 'Mixtral_8x22B',
-            None
+    None
 ]
 load_dirs = [
-    # 'outputs_1', 
+    'outputs_1', 
     'outputs_2', 
-    # 'outputs_3'
+    'outputs_3'
     ]
 
 def parse_args():
