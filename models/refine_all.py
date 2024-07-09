@@ -21,7 +21,7 @@ refiners = [
     None
 ]
 load_dirs = [
-    'outputs_1',
+    # 'outputs_1',
     'outputs_2',
     'outputs_3'
 ]
