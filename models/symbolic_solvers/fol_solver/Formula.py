@@ -2,7 +2,7 @@ from nltk.tree import Tree
 from .fol_parser import FOL_Parser
 from concurrent.futures import ThreadPoolExecutor, TimeoutError, ProcessPoolExecutor
 import signal
-
+import sys
 # def handler(signum, frame):
 #     raise Exception("Timeout!")
 

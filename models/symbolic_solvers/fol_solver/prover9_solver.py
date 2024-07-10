@@ -87,7 +87,6 @@ class FOL_Prover9_Program:
             # print()
             # print()
             return False, None, None
-
     def execute_program(self):
         try:
             goal = Expression.fromstring(self.prover9_conclusion)
