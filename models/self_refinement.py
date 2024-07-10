@@ -11,6 +11,7 @@ from openai_utils import OpenAIModel
 
 from dotenv import load_dotenv
 
+import traceback
 
 load_dotenv()  # take environment variables from .env.
 api_key = os.getenv("OPENAI_API_KEY")
@@ -163,12 +164,19 @@ class SelfRefinementEngine:
     def single_round_self_refinement(self):
         outputs = []
         for example in tqdm(self.logic_programs):
+
+            if 'skip' in example.keys():
+                if example['skip']:
+                    outputs.append(example)
+                    print(f'Skipped {example["id"]}')
+                    continue
+
             logic_program = example['raw_logic_programs']
             status, error, nl_error = self.safe_execute_program(logic_program)
 
             predicates = example['predicates']
 
-            if status == 'parsing error':
+            if status == 'parsing error' and error and nl_error:
 
                 try:
                     
@@ -178,6 +186,7 @@ class SelfRefinementEngine:
 
                 except Exception as e:
                     print(f'Exception for {example["id"]} for parsing prompt generation: {e}')
+                    print('This sample will be skipped in the next iterations.')
                     revised_program = logic_program
                     # programs = [revised_program]
                     output = {'id': example['id'],
@@ -186,7 +195,8 @@ class SelfRefinementEngine:
                             'answer': example['answer'],
                             # 'options': example['options'],
                             'raw_logic_programs': revised_program,
-                            'predicates': predicates}
+                            'predicates': predicates,
+                              'skip': True}
                     outputs.append(output)
                     continue
 
@@ -213,11 +223,12 @@ class SelfRefinementEngine:
                         'answer': example['answer'],
                         # 'options': example['options'],
                         'raw_logic_programs': revised_program,
-                        'predicates': predicates}
+                        'predicates': predicates,
+                          'skip': False}
                 outputs.append(output)
                 
             # if status != 'success':
-            elif status == 'execution error':
+            elif status == 'execution error' and error:
             # if not error_message == 'No Output': # this is not execution error, but parsing error
                 # perform self-correction based on the error message
                 full_prompt = self.execution_error_prompt[self.dataset_name](logic_program, error)
@@ -236,6 +247,7 @@ class SelfRefinementEngine:
                     # programs = revised_program
                 except Exception as e:
                     print(f'Exception for {example["id"]} for execution response: {e}')
+                    # print(traceback.format_exc())
                     revised_program = logic_program
 
                 output = {'id': example['id'], 
@@ -244,9 +256,16 @@ class SelfRefinementEngine:
                         'answer': example['answer'],
                         # 'options': example['options'],
                         'raw_logic_programs': revised_program,
-                        'predicates': predicates}
+                        'predicates': predicates,
+                          'skip': False}
                 outputs.append(output)
+            elif status == 'success':
+                example.update({'skip':False})
+                outputs.append(example)
+
             else:
+                print(f'Something went wrong with {example["id"]}. This sample will be skipped in the next iterations.')
+                example.update({'skip':True})
                 outputs.append(example)
 
         # save results
