@@ -4,9 +4,9 @@ import argparse
 from logic_inference import LogicInferenceEngine
 
 sketchers = [
-    # 'gpt-3.5-turbo', 
-    'gpt-4-turbo', 
-    # 'gpt-4o'
+    'gpt-3.5-turbo', 
+    # 'gpt-4-turbo', 
+    'gpt-4o'
     ]
 refiners = [
     'llama-2-7b',
