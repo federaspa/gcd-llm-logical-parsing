@@ -49,9 +49,14 @@ def get_backup_answers(samples, backup):
         
     return samples
 
-def partial_evaluation(result_file):
+def partial_evaluation(result_file, backup_file):
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
+        
+    with open(backup_file, 'r') as f:
+        backup_samples = json.load(f)
+
+    all_samples = get_backup_answers(all_samples, {sample['id']: sample for sample in backup_samples})
 
     precision, recall, f1, support = evaluate_metrics(all_samples)
 
@@ -62,12 +67,13 @@ def full_evaluation(result_file, backup_file):
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
         
-    # with open(backup_file, 'r') as f:
-    #     backup_samples = json.load(f)
-
+    with open(backup_file, 'r') as f:
+        backup_samples = json.load(f)
+                
     # all_samples = get_backup_answers(all_samples, {sample['id']: sample for sample in backup_samples})
     
     executable_samples = [sample for sample in all_samples if sample['flag'] == 'success']
+    
     # non_executable_samples = [sample for sample in all_samples if sample['flag'] != 'success']
     
     parsing_errors = [sample for sample in all_samples if sample['flag'] == 'parsing error']
@@ -81,6 +87,14 @@ def full_evaluation(result_file, backup_file):
     print('-'*75)
     print()
     precision, recall, f1, support = evaluate_metrics(all_samples)
+    print("Overall:\n")
+    print(f"Average F1: {f1}")
+    print(f"Average Precision: {precision}")
+    print(f"Average Recall: {recall}")
+    print('-'*75)
+    print()
+    precision, recall, f1, support = evaluate_metrics(executable_samples)
+    print("Executables:\n")
     print(f"Average F1: {f1}")
     print(f"Average Precision: {precision}")
     print(f"Average Recall: {recall}")
@@ -147,7 +161,7 @@ if __name__ == "__main__":
         else:
             result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.sketcher_name}_{args.prompt_mode}.json')
 
-        precision, recall, f1, support = partial_evaluation(result_file)
+        precision, recall, f1, support = full_evaluation(result_file, backup_file)
         precision, recall, f1, support = precision*100, recall*100, f1*100, support
         # evaluate_predicates(result_file)
         precisions.append(precision)
