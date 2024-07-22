@@ -5004,6 +5004,29 @@
     ]
   },
   {
+    "id": 171,
+    "story_id": 0,
+    "context": [
+      "If something is a deadly disease, then its survival rate is low. ",
+      "All severe cancers are deadly diseases.",
+      "Bile duct cancer is a severe cancer. ",
+      "All Cholangiocarcinoma is bile duct cancer.",
+      "No one with mild flu has a low survival rate.",
+      "If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer."
+    ],
+    "context_fol": [
+      "∀x (DeadlyDiseases(x) → SurvivalRateIsLow(x))",
+      "∀x (SevereCancer(x) → DeadlyDiseases(x))",
+      "∀x (BileDuctCancer(x) → SevereCancer(x))",
+      "∀x (Cholangiocarcinoma(x) → BileDuctCancer(x))",
+      "∀x (MildFlu(x) → ¬SurvivalRateIsLow(x)) ",
+      "BileDuctCancer(colorectalCancer) ∨ SurvivalRateIsLow(colorectalCancer) → ¬BileDuctCancer(colorectalCancer)"
+    ],
+    "question": "If colorectal cancer is a bile duct cancer or a Cholangiocarcinoma, then colorectal cancer is a bile duct cancer and a mild flu.",
+    "question_fol": "BileDuctCancer(colorectalCancer) ∨ Cholangiocarcinoma(colorectalCancer) → BileDuctCancer(colorectalCancer) ∧ MildFlu(colorectalCancer)",
+    "answer": "A"
+  },
+  {
     "id": 172,
     "story_id": 61,
     "context": [
