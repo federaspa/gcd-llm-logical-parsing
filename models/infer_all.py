@@ -9,20 +9,20 @@ sketchers = [
     'gpt-4o'
     ]
 refiners = [
-    'llama-2-7b',
-    'llama-2-13b',
-    'upstage-llama-2-70b-instruct-v2',
-    'Meta-Llama-3-8B-Instruct',
-    'Meta-Llama-3-70B-Instruct-v2',
-    'mistral-7b-instruct-v0',
-    'mixtral-8x7b-instruct-v0',
+    'llama-2-7b-finetune',
+    # 'llama-2-13b',
+    # 'upstage-llama-2-70b-instruct-v2',
+    # 'Meta-Llama-3-8B-Instruct',
+    # 'Meta-Llama-3-70B-Instruct-v2',
+    # 'mistral-7b-instruct-v0',
+    # 'mixtral-8x7b-instruct-v0',
     # 'Mixtral_8x22B',
-    None
+    # None
 ]
 load_dirs = [
     'outputs_1', 
-    'outputs_2', 
-    'outputs_3'
+    # 'outputs_2', 
+    # 'outputs_3'
     ]
 
 def parse_args():

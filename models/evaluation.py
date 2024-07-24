@@ -111,7 +111,7 @@ def full_evaluation(result_file, backup_file):
         print('-'*75)
         print()    
     
-    return (precision, recall, f1, support)
+    return precision, recall, f1, support
 
 
 def get_res(metric):
