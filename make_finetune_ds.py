@@ -127,10 +127,15 @@ Predicates:
 {example['PREDICATES']}
 \"\"\"
 ######
-Valid FOL Statement: {example['CORRECT']}
+Valid FOL Statement:
 """
 
-    return f"{system_prompt}\n{user_prompt}"
+    output = {
+        'instruction': system_prompt,
+        'input': user_prompt,
+        'output': example['CORRECT']
+    }
+    return output
 
 def main():
     with open('data/FOLIO/train_original.json', 'r') as f:
@@ -148,7 +153,12 @@ def main():
         json.dump(training_data, f, indent=4, ensure_ascii=False)
         
         
-    training_prompts = '\n<s>'.join([create_prompt(example) for example in training_data])
+    training_prompts = [create_prompt(example) for example in training_data]
+    
+    # Save the prompts as a JSONL file
+    with open('train_finetune_prompts.jsonl', 'w') as f:
+        for prompt in training_prompts:
+            f.write(json.dumps(prompt, ensure_ascii=False) + '\n')
     
     # # Create a DataFrame with prompts and empty responses
     # df = pd.DataFrame({
@@ -159,8 +169,8 @@ def main():
     # # Save the DataFrame as a CSV file
     # df.to_csv('llama2_finetuning_data.csv', index=False)
     
-    with open('train_finetune_prompts.txt', 'w') as f:
-        f.write(training_prompts)
+    # with open('train_finetune_prompts.txt', 'w') as f:
+    #     f.write(training_prompts)
 
         
         
