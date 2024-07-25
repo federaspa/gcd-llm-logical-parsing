@@ -2,9 +2,6 @@ import json
 import os
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
-from symbolic_solvers.pyke_solver.pyke_solver import Pyke_Program
-from symbolic_solvers.csp_solver.csp_solver import CSP_Program
-from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 import argparse
 import random
 
@@ -24,9 +21,7 @@ class LogicInferenceEngine:
         self.ground_truth = self.load_ground_truth()
         
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
-                                'LogicNLI': FOL_Prover9_Program,
-                                'ProntoQA': Pyke_Program, 
-                                'ProofWriter': Pyke_Program}
+                                'LogicNLI': FOL_Prover9_Program}
         self.program_executor = program_executor_map[self.dataset_name]
         
     def load_ground_truth(self):
