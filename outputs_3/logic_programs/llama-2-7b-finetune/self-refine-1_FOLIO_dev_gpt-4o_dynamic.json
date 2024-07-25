@@ -1643,7 +1643,7 @@
     "question": "French is an Indo-European language.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(f) ∧ f(x) ∧ f(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x(Basque(x)→¬(Language(y))) ::: Basque is not related to any other language.\n",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(f) ∧ f(x) ∧ f(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x∃y(Basque(x)→¬Language(y)∧Related(x,y)) ::: Basque is not related to any other language.\n",
       "First-Order-Logic Question": "IndoEuropeanLanguage(french) ::: French is an Indo-European language."
     },
     "predicates": [
@@ -1947,7 +1947,7 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, 42.3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, twenty_seven_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
       "First-Order-Logic Question": "∃x (University(x) ∧ Private(x) ∧ IvyLeague(x) ∧ Research(x) ∧ MoveTo(x, new_haven)) ::: A private Ivy League research university moved to New Haven."
     },
     "predicates": [
@@ -1961,7 +1961,7 @@
       "ResidentialCollege(x) ::: x is a residential college.",
       "ListOfColleges(x, y) ::: x is a list of colleges at y."
     ],
-    "skip": true
+    "skip": false
   },
   {
     "id": 67,
@@ -2006,7 +2006,7 @@
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, 42.3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x (ListOfResidentialColleges(x, yale_university) → ∀y (y ∈ x → ResidentialCollege(y))) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, 42.3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x∀y(ListOfResidentialColleges(x,y)→(¬ResidentialCollege(y))) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
       "First-Order-Logic Question": "ResidentialCollege(pierson_college) ::: Pierson College is a residential college at Yale."
     },
     "predicates": [
@@ -2024,7 +2024,7 @@
       "ListOfResidentialColleges(x, y) ::: x is a list of residential colleges at y.",
       "At(x, y) ::: x is at y."
     ],
-    "skip": true
+    "skip": false
   },
   {
     "id": 69,
@@ -3564,7 +3564,8 @@
         "LocatedIn(barutincove, southwestcoastofsnowisland) ::: Barutin Cove is on the southwest coast of Snow Island.",
         "Include(southshetlandislands, snowisland) ∧ Include(southshetlandislands, greenwichisland) ∧ Include(southshetlandislands, deceptionisland) ::: The South Shetland Islands include Snow Island, Greenwich Island, and Deception Island.",
         "PartOf(southshetlandislands, antarctica) ::: The South Shetland Islands are considered part of Antarctica.",
-        "∀x ∀y ∀z (LocatedIn(x, y) ∧ LocatedIn(y, z) → LocatedIn(x, z)) ::: If A is located in B and B is located in C, then A is located in C."
+        "LocatedIn(snowisland, southshetlandislands) ::: Snow Island is located in the South Shetland Islands.",
+        "LocatedIn(southshetlandislands, antarctica) ::: The South Shetland Islands are located in Antarctica."
       ],
       "First-Order-Logic Question": [
         "¬LocatedIn(barutin, antarctica) ::: Barutin is not located in Antarctica."
@@ -4869,7 +4870,7 @@
         "¬RealityTV(BreakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ In(BreakingBad, x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
+        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ IsBreakingBad(x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
       ]
     },
     "predicates": [
@@ -4905,7 +4906,7 @@
         "¬RealityTV(BreakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "∀x (GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ Show(BreakingBad, x) → Monday8pm(x)) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
+        "∀x (GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ Show(BreakingBad) → Monday8pm(x)) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
       ]
     },
     "predicates": [
@@ -5384,7 +5385,7 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "Novel(family_Secrets) ::: Family Secrets is a novel."
     },
     "predicates": [

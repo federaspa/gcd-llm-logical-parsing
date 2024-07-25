@@ -1408,7 +1408,7 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": [
-        "∀x(Season(x) ∧ IsSpring(x) ∧ IsSummer(x) ∧ IsFall(x)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
+        "∀x(Season(x)∧Season(y)∧Season(z)∧Season(x)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter.",
         "∀x (Student(x) ∧ WantLongVacation(x) → LoveMost(x, Summer)) ::: All students who want to have a long vacation love summer the most.",
         "FavoriteSeason(emma, Summer) ::: Emma's favorite season is summer.",
         "∀x (FavoriteSeason(mia, x) → ¬FavoriteSeason(mia, Summer)) ::: Mia's favorite season is not the same as Emma's.",
@@ -1441,7 +1441,7 @@
     "question": "James's favorite season is fall.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x(Season(x)∧Spring(x)∧Summer(x)∧Fall(x)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (WantsLongVacation(x) → ∃y (LovesMost(x, y) ∧ Summer(y))) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, y) ∧ Summer(y) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, z) → ¬FavoriteSeason(mia, y)) ∧ FavoriteSeason(emma, y) ::: Mia's favorite season is not the same as Emma's. \nWantsLongVacation(james) ::: James wants to have a long vacation.\n",
+      "First-Order-Logic Rules": "∀x(Season(x)∧Season(y)∧Season(z)∧Season(x)) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (WantsLongVacation(x) → ∃y (LovesMost(x, y) ∧ Summer(y))) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, y) ∧ Summer(y) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, z) → ¬FavoriteSeason(mia, y)) ∧ FavoriteSeason(emma, y) ::: Mia's favorite season is not the same as Emma's. \nWantsLongVacation(james) ::: James wants to have a long vacation.\n",
       "First-Order-Logic Question": "FavoriteSeason(james, z) ∧ Fall(z) ::: James's favorite season is fall."
     },
     "predicates": [
@@ -1587,7 +1587,7 @@
     "question": "Basque is a Romance language.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(romanceLanguages) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x (BasqueLanguage(x) → ¬Related(x, y)) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(f) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x∃y¬Related(x,y) ::: Basque is not related to any other language.\n",
       "First-Order-Logic Question": "RomanceLanguage(basque) ::: Basque is a Romance language."
     },
     "predicates": [
@@ -1615,7 +1615,7 @@
     "question": "German is a Romance language.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y ∀z (LanguageFamily(z) ∧ z(x) ∧ z(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\n¬RomanceLanguage(german) ∧ Related(german, spanish) ::: German is not a Romance language but is related to Spanish.\n∀x(Basque(x)→¬(Related(x,y))) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y ∀z (LanguageFamily(z) ∧ z(x) ∧ z(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\n∀x ∃y ¬Related(x,y) ::: Basque is not related to any other language.",
       "First-Order-Logic Question": "RomanceLanguage(german) ::: German is a Romance language."
     },
     "predicates": [
@@ -1643,7 +1643,7 @@
     "question": "French is an Indo-European language.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(romanceLanguages) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x ∃y (Basque(x) → ¬Language(y) ∧ ¬Related(x, y)) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(f) ∧ f(x) ∧ f(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x ∃y ¬(Language(y) ∧ Related(x,y)) ::: Basque is not related to any other language.",
       "First-Order-Logic Question": "IndoEuropeanLanguage(french) ::: French is an Indo-European language."
     },
     "predicates": [
@@ -1947,7 +1947,7 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, twenty_seven_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, twenty_seven_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.",
       "First-Order-Logic Question": "∃x (University(x) ∧ Private(x) ∧ IvyLeague(x) ∧ Research(x) ∧ MoveTo(x, new_haven)) ::: A private Ivy League research university moved to New Haven."
     },
     "predicates": [
@@ -2006,7 +2006,7 @@
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x∀y(ListOfResidentialColleges(x,y)→(ResidentialCollege(y))) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, 42_3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x∀y(ListOfResidentialColleges(x,y)→ResidentialCollege(y)) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
       "First-Order-Logic Question": "ResidentialCollege(pierson_college) ::: Pierson College is a residential college at Yale."
     },
     "predicates": [
@@ -2076,7 +2076,7 @@
         "ScriptEditor(andrewcollins, badults) ::: Andrew Collins was the script editor for Badults."
       ],
       "First-Order-Logic Question": [
-        "∀x∃y(MemberOf(x,y)→¬(Star(x,y))) ::: No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
+        "∀x∃y¬(Star(x,y)∧OnChannel(y,y)) ::: No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
       ]
     },
     "predicates": [
@@ -2690,7 +2690,7 @@
       "First-Order-Logic Rules": [
         "∃x (Pet(x) ∧ ManagedBuilding(y) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.",
         "∀x (ManagedBuilding(x) → DepositRequired(x)) ::: A deposit is required to rent an apartment in a managed building.",
-        "∀x∀y(SecurityDeposit(x,y)→(EqualTo(y,x))) ::: The security deposit can be either equal to one month's rent or more.",
+        "∀x∀ySecurityDeposit(x,y)→(EqualTo(y,x)∨MoreThan(y,x)) ::: The security deposit can be either equal to one month's rent or more.",
         "Owns(tom, fluffy) ∧ Cat(fluffy) ::: Fluffy is Tom's cat.",
         "∀x (Cat(x) → Pet(x)) ::: Cats are pets.",
         "ManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.",
@@ -2737,7 +2737,7 @@
       "First-Order-Logic Rules": [
         "∃x (ManagedBuilding(x) ∧ AllowedIn(pet, x)) ::: Pets are allowed in some managed buildings.",
         "∀x (ManagedBuilding(x) → DepositRequired(x)) ::: A deposit is required to rent an apartment in a managed building.",
-        "∀x∀y(SecurityDeposit(x,y)→(EqualOrMore(y,x))) ::: The security deposit can be either equal to one month's rent or more.",
+        "∀x∀ySecurityDeposit(x,y)→(EqualOrMore(y,x)∨EqualOrMore(y,x)) ::: The security deposit can be either equal to one month's rent or more.",
         "Cat(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.",
         "∀x (Cat(x) → Pet(x)) ::: Cats are pets.",
         "ManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.",
@@ -2783,12 +2783,12 @@
       "First-Order-Logic Rules": [
         "∃x (Pet(x) ∧ ManagedBuilding(y) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.",
         "∀x (ManagedBuilding(x) → DepositRequired(x)) ::: A deposit is required to rent an apartment in a managed building.",
-        "∀x∀y(SecurityDeposit(x,y)→EqualOrMore(y,y)) ::: The security deposit can be either equal to one month's rent or more.",
+        "∀x∀y(SecurityDeposit(x,y)→EqualOrMore(y,x)) ::: The security deposit can be either equal to one month's rent or more.",
         "Cat(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.",
         "∀x (Cat(x) → Pet(x)) ::: Cats are pets.",
         "ManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.",
         "MonthlyRent(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.",
-        "∀x∀y(Owner(x,y)∧Pet(y)∧ManagedBuilding(z)∧AllowedIn(y,z)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "∀x∀y∃z∀yOwner(x,y)∧Pet(y)∧ManagedBuilding(z)∧AllowedIn(y,z)∧SecurityDeposit(z,y)∧(SecurityDep ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
         "EqualOrMore(2000, 1500) ::: 2000$ is more than $1500."
       ],
       "First-Order-Logic Question": [
@@ -3155,7 +3155,7 @@
     "question": "There is no financial aid available for the GRE test.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x(Applicant(x)∧Prove(x,y)∧EconomicHardship(x)→FinancialAid(x,y)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (TooLittleMoney(x) ∨ TooFewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nLiveIn(tom, singleparentfamily) ::: Tom lives in a single-parent family.\n∀x (SingleParentFamily(x) → ∃y (Dad(y, x) ∧ OutOfWork(y))) ::: His dad has been out of work for more than a year.\n",
+      "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x (Applicant(x) ∧ Prove(x, EconomicHardship) → FinancialAid(ets, x)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (TooLittleMoney(x) ∨ TooFewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nLiveIn(tom, singleparentfamily) ::: Tom lives in a single-parent family.\n∀x (SingleParentFamily(x) → ∃y (Dad(y, x) ∧ OutOfWork(y))) ::: His dad has been out of work for more than a year.",
       "First-Order-Logic Question": "¬∃x (FinancialAid(ets, x)) ::: There is no financial aid available for the GRE test."
     },
     "predicates": [
@@ -3564,8 +3564,7 @@
         "LocatedIn(barutincove, southwestcoastofsnowisland) ::: Barutin Cove is on the southwest coast of Snow Island.",
         "Include(southshetlandislands, snowisland) ∧ Include(southshetlandislands, greenwichisland) ∧ Include(southshetlandislands, deceptionisland) ::: The South Shetland Islands include Snow Island, Greenwich Island, and Deception Island.",
         "PartOf(southshetlandislands, antarctica) ::: The South Shetland Islands are considered part of Antarctica.",
-        "LocatedIn(snowisland, southshetlandislands) ::: Snow Island is located in the South Shetland Islands.",
-        "LocatedIn(southshetlandislands, antarctica) ::: The South Shetland Islands are located in Antarctica."
+        "∀x ∀y ∀z (LocatedIn(x, y) ∧ LocatedIn(y, z) → LocatedIn(x, z)) ::: If A is located in B and B is located in C, then A is located in C."
       ],
       "First-Order-Logic Question": [
         "¬LocatedIn(barutin, antarctica) ::: Barutin is not located in Antarctica."
@@ -3613,7 +3612,7 @@
     "question": "Greyhound is an airline.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬(Greyhound(y) ∧ Plane(y)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
+      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬(Greyhound(greyhound) ∧ Plane(greyhound)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
       "First-Order-Logic Question": "Airline(greyhound) ::: Greyhound is an airline."
     },
     "predicates": [
@@ -3638,7 +3637,7 @@
     "question": "A Greyhound is a Boeing 707.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬(Greyhound(y) ∧ Plane(y)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes.\n¬Airline(greyhound) → ¬(Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
       "First-Order-Logic Question": "Boeing707(greyhound) ::: A Greyhound is a Boeing 707."
     },
     "predicates": [
@@ -3663,7 +3662,7 @@
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\nPlane(boeing707) ::: Boeing 707 is a plane.\n¬Airline(x) → ¬(Greyhound(y) ∧ Plane(y)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+      "First-Order-Logic Rules": "∀x (TransportMultiplePassengers(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty.\n∀x (Airline(x) → TransportMultiplePassengers(x)) ::: All airlines can transport multiple passengers.\n∀x (Plane(x) → Empty(x)) ::: All planes are empty.\nPlane(boeing707) ::: Boeing 707 is a plane.\n¬Airline(x) → ¬(Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
       "First-Order-Logic Question": "¬Greyhound(boeing707) ::: A Greyhound is not a Boeing 707."
     },
     "predicates": [
@@ -4088,7 +4087,7 @@
     "answer": "B",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (MLAlgorithm(x) → (Supervised(x) ∨ Unsupervised(x) ∨ Reinforcement(x))) ::: Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.\n∀x (Unsupervised(x) → ¬RequireLabelledData(x)) ::: Unsupervised learning doesn't require labelled data.\n∀x (StateOfTheArtModel(x) → ∃y (MLAlgorithm(y) ∧ Train(y, x))) ::: The state-of-the-art text summarization model is trained with machine learning algorithms.\n∀x (Reinforcement(x) → ¬Train(x, stateOfTheArtModel)) ::: Reinforcement learning is not used to train the state-of-the-art text summarization model.\n∀x (Train(x, stateOfTheArtModel) → RequireLabelledData(x)) ::: The Machine Learning algorithm for training text summarization model requires labelled data.\n",
-      "First-Order-Logic Question": "Train(unsupervisedLearning, stateOfTheArtModel) ::: Unsupervised learning is used to train the state-of-the-art text summarization model."
+      "First-Order-Logic Question": "Train(unsupervised, stateOfTheArtModel) ::: Unsupervised learning is used to train the state-of-the-art text summarization model."
     },
     "predicates": [
       "MLAlgorithm(x) ::: x is a machine learning algorithm.",
@@ -4206,7 +4205,7 @@
     "answer": "A",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (BreedingBack(x) → ArtificiallySelected(x)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nBredBack(heck_cattle, aurochs) ∧ Resemble(heck_cattle, aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heck_cattle) ::: Heck cattle are animals.\nAnimal(aurochs) ::: Aurochs are animals.\n∃x (Animal(x) ∧ ∃y (Animal(y) ∧ Extinct(y) ∧ Resemble(x, y))) ::: Some animals to be bred-back resemble animals that are extinct.\n",
-      "First-Order-Logic Question": "∃x(Animal(x)∧ArtificiallySelected(x)∧(Animal(x))) ::: Some Heck cattle are artificially selected."
+      "First-Order-Logic Question": "∃x(Animal(x)∧ArtificiallySelected(x)∧Resemble(x,y)) ::: Some Heck cattle are artificially selected."
     },
     "predicates": [
       "BreedingBack(x) ::: x is a form of artificial selection by deliberate selective breeding.",
@@ -4870,7 +4869,7 @@
         "¬RealityTV(BreakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ IsBreakingBad(x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
+        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ In(BreakingBad, x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
       ]
     },
     "predicates": [
@@ -5353,7 +5352,7 @@
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nWriter(dani_Shapiro) ∧ American(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ::: Family History is a novel.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nWriter(dani_Shapiro) ∧ American(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ::: Family History is a novel.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "NovelWriter(dani_Shapiro) ::: Dani Shapiro is a novel writer."
     },
     "predicates": [
@@ -5417,7 +5416,7 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in American City, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreatedBy(family_Secrets, dani_Shapiro) ∧ Podcast(family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreatedBy(family_Secrets, dani_Shapiro) ∧ Podcast(family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "BornIn(dani_Shapiro, boston) ::: Dani Shapiro was born in Boston."
     },
     "predicates": [

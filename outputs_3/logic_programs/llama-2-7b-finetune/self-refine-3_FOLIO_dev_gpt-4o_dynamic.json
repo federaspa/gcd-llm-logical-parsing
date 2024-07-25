@@ -1587,7 +1587,7 @@
     "question": "Basque is a Romance language.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(romanceLanguages) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\n∀x ∀y (BasqueLanguage(x) ∧ Language(y) → ¬Related(x, y)) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(romanceLanguages) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x (BasqueLanguage(x) → ¬Related(x, y)) ::: Basque is not related to any other language.",
       "First-Order-Logic Question": "RomanceLanguage(basque) ::: Basque is a Romance language."
     },
     "predicates": [
@@ -1615,7 +1615,7 @@
     "question": "German is a Romance language.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All Romance languages are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x(Basque(x)→¬(Related(x,y))) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y ∀z (LanguageFamily(z) ∧ z(x) ∧ z(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\n¬RomanceLanguage(german) ∧ Related(german, spanish) ::: German is not a Romance language but is related to Spanish.\n∀x ∀y (Basque(x) → ¬Related(x, y)) ::: Basque is not related to any other language.",
       "First-Order-Logic Question": "RomanceLanguage(german) ::: German is a Romance language."
     },
     "predicates": [
@@ -1643,7 +1643,7 @@
     "question": "French is an Indo-European language.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(f) ∧ f(x) ∧ f(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x (Basque(x) → ¬Related(x, y)) ::: Basque is not related to any other language.",
+      "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(romanceLanguages) ∧ RomanceLanguage(x) ∧ RomanceLanguage(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x ∃y (Basque(x) → ¬Language(y) ∧ ¬Related(x, y)) ::: Basque is not related to any other language.",
       "First-Order-Logic Question": "IndoEuropeanLanguage(french) ::: French is an Indo-European language."
     },
     "predicates": [
@@ -1947,7 +1947,7 @@
     "question": "A private Ivy League research university moved to New Haven.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, 42.3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven) ∧ Year(1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, twenty_seven_constituent_colleges_and_schools) ∧ ResidentialColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nListOfColleges(yale_university, [benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
       "First-Order-Logic Question": "∃x (University(x) ∧ Private(x) ∧ IvyLeague(x) ∧ Research(x) ∧ MoveTo(x, new_haven)) ::: A private Ivy League research university moved to New Haven."
     },
     "predicates": [
@@ -1961,7 +1961,7 @@
       "ResidentialCollege(x) ::: x is a residential college.",
       "ListOfColleges(x, y) ::: x is a list of colleges at y."
     ],
-    "skip": true
+    "skip": false
   },
   {
     "id": 67,
@@ -2006,7 +2006,7 @@
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, 42.3_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x (ListOfResidentialColleges(x, yale_university) → ∀y (y ∈ x → ResidentialCollege(y))) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
+      "First-Order-Logic Rules": "University(yale_university) ∧ Private(yale_university) ∧ IvyLeague(yale_university) ∧ Research(yale_university) ::: Yale University is a private Ivy League research university.\nMoveTo(yale_university, new_haven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowment(yale_university, forty_two_point_three_billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganizedInto(yale_university, 27_constituent_colleges_and_schools) ::: Yale University has been organized into 27 constituent colleges and schools.\nListOfResidentialColleges([benjamin_franklin_college, berkeley_college, branford_college, davenport_college, ezra_stiles_college, grace_hopper_college, jonathan_edwards_college, morse_college, pauli_murray_college, pierson_college, saybrook_college, silliman_college, timothy_dwight_college, trumbull_college], yale_university) ::: A list of residential colleges at Yale.\n∀x∀y(ListOfResidentialColleges(x,y) → (ResidentialCollege(y))) ::: All colleges in the list of residential colleges at Yale are residential colleges.\n",
       "First-Order-Logic Question": "ResidentialCollege(pierson_college) ::: Pierson College is a residential college at Yale."
     },
     "predicates": [
@@ -2024,7 +2024,7 @@
       "ListOfResidentialColleges(x, y) ::: x is a list of residential colleges at y.",
       "At(x, y) ::: x is at y."
     ],
-    "skip": true
+    "skip": false
   },
   {
     "id": 69,
@@ -2460,7 +2460,7 @@
     "question": "Subway provides take-out service and does not receive many negative reviews.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (ListedInYelp(x) → ¬NegativeReviews(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.\n∀x (RatingGreaterThan9(x) → ListedInYelp(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.\n∃x (¬TakeOutService(x) ∧ NegativeReviews(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.\n∀x (Popular(x) → RatingGreaterThan9(x)) ::: All restaurants that are popular among local residents have ratings greater than 9.\nSubway(subway) ∧ (RatingGreaterThan9(subway) ∨ Popular(subway)) ::: Subway has a rating greater than 9 or is popular among local residents.\n",
+      "First-Order-Logic Rules": "∀x (ListedInYelp(x) → ¬NegativeReviews(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.\n∀x (RatingGreaterThan9(x) → ListedInYelp(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.\n∃x (¬TakeOutService(x) ∧ NegativeReviews(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.\n∀x (Popular(x) → RatingGreaterThan9(x)) ::: All restaurants that are popular among local residents have ratings greater than 9.\nSubway(subway) ∧ (RatingGreaterThan9(subway) ∨ Popular(subway)) ::: Subway has a rating greater than 9 or is popular among local residents.",
       "First-Order-Logic Question": "TakeOutService(subway) ∧ ¬NegativeReviews(subway) ::: Subway provides take-out service and does not receive many negative reviews."
     },
     "predicates": [
@@ -2636,7 +2636,7 @@
     "question": "Machine translation is a language generation task.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (NLPTask(x) → (LanguageGenerationTask(x) ∨ LanguageUnderstandingTask(x))) ::: Natural language processing tasks can be categorized as either language generation task or language understanding task.\n∀x (OutputTextSequence(x) → LanguageGenerationTask(x)) ::: If the output of a natural language processing task is a text sequence, then it is a language generation task.\nNLPTask(machineTranslation) ∧ MachineTranslation(machineTranslation) ::: Machine translation is a natural language processing task.\nOutputTextSequence(machineTranslation) ::: The output of machine translation is a text sequence.\n",
+      "First-Order-Logic Rules": "∀x (NLPTask(x) → (LanguageGenerationTask(x) ∨ LanguageUnderstandingTask(x))) ::: Natural language processing tasks can be categorized as either language generation task or language understanding task.\n∀x (OutputTextSequence(x) → LanguageGenerationTask(x)) ::: If the output of a natural language processing task is a text sequence, then it is a language generation task.\nNLPTask(machineTranslation) ∧ MachineTranslation(machineTranslation) ::: Machine translation is a natural language processing task.\nOutputTextSequence(machineTranslation) ::: The output of machine translation is a text sequence.",
       "First-Order-Logic Question": "LanguageGenerationTask(machineTranslation) ::: Machine translation is a language generation task."
     },
     "predicates": [
@@ -2660,7 +2660,7 @@
     "answer": "B",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (NLPTask(x) → (LanguageGeneration(x) ⊕ LanguageUnderstanding(x))) ::: Natural language processing tasks can be categorized as either language generation task or language understanding task.\n∀x (OutputText(x) → LanguageGeneration(x)) ::: If the output of a natural language processing task is a text sequence, then it is a language generation task.\nNLPTask(machineTranslation) ∧ MachineTranslation(machineTranslation) ::: Machine translation is a natural language processing task.\nOutputText(machineTranslation) ::: The output of machine translation is a text sequence.",
-      "First-Order-Logic Question": "LanguageUnderstanding(machineTranslation) ::: Machine translation is a language understanding task."
+      "First-Order-Logic Question": "LanguageGeneration(machineTranslation) ::: Machine translation is a language generation task."
     },
     "predicates": [
       "NLPTask(x) ::: x is a natural language processing task.",
@@ -3564,7 +3564,8 @@
         "LocatedIn(barutincove, southwestcoastofsnowisland) ::: Barutin Cove is on the southwest coast of Snow Island.",
         "Include(southshetlandislands, snowisland) ∧ Include(southshetlandislands, greenwichisland) ∧ Include(southshetlandislands, deceptionisland) ::: The South Shetland Islands include Snow Island, Greenwich Island, and Deception Island.",
         "PartOf(southshetlandislands, antarctica) ::: The South Shetland Islands are considered part of Antarctica.",
-        "∀x ∀y ∀z (LocatedIn(x, y) ∧ LocatedIn(y, z) → LocatedIn(x, z)) ::: If A is located in B and B is located in C, then A is located in C."
+        "LocatedIn(snowisland, southshetlandislands) ::: Snow Island is located in the South Shetland Islands.",
+        "LocatedIn(southshetlandislands, antarctica) ::: The South Shetland Islands are located in Antarctica."
       ],
       "First-Order-Logic Question": [
         "¬LocatedIn(barutin, antarctica) ::: Barutin is not located in Antarctica."
@@ -4086,8 +4087,8 @@
     "question": "Unsupervised learning is used to train the state-of-the-art text summarization model.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "∀x (MLAlgorithm(x) → (Supervised(x) ∨ Unsupervised(x) ∨ Reinforcement(x))) ::: Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.\n∀x (Unsupervised(x) → ¬RequireLabelledData(x)) ::: Unsupervised learning doesn't require labelled data.\n∀x (StateOfTheArtModel(x) → ∃y (MLAlgorithm(y) ∧ Train(y, x))) ::: The state-of-the-art text summarization model is trained with machine learning algorithms.\n∀x (Reinforcement(x) → ¬Train(x, stateOfTheArtModel)) ::: Reinforcement learning is not used to train the state-of-the-art text summarization model.\n∀x (Train(x, stateOfTheArtModel) → RequireLabelledData(x)) ::: The Machine Learning algorithm for training text summarization model requires labelled data.\nIsStateOfTheArtModel(stateOfTheArtModel) ::: There exists a state-of-the-art text summarization model.",
-      "First-Order-Logic Question": "Train(unsupervisedAlgorithm, stateOfTheArtModel) ::: Unsupervised learning is used to train the state-of-the-art text summarization model."
+      "First-Order-Logic Rules": "∀x (MLAlgorithm(x) → (Supervised(x) ∨ Unsupervised(x) ∨ Reinforcement(x))) ::: Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.\n∀x (Unsupervised(x) → ¬RequireLabelledData(x)) ::: Unsupervised learning doesn't require labelled data.\n∀x (StateOfTheArtModel(x) → ∃y (MLAlgorithm(y) ∧ Train(y, x))) ::: The state-of-the-art text summarization model is trained with machine learning algorithms.\n∀x (Reinforcement(x) → ¬Train(x, stateOfTheArtModelInstance)) ::: Reinforcement learning is not used to train the state-of-the-art text summarization model.\n∀x (Train(x, stateOfTheArtModelInstance) → RequireLabelledData(x)) ::: The Machine Learning algorithm for training text summarization model requires labelled data.\nStateOfTheArtModel(stateOfTheArtModelInstance) ::: There exists a state-of-the-art text summarization model instance.",
+      "First-Order-Logic Question": "Train(unsupervisedLearning, stateOfTheArtModelInstance) ::: Unsupervised learning is used to train the state-of-the-art text summarization model."
     },
     "predicates": [
       "MLAlgorithm(x) ::: x is a machine learning algorithm.",
@@ -4869,7 +4870,7 @@
         "¬RealityTV(BreakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ In(BreakingBad, x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
+        "TVShow(BreakingBad) ∧ ∃x (Monday8pm(x) ∧ GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ IsBreakingBad(x)) ::: Breaking Bad is a TV show in which roses are given out on Monday at 8 pm."
       ]
     },
     "predicates": [
@@ -4905,7 +4906,7 @@
         "¬RealityTV(BreakingBad) ::: Breaking Bad is not a reality TV show."
       ],
       "First-Order-Logic Question": [
-        "∀x (GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ Show(BreakingBad, x) → Monday8pm(x)) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
+        "∀x (GivenOut(x) ∧ OnTV(x) ∧ Rose(x) ∧ Show(BreakingBad) → Monday8pm(x)) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
       ]
     },
     "predicates": [
@@ -5352,7 +5353,7 @@
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nWriter(dani_Shapiro) ∧ American(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ::: Family History is a novel.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nWriter(dani_Shapiro) ∧ American(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ::: Family History is a novel.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "NovelWriter(dani_Shapiro) ::: Dani Shapiro is a novel writer."
     },
     "predicates": [
@@ -5384,7 +5385,7 @@
     "question": "Family Secrets is a novel.",
     "answer": "B",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreated(dani_Shapiro, family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "Novel(family_Secrets) ::: Family Secrets is a novel."
     },
     "predicates": [
@@ -5416,7 +5417,7 @@
     "question": "Dani Shapiro was born in Boston.",
     "answer": "C",
     "raw_logic_programs": {
-      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in American City, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreatedBy(family_Secrets, dani_Shapiro) ∧ Podcast(family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.\n",
+      "First-Order-Logic Rules": "¬(Podcast(x) ∧ Novel(x)) ::: A podcast is not a novel.\n∀x ∀y (BornIn(x, y) ∧ AmericanCity(y) → American(x)) ::: If a person is born in an American city, the person is American.\n∀x ∀y (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y)) ::: If a book is a novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ∧ Writer(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ WrittenIn(family_History, 2003) ::: Family History is a novel written in 2003.\nCreatedBy(family_Secrets, dani_Shapiro) ∧ Podcast(family_Secrets) ::: Dani Shapiro created a podcast called Family Secrets.\nAmericanCity(boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "BornIn(dani_Shapiro, boston) ::: Dani Shapiro was born in Boston."
     },
     "predicates": [

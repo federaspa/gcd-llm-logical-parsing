@@ -5,12 +5,14 @@ import sys
 from self_refinement import SelfRefinementEngine, GrammarConstrainedModel
 
 sketchers = [
-    # 'gpt-3.5-turbo',
+    'gpt-3.5-turbo',
     # 'gpt-4-turbo',
     'gpt-4o'
 ]
 refiners = [
+    # 'GCD/llms/llama-2-7b.Q6_K.gguf',
     'GCD/llms/llama-2-7b-finetune.gguf',
+    'GCD/llms/llama-2-13b-finetune.gguf',
     # 'GCD/llms/llama-2-13b.Q6_K.gguf',
     # 'GCD/llms/upstage-llama-2-70b-instruct-v2.Q6_K.gguf',
     # 'GCD/llms/Meta-Llama-3-8B-Instruct.Q6_K.gguf',
@@ -21,8 +23,8 @@ refiners = [
     # None
 ]
 load_dirs = [
-    # 'outputs_1_finetune',
-    # 'outputs_2',
+    'outputs_1',
+    'outputs_2',
     'outputs_3'
 ]
 
