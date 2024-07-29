@@ -10,12 +10,13 @@ sketchers = [
     'gpt-4o'
 ]
 refiners = [
-    # 'GCD/llms/llama-2-7b.Q6_K.gguf',
+    'GCD/llms/llama-2-7b.Q6_K.gguf',
     'GCD/llms/llama-2-7b-finetune.gguf',
     'GCD/llms/llama-2-13b-finetune.gguf',
-    # 'GCD/llms/llama-2-13b.Q6_K.gguf',
+    'GCD/llms/llama-2-13b.Q6_K.gguf',
     # 'GCD/llms/upstage-llama-2-70b-instruct-v2.Q6_K.gguf',
-    # 'GCD/llms/Meta-Llama-3-8B-Instruct.Q6_K.gguf',
+    'GCD/llms/llama-3-8b-finetune.gguf',
+    'GCD/llms/Meta-Llama-3-8B-Instruct.Q6_K.gguf',
     # 'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
     # 'GCD/llms/mistral-7b-instruct-v0.2.Q6_K.gguf',
     # 'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf',
@@ -54,7 +55,7 @@ if __name__ == '__main__':
                     args.refiner_path = refiner_path
                     args.load_dir = load_dir
 
-                    starting_round = 1
+                    starting_round = 4
 
 
                     if args.refiner_path:
