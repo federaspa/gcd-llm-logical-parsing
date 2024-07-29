@@ -10,15 +10,15 @@ sketchers = [
     'gpt-4o'
 ]
 refiners = [
-    'GCD/llms/llama-2-7b.Q6_K.gguf',
+    'GCD/llms/llama-2-7b.gguf',
     'GCD/llms/llama-2-7b-finetune.gguf',
+    'GCD/llms/llama-2-13b.gguf',
     'GCD/llms/llama-2-13b-finetune.gguf',
-    'GCD/llms/llama-2-13b.Q6_K.gguf',
     # 'GCD/llms/upstage-llama-2-70b-instruct-v2.Q6_K.gguf',
+    'GCD/llms/llama-3-8b.gguf',
     'GCD/llms/llama-3-8b-finetune.gguf',
-    'GCD/llms/Meta-Llama-3-8B-Instruct.Q6_K.gguf',
     # 'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
-    # 'GCD/llms/mistral-7b-instruct-v0.2.Q6_K.gguf',
+    'GCD/llms/mistral-7b.gguf',
     # 'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf',
     # 'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
     # None
@@ -37,13 +37,17 @@ def parse_args():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--n_gpu_layers', type=int)
-    parser.add_argument('--gcd', action='store_true', default=True)
+    parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
     return args
 
 
 if __name__ == '__main__':
     args = parse_args()
+
+    if not args.gcd:
+        print('No GCD')
+
     for load_dir in load_dirs:
         for sketcher in sketchers:
             for refiner_path in refiners:
@@ -55,7 +59,7 @@ if __name__ == '__main__':
                     args.refiner_path = refiner_path
                     args.load_dir = load_dir
 
-                    starting_round = 4
+                    starting_round = 1
 
 
                     if args.refiner_path:
