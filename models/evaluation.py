@@ -161,7 +161,7 @@ if __name__ == "__main__":
         else:
             result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.sketcher_name}_{args.prompt_mode}.json')
 
-        precision, recall, f1, support = full_evaluation(result_file, backup_file)
+        precision, recall, f1, support = partial_evaluation(result_file, backup_file)
         precision, recall, f1, support = precision*100, recall*100, f1*100, support
         # evaluate_predicates(result_file)
         precisions.append(precision)
