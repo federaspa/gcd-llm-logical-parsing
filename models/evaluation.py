@@ -49,14 +49,15 @@ def get_backup_answers(samples, backup):
         
     return samples
 
-def partial_evaluation(result_file, backup_file):
+def partial_evaluation(result_file, backup_file, use_backup):
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
         
-    with open(backup_file, 'r') as f:
-        backup_samples = json.load(f)
+    if use_backup:
+        with open(backup_file, 'r') as f:
+            backup_samples = json.load(f)
 
-    all_samples = get_backup_answers(all_samples, {sample['id']: sample for sample in backup_samples})
+        all_samples = get_backup_answers(all_samples, {sample['id']: sample for sample in backup_samples})
 
     precision, recall, f1, support = evaluate_metrics(all_samples)
 
@@ -131,6 +132,7 @@ def parse_args():
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument("--load_dir", type=str, default=None)
     parser.add_argument("--refiner_name", type=str, default=None)
+    parser.add_argument("--use_backup", action='store_true' ,default=False)
     args = parser.parse_args()
     return args
 
@@ -161,7 +163,7 @@ if __name__ == "__main__":
         else:
             result_file = os.path.join(result_path, f'{args.dataset_name}_{args.split}_{args.sketcher_name}_{args.prompt_mode}.json')
 
-        precision, recall, f1, support = partial_evaluation(result_file, backup_file)
+        precision, recall, f1, support = partial_evaluation(result_file, backup_file, use_backup=args.use_backup)
         precision, recall, f1, support = precision*100, recall*100, f1*100, support
         # evaluate_predicates(result_file)
         precisions.append(precision)
