@@ -168,7 +168,7 @@ class SelfRefinementEngine:
             if 'skip' in example.keys():
                 if example['skip']:
                     outputs.append(example)
-                    print(f'Skipped {example["id"]}')
+                    # print(f'Skipped {example["id"]}')
                     continue
 
             logic_program = example['raw_logic_programs']
@@ -260,7 +260,7 @@ class SelfRefinementEngine:
                           'skip': False}
                 outputs.append(output)
             elif status == 'success':
-                example.update({'skip':False})
+                example.update({'skip':True})
                 outputs.append(example)
 
             else:
