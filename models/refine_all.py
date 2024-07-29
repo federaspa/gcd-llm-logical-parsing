@@ -36,6 +36,7 @@ def parse_args():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--n_gpu_layers', type=int)
+    parser.add_argument('--gcd', action='store_true', default=True)
     args = parser.parse_args()
     return args
 
@@ -51,8 +52,6 @@ if __name__ == '__main__':
                 try:
                     args.sketcher_name = sketcher
                     args.refiner_path = refiner_path
-                    # args.predicates_path = os.path.join(output_dir, 'logic_predicates')
-                    # args.programs_path = os.path.join(output_dir, 'logic_programs')
                     args.load_dir = load_dir
 
                     starting_round = 1
@@ -60,15 +59,12 @@ if __name__ == '__main__':
 
                     if args.refiner_path:
 
-                        # print(f"Using refiner model from {args.refiner_path}.")
-
                         refiner=GrammarConstrainedModel(
                             refiner_path=args.refiner_path,
                             n_gpu_layers=args.n_gpu_layers,
                         )
                     else:
 
-                        # print(f"Using OpenAI model {args.sketcher_name} as refiner.")
                         refiner=None
 
                     for round in range(starting_round, args.maximum_rounds+1):

@@ -865,13 +865,8 @@
     "question": "Djokovic lives in a tax haven.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "GrandSlamChampion(x) ∨ OscarNominee(x) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → ProfessionalTennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (ProfessionalTennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaid(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaid(x) → TaxHaven(x)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → LiveIn(djokovic, TaxHaven) ::: If Djokovic is famous and is an athlete, then Djokovic lives in a tax haven.",
-      "First-Order-Logic Question": "LiveIn(djokovic, TaxHaven) ::: Djokovic lives in a tax haven."
-=======
       "First-Order-Logic Rules": "GrandSlamChampion(x) ∨ OscarNominee(x) ::: A person is either a Grand Slam champion or an Oscar-nominated actor.\n∀x (GrandSlamChampion(x) → ProfessionalTennisPlayer(x)) ::: All people who are Grand Slam champions are professional tennis players.\n∀x (OscarNominee(x) → Celebrity(x)) ::: All Oscar-nominated actors are celebrities.\n∀x (ProfessionalTennisPlayer(x) → Athlete(x)) ::: All professional tennis players are athletes.\n∀x (Celebrity(x) → WellPaid(x)) ::: If a person is a celebrity then they are well paid.\n∀x (Athlete(x) → Famous(x)) ::: If a person is an athlete then they are famous.\n∀x (WellPaid(x) → TaxHaven(x)) ::: All well-paid people live in tax havens.\n(Famous(djokovic) ∧ Athlete(djokovic)) → TaxHaven(djokovic) ::: If Djokovic is famous and is an athlete, then Djokovic lives in a tax haven.",
       "First-Order-Logic Question": "TaxHaven(djokovic) ::: Djokovic lives in a tax haven."
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     },
     "predicates": [
       "GrandSlamChampion(x) ::: x is a Grand Slam champion.",
@@ -1307,13 +1302,8 @@
     "question": "James's favorite season is fall.",
     "answer": "C",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (Season(x) ↔ (Spring(x) ∨ SummerSeason(x) ∨ FallSeason(x) ∨ Winter(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, SummerSeason)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, SummerSeason) ::: Emma's favorite season is summer. \n∀x (Student(x) ∧ NotSame(x, emma)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
-      "First-Order-Logic Question": "FavoriteSeason(james, FallSeason) ::: James's favorite season is fall."
-=======
       "First-Order-Logic Rules": "∀x (Season(x) ↔ (Spring(x) ∨ Summer(x) ∨ Fall(x) ∨ Winter(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, Summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, Summer) ::: Emma's favorite season is summer. \n∀x (Student(x) ∧ NotSame(x, emma)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
       "First-Order-Logic Question": "FavoriteSeason(james, Fall) ::: James's favorite season is fall."
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     },
     "predicates": [
       "Season(x) ::: x is a season.",
@@ -1477,11 +1467,7 @@
     "answer": "C",
     "raw_logic_programs": {
       "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romanceLanguages) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nFrench(french) ∧ Spanish(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x Related(basque, x) ::: Basque is not related to any other language.",
-<<<<<<< HEAD
-      "First-Order-Logic Question": "¬RomanceLanguage(german) ::: German is not a Romance language."
-=======
       "First-Order-Logic Question": "RomanceLanguage(german) ::: German is a Romance language."
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     },
     "predicates": [
       "RomanceLanguage(x) ::: x is a Romance language.",
@@ -1508,11 +1494,7 @@
     "question": "French is an Indo-European language.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomance(french) ∧ Romance(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x Related(basque, x) ::: Basque is not related to any other language.",
-=======
       "First-Order-Logic Rules": "∀x (RomanceLanguage(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLanguage(french) ∧ RomanceLanguage(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x Related(basque, x) ::: Basque is not related to any other language.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "IndoEuropean(french) ::: French is an Indo-European language."
     },
     "predicates": [
@@ -1703,13 +1685,8 @@
     "question": "Mike has a J1 visa.",
     "answer": "C",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (InternationalStudent(x) → (F1Visa(x) ∨ J1Visa(x))) ::: International students in US have either an F1 visa or a J1 visa. \n∀x ((InternationalStudent(x) ∧ HasVisa(x, F1Visa)) → (ApplyFor(x, CPT) ∨ ApplyFor(x, OPT))) ::: An international student in US with an F1 visa needs to apply for CPT or OPT if the student wants to work in the US. \nInternationalStudent(x) ::: InternationalStudent(x) is an international student. \nApplyFor(InternationalStudent(x), CPT) ::: InternationalStudent(x) needs to apply for CPT if he wants to work in the US.",
-      "First-Order-Logic Question": "J1Visa(InternationalStudent(x)) ::: InternationalStudent(x) has a J1 visa."
-=======
       "First-Order-Logic Rules": "∀x (InternationalStudent(x) → (F1Visa(x) ∨ J1Visa(x))) ::: International students in US have either an F1 visa or a J1 visa. \n∀x ((InternationalStudent(x) ∧ HasVisa(x, F1Visa)) → (ApplyFor(x, CPT) ∨ ApplyFor(x, OPT))) ::: An international student in US with an F1 visa needs to apply for CPT or OPT if the student wants to work in the US. \nMike(x) ::: Mike(x) is an international student. \nApplyFor(Mike(x), CPT) ::: Mike(x) needs to apply for CPT if he wants to work in the US.",
       "First-Order-Logic Question": "J1Visa(Mike(x)) ::: Mike(x) has a J1 visa."
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     },
     "predicates": [
       "InternationalStudent(x) ::: x is an international student.",
@@ -1866,11 +1843,7 @@
     "question": "Pierson College is a residential college at Yale.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "PrivateUniversity(yaleuniversity) ∧ IvyLeagueUniversity(yaleuniversity) ∧ ResearchUniversity(yaleuniversity) ::: Yale University is a private Ivy League research university.\nMove(yaleuniversity, newhaven, 1716) ::: Yale University moved to New Haven in 1716.\nEndowmentValue(yaleuniversity, 42.3) ::: Yale university's endowment was valued at $42.3 billion.\nOrganize(yaleuniversity, [residentialcolleges, graduate school of arts and sciences, twelve professional schools]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nList(residentialcolleges, [benjaminfranklin, berkeley, branford, davenport, ezrastiles, gracehopper, jonathanedwards, morse, paulimurray, pierson, saybrook, silliman, timothydwight, trumbull]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
-=======
       "First-Order-Logic Rules": "PrivateUniversity(yaleuniversity) ∧ IvyLeagueUniversity(yaleuniversity) ∧ ResearchUniversity(yaleuniversity) ::: Yale University is a private Ivy League research university.\nMove(yaleuniversity, newhaven, 1716) ::: Yale University moved to New Haven in 1716.\nValue(yaleendowment, 42.3 billion) ::: Yale university's endowment was valued at $42.3 billion.\nOrganize(yaleuniversity, [residentialcolleges, graduate school of arts and sciences, twelve professional schools]) ::: Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.\nList(residentialcolleges, [benjaminfranklin, berkeley, branford, davenport, ezrastiles, gracehopper, jonathanedwards, morse, paulimurray, pierson, saybrook, silliman, timothydwight, trumbull]) ::: A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College.\n",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "ResidentialCollege(pierson) ∧ College(pierson) ::: Pierson College is a residential college at Yale."
     },
     "predicates": [
@@ -1886,11 +1859,7 @@
       "ResidentialCollege(x) ::: x is a residential college.",
       "PiersonCollege(x) ::: x is Pierson College."
     ],
-<<<<<<< HEAD
-    "skip": false
-=======
     "skip": true
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
   },
   {
     "id": 69,
@@ -1956,11 +1925,7 @@
     "question": "KO is a company stock.",
     "answer": "C",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirementFund(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Company(y) ∧ CompanyStock(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirementFund(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nStock(ko) ∧ MatureCompany(company) ∧ CompanyType(company, mature) ∧ CompanyStock(ko, company) ::: KO is a stock of a mature company.",
-=======
       "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirementFund(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Company(y) ∧ CompanyStock(x, y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (MatureCompany(x) → SuitableForRetirementFund(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nStock(ko) ∧ MatureCompany(company) ∧ CompanyStock(ko, company) ::: KO is a stock of a mature company.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "∃y CompanyStock(ko, y) ::: KO is a company stock."
     },
     "predicates": [
@@ -2252,11 +2217,7 @@
     "question": "Dried Thai chilies are neither a product of Baked by Melissa nor a bakery.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "¬(∃x (Bakery(x) ∧ Spicy(x))) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (Product(x, BakedByMelissa) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies() ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
-=======
       "First-Order-Logic Rules": "¬(∃x (Bakery(x) ∧ Spicy(x))) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (Product(x, BakedByMelissa) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(driedthaichilies) ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "¬(Product(DriedThaiChilies, BakedByMelissa) ∨ Bakery(DriedThaiChilies)) ::: Dried Thai chilies are neither a product of Baked by Melissa nor a bakery."
     },
     "predicates": [
@@ -2888,11 +2849,7 @@
     "question": "Tom can apply for financial aid from ETS to take the GRE test.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x (Prove(x, EconomicHardship1) → Provide(ETS, financial_aid, x)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship1(x) ↔ (LittleMoney(x) ∨ FewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(dad, more_than_1_year) ::: His dad has been out of work for more than a year.",
-=======
       "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x (Prove(x, EconomicHardship) → Provide(ETS, financial_aid, x)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (LittleMoney(x) ∨ FewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(dad, more_than_1_year) ::: His dad has been out of work for more than a year.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "ApplyFor(tom, financial_aid, ETS) ::: Tom can apply for financial aid from ETS to take the GRE test."
     },
     "predicates": [
@@ -3080,11 +3037,7 @@
     "question": "Juan de Onate visited a mountain range in New Mexico.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "MountainRange(picurismountains) ∨ MountainRange(picurismountains) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.\nVisited(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.\nLocatedIn(hardingpegmatitemine, picurismountains) ∧ Donated(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.\n¬∃x (MountainRange(x) ∧ In(x, texas) ∧ HasMine(x, donated)) ::: There are no mountain ranges in Texas that have mines which have been donated.\n",
-=======
       "First-Order-Logic Rules": "MountainRange(picurismountains) ∨ MountainRange(picurismountains) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.\nVisited(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.\nLocatedIn(hardingpegmatitemine, picurismountains) ∧ Donated(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.\n¬∃x (MountainRange(x) ∧ In(x, texas) ∧ HasMine(x, donated)) ::: There are no mountain ranges in Texas that have mines which have been donated.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "Visited(juandeonate, newmexico) ::: Juan de Onate visited a mountain range in New Mexico."
     },
     "predicates": [
@@ -3192,11 +3145,7 @@
     "question": "Windy is a great shooter.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(x)∧(Classmate(x,y)∧¬Man(y)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Man(x) ∧ Man(y) ∧ Man(z) ∧ Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Man(michael) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
-=======
       "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(x)∧(Classmate(x,y)∧¬GreatShooter(y)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Man(x) ∧ Man(y) ∧ Man(z) ∧ Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Man(michael) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "GreatShooter(windy) ::: Windy is a great shooter."
     },
     "predicates": [
@@ -3372,11 +3321,7 @@
     "question": "A Greyhound is a Boeing 707.",
     "answer": "B",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n∀x∃y(Greyhound(x)∧Plane(y)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
-=======
       "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \nAirline(x)→¬(Greyhound(x)∧Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "Boeing707(Greyhound) ::: A Greyhound is a Boeing 707."
     },
     "predicates": [
@@ -3401,11 +3346,7 @@
     "question": "A Greyhound is not a Boeing 707.",
     "answer": "A",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n∀x∃y(Greyhound(x)∧Plane(y)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
-=======
       "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \nAirline(x)→¬(Greyhound(x)∧Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "¬(Greyhound(x) ∧ Boeing707(x)) ::: A Greyhound is not a Boeing 707."
     },
     "predicates": [
@@ -3672,11 +3613,7 @@
     "question": "Humans are mammals.",
     "answer": "C",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HasTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HasTeeth(x)) ::: Platypus have no teeth.\n∀x (Platypus(x) → Mammal(x)) ::: Platypus are mammals.\n∀x (Human(x) → HasTeeth(x)) ::: Humans have teeth.",
-=======
       "First-Order-Logic Rules": "∃x (Mammal(x) ∧ HasTeeth(x)) ::: Some mammals have teeth.\n¬∃x (Platypus(x) ∧ HasTeeth(x)) ::: Platypus have no teeth.\n∀x (Platypus(x) → Mammal(x)) ::: Platypus are mammals.\n∀x (HumanBeing(x) → HasTeeth(x)) ::: Humans have teeth.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "Mammal(human) ::: Humans are mammals."
     },
     "predicates": [
@@ -4752,14 +4689,7 @@
     ],
     "question": "The world championships is a sporting event.",
     "answer": "C",
-<<<<<<< HEAD
-    "raw_logic_programs": {
-      "First-Order-Logic Rules": "SportingEvent(olympicGames) ::: The Olympic games is a sporting event.\nLastOlympicGames(tokyo) ::: The last Olympic games was in Tokyo.\nUnitedStates(unitedStates) ∧ WinMostMedals(unitedStates, tokyo) ::: The United States won the most medals in Tokyo.",
-      "First-Order-Logic Question": "SportingEvent(worldChampionships) ::: The world championships is a sporting event."
-    },
-=======
     "raw_logic_programs": {},
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     "predicates": [
       "SportingEvent(x) ::: x is a sporting event.",
       "OlympicGames(x) ::: x is the Olympic games.",
@@ -4965,14 +4895,10 @@
     ],
     "question": "Dani Shapiro is a novel writer.",
     "answer": "A",
-<<<<<<< HEAD
-    "raw_logic_programs": {},
-=======
     "raw_logic_programs": {
       "First-Order-Logic Rules": "¬Novel(podcast) ::: A podcast is not a novel.\n∀x ∀y (BornInCity(x, american_city) → American(x)) ::: If a person is born in American City, the person is American.\n∀x (Novel(y) ∧ WrittenBy(y, x) → NovelWriter(x)) ::: If a book is novel and it is written by a person, then the person is a novel writer.\nAmerican(dani_Shapiro) ::: Dani Shapiro is an American writer.\nWrittenBy(family_History, dani_Shapiro) ::: Family History is written by Dani Shapiro.\nNovel(family_History) ∧ Created(dani_Shapiro, family_Secrets) ::: Family History is a novel written in 2003. Dani Shapiro created a podcast called Family Secrets.\nBornInCity(dani_Shapiro, boston) ::: Boston is an American city.",
       "First-Order-Logic Question": "NovelWriter(dani_Shapiro) ::: Dani Shapiro is a novel writer."
     },
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     "predicates": [
       "Podcast(x) ::: x is a podcast.",
       "Novel(x) ::: x is a novel.",
@@ -5364,13 +5290,8 @@
     "question": "Ailton Silva foes not play for a football club.",
     "answer": "B",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "Person(ailtonSilva) ∧ Born(ailtonSilva, 1995) ∧ KnownAs(ailtonSilva, ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(ailton) ∧ Loan(ailton, braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(ailtonSilva) ∧ Brazilian(ailtonSilva) ∧ PlaysFor(ailtonSilva, nautico) ::: Ailton Silva is a Brazillian footballer who plays for Nautico.\nClubWithAnotherClub(nautico) ∧ Club(braga) ::: Nautico is a football club along with Braga.\nClub(fluminense) ::: Fluminense is a football club.",
-      "First-Order-Logic Question": "DoesNotPlayFor(ailtonSilva, club) ::: Ailton Silva foes not play for a football club."
-=======
       "First-Order-Logic Rules": "Person(ailtonSilva) ∧ Born(ailtonSilva, 1995) ∧ KnownAs(ailtonSilva, ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(ailton) ∧ Loan(ailton, braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(ailtonSilva) ∧ Brazilian(ailtonSilva) ∧ PlaysFor(ailtonSilva, nautico) ::: Ailton Silva is a Brazilian footballer who plays for Nautico.\nClubWithAnotherClub(nautico) ∧ ClubWithAnotherClub(braga) ::: Nautico is a football club along with Braga.\nClubByItself(fluminense) ::: Fluminense is a football club.",
       "First-Order-Logic Question": "DoesNotPlayFor(ailtonSilva, club) ::: Ailton Silva does not play for a football club."
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
     },
     "predicates": [
       "Person(x) ::: x is a person.",
@@ -5397,11 +5318,7 @@
     "question": "Ailton was not loaned out to a football club.",
     "answer": "B",
     "raw_logic_programs": {
-<<<<<<< HEAD
-      "First-Order-Logic Rules": "Person(ailtonSilva) ∧ Born(ailtonSilva, 1995) ∧ KnownAs(ailtonSilva, ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(ailton) ∧ Loan(ailton, braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(ailtonSilva) ∧ Country(ailtonSilva, brazil) ∧ PlaysFor(ailtonSilva, nautico) ::: Ailton Silva is a Brazilian footballer who plays for Nautico.\nClubWithCountry(nautico) ∧ ClubWithoutCountry(braga) ::: Nautico is a football club along with Braga.\nClubWithoutCountry(fluminense) ::: Fluminense is a football club.",
-=======
       "First-Order-Logic Rules": "Person(ailtonSilva) ∧ Born(ailtonSilva, 1995) ∧ KnownAs(ailtonSilva, ailton) ::: Ailton Silva, born in 1995, is commonly known as Ailton.\nFootballPlayer(ailton) ∧ Loan(ailton, braga) ::: Ailton is a football player who was loaned out to Braga.\nFootballPlayer(ailtonSilva) ∧ Country(ailtonSilva, brazil) ∧ PlaysFor(ailtonSilva, nautico) ::: Ailton Silva is a Brazilian footballer who plays for Nautico.\nClubWithCountry(nautico) ∧ ClubWithCountry(braga) ::: Nautico is a football club along with Braga.\nClub(fluminense) ::: Fluminense is a football club.",
->>>>>>> 0e84f6827041cfc1730816d20a63ab9821c07d19
       "First-Order-Logic Question": "¬Loan(ailton, club) ::: Ailton was not loaned out to a football club."
     },
     "predicates": [

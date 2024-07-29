@@ -31,6 +31,7 @@ class SelfRefinementEngine:
                                     #   args.stop_words, args.max_new_tokens
                                       )
         self.refiner = refiner if refiner else None
+        self.gcd = args.gcd
         
         self.refiner_name = args.refiner_path.split('/')[-1].split('.')[0] if refiner else self.sketcher_name
         
@@ -124,6 +125,9 @@ class SelfRefinementEngine:
     def parsing_prompt_folio(self, nl_statement, sketch, predicates):
 
         full_prompt = self.parsing_prompt_template.replace('[[NLSTATEMENT]]', nl_statement).replace('[[SKETCH]]', sketch).replace('[[PREDICATES]]', '\n'.join(predicates))
+
+        if not self.gcd:
+            return full_prompt, None
 
         grammar_predicates = [predicate.split(':::')[0].split('(')[0].strip() for predicate in predicates]
 
