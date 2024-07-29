@@ -10,6 +10,7 @@ sketchers = [
     ]
 refiners = [
     'llama-2-7b-finetune',
+    'llama-2-13b-finetune',
     # 'llama-2-13b',
     # 'upstage-llama-2-70b-instruct-v2',
     # 'Meta-Llama-3-8B-Instruct',
@@ -21,8 +22,8 @@ refiners = [
 ]
 load_dirs = [
     'outputs_1', 
-    # 'outputs_2', 
-    # 'outputs_3'
+    'outputs_2', 
+    'outputs_3'
     ]
 
 def parse_args():
