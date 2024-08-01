@@ -51,7 +51,7 @@ class GrammarConstrainedModel:
         stop: The stop words to use for the model.
         """
 
-        grammar = LlamaGrammar.from_string(raw_grammar, verbose=False)
+        grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
 
         result = self.llm.create_chat_completion(
         messages=[

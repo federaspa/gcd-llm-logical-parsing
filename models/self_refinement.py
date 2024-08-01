@@ -3,12 +3,15 @@
 
 import json
 import os
+import re
+
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
 from gcd_utils import GrammarConstrainedModel
 from openai_utils import OpenAIModel
 
+import traceback
 from dotenv import load_dotenv
 
 import traceback
@@ -32,7 +35,8 @@ class SelfRefinementEngine:
                                       )
         self.refiner = refiner if refiner else None
         self.gcd = args.gcd
-        
+        self.gcd_dir = 'gcd' if self.gcd else 'no_gcd'
+
         self.refiner_name = args.refiner_path.split('/')[-1].split('.')[0] if refiner else self.sketcher_name
         
 
@@ -58,7 +62,7 @@ class SelfRefinementEngine:
         prefix = ""
         if self.current_round > 1:
             prefix = f'self-refine-{self.current_round-1}_'            
-            programs_path = os.path.join(self.load_dir, 'logic_programs', self.refiner_name, f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+            programs_path = os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name, f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
             
         else:
             programs_path = os.path.join(self.load_dir, 'logic_programs', f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
@@ -210,13 +214,15 @@ class SelfRefinementEngine:
                     else:
                         response = self.openai_api.generate(full_prompt, self.task_description_parsing, {"type": "text"}).strip()
 
+                    response = re.sub(r'[\n\t]', '', response)
+
                     revised_program_string = json.dumps(logic_program, ensure_ascii=False).replace(error, response)
 
                     revised_program = json.loads(revised_program_string)
 
 
                 except Exception as e:
-                    print(f'Exception for {example["id"]} for parsing response generation: {e}')
+                    print(f'Exception for {example["id"]} for parsing response generation: {traceback.format_exc()}')
                     revised_program = logic_program
 
 
@@ -273,11 +279,12 @@ class SelfRefinementEngine:
                 outputs.append(example)
 
         # save results
-        if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.refiner_name)):
-            os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.refiner_name))
+        if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name)):
+            os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name))
 
         # save outputs
-        save_path = os.path.join(self.load_dir, 'logic_programs', self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+
+        save_path = os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
         # save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
