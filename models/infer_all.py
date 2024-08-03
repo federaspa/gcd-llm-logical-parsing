@@ -30,7 +30,7 @@ load_dirs = [
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--dataset_name', type=str)
+    parser.add_argument('--dataset_name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--starting_round', type=int, default=3)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         for sketcher in sketchers:
             for refiner_path in refiners:
 
-                print(f'sketcher: {sketcher}, refiner {refiner_path}, load_dir: {load_dir}')
+                print(f'sketcher: {sketcher}, refiner {refiner_path}, load_dir: {load_dir}, gcd: {args.gcd}')
 
                 try:
                     refiner_name = refiner_path.split('/')[-1].split('.')[0] if refiner_path else sketcher

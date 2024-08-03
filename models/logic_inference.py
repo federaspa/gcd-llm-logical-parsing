@@ -133,7 +133,7 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
+    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static', 'logiclm'], default='dynamic')
     parser.add_argument('--self_refine_round', type=int, default=0)
     parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')

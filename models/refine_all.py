@@ -33,7 +33,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--maximum_rounds', type=int, default=3)
-    parser.add_argument('--dataset_name', type=str)
+    parser.add_argument('--dataset_name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--n_gpu_layers', type=int)
