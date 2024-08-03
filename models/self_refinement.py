@@ -274,7 +274,7 @@ class SelfRefinementEngine:
                 outputs.append(example)
 
             else:
-                print(f'Something went wrong with {example["id"]}. This sample will be skipped in the next iterations.')
+                # print(f'Something went wrong with {example["id"]}. This sample will be skipped in the next iterations.')
                 example.update({'skip':True})
                 outputs.append(example)
 
