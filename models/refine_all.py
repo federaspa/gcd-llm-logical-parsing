@@ -18,22 +18,22 @@ refiners = [
     'GCD/llms/llama-3-8b.gguf',
     'GCD/llms/llama-3-8b-finetune.gguf',
     # 'GCD/llms/Meta-Llama-3-70B-Instruct-v2.Q6_K-00001-of-00002.gguf',
-    'GCD/llms/mistral-7b.gguf',
+    # 'GCD/llms/mistral-7b.gguf',
     # 'GCD/llms/mixtral-8x7b-instruct-v0.1.Q6_K.gguf',
     # 'GCD/llms/Mixtral_8x22B/Q6_K-00001-of-00004.gguf',
     # None
 ]
 load_dirs = [
-    'outputs_1',
-    'outputs_2',
-    'outputs_3'
+    'outputs/outputs_1',
+    'outputs/outputs_2',
+    'outputs/outputs_3'
 ]
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--maximum_rounds', type=int, default=3)
-    parser.add_argument('--dataset_name', type=str)
+    parser.add_argument('--dataset_name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     parser.add_argument('--n_gpu_layers', type=int)

@@ -170,6 +170,13 @@ class SelfRefinementEngine:
         return 'success', '', None
     
     def single_round_self_refinement(self):
+        
+        save_path = os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+        
+        if os.path.exists(save_path):
+            print(f"File {save_path} already exists. Skipping.")
+            return
+        
         outputs = []
         for example in tqdm(self.logic_programs):
 
@@ -282,9 +289,6 @@ class SelfRefinementEngine:
         if not os.path.exists(os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name)):
             os.makedirs(os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name))
 
-        # save outputs
-
-        save_path = os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
         # save_path = f'./outputs/logic_programs/self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
         with open(save_path, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
