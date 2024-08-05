@@ -34,8 +34,8 @@ class FOL_Prover9_Program:
             premises = premises_string.strip().split('\n')
             conclusion = conclusion_string.strip().split('\n')
                   
-            premises = [premise for premise in premises if re.sub(r'(?:[\',\",\`,\-,\s*])','', premise)]
-            conclusion = [conc for conc in conclusion if re.sub(r'(?:[\',\"\`,\-,\s*])','', conc)]
+            premises = [premise for premise in premises if re.sub(r'(?:[\'\"\`\-\s*])','', premise)]
+            conclusion = [conc for conc in conclusion if re.sub(r'(?:[\'\"\`\-\s*])','', conc)]
             
             self.logic_premises = [premise.split(':::')[0].strip() for premise in premises]
             self.logic_conclusion = conclusion[0].split(':::')[0].strip()
