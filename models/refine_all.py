@@ -61,9 +61,24 @@ if __name__ == '__main__':
 
                     starting_round = 1
 
-
+                    gcd_dir = 'gcd' if args.gcd else 'no_gcd'
+                    refiner_name = refiner_path.split('/')[-1].split('.')[0] if refiner_path else sketcher
+                    
+                    all_exist = True
+                    for current_round in range(starting_round, args.maximum_rounds+1):
+                        save_path = os.path.join(load_dir, 'logic_programs', gcd_dir, refiner_path, f'self-refine-{current_round}_{args.dataset_name}_{args.split}_{sketcher}_{args.prompt_mode}.json')
+                        
+                        if not os.path.exists(save_path):
+                            all_exist = False
+                            break
+                    
+                    if all_exist:
+                        print('All files exist')
+                        continue
+                    
                     if args.refiner_path:
 
+                        print(f"Loading refiner {args.refiner_path}")
                         refiner=GrammarConstrainedModel(
                             refiner_path=args.refiner_path,
                             n_gpu_layers=args.n_gpu_layers,
