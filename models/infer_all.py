@@ -16,15 +16,15 @@ refiners = [
     # 'llama-2-70b',
     'llama-3-8b',
     'llama-3-8b-finetune',
-    'mistral-7b',
+    # 'mistral-7b',
     # 'mixtral-8x7b',
     # 'mixtral_8x22B',
     # None
 ]
 load_dirs = [
-    'outputs_1', 
-    'outputs_2', 
-    'outputs_3'
+    'outputs/outputs_1', 
+    'outputs/outputs_2', 
+    'outputs/outputs_3'
     ]
 
 def parse_args():
@@ -33,8 +33,8 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
-    parser.add_argument('--starting_round', type=int, default=3)
-    parser.add_argument('--maximum_rounds', type=int, default=3)
+    parser.add_argument('--starting_round', type=int, default=1)
+    parser.add_argument('--maximum_rounds', type=int, default=10)
     parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
     return args
@@ -44,12 +44,12 @@ if __name__ == '__main__':
     args = parse_args()
     for load_dir in load_dirs:
         for sketcher in sketchers:
-            for refiner_path in refiners:
+            for refiner_name in refiners:
 
-                print(f'sketcher: {sketcher}, refiner {refiner_path}, load_dir: {load_dir}, gcd: {args.gcd}')
+                print(f'sketcher: {sketcher}, refiner {refiner_name}, load_dir: {load_dir}, gcd: {args.gcd}')
 
                 try:
-                    refiner_name = refiner_path.split('/')[-1].split('.')[0] if refiner_path else sketcher
+                    refiner_name = refiner_name if refiner_name else sketcher
                     
                     gcd_folder = 'gcd' if args.gcd else 'no_gcd'
                     
