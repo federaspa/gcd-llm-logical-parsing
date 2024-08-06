@@ -56,17 +56,6 @@ class LogicInferenceEngine:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
-    
-    def save_results(self, outputs):
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
-        if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
-        else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
-        
-        with open(os.path.join(self.save_path, save_file), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
 
     def safe_execute_program(self, id, logic_program):
         program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
@@ -87,6 +76,16 @@ class LogicInferenceEngine:
     def inference_on_dataset(self):
         outputs = []
         error_count = 0
+        
+        if self.self_refine_round > 0:
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
+        else:
+            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
+            
+            
+        if os.path.exists(os.path.join(self.save_path, save_file)):
+            print(f"File {save_file} already exists. Skipping...")
+            return
         
         for example in tqdm(self.dataset):
             # execute the logic program
@@ -119,7 +118,13 @@ class LogicInferenceEngine:
             outputs.append(output)
         
         print(f"Error count: {error_count}")
-        self.save_results(outputs)
+        
+        if not os.path.exists(self.save_path):
+            os.makedirs(self.save_path)
+        
+        with open(os.path.join(self.save_path, save_file), 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
+            
         self.cleanup()
 
     def cleanup(self):
