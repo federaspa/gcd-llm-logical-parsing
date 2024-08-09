@@ -32,6 +32,7 @@ class Args(NamedTuple):
     # gcd: bool
     # make_plot: bool
     sketcher_list: List[str]
+    save_path: str
     
 
 TEXT_TO_INDEX = {c: i for i, c in enumerate('ABCDEFGH')}
@@ -117,6 +118,8 @@ def parse_args() -> Args:
     
     parser.add_argument("--refiners_list", type=str, default='gpt-3.5-turbo,gpt-4o')
     parser.add_argument('--self_refine_round', type=int, default=0)
+    
+    parser.add_argument("--save_path", type=str, required=True)
 
     args = parser.parse_args()
     
@@ -130,7 +133,8 @@ def parse_args() -> Args:
         # use_backup=args.use_backup,
         # gcd=args.gcd,
         # make_plot=args.make_plot,
-        sketcher_list=args.sketcher_list.split(',')
+        sketcher_list=args.sketcher_list.split(','),
+        save_path=args.save_path
     )
 
 def process_data(args: Args) -> pd.DataFrame:
@@ -251,7 +255,7 @@ def process_data(args: Args) -> pd.DataFrame:
 def main():
     args = parse_args()
     df = process_data(args)
-    df.to_csv('evaluation/performance_data_folio.csv', index=False)
+    df.to_csv(args.save_path, index=False)
 
 if __name__ == "__main__":
     main()
