@@ -9,17 +9,17 @@ sketchers = [
     'gpt-4o'
     ]
 refiners = [
-    'llama-2-7b',
-    'llama-2-7b-finetune',
-    'llama-2-13b',
-    'llama-2-13b-finetune',
+    # 'llama-2-7b',
+    # 'llama-2-7b-finetune',
+    # 'llama-2-13b',
+    # 'llama-2-13b-finetune',
     # 'llama-2-70b',
-    'llama-3-8b',
-    'llama-3-8b-finetune',
+    # 'llama-3-8b',
+    # 'llama-3-8b-finetune',
     # 'mistral-7b',
     # 'mixtral-8x7b',
     # 'mixtral_8x22B',
-    # None
+    None
 ]
 load_dirs = [
     'outputs/outputs_1', 
@@ -51,12 +51,16 @@ if __name__ == '__main__':
                 try:
                     refiner_name = refiner_name if refiner_name else sketcher
                     
-                    gcd_folder = 'gcd' if args.gcd else 'no_gcd'
+                    if args.maximum_rounds != 0:
+                        gcd_folder = 'gcd' if args.gcd else 'no_gcd'
+                        
+                        args.programs_path = os.path.join(load_dir, 'logic_programs', gcd_folder, refiner_name)
+                        args.save_path = os.path.join(load_dir, 'logic_inference', gcd_folder, refiner_name)
                     
-                    args.programs_path = os.path.join(load_dir, 'logic_programs', gcd_folder, refiner_name)
-                    
-                    args.save_path = os.path.join(load_dir, 'logic_inference', gcd_folder, refiner_name)
-                    
+                    else:
+                        args.programs_path = os.path.join(load_dir, 'logic_programs')
+                        args.save_path = os.path.join(load_dir, 'logic_inference')    
+                
                     args.sketcher_name = sketcher
                     args.load_dir = load_dir
 

@@ -6,20 +6,6 @@ import traceback
 import argparse
 from sklearn.metrics import precision_recall_fscore_support
 from typing import Dict, List, Tuple, Optional, NamedTuple
-
-class Statistics:
-    def __init__(self):
-        self.stats: Dict[str, Dict[str, Dict[str, List[float]]]] = {}
-
-    def add_stat(self, name: str, value: float, prefix: str = '', suffix: str = ''):
-        self.stats.setdefault(prefix, {}).setdefault(suffix, {}).setdefault(name, []).append(value)
-
-    def get_stat(self, name: str, prefix: str = '', suffix: str = '') -> Optional[List[float]]:
-        return self.stats.get(prefix, {}).get(suffix, {}).get(name)
-
-    def average_stat(self, name: str, prefix: str = '', suffix: str = '') -> Optional[float]:
-        values = self.get_stat(name, prefix, suffix)
-        return np.mean(values) if values else None
     
 class Args(NamedTuple):
     dataset_name: str
@@ -66,7 +52,7 @@ def evaluation_baseline(result_file: str) -> Tuple:
 
     return all_stats, class_stats
 
-def evaluation(result_file: str, backup_file: str, use_backup: bool) -> Tuple:
+def evaluation(result_file: str, no_ref_file:str, backup_file: str, use_backup: bool) -> Tuple:
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
 
@@ -75,11 +61,24 @@ def evaluation(result_file: str, backup_file: str, use_backup: bool) -> Tuple:
             backup_samples = json.load(f)
         all_samples = get_backup_answers(all_samples, {sample['id']: sample for sample in backup_samples})
 
+    fixed_samples = []
+
+    with open(no_ref_file, 'r') as f:
+        no_ref_samples = json.load(f)
+        
+    assert len(all_samples) == len(no_ref_samples), f'Length mismatch: {len(all_samples)} vs {len(no_ref_samples)}'
+
+    for sample, no_ref_sample in zip(all_samples, no_ref_samples):
+        if no_ref_sample['flag'] != 'success' and sample['flag'] == 'success':
+            fixed_samples.append(sample)
+            
+    
     executable_samples = [sample for sample in all_samples if sample['flag'] == 'success']
     parsing_errors = [sample for sample in all_samples if sample['flag'] == 'parsing error']
     execution_errors = [sample for sample in all_samples if sample['flag'] == 'execution error']
 
     all_stats = evaluate_metrics(all_samples)
+    fixed_stats = evaluate_metrics(fixed_samples)
     executable_stats = evaluate_metrics(executable_samples)
     class_stats = evaluate_metrics(all_samples, average=None)
 
@@ -89,17 +88,15 @@ def evaluation(result_file: str, backup_file: str, use_backup: bool) -> Tuple:
         len(execution_errors) / len(all_samples)
     ]
 
-    return all_stats, executable_stats, class_stats, rates
+    return all_stats, executable_stats, fixed_stats, class_stats, rates
 
 def get_load_dirs(args: Args) -> List[str]:
     return [args.load_dir] if args.load_dir else ['outputs/outputs_1', 'outputs/outputs_2', 'outputs/outputs_3']
 
 def get_result_path(load_dir: str, refiner_name:str, prefix: str, suffix: str) -> str:
-    # if refiner_name is None:
-    #     return os.path.join(load_dir, 'logic_inference')
     return os.path.join(load_dir, 'logic_inference', prefix, refiner_name + suffix)
 
-def get_file_names(args: Args, sketcher: str, prompt_mode:str, result_path: str) -> Tuple[str, str]:
+def get_file_names(args: Args, sketcher: str, prompt_mode:str, result_path: str) -> Tuple[str, str, str]:
     backup_file = os.path.join('./baselines/results', f'CoT_{args.dataset_name}_{args.split}_{sketcher}.json')
     
     result_file_name = f'{"self-refine-" + str(args.self_refine_round) + "_" if args.self_refine_round > 0 else ""}{args.dataset_name}_{args.split}_{sketcher}_{prompt_mode}.json'
@@ -111,14 +108,10 @@ def parse_args() -> Args:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_name", type=str, required=True)
     parser.add_argument("--split", type=str, default='dev')
-    # parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static', 'logiclm'], default='dynamic')
     parser.add_argument("--load_dir", type=str, default=None)
-    
     parser.add_argument("--sketcher_list", type=str, default='gpt-3.5-turbo,gpt-4o')
-    
     parser.add_argument("--refiners_list", type=str, default='gpt-3.5-turbo,gpt-4o')
     parser.add_argument('--self_refine_round', type=int, default=0)
-    
     parser.add_argument("--save_path", type=str, required=True)
 
     args = parser.parse_args()
@@ -165,9 +158,10 @@ def process_data(args: Args) -> pd.DataFrame:
                                 
                                 result_path = get_result_path(load_dir, refiner, prefix, suffix)
                                 backup_file, result_file = get_file_names(args, sketcher, prompt_mode, result_path)
+                                no_ref_file = os.path.join(load_dir, 'logic_inference', args.dataset_name + '_dev_' + sketcher + '_dynamic.json')
                             
                                 try:
-                                    all_stats, executable_stats, _, rates = evaluation(result_file, backup_file, use_backup=use_backup)
+                                    all_stats, executable_stats, _, rates = evaluation(result_file, no_ref_file, backup_file, use_backup=use_backup)
                                     data.append({
                                         'sketcher': sketcher,
                                         'refiner': refiner,
@@ -187,11 +181,7 @@ def process_data(args: Args) -> pd.DataFrame:
                                         'execution_errors_rate': rates[2],
                                     })
                                 except FileNotFoundError:
-                                    if prompt_mode == 'dynamic':                                    
-                                        if refiner in ['gpt-3.5-turbo', 'gpt-4o']:
-                                            if sketcher != refiner:
-                                                continue
-                                            
+                                    if (prompt_mode == 'dynamic') and (refiner in ['gpt-3.5-turbo', 'gpt-4o']) and (sketcher != refiner):
                                         print(f'File not found: {result_file}')
                                     
                                 except KeyError as e:
