@@ -81,7 +81,7 @@ def get_load_dirs(args: Args) -> List[str]:
     return [args.load_dir] if args.load_dir else ['outputs/outputs_1', 'outputs/outputs_2', 'outputs/outputs_3']
 
 def get_result_path(load_dir: str, refiner_name:str, prefix: str, suffix: str) -> str:
-    return os.path.join(load_dir, 'logic_inference', prefix, refiner_name + suffix)
+    return os.path.join(load_dir, 'logic_inference_alt', prefix, refiner_name + suffix)
 
 def get_file_names(args: Args, sketcher: str, prompt_mode:str, result_path: str) -> Tuple[str, str]:
     backup_file = os.path.join('./baselines/results', f'CoT_{args.dataset_name}_{args.split}_{sketcher}.json')
@@ -167,7 +167,8 @@ def process_data(args: Args) -> pd.DataFrame:
                                         'execution_errors_rate': rates[2],
                                     })
                                 except FileNotFoundError:
-                                    if (prompt_mode == 'dynamic') and (refiner in ['gpt-3.5-turbo', 'gpt-4o']) and (sketcher != refiner):
+                                    # if (prompt_mode == 'dynamic') and (refiner in ['gpt-3.5-turbo', 'gpt-4o']) and (sketcher != refiner):
+                                    if prompt_mode == 'dynamic':
                                         print(f'File not found: {result_file}')
                                     
                                 except KeyError as e:

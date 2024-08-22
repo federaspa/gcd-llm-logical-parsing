@@ -46,11 +46,11 @@ def make_df(df_path: str) -> pd.DataFrame:
     # make a new column new_f1 with the mean +- the std
 
     col = 'f1'
-    df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 2)}') + '\\pm' + df[col, 'std'].apply(lambda y: f'{np.round(y, 2)}') + '$'
+    df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 2)}') + '^{' + '\\pm ' + df[col, 'std'].apply(lambda y: f'{np.round(y, 2)}') + '}$'
     df.drop(columns=(col, 'std'), inplace=True)
     
     col = 'executable_rate'
-    df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 4)*100}' if not np.isnan(x) else 'N/A') + '\\pm' + df[col, 'std'].apply(lambda y: f'{int(y*100)}' if not np.isnan(y) else '') + '\\%$'
+    df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 4)*100}' if not np.isnan(x) else 'N/A') + '^{' + '\\pm' + df[col, 'std'].apply(lambda y: f'{int(y*100)}' if not np.isnan(y) else '') + '}' + '\\%$'
     df.drop(columns=(col, 'std'), inplace=True)
         
         

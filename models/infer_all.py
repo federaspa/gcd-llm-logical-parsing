@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from logic_inference import LogicInferenceEngine
+from logic_inference_alt import LogicInferenceEngine
 
 sketchers = [
     'gpt-3.5-turbo', 
@@ -9,12 +9,12 @@ sketchers = [
     'gpt-4o'
     ]
 refiners = [
-    # 'llama-2-7b',
+    'llama-2-7b',
     # 'llama-2-7b-finetune',
-    # 'llama-2-13b',
+    'llama-2-13b',
     # 'llama-2-13b-finetune',
     # 'llama-2-70b',
-    # 'llama-3-8b',
+    'llama-3-8b',
     # 'llama-3-8b-finetune',
     # 'mistral-7b',
     # 'mixtral-8x7b',
@@ -33,8 +33,8 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
-    parser.add_argument('--starting_round', type=int, default=1)
-    parser.add_argument('--maximum_rounds', type=int, default=10)
+    parser.add_argument('--starting_round', type=int, default=3)
+    parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
     return args
@@ -55,11 +55,11 @@ if __name__ == '__main__':
                         gcd_folder = 'gcd' if args.gcd else 'no_gcd'
                         
                         args.programs_path = os.path.join(load_dir, 'logic_programs', gcd_folder, refiner_name)
-                        args.save_path = os.path.join(load_dir, 'logic_inference', gcd_folder, refiner_name)
+                        args.save_path = os.path.join(load_dir, 'logic_inference_alt', gcd_folder, refiner_name)
                     
                     else:
                         args.programs_path = os.path.join(load_dir, 'logic_programs')
-                        args.save_path = os.path.join(load_dir, 'logic_inference')    
+                        args.save_path = os.path.join(load_dir, 'logic_inference_alt')    
                 
                     args.sketcher_name = sketcher
                     args.load_dir = load_dir
