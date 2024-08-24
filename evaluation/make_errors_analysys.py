@@ -25,10 +25,10 @@ class Args(NamedTuple):
 def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
     
     raw_file = result_files[0]
-    grammar_file = result_files[2]
+    grammar_file = result_files[1]
     
     raw_file_prog = result_files[0].replace('logic_inference', 'logic_programs')
-    grammar_file_prog = result_files[2].replace('logic_inference', 'logic_programs')
+    grammar_file_prog = result_files[1].replace('logic_inference', 'logic_programs')
 
     
     with open(raw_file, 'r') as f:
@@ -49,6 +49,7 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
     grammar_fixed = []
             
     thingy_key = '_'.join(grammar_file.split('/')[-3:-1])
+    thingy_key = thingy_key + '_3.5' if '3.5' in grammar_file else thingy_key + '_4'
     
     
     if not thingy_key in thingy:
@@ -64,10 +65,12 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
             grammar_fixed.append(grammar_sample)
             
             # fix but no improvement
-            if (raw_sample['id'] not in [thing['id'] for thing in thingy[thingy_key]]) and (grammar_sample['answer'] != grammar_sample['predicted_answer']):
+            if (raw_sample['id'] not in [thing['id'] for thing in thingy[thingy_key]]) and (grammar_sample['answer'] != grammar_sample['predicted_answer']) and (raw_sample['flag'] == 'parsing error'):
                 
                 raw_prog = [sample for sample in raw_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
                 gram_prog = [sample for sample in grammar_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
+                diff = []
+                
                 
                 try:
                     raw_rules = raw_prog["First-Order-Logic Rules"]
@@ -85,8 +88,7 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
                     gram_question = gram_question.split('\n') if type(gram_question) == str else gram_question
                     
                     assert len(raw_question) == len(gram_question), 'Len mismatch question'
-                    
-                    diff = []
+                                        
                     for r, g in zip(raw_rules, gram_rules):
                         if SequenceMatcher(None, r, g).ratio() < 0.95:
                           diff.append({
@@ -94,21 +96,23 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
                               'gram': g
                           })
                             
-                    thingy[thingy_key].append({
-                        'id': raw_sample['id'],
-                        'diff': diff,
-                        'flag': raw_sample['flag'],
-                        'answer': grammar_sample['answer'],
-                        'grammar_answer': grammar_sample['predicted_answer']
-                    })
-                
-                except Exception:
-
+                    # thingy[thingy_key].append({
+                    #     'id': raw_sample['id'],
+                    #     'diff': diff,
+                    #     'flag': raw_sample['flag'],
+                        
+                    #     'answer': grammar_sample['answer'],
+                    #     'grammar_answer': grammar_sample['predicted_answer']
+                    # })
+                except Exception as e:
+                    print(raw_sample['id'], e)
+                finally:
                     thingy[thingy_key].append({
                         'id': raw_sample['id'],
                         'raw_prog': raw_prog,
                         'gram_prog': gram_prog,
-                        'flag': raw_sample['flag'],
+                        'diff': diff,
+                        # 'flag': raw_sample['flag'],
                         'answer': grammar_sample['answer'],
                         'grammar_answer': grammar_sample['predicted_answer']
                     })
@@ -119,15 +123,18 @@ def get_load_dirs(args: Args) -> List[str]:
     return [args.load_dir] if args.load_dir else ['outputs/outputs_1', 'outputs/outputs_2', 'outputs/outputs_3']
 
 def get_result_path(load_dir: str, refiner_name:str, prefix: str) -> str:
-    return os.path.join(load_dir, 'logic_inference', prefix, refiner_name)
-
-def get_file_names(args: Args, sketcher: str, prompt_mode:str, result_path: str) -> Tuple[str, str]:
-    backup_file = os.path.join('./baselines/results', f'CoT_{args.dataset_name}_{args.split}_{sketcher}.json')
+    if refiner_name in ['gpt-3.5-turbo', 'gpt-4o']:
+        return os.path.join(load_dir, prefix, refiner_name)
     
-    result_file_name = f'{"self-refine-" + str(args.self_refine_round) + "_" if args.self_refine_round > 0 else ""}{args.dataset_name}_{args.split}_{sketcher}_{prompt_mode}.json'
+    else:
+        return os.path.join(load_dir, 'logic_inference', prefix, refiner_name)
+
+def get_file_names(args: Args, sketcher: str, prompt_mode:str, result_path: str, self_refine_round) -> Tuple[str, str]:
+            
+    result_file_name = f'{"self-refine-" + str(self_refine_round) + "_" if self_refine_round > 0 else ""}{args.dataset_name}_{args.split}_{sketcher}_{prompt_mode}.json'
     result_file = os.path.join(result_path, result_file_name)
     
-    return backup_file, result_file
+    return result_file
 
 
 def parse_args() -> Args:
@@ -163,24 +170,17 @@ def process_data(args: Args) -> dict:
     refiners_list = args.refiners_list
     
     for refiner in refiners_list:  # iterate over all refiners
-    
-        prefixes = ['no_gcd', 'gcd'] if refiner not in ['gpt-3.5-turbo', 'gpt-4o'] else ['']
         
         for sketcher in args.sketcher_list:
         
             for load_dir in load_dirs:
-                
-                result_paths = []
+
                 result_files = []
                 
-                for prefix in prefixes:
-                    result_paths.append(get_result_path(load_dir, refiner, prefix))
+                result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, '', ''), 0))  
+                result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, refiner, 'gcd',), args.self_refine_round))
                 
-                for result_path in result_paths:
-                    backup_file, result_file = get_file_names(args, sketcher, 'dynamic', result_path)
-                    result_files.append(result_file)
-                    
-                thingy = evaluation(result_files, backup_file, thingy)
+                thingy = evaluation(result_files, thingy)
             
     
     
