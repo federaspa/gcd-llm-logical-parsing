@@ -2691,5 +2691,187 @@
             "answer": "C",
             "grammar_answer": "A"
         }
-    ]
+    ],
+    "logic_inference_gpt-3.5-turbo_3.5": [
+        {
+            "id": 14,
+            "raw_prog": {
+                "First-Order-Logic Rules": "Create(japaneseGameCompany, legendOfZelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Sell(x, moreThanOneMillion) → Select(x, Top10)) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSelect(legendOfZelda, Top10) ::: The Legend of Zelda sold more than one million copies.\n∀x (Top10(x) → Japanese(Create(japanese, x))) ::: All games in the Top 10 list are made by Japanese game companies.\n",
+                "First-Order-Logic Question": "¬Top10(legendOfZelda) ::: The Legend of Zelda is not in the Top 10 list."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "CreateGame(japaneseGameCompany, legendOfZelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Sell(x, moreThanOneMillion) → Select(x, Top10List)) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSelect(legendOfZelda, Top10List) ::: The Legend of Zelda sold more than one million copies.\n∀x (Top10Game(x) → ∃y (Game(y) ∧ CreateCompany(Japanese, y, x))) ::: All games in the Top 10 list are made by Japanese game companies.",
+                "First-Order-Logic Question": "¬Top10Game(legendOfZelda) ::: The Legend of Zelda is not in the Top 10 list."
+            },
+            "diff": [],
+            "answer": "B",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 52,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomance(french) ∧ Romance(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\nBasque ::: Basque is not related to any other language.",
+                "First-Order-Logic Question": "Romance(basque) ::: Basque is a Romance language."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∀x (RomanceLang(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomanceLang(french) ∧ RomanceLang(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n¬∃x (Related(Basque, x)) ::: Basque is not related to any other language.",
+                "First-Order-Logic Question": "RomanceLang(basque) ::: Basque is a Romance language."
+            },
+            "diff": [
+                {
+                    "raw": "Basque ::: Basque is not related to any other language.",
+                    "gram": "¬∃x (Related(Basque, x)) ::: Basque is not related to any other language."
+                }
+            ],
+            "answer": "B",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 104,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, x)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, y) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, luke)) ⊕ (¬Twins(luke) ∧ ¬DevelopBonds(luke, luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
+                "First-Order-Logic Question": "¬(Twins(luke) ∨ Triplets(luke) ∨ Complain(luke)) ::: Luke is neither a twin nor triplet nor complains often about annoying siblings."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, x)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, y) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, luke)) ⊕ (¬Twins(luke) ∧ ¬DevelopBonds(luke, luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
+                "First-Order-Logic Question": "¬(Twins(luke) ∨ Triplets(luke) ∨ Complain(luke)) ::: Luke is neither a twin nor triplet nor complains often about annoying siblings."
+            },
+            "diff": [],
+            "answer": "A",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 115,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Man(x) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shooter(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Shooter(x) ∧ Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
+                "First-Order-Logic Question": "∃x (Man(x) ∧ Classmate(x, michael) ∧ Taller(x, peter)) ::: Peter is shorter than a man in Michael's class."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∃x (JapaneseCompany(x) ∧ Create(x, legendOfZelda)) ::: A Japanese game company created the game the Legend of Zelda.\n∀x ∃z (¬Top10(x) ∨ (JapaneseCompany(z) ∧ Create(z,x))) ::: All games in the Top 10 list are made by Japanese game companies.\n∀x (SellExactly(x, oneMillion) → Top10(x)) ::: If a game sells one million copies, then it will be selected into the Top 10 list.\nSellMore(legendOfZelda, oneMillion) ::: The Legend of Zelda sold more than one million copies.",
+                "First-Order-Logic Question": "Top10(legendOfZelda) ::: The Legend of Zelda is in the Top 10 list."
+            },
+            "diff": [],
+            "answer": "B",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 128,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParis(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (OccurIn(x, July) ∧ HaveWedding(x) → TravelToParis(x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (OccurIn(x, July) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParis(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\nHaveWedding(John) ∧ WellAttended(John) → (OccurIn(John, July) ∨ (¬OccurIn(John, July) → TravelToParis(John))) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
+                "First-Order-Logic Question": "WellAttended(John) ::: John has a wedding that is well-attended."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParis(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (OccurIn(x, July) ∧ HaveWedding(x) → TravelToParis(x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (OccurIn(x, July) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParis(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\nHaveWedding(John) ∧ WellAttended(John) → (OccurIn(John, July) ∨ (¬OccurIn(John, July) → TravelToParis(John))) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
+                "First-Order-Logic Question": "WellAttended(John) ::: John has a wedding that is well-attended."
+            },
+            "diff": [],
+            "answer": "B",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 155,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x,y (Owns(x, y) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (FullyStocked(x) → Owns(x, largeDesktopMonitor) ∧ Impressive(x)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → Tidy(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (Tidy(x) → (¬Late(x) ∧ ¬WakeLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(Tidy(remy) ∧ Late(remy) ∧ WakeLate(remy)) ⊕ (¬Late(remy) ∧ ¬WakeLate(remy) ∧ ¬Tidy(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
+                "First-Order-Logic Question": "((Late(remy) ∧ WakeLate(remy)) ∨ VisitStore(remy)) → (¬Tidy(remy) ∧ ¬FullyStocked(remy)) ::: If Remy either goes to bed late and wakes up every day after noon or visits the office supply store regularly, then Remy neither spends their free time tidying and organizing the spaces in their home nor has a fully stocked and impressive home office."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∀x (Owns(x, LargeDesktopMonitor) ∧ Home(x) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (FullyStocked(x) → Owns(x, largeDesktopMonitor) ∧ Impressive(x)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → Tidy(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (Tidy(x) → (¬Late(x) ∧ ¬WakeLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(Tidy(remy) ∧ Late(remy) ∧ WakeLate(remy)) ⊕ (¬Late(remy) ∧ ¬WakeLate(remy) ∧ ¬Tidy(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
+                "First-Order-Logic Question": "((Late(remy) ∧ WakeLate(remy)) ∨ VisitStore(remy)) → (¬Tidy(remy) ∧ ¬FullyStocked(remy)) ::: If Remy either goes to bed late and wakes up every day after noon or visits the office supply store regularly, then Remy neither spends their free time tidying and organizing the spaces in their home nor has a fully stocked and impressive home office."
+            },
+            "diff": [
+                {
+                    "raw": "∀x,y (Owns(x, y) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.",
+                    "gram": "∀x (Owns(x, LargeDesktopMonitor) ∧ Home(x) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home."
+                }
+            ],
+            "answer": "A",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 181,
+            "raw_prog": {
+                "First-Order-Logic Rules": "Flies(susan, LGA) ::: Susan flies to LGA airport.\n∀x (Airport(x) ∧ Flies(john, x) ∧ ¬(DepartsFrom(john, x) ∧ ArrivesAt(john, x))) ::: The departure and arrival can not be the same airport.\n",
+                "First-Order-Logic Question": "Flies(john, LGA) ::: John flies to LGA airport."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "Flies(susan, LGA) ::: Susan flies to LGA airport.\n∀x (Airport(x) ∧ Flies(john, x) ∧ ¬(DepartsFrom(john, x) ∧ ArrivesAt(john, x))) ::: The departure and arrival can not be the same airport.\n",
+                "First-Order-Logic Question": "Flies(john, LGA) ::: John flies to LGA airport."
+            },
+            "diff": [],
+            "answer": "B",
+            "grammar_answer": "A"
+        },
+        {
+            "id": 46,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∀x (Season(x) → (Spring(x) ∨ Summer(x) ∨ Fall(x) ∨ Winter(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, Summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, Summer) ::: Emma's favorite season is summer. \n∀x (Student(mia) ∧ NotSame(FavoriteSeason(mia, emma), emma)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
+                "First-Order-Logic Question": "FavoriteSeason(james, Summer) ::: James's favorite season is summer."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∀x (Season(x) → (Spring(x) ∨ SeasonSummer(x) ∨ Fall(x) ∨ Winter(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, SeasonSummer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, SeasonSummer) ::: Emma's favorite season is summer. \n∀x (Student(mia) ∧ ∀y (Season(y) → (FavoriteSeason(mia, y) ∧ ¬FavoriteSeason(emma, y)))) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
+                "First-Order-Logic Question": "FavoriteSeason(james, SeasonSummer) ::: James's favorite season is summer."
+            },
+            "diff": [
+                {
+                    "raw": "∀x (Student(mia) ∧ NotSame(FavoriteSeason(mia, emma), emma)) ::: Mia's favorite season is not the same as Emma's. ",
+                    "gram": "∀x (Student(mia) ∧ ∀y (Season(y) → (FavoriteSeason(mia, y) ∧ ¬FavoriteSeason(emma, y)))) ::: Mia's favorite season is not the same as Emma's. "
+                }
+            ],
+            "answer": "A",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 107,
+            "raw_prog": {
+                "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x (Prove(x, EconomicHardship) → Provide(ETS, financial_aid, x)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (LittleMoney(x) ∨ FewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(dad, 1) ::: His dad has been out of work for more than a year.\n",
+                "First-Order-Logic Question": "¬∃x ∀y (Prove(x, EconomicHardship) ∧ y = gre → Provide(ETS, financial_aid, x)) ::: There is no financial aid available for the GRE test."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x (EconomicHardship(x) → (LittleMoney(x) ∨ FewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(dad, 1) ::: His dad has been out of work for more than a year.",
+                "First-Order-Logic Question": "¬∃x (EconomicHardship(x) ∧ Cost(gre, y) ∧ Provide(ETS, financial_aid, x)) ::: There is no financial aid available for the GRE test."
+            },
+            "diff": [],
+            "answer": "B",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 95,
+            "raw_prog": {
+                "First-Order-Logic Rules": "∃x (Pet(x) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (RequireDeposit(x) → (Equal(x, RentAmount(y, z)) ∨ MoreThan(x, RentAmount(y, z)))) ::: A deposit is required to rent an apartment in a managed building.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\nCat(x) → Pet(x) ::: Cats are pets.\nManaged(olivegarden) ∧ Building(olivegarden) ::: The Olive Garden is a managed building.\nRentAmount(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, olivegarden) ↔ (MoveInWith(tom, fluffy) ∧ ¬MoreThan(deposit, 1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
+                "First-Order-Logic Question": "Equal(deposit, 2000) ∨ MoreThan(deposit, 2000) ::: The security deposit at the Olive Garden is either $2000 or more."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "∃x (Pet(x) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (RentApartment(x, y) ∧ Managed(y) → RequireDeposit(x)) ::: A deposit is required to rent an apartment in a managed building.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\nCat(x) → Pet(x) ::: Cats are pets.\nManaged(olivegarden) ∧ Building(olivegarden) ::: The Olive Garden is a managed building.\nRentAmount(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, olivegarden) ↔ (MoveInWith(tom, fluffy) ∧ ¬MoreThan(deposit, 1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
+                "First-Order-Logic Question": "Equal(deposit, 2000) ∨ MoreThan(deposit, 2000) ::: The security deposit at the Olive Garden is either $2000 or more."
+            },
+            "diff": [
+                {
+                    "raw": "∀x (RequireDeposit(x) → (Equal(x, RentAmount(y, z)) ∨ MoreThan(x, RentAmount(y, z)))) ::: A deposit is required to rent an apartment in a managed building.",
+                    "gram": "∀x (RentApartment(x, y) ∧ Managed(y) → RequireDeposit(x)) ::: A deposit is required to rent an apartment in a managed building."
+                }
+            ],
+            "answer": "A",
+            "grammar_answer": "C"
+        },
+        {
+            "id": 105,
+            "raw_prog": {
+                "First-Order-Logic Rules": "Cost(gre_test, 205) ::: It costs US $205 to take the GRE test.\n∀x ∀y (Prove(x, EconomicHardship(y)) → ProvideFinancialAid(ETS, y)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (Difficulty(x) ∧ (LittleMoney(x) ∨ FewResources(x)))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParentFamily(tom) ::: Tom lives in a single-parent family.\nOutOfWork(tom_dad, more_than_1_year) ::: His dad has been out of work for more than a year.\n",
+                "First-Order-Logic Question": "ApplyFor(tom, ETS, gre_test) ::: Tom can apply for financial aid from ETS to take the GRE test."
+            },
+            "gram_prog": {
+                "First-Order-Logic Rules": "Cost(gre_test, 205) ::: It costs US $205 to take the GRE test.\n∀y (EconomicHardship(y) → (Prove(GREApplicants, y) → ProvideFinancialAid(ETS, GREApplicants))) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (Difficulty(x) ∧ (LittleMoney(x) ∨ FewResources(x)))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParentFamily(tom) ::: Tom lives in a single-parent family.\nOutOfWork(tom_dad, more_than_1_year) ::: His dad has been out of work for more than a year.\n",
+                "First-Order-Logic Question": "ApplyFor(tom, ETS, gre_test) ::: Tom can apply for financial aid from ETS to take the GRE test."
+            },
+            "diff": [
+                {
+                    "raw": "∀x ∀y (Prove(x, EconomicHardship(y)) → ProvideFinancialAid(ETS, y)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.",
+                    "gram": "∀y (EconomicHardship(y) → (Prove(GREApplicants, y) → ProvideFinancialAid(ETS, GREApplicants))) ::: ETS provides financial aid to those GRE applicants who prove economic hardship."
+                }
+            ],
+            "answer": "A",
+            "grammar_answer": "C"
+        }
+    ],
+    "logic_inference_gpt-4o_4": []
 }

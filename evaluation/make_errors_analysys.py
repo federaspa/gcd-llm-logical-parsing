@@ -124,7 +124,7 @@ def get_load_dirs(args: Args) -> List[str]:
 
 def get_result_path(load_dir: str, refiner_name:str, prefix: str) -> str:
     if refiner_name in ['gpt-3.5-turbo', 'gpt-4o']:
-        return os.path.join(load_dir, prefix, refiner_name)
+        return os.path.join(load_dir, 'logic_inference', refiner_name)
     
     else:
         return os.path.join(load_dir, 'logic_inference', prefix, refiner_name)
@@ -172,6 +172,12 @@ def process_data(args: Args) -> dict:
     for refiner in refiners_list:  # iterate over all refiners
         
         for sketcher in args.sketcher_list:
+            
+            if sketcher == 'gpt-3.5-turbo' and refiner == 'gpt-4o':
+                continue
+            
+            if sketcher == 'gpt-4o' and refiner == 'gpt-3.5-turbo':
+                continue
         
             for load_dir in load_dirs:
 

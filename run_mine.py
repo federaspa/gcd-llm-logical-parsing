@@ -27,11 +27,15 @@ def main():
     with open('qualitative/llama-2-7b.json', 'r') as f:
         samples = json.load(f)
         
+    with open('qualitative/gpt-3.5.json', 'r') as f:
+        samples_sket = json.load(f)
+        
     y_true = []
     y_pred_manual = []
     y_pred_grammar = []
+    y_sket = []
         
-    for sample in samples:
+    for sample in zip(samples):
         
         if not sample['fixed']:
             continue
@@ -40,9 +44,16 @@ def main():
         manual_prog = sample["manual_prog"]
         pred_answer, status, error, _ = safe_execute_program(manual_prog)
         
+        if pred_answer == 'N/A':
+            continue
+        
         y_true.append(sample['answer'])
         y_pred_grammar.append(sample["grammar_answer"])
         y_pred_manual.append(pred_answer)
+        
+    for sample in samples_sket:
+        y_sket.append(sample['grammar_answer'])
+        
         
         # if sample['answer'] != pred_answer:
         #     print(sample['id'], sample['answer'], pred_answer)
@@ -53,52 +64,58 @@ def main():
     # print(pd.Series(gold).value_counts())
     # print(pd.Series(pred).value_counts())
     
-    labels=['A', 'B', 'C', 'N/A']
+    labels=['A', 'B', 'C']
     
-    data = confusion_matrix(y_true, y_pred_manual)
-    df_cm = pd.DataFrame(data, columns=labels, index = labels)
-    df_cm.index.name = 'Actual'
-    df_cm.columns.name = 'Predicted'
+    data_manual = confusion_matrix(y_true, y_pred_manual)
+    df_cm_manual = pd.DataFrame(data_manual, columns=labels, index = labels)
+    df_cm_manual.index.name = 'Actual'
+    df_cm_manual.columns.name = 'Predicted'
 
+    data_grammar = confusion_matrix(y_true, y_pred_grammar)
+    df_cm_grammar = pd.DataFrame(data_grammar, columns=labels, index = labels)
+    df_cm_grammar.index.name = 'Actual'
+    df_cm_grammar.columns.name = 'Predicted'
 
-    f, ax = plt.subplots(figsize=(10, 8))
+    # Create a figure with two subplots
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
     cmap = sns.cubehelix_palette(light=1, as_cmap=True)
-    palette = sns.color_palette("Set2", n_colors=2)
+    palette = sns.color_palette("Set2", n_colors=3)
 
-    sns.heatmap(df_cm, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
-                annot_kws={'size': 10})
-    plt.title('Actuals vs Predicted Heatmap')
+    # Plot 1: y_manual
+    sns.heatmap(df_cm_manual, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
+                annot_kws={'size': 10}, ax=ax1)
+    ax1.set_title('Actuals vs Predicted (Manual) Heatmap')
+
+    # Plot 2: y_grammar
+    sns.heatmap(df_cm_grammar, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
+                annot_kws={'size': 10}, ax=ax2)
+    ax2.set_title(u'Actuals vs Predicted (\u2605) Heatmap')
+
     plt.savefig('qualitative/confusion_refine.png')
-    
-    
+
     # Create a new plot for y_true and y_pred countplots
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax1 = plt.subplots(figsize=(18, 6))
 
     # Create a dataframe with y_true and y_pred
-    df = pd.DataFrame({'Actual': y_true, 'Predicted': y_pred_manual})
+    df = pd.DataFrame({'Actual': y_true, 'Predicted (Manual)': y_pred_manual, u'Predicted (\u2605)': y_pred_grammar})
+    # df_grammar = pd.DataFrame({'Actual': y_true, 'Predicted': y_pred_grammar})
 
     # Melt the dataframe to create a long format
     df_melted = pd.melt(df, var_name='category', value_name='label')
+    # df_melted_grammar = pd.melt(df_grammar, var_name='category', value_name='label')
 
     # Create the countplot
-    sns.countplot(x='label', hue='category', data=df_melted, ax=ax, order=labels, palette=palette, stat='proportion')
+    sns.countplot(x='label', hue='category', data=df_melted, ax=ax1, order=labels, palette=palette)
+    ax1.set_xlabel('Labels')
+    ax1.set_ylabel('Frequency')
+    ax1.set_title('Actual vs Predicted Label Distribution')
 
-    ax.set_xlabel('Labels')
-    ax.set_ylabel('Frequency')
-    ax.set_title('Actual vs Predicted Label Distribution')
-    ax.legend()
+    # sns.countplot(x='label', hue='category', data=df_melted_grammar, ax=ax2, order=labels, palette=palette, stat='proportion')
+    # ax2.set_xlabel('Labels')
+    # ax2.set_ylabel('Frequency')
+    # ax2.set_title(u'Actual vs Predicted Label Distribution (\u2605)')
 
-    plt.savefig('qualitative/distribution_refine.png')
-
-
-
-
-
-
-
-
-        
-    
+    plt.savefig('qualitative/distribution_refine.png')    
                 
 if __name__ == '__main__':
     main()
