@@ -43,8 +43,14 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
     with open(raw_file_prog, 'r') as f:
         raw_samples_prog = json.load(f)
         
-    assert len(raw_samples) == len(grammar_samples), 'Len mismatch samples'
     
+    # assert len(raw_samples) == len(grammar_samples), f'Len mismatch samples in {raw_file} vs {grammar_file}: {len(raw_samples)} != {len(grammar_samples)}'
+        
+    unique_ids = set([sample['id'] for sample in raw_samples]) - set([sample['id'] for sample in grammar_samples])
+    
+    # remove samples with unique ids from raw_samples
+    raw_samples = [sample for sample in raw_samples if sample['id'] not in unique_ids]
+
     
     grammar_fixed = []
             
@@ -90,6 +96,13 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
                     assert len(raw_question) == len(gram_question), 'Len mismatch question'
                                         
                     for r, g in zip(raw_rules, gram_rules):
+                        if SequenceMatcher(None, r, g).ratio() < 0.95:
+                          diff.append({
+                              'raw': r,
+                              'gram': g
+                          })
+                          
+                    for r, g in zip(raw_question, gram_question):
                         if SequenceMatcher(None, r, g).ratio() < 0.95:
                           diff.append({
                               'raw': r,

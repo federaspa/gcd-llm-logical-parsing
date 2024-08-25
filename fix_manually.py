@@ -7,7 +7,7 @@ from models.symbolic_solvers.fol_solver.Formula_util import FOL_Formula
 os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
 
 
-with open('checkpoint.json', 'r') as f:
+with open(file, 'r') as f:
     samples = json.load(f)
     
 # samples = samples['gcd_llama-2-7b']
@@ -66,5 +66,5 @@ for sample in samples:
     else:
         sample["fixed"] = True
         
-    with open('checkpoint.json', 'w') as f:
+    with open(file, 'w') as f:
         json.dump(samples, f, ensure_ascii=False)

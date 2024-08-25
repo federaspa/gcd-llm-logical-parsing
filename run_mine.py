@@ -24,18 +24,20 @@ def safe_execute_program(logic_program):
     return answer, 'success', None, None
 
 def main():
-    with open('qualitative/llama-2-7b.json', 'r') as f:
+    with open('qualitative_nli/llama-2-7b.json', 'r') as f:
         samples = json.load(f)
         
-    with open('qualitative/gpt-3.5.json', 'r') as f:
+    with open('qualitative_nli/gpt-3.5.json', 'r') as f:
         samples_sket = json.load(f)
         
     y_true = []
     y_pred_manual = []
     y_pred_grammar = []
-    y_sket = []
+    
+    y_true_sket = []
+    y_pred_sket = []
         
-    for sample in zip(samples):
+    for sample in samples:
         
         if not sample['fixed']:
             continue
@@ -52,7 +54,8 @@ def main():
         y_pred_manual.append(pred_answer)
         
     for sample in samples_sket:
-        y_sket.append(sample['grammar_answer'])
+        y_true_sket.append(sample['answer'])
+        y_pred_sket.append(sample['grammar_answer'])
         
         
         # if sample['answer'] != pred_answer:
@@ -75,6 +78,11 @@ def main():
     df_cm_grammar = pd.DataFrame(data_grammar, columns=labels, index = labels)
     df_cm_grammar.index.name = 'Actual'
     df_cm_grammar.columns.name = 'Predicted'
+    
+    data_sket = confusion_matrix(y_true_sket, y_pred_sket)
+    df_cm_sket = pd.DataFrame(data_sket, columns=labels, index = labels)
+    df_cm_sket.index.name = 'Actual'
+    df_cm_sket.columns.name = 'Predicted'
 
     # Create a figure with two subplots
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
@@ -90,32 +98,41 @@ def main():
     sns.heatmap(df_cm_grammar, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
                 annot_kws={'size': 10}, ax=ax2)
     ax2.set_title(u'Actuals vs Predicted (\u2605) Heatmap')
+    
+    plt.savefig('qualitative_nli/confusion_refine_1.png')
+    
+    fig, ax3 = plt.subplots(figsize=(10, 8))
+    
+    # Plot 3: y_sket
+    sns.heatmap(df_cm_sket, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
+                annot_kws={'size': 10}, ax=ax3)
+    ax3.set_title(u'Actuals vs Predicted (GPT-3.5) Heatmap')
 
-    plt.savefig('qualitative/confusion_refine.png')
-
-    # Create a new plot for y_true and y_pred countplots
-    fig, ax1 = plt.subplots(figsize=(18, 6))
+    plt.savefig('qualitative_nli/confusion_refine_2.png')
 
     # Create a dataframe with y_true and y_pred
     df = pd.DataFrame({'Actual': y_true, 'Predicted (Manual)': y_pred_manual, u'Predicted (\u2605)': y_pred_grammar})
-    # df_grammar = pd.DataFrame({'Actual': y_true, 'Predicted': y_pred_grammar})
-
+    df_sket = pd.DataFrame({'Actual': y_true_sket, 'Predicted (GPT-3.5-Turbo)': y_pred_sket})
+    
     # Melt the dataframe to create a long format
     df_melted = pd.melt(df, var_name='category', value_name='label')
-    # df_melted_grammar = pd.melt(df_grammar, var_name='category', value_name='label')
+    df_melted_sket = pd.melt(df_sket, var_name='category', value_name='label')
 
-    # Create the countplot
-    sns.countplot(x='label', hue='category', data=df_melted, ax=ax1, order=labels, palette=palette)
-    ax1.set_xlabel('Labels')
-    ax1.set_ylabel('Frequency')
-    ax1.set_title('Actual vs Predicted Label Distribution')
+    for i, df in enumerate([df_melted, df_melted_sket]):
+        fig, ax1 = plt.subplots(figsize=(10, 8))
+        
+        # Create the countplot
+        sns.countplot(x='label', hue='category', data=df, ax=ax1, order=labels, palette=palette)
+        ax1.set_xlabel('Labels')
+        ax1.set_ylabel('Frequency')
+        ax1.set_title('Actual vs Predicted Label Distribution')
 
-    # sns.countplot(x='label', hue='category', data=df_melted_grammar, ax=ax2, order=labels, palette=palette, stat='proportion')
-    # ax2.set_xlabel('Labels')
-    # ax2.set_ylabel('Frequency')
-    # ax2.set_title(u'Actual vs Predicted Label Distribution (\u2605)')
+        # sns.countplot(x='label', hue='category', data=df_melted_sket, ax=ax2, order=labels, palette=palette)
+        # ax2.set_xlabel('Labels')
+        # ax2.set_ylabel('Frequency')
+        # ax2.set_title(u'Actual vs Predicted Label Distribution')
 
-    plt.savefig('qualitative/distribution_refine.png')    
+        plt.savefig(f'qualitative_nli/distribution_refine_{i}.png')    
                 
 if __name__ == '__main__':
     main()
