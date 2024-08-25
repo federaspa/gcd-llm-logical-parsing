@@ -24,6 +24,91 @@
         "fixed": true
     },
     {
+        "id": 3,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Employee(x) ∧ ScheduleMeeting(x, y) → AppearInCompany(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (HasLunchInCompany(x) → ScheduleMeeting(x, Customer(x))) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (HasLunchInCompany(x) ∨ HasLunchAtHome(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (HasLunchAtHome(x) → WorkRemotelyFromHome(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬WorkRemotelyFromHome(x)) ::: No managers work remotely from home. \n(Employee(james) ∧ AppearInCompany(james)) ⊕ (¬Manager(james) ∧ ¬AppearInCompany(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "HasLunchInCompany(james) ::: James has lunch in the company."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Employee(x) ∧ ScheduleMeeting(x, y) → AppearInCompany(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x(HasLunchInCompany(x)→ScheduleMeeting(x,y)) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (HasLunchInCompany(x) ∨ HasLunchAtHome(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (HasLunchAtHome(x) → WorkRemotelyFromHome(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬WorkRemotelyFromHome(x)) ::: No managers work remotely from home. \n(Employee(james) ∧ AppearInCompany(james)) ⊕ (¬Manager(james) ∧ ¬AppearInCompany(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "HasLunchInCompany(james) ::: James has lunch in the company."
+        },
+        "diff": [
+            {
+                "raw": "∀x (HasLunchInCompany(x) → ScheduleMeeting(x, Customer(x))) ::: Everyone who has lunch in the company schedules meetings with their customers. ",
+                "gram": "∀x(HasLunchInCompany(x)→ScheduleMeeting(x,y)) ::: Everyone who has lunch in the company schedules meetings with their customers. "
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Employee(x) ∧ ScheduleMeeting(x, y) → AppearInCompany(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x(HasLunchInCompany(x)→ScheduleMeeting(x,y)) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (HasLunchInCompany(x) ∨ HasLunchAtHome(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (HasLunchAtHome(x) → WorkRemotelyFromHome(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (InOtherCountries(x) → WorkRemotelyFromHome(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬WorkRemotelyFromHome(x)) ::: No managers work remotely from home. \n(Employee(james) ∧ AppearInCompany(james)) ⊕ (¬Manager(james) ∧ ¬AppearInCompany(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "HasLunchInCompany(james) ::: James has lunch in the company."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 4,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Schedule(x, y) → Appear(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (Lunch(x) → ∃y (Schedule(x, y))) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (Lunch(x) ∨ Home(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (Home(x) → Remote(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (Work(x, y) → Remote(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬Remote(x)) ::: No managers work remotely from home. \n(Manager(james) ∧ Appear(james)) ⊕ (¬Manager(james) ∧ ¬Appear(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "¬Lunch(james) ::: James does not have lunch in the company."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Schedule(x, y) → Appear(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (Lunch(x) → ∃y (Schedule(x, y))) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (Lunch(x) ∨ Home(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (Home(x) → Remote(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (Work(x, y) → Remote(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬Remote(x)) ::: No managers work remotely from home. \n(Manager(james) ∧ Appear(james)) ⊕ (¬Manager(james) ∧ ¬Appear(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "¬Lunch(james) ::: James does not have lunch in the company."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x∀y (Schedule(x, y) → Appear(x)) ::: All employees who schedule a meeting with their customers will appear in the company today. \n∀x (Lunch(x) → ∃y (Schedule(x, y))) ::: Everyone who has lunch in the company schedules meetings with their customers. \n∀x (Lunch(x) ∨ Home(x)) ::: Employees will either have lunch in the company or have lunch at home. \n∀x (Home(x) → Remote(x)) ::: If an employee has lunch at home, then he/she is working remotely from home. \n∀x (Work(x, y) → Remote(x)) ::: All employees who are in other countries work remotely from home. \n∀x (Manager(x) → ¬Remote(x)) ::: No managers work remotely from home. \n(Manager(james) ∧ Appear(james)) ⊕ (¬Manager(james) ∧ ¬Appear(james)) ::: James is either a manager and appears in the company today or neither a manager nor appears in the company today.",
+            "First-Order-Logic Question": "¬Lunch(james) ::: James does not have lunch in the company."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 43,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (RankedHighly(x) → Active(x)) ::: If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. \n∀x (LostTo(x, IgaSwiatek) → RankedHighly(x)) ::: Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association. \n∀x (Female(x) ∧ At(x, RolandGarros) → LostTo(x, IgaSwiatek)) ::: All female tennis players at Roland Garros 2022 lost to Iga Swiatek. \n(Female(x) ∧ At(x, RolandGarros)) ∨ (Male(x) ∧ At(x, RolandGarros)) ::: Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. \n∀x (Male(x) ∧ At(x, RolandGarros) → LostToRafaelNadal(x)) ::: All male tennis players at Roland Garros 2022 lost to Rafael Nadal. \n(RankedHighly(CocoGauff) ∨ LostTo(CocoGauff, RafaelNadal)) → ¬(Male(CocoGauff) ∧ At(CocoGauff, RolandGarros)) ::: If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022. \n",
+            "First-Order-Logic Question": "LostTo(CocoGauff, RafaelNadal) ::: Coco Gauff has lost to Rafael Nadal."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (RankedHighly(x) → Active(x)) ::: If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. \n∀x (LostTo(x, IgaSwiatek) → RankedHighly(x)) ::: Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association. \n∀x (Female(x) ∧ At(x, RolandGarros) → LostTo(x, IgaSwiatek)) ::: All female tennis players at Roland Garros 2022 lost to Iga Swiatek. \n(Female(x) ∧ At(x, RolandGarros)) ∨ (Male(x) ∧ At(x, RolandGarros)) ::: Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. \n∀x (Male(x) ∧ At(x, RolandGarros) → LostToRafaelNadal(x)) ::: All male tennis players at Roland Garros 2022 lost to Rafael Nadal. \n(RankedHighly(CocoGauff) ∨ LostTo(CocoGauff, RafaelNadal)) → ¬(Male(CocoGauff) ∧ At(CocoGauff, RolandGarros)) ::: If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022. \n",
+            "First-Order-Logic Question": "LostTo(CocoGauff, RafaelNadal) ::: Coco Gauff has lost to Rafael Nadal."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (RankedHighly(x) → Active(x)) ::: If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. \n∀x (LostTo(x, IgaSwiatek) → RankedHighly(x)) ::: Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association. \n∀x (Female(x) ∧ At(x, RolandGarros) → LostTo(x, IgaSwiatek)) ::: All female tennis players at Roland Garros 2022 lost to Iga Swiatek. \n(Female(x) ∧ At(x, RolandGarros)) ∨ (Male(x) ∧ At(x, RolandGarros)) ::: Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. \n∀x (Male(x) ∧ At(x, RolandGarros) → LostToRafaelNadal(x)) ::: All male tennis players at Roland Garros 2022 lost to Rafael Nadal. \n(RankedHighly(CocoGauff) ∨ LostTo(CocoGauff, RafaelNadal)) → ¬(Male(CocoGauff) ∧ At(CocoGauff, RolandGarros)) ::: If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022. \n",
+            "First-Order-Logic Question": "LostTo(CocoGauff, RafaelNadal) ::: Coco Gauff has lost to Rafael Nadal."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 48,
+        "raw_prog": {
+            "First-Order-Logic Rules": "Season(spring) ∧ Season(summer) ∧ Season(fall) ∧ Season(winter) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, summer) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, y) → ¬FavoriteSeason(emma, y)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
+            "First-Order-Logic Question": "FavoriteSeason(mia, spring) ::: Mia's favorite season is spring."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "Season(spring) ∧ Season(summer) ∧ Season(fall) ∧ Season(winter) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, summer) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, y) → ¬FavoriteSeason(emma, y)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
+            "First-Order-Logic Question": "FavoriteSeason(mia, spring) ::: Mia's favorite season is spring."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "Season(spring) ∧ Season(summer) ∧ Season(fall) ∧ Season(winter) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, summer) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, y) → ¬FavoriteSeason(emma, y)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
+            "First-Order-Logic Question": "FavoriteSeason(mia, spring) ::: Mia's favorite season is spring."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 52,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomance(french) ∧ Romance(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\nBasque ::: Basque is not related to any other language.",
@@ -60,6 +145,26 @@
         "fixed": true
     },
     {
+        "id": 57,
+        "raw_prog": {
+            "First-Order-Logic Rules": "Striker(robertlewandowski) ::: Robert Lewandowski is a striker.\n∀x (Striker(x) → SoccerPlayer(x)) ::: Strikers are soccer players.\nLeftTeam(robertlewandowski, bayernmunchen) ::: Robert Lewandowski left Bayern Munchen.\n∀x∀y (LeftTeam(x, y) → ¬PlayFor(x, y)) ::: If a player left a team they no longer play for that team.",
+            "First-Order-Logic Question": "Star(robertlewandowski) ::: Robert Lewandowski is a star."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "Striker(robertlewandowski) ::: Robert Lewandowski is a striker.\n∀x (Striker(x) → SoccerPlayer(x)) ::: Strikers are soccer players.\nLeftTeam(robertlewandowski, bayernmunchen) ::: Robert Lewandowski left Bayern Munchen.\n∀x∀y (LeftTeam(x, y) → ¬PlayFor(x, y)) ::: If a player left a team they no longer play for that team.",
+            "First-Order-Logic Question": "Star(robertlewandowski) ::: Robert Lewandowski is a star."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "Striker(robertlewandowski) ::: Robert Lewandowski is a striker.\n∀x (Striker(x) → SoccerPlayer(x)) ::: Strikers are soccer players.\nLeftTeam(robertlewandowski, bayernmunchen) ::: Robert Lewandowski left Bayern Munchen.\n∀x∀y (LeftTeam(x, y) → ¬PlayFor(x, y)) ::: If a player left a team they no longer play for that team.",
+            "First-Order-Logic Question": "Star(robertlewandowski) ::: Robert Lewandowski is a star."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 58,
         "raw_prog": {
             "First-Order-Logic Rules": "City(billings) ∧ City(butte) ∧ City(helena) ∧ City(missoula) ∧ City(whiteSulphurSprings) ∧ City(pierre) ∧ State(montana) ∧ State(southDakota) ∧ State(x) ∧ In(billings, montana) ∧ In(butte, montana) ∧ In(helena, montana) ∧ In(missoula, montana) ∧ In(whiteSulphurSprings, montana) ∧ In(butte, x) ∧ ¬In(pierre, southDakota) ∧ ∀x (In(x, butte) → ¬In(x, pierre)) ::: Billings is a city in Montana. Montana includes the cities of Butte, Helena, and Missoula. White Sulphur Springs and Butte are cities in the same state. The city of Pierre is not in Montana. Any city in Butte is not in Pierre.",
@@ -82,6 +187,66 @@
             "First-Order-Logic Question": "SameState(butte, pierre) ::: Butte and Pierre are in the same state."
         },
         "fixed": false
+    },
+    {
+        "id": 59,
+        "raw_prog": {
+            "First-Order-Logic Rules": "City(billings) ∧ In(billings, montana) ::: Billings is a city in Montana.\nInclude(montana, butte) ∧ Include(montana, helena) ∧ Include(montana, missoula) ::: Montana includes the cities of Butte, Helena, and Missoula.\nCity(white_sulphur_springs) ∧ City(butte) ∧ SameState(white_sulphur_springs, butte) ::: White Sulphur Springs and Butte are cities in the same state.\n¬In(pierre, montana) ::: The city of Pierre is not in Montana.\n∀x (City(x) ∧ In(x, butte) → ¬In(x, pierre)) ::: Any city in Butte is not in Pierre.\n",
+            "First-Order-Logic Question": "SameState(pierre, bismarck) ::: Pierre and Bismarck are in the same state."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "City(billings) ∧ In(billings, montana) ::: Billings is a city in Montana.\nInclude(montana, butte) ∧ Include(montana, helena) ∧ Include(montana, missoula) ::: Montana includes the cities of Butte, Helena, and Missoula.\nCity(white_sulphur_springs) ∧ City(butte) ∧ SameState(white_sulphur_springs, butte) ::: White Sulphur Springs and Butte are cities in the same state.\n¬In(pierre, montana) ::: The city of Pierre is not in Montana.\n∀x (City(x) ∧ In(x, butte) → ¬In(x, pierre)) ::: Any city in Butte is not in Pierre.\n",
+            "First-Order-Logic Question": "SameState(pierre, bismarck) ::: Pierre and Bismarck are in the same state."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "City(billings) ∧ In(billings, montana) ::: Billings is a city in Montana.\nInclude(montana, butte) ∧ Include(montana, helena) ∧ Include(montana, missoula) ::: Montana includes the cities of Butte, Helena, and Missoula.\nCity(white_sulphur_springs) ∧ City(butte) ∧ SameState(white_sulphur_springs, butte) ::: White Sulphur Springs and Butte are cities in the same state.\n¬In(pierre, montana) ::: The city of Pierre is not in Montana.\n∀x (City(x) ∧ In(x, butte) → ¬In(x, pierre)) ::: Any city in Butte is not in Pierre.\n",
+            "First-Order-Logic Question": "SameState(pierre, bismarck) ::: Pierre and Bismarck are in the same state."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 61,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (InternationalStudent(x) ∧ InUS(x) → (HasVisa(x, F1Visa) ∨ HasVisa(x, J1Visa))) ::: International students in US have either an F1 visa or a J1 visa. \n∀x (InternationalStudent(x) ∧ InUS(x) ∧ HasVisa(x, F1Visa) ∧ WorkInUS(x) → NeedsToApplyFor(x, CPT)) ::: An international student in US with an F1 visa needs to apply for CPT or OPT if the student wants to work in the US. \nInternationalStudent(mike) ::: Mike is an international student. \nWorkInUS(mike) ∧ NeedsToApplyFor(mike, CPT) ::: Mike needs to apply for CPT if he wants to work in the US.",
+            "First-Order-Logic Question": "HasVisa(mike, F1Visa) ::: Mike has an F1 visa."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (InternationalStudent(x) ∧ InUS(x) → (HasVisa(x, F1Visa) ∨ HasVisa(x, J1Visa))) ::: International students in US have either an F1 visa or a J1 visa. \n∀x (InternationalStudent(x) ∧ InUS(x) ∧ HasVisa(x, F1Visa) ∧ WorkInUS(x) → NeedsToApplyFor(x, CPT)) ::: An international student in US with an F1 visa needs to apply for CPT or OPT if the student wants to work in the US. \nInternationalStudent(mike) ::: Mike is an international student. \nWorkInUS(mike) ∧ NeedsToApplyFor(mike, CPT) ::: Mike needs to apply for CPT if he wants to work in the US.",
+            "First-Order-Logic Question": "HasVisa(mike, F1Visa) ::: Mike has an F1 visa."
+        },
+        "diff": [],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (InternationalStudent(x) ∧ InUS(x) → (HasVisa(x, F1Visa) ∨ HasVisa(x, J1Visa))) ::: International students in US have either an F1 visa or a J1 visa. \n∀x (InternationalStudent(x) ∧ InUS(x) ∧ HasVisa(x, F1Visa) ∧ WorkInUS(x) → NeedsToApplyFor(x, CPT)) ::: An international student in US with an F1 visa needs to apply for CPT or OPT if the student wants to work in the US. \nInternationalStudent(mike) ::: Mike is an international student. \nWorkInUS(mike) ∧ NeedsToApplyFor(mike, CPT) ::: Mike needs to apply for CPT if he wants to work in the US.",
+            "First-Order-Logic Question": "HasVisa(mike, F1Visa) ::: Mike has an F1 visa."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 73,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirement(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Company(y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (Stock(x) ∧ MatureCompany(x) → SuitableForRetirement(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nKO(ko) ∧ Stock(ko) ∧ MatureCompany(ko) ::: KO is a stock of a mature company.\n",
+            "First-Order-Logic Question": "(GrowthStock(ko) ∨ Volatile(ko)) → (¬Stock(ko) ∧ ¬Volatile(ko)) ::: If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirement(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Company(y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (Stock(x) ∧ MatureCompany(x) → SuitableForRetirement(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nKO(ko) ∧ Stock(ko) ∧ MatureCompany(ko) ::: KO is a stock of a mature company.\n",
+            "First-Order-Logic Question": "(GrowthStock(ko) ∨ Volatile(ko)) → (¬Stock(ko) ∧ ¬Volatile(ko)) ::: If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile."
+        },
+        "diff": [],
+        "answer": "A",
+        "grammar_answer": "A",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (GrowthStock(x) → Volatile(x)) ::: All growth stocks of companies are volatile.\n∀x (Volatile(x) → ¬SuitableForRetirement(x)) ::: If the stock price is volatile, then it is not suitable for a retirement fund.\n∃x ∃y (GrowthStock(x) ∧ Company(y)) ::: Some stocks of some companies are growth stocks of companies.\n∀x (Stock(x) ∧ MatureCompany(x) → SuitableForRetirement(x)) ::: All stocks of mature companies are suitable for a retirement fund.\nKO(ko) ∧ Stock(ko) ∧ MatureCompany(ko) ::: KO is a stock of a mature company.\n",
+            "First-Order-Logic Question": "(GrowthStock(ko) ∨ Volatile(ko)) → (¬Stock(ko) ∧ ¬Volatile(ko)) ::: If KO is a growth stock of a company or if its price is volatile, then KO is neither a stock of a company nor is its price volatile."
+        },
+        "manual_answer": "A",
+        "fixed": true
     },
     {
         "id": 93,
@@ -112,6 +277,31 @@
         "fixed": true
     },
     {
+        "id": 94,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∃x (Pet(x) ∧ ManagedBuilding(y) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (ManagedBuilding(x) → RequireDeposit(x)) ::: A deposit is required to rent an apartment in a managed building.\n∀x (SecurityDeposit(x) → (Equal(x, Rent) ∨ MoreThan(x, Rent))) ::: The security deposit can be either equal to one month's rent or more.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x (Cat(x) → Pet(x)) ::: Cats are pets.\nManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.\nPrice(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, olivegarden) ↔ (AllowedIn(tom, olivegarden) ∧ ¬MoreThan(SecurityDeposit(olivegarden), 1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
+            "First-Order-Logic Question": "RentApartment(tom, olivegarden) ∧ MoveInWith(tom, fluffy) ::: Tom is allowed to move in an apartment in The Olive Garden with Fluffy."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∃x (Pet(x) ∧ ManagedBuilding(y) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (ManagedBuilding(x) → RequireDeposit(x)) ::: A deposit is required to rent an apartment in a managed building.\n∀x (SecurityDeposit(x) → (Equal(x, Rent) ∨ MoreThan(x, Rent))) ::: The security deposit can be either equal to one month's rent or more.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x (Cat(x) → Pet(x)) ::: Cats are pets.\nManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.\nPrice(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(x,y)↔(AllowedIn(x,y)∧¬MoreThan(y,x)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
+            "First-Order-Logic Question": "RentApartment(tom, olivegarden) ∧ MoveInWith(tom, fluffy) ::: Tom is allowed to move in an apartment in The Olive Garden with Fluffy."
+        },
+        "diff": [
+            {
+                "raw": "RentApartment(tom, olivegarden) ↔ (AllowedIn(tom, olivegarden) ∧ ¬MoreThan(SecurityDeposit(olivegarden), 1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+                "gram": "RentApartment(x,y)↔(AllowedIn(x,y)∧¬MoreThan(y,x)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∃x (Pet(x) ∧ ManagedBuilding(y) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (ManagedBuilding(x) → RequireDeposit(x)) ::: A deposit is required to rent an apartment in a managed building.\n∀x (SecurityDeposit(x) → (Equal(x, Rent) ∨ MoreThan(x, Rent))) ::: The security deposit can be either equal to one month's rent or more.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\n∀x (Cat(x) → Pet(x)) ::: Cats are pets.\nManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.\nPrice(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(x,y)↔(AllowedIn(x,y)∧¬MoreThan(y,x)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
+            "First-Order-Logic Question": "RentApartment(tom, olivegarden) ∧ MoveInWith(tom, fluffy) ::: Tom is allowed to move in an apartment in The Olive Garden with Fluffy."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 104,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, x)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, y) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, luke)) ⊕ (¬Twins(luke) ∧ ¬DevelopBonds(luke, luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
@@ -128,6 +318,31 @@
             "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, x)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, y) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, luke)) ⊕ (¬Twins(luke) ∧ ¬DevelopBonds(luke, luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
             "First-Order-Logic Question": "¬(Twins(luke) ∨ Triplets(luke) ∨ Complain(luke)) ::: Luke is neither a twin nor triplet nor complains often about annoying siblings."
         },
+        "fixed": true
+    },
+    {
+        "id": 116,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Man(x) ∧ Man(y) ∧ Man(z) ∧ Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Man(michael) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
+            "First-Order-Logic Question": "GreatShooter(windy) ::: Windy is a great shooter."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(x)→Taller(x,y)∧Block(x,y)∧¬(Classmate(x,y))∧¬(Shoot(x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Man(x) ∧ Man(y) ∧ Man(z) ∧ Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Man(michael) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
+            "First-Order-Logic Question": "GreatShooter(windy) ::: Windy is a great shooter."
+        },
+        "diff": [
+            {
+                "raw": "Man(michael) ∧ ∀x (Classmate(x, michael) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.",
+                "gram": "Man(x)→Taller(x,y)∧Block(x,y)∧¬(Classmate(x,y))∧¬(Shoot(x)) ::: Michael is a man who is taller than everyone else in his class."
+            }
+        ],
+        "answer": "A",
+        "grammar_answer": "A",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(x)→Taller(x,y)∧Block(x,y)∧¬(Classmate(x,y))∧¬(Shoot(x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Man(x) ∧ Man(y) ∧ Man(z) ∧ Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Man(michael) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
+            "First-Order-Logic Question": "GreatShooter(windy) ::: Windy is a great shooter."
+        },
+        "manual_answer": "A",
         "fixed": true
     },
     {
@@ -174,6 +389,31 @@
         "fixed": true
     },
     {
+        "id": 130,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (Weddings(x) ∧ July(x) → BelongTo(x, TravelToParisForHoneymoon(x))) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (Weddings(x) ∧ July(x) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParisForHoneymoon(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\n(WellAttended(John) → (Weddings(John) ∧ July(John))) ∨ (¬July(John) → TravelToParisForHoneymoon(John)) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
+            "First-Order-Logic Question": "HaveChild(John) ::: John has at least one child."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x(WellAttended(x)→BelongTo(x,x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (Weddings(x) ∧ July(x) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParisForHoneymoon(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\n(WellAttended(John) → (Weddings(John) ∧ July(John))) ∨ (¬July(John) → TravelToParisForHoneymoon(John)) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
+            "First-Order-Logic Question": "HaveChild(John) ::: John has at least one child."
+        },
+        "diff": [
+            {
+                "raw": "∀x (Weddings(x) ∧ July(x) → BelongTo(x, TravelToParisForHoneymoon(x))) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.",
+                "gram": "∀x(WellAttended(x)→BelongTo(x,x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x(WellAttended(x)→BelongTo(x,x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (Weddings(x) ∧ July(x) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParisForHoneymoon(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\n(WellAttended(John) → (Weddings(John) ∧ July(John))) ∨ (¬July(John) → TravelToParisForHoneymoon(John)) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
+            "First-Order-Logic Question": "HaveChild(John) ::: John has at least one child."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 138,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x (Algorithm(x) → (SupervisedLearning(x) ∨ UnsupervisedLearning(x) ∨ ReinforcementLearning(x))) ::: Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.\n∀x (UnsupervisedLearning(x) → ¬RequireLabelledData(x)) ::: Unsupervised learning doesn't require labelled data.\nStateOfTheArtModel(model) ∧ Algorithm(algo) ∧ TrainedWith(model, algo) ::: The state-of-the-art text summarization model is trained with machine learning algorithms.\nReinforcementLearning(rl) → ¬TrainedWith(StateOfTheArtModel(model), rl) ::: Reinforcement learning is not used to train the state-of-the-art text summarization model.\n∀x (Algorithm(x) ∧ TrainedWith(StateOfTheArtModel(model), x) → RequireLabelledData(x)) ::: The Machine Learning algorithm for training text summarization model requires labelled data.\n",
@@ -202,6 +442,31 @@
         "fixed": true
     },
     {
+        "id": 153,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x,y (Owns(x, y) → (WorkRegularlyAtHome(x) ∧ TidyOrganize(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (HasHomeOffice(x) → Owns(x, largeDesktopMonitor)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularlyAtHome(x) → TidyOrganize(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularlyAtHome(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (TidyOrganize(x) → (¬GoToBedLate(x) ∧ WakeUpLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(TidyOrganize(remy) ∧ (GoToBedLate(remy) ∧ WakeUpLate(remy))) ⊕ (¬GoToBedLate(remy) ∧ ¬WakeUpLate(remy) ∧ ¬TidyOrganize(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
+            "First-Order-Logic Question": "VisitStore(remy) ::: Remy visits the office supply store regularly."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x(Owns(x,y)→(WorkRegularlyAtHome(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (HasHomeOffice(x) → Owns(x, largeDesktopMonitor)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularlyAtHome(x) → TidyOrganize(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularlyAtHome(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (TidyOrganize(x) → (¬GoToBedLate(x) ∧ WakeUpLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(TidyOrganize(remy) ∧ (GoToBedLate(remy) ∧ WakeUpLate(remy))) ⊕ (¬GoToBedLate(remy) ∧ ¬WakeUpLate(remy) ∧ ¬TidyOrganize(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
+            "First-Order-Logic Question": "VisitStore(remy) ::: Remy visits the office supply store regularly."
+        },
+        "diff": [
+            {
+                "raw": "∀x,y (Owns(x, y) → (WorkRegularlyAtHome(x) ∧ TidyOrganize(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.",
+                "gram": "∀x(Owns(x,y)→(WorkRegularlyAtHome(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x(Owns(x,y)→(WorkRegularlyAtHome(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (HasHomeOffice(x) → Owns(x, largeDesktopMonitor)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularlyAtHome(x) → TidyOrganize(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularlyAtHome(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (TidyOrganize(x) → (¬GoToBedLate(x) ∧ WakeUpLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(TidyOrganize(remy) ∧ (GoToBedLate(remy) ∧ WakeUpLate(remy))) ⊕ (¬GoToBedLate(remy) ∧ ¬WakeUpLate(remy) ∧ ¬TidyOrganize(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
+            "First-Order-Logic Question": "VisitStore(remy) ::: Remy visits the office supply store regularly."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 155,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x,y (Owns(x, y) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (FullyStocked(x) → Owns(x, largeDesktopMonitor) ∧ Impressive(x)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → Tidy(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (Tidy(x) → (¬Late(x) ∧ ¬WakeLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(Tidy(remy) ∧ Late(remy) ∧ WakeLate(remy)) ⊕ (¬Late(remy) ∧ ¬WakeLate(remy) ∧ ¬Tidy(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
@@ -226,6 +491,31 @@
         "fixed": true
     },
     {
+        "id": 164,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∃x ∃y (Roses(x) ∧ MondayAt8pm(y) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (GivenOut(x, TVShow(TheBachelor)) → On(x, TheBachelor)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(TheBachelor, x) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
+            "First-Order-Logic Question": "∃x (Roses(x) ∧ MondayAt8pm(x)) ::: Breaking Bad is on Monday at 8 pm."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∃x ∃y (Roses(x) ∧ MondayAt8pm(y) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x(GivenOut(x,y)→On(x,y)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(TheBachelor, x) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
+            "First-Order-Logic Question": "∃x (Roses(x) ∧ MondayAt8pm(x)) ::: Breaking Bad is on Monday at 8 pm."
+        },
+        "diff": [
+            {
+                "raw": "∀x (GivenOut(x, TVShow(TheBachelor)) → On(x, TheBachelor)) ::: Every rose given out on TV is on the Bachelor.",
+                "gram": "∀x(GivenOut(x,y)→On(x,y)) ::: Every rose given out on TV is on the Bachelor."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∃x ∃y (Roses(x) ∧ MondayAt8pm(y) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x(GivenOut(x,y)→On(x,y)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(TheBachelor, x) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
+            "First-Order-Logic Question": "∃x (Roses(x) ∧ MondayAt8pm(x)) ::: Breaking Bad is on Monday at 8 pm."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 166,
         "raw_prog": {
             "First-Order-Logic Rules": "∃x ∃y (Monday(y) ∧ Time(y) ∧ Roses(x) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (Roses(x) → On(x, Bachelor)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(x, Bachelor) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
@@ -242,6 +532,26 @@
             "First-Order-Logic Rules": "∃x ∃y (Monday(y) ∧ Time(y) ∧ Roses(x) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (Roses(x) → On(x, Bachelor)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(x, Bachelor) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
             "First-Order-Logic Question": "∀x (Roses(x) ∧ Monday(y) ∧ GivenOut(x, y)) → On(BreakingBad, y) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
         },
+        "fixed": true
+    },
+    {
+        "id": 178,
+        "raw_prog": {
+            "First-Order-Logic Rules": "SportingEvent(olympicGames) ::: The Olympic games is a sporting event.\nLastOlympicGames(tokyo) ::: The last Olympic games was in Tokyo.\nWonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in Tokyo.\n",
+            "First-Order-Logic Question": "WonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in the last Olympic games."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "SportingEvent(olympicGames) ::: The Olympic games is a sporting event.\nLastOlympicGames(tokyo) ::: The last Olympic games was in Tokyo.\nWonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in Tokyo.\n",
+            "First-Order-Logic Question": "WonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in the last Olympic games."
+        },
+        "diff": [],
+        "answer": "A",
+        "grammar_answer": "A",
+        "manual_prog": {
+            "First-Order-Logic Rules": "SportingEvent(olympicGames) ::: The Olympic games is a sporting event.\nLastOlympicGames(tokyo) ::: The last Olympic games was in Tokyo.\nWonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in Tokyo.\n",
+            "First-Order-Logic Question": "WonMostMedals(unitedStates, tokyo) ::: The United States won the most medals in the last Olympic games."
+        },
+        "manual_answer": "A",
         "fixed": true
     },
     {
@@ -355,6 +665,31 @@
         "fixed": false
     },
     {
+        "id": 74,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (Plate(x) → BeginWith(x, number34)) ::: All vehicle registration plates in Istanbul begin with the number 34.\n∀x (¬BeginWith(x, number34) → ¬InCity(x, istanbul)) ::: Plates that do not begin with the number 34 are not from Istanbul.\nInCity(joePlate, istanbul) ::: Joe's vehicle registration plate is from Istanbul.\nBeginWith(tomPlate, number35) ::: Tom's license plate begins with the number 35.\n∀x (BG(BeginWith(x, number35), ¬BeginWith(x, number34))) ::: If a license plate begins with the number 35, then it does not begin with the number 34.",
+            "First-Order-Logic Question": "BeginWith(joePlate, number34) ::: Joe's license plate begins with the number 34."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (Plate(x) → BeginWith(x, number34)) ::: All vehicle registration plates in Istanbul begin with the number 34.\n∀x (¬BeginWith(x, number34) → ¬InCity(x, istanbul)) ::: Plates that do not begin with the number 34 are not from Istanbul.\nInCity(joePlate, istanbul) ::: Joe's vehicle registration plate is from Istanbul.\nBeginWith(tomPlate, number35) ::: Tom's license plate begins with the number 35.\nBeginWith(x,y)→¬BeginWith(x,y) ::: If a license plate begins with the number 35, then it does not begin with the number 34.",
+            "First-Order-Logic Question": "BeginWith(joePlate, number34) ::: Joe's license plate begins with the number 34."
+        },
+        "diff": [
+            {
+                "raw": "∀x (BG(BeginWith(x, number35), ¬BeginWith(x, number34))) ::: If a license plate begins with the number 35, then it does not begin with the number 34.",
+                "gram": "BeginWith(x,y)→¬BeginWith(x,y) ::: If a license plate begins with the number 35, then it does not begin with the number 34."
+            }
+        ],
+        "answer": "A",
+        "grammar_answer": "A",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (Plate(x) → BeginWith(x, number34)) ::: All vehicle registration plates in Istanbul begin with the number 34.\n∀x (¬BeginWith(x, number34) → ¬InCity(x, istanbul)) ::: Plates that do not begin with the number 34 are not from Istanbul.\nInCity(joePlate, istanbul) ::: Joe's vehicle registration plate is from Istanbul.\nBeginWith(tomPlate, number35) ::: Tom's license plate begins with the number 35.\nBeginWith(x,y)→¬BeginWith(x,y) ::: If a license plate begins with the number 35, then it does not begin with the number 34.",
+            "First-Order-Logic Question": "BeginWith(joePlate, number34) ::: Joe's license plate begins with the number 34."
+        },
+        "manual_answer": "A",
+        "fixed": true
+    },
+    {
         "id": 103,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, Siblings(x))) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHomeRegularly(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, Siblings(x)) → ¬LiveAtHomeRegularly(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, FamilyMembers)) ∨ (¬Twins(luke) ∧ ¬DevelopBonds(luke, FamilyMembers)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
@@ -403,6 +738,31 @@
         "fixed": true
     },
     {
+        "id": 108,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (SpillFood(x) → (¬TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.\n∀x (Foodie(x) → SpillFood(x)) ::: All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.\n∀x (OnlyChild(x) → (TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.\n∀x (BusyParents(x) → OnlyChild(x)) ::: If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.\n∀x (HighIncomeHousehold(x) → BusyParents(Person(x))) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.\n(SpillFood(Peter) ∧ OnlyChild(Peter)) ⊕ (¬SpillFood(Peter) ∧ ¬OnlyChild(Peter)) ::: Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. ",
+            "First-Order-Logic Question": "TidySpaces(Peter) ∧ EnjoyCleaning(Peter) ::: Peter tidies his space consistently and enjoys the process of cleaning."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (SpillFood(x) → (¬TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.\n∀x (Foodie(x) → SpillFood(x)) ::: All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.\n∀x (OnlyChild(x) → (TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.\n∀x (BusyParents(x) → OnlyChild(x)) ::: If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.\nBusyParents(x)→HighIncomeHousehold(x) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.\n(SpillFood(Peter) ∧ OnlyChild(Peter)) ⊕ (¬SpillFood(Peter) ∧ ¬OnlyChild(Peter)) ::: Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. ",
+            "First-Order-Logic Question": "TidySpaces(Peter) ∧ EnjoyCleaning(Peter) ::: Peter tidies his space consistently and enjoys the process of cleaning."
+        },
+        "diff": [
+            {
+                "raw": "∀x (HighIncomeHousehold(x) → BusyParents(Person(x))) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.",
+                "gram": "BusyParents(x)→HighIncomeHousehold(x) ::: All households with a high net income have people who have parents who are very busy with their regular jobs."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (SpillFood(x) → (¬TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.\n∀x (Foodie(x) → SpillFood(x)) ::: All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.\n∀x (OnlyChild(x) → (TidySpaces(x) ∧ EnjoyCleaning(x))) ::: If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.\n∀x (BusyParents(x) → OnlyChild(x)) ::: If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.\nBusyParents(x)→HighIncomeHousehold(x) ::: All households with a high net income have people who have parents who are very busy with their regular jobs.\n(SpillFood(Peter) ∧ OnlyChild(Peter)) ⊕ (¬SpillFood(Peter) ∧ ¬OnlyChild(Peter)) ::: Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. ",
+            "First-Order-Logic Question": "TidySpaces(Peter) ∧ EnjoyCleaning(Peter) ::: Peter tidies his space consistently and enjoys the process of cleaning."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
         "id": 115,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Man(x) ∧ x ≠ michael → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shooter(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Shooter(x) ∧ Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
@@ -448,6 +808,56 @@
             "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ Not(x,michael) → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
             "First-Order-Logic Question": "Block(peter, windy) ::: Peter can block Windy's shooting."
         },
+        "fixed": true
+    },
+    {
+        "id": 122,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(Greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Airline(Greyhound) ::: Greyhound is an airline."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Airline(Greyhound) ::: Greyhound is an airline."
+        },
+        "diff": [
+            {
+                "raw": "¬Airline(Greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+                "gram": "¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes."
+            }
+        ],
+        "answer": "C",
+        "grammar_answer": "C",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Airline(Greyhound) ::: Greyhound is an airline."
+        },
+        "manual_answer": "C",
+        "fixed": true
+    },
+    {
+        "id": 123,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(Greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Boeing707(Greyhound) ::: A Greyhound is a Boeing 707."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Boeing707(Greyhound) ::: A Greyhound is a Boeing 707."
+        },
+        "diff": [
+            {
+                "raw": "¬Airline(Greyhound) → ¬∃x (Greyhound(x) ∧ Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+                "gram": "¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes."
+            }
+        ],
+        "answer": "B",
+        "grammar_answer": "B",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n¬Airline(x)→¬Plane(x) ::: If Greyhound is not an airline, then there are no Greyhound planes.",
+            "First-Order-Logic Question": "Boeing707(Greyhound) ::: A Greyhound is a Boeing 707."
+        },
+        "manual_answer": "B",
         "fixed": true
     },
     {
@@ -642,6 +1052,31 @@
         "fixed": true
     },
     {
+        "id": 79,
+        "raw_prog": {
+            "First-Order-Logic Rules": "¬(∃x (Bakery(x) ∧ Spicy(x))) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x (Product(BakedByMelissa(x), x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(driedthaichilies) ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
+            "First-Order-Logic Question": "Product(driedthaichilies, BakedByMelissa) ::: Dried Thai chilies are a product of Baked by Melissa."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "¬(∃x (Bakery(x) ∧ Spicy(x))) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x(Product(x,y)→Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(driedthaichilies) ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
+            "First-Order-Logic Question": "Product(driedthaichilies, BakedByMelissa) ::: Dried Thai chilies are a product of Baked by Melissa."
+        },
+        "diff": [
+            {
+                "raw": "∀x (Product(BakedByMelissa(x), x) → Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.",
+                "gram": "∀x(Product(x,y)→Cupcake(x)) ::: All products of Baked by Melissa are cupcakes."
+            }
+        ],
+        "answer": "B",
+        "grammar_answer": "B",
+        "manual_prog": {
+            "First-Order-Logic Rules": "¬(∃x (Bakery(x) ∧ Spicy(x))) ::: No bakery is spicy.\n∀x (Cupcake(x) → Bakery(x)) ::: All cupcakes are bakeries.\n∀x (Hotpot(x) → Spicy(x)) ::: All hotpots are spicy.\n∀x(Product(x,y)→Cupcake(x)) ::: All products of Baked by Melissa are cupcakes.\n(DriedThaiChilies(driedthaichilies) ∨ Bakery(driedthaichilies)) → (Hotpot(driedthaichilies) ∨ Spicy(driedthaichilies)) ::: If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.\n",
+            "First-Order-Logic Question": "Product(driedthaichilies, BakedByMelissa) ::: Dried Thai chilies are a product of Baked by Melissa."
+        },
+        "manual_answer": "B",
+        "fixed": true
+    },
+    {
         "id": 85,
         "raw_prog": {
             "First-Order-Logic Rules": "∀x (Listed(x) → ¬NotNegative(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.\n∀x (Rating(x, y) ∧ y > 9 → Listed(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.\n∃x (Restaurant(x) ∧ ¬Provide(x, takeout) → NotNegative(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.\n∀x (Popular(x) → Rating(x, y) ∧ y > 9) ::: All restaurants that are popular among local residents have ratings greater than 9.\nRating(subway, y) ∨ Popular(subway) ::: Subway has a rating greater than 9 or is popular among local residents.\n",
@@ -667,6 +1102,35 @@
             "First-Order-Logic Rules": "∀x (Listed(x) → ¬NotNegative(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.\n∀x (Rating(x, y) ∧ MoreThan(y,9) → Listed(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.\n∃x (Restaurant(x) ∧ ¬Provide(x, takeout) → NotNegative(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.\n∀x (Popular(x) → Rating(x, y) ∧ MoreThan(y,9)) ::: All restaurants that are popular among local residents have ratings greater than 9.\nRating(subway, y) ∨ Popular(subway) ::: Subway has a rating greater than 9 or is popular among local residents.\n",
             "First-Order-Logic Question": "TakeOut(subway) ∧ ¬NotNegative(subway) ::: Subway provides take-out service and does not receive many negative reviews."
         },
+        "fixed": true
+    },
+    {
+        "id": 87,
+        "raw_prog": {
+            "First-Order-Logic Rules": "∀x (SuperheroMovie(x) → Win(GoodGuy(x))) ::: In superhero movies, the good guys always win.\nSuperheroMovie(sir_digby) ∧ NamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is a superhero movie.\n∀x (GoodGuy(x) → Fight(x, BadGuy(x)) ∧ Fight(BadGuy(x), x)) ::: Good guys fight bad guys and vice versa.\nFight(sir_digby, nemesis) ::: Sir Digby fights his nemesis.\n∀x (SuperheroMovie(x) ∧ NamedAfter(x, character) → GoodGuy(character)) ::: If a superhero movie is named after a character, that character is a good guy.\nNamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is named after Sir Digby.\n∀x ∀y (Win(x) → Lose(y)) ::: If somebody wins a fight, the person they are fighting loses.\n∀x ∀y (SuperheroMovie(x) ∧ NamedAfter(x, y) → AppearIn(y, x)) ::: If a superhero movie is named after a character, that character appears in the movie.\n",
+            "First-Order-Logic Question": "Lose(nemesis) ::: Sir Digby’s nemesis loses."
+        },
+        "gram_prog": {
+            "First-Order-Logic Rules": "∀x(SuperheroMovie(x)→Win(x)) ::: In superhero movies, the good guys always win.\nSuperheroMovie(sir_digby) ∧ NamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is a superhero movie.\n∀x(GoodGuy(x)→Fight(x,y)∧Fight(y,x)) ::: Good guys fight bad guys and vice versa.\nFight(sir_digby, nemesis) ::: Sir Digby fights his nemesis.\n∀x (SuperheroMovie(x) ∧ NamedAfter(x, character) → GoodGuy(character)) ::: If a superhero movie is named after a character, that character is a good guy.\nNamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is named after Sir Digby.\n∀x ∀y (Win(x) → Lose(y)) ::: If somebody wins a fight, the person they are fighting loses.\n∀x ∀y (SuperheroMovie(x) ∧ NamedAfter(x, y) → AppearIn(y, x)) ::: If a superhero movie is named after a character, that character appears in the movie.\n",
+            "First-Order-Logic Question": "Lose(nemesis) ::: Sir Digby’s nemesis loses."
+        },
+        "diff": [
+            {
+                "raw": "∀x (SuperheroMovie(x) → Win(GoodGuy(x))) ::: In superhero movies, the good guys always win.",
+                "gram": "∀x(SuperheroMovie(x)→Win(x)) ::: In superhero movies, the good guys always win."
+            },
+            {
+                "raw": "∀x (GoodGuy(x) → Fight(x, BadGuy(x)) ∧ Fight(BadGuy(x), x)) ::: Good guys fight bad guys and vice versa.",
+                "gram": "∀x(GoodGuy(x)→Fight(x,y)∧Fight(y,x)) ::: Good guys fight bad guys and vice versa."
+            }
+        ],
+        "answer": "A",
+        "grammar_answer": "A",
+        "manual_prog": {
+            "First-Order-Logic Rules": "∀x(SuperheroMovie(x)→Win(x)) ::: In superhero movies, the good guys always win.\nSuperheroMovie(sir_digby) ∧ NamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is a superhero movie.\n∀x(GoodGuy(x)→Fight(x,y)∧Fight(y,x)) ::: Good guys fight bad guys and vice versa.\nFight(sir_digby, nemesis) ::: Sir Digby fights his nemesis.\n∀x (SuperheroMovie(x) ∧ NamedAfter(x, character) → GoodGuy(character)) ::: If a superhero movie is named after a character, that character is a good guy.\nNamedAfter(sir_digby, sir_digby) ::: The Surprising Adventures of Sir Digby Chicken Caesar is named after Sir Digby.\n∀x ∀y (Win(x) → Lose(y)) ::: If somebody wins a fight, the person they are fighting loses.\n∀x ∀y (SuperheroMovie(x) ∧ NamedAfter(x, y) → AppearIn(y, x)) ::: If a superhero movie is named after a character, that character appears in the movie.\n",
+            "First-Order-Logic Question": "Lose(nemesis) ::: Sir Digby’s nemesis loses."
+        },
+        "manual_answer": "A",
         "fixed": true
     },
     {
@@ -766,176 +1230,28 @@
         "fixed": true
     },
     {
-        "id": 70,
+        "id": 151,
         "raw_prog": {
-            "First-Order-Logic Rules": [
-                "British(badults) ∧ Sitcom(badults) ∧ ∀x (MemberOf(x, pappys) → Star(x, badults)) ::: Badults is a British Sitcom series, starring members of Pappy's.",
-                "Pilot(badults, 2013) ∧ Network(badults, bbcthree) ::: Badults piloted in July 2013 on BBC Three.",
-                "WorkingTitle(badults, thesecretdudesociety) ::: The Working title 'The Secret Dude Society' was used for Badults.",
-                "ScriptEditor(andrewcollins, badults) ::: Andrew Collins was the script editor for Badults."
-            ],
-            "First-Order-Logic Question": [
-                "∀x (MemberOf(x, pappys) → ¬∃y (Star(x, y) ∧ (Network(y, bbctwo) ∨ Network(y, bbcthree)))) ::: No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
-            ]
+            "First-Order-Logic Rules": "PublishingHouse(newVesselPress) ∧ SpecializeIn(newVesselPress, foreignLiterature) ∧ Language(allBooks, english) ∧ Book(neapolitanChronicles) ∧ Publish(newVesselPress, neapolitanChronicles) ∧ Translate(neapolitanChronicles, italian, english) ∧ Book(palaceOfFlies) ∧ Publish(newVesselPress, palaceOfFlies) ::: New Vessel Press is a publishing house which specializes in translating foreign literature into English. All of New Vessel Press's published books are in English. Neapolitan Chronicles is a book published by New Vessel Press. Neapolitan Chronicles was translated from Italian. Palace of Flies is a book published by New Vessel Press.",
+            "First-Order-Logic Question": "¬Publish(newVesselPress, harryPotter) ::: Harry Potter was published by New Vessel Press."
         },
         "gram_prog": {
-            "First-Order-Logic Rules": [
-                "British(badults) ∧ Sitcom(badults) ∧ ∀x (MemberOf(x, pappys) → Star(x, badults)) ::: Badults is a British Sitcom series, starring members of Pappy's.",
-                "Pilot(badults, 2013) ∧ Network(badults, bbcthree) ::: Badults piloted in July 2013 on BBC Three.",
-                "WorkingTitle(badults, thesecretdudesociety) ::: The Working title 'The Secret Dude Society' was used for Badults.",
-                "ScriptEditor(andrewcollins, badults) ::: Andrew Collins was the script editor for Badults."
-            ],
-            "First-Order-Logic Question": [
-                "∀x(MemberOf(x,y)→¬(Star(x,y))) ::: No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
-            ]
-        },
-        "diff": [],
-        "answer": "B",
-        "grammar_answer": "C",
-        "manual_prog": {
-            "First-Order-Logic Rules": [
-                "British(badults) ∧ Sitcom(badults) ∧ ∀x (MemberOf(x, pappys) → Star(x, badults)) ::: Badults is a British Sitcom series, starring members of Pappy's.",
-                "Pilot(badults, 2013) ∧ Network(badults, bbcthree) ::: Badults piloted in July 2013 on BBC Three.",
-                "WorkingTitle(badults, thesecretdudesociety) ::: The Working title 'The Secret Dude Society' was used for Badults.",
-                "ScriptEditor(andrewcollins, badults) ::: Andrew Collins was the script editor for Badults."
-            ],
-            "First-Order-Logic Question": [
-                "∀x ∃y (MemberOf(x, pappys) → ¬(Star(x, y) ∧ (Network(y, bbctwo) ∨ Network(y, bbcthree)))) ::: No members of Pappy's have starred for a show piloting on BBC Two or BBC Three."
-            ]
-        },
-        "fixed": true
-    },
-    {
-        "id": 113,
-        "raw_prog": {
-            "First-Order-Logic Rules": [
-                "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ⊕ In(picurismountains, texas)) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.",
-                "Visit(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.",
-                "Mine(hardingpegmatitemine) ∧ LocatedIn(hardingpegmatitemine, picurismountains) ∧ Donate(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
-                "∀x ∃y (MountainRange(x) ∧ In(x, texas) → ¬(Mine(y) ∧ LocatedIn(y, x) ∧ Donate(y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
-            ],
-            "First-Order-Logic Question": "∃x (MountainRange(x) ∧ In(x, texas) ∧ Visit(juandeonate, x)) ::: Juan de Onate visited a mountain range in Texas."
-        },
-        "gram_prog": {
-            "First-Order-Logic Rules": [
-                "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ⊕ In(picurismountains, texas)) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.",
-                "Visit(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.",
-                "Mine(hardingpegmatitemine) ∧ LocatedIn(hardingpegmatitemine, picurismountains) ∧ Donate(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
-                "∀x(MountainRange(x)→¬(In(x,y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
-            ],
-            "First-Order-Logic Question": "∃x (MountainRange(x) ∧ In(x, texas) ∧ Visit(juandeonate, x)) ::: Juan de Onate visited a mountain range in Texas."
+            "First-Order-Logic Rules": "PublishingHouse(x)∧SpecializeIn(x,y)∧Language(x,z)∧Book(x)∧PublishedIn(x,y)∧Translate(x,y,z) ::: New Vessel Press is a publishing house which specializes in translating foreign literature into English. All of New Vessel Press's published books are in English. Neapolitan Chronicles is a book published by New Vessel Press. Neapolitan Chronicles was translated from Italian. Palace of Flies is a book published by New Vessel Press.",
+            "First-Order-Logic Question": "¬Publish(newVesselPress, harryPotter) ::: Harry Potter was published by New Vessel Press."
         },
         "diff": [
             {
-                "raw": "∀x (MountainRange(x) ∧ In(x, texas) → ¬∃y (Mine(y) ∧ LocatedIn(y, x) ∧ Donate(y))) ::: There are no mountain ranges in Texas that have mines which have been donated.",
-                "gram": "∀x(MountainRange(x)→¬(In(x,y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
+                "raw": "PublishingHouse(newVesselPress) ∧ SpecializeIn(newVesselPress, foreignLiterature) ∧ Language(allBooks, english) ∧ Book(neapolitanChronicles) ∧ Publish(newVesselPress, neapolitanChronicles) ∧ Translate(neapolitanChronicles, italian, english) ∧ Book(palaceOfFlies) ∧ Publish(newVesselPress, palaceOfFlies) ::: New Vessel Press is a publishing house which specializes in translating foreign literature into English. All of New Vessel Press's published books are in English. Neapolitan Chronicles is a book published by New Vessel Press. Neapolitan Chronicles was translated from Italian. Palace of Flies is a book published by New Vessel Press.",
+                "gram": "PublishingHouse(x)∧SpecializeIn(x,y)∧Language(x,z)∧Book(x)∧PublishedIn(x,y)∧Translate(x,y,z) ::: New Vessel Press is a publishing house which specializes in translating foreign literature into English. All of New Vessel Press's published books are in English. Neapolitan Chronicles is a book published by New Vessel Press. Neapolitan Chronicles was translated from Italian. Palace of Flies is a book published by New Vessel Press."
             }
         ],
         "answer": "C",
-        "grammar_answer": "A",
-        "manual_prog": {
-            "First-Order-Logic Rules": [
-                "MountainRange(picurismountains) ∧ (In(picurismountains, newmexico) ⊕ In(picurismountains, texas)) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.",
-                "Visit(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.",
-                "Mine(hardingpegmatitemine) ∧ LocatedIn(hardingpegmatitemine, picurismountains) ∧ Donate(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.",
-                "∀x ∃y (MountainRange(x) ∧ In(x, texas) → ¬(Mine(y) ∧ LocatedIn(y, x) ∧ Donate(y))) ::: There are no mountain ranges in Texas that have mines which have been donated."
-            ],
-            "First-Order-Logic Question": "∃x (MountainRange(x) ∧ In(x, texas) ∧ Visit(juandeonate, x)) ::: Juan de Onate visited a mountain range in Texas."
-        },
-        "fixed": false
-    },
-    {
-        "id": 143,
-        "raw_prog": {
-            "First-Order-Logic Rules": "∀x (BreedingBack(x) → ArtificiallySelected(x)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nBredBack(heck_cattle, aurochs) ∧ Resemble(heck_cattle, aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heck_cattle) ::: Heck cattle are animals.\nAnimal(aurochs) ::: Aurochs are animals.\n∃x ∃y (Animal(x) ∧ Animal(y) ∧ BredBack(x, y) ∧ Resemble(x, y) ∧ Extinct(y)) ::: Some animals to be bred-back resemble animals that are extinct.\n",
-            "First-Order-Logic Question": "∃x (Animal(x) ∧ ArtificiallySelected(x) ∧ x = heck_cattle) ::: Some Heck cattle are artificially selected."
-        },
-        "gram_prog": {
-            "First-Order-Logic Rules": "∀x (BreedingBack(x) → ArtificiallySelected(x)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nBredBack(heck_cattle, aurochs) ∧ Resemble(heck_cattle, aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heck_cattle) ::: Heck cattle are animals.\nAnimal(aurochs) ::: Aurochs are animals.\n∃x ∃y (Animal(x) ∧ Animal(y) ∧ BredBack(x, y) ∧ Resemble(x, y) ∧ Extinct(y)) ::: Some animals to be bred-back resemble animals that are extinct.\n",
-            "First-Order-Logic Question": "∃x(Animal(x)∧ArtificiallySelected(x)∧Resemble(x,x)) ::: Some Heck cattle are artificially selected."
-        },
-        "diff": [],
-        "answer": "A",
         "grammar_answer": "C",
         "manual_prog": {
-            "First-Order-Logic Rules": "∀x (BreedingBack(x) → ArtificiallySelected(x)) ::: Breeding back is a form of artificial selection by the deliberate selective breeding of domestic animals.\nBredBack(heck_cattle, aurochs) ∧ Resemble(heck_cattle, aurochs) ::: Heck cattle were bred-back in the 1920s to resemble the aurochs.\nAnimal(heck_cattle) ::: Heck cattle are animals.\nAnimal(aurochs) ::: Aurochs are animals.\n∃x ∃y (Animal(x) ∧ Animal(y) ∧ BredBack(x, y) ∧ Resemble(x, y) ∧ Extinct(y)) ::: Some animals to be bred-back resemble animals that are extinct.\n",
-            "First-Order-Logic Question": "∃x (Animal(x) ∧ ArtificiallySelected(x) ∧ x = heck_cattle) ::: Some Heck cattle are artificially selected."
+            "First-Order-Logic Rules": "PublishingHouse(x)∧SpecializeIn(x,y)∧Language(x,z)∧Book(x)∧PublishedIn(x,y)∧Translate(x,y,z) ::: New Vessel Press is a publishing house which specializes in translating foreign literature into English. All of New Vessel Press's published books are in English. Neapolitan Chronicles is a book published by New Vessel Press. Neapolitan Chronicles was translated from Italian. Palace of Flies is a book published by New Vessel Press.",
+            "First-Order-Logic Question": "¬Publish(newVesselPress, harryPotter) ::: Harry Potter was published by New Vessel Press."
         },
-        "fixed": false
-    },
-    {
-        "id": 10,
-        "raw_prog": {
-            "First-Order-Logic Rules": "∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))) ::: There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\nNot(tom, EasternWildTurkey(tom)) ::: Tom is not an Eastern wild turkey.\nNot(tom, OsceolaWildTurkey(tom)) ::: Tom is not an Osceola wild turkey.\nNot(tom, GouldsWildTurkey(tom)) ∧ Not(tom, MerriamsWildTurkey(tom)) ∧ Not(tom, RioGrandeWildTurkey(tom)) ::: Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\nWildTurkey(tom) ::: Tom is a wild turkey.\n",
-            "First-Order-Logic Question": "EasternWildTurkey(tom) ::: Tom is an Eastern wild turkey."
-        },
-        "gram_prog": {
-            "First-Order-Logic Rules": "∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))) ::: There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\nNot(x,y)→(EasternWildTurkey(x)→¬OsceolaWildTurkey(x)) ::: Tom is not an Eastern wild turkey.\nNot(x,y)→OsceolaWildTurkey(x) ::: Tom is not an Osceola wild turkey.\nNot(x,y)→(WildTurkey(x)∧¬EasternWildTurkey(x)) ::: Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\nWildTurkey(tom) ::: Tom is a wild turkey.\n",
-            "First-Order-Logic Question": "EasternWildTurkey(tom) ::: Tom is an Eastern wild turkey."
-        },
-        "diff": [
-            {
-                "raw": "Not(tom, EasternWildTurkey(tom)) ::: Tom is not an Eastern wild turkey.",
-                "gram": "Not(x,y)→(EasternWildTurkey(x)→¬OsceolaWildTurkey(x)) ::: Tom is not an Eastern wild turkey."
-            },
-            {
-                "raw": "Not(tom, OsceolaWildTurkey(tom)) ::: Tom is not an Osceola wild turkey.",
-                "gram": "Not(x,y)→OsceolaWildTurkey(x) ::: Tom is not an Osceola wild turkey."
-            },
-            {
-                "raw": "Not(tom, GouldsWildTurkey(tom)) ∧ Not(tom, MerriamsWildTurkey(tom)) ∧ Not(tom, RioGrandeWildTurkey(tom)) ::: Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
-                "gram": "Not(x,y)→(WildTurkey(x)∧¬EasternWildTurkey(x)) ::: Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey."
-            }
-        ],
-        "answer": "B",
-        "grammar_answer": "C",
-        "manual_prog": {
-            "First-Order-Logic Rules": "∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))) ::: There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\n¬EasternWildTurkey(tom) ::: Tom is not an Eastern wild turkey.\n¬OsceolaWildTurkey(tom) ::: Tom is not an Osceola wild turkey.\n¬GouldsWildTurkey(tom) ∧ ¬MerriamsWildTurkey(tom) ∧ ¬RioGrandeWildTurkey(tom) ::: Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\nWildTurkey(tom) ::: Tom is a wild turkey.\n",
-            "First-Order-Logic Question": "EasternWildTurkey(tom) ::: Tom is an Eastern wild turkey."
-        },
-        "fixed": true
-    },
-    {
-        "id": 38,
-        "raw_prog": {
-            "First-Order-Logic Rules": [
-                "MusicPiece(symphonyNo9) ::: Symphony No. 9 is a music piece.",
-                "∀x (Composer(x) → ∃y (Write(x, y) ∧ MusicPiece(y))) ::: Composers write music pieces.",
-                "Write(beethoven, symphonyNo9) ∧ Composer(beethoven) ::: Beethoven wrote Symphony No. 9.",
-                "Premiere(viennaMusicSociety, symphonyNo9) ::: Vienna Music Society premiered Symphony No. 9.",
-                "Orchestra(viennaMusicSociety) ::: Vienna Music Society is an orchestra.",
-                "Lead(beethoven, viennaMusicSociety) ::: Beethoven leads the Vienna Music Society.",
-                "∀x (Orchestra(x) → ∃y (Lead(y, x) ∧ Conductor(y))) ::: Orchestras are led by conductors."
-            ],
-            "First-Order-Logic Question": "Not(Conductor(beethoven)) ::: Beethoven is not a conductor."
-        },
-        "gram_prog": {
-            "First-Order-Logic Rules": [
-                "MusicPiece(symphonyNo9) ::: Symphony No. 9 is a music piece.",
-                "∀x (Composer(x) → ∃y (Write(x, y) ∧ MusicPiece(y))) ::: Composers write music pieces.",
-                "Write(beethoven, symphonyNo9) ∧ Composer(beethoven) ::: Beethoven wrote Symphony No. 9.",
-                "Premiere(viennaMusicSociety, symphonyNo9) ::: Vienna Music Society premiered Symphony No. 9.",
-                "Orchestra(viennaMusicSociety) ::: Vienna Music Society is an orchestra.",
-                "Lead(beethoven, viennaMusicSociety) ::: Beethoven leads the Vienna Music Society.",
-                "∀x (Orchestra(x) → ∃y (Lead(y, x) ∧ Conductor(y))) ::: Orchestras are led by conductors."
-            ],
-            "First-Order-Logic Question": "Not(x)→Composer(x)∨Write(x,y)∨Premiere(x,y)∨Orchestra(x)∨Lead(x,y)∨Conductor(x) ::: Beethoven is not a conductor."
-        },
-        "diff": [],
-        "answer": "B",
-        "grammar_answer": "C",
-        "manual_prog": {
-            "First-Order-Logic Rules": [
-                "MusicPiece(symphonyNo9) ::: Symphony No. 9 is a music piece.",
-                "∀x (Composer(x) → ∃y (Write(x, y) ∧ MusicPiece(y))) ::: Composers write music pieces.",
-                "Write(beethoven, symphonyNo9) ∧ Composer(beethoven) ::: Beethoven wrote Symphony No. 9.",
-                "Premiere(viennaMusicSociety, symphonyNo9) ::: Vienna Music Society premiered Symphony No. 9.",
-                "Orchestra(viennaMusicSociety) ::: Vienna Music Society is an orchestra.",
-                "Lead(beethoven, viennaMusicSociety) ::: Beethoven leads the Vienna Music Society.",
-                "∀x (Orchestra(x) → ∃y (Lead(y, x) ∧ Conductor(y))) ::: Orchestras are led by conductors."
-            ],
-            "First-Order-Logic Question": "¬Conductor(beethoven) ::: Beethoven is not a conductor."
-        },
+        "manual_answer": "C",
         "fixed": true
     }
 ]

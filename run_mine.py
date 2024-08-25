@@ -15,7 +15,7 @@ label_map = {
     'N/A': 'N/A'
 }
 
-dataset = 'LogicNLI'
+dataset = 'FOLIO'
 load_dir = 'qualitative'
 load_dir = load_dir + '_' + 'folio' if dataset == 'FOLIO' else load_dir + '_' + 'nli'
 
@@ -78,7 +78,7 @@ def main():
             y_pred_sket.append('N/A')
             
     with open(f'{load_dir}/llama-2-7b.json', 'w') as f:
-        json.dump(samples, f, indent=4)
+        json.dump(samples, f, indent=4, ensure_ascii=False)
         
         
     # for sample in samples_sket:
