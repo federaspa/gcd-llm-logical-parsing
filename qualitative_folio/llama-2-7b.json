@@ -21,7 +21,8 @@
             "First-Order-Logic Rules": "∀x (Perform(x) → (Attend(x) ∧ Engaged(x))) ::: If people perform in school talent shows often, then they attend and are very engaged with school events.\n∀x ((Perform(x) ∨ (Inactive(x) ∧ Disinterested(x)))) ::: People either perform in school talent shows often or are inactive and disinterested members of their community.\n∀x (Chaperone(x) → ¬Student(x)) ::: If people chaperone high school dances, then they are not students who attend the school.\n∀x ((Inactive(x) ∧ Disinterested(x)) → Chaperone(x)) ::: All people who are inactive and disinterested members of their community chaperone high school dances.\n∀x ((Young(x) ∨ Teenager(x)) ∧ Wish(x) → Student(x)) ::: All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.\n¬((Attend(Bonnie) ∧ Engaged(Bonnie)) ⊕ Student(Bonnie)) ::: Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school.\n",
             "First-Order-Logic Question": "((Chaperone(Bonnie) ∨ ¬Chaperone(Bonnie) ∧ Perform(Bonnie)) → ((Young(Bonnie) ∨ Teenager(Bonnie)) ∧ Wish(Bonnie) ∧ Inactive(Bonnie) ∧ Disinterested(Bonnie))) ::: If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 3,
@@ -142,7 +143,8 @@
             "First-Order-Logic Rules": "∀x (Romance(x) → IndoEuropean(x)) ::: All Romance languages are Indo-European languages.\nLanguageFamily(romance) ::: The Romance languages are a language family.\n∀x ∀y (LanguageFamily(x) ∧ LanguageFamily(y) → Related(x, y)) ::: All languages within a language family are related to each other.\nRomance(french) ∧ Romance(spanish) ::: French and Spanish are both Romance languages.\nRelated(german, spanish) ::: German is related to Spanish.\n∀x (¬Related(x, basque)) ::: ∀x (¬Related(x, basque)) is not related to any other language.",
             "First-Order-Logic Question": "Romance(basque) ::: ∀x (¬Related(x, basque)) is a Romance language."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "N/A"
     },
     {
         "id": 57,
@@ -274,7 +276,8 @@
             "First-Order-Logic Rules": "∃x (Pet(x) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x ∃y ∃z (RequireDeposit(x) → (RentApartment(z, y) ∧ SecurityDeposit(x) ∧ (Equal(x,y) ∨ MoreThan(x,y)))) ::: A deposit is required to rent an apartment in a managed building. The security deposit can be either equal to one month's rent or more.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\nCat(x) → Pet(x) ::: Cats are pets.\nManagedBuilding(olivegarden) ::: The Olive Garden is a managed building.\nRentAmount(2000, olivegarden) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, olivegarden) ↔ (AllowedIn(tom, olivegarden) ∧ SecurityDeposit(olivegarden) ∧ (Equal(olivegarden, 1500) ∨ ¬MoreThan(olivegarden, 1500))) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.",
             "First-Order-Logic Question": "RentApartment(tom, olivegarden) ::: Tom will rent an apartment in The Olive Garden."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 94,
@@ -318,7 +321,8 @@
             "First-Order-Logic Rules": "∀x (Twins(x) ∨ Triplets(x) → SpendTimeWith(x, x)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHome(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (SpendTimeWith(x, y) → ¬LiveAtHome(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, luke)) ⊕ (¬Twins(luke) ∧ ¬DevelopBonds(luke, luke)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
             "First-Order-Logic Question": "¬(Twins(luke) ∨ Triplets(luke) ∨ Complain(luke)) ::: Luke is neither a twin nor triplet nor complains often about annoying siblings."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 116,
@@ -367,7 +371,8 @@
             "First-Order-Logic Rules": "∀x (Transport(x) → ¬Empty(x)) ::: If something can transport multiple passengers, then they are not empty. \n∀x (Airline(x) → Transport(x)) ::: All airlines can transport multiple passengers. \n∀x (Plane(x) → Empty(x)) ::: All planes are empty. \n∀x (Boeing707(x) → Plane(x)) ::: All Boeing 707s are planes. \n∀x ((Greyhound(x) ∧ ¬Airline(x)) → ¬Plane(x)) ::: If Greyhound is not an airline, then there are no Greyhound planes.\n",
             "First-Order-Logic Question": "¬(Greyhound(x) ∧ Boeing707(x)) ::: A Greyhound is not a Boeing 707."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "A"
     },
     {
         "id": 128,
@@ -386,7 +391,8 @@
             "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParis(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (OccurIn(x, July) ∧ HaveWedding(x) → TravelToParis(x)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (OccurIn(x, July) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParis(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\nHaveWedding(John) ∧ WellAttended(John) → (OccurIn(John, July) ∨ (¬OccurIn(John, July) → TravelToParis(John))) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
             "First-Order-Logic Question": "WellAttended(John) ::: John has a wedding that is well-attended."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 130,
@@ -439,7 +445,8 @@
             "First-Order-Logic Rules": "∀x (Algorithm(x) → (SupervisedLearning(x) ∨ UnsupervisedLearning(x) ∨ ReinforcementLearning(x))) ::: Machine Learning algorithms can be categorized as supervised learning, unsupervised learning, and reinforcement learning.\n∀x (UnsupervisedLearning(x) → ¬RequireLabelledData(x)) ::: Unsupervised learning doesn't require labelled data.\nStateOfTheArtModel(model) ∧ Algorithm(algo) ∧ TrainedWith(model, algo) ::: The state-of-the-art text summarization model is trained with machine learning algorithms.\nReinforcementLearning(rl) → (StateOfTheArtModel(model) ∧ ¬TrainedWith(model, rl)) ::: Reinforcement learning is not used to train the state-of-the-art text summarization model.\n∀x (Algorithm(x) ∧ StateOfTheArtModel(model) ∧ TrainedWith(model, x) → RequireLabelledData(x)) ::: The Machine Learning algorithm for training text summarization model requires labelled data.\n",
             "First-Order-Logic Question": "SupervisedLearning(supervised) ∧ StateOfTheArtModel(model) ∧ TrainedWith(model, supervised) ::: Supervised learning is used to train the state-of-the-art text summarization model."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 153,
@@ -488,7 +495,8 @@
             "First-Order-Logic Rules": "∀x ∀y (Owns(x, y) → (WorkRegularly(x) ∧ WorkOften(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x (FullyStocked(x) → Owns(x, largeDesktopMonitor) ∧ Impressive(x)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → Tidy(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularly(x) ∧ WorkOften(x) → VisitStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (Tidy(x) → (¬Late(x) ∧ ¬WakeLate(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(Tidy(remy) ∧ Late(remy) ∧ WakeLate(remy)) ⊕ (¬Late(remy) ∧ ¬WakeLate(remy) ∧ ¬Tidy(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
             "First-Order-Logic Question": "((Late(remy) ∧ WakeLate(remy)) ∨ VisitStore(remy)) → (¬Tidy(remy) ∧ ¬FullyStocked(remy)) ::: If Remy either goes to bed late and wakes up every day after noon or visits the office supply store regularly, then Remy neither spends their free time tidying and organizing the spaces in their home nor has a fully stocked and impressive home office."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "A"
     },
     {
         "id": 164,
@@ -532,7 +540,8 @@
             "First-Order-Logic Rules": "∃x ∃y (Monday(y) ∧ Time(y) ∧ Roses(x) ∧ GivenOut(x, y)) ::: On some Mondays at 8 pm, roses are given out on TV.\n∀x (Roses(x) → On(x, Bachelor)) ::: Every rose given out on TV is on the Bachelor.\n∀x (On(x, Bachelor) → Portray(x, RealPeople)) ::: Everything on the Bachelor portrays the lives of real people.\n∀x (Portray(x, RealPeople) → RealityTVShow(x)) ::: All shows portraying the lives of real people are reality TV shows.\n¬RealityTVShow(BreakingBad) ::: Breaking Bad is not a reality TV show.\n",
             "First-Order-Logic Question": "∀x (Roses(x) ∧ Monday(y) ∧ GivenOut(x, y)) → On(BreakingBad, y) ::: If roses are given out during Breaking Bad, then it is on Monday at 8 pm."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 178,
@@ -571,7 +580,8 @@
             "First-Order-Logic Rules": "Flies(susan, LGA) ::: Susan flies to LGA airport.\n∀x (Airport(x) ∧ Flies(john, x) ∧ ¬(DepartsFrom(john, x) ∧ ArrivesAt(john, x))) ::: The departure and arrival can not be the same airport.\n",
             "First-Order-Logic Question": "Flies(john, LGA) ::: John flies to LGA airport."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "A"
     },
     {
         "id": 1,
@@ -595,7 +605,8 @@
             "First-Order-Logic Rules": "∀x (Perform(x) → (Attend(x) ∧ Engaged(x))) ::: If people perform in school talent shows often, then they attend and are very engaged with school events.\n∀x ((Perform(x) ∨ (Inactive(x) ∧ Disinterested(x)))) ::: People either perform in school talent shows often or are inactive and disinterested members of their community.\n∀x (Chaperone(x) → ¬Student(x)) ::: If people chaperone high school dances, then they are not students who attend the school.\n∀x ((Inactive(x) ∧ Disinterested(x)) → Chaperone(x)) ::: All people who are inactive and disinterested members of their community chaperone high school dances.\n∀x ((Young(x) ∨ Teenager(x)) ∧ Wish(x) → Student(x)) ::: All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.\n¬((Attend(Bonnie) ∧ Engaged(Bonnie)) ⊕ Student(Bonnie)) ::: Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school.",
             "First-Order-Logic Question": "((Young(Bonnie) ∨ Teenager(Bonnie)) ∧ Wish(Bonnie) ∧ Chaperone(Bonnie)) ∨ ¬((Young(Bonnie) ∨ Teenager(Bonnie)) ∧ ¬Wish(Bonnie)) → (Student(Bonnie) ∨ (Inactive(Bonnie) ∧ Disinterested(Bonnie)))"
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "A"
     },
     {
         "id": 13,
@@ -619,7 +630,8 @@
             "First-Order-Logic Rules": "Create(japaneseGameCompany, legendOfZelda) ::: A Japanese game company created the game the Legend of Zelda.\n∀x (Game(x) ∧ Sell(x, moreThanOneMillion) → Select(x, Top10)) ::: If a game sells more than one million copies, then it will be selected into the Top 10 list.\nSelect(legendOfZelda, Top10) ::: The Legend of Zelda sold more than one million copies and is selected into the Top 10 list.\n",
             "First-Order-Logic Question": "Create(japaneseVideoGameCompany, FIFA22) ::: FIFA 22 is made by a Japanese video game company."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 46,
@@ -643,7 +655,8 @@
             "First-Order-Logic Rules": "∀x (Season(x) → (Spring(x) ∨ Summer(x) ∨ Fall(x) ∨ Winter(x))) ::: There are four seasons in a year: Spring, Summer, Fall, and Winter. \n∀x (Student(x) ∧ WantLongVacation(x) → Love(x, Summer)) ::: All students who want to have a long vacation love summer the most. \nFavoriteSeason(emma, Summer) ::: Emma's favorite season is summer. \n∀x (FavoriteSeason(mia, x) → ¬FavoriteSeason(mia, x)) ::: Mia's favorite season is not the same as Emma's. \nWantLongVacation(james) ::: James wants to have a long vacation.",
             "First-Order-Logic Question": "FavoriteSeason(james, Summer) ::: James's favorite season is summer."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "N/A"
     },
     {
         "id": 68,
@@ -711,7 +724,8 @@
             "First-Order-Logic Rules": "∀x ∀y (Twins(x) ∨ Triplets(x) → SpendTimeWith(x,y) ∧ Siblings(x,y)) ::: If people are twins or triplets, then they spend a lot of time hanging out with and playing with their siblings.\n∀x (Siblings(x, y) → Twins(x) ∨ Triplets(x)) ::: If people have siblings who are the same age, then they are twins or triplets.\n∀x (Complain(x) → Siblings(x, y)) ::: If people complain often about annoying siblings, then they have siblings who are the same age.\n∀x (¬LiveAtHomeRegularly(x) → ¬DevelopBonds(x, y)) ::: If people do not live at home regularly, then they do not develop strong bonds with their family members.\n∀x (Siblings(y) ∧ SpendTimeWith(x, y) → ¬LiveAtHomeRegularly(x)) ::: If people spend a lot of time hanging out with and playing with their siblings, then they often did not live at home regularly.\n(Twins(luke) ∧ DevelopBonds(luke, FamilyMembers)) ∨ (¬Twins(luke) ∧ ¬DevelopBonds(luke, FamilyMembers)) ::: Luke is either both a twin or triplet and develops strong bonds with his family members, or he neither is a twin or triplet nor develops strong bonds with his family members.\n",
             "First-Order-Logic Question": "Complain(luke) ::: Luke complains often about annoying siblings."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "N/A"
     },
     {
         "id": 105,
@@ -735,7 +749,8 @@
             "First-Order-Logic Rules": "Cost(gre_test, 205) ::: It costs US $205 to take the GRE test.\n∀x ∀y (EconomicHardship(y) ∧ Prove(x, y) → ProvideAid(ETS, y)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (Difficulty(x, money) ∨ Difficulty(x, resources))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(tom_dad, more_than_1_year) ::: His dad has been out of work for more than a year.\n",
             "First-Order-Logic Question": "ApplyFor(tom, ETS, gre_test) ::: Tom can apply for financial aid from ETS to take the GRE test."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 108,
@@ -784,7 +799,8 @@
             "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Man(x) ∧ Not(x,michael) → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shooter(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Shooter(x) ∧ Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
             "First-Order-Logic Question": "∃x (Man(x) ∧ Classmate(x, michael) ∧ Taller(x, peter)) ::: Peter is shorter than a man in Michael's class."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "N/A"
     },
     {
         "id": 117,
@@ -808,7 +824,8 @@
             "First-Order-Logic Rules": "∀x ∀y (Man(x) ∧ Man(y) ∧ Taller(x, y) → Block(x, y)) ::: If a man is taller than another man, the taller one can block the other's shooting.\nMan(michael) ∧ ∀x (Classmate(x, michael) ∧ Not(x,michael) → Taller(michael, x)) ::: Michael is a man who is taller than everyone else in his class.\n∀x ∀y ∀z (Taller(x, y) ∧ Taller(y, z) → Taller(x, z)) ::: If person x is taller than person y, and person y is taller than person z, than x is taller than z\nMan(peter) ∧ Taller(peter, michael) ::: Peter is a man who is taller than Michael.\n∀x (Shoot(x) ∧ ¬Jump(x) → Block(michael, x)) ::: Michael can block any shooting from a person as long as the person does not jump when shooting.\n¬Block(michael, windy) ::: Michael cannot block Windy's shooting.\n∀x (Jump(x) → GreatShooter(x)) ::: Every shooter who can jump when shooting is a great shooter.",
             "First-Order-Logic Question": "Block(peter, windy) ::: Peter can block Windy's shooting."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 122,
@@ -882,7 +899,8 @@
             "First-Order-Logic Rules": "∀x (HaveWedding(x) → HaveChild(x)) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (Weddings(x) ∧ July(x) → TravelToParisForHoneymoon(x) ∧ BelongTo(x, y)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (Weddings(x) ∧ July(x) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → (¬TravelToParisForHoneymoon(John) ∧ ¬HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\nHaveWedding(John) ∧ WellAttended(John) → (July(John) ∨ (¬July(John) ∧ TravelToParisForHoneymoon(John))) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
             "First-Order-Logic Question": "¬WellAttended(John) ::: John does not have a wedding that is well-attended."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 131,
@@ -906,7 +924,8 @@
             "First-Order-Logic Rules": "∀x HaveWedding(x) → HaveChild(x) ::: All people who have a wedding are people who have at least one child.\n∀x (TravelToParisForHoneymoon(x) → HaveWedding(x)) ::: All people who travel to Paris for their honeymoon are people who have a wedding.\n∀x (Weddings(x) ∧ July(x) → TravelToParisForHoneymoon(x) ∧ BelongTo(x, y)) ::: All weddings that occur in July belong to people who travel to Paris for their honeymoon.\n∃x (Weddings(x) ∧ July(x) ∧ WellAttended(x)) ::: Some weddings in July are well-attended.\nHaveChild(John) → ¬(TravelToParisForHoneymoon(John) ∧ HaveWedding(John)) ::: If John has at least one child, then John does not travel to Paris for his honeymoon and does not have a wedding.\nHaveWedding(John) ∧ WellAttended(John) → (July(John) ∨ (¬July(John) ∧ TravelToParisForHoneymoon(John))) ::: If John has a wedding that is well-attended, then John has a wedding in July or, if not, then John travels to Paris for their honeymoon.",
             "First-Order-Logic Question": "¬(WellAttended(John) ∨ TravelToParisForHoneymoon(John)) ::: John has neither a wedding that is well-attended nor does he travel to Paris for his honeymoon."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 154,
@@ -934,7 +953,8 @@
             "First-Order-Logic Rules": "∀x ∀y (Owns(x, y) → (WorkRegularlyAtHome(x) ∧ TidyOrganize(x))) ::: If people own a large desktop monitor at their home, then they work regularly and often at home.\n∀x ∀y (FullyStockedImpressiveHomeOffice(x) → LargeDesktopMonitor(x, y)) ::: All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.\n∀x (WorkRegularlyAtHome(x) → TidyOrganize(x)) ::: All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.\n∀x (WorkRegularlyAtHome(x) → VisitOfficeStore(x)) ::: All people who work regularly and often at home visit the office supply store regularly.\n∀x (TidyOrganize(x) → (¬GoToBedLate(x) ∧ ¬WakeUpAfterNoon(x))) ::: If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon.\n(TidyOrganize(remy) ∧ (GoToBedLate(remy) ∧ WakeUpAfterNoon(remy))) ⊕ (¬GoToBedLate(remy) ∧ ¬WakeUpAfterNoon(remy) ∧ ¬TidyOrganize(remy)) ::: Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home.\n",
             "First-Order-Logic Question": "FullyStockedImpressiveHomeOffice(remy) ∧ VisitOfficeStore(remy) ::: Remy has a fully stocked and impressive home office and also visits the office supply store regularly."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 180,
@@ -958,7 +978,8 @@
             "First-Order-Logic Rules": "Flies(susan, lga) ::: Susan flies to LGA airport.\nDeparture(x, y) ∧ Arrival(x, y) ⊕ ¬Equal(x,y) ::: The departure and arrival can not be the same airport.\nFrom(john, lga) ::: John flies from LGA airport.",
             "First-Order-Logic Question": "From(susan, lga) ::: Susan flies from LGA airport."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 199,
@@ -1025,7 +1046,8 @@
             "First-Order-Logic Rules": "WildTurkey(tom) ::: Tom is a wild turkey.\n∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))) ::: There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\n¬EasternWildTurkey(tom) ∧ ¬OsceolaWildTurkey(tom) ∧ ¬GouldsWildTurkey(tom) ∧ ¬MerriamsWildTurkey(tom) ∧ ¬RioGrandeWildTurkey(tom) ::: Tom is not an Eastern wild turkey, Osceola wild turkey, Gould's wild turkey, Merriam's wild turkey, or Rio Grande wild turkey.\n",
             "First-Order-Logic Question": "WildTurkey(joey) ::: Joey is a wild turkey."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 41,
@@ -1049,7 +1071,8 @@
             "First-Order-Logic Rules": "∀x (DesignStyle(x, ZahaHadid) → Timeless(x)) ::: All of Zaha Hadid's design styles are timeless.\n∀x (MassProductDesign(x) → ¬Timeless(x)) ::: No mass product design is timeless.\nDesignStyle(ZahaHadid, y) ∨ DesignStyle(KellyWearstler, y) ::: Either Zaha Hadid's design style or Kelly Wearstler's design style.\n∀x (DesignStyle(x, KellyWearstler) → Evocative(x)) ::: All of Kelly Wearstler's design styles are evocative.\n∀x (DesignStyle(x, KellyWearstler) → Dreamy(x)) ::: All of Kelly Wearstler's design styles are dreamy.\n∀x (DesignBy(x, Max) ∧ Timeless(x)) → (DesignBy(x, Max) ∧ MassProductDesign(x) ∧ Evocative(x)) ::: If a design by Max is timeless, then a design by Max is a mass product design and evocative.\n",
             "First-Order-Logic Question": "DesignBy(x, Max) ∧ Evocative(x) ∨ DesignBy(x, Max) ∧ Dreamy(x) ::: A design by Max is either evocative or dreamy."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 79,
@@ -1102,7 +1125,8 @@
             "First-Order-Logic Rules": "∀x (Listed(x) → ¬NotNegative(x)) ::: If the restaurant is listed in Yelp’s recommendations, then the restaurant does not receive many negative reviews.\n∀x (Rating(x, y) ∧ MoreThan(y,9) → Listed(x)) ::: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.\n∃x (Restaurant(x) ∧ ¬Provide(x, takeout) → NotNegative(x)) ::: Some restaurants that do not provide take-out service receive many negative reviews.\n∀x (Popular(x) → Rating(x, y) ∧ MoreThan(y,9)) ::: All restaurants that are popular among local residents have ratings greater than 9.\nRating(subway, y) ∨ Popular(subway) ::: Subway has a rating greater than 9 or is popular among local residents.\n",
             "First-Order-Logic Question": "TakeOut(subway) ∧ ¬NotNegative(subway) ::: Subway provides take-out service and does not receive many negative reviews."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 87,
@@ -1155,7 +1179,8 @@
             "First-Order-Logic Rules": "∃x (Pet(x) ∧ AllowedIn(x, y)) ::: Pets are allowed in some managed buildings.\n∀x (RequireDeposit(x) → (RentAmount(y, z) ∧ Equal(x, y) ∨ RentAmount(y, z) ∧ MoreThan(x, y))) ::: A deposit is required to rent an apartment in a managed building.\nCat(fluffy) ∧ Pet(fluffy) ∧ Owner(tom, fluffy) ::: Fluffy is Tom's cat.\nCat(x) → Pet(x) ::: Cats are pets.\nManaged(olivegarden) ∧ Building(olivegarden) ::: The Olive Garden is a managed building.\nRentAmount(olivegarden, 2000) ::: The monthly rent at the Olive Garden is $2000.\nRentApartment(tom, olivegarden) ↔ (MoveInWith(tom, fluffy) ∧ ¬MoreThan(deposit, 1500)) ::: Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.\nMoreThan(2000, 1500) ::: 2000$ is more than $1500.\n",
             "First-Order-Logic Question": "Equal(deposit, 2000) ∨ MoreThan(deposit, 2000) ::: The security deposit at the Olive Garden is either $2000 or more."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 106,
@@ -1179,7 +1204,8 @@
             "First-Order-Logic Rules": "Cost(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x ∀y (TakeTest(x, gre) ∧ EconomicHardship(y) ∧ Difficulty(y, money) → ProvideAid(ets, x)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (Difficulty(x, money) ∨ Difficulty(x, resources))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParentFamily(tom) ::: Tom lives in a single-parent family.\nOutOfWork(tomdad) ::: His dad has been out of work for more than a year.\n",
             "First-Order-Logic Question": "∃x (Cost(gre, x) ∧ Cost(x, 300)) ::: It cost below US $300 to take the GRE test."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 107,
@@ -1203,7 +1229,8 @@
             "First-Order-Logic Rules": "Costs(gre, 205) ::: It costs US $205 to take the GRE test.\n∀x ∀y (EconomicHardship(y) ∧ Prove(x, y) → ProvidesAid(ETS, y)) ::: ETS provides financial aid to those GRE applicants who prove economic hardship.\n∀x (EconomicHardship(x) ↔ (TooLittleMoney(x) ∨ TooFewResources(x))) ::: Economic hardship refers to difficulty caused by having too little money or too few resources.\nSingleParent(tom) ::: Tom lives in a single-parent family.\nOutOfWork(dad, moreThanAYear) ::: His dad has been out of work for more than a year.\n",
             "First-Order-Logic Question": "¬∃x ∀y (Costs(gre, y) ∧ ProvidesAid(ETS, x)) ::: There is no financial aid available for the GRE test."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "C"
     },
     {
         "id": 114,
@@ -1227,7 +1254,8 @@
             "First-Order-Logic Rules": "MountainRange(picurismountains) ∨ MountainRange(picurismountains) ::: The Picuris Mountains are a mountain range in New Mexico or Texas.\nVisited(juandeonate, picurismountains) ::: Juan de Onate visited the Picuris Mountains.\nLocatedIn(hardingpegmatitemine, picurismountains) ∧ Donated(hardingpegmatitemine) ::: The Harding Pegmatite Mine, located in the Picuris Mountains, was donated.\n∀x ∃y (MountainRange(x) ∧ In(x, texas) → ¬(Mine(y) ∧ Has(y, donated) ∧ LocatedIn(y, x))) ::: There are no mountain ranges in Texas that have mines which have been donated.\n",
             "First-Order-Logic Question": "NotLocatedIn(hardingpegmatitemine, newmexico) ::: The Harding Pegmatite Mine is not located in a mountain range in New Mexico."
         },
-        "fixed": true
+        "fixed": true,
+        "manual_answer": "N/A"
     },
     {
         "id": 151,

@@ -1,10 +1,6 @@
-import numpy as np
-import pandas as pd
 import json
 import os
-import traceback
 import argparse
-from sklearn.metrics import precision_recall_fscore_support, f1_score
 from typing import Dict, List, Tuple, Optional, NamedTuple
 from copy import deepcopy
 from difflib import SequenceMatcher
@@ -22,7 +18,7 @@ class Args(NamedTuple):
     sketcher_list: List[str]
     save_path: str
     
-def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
+def evaluation(result_files: list[str, str, str, str], errors_dict:list) -> Tuple:
     
     raw_file = result_files[0]
     grammar_file = result_files[1]
@@ -54,12 +50,15 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
     
     grammar_fixed = []
             
-    thingy_key = '_'.join(grammar_file.split('/')[-3:-1])
-    thingy_key = thingy_key + '_3.5' if '3.5' in grammar_file else thingy_key + '_4'
+    errors_dict_key = '_'.join(grammar_file.split('/')[-3:-1])
+    errors_dict_key = errors_dict_key + '_3.5' if '3.5' in grammar_file else errors_dict_key + '_4'
     
+    load_dir = grammar_file.split('/')[1]
     
-    if not thingy_key in thingy:
-        thingy[thingy_key] = []
+    if not errors_dict_key in errors_dict:
+        errors_dict[errors_dict_key] = []
+        
+        
             
     tot = 0
     errors = 0
@@ -71,7 +70,7 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
             grammar_fixed.append(grammar_sample)
             
             # fix but no improvement
-            if (raw_sample['id'] not in [thing['id'] for thing in thingy[thingy_key]]) and (raw_sample['flag'] == 'parsing error'):
+            if (raw_sample['id'] not in [thing['id'] for thing in errors_dict[errors_dict_key]]) and (raw_sample['flag'] == 'parsing error'):
                 
                 raw_prog = [sample for sample in raw_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
                 gram_prog = [sample for sample in grammar_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
@@ -108,19 +107,11 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
                               'raw': r,
                               'gram': g
                           })
-                            
-                    # thingy[thingy_key].append({
-                    #     'id': raw_sample['id'],
-                    #     'diff': diff,
-                    #     'flag': raw_sample['flag'],
-                        
-                    #     'answer': grammar_sample['answer'],
-                    #     'grammar_answer': grammar_sample['predicted_answer']
-                    # })
+
                 except Exception as e:
                     print(raw_sample['id'], e)
                 finally:
-                    thingy[thingy_key].append({
+                    errors_dict[errors_dict_key].append({
                         'id': raw_sample['id'],
                         'raw_prog': raw_prog,
                         'gram_prog': gram_prog,
@@ -130,7 +121,7 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
                         'grammar_answer': grammar_sample['predicted_answer']
                     })
             
-    return thingy
+    return errors_dict
 
 def get_load_dirs(args: Args) -> List[str]:
     return [args.load_dir] if args.load_dir else ['outputs/outputs_1', 'outputs/outputs_2', 'outputs/outputs_3']
@@ -178,7 +169,7 @@ def parse_args() -> Args:
 
 def process_data(args: Args) -> dict:
     load_dirs = get_load_dirs(args)
-    thingy = {}
+    errors_dict = {}
     
     refiners_list = args.refiners_list
     
@@ -199,11 +190,11 @@ def process_data(args: Args) -> dict:
                 result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, '', ''), 0))  
                 result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, refiner, 'gcd',), args.self_refine_round))
                 
-                thingy = evaluation(result_files, thingy)
+                errors_dict = evaluation(result_files, errors_dict)
             
     
     
-    return thingy
+    return errors_dict
 
 def main():
     args = parse_args()

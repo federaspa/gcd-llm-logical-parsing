@@ -86,7 +86,7 @@ def main():
     #     y_pred_sket.append(label_map[sample['grammar_answer']])
 
 
-    labels=['True', 'False', 'Uncertain', 'N/A']
+    labels=['True', 'False', 'Uncertain']
     
     data_manual = confusion_matrix(y_true, y_pred_manual, labels=labels)
     df_cm_manual = pd.DataFrame(data_manual, columns=labels, index = labels)
@@ -105,14 +105,20 @@ def main():
     
     # increase text size with plt.rcParams
     plt.rcParams.update({'font.size': 18, 'font.weight': 'bold'})
+    
+    dfs = [df_cm_manual, df_cm_grammar, 
+        #    df_cm_sket
+           ]
+    names = ['Manual', '\u2605', 
+            #  'GPT-3.5'
+             ]
 
-    # Create a figure with two subplots
-    fig, axes = plt.subplots(1, 3, figsize=(28, 10))
+    fig, axes = plt.subplots(1, len(dfs), figsize=(20, 12))
     cmap = sns.cubehelix_palette(light=1, as_cmap=True)
     palette = sns.color_palette("Set2", n_colors=4)
     annot_kws={'size': 18}
 
-    for ax, df, strat in zip(axes, [df_cm_manual, df_cm_grammar, df_cm_sket], ['Manual', '\u2605', 'GPT-3.5']):
+    for ax, df, strat in zip(axes, dfs, names):
         
         sns.heatmap(df, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
                     annot_kws=annot_kws, ax=ax)
@@ -128,7 +134,12 @@ def main():
 
     plt.savefig(f'{load_dir}/3.5/confusion_refine_0.png')
 
-    df = pd.DataFrame({'Actual': y_true, 'Predicted (Manual)': y_pred_manual, u'Predicted (\u2605)': y_pred_grammar, 'Predicted (GPT-3.5)': y_pred_sket})
+    df = pd.DataFrame({
+        'Actual': y_true, 
+        'Predicted (Manual)': y_pred_manual, 
+        u'Predicted (\u2605)': y_pred_grammar, 
+        # 'Predicted (GPT-3.5)': y_pred_sket
+        })
     df_melted = pd.melt(df, var_name='Strategy', value_name='label')
 
 
