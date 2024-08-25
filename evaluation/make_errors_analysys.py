@@ -71,7 +71,7 @@ def evaluation(result_files: list[str, str, str, str], thingy:list) -> Tuple:
             grammar_fixed.append(grammar_sample)
             
             # fix but no improvement
-            if (raw_sample['id'] not in [thing['id'] for thing in thingy[thingy_key]]) and (grammar_sample['answer'] != grammar_sample['predicted_answer']) and (raw_sample['flag'] == 'parsing error'):
+            if (raw_sample['id'] not in [thing['id'] for thing in thingy[thingy_key]]) and (raw_sample['flag'] == 'parsing error'):
                 
                 raw_prog = [sample for sample in raw_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
                 gram_prog = [sample for sample in grammar_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]

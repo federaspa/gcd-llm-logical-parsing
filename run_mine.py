@@ -2,9 +2,23 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 import seaborn as sns
 from models.symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from sklearn.metrics import f1_score, multilabel_confusion_matrix, confusion_matrix
+
+
+label_map = {
+    'A': 'True',
+    'B': 'False',
+    'C': 'Uncertain',
+    'N/A': 'N/A'
+}
+
+dataset = 'LogicNLI'
+load_dir = 'qualitative'
+load_dir = load_dir + '_' + 'folio' if dataset == 'FOLIO' else load_dir + '_' + 'nli'
+
 
 def safe_execute_program(logic_program):
     program_executor = FOL_Prover9_Program
@@ -24,115 +38,108 @@ def safe_execute_program(logic_program):
     return answer, 'success', None, None
 
 def main():
-    with open('qualitative_nli/llama-2-7b.json', 'r') as f:
+    with open(f'{load_dir}/llama-2-7b.json', 'r') as f:
         samples = json.load(f)
         
-    with open('qualitative_nli/gpt-3.5.json', 'r') as f:
+    with open(f'{load_dir}/gpt-3.5.json', 'r') as f:
         samples_sket = json.load(f)
         
     y_true = []
     y_pred_manual = []
     y_pred_grammar = []
-    
-    y_true_sket = []
     y_pred_sket = []
         
-    for sample in samples:
+    for sample in tqdm(samples):
         
         if not sample['fixed']:
             continue
         
+        if "manual_answer" in sample.keys():
+            pred_answer = sample["manual_answer"]
         
-        manual_prog = sample["manual_prog"]
-        pred_answer, status, error, _ = safe_execute_program(manual_prog)
-        
+        else:
+            manual_prog = sample["manual_prog"]
+            pred_answer, status, error, _ = safe_execute_program(manual_prog)
+            sample["manual_answer"] = pred_answer        
+
         if pred_answer == 'N/A':
             continue
         
-        y_true.append(sample['answer'])
-        y_pred_grammar.append(sample["grammar_answer"])
-        y_pred_manual.append(pred_answer)
+        y_true.append(label_map[sample['answer']])
+        y_pred_grammar.append(label_map[sample["grammar_answer"]])
+        y_pred_manual.append(label_map[pred_answer])
         
-    for sample in samples_sket:
-        y_true_sket.append(sample['answer'])
-        y_pred_sket.append(sample['grammar_answer'])
+        sket_candidates = [s for s in samples_sket if s['id'] == sample['id']]
+        
+        if sket_candidates:
+            sample_sket = sket_candidates[0]
+            y_pred_sket.append(label_map[sample_sket['grammar_answer']])
+        else:
+            y_pred_sket.append('N/A')
+            
+    with open(f'{load_dir}/llama-2-7b.json', 'w') as f:
+        json.dump(samples, f, indent=4)
         
         
-        # if sample['answer'] != pred_answer:
-        #     print(sample['id'], sample['answer'], pred_answer)
+    # for sample in samples_sket:
+    #     y_true_sket.append(label_map[sample['answer']])
+    #     y_pred_sket.append(label_map[sample['grammar_answer']])
 
-    # print()        
-    # print(f1_score(gold, pred, average=None, labels=['A', 'B', 'C', 'N/A']))
-    # print(multilabel_confusion_matrix(y_true, y_pred, labels=['A', 'B', 'C', 'N/A']))
-    # print(pd.Series(gold).value_counts())
-    # print(pd.Series(pred).value_counts())
+
+    labels=['True', 'False', 'Uncertain', 'N/A']
     
-    labels=['A', 'B', 'C']
-    
-    data_manual = confusion_matrix(y_true, y_pred_manual)
+    data_manual = confusion_matrix(y_true, y_pred_manual, labels=labels)
     df_cm_manual = pd.DataFrame(data_manual, columns=labels, index = labels)
     df_cm_manual.index.name = 'Actual'
     df_cm_manual.columns.name = 'Predicted'
 
-    data_grammar = confusion_matrix(y_true, y_pred_grammar)
+    data_grammar = confusion_matrix(y_true, y_pred_grammar, labels=labels)
     df_cm_grammar = pd.DataFrame(data_grammar, columns=labels, index = labels)
     df_cm_grammar.index.name = 'Actual'
     df_cm_grammar.columns.name = 'Predicted'
     
-    data_sket = confusion_matrix(y_true_sket, y_pred_sket)
+    data_sket = confusion_matrix(y_true, y_pred_sket, labels=labels)
     df_cm_sket = pd.DataFrame(data_sket, columns=labels, index = labels)
     df_cm_sket.index.name = 'Actual'
     df_cm_sket.columns.name = 'Predicted'
+    
+    # increase text size with plt.rcParams
+    plt.rcParams.update({'font.size': 18, 'font.weight': 'bold'})
 
     # Create a figure with two subplots
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
+    fig, axes = plt.subplots(1, 3, figsize=(28, 10))
     cmap = sns.cubehelix_palette(light=1, as_cmap=True)
-    palette = sns.color_palette("Set2", n_colors=3)
+    palette = sns.color_palette("Set2", n_colors=4)
+    annot_kws={'size': 18}
 
-    # Plot 1: y_manual
-    sns.heatmap(df_cm_manual, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
-                annot_kws={'size': 10}, ax=ax1)
-    ax1.set_title('Actuals vs Predicted (Manual) Heatmap')
-
-    # Plot 2: y_grammar
-    sns.heatmap(df_cm_grammar, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
-                annot_kws={'size': 10}, ax=ax2)
-    ax2.set_title(u'Actuals vs Predicted (\u2605) Heatmap')
-    
-    plt.savefig('qualitative_nli/confusion_refine_1.png')
-    
-    fig, ax3 = plt.subplots(figsize=(10, 8))
-    
-    # Plot 3: y_sket
-    sns.heatmap(df_cm_sket, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
-                annot_kws={'size': 10}, ax=ax3)
-    ax3.set_title(u'Actuals vs Predicted (GPT-3.5) Heatmap')
-
-    plt.savefig('qualitative_nli/confusion_refine_2.png')
-
-    # Create a dataframe with y_true and y_pred
-    df = pd.DataFrame({'Actual': y_true, 'Predicted (Manual)': y_pred_manual, u'Predicted (\u2605)': y_pred_grammar})
-    df_sket = pd.DataFrame({'Actual': y_true_sket, 'Predicted (GPT-3.5-Turbo)': y_pred_sket})
-    
-    # Melt the dataframe to create a long format
-    df_melted = pd.melt(df, var_name='category', value_name='label')
-    df_melted_sket = pd.melt(df_sket, var_name='category', value_name='label')
-
-    for i, df in enumerate([df_melted, df_melted_sket]):
-        fig, ax1 = plt.subplots(figsize=(10, 8))
+    for ax, df, strat in zip(axes, [df_cm_manual, df_cm_grammar, df_cm_sket], ['Manual', '\u2605', 'GPT-3.5']):
         
-        # Create the countplot
-        sns.countplot(x='label', hue='category', data=df, ax=ax1, order=labels, palette=palette)
-        ax1.set_xlabel('Labels')
-        ax1.set_ylabel('Frequency')
-        ax1.set_title('Actual vs Predicted Label Distribution')
+        sns.heatmap(df, cbar=False, annot=True, cmap=cmap, square=True, fmt='.0f',
+                    annot_kws=annot_kws, ax=ax)
+        ax.set_title(u'Actual vs Predicted Labels ({strat})\n{dataset}'.format(strat=strat, dataset=dataset))
+    
+        bbox = ax.get_tightbbox(fig.canvas.get_renderer())
+        x0, y0, width, height = bbox.transformed(fig.transFigure.inverted()).bounds
+        # slightly increase the very tight bounds:
+        xpad = 0.05 * width
+        ypad = 0.05 * height
+        fig.add_artist(plt.Rectangle((x0-xpad, y0-ypad), width+2*xpad, height+2*ypad, edgecolor='black', linewidth=1, fill=False))
 
-        # sns.countplot(x='label', hue='category', data=df_melted_sket, ax=ax2, order=labels, palette=palette)
-        # ax2.set_xlabel('Labels')
-        # ax2.set_ylabel('Frequency')
-        # ax2.set_title(u'Actual vs Predicted Label Distribution')
 
-        plt.savefig(f'qualitative_nli/distribution_refine_{i}.png')    
+    plt.savefig(f'{load_dir}/3.5/confusion_refine_0.png')
+
+    df = pd.DataFrame({'Actual': y_true, 'Predicted (Manual)': y_pred_manual, u'Predicted (\u2605)': y_pred_grammar, 'Predicted (GPT-3.5)': y_pred_sket})
+    df_melted = pd.melt(df, var_name='Strategy', value_name='label')
+
+
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    sns.countplot(x='label', hue='Strategy', data=df_melted, ax=ax1, order=labels, palette=palette)
+    ax1.set_xlabel('Labels')
+    ax1.set_ylabel('Count')
+    ax1.legend()
+    ax1.set_title(f'Actual vs Predicted Labels \n{dataset}', fontdict={'fontsize': 20})
+    
+    plt.savefig(f'{load_dir}/3.5/distribution_refine_0.png')    
                 
 if __name__ == '__main__':
     main()

@@ -6,6 +6,9 @@ from models.symbolic_solvers.fol_solver.Formula_util import FOL_Formula
 
 os.environ['PROVER9'] = './models/symbolic_solvers/Prover9/bin'
 
+file = 'fixed_errors_nli_3.5.json'
+
+known_errors = {}
 
 with open(file, 'r') as f:
     samples = json.load(f)
@@ -23,9 +26,18 @@ for sample in samples:
         "First-Order-Logic Question": sample["raw_prog"]["First-Order-Logic Question"]
     }
     
+    skipped = False
+    
     for formula in sample['diff']:
         
         error = formula['raw'].split(':::')[0].strip()
+        
+        if error in known_errors.keys():
+            fixed = known_errors[error]
+            fixed_errors.append((error, fixed))
+            continue
+
+        
         print(error)
         
         not_valid = True
@@ -38,6 +50,7 @@ for sample in samples:
                 raise KeyboardInterrupt()
             
             if fixed == 'skip':
+                skipped = True
                 break
 
             fol_formula = FOL_Formula(fixed)
@@ -49,7 +62,8 @@ for sample in samples:
             
         if fixed == 'skip':
             continue
-
+        
+        known_errors[error] = fixed            
         fixed_errors.append((error, fixed))
         
     try:
@@ -58,9 +72,10 @@ for sample in samples:
             sample["manual_prog"]["First-Order-Logic Question"] = sample["manual_prog"]["First-Order-Logic Question"].replace(error, fixed)
     except Exception as e:
         sample["fixed"] = False
+        print(e)
         continue
 
-    if fixed == 'skip':
+    if skipped:
         sample["fixed"] = False
 
     else:
