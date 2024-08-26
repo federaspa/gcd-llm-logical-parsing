@@ -18,7 +18,7 @@ class Args(NamedTuple):
     sketcher_list: List[str]
     save_path: str
     
-def evaluation(result_files: list[str, str, str, str], errors_dict:list) -> Tuple:
+def evaluation(result_files: list[str, str, str, str], errors_dict:dict, error_ids_dict:dict) -> Tuple:
     
     raw_file = result_files[0]
     grammar_file = result_files[1]
@@ -48,29 +48,31 @@ def evaluation(result_files: list[str, str, str, str], errors_dict:list) -> Tupl
     raw_samples = [sample for sample in raw_samples if sample['id'] not in unique_ids]
 
     
-    grammar_fixed = []
-            
     errors_dict_key = '_'.join(grammar_file.split('/')[-3:-1])
     errors_dict_key = errors_dict_key + '_3.5' if '3.5' in grammar_file else errors_dict_key + '_4'
     
     load_dir = grammar_file.split('/')[1]
     
-    if not errors_dict_key in errors_dict:
+    if not errors_dict_key in errors_dict.keys():
         errors_dict[errors_dict_key] = []
         
+    if not errors_dict_key in error_ids_dict.keys():
+        error_ids_dict[errors_dict_key] = {}
         
-            
+    if not load_dir in error_ids_dict[errors_dict_key].keys():
+        error_ids_dict[errors_dict_key][load_dir] = []
+                    
     tot = 0
     errors = 0
             
     for raw_sample, grammar_sample in zip(raw_samples, grammar_samples):
-        if raw_sample['flag'] != 'success' and grammar_sample['flag'] == 'success':
+        if (raw_sample['flag'] == 'parsing error' and grammar_sample['flag'] == 'success'):
             
-            tot += 1
-            grammar_fixed.append(grammar_sample)
+            
+            error_ids_dict[errors_dict_key][load_dir].append(raw_sample['id'])
             
             # fix but no improvement
-            if (raw_sample['id'] not in [thing['id'] for thing in errors_dict[errors_dict_key]]) and (raw_sample['flag'] == 'parsing error'):
+            if (raw_sample['id'] not in [thing['id'] for thing in errors_dict[errors_dict_key]]) :
                 
                 raw_prog = [sample for sample in raw_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
                 gram_prog = [sample for sample in grammar_samples_prog if sample['id'] == raw_sample['id']][0]["raw_logic_programs"]
@@ -121,7 +123,7 @@ def evaluation(result_files: list[str, str, str, str], errors_dict:list) -> Tupl
                         'grammar_answer': grammar_sample['predicted_answer']
                     })
             
-    return errors_dict
+    return errors_dict, error_ids_dict
 
 def get_load_dirs(args: Args) -> List[str]:
     return [args.load_dir] if args.load_dir else ['outputs/outputs_1', 'outputs/outputs_2', 'outputs/outputs_3']
@@ -170,6 +172,7 @@ def parse_args() -> Args:
 def process_data(args: Args) -> dict:
     load_dirs = get_load_dirs(args)
     errors_dict = {}
+    error_ids_dict = {}
     
     refiners_list = args.refiners_list
     
@@ -190,18 +193,22 @@ def process_data(args: Args) -> dict:
                 result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, '', ''), 0))  
                 result_files.append(get_file_names(args, sketcher, 'dynamic', get_result_path(load_dir, refiner, 'gcd',), args.self_refine_round))
                 
-                errors_dict = evaluation(result_files, errors_dict)
+                errors_dict, error_ids_dict = evaluation(result_files, errors_dict, error_ids_dict)
             
     
     
-    return errors_dict
+    return errors_dict, error_ids_dict
 
 def main():
     args = parse_args()
-    thingy = process_data(args)
+    errors_dict, error_ids_dict = process_data(args)
+    
     
     with open('fixed_errors.json', 'w') as f:
-        json.dump(thingy, f, ensure_ascii=False, indent=4)
+        json.dump(errors_dict, f, ensure_ascii=False, indent=4)
 
+    with open('error_ids.json', 'w') as f:
+        json.dump(error_ids_dict, f, ensure_ascii=False, indent=4)
+    
 if __name__ == "__main__":
     main()

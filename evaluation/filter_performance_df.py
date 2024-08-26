@@ -25,7 +25,7 @@ def rename_model(x:str) -> str:
     
 def rename_strategy(x:str) -> str:
     if 'CoT' in x:
-        return 'Chain-of-Thought'
+        return 'CoT'
 
     elif 'LogicLM' in x:
         return 'LogicLM'
@@ -38,7 +38,7 @@ def make_df(df_path: str) -> pd.DataFrame:
     group_cols = ['sketcher', 'refiner', 'gcd', 'finetune', 'baseline', 'use_backup']
 
     # Define the metrics to average
-    metric_cols = ['f1', 'executable_rate']
+    metric_cols = ['f1', 'executable_f1', 'executable_rate']
 
     # Group by the experiment columns and calculate the mean of the metrics
     df = df_original.groupby(group_cols).agg({col: ['mean', 'std'] for col in metric_cols}).reset_index()
@@ -46,6 +46,10 @@ def make_df(df_path: str) -> pd.DataFrame:
     # make a new column new_f1 with the mean +- the std
 
     col = 'f1'
+    df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 2)}') + '^{' + '\\pm ' + df[col, 'std'].apply(lambda y: f'{np.round(y, 2)}') + '}$'
+    df.drop(columns=(col, 'std'), inplace=True)
+    
+    col = 'executable_f1'
     df[col] = '$' + df[col, 'mean'].apply(lambda x: f'{np.round(x, 2)}') + '^{' + '\\pm ' + df[col, 'std'].apply(lambda y: f'{np.round(y, 2)}') + '}$'
     df.drop(columns=(col, 'std'), inplace=True)
     
@@ -66,6 +70,8 @@ def make_df(df_path: str) -> pd.DataFrame:
     # group by group_cols to merge f1_backup and f1_nobackup
     df = df.groupby(group_cols).agg({'f1_backup': 'first', 
                                     'f1_nobackup': 'first',
+                                    'executable_f1_backup': 'first',
+                                    'executable_f1_nobackup': 'first',
                                     'executable_rate_backup': 'first',
                                     }).reset_index()
     
@@ -85,11 +91,14 @@ def make_df(df_path: str) -> pd.DataFrame:
     
     df = df.drop(columns=['Finetune', 'GCD', 'baseline'])
     
-    df = df[['sketcher', 'strategy', 'refiner', 'f1_nobackup', 'f1_backup', 'executable_rate_backup']].reset_index(drop=True)  
+    df = df[['sketcher', 'strategy', 'refiner', 'f1_nobackup','executable_f1_nobackup', 'executable_rate_backup']].reset_index(drop=True)  
+    
+    df2 = df[['sketcher', 'strategy', 'refiner', 'f1_backup']]
     
     
-    df = df.rename(columns={'f1_nobackup': 'F1', 
-                            'f1_backup': 'F1 (with backup)', 
+    df = df.rename(columns={'f1_nobackup': 'Weighted F1 (all samples)', 
+                            'executable_f1_nobackup': 'Weighted F1 (executable samples)',
+                            'f1_backup': 'Weighted F1 (with backup)',
                             'executable_rate_backup': 'Executable Samples (%)', 
                             'sketcher': 'Sketcher',
                             'refiner': 'Refiner',
