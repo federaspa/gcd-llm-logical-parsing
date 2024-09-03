@@ -10,12 +10,11 @@ F1 ::= "¬" "(" F2 ")" | "(" F2 ")" | F2 OP F2 | L
 F2 ::= "¬" "(" F3 ")" | "(" F3 ")" | F3 OP F3 | L
 F3 ::= L 
 
-
-
 OP ::= "⊕" | "∨" | "∧" | "→" | "↔"
 L ::= "¬"? PRED "(" TERMS ")"
 TERMS ::= TERM | TERM "," TERMS
-TERM ::=  VAR
+TERM ::=  VAR | CONST
 QUANT ::= "∀" | "∃"
+CONST ::= [a-z]{5,15}
 VAR ::= "x" | "y" | "z"
 PRED ::= [[PREDICATES]]

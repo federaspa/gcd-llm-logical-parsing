@@ -56,21 +56,27 @@ def make_df(df_path: str) -> pd.DataFrame:
     df.columns = df.columns.droplevel(1)
     
     random_1 = df['random\\_f1'][0]
-    random_2 = df['random\\_f1'][3]
+    random_2 = df['random\\_f1'][0]
 
-    df = df[['sketcher', 'refiner', 'grammar\\_f1', 'manual\\_f1']]
+    df = df[['sketcher', 'refiner', 'grammar\\_f1', 'manual\\_f1', 'backup\\_f1']]
     # duplicate every row by splitting the grammar_f1 and grammar_fine_f1
     df1 = df.copy()
     df2 = df.copy()
+    df3 = df.copy()
+    
     df1['f1'] = df1['grammar\\_f1']
     df1['type'] = 'grammar'
+    
     df2['f1'] = df2['manual\\_f1']
     df2['type'] = 'manual'
+    
+    df3['f1'] = df3['backup\\_f1']
+    df3['type'] = 'backup'
 
-    df = pd.concat([df1, df2], ignore_index=True)
-    df['refiner'] = df['refiner'] + df['type'].map({'grammar': ' $\\blacklozenge$ $\\bigstar$', 'manual': ' $\\bigstar$'})
+    df = pd.concat([df1, df2, df3], ignore_index=True)
+    df['refiner'] = df['refiner'] + df['type'].map({'grammar': ' $\\bigstar$', 'manual': ' manual', 'backup': ' backup'})
 
-    df.drop(columns=['grammar\\_f1', 'manual\\_f1', 'type'], inplace=True)
+    df.drop(columns=['grammar\\_f1', 'manual\\_f1', 'backup\\_f1', 'type'], inplace=True)
     df = df.sort_values(by=['sketcher', 'refiner']).reset_index(drop=True)
     df = pd.concat([df, pd.DataFrame([['gpt-3.5-turbo', 'random', random_1]], columns=df.columns), pd.DataFrame([['gpt-4o', 'random', random_2]], columns=df.columns)])
     

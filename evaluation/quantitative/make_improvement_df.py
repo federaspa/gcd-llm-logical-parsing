@@ -86,25 +86,40 @@ def evaluation(result_files: list[str, str, str, str], backup_file:str) -> Tuple
     grammar_fixed = []
     grammar_fine_fixed = []
     manual_fixed = []
+    backup_fixed = []
+    
+    
+    with open(backup_file, 'r') as f:
+        backup_samples = json.load(f)
+    backed_up_samples = get_backup_answers(raw_samples, {sample['id']: sample for sample in backup_samples})
+    # backed_up_samples = [sample for sample in backed_up_samples if sample['flag'] != 'success']  
         
     for raw_sample, fine_sample in zip(raw_samples, finetune_samples):
         if raw_sample['flag'] != 'success' and fine_sample['flag'] == 'success':
             fine_fixed.append(fine_sample)
-            
-    for raw_sample, grammar_sample in zip(raw_samples, grammar_samples):
+    
+    for raw_sample, grammar_sample, backup_sample in zip(raw_samples, grammar_samples, backed_up_samples):
         if raw_sample['flag'] == 'parsing error' and grammar_sample['flag'] == 'success':
             grammar_fixed.append(grammar_sample)
+            backup_fixed.append(backup_sample)
+            
+            s = [sample for sample in manual_samples if sample['id'] == raw_sample['id']]
+            
+            if len(s) > 0:
+                manual_fixed.append(s[0])
+            
+            
             
     for raw_sample, grammar_fine_sample in zip(raw_samples, grammar_fine_samples):
         if raw_sample['flag'] != 'success' and grammar_fine_sample['flag'] == 'success':
             grammar_fine_fixed.append(grammar_fine_sample)
             
-    for raw_sample in raw_samples:
-        if raw_sample['flag'] == 'parsing error':
-            s = [sample for sample in manual_samples if sample['id'] == raw_sample['id']]
+    # for raw_sample in raw_samples:
+    #     if raw_sample['flag'] == 'parsing error':
+    #         s = [sample for sample in manual_samples if sample['id'] == raw_sample['id']]
             
-            if len(s) > 0:
-                manual_fixed.append(s[0])
+    #         if len(s) > 0:
+    #             manual_fixed.append(s[0])
 
     
     raw = evaluate_metrics(raw_samples)[2], len(raw_samples)
@@ -112,13 +127,7 @@ def evaluation(result_files: list[str, str, str, str], backup_file:str) -> Tuple
     grammar = evaluate_metrics(grammar_fixed)[2], len(grammar_fixed)
     grammar_fine = evaluate_metrics(grammar_fine_fixed)[2], len(grammar_fine_fixed)
     manual = evaluate_metrics(manual_fixed)[2], len(manual_fixed)
-    
-    with open(backup_file, 'r') as f:
-        backup_samples = json.load(f)
-    backed_up_samples = get_backup_answers(raw_samples, {sample['id']: sample for sample in backup_samples})
-    backed_up_samples = [sample for sample in backed_up_samples if sample['flag'] != 'success']  
-    
-    backup = evaluate_metrics(backed_up_samples)[2], len(backed_up_samples)
+    backup = evaluate_metrics(backup_fixed)[2], len(backup_fixed)
     
     random_samples = deepcopy(raw_samples)
     for random_samp in random_samples:
