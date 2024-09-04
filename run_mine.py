@@ -19,9 +19,12 @@ with open('evaluation/quantitative/wrong_ids.json', 'r') as f:
     wrong_ids = json.load(f)
 
 dataset = 'FOLIO'
+sketcher = '4o'
+
 load_dir = 'evaluation/qualitative/qualitative'
 load_dir = load_dir + '_' + 'folio' if dataset == 'FOLIO' else load_dir + '_' + 'nli'
 
+file_name = f'{load_dir}/{sketcher}/manual_fixed.json'
 
 def safe_execute_program(logic_program):
     program_executor = FOL_Prover9_Program
@@ -41,7 +44,7 @@ def safe_execute_program(logic_program):
     return answer, 'success', None, None
 
 def main():
-    with open(f'{load_dir}/manual_fixed.json', 'r') as f:
+    with open(file_name, 'r') as f:
         manual_fixed = json.load(f)
         
     # with open(f'{load_dir}/gpt-3.5.json', 'r') as f:
@@ -51,6 +54,7 @@ def main():
     y_true = []
     y_pred_manual = []
     y_pred_grammar = []
+    y_pred_backup = []
     # y_pred_sket = []
     
     all_samples:list = manual_fixed["outputs_1"]
@@ -84,6 +88,7 @@ def main():
         y_true.append(label_map[sample['answer']])
         y_pred_grammar.append(label_map[sample["grammar_answer"]])
         y_pred_manual.append(label_map[pred_answer])
+        y_pred_backup.append(label_map[sample['backup_answer']])
         
         # sket_candidates = [s for s in samples_sket if s['id'] == sample['id']]
         
@@ -154,6 +159,7 @@ def main():
         'Actual': y_true, 
         'Predicted (Manual)': y_pred_manual, 
         u'Predicted (\u2605)': y_pred_grammar, 
+        'Predicted (CoT Backup)': y_pred_backup
         # 'Predicted (GPT-3.5)': y_pred_sket
         })
     df_melted = pd.melt(df, var_name='Strategy', value_name='label')
@@ -166,10 +172,11 @@ def main():
     ax1.legend()
     ax1.set_title(f'Actual vs Predicted Labels \n{dataset}', fontdict={'fontsize': 20})
     
-    plt.savefig(f'{load_dir}/3.5/distribution_refine_0.png')    
+    plt.savefig(f'{load_dir}/{sketcher}/distribution_refine_0.png')    
     
-    print(f1_score(y_true, y_pred_manual, average='weighted'))
-    print(f1_score(y_true, y_pred_grammar, average='weighted'))
+    print('Manual: ',f1_score(y_true, y_pred_manual, average='weighted'))
+    print('Grammar: ', f1_score(y_true, y_pred_grammar, average='weighted'))
+    print('Backup: ',f1_score(y_true, y_pred_backup, average='weighted'))
                 
 if __name__ == '__main__':
     main()
