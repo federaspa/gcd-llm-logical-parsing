@@ -8,41 +8,48 @@
 
 <h4>From <code>source</code></h4>
 
-> 1. Clone the thesis_project repository:
+1. Clone the thesis_project repository:
 >
 > ```console
 > $ git clone https://github.com/federaspa/thesis_project.git
 > ```
 >
-> 2. Change to the project directory:
+2. Change to the project directory:
 > ```console
 > $ cd thesis_project
 > ```
 >
-> 3. Install the dependencies:
+3. Install the dependencies:
 > ```console
-> $ > pip install -r requirements.txt
+> $ pip install -r requirements.txt
 > ```
+4. Download the Q6_K.gguf version of the desired open-source LLM for refinement in `GCD/llms`, for example
+>```console
+>$ GCD/llms/llama-2-7b.Q6_K.gguf
+>```
+4. Download and compile Prover9 into `models/symbolic_solvers/Prover9`, following https://www.cs.unm.edu/~mccune/prover9/manual/2009-11A/
 
 ###  Usage
 
 <h4>From <code>source</code></h4>
 
-> Run thesis_project using the command below:
+1. Extract examples from train split
 > ```console
-> $ 
+> $ python models/examples_extractor.py --dataset_name FOLIO
 > ```
-
-##  License
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
-
-[**Return**](#-overview)
-
----
+2. Extract predicates for CFG grammar update
+> ```console
+> python models/logic_predicates.py --dataset_name FOLIO
+> ```
+3. Extract logic programs
+> ```console
+> python models/logic_program.py --dataset_name FOLIO
+> ```
+4. Refine logic programs
+> ```console
+> python models/self_refinement.py --dataset_name FOLIO  --maximum_rounds 3 --gcd --n_gpu_layers 0
+> ```
+> 5. Run Prover9 inference 
+> ```console
+> python models/logic_inference.py --dataset_name FOLIO  --self_refine_round 3 
+> ```

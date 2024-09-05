@@ -149,34 +149,16 @@ def main():
         except:
             continue
     
-    with open('train_finetune.json', 'w') as f:
+    with open('data/finetuning/train_finetune_formulas.json', 'w') as f:
         json.dump(training_data, f, indent=4, ensure_ascii=False)
         
         
     training_prompts = [create_prompt(example) for example in training_data]
     
     # Save the prompts as a JSONL file
-    with open('train_finetune_prompts.jsonl', 'w') as f:
+    with open('data/finetuning/train_finetune_prompts.jsonl', 'w') as f:
         for prompt in training_prompts:
             f.write(json.dumps(prompt, ensure_ascii=False) + '\n')
     
-    # # Create a DataFrame with prompts and empty responses
-    # df = pd.DataFrame({
-    #     'prompt': training_prompts,
-    #     'response': [p['CORRECT'] for p in training_data]
-    # })
-
-    # # Save the DataFrame as a CSV file
-    # df.to_csv('llama2_finetuning_data.csv', index=False)
-    
-    # with open('train_finetune_prompts.txt', 'w') as f:
-    #     f.write(training_prompts)
-
-        
-        
-        
-        
-        
-        
 if __name__ == '__main__':
     main()
