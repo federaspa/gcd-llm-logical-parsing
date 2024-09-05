@@ -236,67 +236,7 @@ class LogicProgramGenerator(PromptGenerator):
         with open((active_requests_path), 'w') as f:
             json.dump(active_requests, f, indent=2, ensure_ascii=False)
             
-
-class Cheater:
-
-    def __init__(self, args):
-            
-        raise NotImplementedError("This class is not implemented yet.")
-            
-        self.args = args
-        self.data_path = args.data_path
-        self.dataset_name = args.dataset_name
-        self.split = args.split
-        self.sketcher_name = args.sketcher_name
-        self.save_path = args.save_path
-        self.prompt_mode = args.prompt_mode
-    
-    
-    def load_raw_dataset(self, split):
-        with open(os.path.join(self.data_path, self.dataset_name, f'{split}.json')) as f:
-            raw_dataset = json.load(f)
-        return raw_dataset
-    
-    def cheat(self):
-        
-        raw_dataset = self.load_raw_dataset(self.split)
-        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        outputs = []
-        # split dataset into chunks
-    
-        for sample in raw_dataset:
-            
-            premises_list = sample['context_fol']
-            
-            if 'question_fol' in sample.keys():
-                question = sample['question_fol']
-            else:
-                question = premises_list.pop()
-            
-            premises = '\n'.join(premises_list)
-            programs = "First-Order-Logic Rules:\n\"\"\"\n" + premises
-            
-            programs += '\n\"\"\"'
-            
-
-            programs += "\nFirst-Order-Logic Question:\n\"\"\"\n" + question + "\n\"\"\""
-                
-            
-        
-            output = {'id': sample['id'], 
-                    # 'context': sample['context'],
-                    'question': sample['question'], 
-                    'answer': sample['answer'],
-                    # 'options': sample['options'],
-                    'raw_logic_programs': [programs]}
-            outputs.append(output)
-
-        if not os.path.exists(self.save_path):
-            os.makedirs(self.save_path)
-        
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
-                    
+     
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
@@ -307,20 +247,15 @@ def parse_args():
     parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
     parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--generation_mode', type=str, choices=['sync', 'async'], default='sync')
-    parser.add_argument('--cheat', type=str)
     args = parser.parse_args()
     return args
 
 if __name__ == '__main__':
     args = parse_args()
     
-    if args.cheat:
-        cheater = Cheater(args)
-        cheater.cheat()
-    else:
-        logic_program_generator = LogicProgramGenerator(args)
-        if args.generation_mode == 'sync':
-            logic_program_generator.batch_logic_program_generation()
-            
-        elif args.generation_mode == 'async':
-            logic_program_generator.batch_async_logic_program_generation()
+    logic_program_generator = LogicProgramGenerator(args)
+    if args.generation_mode == 'sync':
+        logic_program_generator.batch_logic_program_generation()
+        
+    elif args.generation_mode == 'async':
+        logic_program_generator.batch_async_logic_program_generation()

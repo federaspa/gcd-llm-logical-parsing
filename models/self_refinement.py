@@ -296,7 +296,7 @@ class SelfRefinementEngine:
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--load_dir', type=str, default='./outputs_1/')
+    parser.add_argument('--load_dir', type=str, default='./outputs/')
     parser.add_argument('--maximum_rounds', type=int, default=3)
     parser.add_argument('--dataset_name', type=str)
     parser.add_argument('--split', type=str, default='dev')
@@ -305,6 +305,7 @@ def parse_args():
     parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
     parser.add_argument('--refiner_path', type=str)
     parser.add_argument('--n_gpu_layers', type=int)
+    parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
     return args
 
