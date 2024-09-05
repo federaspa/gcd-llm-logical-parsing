@@ -3,26 +3,38 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
+from sklearn.metrics import f1_score
+from collections import OrderedDict
+
+
+with open('evaluation/quantitative/wrong_ids.json', 'r') as f:
+    wrong_ids = json.load(f)
 
 def load_datasets():
     with open('data/FOLIO/dev.json', 'r') as f:
-        dev_folio = json.load(f)
+        folio = json.load(f)
         
     with open('data/LogicNLI/dev.json', 'r') as f:
-        dev_nli = json.load(f)
-    
-    with open('data/FOLIO/train.json', 'r') as f:
-        train_folio = json.load(f)
+        nli = json.load(f)
         
-    with open('data/LogicNLI/train.json', 'r') as f:
-        train_nli = json.load(f)
+    nli = [sample for sample in nli if sample['id'] not in wrong_ids]
         
-    folio = train_folio + dev_folio
-    nli = train_nli + dev_nli
-    
     return folio, nli
 
+def load_outputs(dataset_name, sketcher):
+    
+    with open(f'outputs/outputs_1/logic_inference/no_gcd/llama-2-7b/self-refine-3_{dataset_name}_dev_{sketcher}_dynamic.json', 'r') as f:
+        raw_outs = json.load(f)
 
+    with open(f'outputs/outputs_1/logic_inference/gcd/llama-2-7b/self-refine-3_{dataset_name}_dev_{sketcher}_dynamic.json', 'r') as f:
+        gcd_outs = json.load(f)
+        
+    if dataset_name == 'LogicNLI':
+        raw_outs = [sample for sample in raw_outs if sample['id'] not in wrong_ids]
+        gcd_outs = [sample for sample in gcd_outs if sample['id'] not in wrong_ids]
+        
+    return raw_outs, gcd_outs
+        
 def words_per_premise(ds):
     
     all_counts  = []
@@ -88,17 +100,10 @@ def nestings_per_premise(ds):
         
     return all_counts, mean
 
-def average_premises(ds):   
-    all_counts  = []
-    
-    for i, sample in enumerate(ds):
-        context = sample['context_fol']
-        all_counts.append(len(context))
+def average_premises(sample):   
+    context = sample['context_fol']
+    return len(context)
         
-    mean = np.mean(all_counts)
-        
-    return all_counts, mean
-
 def predicates_per_premise(ds):
     
     all_counts  = []
@@ -125,52 +130,95 @@ def predicates_per_premise(ds):
         
     return all_counts, mean
 
+def group_by_premises(ds, raw_outs, gcd_outs):
+    
+    grouped = {}
+    
+    for (raw_out, gcd_out) in zip(raw_outs, gcd_outs):
+        
+        assert raw_out['id'] == gcd_out['id'], 'Different ids in raw and gcd outputs'
+        
+        if raw_out['id'] == 1:
+            print(raw_out['predicted_answer'])
+            print(gcd_out['predicted_answer'])
+        
+        sample = [s for s in ds if s['id'] == raw_out['id']]
+        
+        if len(sample) != 1:
+            print(f'No or too many samples with id: {raw_out["id"]}')
+            continue
+        else:
+            sample = sample[0]
+        
+        av_premises = average_premises(sample)
+        
+        point = {
+            'id': sample['id'],
+            'predicted_answer_raw': raw_out['predicted_answer'],
+            'predicted_answer_gcd': gcd_out['predicted_answer'],
+            'answer': sample['answer'],
+        }
+        
+        if not av_premises in grouped.keys():
+            grouped[av_premises] = []
+        grouped[av_premises].append(point)
+        
+    return grouped
+
 def main():
     
+    plt.rcParams.update({'font.size': 26, 'font.weight': 'bold'})
+    sns.set_style("whitegrid")
+    fig, (ax1,ax2) = plt.subplots(2,1,figsize=(20, 20))
+
+        
     folio, nli = load_datasets()
     
-    for ds, name in zip([folio, nli], ['FOLIO', 'LogicNLI']):
-        counts, mean = words_per_premise(ds)
+    ds = folio
+    name = 'FOLIO'
+    
+    
+    for sketcher, ax in zip(['gpt-3.5-turbo', 'gpt-4o'], [ax1, ax2]):
+    
+        raw_outs, gcd_outs = load_outputs(name, sketcher)
         
-        print(f'{name} - Mean words per premise: {mean}')
+        assert len(raw_outs) == len(gcd_outs), 'Different number of samples in raw and gcd outputs'
         
-        fig, _ = plt.subplots()
-        # plot counts
-        sns.histplot(counts)
-        plt.title(f'Words per premise - {name}')
-        plt.savefig(f'evaluation/qualitative/images/words_per_premise_{name}.png')
+        grouped = group_by_premises(ds, raw_outs, gcd_outs)
         
+        f1s = {}
+            
+        for key, value in grouped.items():
+            
+            y_true = [sample['answer'] for sample in value]
+            y_pred_raw = [sample['predicted_answer_raw'] for sample in value]
+            y_pred_gcd = [sample['predicted_answer_gcd'] for sample in value]
+            
+            f1s[key] = {'raw': f1_score(y_true, y_pred_raw, average="weighted"), 'gcd': f1_score(y_true, y_pred_gcd, average="weighted")}
+            
+        # Order by key
+        f1s = OrderedDict(sorted(f1s.items())) 
         
-        fig, _ = plt.subplots()
-        
-        counts, mean = nestings_per_premise(ds)
-        
-        print(f'{name} - Mean nesting per premise: {mean}')
-        
-        # plot counts
-        sns.histplot(counts)  
-        plt.title(f'Nesting per premise - {name}')
-        plt.savefig(f'evaluation/qualitative/images/nesting_per_premise{name}.png')
-        
-        
-        fig, _ = plt.subplots()
-        
-        counts, mean = predicates_per_premise(ds)
-        
-        print(f'{name} - Mean predicates per premise: {mean}')
-        
-        # plot counts
-        sns.histplot(counts)
-        plt.title(f'Predicates per premise - {name}')
-        plt.savefig(f'evaluation/qualitative/images/predicates_per_premise{name}.png')
-        
-        print(f'{name} - Mean premises per sample: {mean}')
+        # Plot F1 scores with seaborn
+        sns.lineplot(x=list(f1s.keys()), y=[f1['raw'] for f1 in f1s.values()], ax=ax, label='No GCD')
+        sns.lineplot(x=list(f1s.keys()), y=[f1['gcd'] for f1 in f1s.values()], ax=ax, label='GCD')
+        ax.set_ylabel('Weighted F1 score')
+        ax.set_title(f'Weighted F1 score by number of premises - {'GPT-3.5-Turbo' if sketcher == 'gpt-3.5-turbo' else 'GPT-4o'}')
+        ax.legend()
         
         
-        print('--------------------------------------------------')
-        
-        counts, mean = average_premises(ds)
-        
+        # plt.plot(list(f1s.keys()), [f1['raw'] for f1 in f1s.values()], label='Raw')
+        # plt.plot(list(f1s.keys()), [f1['gcd'] for f1 in f1s.values()], label='GCD')
+        # plt.xlabel('Premises per sample')
+        # plt.ylabel('F1 score')
+        # plt.title(f'{name} - F1 score by premises per sample')
+        # plt.legend()
+    ax2.set_xlabel('Number of premises')
+    plt.savefig(f'evaluation/qualitative/images/f1_by_premises.png')
+    
+    
+    # print('--------------------------------------------------')
+
         
 
 if __name__ == "__main__":

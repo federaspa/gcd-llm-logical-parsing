@@ -5,20 +5,12 @@ from logic_inference_alt import LogicInferenceEngine
 
 sketchers = [
     'gpt-3.5-turbo', 
-    # 'gpt-4-turbo', 
     'gpt-4o'
     ]
 refiners = [
     'llama-2-7b',
-    # 'llama-2-7b-finetune',
     'llama-2-13b',
-    # 'llama-2-13b-finetune',
-    # 'llama-2-70b',
     'llama-3-8b',
-    # 'llama-3-8b-finetune',
-    # 'mistral-7b',
-    # 'mixtral-8x7b',
-    # 'mixtral_8x22B',
     None
 ]
 load_dirs = [

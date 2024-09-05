@@ -316,8 +316,6 @@ if __name__ == "__main__":
     
     if args.refiner_path:
         
-        # print(f"Using refiner model from {args.refiner_path}.")
-        
         refiner=GrammarConstrainedModel(
             refiner_path=args.refiner_path,
             n_gpu_layers=args.n_gpu_layers,
@@ -327,7 +325,6 @@ if __name__ == "__main__":
         
     else:
         
-        # print(f"Using OpenAI model {args.sketcher_name} as refiner.")
         refiner=None
         args.refiner_name = args.sketcher_name
     
