@@ -49,7 +49,7 @@
 > ```console
 > python models/self_refinement.py --dataset_name FOLIO  --maximum_rounds 3 --gcd --n_gpu_layers 0
 > ```
-> 5. Run Prover9 inference 
+5. Run Prover9 inference 
 > ```console
 > python models/logic_inference.py --dataset_name FOLIO  --self_refine_round 3 
 > ```
