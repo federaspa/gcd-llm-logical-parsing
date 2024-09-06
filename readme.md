@@ -45,7 +45,7 @@
 > ```console
 > python models/logic_program.py --dataset_name FOLIO
 > ```
-4. Refine logic programs
+4. Refine logic programs. Pass `--gcd` to make use of grammar-constrained decoding. To use GPU acceleartion, set `--n-gpu-layers` to a number greater than 0, or to `-1` to pass all model's layers to the GPU.
 > ```console
 > python models/self_refinement.py --dataset_name FOLIO  --maximum_rounds 3 --gcd --n_gpu_layers 0
 > ```
