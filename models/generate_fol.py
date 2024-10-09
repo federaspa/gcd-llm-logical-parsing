@@ -2,28 +2,22 @@
 
 import json
 import os
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm
 from os_utils import OSModel
 import sys
 import argparse
 from collections.abc import Callable, Awaitable
 
-from dotenv import load_dotenv
-
-
-load_dotenv()  # take environment variables from .env.
-api_key = os.getenv("OPENAI_API_KEY")
-
 class PromptGenerator:
     def __init__(self, args):
         self.dataset_name = args.dataset_name
 
-        self.generation_prompt_creator = {'FOLIO': self.prompt_generation_folio,
+        self.generation_prompt_creators = {'FOLIO': self.prompt_generation_folio,
                             'FOLIOv2': self.prompt_generation_folio,
                                 'LogicNLI': self.prompt_generation_folio
                                 }
         
-        self.reasoning_prompt_creator = {'FOLIO': self.prompt_reasoning_folio,
+        self.reasoning_prompt_creators = {'FOLIO': self.prompt_reasoning_folio,
                             'FOLIOv2': self.prompt_reasoning_folio,
                                 'LogicNLI': self.prompt_reasoning_folio
                                 }
@@ -82,8 +76,8 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_api = OSModel(model_path=self.sketcher_path, n_gpu_layers=self.n_gpu_layers, verbose=args.verbose)
         self.sketcher_name = os.path.splitext(self.sketcher_path)[0].split('/')[-1]
         
-        self.generation_prompt_creator:Callable[[dict],str] = self.generation_prompt_creator[self.dataset_name]
-        self.reasoning_prompt_creator:Callable[[dict],str] = self.reasoning_prompt_creator[self.dataset_name]
+        self.generation_prompt_creator:Callable[[dict],str] = self.generation_prompt_creators[self.dataset_name]
+        self.reasoning_prompt_creator:Callable[[dict],str] = self.reasoning_prompt_creators[self.dataset_name]
             
     def load_raw_dataset(self):
         with open(os.path.join(self.data_path, self.dataset_name, f'{self.split}.json')) as f:
@@ -123,15 +117,28 @@ class LogicProgramGenerator(PromptGenerator):
         # load raw dataset
         raw_dataset = self.load_raw_dataset()
 
-        print(f"Loaded {len(raw_dataset)} examples from {self.split} split.")
-        
-        outputs = []
+        save_file = os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+
+        existing_samples = []
+        if os.path.exists(save_file):
+            with open(save_file, 'r') as f:
+                existing_samples = json.load(f)
+
+            existing_ids = [s["id"] for s in existing_samples]
+            raw_dataset = [s for s in raw_dataset if s["id"] not in existing_ids]
+
+        print(f"{len(existing_samples)} already exist.\nLoaded {len(raw_dataset)} examples from {self.split} split.")
+
+
         
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
+
+
         
+        outputs = []
+
         for i, sample in enumerate(tqdm(raw_dataset)):
-            
             
             reasoning = self.reasoning_generator(sample)
         
@@ -152,7 +159,7 @@ class LogicProgramGenerator(PromptGenerator):
             outputs.append(output)
             
             # save outputs
-            with open(os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'), 'w') as f:
+            with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
 
         print(f"Generated {len(outputs)} examples.")
