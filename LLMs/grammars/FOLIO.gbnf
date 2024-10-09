@@ -1,0 +1,19 @@
+root ::= S
+
+S ::= "¬"? (F | (QUANT VAR)+ "(" F ")")
+
+F ::= "¬"? (C | "(" C (OP C)+ ")")
+
+C ::= "¬"? (L | "(" L (OP L)+ ")")
+
+OP ::= "\u2295" | "\u2228" | "\u2227" | "\u2192" | "\u2194"
+L ::= "¬"? PRED "(" TERMS ")"
+TERMS ::= TERM | TERM "," TERMS
+TERM ::=  VAR | CONST
+QUANT ::= "\u2200" | "\u2203"
+CONST ::= [a-z]{2,15}
+VAR ::= "x" | "y" | "z"
+PRED ::="Meeting"|"InOtherCountries"|"AppearInCompany"|"Manager"|"LunchInCompany"|"Meetings"|"WorkRemotelyFromHome"|"LunchAtHome"
+
+# Optional space: by convention, applied in this grammar after literal chars when allowed
+ws ::= | " " | "\n" [ \t]{0,20}
