@@ -1,0 +1,999 @@
+[
+  {
+    "id": 1,
+    "nl_problem": {
+      "nl_rules": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "nl_conc": "If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Attends(x)",
+        "Performs(x)",
+        "Chaperones(x)",
+        "Student(x)",
+        "Inactive(x)",
+        "YoungChildOrTeenager(x)"
+      ],
+      "fol_rules": [
+        "∀x (Performs(x) → Attends(x))",
+        "∀x (Performs(x) ⊕ Inactive(x))",
+        "∀x (Chaperones(x) → ¬Student(x))",
+        "∀x (Inactive(x) → Chaperones(x))",
+        "∀x (YoungChildOrTeenager(x) → Student(x))"
+      ],
+      "fol_conc": "((YoungChildOrTeenager(bonnie) ∧ Chaperones(bonnie)) ⊕ ¬(YoungChildOrTeenager(bonnie) ∨ Chaperones(bonnie))) → (Student(bonnie) ⊕ Inactive(bonnie))",
+      "reasoning": "Let's break down the conversion step by step.\n\n### Predicates\n\nTo convert the natural language problem to first-order logic, we need to define the predicates first.\n\n- Attends(x): x attends and is very engaged with school events.\n- Performs(x): x performs in school talent shows often.\n- Chaperones(x): x chaperones high school dances.\n- Student(x): x is a student who attends the school.\n- Inactive(x): x is an inactive and disinterested member of their community.\n- YoungChildOrTeenager(x): x is a young child or teenager who wishes to further their academic career and educational opportunities.\n\n### Premise 1\n\n\"If people perform in school talent shows often, then they attend and are very engaged with school events.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"People perform in school talent shows often\" translates to \"For all x, x performs in school talent shows often.\"\n   - Using predicate Performs(x): x performs in school talent shows often.\n3. Consequent (B):\n   - \"they attend and are very engaged with school events\" translates to \"For all x, x attends and is very engaged with school events.\"\n   - Using predicate Attends(x): x attends and is very engaged with school events.\n4. Formulate the FOL expression:\n   - ∀x (Performs(x) → Attends(x))\n\n### Premise 2\n\n\"People either perform in school talent shows often or are inactive and disinterested members of their community.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - Performs(x): x performs in school talent shows often.\n   - Inactive(x): x is an inactive and disinterested member of their community.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Performs(x) ⊕ Inactive(x))\n\n### Premise 3\n\n\"If people chaperone high school dances, then they are not students who attend the school.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"people chaperone high school dances\" translates to \"For all x, x chaperones high school dances.\"\n   - Using predicate Chaperones(x): x chaperones high school dances.\n3. Consequent (B):\n   - \"they are not students who attend the school\" translates to \"For all x, x is not a student who attends the school.\"\n   - Using predicate Student(x): x is a student who attends the school.\n   - Apply negation to Student(x): ¬Student(x)\n4. Formulate the FOL expression:\n   - ∀x (Chaperones(x) → ¬Student(x))\n\n### Premise 4\n\n\"All people who are inactive and disinterested members of their community chaperone high school dances.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All people who are inactive and disinterested members of their community chaperone high school dances\" to \"For all x, if x is an inactive and disinterested member of their community, then x chaperones high school dances.\"\n3. Using predicates:\n   - Inactive(x): x is an inactive and disinterested member of their community.\n   - Chaperones(x): x chaperones high school dances.\n4. Formulate the FOL expression: ∀x (Inactive(x) → Chaperones(x))\n\n### Premise 5\n\n\"All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school\" to \"For all x, if x is a young child or teenager who wishes to further their academic career and educational opportunities, then x is a student who attends the school.\"\n3. Using predicates:\n   - YoungChildOrTeenager(x): x is a young child or teenager who wishes to further their academic career and educational opportunities.\n   - Student(x): x is a student who attends the school.\n4. Formulate the FOL expression: ∀x (YoungChildOrTeenager(x) → Student(x))\n\n### Premise 6\n\n\"Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school.\"\n\nSteps to Convert:\n\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - \"both attends and is very engaged with school events and is a student who attends the school\" translates to \"Bonnie attends and is very engaged with school events and is a student who attends the school.\"\n   - Using predicates:\n     - Attends(bonnie): Bonnie attends and is very engaged with school events.\n     - Student(bonnie): Bonnie is a student who attends the school.\n   - Combined using conjunction: Attends(bonnie) ∧ Student(bonnie)\n3. Second possibility:\n   - \"neither attends and is very engaged with school events nor is a student who attends the school\" translates to the negation of the disjunction:\n     - ¬(Attends(bonnie) ∨ Student(bonnie))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Attends(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attends(bonnie) ∨ Student(bonnie))\n\n### Conclusion\n\n\"If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities\" translates to \"Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances, or neither is a young child nor teenager who wishes to further her academic career and educational opportunities.\"\n   - Using predicates:\n     - YoungChildOrTeenager(bonnie): Bonnie is a young child or teenager who wishes to further their academic career and educational opportunities.\n     - Chaperones(bonnie): Bonnie chaperones high school dances.\n   - First possibility:\n     - YoungChildOrTeenager(bonnie) ∧ Chaperones(bonnie)\n   - Second possibility:\n     - ¬(YoungChildOrTeenager(bonnie) ∨ Chaperones(bonnie))\n   - Combined using exclusive or (⊕):\n     - (YoungChildOrTeenager(bonnie) ∧ Chaperones(bonnie)) ⊕ ¬(YoungChildOrTeenager(bonnie) ∨ Chaperones(bonnie))\n3. Consequent (B):\n   - \"Bonnie is either a student who attends the school or is an inactive and disinterested member of the community\" translates to \"Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.\"\n   - Using predicates:\n     - Student(bonnie): Bonnie is a student who attends the school.\n     - Inactive(bonnie): Bonnie is an inactive and disinterested member of the community.\n   - Use the exclusive or operator (⊕):\n     - Student(bonnie) ⊕ Inactive(bonnie)\n4. Formulate the FOL expression:\n   - ((YoungChildOrTeenager(bonnie) ∧ Chaperones(bonnie)) ⊕ ¬(YoungChildOrTeenager(bonnie) ∨ Chaperones(bonnie))) → (Student(bonnie) ⊕ Inactive(bonnie))"
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "nl_rules": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "nl_conc": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community."
+    },
+    "answer": "B",
+    "fol_problem": {
+      "fol_preds": [
+        "Attend(x)",
+        "Perform(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Inactive(x)",
+        "Young(x)"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → Attend(x))",
+        "∀x (Perform(x) ⊕ Inactive(x))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (Inactive(x) → Chaperone(x))",
+        "∀x (Young(x) → Student(x))",
+        "(Attend(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "(Chaperone(bonnie) ⊕ (¬Chaperone(bonnie) ∧ Perform(bonnie))) → (Young(bonnie) ∧ Inactive(bonnie))",
+      "reasoning": "Let's convert the given natural language reasoning problem into first-order logic step by step.\n\n### Predicates:\n\n1. Attend(x): x attends and is very engaged with school events.\n2. Perform(x): x performs in school talent shows often.\n3. Chaperone(x): x chaperones high school dances.\n4. Student(x): x is a student who attends the school.\n5. Inactive(x): x is an inactive and disinterested member of their community.\n6. Young(x): x is a young child or teenager who wishes to further their academic career and educational opportunities.\n\n### Premise 1:\n\"If people perform in school talent shows often, then they attend and are very engaged with school events.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"People perform in school talent shows often.\"\n   - Using predicate: Perform(x)\n3. Consequent (B):\n   - \"They attend and are very engaged with school events.\"\n   - Using predicate: Attend(x)\n4. Formulate the FOL expression:\n   - ∀x (Perform(x) → Attend(x))\n\n### Premise 2:\n\"People either perform in school talent shows often or are inactive and disinterested members of their community.\"\n\nSteps to Convert:\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - Perform(x): x performs in school talent shows often.\n   - Inactive(x): x is an inactive and disinterested member of their community.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Perform(x) ⊕ Inactive(x))\n\n### Premise 3:\n\"If people chaperone high school dances, then they are not students who attend the school.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"People chaperone high school dances.\"\n   - Using predicate: Chaperone(x)\n3. Consequent (B):\n   - \"They are not students who attend the school.\"\n   - Using predicate: ¬Student(x)\n4. Formulate the FOL expression:\n   - ∀x (Chaperone(x) → ¬Student(x))\n\n### Premise 4:\n\"All people who are inactive and disinterested members of their community chaperone high school dances.\"\n\nSteps to Convert:\n1. Recognize the universal affirmative statement.\n2. Translate \"All people who are inactive and disinterested members of their community chaperone high school dances\" to \"For all x, if x is an inactive and disinterested member of their community, then x chaperones high school dances.\"\n3. Using predicates:\n   - Inactive(x): x is an inactive and disinterested member of their community.\n   - Chaperone(x): x chaperones high school dances.\n4. Formulate the FOL expression: ∀x (Inactive(x) → Chaperone(x))\n\n### Premise 5:\n\"All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.\"\n\nSteps to Convert:\n1. Recognize the universal affirmative statement.\n2. Translate \"All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school\" to \"For all x, if x is a young child or teenager who wishes to further their academic career and educational opportunities, then x is a student who attends the school.\"\n3. Using predicates:\n   - Young(x): x is a young child or teenager who wishes to further their academic career and educational opportunities.\n   - Student(x): x is a student who attends the school.\n4. Formulate the FOL expression: ∀x (Young(x) → Student(x))\n\n### Premise 6:\n\"Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school.\"\n\nSteps to Convert:\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - Attend(bonnie): Bonnie attends and is very engaged with school events.\n   - Student(bonnie): Bonnie is a student who attends the school.\n   - Combined using conjunction: Attend(bonnie) ∧ Student(bonnie)\n3. Second possibility:\n   - Neither Attend(bonnie) nor Student(bonnie) translates to the negation of the disjunction:\n     - ¬(Attend(bonnie) ∨ Student(bonnie))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Attend(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Student(bonnie))\n\n### Conclusion:\n\"If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often.\"\n   - Using predicate: Chaperone(bonnie) ⊕ (¬Chaperone(bonnie) ∧ Perform(bonnie))\n3. Consequent (B):\n   - \"Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.\"\n   - Using predicate: Young(bonnie) ∧ Inactive(bonnie)\n4. Formulate the FOL expression:\n   - (Chaperone(bonnie) ⊕ (¬Chaperone(bonnie) ∧ Perform(bonnie))) → (Young(bonnie) ∧ Inactive(bonnie))\n\nThe final FOL expression for the given natural language reasoning problem is:\n\n∀x (Perform(x) → Attend(x))\n∀x (Perform(x) ⊕ Inactive(x))\n∀x (Chaperone(x) → ¬Student(x))\n∀x (Inactive(x) → Chaperone(x))\n∀x (Young(x) → Student(x))\n(Attend(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Student(bonnie))\n(Chaperone(bonnie) ⊕ (¬Chaperone(bonnie) ∧ Perform(bonnie))) → (Young(bonnie) ∧ Inactive(bonnie))"
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "nl_rules": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "nl_conc": "James has lunch in the company."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "SchedulesMeeting(x, y)",
+        "Appears(x)",
+        "HasLunch(x, y)",
+        "Manager(x)",
+        "Remote(x)",
+        "InCountry(x, y)",
+        "Employee(x)"
+      ],
+      "fol_rules": [
+        "∀x (Employee(x) ∧ SchedulesMeeting(x, y) → Appears(x))",
+        "∀x (HasLunch(x, company) → SchedulesMeeting(x, customers))",
+        "∀x (Employee(x) → (HasLunch(x, company) ⊕ HasLunch(x, home)))",
+        "(Employee(x) ∧ HasLunch(x, home)) → Remote(x)",
+        "∀x (Employee(x) ∧ InCountry(x, other) → Remote(x))",
+        "∀x (Manager(x) → ¬Remote(x))",
+        "(Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))"
+      ],
+      "fol_conc": "HasLunch(james, company)",
+      "reasoning": "To convert the given natural language reasoning problem into first-order logic, we need to follow the same steps as before. Here's the step-by-step conversion:\n\nPredicates:\n- SchedulesMeeting(x, y): x schedules a meeting with y.\n- Appears(x): x appears in the company today.\n- HasLunch(x, y): x has lunch at location y.\n- Manager(x): x is a manager.\n- Remote(x): x is working remotely from home.\n- InCountry(x, y): x is in country y.\n\n---\n\nPremise 1:\n\"All employees who schedule a meeting with their customers will appear in the company today.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All employees who schedule a meeting with their customers will appear in the company today\" to \"For all x, if x is an employee and schedules a meeting with their customers, then x appears in the company today.\"\n3. Using predicates:\n   - Employee(x): x is an employee.\n   - SchedulesMeeting(x, y): x schedules a meeting with y.\n   - Appears(x): x appears in the company today.\n4. Formulate the FOL expression: ∀x (Employee(x) ∧ SchedulesMeeting(x, y) → Appears(x))\n\n---\n\nPremise 2:\n\"Everyone who has lunch in the company schedules meetings with their customers.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Everyone who has lunch in the company schedules meetings with their customers\" to \"For all x, if x has lunch in the company, then x schedules meetings with their customers.\"\n3. Using predicates:\n   - HasLunch(x, y): x has lunch at location y.\n   - SchedulesMeeting(x, y): x schedules a meeting with y.\n4. Formulate the FOL expression: ∀x (HasLunch(x, company) → SchedulesMeeting(x, customers))\n\n---\n\nPremise 3:\n\"Employees will either have lunch in the company or have lunch at home.\"\n\nSteps to Convert:\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - HasLunch(x, y): x has lunch at location y.\n   - Employee(x): x is an employee.\n   - company: the company location.\n   - home: the home location.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Employee(x) → (HasLunch(x, company) ⊕ HasLunch(x, home)))\n\n---\n\nPremise 4:\n\"If an employee has lunch at home, then he/she is working remotely from home.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"An employee has lunch at home.\"\n   - Combined using conjunction and Employee(x):\n     - Employee(x) ∧ HasLunch(x, home)\n3. Consequent (B):\n   - \"He/she is working remotely from home.\"\n   - Using Remote(x):\n     - Remote(x)\n4. Formulate the FOL expression:\n   - (Employee(x) ∧ HasLunch(x, home)) → Remote(x)\n\n---\n\nPremise 5:\n\"All employees who are in other countries work remotely from home.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All employees who are in other countries work remotely from home\" to \"For all x, if x is an employee and in other countries, then x works remotely from home.\"\n3. Using predicates:\n   - Employee(x): x is an employee.\n   - InCountry(x, y): x is in country y.\n   - Remote(x): x is working remotely from home.\n4. Formulate the FOL expression: ∀x (Employee(x) ∧ InCountry(x, other) → Remote(x))\n\n---\n\nPremise 6:\n\"No managers work remotely from home.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"No managers work remotely from home\" to \"For all x, if x is a manager, then x does not work remotely from home.\"\n3. Using predicates:\n   - Manager(x): x is a manager.\n   - Remote(x): x is working remotely from home.\n4. Apply negation to Remote(x): ¬Remote(x)\n5. Formulate the FOL expression: ∀x (Manager(x) → ¬Remote(x))\n\n---\n\nPremise 7:\n\"James is either a manager and appears in the company today or neither a manager nor appears in the company today.\"\n\nSteps to Convert:\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - Manager(james): James is a manager.\n   - Appears(james): James appears in the company today.\n   - Combined using conjunction: Manager(james) ∧ Appears(james)\n3. Second possibility:\n   - Neither Manager(james) nor Appears(james) translates to the negation of the disjunction:\n     - ¬(Manager(james) ∨ Appears(james))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))\n\n---\n\nConclusion:\n\"James has lunch in the company.\"\n\nSteps to Convert:\n1. Recognize the use of \"has lunch in the company,\" implying the predicate HasLunch(x, y) with y being the company location.\n2. Using predicates:\n   - HasLunch(james, company): James has lunch in the company.\n3. Formulate the FOL expression: HasLunch(james, company)\n\n---\n\nNow we have the FOL expressions for all the premises and the conclusion. We can use these expressions to reason about the problem in first-order logic."
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "nl_rules": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "nl_conc": "James does not have lunch in the company."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "SchedulesMeeting(x, y)",
+        "AppearsInCompanyToday(x)",
+        "HasLunchInCompany(x)",
+        "HasLunchAtHome(x)",
+        "WorksRemotelyFromHome(x)",
+        "Manager(x)",
+        "InOtherCountries(x)"
+      ],
+      "fol_rules": [
+        "∀x (SchedulesMeeting(x, Customer) → AppearsInCompanyToday(x))",
+        "∀x (HasLunchInCompany(x) → SchedulesMeeting(x, Customer))",
+        "HasLunchInCompany(x) ⊕ HasLunchAtHome(x)",
+        "HasLunchAtHome(x) → WorksRemotelyFromHome(x)",
+        "∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))",
+        "∀x (Manager(x) → ¬WorksRemotelyFromHome(x))",
+        "(Manager(james) ∧ AppearsInCompanyToday(james)) ⊕ ¬(Manager(james) ∨ AppearsInCompanyToday(james))"
+      ],
+      "fol_conc": "¬HasLunchInCompany(james)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe'll define the following predicates:\n\n- `SchedulesMeeting(x, y)`: x schedules a meeting with y.\n- `AppearsInCompanyToday(x)`: x appears in the company today.\n- `HasLunchInCompany(x)`: x has lunch in the company.\n- `HasLunchAtHome(x)`: x has lunch at home.\n- `WorksRemotelyFromHome(x)`: x works remotely from home.\n- `Manager(x)`: x is a manager.\n- `InOtherCountries(x)`: x is in other countries.\n\n### Premise 1:\n\"All employees who schedule a meeting with their customers will appear in the company today.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x schedules a meeting with their customers, then x appears in the company today.\"\n3. Using predicates:\n   - `SchedulesMeeting(x, y)`: x schedules a meeting with y.\n   - `AppearsInCompanyToday(x)`: x appears in the company today.\n4. Formulate the FOL expression: ∀x (SchedulesMeeting(x, Customer) → AppearsInCompanyToday(x))\n\n### Premise 2:\n\"Everyone who has lunch in the company schedules meetings with their customers.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x has lunch in the company, then x schedules meetings with their customers.\"\n3. Using predicates:\n   - `HasLunchInCompany(x)`: x has lunch in the company.\n   - `SchedulesMeeting(x, y)`: x schedules a meeting with y.\n4. Formulate the FOL expression: ∀x (HasLunchInCompany(x) → SchedulesMeeting(x, Customer))\n\n### Premise 3:\n\"Employees will either have lunch in the company or have lunch at home.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - `HasLunchInCompany(x)`: x has lunch in the company.\n   - `HasLunchAtHome(x)`: x has lunch at home.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: HasLunchInCompany(x) ⊕ HasLunchAtHome(x)\n\n### Premise 4:\n\"If an employee has lunch at home, then he/she is working remotely from home.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"An employee has lunch at home.\"\n   - Using predicate: HasLunchAtHome(x)\n3. Consequent (B):\n   - \"He/she is working remotely from home.\"\n   - Using predicate: WorksRemotelyFromHome(x)\n4. Formulate the FOL expression: HasLunchAtHome(x) → WorksRemotelyFromHome(x)\n\n### Premise 5:\n\"All employees who are in other countries work remotely from home.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in other countries, then x works remotely from home.\"\n3. Using predicates:\n   - `InOtherCountries(x)`: x is in other countries.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: ∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))\n\n### Premise 6:\n\"No managers work remotely from home.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a manager, then x does not work remotely from home.\"\n3. Using predicates:\n   - `Manager(x)`: x is a manager.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Apply negation to WorksRemotelyFromHome(x): ¬WorksRemotelyFromHome(x)\n5. Formulate the FOL expression: ∀x (Manager(x) → ¬WorksRemotelyFromHome(x))\n\n### Premise 7:\n\"James is either a manager and appears in the company today or neither a manager nor appears in the company today.\"\n\nSteps to Convert:\n\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - `Manager(james)`: James is a manager.\n   - `AppearsInCompanyToday(james)`: James appears in the company today.\n   - Combined using conjunction: Manager(james) ∧ AppearsInCompanyToday(james)\n3. Second possibility:\n   - \"Neither a manager nor appears in the company today\" translates to the negation of the disjunction:\n     - ¬(Manager(james) ∨ AppearsInCompanyToday(james))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Manager(james) ∧ AppearsInCompanyToday(james)) ⊕ ¬(Manager(james) ∨ AppearsInCompanyToday(james))\n\n### Conclusion:\n\"James does not have lunch in the company.\"\n\nSteps to Convert:\n\n1. Recognize the negation of \"has lunch in the company.\"\n2. Using predicate: HasLunchInCompany(x)\n3. Apply negation: ¬HasLunchInCompany(x)\n4. Substitute x with james: ¬HasLunchInCompany(james)\n5. Formulate the FOL expression: ¬HasLunchInCompany(james)\n\nNow we have the FOL expressions for all the premises and the conclusion. We can use these to reason about the problem in a formal and rigorous way."
+    }
+  },
+  {
+    "id": 5,
+    "nl_problem": {
+      "nl_rules": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "nl_conc": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Schedules(x, y)",
+        "Appears(x)",
+        "HasLunch(x, y)",
+        "Manager(x)",
+        "InOtherCountries(x)",
+        "WorksRemotelyFromHome(x)"
+      ],
+      "fol_rules": [
+        "∀x (Schedules(x, Customer(x)) → Appears(x))",
+        "∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))",
+        "HasLunch(x, Company) ⊕ HasLunch(x, Home)",
+        "HasLunch(x, Home) → WorksRemotelyFromHome(x)",
+        "∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))",
+        "∀x (Manager(x) → ¬WorksRemotelyFromHome(x))",
+        "(Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))"
+      ],
+      "fol_conc": "(Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))",
+      "reasoning": "Let's break down the conversion step by step.\n\n### Predicates\n\n1. `Schedules(x, y)`: x schedules a meeting with y.\n2. `Appears(x)`: x appears in the company today.\n3. `HasLunch(x, y)`: x has lunch at location y.\n4. `Manager(x)`: x is a manager.\n5. `InOtherCountries(x)`: x is in other countries.\n6. `WorksRemotelyFromHome(x)`: x works remotely from home.\n\n### Premise 1\n\"All employees who schedule a meeting with their customers will appear in the company today.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x schedules a meeting with their customers, then x appears in the company today.\"\n3. Using predicates:\n   - `Schedules(x, y)`: x schedules a meeting with y.\n   - `Appears(x)`: x appears in the company today.\n4. Formulate the FOL expression: ∀x (Schedules(x, Customer(x)) → Appears(x))\n\n### Premise 2\n\"Everyone who has lunch in the company schedules meetings with their customers.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x has lunch in the company, then x schedules a meeting with their customers.\"\n3. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n   - `Schedules(x, y)`: x schedules a meeting with y.\n4. Formulate the FOL expression: ∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))\n\n### Premise 3\n\"Employees will either have lunch in the company or have lunch at home.\"\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: HasLunch(x, Company) ⊕ HasLunch(x, Home)\n\n### Premise 4\n\"If an employee has lunch at home, then he/she is working remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"An employee has lunch at home.\"\n   - Using predicates:\n     - `HasLunch(x, Home)`: x has lunch at home.\n3. Consequent (B):\n   - \"He/she is working remotely from home.\"\n   - Using predicates:\n     - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: HasLunch(x, Home) → WorksRemotelyFromHome(x)\n\n### Premise 5\n\"All employees who are in other countries work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in other countries, then x works remotely from home.\"\n3. Using predicates:\n   - `InOtherCountries(x)`: x is in other countries.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: ∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))\n\n### Premise 6\n\"No managers work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a manager, then x does not work remotely from home.\"\n3. Using predicates:\n   - `Manager(x)`: x is a manager.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Apply negation to `WorksRemotelyFromHome(x)`: ¬WorksRemotelyFromHome(x)\n5. Formulate the FOL expression: ∀x (Manager(x) → ¬WorksRemotelyFromHome(x))\n\n### Premise 7\n\"James is either a manager and appears in the company today or neither a manager nor appears in the company today.\"\n\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - `Manager(james)`: James is a manager.\n   - `Appears(james)`: James appears in the company today.\n   - Combined using conjunction: Manager(james) ∧ Appears(james)\n3. Second possibility:\n   - Neither `Manager(james)` nor `Appears(james)` translates to the negation of the disjunction:\n     - ¬(Manager(james) ∨ Appears(james))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))\n\n### Conclusion\n\"If James is either a manager or in other countries, then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"James is either a manager or in other countries.\"\n   - Using predicates:\n     - `Manager(james)`: James is a manager.\n     - `InOtherCountries(james)`: James is in other countries.\n   - Use the exclusive or operator (⊕):\n     - Formulate the FOL expression: (Manager(james) ⊕ InOtherCountries(james))\n3. Consequent (B):\n   - First possibility:\n     - `HasLunch(james, Home)`: James has lunch at home.\n     - `WorksRemotelyFromHome(james)`: James works remotely from home.\n     - Combined using conjunction: HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)\n   - Second possibility:\n     - Neither `HasLunch(james, Home)` nor `WorksRemotelyFromHome(james)` translates to the negation of the disjunction:\n       - ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n   - Combined using exclusive or (⊕):\n     - (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n4. Formulate the FOL expression:\n   - (Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))"
+    }
+  },
+  {
+    "id": 6,
+    "nl_problem": {
+      "nl_rules": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "nl_conc": "There is an animal."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "Virus(x)",
+        "Animal(x)",
+        "Human(x)",
+        "Mammal(x)",
+        "Symptom(x)",
+        "FeelTired(x)",
+        "Glu(x)"
+      ],
+      "fol_rules": [
+        "∃x (Virus(x) ∧ InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, x))",
+        "∃x (Animal(x) ∧ Virus(monkeypox) ∧ CanOccurIn(x, monkeypox))",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "∃x (Symptom(x) ∧ (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "∀x (Person(x) → (Glu(x) → FeelTired(x)))"
+      ],
+      "fol_conc": "∃x Animal(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we need to follow the steps outlined in the example. Here's the step-by-step conversion:\n\n**Predicates:**\n\n1. InfectiousDisease(x): x is an infectious disease.\n2. CausedBy(x, y): x is caused by y.\n3. Virus(x): x is a virus.\n4. Animal(x): x is an animal.\n5. Human(x): x is a human.\n6. Mammal(x): x is a mammal.\n7. Symptom(x): x is a symptom of Monkeypox.\n8. FeelTired(x): x feels tired.\n9. Glu(x): x is a glu.\n\n**Premise 1:**\n\"Monkeypox is an infectious disease caused by the monkeypox virus.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox is an infectious disease caused by the monkeypox virus\" to \"There exists a virus such that Monkeypox is an infectious disease caused by it.\"\n3. Using predicates:\n   - InfectiousDisease(monkeypox): monkeypox is an infectious disease.\n   - CausedBy(monkeypox, x): monkeypox is caused by x.\n   - Virus(x): x is a virus.\n4. Formulate the FOL expression: ∃x (Virus(x) ∧ InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, x))\n\n**Premise 2:**\n\"Monkeypox virus can occur in certain animals, including humans.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"can occur in\" implying a possibility.\n2. Translate to \"There exists an animal such that Monkeypox virus can occur in it.\"\n3. Using predicates:\n   - Animal(x): x is an animal.\n   - Virus(monkeypox): monkeypox is a virus.\n4. Formulate the FOL expression: ∃x (Animal(x) ∧ Virus(monkeypox) ∧ CanOccurIn(x, monkeypox))\n\n**Premise 3:**\n\"Humans are mammals.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Humans are mammals\" to \"For all humans, they are mammals.\"\n3. Using predicates:\n   - Human(x): x is a human.\n   - Mammal(x): x is a mammal.\n4. Formulate the FOL expression: ∀x (Human(x) → Mammal(x))\n\n**Premise 4:**\n\"Mammals are animals.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Mammals are animals\" to \"For all mammals, they are animals.\"\n3. Using predicates:\n   - Mammal(x): x is a mammal.\n   - Animal(x): x is an animal.\n4. Formulate the FOL expression: ∀x (Mammal(x) → Animal(x))\n\n**Premise 5:**\n\"Symptoms of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"include\" implying a subset.\n2. Translate to \"There exists a symptom such that it is a symptom of Monkeypox.\"\n3. Using predicates:\n   - Symptom(x): x is a symptom of Monkeypox.\n   - Fever(x): x is a fever.\n   - Headache(x): x is a headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n4. Formulate the FOL expression: ∃x (Symptom(x) ∧ (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\n**Premise 6:**\n\"People feel tired when they get a glu.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"when\" implying a condition.\n2. Translate to \"For all people, if they get a glu, then they feel tired.\"\n3. Using predicates:\n   - Person(x): x is a person.\n   - Glu(x): x is a glu.\n   - FeelTired(x): x feels tired.\n4. Formulate the FOL expression: ∀x (Person(x) → (Glu(x) → FeelTired(x)))\n\n**Conclusion:**\n\"There is an animal.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"there is\" implying existence.\n2. Using predicates:\n   - Animal(x): x is an animal.\n3. Formulate the FOL expression: ∃x Animal(x)\n\nNow, we have the FOL expressions for each premise and the conclusion."
+    }
+  },
+  {
+    "id": 7,
+    "nl_problem": {
+      "nl_rules": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "nl_conc": "No one gets flu."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "Virus(x)",
+        "OccursIn(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "FeelTired(x)",
+        "GetFlu(x)",
+        "Glu(x)"
+      ],
+      "fol_rules": [
+        "∃x (Virus(x) ∧ InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, x))",
+        "∀x (Virus(x) → ∃y (Animal(y) ∧ OccursIn(x, y)))",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "∃x (Symptom(x, monkeypox))",
+        "∀x (GetGlu(x) → FeelTired(x))"
+      ],
+      "fol_conc": "∀x ¬GetFlu(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n**Predicates:**\n\n1. InfectiousDisease(x): x is an infectious disease.\n2. CausedBy(x, y): x is caused by y.\n3. Virus(x): x is a virus.\n4. OccursIn(x, y): x occurs in y.\n5. Mammal(x): x is a mammal.\n6. Animal(x): x is an animal.\n7. Symptom(x, y): x is a symptom of y.\n8. FeelTired(x): x feels tired.\n9. GetFlu(x): x gets flu.\n10. Glu(x): x gets a glu.\n\n**Premise 1:**\n\"Monkeypox is an infectious disease caused by the monkeypox virus.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox is an infectious disease caused by the monkeypox virus\" to \"There exists a virus such that Monkeypox is an infectious disease caused by it.\"\n3. Using predicates:\n   - InfectiousDisease(monkeypox): monkeypox is an infectious disease.\n   - CausedBy(monkeypox, x): monkeypox is caused by x.\n   - Virus(x): x is a virus.\n4. Formulate the FOL expression: ∃x (Virus(x) ∧ InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, x))\n\n**Premise 2:**\n\"Monkeypox virus can occur in certain animals, including humans.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox virus can occur in certain animals, including humans\" to \"For all x, if x is a virus, then x can occur in certain animals, including humans.\"\n3. Using predicates:\n   - Virus(x): x is a virus.\n   - OccursIn(x, y): x occurs in y.\n4. Formulate the FOL expression: ∀x (Virus(x) → ∃y (Animal(y) ∧ OccursIn(x, y)))\n\n**Premise 3:**\n\"Humans are mammals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Humans are mammals\" to \"For all x, if x is a human, then x is a mammal.\"\n3. Using predicates:\n   - Human(x): x is a human.\n   - Mammal(x): x is a mammal.\n4. Formulate the FOL expression: ∀x (Human(x) → Mammal(x))\n\n**Premise 4:**\n\"Mammals are animals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Mammals are animals\" to \"For all x, if x is a mammal, then x is an animal.\"\n3. Using predicates:\n   - Mammal(x): x is a mammal.\n   - Animal(x): x is an animal.\n4. Formulate the FOL expression: ∀x (Mammal(x) → Animal(x))\n\n**Premise 5:**\n\"Symptoms of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Symptoms of Monkeypox include fever, headache, muscle pains, feeling tired, and so on\" to \"There exists a symptom such that the symptom is a symptom of Monkeypox.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Monkeypox: monkeypox is a disease.\n4. Formulate the FOL expression: ∃x (Symptom(x, monkeypox))\n\n**Premise 6:**\n\"People feel tired when they get a glu.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"People feel tired when they get a glu\" to \"For all x, if x gets a glu, then x feels tired.\"\n3. Using predicates:\n   - GetGlu(x): x gets a glu.\n   - FeelTired(x): x feels tired.\n4. Formulate the FOL expression: ∀x (GetGlu(x) → FeelTired(x))\n\n**Conclusion:**\n\"No one gets flu.\"\n\nSteps to Convert:\n1. Recognize that this is a universal negative statement.\n2. Translate \"No one gets flu\" to \"For all x, x does not get flu.\"\n3. Using predicates:\n   - GetFlu(x): x gets flu.\n4. Formulate the FOL expression: ∀x ¬GetFlu(x)"
+    }
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "nl_rules": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "nl_conc": "Symptons of Monkeypox include coughing."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Dependent(x)",
+        "Drinks(x)",
+        "Jokes(x)",
+        "Unaware(x)",
+        "Student(x)",
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "Virus(x)",
+        "OccursIn(x, y)",
+        "Human(x)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "FeelTired(x)",
+        "Glu(x)",
+        "Coughing(x)"
+      ],
+      "fol_rules": [
+        "∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))",
+        "∀x (MonkeypoxVirus(x) → (∃y (OccursIn(x, y) ∧ Animal(y)) ∧ ∃z (OccursIn(x, z) ∧ Human(z)))",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "∀x (Glu(x) → FeelTired(x))",
+        "∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+        "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))",
+        "∀x (Drinks(x) → Dependent(x))",
+        "∀x (Drinks(x) ⊕ Jokes(x))",
+        "∀x (Jokes(x) → ¬Unaware(x))"
+      ],
+      "fol_conc": "Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we will follow the same steps as before.\n\n**Predicates:**\n\n1. InfectiousDisease(x): x is an infectious disease.\n2. CausedBy(x, y): x is caused by y.\n3. Virus(x): x is a virus.\n4. OccursIn(x, y): x occurs in y.\n5. Human(x): x is a human.\n6. Mammal(x): x is a mammal.\n7. Animal(x): x is an animal.\n8. Symptom(x, y): x is a symptom of y.\n9. FeelTired(x): x feels tired.\n10. Glu(x): x gets a glu.\n\n**Premise 1:**\n\"Monkeypox is an infectious disease caused by the monkeypox virus.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox is an infectious disease caused by the monkeypox virus\" to \"For all x, if x is monkeypox, then x is an infectious disease and x is caused by the monkeypox virus.\"\n3. Using predicates:\n   - InfectiousDisease(x): x is an infectious disease.\n   - CausedBy(x, y): x is caused by y.\n   - Virus(x): x is a virus.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))\n\n**Premise 2:**\n\"Monkeypox virus can occur in certain animals, including humans.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox virus can occur in certain animals, including humans\" to \"For all x, if x is a monkeypox virus, then x occurs in some animal and x occurs in some human.\"\n3. Using predicates:\n   - OccursIn(x, y): x occurs in y.\n   - Human(x): x is a human.\n   - Animal(x): x is an animal.\n   - MonkeypoxVirus: monkeypox virus (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (MonkeypoxVirus(x) → ∃y (OccursIn(x, y) ∧ Animal(y)) ∧ ∃z (OccursIn(x, z) ∧ Human(z)))\n\n**Premise 3:**\n\"Humans are mammals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Humans are mammals\" to \"For all x, if x is a human, then x is a mammal.\"\n3. Using predicates:\n   - Mammal(x): x is a mammal.\n   - Human(x): x is a human.\n4. Formulate the FOL expression: ∀x (Human(x) → Mammal(x))\n\n**Premise 4:**\n\"Mammals are animals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Mammals are animals\" to \"For all x, if x is a mammal, then x is an animal.\"\n3. Using predicates:\n   - Animal(x): x is an animal.\n   - Mammal(x): x is a mammal.\n4. Formulate the FOL expression: ∀x (Mammal(x) → Animal(x))\n\n**Premise 5:**\n\"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on\" to \"For all x, if x is a symptom of monkeypox, then x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\n**Premise 6:**\n\"People feel tired when they get a glu.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"People feel tired when they get a glu\" to \"For all x, if x gets a glu, then x feels tired.\"\n3. Using predicates:\n   - FeelTired(x): x feels tired.\n   - Glu(x): x gets a glu.\n4. Formulate the FOL expression: ∀x (Glu(x) → FeelTired(x))\n\n**Conclusion:**\n\"Symptons of Monkeypox include coughing.\"\n\nSteps to Convert:\n1. Recognize the use of \"include,\" implying a disjunction.\n2. Translate \"Symptons of Monkeypox include coughing\" to \"For all x, if x is a symptom of monkeypox, then x is coughing or x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Coughing(x): x is coughing.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\nNote that we've used constants for monkeypox and monkeypox virus, assuming they are specific entities. If they are not, we would need to use variables instead."
+    }
+  },
+  {
+    "id": 9,
+    "nl_problem": {
+      "nl_rules": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "nl_conc": "Tom is an Ocellated wild turkey."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "EasternWildTurkey(x)",
+        "OsceolaWildTurkey(x)",
+        "GouldsWildTurkey(x)",
+        "MerriamsWildTurkey(x)",
+        "RioGrandeWildTurkey(x)",
+        "OcellatedWildTurkey(x)"
+      ],
+      "fol_rules": [
+        "∃x (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))",
+        "¬EasternWildTurkey(tom)",
+        "¬OsceolaWildTurkey(tom)",
+        "¬(GouldsWildTurkey(tom) ⊕ MerriamsWildTurkey(tom) ⊕ RioGrandeWildTurkey(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "OcellatedWildTurkey(tom)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates:\n\n1. WildTurkey(x): x is a wild turkey.\n2. EasternWildTurkey(x): x is an Eastern wild turkey.\n3. OsceolaWildTurkey(x): x is an Osceola wild turkey.\n4. GouldsWildTurkey(x): x is a Gould's wild turkey.\n5. MerriamsWildTurkey(x): x is a Merriam's wild turkey.\n6. RioGrandeWildTurkey(x): x is a Rio Grande wild turkey.\n7. OcellatedWildTurkey(x): x is an Ocellated wild turkey.\n\n### Premise 1:\n\"There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\"\n\nThis is a general statement about the existence of different types of wild turkeys. We can represent it as:\n\n∃x (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))\n\n### Premise 2:\n\"Tom is not an Eastern wild turkey.\"\n\nWe can represent this as:\n\n¬EasternWildTurkey(tom)\n\n### Premise 3:\n\"Tom is not an Osceola wild turkey.\"\n\nSimilarly, we can represent this as:\n\n¬OsceolaWildTurkey(tom)\n\n### Premise 4:\n\"Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\"\n\nThis is an exclusive or statement, so we can represent it as:\n\n¬(GouldsWildTurkey(tom) ⊕ MerriamsWildTurkey(tom) ⊕ RioGrandeWildTurkey(tom))\n\n### Premise 5:\n\"Tom is a wild turkey.\"\n\nWe can represent this as:\n\nWildTurkey(tom)\n\n### Conclusion:\n\"Tom is an Ocellated wild turkey.\"\n\nWe can represent this as:\n\nOcellatedWildTurkey(tom)\n\nNow, let's combine the premises to derive the conclusion.\n\n### Derivation:\n\nFrom Premise 1, we know that there are six types of wild turkeys, and from Premise 2 and 3, we know that Tom is not an Eastern wild turkey and not an Osceola wild turkey.\n\nFrom Premise 4, we know that Tom is not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey. This implies that Tom is either a Gould's wild turkey or a Merriam's wild turkey or a Rio Grande wild turkey, but not all three.\n\nFrom Premise 5, we know that Tom is a wild turkey.\n\nNow, let's use the premises to derive the conclusion.\n\n∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x)))\n\n¬EasternWildTurkey(tom)\n¬OsceolaWildTurkey(tom)\n¬(GouldsWildTurkey(tom) ⊕ MerriamsWildTurkey(tom) ⊕ RioGrandeWildTurkey(tom))\nWildTurkey(tom)\n\n∴ OcellatedWildTurkey(tom)\n\nThe final answer is:\n\n∀x (WildTurkey(x) → (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x)))\n¬EasternWildTurkey(tom)\n¬OsceolaWildTurkey(tom)\n¬(GouldsWildTurkey(tom) ⊕ MerriamsWildTurkey(tom) ⊕ RioGrandeWildTurkey(tom))\nWildTurkey(tom)\n∴ OcellatedWildTurkey(tom)"
+    }
+  },
+  {
+    "id": 10,
+    "nl_problem": {
+      "nl_rules": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "nl_conc": "Tom is an Eastern wild turkey."
+    },
+    "answer": "B",
+    "fol_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "EasternWildTurkey(x)",
+        "OsceolaWildTurkey(x)",
+        "GouldsWildTurkey(x)",
+        "MerriamsWildTurkey(x)",
+        "RioGrandeWildTurkey(x)",
+        "OcellatedWildTurkey(x)"
+      ],
+      "fol_rules": [
+        "∃x (EasternWildTurkey(x) ⊕ OsceolaWildTurkey(x) ⊕ GouldsWildTurkey(x) ⊕ MerriamsWildTurkey(x) ⊕ RioGrandeWildTurkey(x) ⊕ OcellatedWildTurkey(x))",
+        "¬EasternWildTurkey(tom)",
+        "¬OsceolaWildTurkey(tom)",
+        "¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "EasternWildTurkey(tom)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe need to define the predicates based on the given information:\n\n- WildTurkey(x): x is a wild turkey.\n- EasternWildTurkey(x): x is an Eastern wild turkey.\n- OsceolaWildTurkey(x): x is an Osceola wild turkey.\n- GouldsWildTurkey(x): x is a Gould's wild turkey.\n- MerriamsWildTurkey(x): x is a Merriam's wild turkey.\n- RioGrandeWildTurkey(x): x is a Rio Grande wild turkey.\n- OcellatedWildTurkey(x): x is an Ocellated wild turkey.\n\n### Premise 1:\n\"There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\"\n\nThis premise is a simple statement of existence for each type of wild turkey. We can formulate the FOL expression as:\n\n∃x (EasternWildTurkey(x) ⊕ OsceolaWildTurkey(x) ⊕ GouldsWildTurkey(x) ⊕ MerriamsWildTurkey(x) ⊕ RioGrandeWildTurkey(x) ⊕ OcellatedWildTurkey(x))\n\n### Premise 2:\n\"Tom is not an Eastern wild turkey.\"\n\nThis premise is a simple negation of the statement \"Tom is an Eastern wild turkey.\" We can formulate the FOL expression as:\n\n¬EasternWildTurkey(tom)\n\n### Premise 3:\n\"Tom is not an Osceola wild turkey.\"\n\nThis premise is similar to Premise 2, but for Osceola wild turkey. We can formulate the FOL expression as:\n\n¬OsceolaWildTurkey(tom)\n\n### Premise 4:\n\"Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\"\n\nThis premise is a negation of the disjunction of three statements. We can formulate the FOL expression as:\n\n¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))\n\n### Premise 5:\n\"Tom is a wild turkey.\"\n\nThis premise is a simple statement of existence for Tom as a wild turkey. We can formulate the FOL expression as:\n\nWildTurkey(tom)\n\n### Conclusion:\n\"Tom is an Eastern wild turkey.\"\n\nThis conclusion is a simple statement of existence for Tom as an Eastern wild turkey. We can formulate the FOL expression as:\n\nEasternWildTurkey(tom)\n\nNow, let's combine the premises to derive the conclusion.\n\n### Derivation\n\nFrom Premise 1, we know that there are six types of wild turkeys, and Tom is not an Eastern wild turkey (Premise 2) or an Osceola wild turkey (Premise 3). From Premise 4, we know that Tom is not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey. From Premise 5, we know that Tom is a wild turkey.\n\nWe can use these premises to derive the conclusion that Tom is an Eastern wild turkey.\n\n∃x (EasternWildTurkey(x) ⊕ OsceolaWildTurkey(x) ⊕ GouldsWildTurkey(x) ⊕ MerriamsWildTurkey(x) ⊕ RioGrandeWildTurkey(x) ⊕ OcellatedWildTurkey(x))\n¬EasternWildTurkey(tom)\n¬OsceolaWildTurkey(tom)\n¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))\nWildTurkey(tom)\n\nFrom the premises, we can conclude that Tom is an Eastern wild turkey:\n\nEasternWildTurkey(tom)\n\nThis derivation is based on the given premises and the definition of the predicates. The conclusion follows logically from the premises, and the FOL expressions accurately represent the natural language statements."
+    }
+  },
+  {
+    "id": 11,
+    "nl_problem": {
+      "nl_rules": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "nl_conc": "Joey is a wild turkey."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "EasternWildTurkey(x)",
+        "OsceolaWildTurkey(x)",
+        "GouldsWildTurkey(x)",
+        "MerriamsWildTurkey(x)",
+        "RioGrandeWildTurkey(x)",
+        "OcellatedWildTurkey(x)"
+      ],
+      "fol_rules": [
+        "∃x (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))",
+        "¬EasternWildTurkey(tom)",
+        "¬OsceolaWildTurkey(tom)",
+        "¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "WildTurkey(joey)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we need to follow the steps outlined in the example. Here's the conversion step-by-step:\n\n**Predicates:**\n\n1. WildTurkey(x): x is a wild turkey.\n2. EasternWildTurkey(x): x is an Eastern wild turkey.\n3. OsceolaWildTurkey(x): x is an Osceola wild turkey.\n4. GouldsWildTurkey(x): x is a Gould's wild turkey.\n5. MerriamsWildTurkey(x): x is a Merriam's wild turkey.\n6. RioGrandeWildTurkey(x): x is a Rio Grande wild turkey.\n7. OcellatedWildTurkey(x): x is an Ocellated wild turkey.\n\n**Premise 1:**\n\"There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild turkey, Rio Grande wild turkey, and Ocellated wild turkey.\"\n\nThis is a general statement about the existence of different types of wild turkeys. We can represent it using the existential quantifier (∃) and the disjunction (∨) operator.\n\nFormulate the FOL expression:\n∃x (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))\n\n**Premise 2:**\n\"Tom is not an Eastern wild turkey.\"\n\nThis is a negated statement about Tom's type. We can represent it using the negation (∼) operator and the predicate EasternWildTurkey(x).\n\nFormulate the FOL expression:\n¬EasternWildTurkey(tom)\n\n**Premise 3:**\n\"Tom is not an Osceola wild turkey.\"\n\nSimilar to Premise 2, we can represent it using the negation (∼) operator and the predicate OsceolaWildTurkey(x).\n\nFormulate the FOL expression:\n¬OsceolaWildTurkey(tom)\n\n**Premise 4:**\n\"Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.\"\n\nThis is a negated statement about Tom's type, combined with the disjunction (∨) operator. We can represent it using the negation (∼) operator and the disjunction (∨) operator.\n\nFormulate the FOL expression:\n¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))\n\n**Premise 5:**\n\"Tom is a wild turkey.\"\n\nThis is a statement about Tom's type. We can represent it using the predicate WildTurkey(x).\n\nFormulate the FOL expression:\nWildTurkey(tom)\n\n**Conclusion:**\n\"Joey is a wild turkey.\"\n\nThis is a statement about Joey's type. We can represent it using the predicate WildTurkey(x).\n\nFormulate the FOL expression:\nWildTurkey(joey)\n\nNow, let's combine the premises and the conclusion to form the FOL problem:\n\n∃x (EasternWildTurkey(x) ∨ OsceolaWildTurkey(x) ∨ GouldsWildTurkey(x) ∨ MerriamsWildTurkey(x) ∨ RioGrandeWildTurkey(x) ∨ OcellatedWildTurkey(x))\n¬EasternWildTurkey(tom)\n¬OsceolaWildTurkey(tom)\n¬(GouldsWildTurkey(tom) ∨ MerriamsWildTurkey(tom) ∨ RioGrandeWildTurkey(tom))\nWildTurkey(tom)\nWildTurkey(joey)\n\nNote that we have not used the exclusive or operator (⊕) in this problem, as it is not necessary to represent the given natural language statements."
+    }
+  },
+  {
+    "id": 12,
+    "nl_problem": {
+      "nl_rules": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "nl_conc": "The Legend of Zelda is in the Top 10 list."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "CreatedBy(x, y)",
+        "Japanese(x)",
+        "InTop10(x)",
+        "Sells(x, y)",
+        "MoreThanOneMillion(y)",
+        "Game(x)",
+        "TheLegendOfZelda(x)"
+      ],
+      "fol_rules": [
+        "∃x (Japanese(x) ∧ CreatedBy(x, TheLegendOfZelda(x)))",
+        "∀x (InTop10(x) → ∃y (Japanese(y) ∧ CreatedBy(y, x)))",
+        "(Game(x) ∧ Sells(x, MoreThanOneMillion(1))) → InTop10(x)",
+        "∃x (TheLegendOfZelda(x) ∧ Sells(x, MoreThanOneMillion(1)))"
+      ],
+      "fol_conc": "InTop10(TheLegendOfZelda(x))",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we need to follow the same steps as before.\n\n### Predicates\n\nFirst, we need to define the predicates that will be used to represent the concepts in the problem.\n\n- `CreatedBy(x, y)`: x created the game y.\n- `Japanese(x)`: x is a Japanese game company.\n- `InTop10(x)`: x is in the Top 10 list.\n- `Sells(x, y)`: x sold y copies.\n- `TheLegendOfZelda(x)`: x is the game the Legend of Zelda.\n\n### Premise 1:\n\"A Japanese game company created the game the Legend of Zelda.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"There exists a Japanese game company x such that x created the game the Legend of Zelda.\"\n3. Using predicates:\n   - `Japanese(x)`: x is a Japanese game company.\n   - `CreatedBy(x, y)`: x created the game y.\n   - `TheLegendOfZelda(x)`: x is the game the Legend of Zelda.\n4. Formulate the FOL expression: ∃x (Japanese(x) ∧ CreatedBy(x, TheLegendOfZelda(x)))\n\n### Premise 2:\n\"All games in the Top 10 list are made by Japanese game companies.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in the Top 10 list, then x was made by a Japanese game company.\"\n3. Using predicates:\n   - `InTop10(x)`: x is in the Top 10 list.\n   - `CreatedBy(x, y)`: x created the game y.\n   - `Japanese(x)`: x is a Japanese game company.\n4. Formulate the FOL expression: ∀x (InTop10(x) → ∃y (Japanese(y) ∧ CreatedBy(y, x)))\n\n### Premise 3:\n\"If a game sells more than one million copies, then it will be selected into the Top 10 list.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"a game sells more than one million copies.\"\n   - Combined using predicates:\n     - `Sells(x, y)`: x sold y copies.\n     - `MoreThanOneMillion(y)`: y is more than one million.\n     - `Game(x)`: x is a game.\n     - Combined using conjunction: `Game(x) ∧ Sells(x, MoreThanOneMillion(1))`\n3. Consequent (B):\n   - \"it will be selected into the Top 10 list.\"\n   - Combined using predicate: `InTop10(x)`\n4. Formulate the FOL expression:\n   - `Game(x) ∧ Sells(x, MoreThanOneMillion(1)) → InTop10(x)`\n\n### Premise 4:\n\"The Legend of Zelda sold more than one million copies.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate to \"There exists a game x such that x is the Legend of Zelda and x sold more than one million copies.\"\n3. Using predicates:\n   - `TheLegendOfZelda(x)`: x is the game the Legend of Zelda.\n   - `Sells(x, y)`: x sold y copies.\n   - `MoreThanOneMillion(y)`: y is more than one million.\n4. Formulate the FOL expression: ∃x (TheLegendOfZelda(x) ∧ Sells(x, MoreThanOneMillion(1)))\n\n### Conclusion:\n\"The Legend of Zelda is in the Top 10 list.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"is in the Top 10 list,\" implying a predicate.\n2. Using predicate:\n   - `InTop10(x)`: x is in the Top 10 list.\n   - `TheLegendOfZelda(x)`: x is the game the Legend of Zelda.\n3. Formulate the FOL expression: `InTop10(TheLegendOfZelda(x))`\n\nNow, we can combine the FOL expressions from the premises to derive the conclusion.\n\n∃x (Japanese(x) ∧ CreatedBy(x, TheLegendOfZelda(x))) ∧ ∀x (InTop10(x) → ∃y (Japanese(y) ∧ CreatedBy(y, x))) ∧ (Game(x) ∧ Sells(x, MoreThanOneMillion(1)) → InTop10(x)) ∧ ∃x (TheLegendOfZelda(x) ∧ Sells(x, MoreThanOneMillion(1))) → InTop10(TheLegendOfZelda(x))\n\nThis FOL expression represents the conclusion that \"The Legend of Zelda is in the Top 10 list.\""
+    }
+  },
+  {
+    "id": 13,
+    "nl_problem": {
+      "nl_rules": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "nl_conc": "FIFA 22 is made by a Japanese video game company."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Company(x)",
+        "Japanese(x)",
+        "Game(x)",
+        "Created(x, y)",
+        "Top10(x)",
+        "Sells(x, y)",
+        "FIFA22(x)",
+        "MadeBy(x, y)"
+      ],
+      "fol_rules": [
+        "∃x (Japanese(x) ∧ Created(x, zelda))",
+        "∀x (Top10(x) → ∃y (Japanese(y) ∧ MadeBy(x, y)))",
+        "∃x (Game(x) ∧ Sells(x, 1000000)) → Top10(x)",
+        "∃x (Game(zelda) ∧ Sells(x, 1000000))"
+      ],
+      "fol_conc": "FIFA22(x) → ∃y (Japanese(y) ∧ MadeBy(x, y))",
+      "reasoning": "To convert the given natural language reasoning problem into first-order logic, we will follow the same steps as before.\n\n### Predicates:\n\n1. `Company(x)`: x is a game company.\n2. `Japanese(x)`: x is a Japanese game company.\n3. `Game(x)`: x is a game.\n4. `Created(x, y)`: x created the game y.\n5. `Top10(x)`: x is in the Top 10 list.\n6. `Sells(x, y)`: x sells y copies.\n7. `FIFA22(x)`: x is FIFA 22.\n8. `MadeBy(x, y)`: x is made by y.\n\n### Premise 1:\n\"A Japanese game company created the game the Legend of Zelda.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"There exists a Japanese game company x such that x created the game the Legend of Zelda.\"\n3. Using predicates:\n   - `Japanese(x)`: x is a Japanese game company.\n   - `Created(x, y)`: x created the game y.\n   - `Game(zelda)`: the Legend of Zelda is a game.\n4. Formulate the FOL expression: ∃x (Japanese(x) ∧ Created(x, zelda))\n\n### Premise 2:\n\"All games in the Top 10 list are made by Japanese game companies.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in the Top 10 list, then x is made by a Japanese game company.\"\n3. Using predicates:\n   - `Top10(x)`: x is in the Top 10 list.\n   - `MadeBy(x, y)`: x is made by y.\n   - `Japanese(y)`: y is a Japanese game company.\n4. Formulate the FOL expression: ∀x (Top10(x) → ∃y (Japanese(y) ∧ MadeBy(x, y)))\n\n### Premise 3:\n\"If a game sells more than one million copies, then it will be selected into the Top 10 list.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"a game sells more than one million copies.\"\n   - Combined using predicates:\n     - `Sells(x, 1000000)`: x sells one million copies.\n     - `Game(x)`: x is a game.\n3. Consequent (B):\n   - \"it will be selected into the Top 10 list.\"\n   - Combined using predicate:\n     - `Top10(x)`: x is in the Top 10 list.\n4. Formulate the FOL expression:\n   - `∃x (Game(x) ∧ Sells(x, 1000000)) → Top10(x)`\n\n### Premise 4:\n\"The Legend of Zelda sold more than one million copies.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate to \"There exists a game x such that x is the Legend of Zelda and x sold more than one million copies.\"\n3. Using predicates:\n   - `Game(zelda)`: the Legend of Zelda is a game.\n   - `Sells(x, 1000000)`: x sells one million copies.\n4. Formulate the FOL expression: ∃x (Game(zelda) ∧ Sells(x, 1000000))\n\n### Conclusion:\n\"FIFA 22 is made by a Japanese video game company.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"is made by,\" implying the predicate `MadeBy`.\n2. Using predicates:\n   - `FIFA22(x)`: x is FIFA 22.\n   - `Japanese(x)`: x is a Japanese game company.\n   - `MadeBy(x, y)`: x is made by y.\n3. Formulate the FOL expression: FIFA22(x) → ∃y (Japanese(y) ∧ MadeBy(x, y))\n\n### Final FOL Expression:\n\n∃x (Japanese(x) ∧ Created(x, zelda)) ∧ ∀x (Top10(x) → ∃y (Japanese(y) ∧ MadeBy(x, y))) ∧ (∃x (Game(x) ∧ Sells(x, 1000000)) → Top10(x)) ∧ ∃x (Game(zelda) ∧ Sells(x, 1000000)) → FIFA22(x) → ∃y (Japanese(y) ∧ MadeBy(x, y))\n\nNote that the final FOL expression is a conjunction of all the premises and the conclusion."
+    }
+  },
+  {
+    "id": 14,
+    "nl_problem": {
+      "nl_rules": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "nl_conc": "The Legend of Zelda is not in the Top 10 list."
+    },
+    "answer": "B",
+    "fol_problem": {
+      "fol_preds": [
+        "CreatedBy(x, y)",
+        "Japanese(x)",
+        "InTop10(x)",
+        "Sells(x, y)",
+        "TheLegendOfZelda(x)",
+        "Game(x)",
+        "SellsMoreThanOneMillion(x)",
+        "SelectedIntoTop10(x)",
+        "OneMillion(x)",
+        "MoreThan(x, y)"
+      ],
+      "fol_rules": [
+        "∃x (Japanese(x) ∧ CreatedBy(x, TheLegendOfZelda(x)))",
+        "∀x (InTop10(x) → ∃y (Japanese(y) ∧ CreatedBy(y, x)))",
+        "SellsMoreThanOneMillion(x) → SelectedIntoTop10(x)",
+        "∃x (Sells(TheLegendOfZelda(x), x) ∧ MoreThan(x, OneMillion(x)))"
+      ],
+      "fol_conc": "¬InTop10(TheLegendOfZelda(x))",
+      "reasoning": "To convert this problem to First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe need to define the predicates based on the given information:\n\n- `CreatedBy(x, y)`: x created the game y.\n- `Japanese(x)`: x is a Japanese game company.\n- `InTop10(x)`: x is in the Top 10 list.\n- `Sells(x, y)`: x sells y copies.\n- `TheLegendOfZelda(x)`: x is the Legend of Zelda game.\n- `Game(x)`: x is a game.\n\n### Premise 1:\n\"A Japanese game company created the game the Legend of Zelda.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate to \"There exists a Japanese game company x such that x created the Legend of Zelda game.\"\n3. Using predicates:\n   - `Japanese(x)`: x is a Japanese game company.\n   - `CreatedBy(x, y)`: x created the game y.\n   - `TheLegendOfZelda(x)`: x is the Legend of Zelda game.\n4. Formulate the FOL expression: ∃x (Japanese(x) ∧ CreatedBy(x, TheLegendOfZelda(x)))\n\n### Premise 2:\n\"All games in the Top 10 list are made by Japanese game companies.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in the Top 10 list, then x was made by a Japanese game company.\"\n3. Using predicates:\n   - `InTop10(x)`: x is in the Top 10 list.\n   - `Japanese(x)`: x is a Japanese game company.\n   - `CreatedBy(x, y)`: x created the game y.\n4. Formulate the FOL expression: ∀x (InTop10(x) → ∃y (Japanese(y) ∧ CreatedBy(y, x)))\n\n### Premise 3:\n\"If a game sells more than one million copies, then it will be selected into the Top 10 list.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"a game sells more than one million copies.\"\n   - Combined using predicates:\n     - `Sells(x, y)`: x sells y copies.\n     - `Game(x)`: x is a game.\n     - `OneMillion(x)`: x is one million copies.\n     - `MoreThan(x, y)`: x is more than y.\n     - `SellsMoreThanOneMillion(x)`: x sells more than one million copies.\n     - `SellsMoreThanOneMillion(x) ≡ Sells(x, OneMillion(x)) ∧ MoreThan(x, OneMillion(x))`\n   - Formulate the FOL expression: SellsMoreThanOneMillion(x)\n3. Consequent (B):\n   - \"it will be selected into the Top 10 list.\"\n   - Combined using predicates:\n     - `InTop10(x)`: x is in the Top 10 list.\n     - `Selected(x)`: x is selected.\n     - `SelectedIntoTop10(x)`: x is selected into the Top 10 list.\n     - `SelectedIntoTop10(x) ≡ InTop10(x) ∧ Selected(x)`\n   - Formulate the FOL expression: SelectedIntoTop10(x)\n4. Formulate the FOL expression:\n   - SellsMoreThanOneMillion(x) → SelectedIntoTop10(x)\n\n### Premise 4:\n\"The Legend of Zelda sold more than one million copies.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate to \"There exists a number of copies x such that The Legend of Zelda sold x copies and x is more than one million.\"\n3. Using predicates:\n   - `Sells(x, y)`: x sells y copies.\n   - `TheLegendOfZelda(x)`: x is the Legend of Zelda game.\n   - `OneMillion(x)`: x is one million copies.\n   - `MoreThan(x, y)`: x is more than y.\n   - `SellsMoreThanOneMillion(x)`: x sells more than one million copies.\n   - `SellsMoreThanOneMillion(x) ≡ Sells(x, OneMillion(x)) ∧ MoreThan(x, OneMillion(x))`\n4. Formulate the FOL expression: ∃x (Sells(TheLegendOfZelda(x), x) ∧ MoreThan(x, OneMillion(x)))\n\n### Conclusion:\n\"The Legend of Zelda is not in the Top 10 list.\"\n\nSteps to Convert:\n\n1. Recognize the negation of the statement \"The Legend of Zelda is in the Top 10 list.\"\n2. Using predicates:\n   - `InTop10(x)`: x is in the Top 10 list.\n   - `TheLegendOfZelda(x)`: x is the Legend of Zelda game.\n3. Formulate the FOL expression: ¬InTop10(TheLegendOfZelda(x))\n\nNow we have the FOL expressions for the premises and the conclusion. We can combine them using logical operators to derive the final conclusion."
+    }
+  },
+  {
+    "id": 15,
+    "nl_problem": {
+      "nl_rules": [
+        "All squares have four sides.",
+        "All four-sided things are shapes. "
+      ],
+      "nl_conc": "All squares are shapes."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Square(x)",
+        "FourSided(x)",
+        "Shape(x)"
+      ],
+      "fol_rules": [
+        "∀x (Square(x) → FourSided(x))",
+        "∀x (FourSided(x) → Shape(x))"
+      ],
+      "fol_conc": "∀x (Square(x) → Shape(x))",
+      "reasoning": "Let's break down the conversion step by step.\n\n**Predicates:**\n\n1. Square(x): x is a square.\n2. FourSided(x): x has four sides.\n3. Shape(x): x is a shape.\n\n**Premise 1:**\n\"All squares have four sides.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squares have four sides\" to \"For all x, if x is a square, then x has four sides.\"\n3. Using predicates:\n   - Square(x): x is a square.\n   - FourSided(x): x has four sides.\n4. Formulate the FOL expression: ∀x (Square(x) → FourSided(x))\n\n**Premise 2:**\n\"All four-sided things are shapes.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All four-sided things are shapes\" to \"For all x, if x has four sides, then x is a shape.\"\n3. Using predicates:\n   - FourSided(x): x has four sides.\n   - Shape(x): x is a shape.\n4. Formulate the FOL expression: ∀x (FourSided(x) → Shape(x))\n\n**Conclusion:**\n\"All squares are shapes.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squares are shapes\" to \"For all x, if x is a square, then x is a shape.\"\n3. Using predicates:\n   - Square(x): x is a square.\n   - Shape(x): x is a shape.\n4. Formulate the FOL expression: ∀x (Square(x) → Shape(x))\n\nNow, let's combine the two premises using the rule of universal instantiation (UI) and the rule of universal generalization (UG). We can derive the conclusion as follows:\n\n1. From Premise 1: ∀x (Square(x) → FourSided(x))\n2. From Premise 2: ∀x (FourSided(x) → Shape(x))\n3. By UI, we can instantiate the universal quantifiers to get: Square(a) → FourSided(a) and FourSided(a) → Shape(a)\n4. By UI again, we can instantiate the universal quantifiers to get: Square(a) → Shape(a)\n5. By UG, we can generalize the result to get: ∀x (Square(x) → Shape(x))\n\nTherefore, the FOL expression for the conclusion is: ∀x (Square(x) → Shape(x))"
+    }
+  },
+  {
+    "id": 16,
+    "nl_problem": {
+      "nl_rules": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "nl_conc": "Rock is a turtle."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Cute(x)",
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Turtle(Rock)"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(Rock)"
+      ],
+      "fol_conc": "Turtle(Rock)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n**Predicates:**\n\n1. Cute(x): x is cute.\n2. Rabbit(x): x is a rabbit.\n3. Turtle(x): x is a turtle.\n4. Squirrel(x): x is a squirrel.\n5. Skittish(x): x is skittish.\n6. Still(x): x is still.\n\n**Premise 1:**\n\"All rabbits are cute.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All rabbits are cute\" to \"For all x, if x is a rabbit, then x is cute.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Cute(x): x is cute.\n4. Formulate the FOL expression: ∀x (Rabbit(x) → Cute(x))\n\n**Premise 2:**\n\"Some turtles exist.\"\n\nSteps to Convert:\n\n1. Recognize that \"Some x exist\" translates to \"There exists an x such that x is a turtle.\"\n2. Using predicate:\n   - Turtle(x): x is a turtle.\n3. Formulate the FOL expression: ∃x Turtle(x)\n\n**Premise 3:**\n\"An animal is either a rabbit or a squirrel.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Translate to \"For all x, x is either a rabbit or a squirrel, but not both.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Squirrel(x): x is a squirrel.\n4. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Rabbit(x) ⊕ Squirrel(x))\n\n**Premise 4:**\n\"If something is skittish, then it is not still.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Something is skittish.\"\n   - Using predicate:\n     - Skittish(x): x is skittish.\n3. Consequent (B):\n   - \"It is not still.\"\n   - Using predicate:\n     - Still(x): x is still.\n   - Apply negation to Still(x): ¬Still(x)\n4. Formulate the FOL expression:\n   - Skittish(x) → ¬Still(x)\n\n**Premise 5:**\n\"All squirrels are skittish.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squirrels are skittish\" to \"For all x, if x is a squirrel, then x is skittish.\"\n3. Using predicates:\n   - Squirrel(x): x is a squirrel.\n   - Skittish(x): x is skittish.\n4. Formulate the FOL expression: ∀x (Squirrel(x) → Skittish(x))\n\n**Premise 6:**\n\"Rock is still.\"\n\nSteps to Convert:\n\n1. Recognize that \"Rock is still\" translates to \"Rock is still.\"\n2. Using predicate:\n   - Still(Rock): Rock is still.\n3. Formulate the FOL expression: Still(Rock)\n\n**Conclusion:**\n\"Rock is a turtle.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"is a\" implying an instance of a predicate.\n2. Translate \"Rock is a turtle\" to \"Rock is a turtle.\"\n3. Using predicate:\n   - Turtle(Rock): Rock is a turtle.\n4. Formulate the FOL expression: Turtle(Rock)\n\nNow we have the FOL expressions for all premises and the conclusion."
+    }
+  },
+  {
+    "id": 17,
+    "nl_problem": {
+      "nl_rules": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "nl_conc": "Rock is not a turtle."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Cute(x)",
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(Rock)"
+      ],
+      "fol_conc": "¬Turtle(Rock)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we will follow the same steps as before.\n\n### Predicates\n\nWe define the following predicates:\n\n- Cute(x): x is cute.\n- Rabbit(x): x is a rabbit.\n- Turtle(x): x is a turtle.\n- Squirrel(x): x is a squirrel.\n- Skittish(x): x is skittish.\n- Still(x): x is still.\n\n### Premise 1: \"All rabbits are cute.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All rabbits are cute\" to \"For all x, if x is a rabbit, then x is cute.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Cute(x): x is cute.\n4. Formulate the FOL expression: ∀x (Rabbit(x) → Cute(x))\n\n### Premise 2: \"Some turtles exist.\"\n\nSteps to Convert:\n\n1. Recognize that \"Some turtles exist\" translates to \"There exists an x such that x is a turtle.\"\n2. Using predicates:\n   - Turtle(x): x is a turtle.\n3. Formulate the FOL expression: ∃x Turtle(x)\n\n### Premise 3: \"An animal is either a rabbit or a squirrel.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Translate to \"For all x, x is either a rabbit or a squirrel, but not both.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Squirrel(x): x is a squirrel.\n4. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Rabbit(x) ⊕ Squirrel(x))\n\n### Premise 4: \"If something is skittish, then it is not still.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Something is skittish.\"\n   - Using predicate: Skittish(x)\n3. Consequent (B):\n   - \"It is not still.\"\n   - Using predicate: ¬Still(x)\n4. Formulate the FOL expression: ∀x (Skittish(x) → ¬Still(x))\n\n### Premise 5: \"All squirrels are skittish.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squirrels are skittish\" to \"For all x, if x is a squirrel, then x is skittish.\"\n3. Using predicates:\n   - Squirrel(x): x is a squirrel.\n   - Skittish(x): x is skittish.\n4. Formulate the FOL expression: ∀x (Squirrel(x) → Skittish(x))\n\n### Premise 6: \"Rock is still.\"\n\nSteps to Convert:\n\n1. Recognize that \"Rock is still\" translates to \"Rock is still.\"\n2. Using predicate: Still(Rock)\n3. Formulate the FOL expression: Still(Rock)\n\n### Conclusion: \"Rock is not a turtle.\"\n\nSteps to Convert:\n\n1. Recognize the negation of the statement \"Rock is a turtle.\"\n2. Translate to \"It is not the case that Rock is a turtle.\"\n3. Using predicate: Turtle(Rock)\n4. Apply negation: ¬Turtle(Rock)\n5. Formulate the FOL expression: ¬Turtle(Rock)\n\n### Final FOL Expression\n\nCombining all the premises and the conclusion, we get the following FOL expression:\n\n∀x (Rabbit(x) → Cute(x)) ∧ ∃x Turtle(x) ∧ ∀x (Rabbit(x) ⊕ Squirrel(x)) ∧ ∀x (Skittish(x) → ¬Still(x)) ∧ ∀x (Squirrel(x) → Skittish(x)) ∧ Still(Rock) → ¬Turtle(Rock)\n\nNote that the conclusion is already in FOL form, so we don't need to convert it further."
+    }
+  },
+  {
+    "id": 18,
+    "nl_problem": {
+      "nl_rules": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "nl_conc": "Rock is a turtle or cute."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Cute(x)",
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Turtle(Rock)",
+        "Cute(Rock)"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(Rock)"
+      ],
+      "fol_conc": "Turtle(Rock) ⊕ Cute(Rock)",
+      "reasoning": "Let's break down the conversion step by step.\n\n### Predicates\n\nWe'll define the following predicates:\n\n- Cute(x): x is cute.\n- Rabbit(x): x is a rabbit.\n- Turtle(x): x is a turtle.\n- Squirrel(x): x is a squirrel.\n- Skittish(x): x is skittish.\n- Still(x): x is still.\n\n### Premise 1\n\"All rabbits are cute.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All rabbits are cute\" to \"For all x, if x is a rabbit, then x is cute.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Cute(x): x is cute.\n4. Formulate the FOL expression: ∀x (Rabbit(x) → Cute(x))\n\n### Premise 2\n\"Some turtles exist.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate \"Some turtles exist\" to \"There exists an x such that x is a turtle.\"\n3. Using predicates:\n   - Turtle(x): x is a turtle.\n4. Formulate the FOL expression: ∃x Turtle(x)\n\n### Premise 3\n\"An animal is either a rabbit or a squirrel.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Squirrel(x): x is a squirrel.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: Rabbit(x) ⊕ Squirrel(x)\n\n### Premise 4\n\"If something is skittish, then it is not still.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Something is skittish.\"\n   - Using predicate: Skittish(x)\n3. Consequent (B):\n   - \"It is not still.\"\n   - Using predicate: ¬Still(x)\n4. Formulate the FOL expression: ∀x (Skittish(x) → ¬Still(x))\n\n### Premise 5\n\"All squirrels are skittish.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squirrels are skittish\" to \"For all x, if x is a squirrel, then x is skittish.\"\n3. Using predicates:\n   - Squirrel(x): x is a squirrel.\n   - Skittish(x): x is skittish.\n4. Formulate the FOL expression: ∀x (Squirrel(x) → Skittish(x))\n\n### Premise 6\n\"Rock is still.\"\n\nSteps to Convert:\n\n1. Recognize that this is an atomic statement.\n2. Using predicate:\n   - Still(Rock): Rock is still.\n3. Formulate the FOL expression: Still(Rock)\n\n### Conclusion\n\"Rock is a turtle or cute.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - Turtle(Rock): Rock is a turtle.\n   - Cute(Rock): Rock is cute.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: Turtle(Rock) ⊕ Cute(Rock)\n\nNow we have the FOL expressions for all premises and the conclusion:\n\n- Premise 1: ∀x (Rabbit(x) → Cute(x))\n- Premise 2: ∃x Turtle(x)\n- Premise 3: ∀x (Rabbit(x) ⊕ Squirrel(x))\n- Premise 4: ∀x (Skittish(x) → ¬Still(x))\n- Premise 5: ∀x (Squirrel(x) → Skittish(x))\n- Premise 6: Still(Rock)\n- Conclusion: Turtle(Rock) ⊕ Cute(Rock)"
+    }
+  },
+  {
+    "id": 19,
+    "nl_problem": {
+      "nl_rules": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "nl_conc": "If Rock is not both a turtle and a squirrel, then Rock is either cute or skittish."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Rabbit(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(Rock)"
+      ],
+      "fol_conc": "¬(Turtle(Rock) ∧ Squirrel(Rock)) → (Cute(Rock) ⊕ Skittish(Rock))",
+      "reasoning": "To convert the given natural language reasoning problem into first-order logic, we will follow the same steps as before.\n\n### Predicates\n\nWe will define the following predicates:\n\n- Cute(x): x is cute.\n- Turtle(x): x is a turtle.\n- Rabbit(x): x is a rabbit.\n- Squirrel(x): x is a squirrel.\n- Skittish(x): x is skittish.\n- Still(x): x is still.\n\n### Premise 1: All rabbits are cute.\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All rabbits are cute\" to \"For all x, if x is a rabbit, then x is cute.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Cute(x): x is cute.\n4. Formulate the FOL expression: ∀x (Rabbit(x) → Cute(x))\n\n### Premise 2: Some turtles exist.\n\nSteps to Convert:\n\n1. Recognize that \"Some turtles exist\" translates to \"There exists a turtle.\"\n2. Using predicates:\n   - Turtle(x): x is a turtle.\n3. Formulate the FOL expression: ∃x Turtle(x)\n\n### Premise 3: An animal is either a rabbit or a squirrel.\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Translate to \"For all x, x is either a rabbit or a squirrel, but not both.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Squirrel(x): x is a squirrel.\n4. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Rabbit(x) ⊕ Squirrel(x))\n\n### Premise 4: If something is skittish, then it is not still.\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - Skittish(x): x is skittish.\n3. Consequent (B):\n   - Not still: ¬Still(x)\n4. Formulate the FOL expression: ∀x (Skittish(x) → ¬Still(x))\n\n### Premise 5: All squirrels are skittish.\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squirrels are skittish\" to \"For all x, if x is a squirrel, then x is skittish.\"\n3. Using predicates:\n   - Squirrel(x): x is a squirrel.\n   - Skittish(x): x is skittish.\n4. Formulate the FOL expression: ∀x (Squirrel(x) → Skittish(x))\n\n### Premise 6: Rock is still.\n\nSteps to Convert:\n\n1. Recognize that \"Rock is still\" translates to \"Rock is still.\"\n2. Using predicates:\n   - Still(Rock): Rock is still.\n3. Formulate the FOL expression: Still(Rock)\n\n### Conclusion: If Rock is not both a turtle and a squirrel, then Rock is either cute or skittish.\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - Not both a turtle and a squirrel: ¬(Turtle(Rock) ∧ Squirrel(Rock))\n3. Consequent (B):\n   - Either cute or skittish: Cute(Rock) ⊕ Skittish(Rock)\n4. Formulate the FOL expression:\n   - ¬(Turtle(Rock) ∧ Squirrel(Rock)) → (Cute(Rock) ⊕ Skittish(Rock))"
+    }
+  },
+  {
+    "id": 20,
+    "nl_problem": {
+      "nl_rules": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "nl_conc": "If Rock is cute and still, then Rock is a turtle and skittish."
+    },
+    "answer": "B",
+    "fol_problem": {
+      "fol_preds": [
+        "Cute(x)",
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(Rock)"
+      ],
+      "fol_conc": "(Cute(Rock) ∧ Still(Rock)) → (Turtle(Rock) ∧ Skittish(Rock))",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe'll define the following predicates:\n\n- Cute(x): x is cute.\n- Rabbit(x): x is a rabbit.\n- Turtle(x): x is a turtle.\n- Squirrel(x): x is a squirrel.\n- Skittish(x): x is skittish.\n- Still(x): x is still.\n\n### Premise 1: \"All rabbits are cute.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All rabbits are cute\" to \"For all x, if x is a rabbit, then x is cute.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Cute(x): x is cute.\n4. Formulate the FOL expression: ∀x (Rabbit(x) → Cute(x))\n\n### Premise 2: \"Some turtles exist.\"\n\nSteps to Convert:\n\n1. Recognize that \"Some turtles exist\" translates to \"There exists an x such that x is a turtle.\"\n2. Using predicates:\n   - Turtle(x): x is a turtle.\n3. Formulate the FOL expression: ∃x Turtle(x)\n\n### Premise 3: \"An animal is either a rabbit or a squirrel.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Translate to \"For all x, x is either a rabbit or a squirrel, but not both.\"\n3. Using predicates:\n   - Rabbit(x): x is a rabbit.\n   - Squirrel(x): x is a squirrel.\n4. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: ∀x (Rabbit(x) ⊕ Squirrel(x))\n\n### Premise 4: \"If something is skittish, then it is not still.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Something is skittish.\"\n   - Using predicate: Skittish(x)\n3. Consequent (B):\n   - \"It is not still.\"\n   - Using predicate: ¬Still(x)\n4. Formulate the FOL expression: ∀x (Skittish(x) → ¬Still(x))\n\n### Premise 5: \"All squirrels are skittish.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All squirrels are skittish\" to \"For all x, if x is a squirrel, then x is skittish.\"\n3. Using predicates:\n   - Squirrel(x): x is a squirrel.\n   - Skittish(x): x is skittish.\n4. Formulate the FOL expression: ∀x (Squirrel(x) → Skittish(x))\n\n### Premise 6: \"Rock is still.\"\n\nSteps to Convert:\n\n1. Recognize that this is an existential statement.\n2. Translate \"Rock is still\" to \"There exists an x such that x is Rock and x is still.\"\n3. Using predicates:\n   - Still(x): x is still.\n4. Formulate the FOL expression: Still(Rock)\n\n### Conclusion: \"If Rock is cute and still, then Rock is a turtle and skittish.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Rock is cute and still.\"\n   - Using predicates:\n     - Cute(Rock): Rock is cute.\n     - Still(Rock): Rock is still.\n   - Combined using conjunction: Cute(Rock) ∧ Still(Rock)\n3. Consequent (B):\n   - \"Rock is a turtle and skittish.\"\n   - Using predicates:\n     - Turtle(Rock): Rock is a turtle.\n     - Skittish(Rock): Rock is skittish.\n   - Combined using conjunction: Turtle(Rock) ∧ Skittish(Rock)\n4. Formulate the FOL expression: (Cute(Rock) ∧ Still(Rock)) → (Turtle(Rock) ∧ Skittish(Rock))\n\nThe converted FOL problem is now ready for further logical reasoning and inference."
+    }
+  },
+  {
+    "id": 21,
+    "nl_problem": {
+      "nl_rules": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "nl_conc": "Karen will share \"Stranger Things\" to Lisa."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "BingeWatch(x, y)",
+        "Download(x, y)",
+        "Netflix(x)",
+        "Share(x, y, z)"
+      ],
+      "fol_rules": [
+        "∀x (Popular(x) ∧ Netflix(x) → BingeWatch(x, karen))",
+        "∀x (BingeWatch(x, karen) ∧ Netflix(x) → Download(x, karen))",
+        "¬Download('Black Mirror', karen)",
+        "Netflix('Black Mirror')",
+        "∀x (BingeWatch(x, karen) ∧ Netflix(x) → Share(x, karen, lisa))"
+      ],
+      "fol_conc": "Share('Stranger Things', karen, lisa)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe'll define the following predicates:\n\n- Popular(x): x is a popular Netflix show.\n- BingeWatch(x, y): y binge-watches x.\n- Download(x, y): y downloads x.\n- Netflix(x): x is a Netflix show.\n- Share(x, y, z): y shares x to z.\n\n### Premise 1:\n\"Stranger Things\" is a popular Netflix show.\n\nSteps to Convert:\n\n1. Recognize that this is a simple statement.\n2. Translate to \"Stranger Things is a popular Netflix show.\"\n3. Using predicates:\n   - Popular(x): x is a popular Netflix show.\n   - Netflix(x): x is a Netflix show.\n4. Formulate the FOL expression: Popular(\"Stranger Things\") ∧ Netflix(\"Stranger Things\")\n\n### Premise 2:\n\"If a Netflix show is popular, Karen will binge-watch it.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"A Netflix show is popular.\"\n   - Using predicates:\n     - Popular(x): x is a popular Netflix show.\n     - Netflix(x): x is a Netflix show.\n   - Combined using conjunction: Popular(x) ∧ Netflix(x)\n3. Consequent (B):\n   - \"Karen will binge-watch it.\"\n   - Using predicates:\n     - BingeWatch(x, karen): karen binge-watches x.\n4. Formulate the FOL expression: ∀x (Popular(x) ∧ Netflix(x) → BingeWatch(x, karen))\n\n### Premise 3:\n\"If and only if Karen binge-watches a Netflix show, she will download it.\"\n\nSteps to Convert:\n\n1. Recognize the biconditional statement \"If and only if A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Using predicates:\n     - BingeWatch(x, karen): karen binge-watches x.\n     - Netflix(x): x is a Netflix show.\n   - Combined using conjunction: BingeWatch(x, karen) ∧ Netflix(x)\n3. Consequent (B):\n   - \"She will download it.\"\n   - Using predicates:\n     - Download(x, karen): karen downloads x.\n4. Formulate the FOL expression: ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Download(x, karen))\n\n### Premise 4:\n\"Karen does not download 'Black Mirror'.\"\n\nSteps to Convert:\n\n1. Recognize the negation of a statement.\n2. Translate to \"It is not the case that Karen downloads 'Black Mirror'.\"\n3. Using predicates:\n   - Download(x, karen): karen downloads x.\n   - 'Black Mirror' is a constant representing the show.\n4. Formulate the FOL expression: ¬Download('Black Mirror', karen)\n\n### Premise 5:\n\"'Black Mirror' is a Netflix show.\"\n\nSteps to Convert:\n\n1. Recognize that this is a simple statement.\n2. Translate to \"'Black Mirror' is a Netflix show.\"\n3. Using predicates:\n   - Netflix(x): x is a Netflix show.\n   - 'Black Mirror' is a constant representing the show.\n4. Formulate the FOL expression: Netflix('Black Mirror')\n\n### Premise 6:\n\"If Karen binge-watches a Netflix show, she will share it to Lisa.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Using predicates:\n     - BingeWatch(x, karen): karen binge-watches x.\n     - Netflix(x): x is a Netflix show.\n   - Combined using conjunction: BingeWatch(x, karen) ∧ Netflix(x)\n3. Consequent (B):\n   - \"She will share it to Lisa.\"\n   - Using predicates:\n     - Share(x, karen, lisa): karen shares x to lisa.\n4. Formulate the FOL expression: ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Share(x, karen, lisa))\n\n### Conclusion:\n\"Karen will share 'Stranger Things' to Lisa.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"will share\" implying a statement about the future.\n2. Translate to \"It is the case that Karen will share 'Stranger Things' to Lisa.\"\n3. Using predicates:\n   - Share(x, karen, lisa): karen shares x to lisa.\n   - 'Stranger Things' is a constant representing the show.\n4. Formulate the FOL expression: Share('Stranger Things', karen, lisa)\n\n### Final FOL Expression\n\nCombining all the premises and the conclusion, we get the following FOL expression:\n\n∀x (Popular(x) ∧ Netflix(x) → BingeWatch(x, karen)) ∧ ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Download(x, karen)) ∧ ¬Download('Black Mirror', karen) ∧ Netflix('Black Mirror') ∧ ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Share(x, karen, lisa)) ∧ Popular('Stranger Things') ∧ Netflix('Stranger Things') ∧ Share('Stranger Things', karen, lisa)\n\nHowever, this expression is not in the simplest form. We can simplify it by removing the universal quantifier from the last two statements, since they are specific to 'Stranger Things'. The simplified FOL expression is:\n\n∀x (Popular(x) ∧ Netflix(x) → BingeWatch(x, karen)) ∧ ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Download(x, karen)) ∧ ¬Download('Black Mirror', karen) ∧ Netflix('Black Mirror') ∧ ∀x (BingeWatch(x, karen) ∧ Netflix(x) → Share(x, karen, lisa)) ∧ Popular('Stranger Things') ∧ Netflix('Stranger Things') ∧ Share('Stranger Things', karen, lisa)\n\nThis expression represents the given natural language reasoning problem in First-Order Logic (FOL)."
+    }
+  },
+  {
+    "id": 22,
+    "nl_problem": {
+      "nl_rules": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "nl_conc": "\"Black Mirror\" is popular."
+    },
+    "answer": "B",
+    "fol_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "NetflixShow(x)",
+        "BingeWatched(x, y)",
+        "Downloaded(x, y)",
+        "Shared(x, y, z)",
+        "Karen",
+        "Lisa",
+        "BlackMirror"
+      ],
+      "fol_rules": [
+        "Popular(StrangerThings)",
+        "(NetflixShow(x) ∧ Popular(x)) → BingeWatched(x, Karen)",
+        "(BingeWatched(x, Karen) ∧ NetflixShow(x)) → Downloaded(x, Karen)",
+        "¬Downloaded(BlackMirror, Karen)",
+        "NetflixShow(BlackMirror)",
+        "(BingeWatched(x, Karen) ∧ NetflixShow(x)) → Shared(x, Karen, Lisa)"
+      ],
+      "fol_conc": "Popular(BlackMirror)",
+      "reasoning": "Let's convert the given natural language reasoning problem into First-Order Logic (FOL) step by step.\n\n### Predicates\n\nTo represent the given information in FOL, we need to define the following predicates:\n\n- Popular(x): x is a popular Netflix show.\n- NetflixShow(x): x is a Netflix show.\n- BingeWatched(x, y): y binge-watches x.\n- Downloaded(x, y): y downloads x.\n- Shared(x, y, z): y shares x to z.\n- Karen: Karen is a person.\n- Lisa: Lisa is a person.\n- BlackMirror: BlackMirror is a Netflix show.\n\n### Premise 1:\n\"Stranger Things\" is a popular Netflix show.\n\nSteps to Convert:\n1. Recognize that this is a simple statement.\n2. Translate to \"Stranger Things is a popular Netflix show.\"\n3. Using predicates:\n   - Popular(x): x is a popular Netflix show.\n   - NetflixShow(x): x is a Netflix show.\n   - StrangerThings: Stranger Things is a Netflix show.\n4. Formulate the FOL expression: Popular(StrangerThings)\n\n### Premise 2:\n\"If a Netflix show is popular, Karen will binge-watch it.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"A Netflix show is popular.\"\n   - Combined using conjunction and predicate:\n     - NetflixShow(x) ∧ Popular(x)\n3. Consequent (B):\n   - \"Karen will binge-watch it.\"\n   - Combined using predicate:\n     - BingeWatched(x, Karen)\n4. Formulate the FOL expression:\n   - (NetflixShow(x) ∧ Popular(x)) → BingeWatched(x, Karen)\n\n### Premise 3:\n\"If and only if Karen binge-watches a Netflix show, she will download it.\"\n\nSteps to Convert:\n1. Recognize the biconditional statement \"If and only if A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Combined using conjunction and predicate:\n     - BingeWatched(x, Karen) ∧ NetflixShow(x)\n3. Consequent (B):\n   - \"She will download it.\"\n   - Combined using predicate:\n     - Downloaded(x, Karen)\n4. Formulate the FOL expression:\n   - (BingeWatched(x, Karen) ∧ NetflixShow(x)) → Downloaded(x, Karen)\n\n### Premise 4:\n\"Karen does not download 'Black Mirror'.\"\n\nSteps to Convert:\n1. Recognize the negation of a statement.\n2. Translate to \"It is not the case that Karen downloads Black Mirror.\"\n3. Using predicates:\n   - Downloaded(x, y): y downloads x.\n   - BlackMirror: BlackMirror is a Netflix show.\n4. Formulate the FOL expression: ¬Downloaded(BlackMirror, Karen)\n\n### Premise 5:\n\"'Black Mirror' is a Netflix show.\"\n\nSteps to Convert:\n1. Recognize that this is a simple statement.\n2. Translate to \"Black Mirror is a Netflix show.\"\n3. Using predicates:\n   - NetflixShow(x): x is a Netflix show.\n   - BlackMirror: BlackMirror is a Netflix show.\n4. Formulate the FOL expression: NetflixShow(BlackMirror)\n\n### Premise 6:\n\"If Karen binge-watches a Netflix show, she will share it to Lisa.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Combined using conjunction and predicate:\n     - BingeWatched(x, Karen) ∧ NetflixShow(x)\n3. Consequent (B):\n   - \"She will share it to Lisa.\"\n   - Combined using predicate:\n     - Shared(x, Karen, Lisa)\n4. Formulate the FOL expression:\n   - (BingeWatched(x, Karen) ∧ NetflixShow(x)) → Shared(x, Karen, Lisa)\n\n### Conclusion:\n\"'Black Mirror' is popular.\"\n\nSteps to Convert:\n1. Recognize the simple statement.\n2. Translate to \"Black Mirror is a popular Netflix show.\"\n3. Using predicates:\n   - Popular(x): x is a popular Netflix show.\n   - NetflixShow(x): x is a Netflix show.\n   - BlackMirror: BlackMirror is a Netflix show.\n4. Formulate the FOL expression: Popular(BlackMirror)\n\n### Final FOL Expression\n\nThe final FOL expression is a conjunction of all the premises and the conclusion:\n\n∀x (Popular(x) → BingeWatched(x, Karen)) ∧\n∀x ((BingeWatched(x, Karen) ∧ NetflixShow(x)) → Downloaded(x, Karen)) ∧\n¬Downloaded(BlackMirror, Karen) ∧\nNetflixShow(BlackMirror) ∧\n∀x ((BingeWatched(x, Karen) ∧ NetflixShow(x)) → Shared(x, Karen, Lisa)) ∧\nPopular(BlackMirror)\n\nNote that the final FOL expression is a conjunction of all the premises and the conclusion, which is a common way to represent a set of rules and a conclusion in FOL."
+    }
+  },
+  {
+    "id": 23,
+    "nl_problem": {
+      "nl_rules": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "nl_conc": "Karen will share \"Black Mirror\" to Lisa."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "Binge_watches(x, y)",
+        "Downloads(x, y)",
+        "Netflix_show(x)",
+        "Shares(x, y)"
+      ],
+      "fol_rules": [
+        "Popular('Stranger Things') ∧ Netflix_show('Stranger Things')",
+        "∀x (Popular(x) ∧ Netflix_show(x) → Binge_watches(Karen, x))",
+        "∀x (Binge_watches(Karen, x) ∧ Netflix_show(x) → Downloads(Karen, x))",
+        "¬Downloads(Karen, Black_Mirror)",
+        "Netflix_show(Black_Mirror)",
+        "∀x (Binge_watches(Karen, x) ∧ Netflix_show(x) → Shares(Karen, x, Lisa))"
+      ],
+      "fol_conc": "Shares(Karen, Black_Mirror, Lisa)",
+      "reasoning": "To convert the given natural language reasoning problem into first-order logic, we need to follow the steps outlined in the example. Here's the conversion step by step:\n\nPredicates:\n- Popular(x): x is a popular Netflix show.\n- Binge_watches(x, y): x binge-watches y.\n- Downloads(x, y): x downloads y.\n- Netflix_show(x): x is a Netflix show.\n- Shares(x, y): x shares y to z.\n\n---\n\nPremise 1:\n\"'Stranger Things' is a popular Netflix show.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"'Stranger Things' is a popular Netflix show\" to \"Stranger Things is a popular Netflix show.\"\n3. Using predicates:\n   - Popular(x): x is a popular Netflix show.\n   - Netflix_show(x): x is a Netflix show.\n4. Formulate the FOL expression: Popular('Stranger Things') ∧ Netflix_show('Stranger Things')\n\n---\n\nPremise 2:\n\"If a Netflix show is popular, Karen will binge-watch it.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"A Netflix show is popular.\"\n   - Using predicates:\n     - Popular(x): x is a popular Netflix show.\n     - Netflix_show(x): x is a Netflix show.\n   - Combined using conjunction: Popular(x) ∧ Netflix_show(x)\n3. Consequent (B):\n   - \"Karen will binge-watch it.\"\n   - Using predicates:\n     - Binge_watches(x, y): x binge-watches y.\n   - Formulate the FOL expression: ∀x (Popular(x) ∧ Netflix_show(x) → Binge_watches(Karen, x))\n\n---\n\nPremise 3:\n\"If and only if Karen binge-watches a Netflix show, she will download it.\"\n\nSteps to Convert:\n1. Recognize the biconditional statement \"If and only if A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Using predicates:\n     - Binge_watches(x, y): x binge-watches y.\n     - Netflix_show(x): x is a Netflix show.\n   - Combined using conjunction: Binge_watches(Karen, x) ∧ Netflix_show(x)\n3. Consequent (B):\n   - \"She will download it.\"\n   - Using predicates:\n     - Downloads(x, y): x downloads y.\n   - Formulate the FOL expression: ∀x (Binge_watches(Karen, x) ∧ Netflix_show(x) → Downloads(Karen, x))\n\n---\n\nPremise 4:\n\"Karen does not download 'Black Mirror'.\"\n\nSteps to Convert:\n1. Recognize the negation of the statement \"Karen downloads 'Black Mirror'.\"\n2. Using predicates:\n   - Downloads(x, y): x downloads y.\n   - Black_Mirror: Black Mirror is a Netflix show.\n3. Formulate the FOL expression: ¬Downloads(Karen, Black_Mirror)\n\n---\n\nPremise 5:\n\"'Black Mirror' is a Netflix show.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"'Black Mirror' is a Netflix show\" to \"Black Mirror is a Netflix show.\"\n3. Using predicates:\n   - Netflix_show(x): x is a Netflix show.\n   - Black_Mirror: Black Mirror is a Netflix show.\n4. Formulate the FOL expression: Netflix_show(Black_Mirror)\n\n---\n\nPremise 6:\n\"If Karen binge-watches a Netflix show, she will share it to Lisa.\"\n\nSteps to Convert:\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Karen binge-watches a Netflix show.\"\n   - Using predicates:\n     - Binge_watches(x, y): x binge-watches y.\n     - Netflix_show(x): x is a Netflix show.\n   - Combined using conjunction: Binge_watches(Karen, x) ∧ Netflix_show(x)\n3. Consequent (B):\n   - \"She will share it to Lisa.\"\n   - Using predicates:\n     - Shares(x, y): x shares y to z.\n   - Formulate the FOL expression: ∀x (Binge_watches(Karen, x) ∧ Netflix_show(x) → Shares(Karen, x, Lisa))\n\n---\n\nConclusion:\n\"Karen will share 'Black Mirror' to Lisa.\"\n\nSteps to Convert:\n1. Recognize the use of \"will share\" implying a statement about the future.\n2. Using predicates:\n   - Shares(x, y): x shares y to z.\n   - Black_Mirror: Black Mirror is a Netflix show.\n3. Formulate the FOL expression: Shares(Karen, Black_Mirror, Lisa)\n\n---\n\nNow we have the FOL expressions for all the premises and the conclusion. We can use these expressions to reason about the problem in first-order logic."
+    }
+  },
+  {
+    "id": 24,
+    "nl_problem": {
+      "nl_rules": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "nl_conc": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Populous(x)",
+        "Located(x, y)",
+        "Hosted(x, y, z)",
+        "University(x)",
+        "Ranked(x, y)"
+      ],
+      "fol_rules": [
+        "∀x (Capital(x, People's Republic of China) → x = Beijing)",
+        "∀x (Populous(x) → x = Beijing)",
+        "∀x (x = Beijing → Located(x, Northern China))",
+        "∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics))",
+        "∀x (x = Beijing → (Hosted(x, Summer Olympics, Summer Paralympics) ∧ Hosted(x, Winter Olympics, Winter Paralympics)))",
+        "∀x (University(x) ∧ Located(x, Beijing) → Ranked(x, Asia-Pacific and the world))"
+      ],
+      "fol_conc": "Hosted(Beijing, 2008 Summer Olympics, ?) ∧ Hosted(Beijing, Winter Olympics, ?)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates:\n\n1. Capital(x, y): x is the capital of y.\n2. Populous(x): x is the world's most populous national capital city.\n3. Located(x, y): x is located in y.\n4. Hosted(x, y, z): x hosted the y Olympics and z Paralympics Games.\n5. University(x): x is a university.\n6. Ranked(x, y): x consistently ranks among the best in y.\n\n### Premise 1:\n\"Beijing is the capital of the People's Republic of China.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is the capital of the People's Republic of China, then x is Beijing.\"\n3. Using predicates:\n   - Capital(x, y): x is the capital of y.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (Capital(x, People's Republic of China) → x = Beijing)\n\n### Premise 2:\n\"Beijing is the world's most populous national capital city.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is the world's most populous national capital city, then x is Beijing.\"\n3. Using predicates:\n   - Populous(x): x is the world's most populous national capital city.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (Populous(x) → x = Beijing)\n\n### Premise 3:\n\"Beijing is located in Northern China.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x is located in Northern China.\"\n3. Using predicates:\n   - Located(x, y): x is located in y.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (x = Beijing → Located(x, Northern China))\n\n### Premise 4:\n\"Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n3. Using predicates:\n   - Hosted(x, y, z): x hosted the y Olympics and z Paralympics Games.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics))\n\n### Premise 5:\n\"Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x hosted both the Summer and Winter Olympics, and both the Summer and Winter Paralympics.\"\n3. Using predicates:\n   - Hosted(x, y, z): x hosted the y Olympics and z Paralympics Games.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (x = Beijing → (Hosted(x, Summer Olympics, Summer Paralympics) ∧ Hosted(x, Winter Olympics, Winter Paralympics)))\n\n### Premise 6:\n\"Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a university in Beijing, then x consistently ranks among the best in the Asia-Pacific and the world.\"\n3. Using predicates:\n   - University(x): x is a university.\n   - Ranked(x, y): x consistently ranks among the best in y.\n   - Beijing: Beijing is the city in question.\n4. Formulate the FOL expression: ∀x (University(x) ∧ Located(x, Beijing) → Ranked(x, Asia-Pacific and the world))\n\n### Conclusion:\n\"Beijing has hosted both the 2008 Summer Olympics and a winter olympics.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"both...and\", implying a conjunction.\n2. Using predicates:\n   - Hosted(x, y, z): x hosted the y Olympics and z Paralympics Games.\n   - Beijing: Beijing is the city in question.\n3. Formulate the FOL expression: Hosted(Beijing, 2008 Summer Olympics, ?) ∧ Hosted(Beijing, Winter Olympics, ?)\n\nNote: The FOL expression for the conclusion is incomplete because we don't know what the Paralympics Games for the Winter Olympics are. We can represent it as Hosted(Beijing, 2008 Summer Olympics, ?) ∧ Hosted(Beijing, Winter Olympics, ?) where ? represents the unknown Paralympics Games.\n\nThe final FOL representation of the given natural language reasoning problem is:\n\n∀x (Capital(x, People's Republic of China) → x = Beijing)\n∀x (Populous(x) → x = Beijing)\n∀x (x = Beijing → Located(x, Northern China))\n∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics))\n∀x (x = Beijing → (Hosted(x, Summer Olympics, Summer Paralympics) ∧ Hosted(x, Winter Olympics, Winter Paralympics)))\n∀x (University(x) ∧ Located(x, Beijing) → Ranked(x, Asia-Pacific and the world))\nHosted(Beijing, 2008 Summer Olympics, ?) ∧ Hosted(Beijing, Winter Olympics, ?)"
+    }
+  },
+  {
+    "id": 25,
+    "nl_problem": {
+      "nl_rules": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "nl_conc": "Beijing is located in southern China."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Populous(x)",
+        "Located(x, y)",
+        "Hosted(x, y, z)",
+        "HostedBoth(x, y, z)",
+        "University(x)",
+        "Ranked(x)"
+      ],
+      "fol_rules": [
+        "∀x (Capital(x, People's Republic of China) → x = Beijing)",
+        "∀x (Populous(x) → x = Beijing)",
+        "∀x (x = Beijing → Located(x, Northern China))",
+        "∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics Games))",
+        "∀x (x = Beijing → HostedBoth(x, Summer Olympics, Winter Olympics))",
+        "∀x (University(x) ∧ Located(x, Beijing) → Ranked(x))"
+      ],
+      "fol_conc": "¬Located(Beijing, Northern China) ∨ Located(Beijing, Southern China)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we will follow the same steps as before.\n\n### Predicates:\n\n1. Capital(x, y): x is the capital of y.\n2. Populous(x): x is the world's most populous national capital city.\n3. Located(x, y): x is located in y.\n4. Hosted(x, y, z): x hosted the y Summer Olympics and z Summer Paralympics Games.\n5. HostedBoth(x, y, z): x has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics.\n6. University(x): x is a university.\n7. Ranked(x): x consistently ranks among the best in the Asia-Pacific and the world.\n\n### Premise 1:\n\"Beijing is the capital of the People's Republic of China.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is the capital of the People's Republic of China, then x is Beijing.\"\n3. Using predicates:\n   - Capital(x, y): x is the capital of y.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n4. Formulate the FOL expression: ∀x (Capital(x, People's Republic of China) → x = Beijing)\n\n### Premise 2:\n\"Beijing is the world's most populous national capital city.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is the world's most populous national capital city, then x is Beijing.\"\n3. Using predicates:\n   - Populous(x): x is the world's most populous national capital city.\n   - Beijing: Beijing is the world's most populous national capital city.\n4. Formulate the FOL expression: ∀x (Populous(x) → x = Beijing)\n\n### Premise 3:\n\"Beijing is located in Northern China.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x is located in Northern China.\"\n3. Using predicates:\n   - Located(x, y): x is located in y.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n4. Formulate the FOL expression: ∀x (x = Beijing → Located(x, Northern China))\n\n### Premise 4:\n\"Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n3. Using predicates:\n   - Hosted(x, y, z): x hosted the y Summer Olympics and z Summer Paralympics Games.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n4. Formulate the FOL expression: ∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics Games))\n\n### Premise 5:\n\"Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is Beijing, then x has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics.\"\n3. Using predicates:\n   - HostedBoth(x, y, z): x has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n4. Formulate the FOL expression: ∀x (x = Beijing → HostedBoth(x, Summer Olympics, Winter Olympics))\n\n### Premise 6:\n\"Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a university in Beijing, then x consistently ranks among the best in the Asia-Pacific and the world.\"\n3. Using predicates:\n   - University(x): x is a university.\n   - Ranked(x): x consistently ranks among the best in the Asia-Pacific and the world.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n4. Formulate the FOL expression: ∀x (University(x) ∧ Located(x, Beijing) → Ranked(x))\n\n### Conclusion:\n\"Beijing is located in southern China.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"located in southern China,\" implying a location.\n2. Using predicates:\n   - Located(x, y): x is located in y.\n   - Beijing: Beijing is the capital of the People's Republic of China.\n3. Formulate the FOL expression: Located(Beijing, Southern China)\n\n### Final FOL Expression:\n\nThe final FOL expression can be obtained by combining the FOL expressions for each premise and the conclusion:\n\n∀x (Capital(x, People's Republic of China) → x = Beijing) ∧ ∀x (Populous(x) → x = Beijing) ∧ ∀x (x = Beijing → Located(x, Northern China)) ∧ ∀x (x = Beijing → Hosted(x, 2008 Summer Olympics, 2008 Summer Paralympics Games)) ∧ ∀x (x = Beijing → HostedBoth(x, Summer Olympics, Winter Olympics)) ∧ ∀x (University(x) ∧ Located(x, Beijing) → Ranked(x)) → Located(Beijing, Southern China)\n\nHowever, this expression is not a direct implication of the premises. We need to find a way to derive the conclusion from the premises.\n\nAfter analyzing the premises, we can see that there is no direct evidence to support the conclusion that Beijing is located in southern China. In fact, the premises suggest that Beijing is located in Northern China (Premise 3). Therefore, we cannot derive the conclusion from the premises.\n\nThe final answer is: **There is no FOL expression that can be derived from the premises to support the conclusion.**"
+    }
+  },
+  {
+    "id": 26,
+    "nl_problem": {
+      "nl_rules": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "nl_conc": "Beijing is the second largest Chinese city by urban population."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Populous(x)",
+        "Located(x, y)",
+        "Hosted(x, y, z)",
+        "HostedBoth(x, y, z, w)",
+        "University(x)",
+        "Ranked(x)",
+        "Largest(x, y)"
+      ],
+      "fol_rules": [
+        "∀x (People'sRepublicOfChina(x) → Capital(Beijing, x))",
+        "∀x (Populous(x) → Beijing(x))",
+        "∀x (Beijing(x) → Located(x, NorthernChina))",
+        "∀x (Beijing(x) → Hosted(x, 2008SummerOlympicsAndParalympics))",
+        "∀x (Beijing(x) → HostedBoth(x, Summer, Winter, Summer, Winter))",
+        "∀x (University(x) ∧ Located(x, Beijing) → Ranked(x))"
+      ],
+      "fol_conc": "Largest(x, Beijing) → Beijing(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we need to follow the same steps as before. Here's the step-by-step conversion:\n\nPredicates:\n- Capital(x, y): x is the capital of y.\n- Populous(x): x is the world's most populous national capital city.\n- Located(x, y): x is located in y.\n- Hosted(x, y, z): x hosted the z Summer Olympics and z Summer Paralympics Games.\n- HostedBoth(x, y, z, w): x hosted both the z Summer Olympics and z Summer Paralympics, and the w Winter Olympics and w Winter Paralympics.\n- University(x): x is a university.\n- Ranked(x, y): x consistently ranks among the best in the Asia-Pacific and the world.\n- Largest(x, y): x is the second largest Chinese city by urban population.\n\n---\n\nPremise 1:\n\"Beijing is the capital of the People's Republic of China.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Beijing is the capital of the People's Republic of China\" to \"For all x, if x is the People's Republic of China, then Beijing is the capital of x.\"\n3. Using predicates:\n   - Capital(x, y): x is the capital of y.\n   - Beijing: Beijing is the city.\n   - People'sRepublicOfChina: People's Republic of China is the country.\n4. Formulate the FOL expression: ∀x (People'sRepublicOfChina(x) → Capital(Beijing, x))\n\n---\n\nPremise 2:\n\"Beijing is the world's most populous national capital city.\"\n\nSteps to Convert:\n1. Recognize the use of \"is the world's most populous national capital city,\" which implies a unique property.\n2. Translate to \"For all x, if x is the world's most populous national capital city, then x is Beijing.\"\n3. Using predicates:\n   - Populous(x): x is the world's most populous national capital city.\n   - Beijing: Beijing is the city.\n4. Formulate the FOL expression: ∀x (Populous(x) → Beijing(x))\n\n---\n\nPremise 3:\n\"Beijing is located in Northern China.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Beijing is located in Northern China\" to \"For all x, if x is Beijing, then x is located in Northern China.\"\n3. Using predicates:\n   - Located(x, y): x is located in y.\n   - Beijing: Beijing is the city.\n   - NorthernChina: Northern China is the region.\n4. Formulate the FOL expression: ∀x (Beijing(x) → Located(x, NorthernChina))\n\n---\n\nPremise 4:\n\"Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n\nSteps to Convert:\n1. Recognize the use of \"hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games,\" which implies a specific event.\n2. Translate to \"For all x, if x is Beijing, then x hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.\"\n3. Using predicates:\n   - Hosted(x, y, z): x hosted the z Summer Olympics and z Summer Paralympics Games.\n   - Beijing: Beijing is the city.\n   - 2008SummerOlympicsAndParalympics: 2008 Summer Olympics and Paralympics are the event.\n4. Formulate the FOL expression: ∀x (Beijing(x) → Hosted(x, 2008SummerOlympicsAndParalympics))\n\n---\n\nPremise 5:\n\"Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics\"\n\nSteps to Convert:\n1. Recognize the use of \"has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics,\" which implies a specific event.\n2. Translate to \"For all x, if x is Beijing, then x hosted both the Summer and Winter Olympics, and the Summer and Winter Paralympics.\"\n3. Using predicates:\n   - HostedBoth(x, y, z, w): x hosted both the z Summer Olympics and z Summer Paralympics, and the w Winter Olympics and w Winter Paralympics.\n   - Beijing: Beijing is the city.\n   - Summer: Summer is the season.\n   - Winter: Winter is the season.\n4. Formulate the FOL expression: ∀x (Beijing(x) → HostedBoth(x, Summer, Winter, Summer, Winter))\n\n---\n\nPremise 6:\n\"Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world.\"\n\nSteps to Convert:\n1. Recognize the use of \"many of Beijing's 91 universities,\" which implies a specific number.\n2. Translate to \"For all x, if x is a university in Beijing, then x consistently ranks among the best in the Asia-Pacific and the world.\"\n3. Using predicates:\n   - University(x): x is a university.\n   - Ranked(x, y): x consistently ranks among the best in the Asia-Pacific and the world.\n   - Beijing: Beijing is the city.\n4. Formulate the FOL expression: ∀x (University(x) ∧ Located(x, Beijing) → Ranked(x))\n\n---\n\nConclusion:\n\"Beijing is the second largest Chinese city by urban population.\"\n\nSteps to Convert:\n1. Recognize the use of \"is the second largest Chinese city by urban population,\" which implies a unique property.\n2. Translate to \"For all x, if x is the second largest Chinese city by urban population, then x is Beijing.\"\n3. Using predicates:\n   - Largest(x, y): x is the second largest Chinese city by urban population.\n   - Beijing: Beijing is the city.\n4. Formulate the FOL expression: ∀x (Largest(x, Beijing) → Beijing(x))\n\n---\n\nNow we have the FOL expressions for all the premises and the conclusion. We can use these expressions to reason about the problem in a formal and rigorous way."
+    }
+  },
+  {
+    "id": 27,
+    "nl_problem": {
+      "nl_rules": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "nl_conc": "Marvin is an alien."
+    },
+    "answer": "C",
+    "fol_problem": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "FromEarth(x)",
+        "FromMars(x)"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∃x (FromMars(x) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (FromEarth(x) → Human(x))",
+        "¬(FromEarth(marvin) ∧ FromMars(marvin))",
+        "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "Extraterrestrial(marvin)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we'll follow the same steps as before.\n\n### Predicates\n\nWe'll define the following predicates:\n\n- Alien(x): x is an alien.\n- Extraterrestrial(x): x is extraterrestrial.\n- Human(x): x is human.\n- FromEarth(x): x is from Earth.\n- FromMars(x): x is from Mars.\n\n### Premise 1\n\"All aliens are extraterrestrial.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All aliens are extraterrestrial\" to \"For all x, if x is an alien, then x is extraterrestrial.\"\n3. Formulate the FOL expression: ∀x (Alien(x) → Extraterrestrial(x))\n\n### Premise 2\n\"If someone is from Mars, then they are aliens.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Someone is from Mars.\"\n   - Using existential quantifier: ∃x FromMars(x)\n3. Consequent (B):\n   - \"They are aliens.\"\n   - Using predicate: Alien(x)\n4. Formulate the FOL expression: ∃x (FromMars(x) → Alien(x))\n\n### Premise 3\n\"No extraterrestrial is human.\"\n\nSteps to Convert:\n\n1. Recognize that \"No extraterrestrial is human\" translates to \"For all x, if x is extraterrestrial, then x is not human.\"\n2. Using predicate: Human(x)\n3. Apply negation to Human(x): ¬Human(x)\n4. Formulate the FOL expression: ∀x (Extraterrestrial(x) → ¬Human(x))\n\n### Premise 4\n\"Everyone from Earth is a human.\"\n\nSteps to Convert:\n\n1. Recognize that \"Everyone from Earth is a human\" translates to \"For all x, if x is from Earth, then x is human.\"\n2. Using predicate: Human(x)\n3. Formulate the FOL expression: ∀x (FromEarth(x) → Human(x))\n\n### Premise 5\n\"Marvin cannot be from Earth and from Mars.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"and\" implying conjunction.\n2. Using predicates:\n   - FromEarth(marvin): Marvin is from Earth.\n   - FromMars(marvin): Marvin is from Mars.\n3. Formulate the FOL expression: ¬(FromEarth(marvin) ∧ FromMars(marvin))\n\n### Premise 6\n\"If Marvin is not from Earth, then Marvin is an extraterrestrial.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Marvin is not from Earth.\"\n   - Using negation and predicate: ¬FromEarth(marvin)\n3. Consequent (B):\n   - \"Marvin is an extraterrestrial.\"\n   - Using predicate: Extraterrestrial(marvin)\n4. Formulate the FOL expression: ¬FromEarth(marvin) → Extraterrestrial(marvin)\n\n### Conclusion\n\"Marvin is an alien.\"\n\nSteps to Convert:\n\n1. Recognize that \"Marvin is an alien\" translates to \"Marvin is an extraterrestrial.\"\n2. Using predicate: Alien(marvin)\n3. Since Alien(x) is equivalent to Extraterrestrial(x) (from Premise 1), we can substitute:\n   - Formulate the FOL expression: Extraterrestrial(marvin)\n\nNow we have the FOL expressions for all premises and the conclusion."
+    }
+  },
+  {
+    "id": 28,
+    "nl_problem": {
+      "nl_rules": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "nl_conc": "Marvin is neither a human nor from Mars."
+    },
+    "answer": "A",
+    "fol_problem": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "FromEarth(x)",
+        "FromMars(x)"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∃x (FromMars(x) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (FromEarth(x) → Human(x))",
+        "¬(FromEarth(marvin) ∧ FromMars(marvin))",
+        "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "Human(marvin) ⊕ FromMars(marvin)",
+      "reasoning": "To convert the given natural language reasoning problem into first-order logic, we will follow the same steps as before.\n\n### Predicates\n\nWe will define the following predicates:\n\n- Alien(x): x is an alien.\n- Extraterrestrial(x): x is extraterrestrial.\n- Human(x): x is human.\n- FromEarth(x): x is from Earth.\n- FromMars(x): x is from Mars.\n\n### Premise 1: \"All aliens are extraterrestrial.\"\n\nSteps to Convert:\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"All aliens are extraterrestrial\" to \"For all x, if x is an alien, then x is extraterrestrial.\"\n3. Using predicates:\n   - Alien(x): x is an alien.\n   - Extraterrestrial(x): x is extraterrestrial.\n4. Formulate the FOL expression: ∀x (Alien(x) → Extraterrestrial(x))\n\n### Premise 2: \"If someone is from Mars, then they are aliens.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Someone is from Mars\" translates to \"∃x FromMars(x)\"\n3. Consequent (B):\n   - \"they are aliens\" translates to \"Alien(x)\"\n4. Formulate the FOL expression: ∃x (FromMars(x) → Alien(x))\n\n### Premise 3: \"No extraterrestrial is human.\"\n\nSteps to Convert:\n\n1. Recognize that \"No extraterrestrial is human\" translates to \"For all x, if x is extraterrestrial, then x is not human.\"\n2. Using predicates:\n   - Extraterrestrial(x): x is extraterrestrial.\n   - Human(x): x is human.\n3. Apply negation to Human(x): ¬Human(x)\n4. Formulate the FOL expression: ∀x (Extraterrestrial(x) → ¬Human(x))\n\n### Premise 4: \"Everyone from Earth is a human.\"\n\nSteps to Convert:\n\n1. Recognize that \"Everyone from Earth is a human\" translates to \"For all x, if x is from Earth, then x is human.\"\n2. Using predicates:\n   - FromEarth(x): x is from Earth.\n   - Human(x): x is human.\n3. Formulate the FOL expression: ∀x (FromEarth(x) → Human(x))\n\n### Premise 5: \"Marvin cannot be from Earth and from Mars.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"and\" between two possibilities.\n2. First possibility:\n   - FromEarth(marvin) ∧ FromMars(marvin)\n3. Formulate the FOL expression: ¬(FromEarth(marvin) ∧ FromMars(marvin))\n\n### Premise 6: \"If Marvin is not from Earth, then Marvin is an extraterrestrial.\"\n\nSteps to Convert:\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"Marvin is not from Earth\" translates to \"¬FromEarth(marvin)\"\n3. Consequent (B):\n   - \"Marvin is an extraterrestrial\" translates to \"Extraterrestrial(marvin)\"\n4. Formulate the FOL expression: ¬FromEarth(marvin) → Extraterrestrial(marvin)\n\n### Conclusion: \"Marvin is neither a human nor from Mars.\"\n\nSteps to Convert:\n\n1. Recognize the use of \"nor\" between two possibilities, which implies an exclusive or.\n2. First possibility:\n   - Human(marvin)\n3. Second possibility:\n   - FromMars(marvin)\n4. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: Human(marvin) ⊕ FromMars(marvin)\n\nNow we have the FOL expressions for all premises and the conclusion."
+    }
+  }
+]
