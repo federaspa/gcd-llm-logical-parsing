@@ -1,0 +1,149 @@
+[
+  {
+    "id": 5,
+    "nl_problem": {
+      "nl_rules": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "nl_conc": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home."
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Schedules(x, y)",
+        "Appears(x)",
+        "HasLunch(x, y)",
+        "Manager(x)",
+        "InOtherCountries(x)",
+        "WorksRemotelyFromHome(x)"
+      ],
+      "fol_rules": [
+        "∀x (Schedules(x, Customer(x)) → Appears(x))",
+        "∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))",
+        "HasLunch(x, Company) ⊕ HasLunch(x, Home)",
+        "HasLunch(x, Home) → WorksRemotelyFromHome(x)",
+        "∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))",
+        "∀x (Manager(x) → ¬WorksRemotelyFromHome(x))",
+        "(Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))"
+      ],
+      "fol_conc": "(Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))",
+      "reasoning": "Let's break down the conversion step by step.\n\n### Predicates\n\n1. `Schedules(x, y)`: x schedules a meeting with y.\n2. `Appears(x)`: x appears in the company today.\n3. `HasLunch(x, y)`: x has lunch at location y.\n4. `Manager(x)`: x is a manager.\n5. `InOtherCountries(x)`: x is in other countries.\n6. `WorksRemotelyFromHome(x)`: x works remotely from home.\n\n### Premise 1\n\"All employees who schedule a meeting with their customers will appear in the company today.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x schedules a meeting with their customers, then x appears in the company today.\"\n3. Using predicates:\n   - `Schedules(x, y)`: x schedules a meeting with y.\n   - `Appears(x)`: x appears in the company today.\n4. Formulate the FOL expression: ∀x (Schedules(x, Customer(x)) → Appears(x))\n\n### Premise 2\n\"Everyone who has lunch in the company schedules meetings with their customers.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x has lunch in the company, then x schedules a meeting with their customers.\"\n3. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n   - `Schedules(x, y)`: x schedules a meeting with y.\n4. Formulate the FOL expression: ∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))\n\n### Premise 3\n\"Employees will either have lunch in the company or have lunch at home.\"\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: HasLunch(x, Company) ⊕ HasLunch(x, Home)\n\n### Premise 4\n\"If an employee has lunch at home, then he/she is working remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"An employee has lunch at home.\"\n   - Using predicates:\n     - `HasLunch(x, Home)`: x has lunch at home.\n3. Consequent (B):\n   - \"He/she is working remotely from home.\"\n   - Using predicates:\n     - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: HasLunch(x, Home) → WorksRemotelyFromHome(x)\n\n### Premise 5\n\"All employees who are in other countries work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in other countries, then x works remotely from home.\"\n3. Using predicates:\n   - `InOtherCountries(x)`: x is in other countries.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: ∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))\n\n### Premise 6\n\"No managers work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a manager, then x does not work remotely from home.\"\n3. Using predicates:\n   - `Manager(x)`: x is a manager.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Apply negation to `WorksRemotelyFromHome(x)`: ¬WorksRemotelyFromHome(x)\n5. Formulate the FOL expression: ∀x (Manager(x) → ¬WorksRemotelyFromHome(x))\n\n### Premise 7\n\"James is either a manager and appears in the company today or neither a manager nor appears in the company today.\"\n\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - `Manager(james)`: James is a manager.\n   - `Appears(james)`: James appears in the company today.\n   - Combined using conjunction: Manager(james) ∧ Appears(james)\n3. Second possibility:\n   - Neither `Manager(james)` nor `Appears(james)` translates to the negation of the disjunction:\n     - ¬(Manager(james) ∨ Appears(james))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))\n\n### Conclusion\n\"If James is either a manager or in other countries, then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"James is either a manager or in other countries.\"\n   - Using predicates:\n     - `Manager(james)`: James is a manager.\n     - `InOtherCountries(james)`: James is in other countries.\n   - Use the exclusive or operator (⊕):\n     - Formulate the FOL expression: (Manager(james) ⊕ InOtherCountries(james))\n3. Consequent (B):\n   - First possibility:\n     - `HasLunch(james, Home)`: James has lunch at home.\n     - `WorksRemotelyFromHome(james)`: James works remotely from home.\n     - Combined using conjunction: HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)\n   - Second possibility:\n     - Neither `HasLunch(james, Home)` nor `WorksRemotelyFromHome(james)` translates to the negation of the disjunction:\n       - ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n   - Combined using exclusive or (⊕):\n     - (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n4. Formulate the FOL expression:\n   - (Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))"
+    },
+    "refined_problem": {
+      "fol_preds": [
+        "Schedules(x, y)",
+        "Appears(x)",
+        "HasLunch(x, y)",
+        "Manager(x)",
+        "InOtherCountries(x)",
+        "WorksRemotelyFromHome(x)"
+      ],
+      "fol_rules": [
+        "InOtherCountries(james)",
+        "∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))",
+        "HasLunch(x, Company) ⊕ HasLunch(x, Home)",
+        "HasLunch(x, Home) → WorksRemotelyFromHome(x)",
+        "∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))",
+        "∀x (Manager(x) → ¬WorksRemotelyFromHome(x))",
+        "(Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))"
+      ],
+      "fol_conc": "(Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))",
+      "reasoning": "Let's break down the conversion step by step.\n\n### Predicates\n\n1. `Schedules(x, y)`: x schedules a meeting with y.\n2. `Appears(x)`: x appears in the company today.\n3. `HasLunch(x, y)`: x has lunch at location y.\n4. `Manager(x)`: x is a manager.\n5. `InOtherCountries(x)`: x is in other countries.\n6. `WorksRemotelyFromHome(x)`: x works remotely from home.\n\n### Premise 1\n\"All employees who schedule a meeting with their customers will appear in the company today.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x schedules a meeting with their customers, then x appears in the company today.\"\n3. Using predicates:\n   - `Schedules(x, y)`: x schedules a meeting with y.\n   - `Appears(x)`: x appears in the company today.\n4. Formulate the FOL expression: InOtherCountries(james)\n\n### Premise 2\n\"Everyone who has lunch in the company schedules meetings with their customers.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x has lunch in the company, then x schedules a meeting with their customers.\"\n3. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n   - `Schedules(x, y)`: x schedules a meeting with y.\n4. Formulate the FOL expression: ∀x (HasLunch(x, Company) → Schedules(x, Customer(x)))\n\n### Premise 3\n\"Employees will either have lunch in the company or have lunch at home.\"\n\n1. Recognize the use of \"either...or...\", implying an exclusive or.\n2. Using predicates:\n   - `HasLunch(x, y)`: x has lunch at location y.\n3. Use the exclusive or operator (⊕):\n   - Formulate the FOL expression: HasLunch(x, Company) ⊕ HasLunch(x, Home)\n\n### Premise 4\n\"If an employee has lunch at home, then he/she is working remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"An employee has lunch at home.\"\n   - Using predicates:\n     - `HasLunch(x, Home)`: x has lunch at home.\n3. Consequent (B):\n   - \"He/she is working remotely from home.\"\n   - Using predicates:\n     - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: HasLunch(x, Home) → WorksRemotelyFromHome(x)\n\n### Premise 5\n\"All employees who are in other countries work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is in other countries, then x works remotely from home.\"\n3. Using predicates:\n   - `InOtherCountries(x)`: x is in other countries.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Formulate the FOL expression: ∀x (InOtherCountries(x) → WorksRemotelyFromHome(x))\n\n### Premise 6\n\"No managers work remotely from home.\"\n\n1. Recognize that this is a universal affirmative statement.\n2. Translate to \"For all x, if x is a manager, then x does not work remotely from home.\"\n3. Using predicates:\n   - `Manager(x)`: x is a manager.\n   - `WorksRemotelyFromHome(x)`: x works remotely from home.\n4. Apply negation to `WorksRemotelyFromHome(x)`: ¬WorksRemotelyFromHome(x)\n5. Formulate the FOL expression: ∀x (Manager(x) → ¬WorksRemotelyFromHome(x))\n\n### Premise 7\n\"James is either a manager and appears in the company today or neither a manager nor appears in the company today.\"\n\n1. Recognize the structure: \"either (A and B) or neither A nor B,\" which is an exclusive or between two possibilities.\n2. First possibility:\n   - `Manager(james)`: James is a manager.\n   - `Appears(james)`: James appears in the company today.\n   - Combined using conjunction: Manager(james) ∧ Appears(james)\n3. Second possibility:\n   - Neither `Manager(james)` nor `Appears(james)` translates to the negation of the disjunction:\n     - ¬(Manager(james) ∨ Appears(james))\n4. Use the exclusive or operator (⊕) between the two possibilities.\n5. Formulate the FOL expression:\n   - (Manager(james) ∧ Appears(james)) ⊕ ¬(Manager(james) ∨ Appears(james))\n\n### Conclusion\n\"If James is either a manager or in other countries, then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.\"\n\n1. Recognize the conditional statement \"If A, then B.\"\n2. Antecedent (A):\n   - \"James is either a manager or in other countries.\"\n   - Using predicates:\n     - `Manager(james)`: James is a manager.\n     - `InOtherCountries(james)`: James is in other countries.\n   - Use the exclusive or operator (⊕):\n     - Formulate the FOL expression: (Manager(james) ⊕ InOtherCountries(james))\n3. Consequent (B):\n   - First possibility:\n     - `HasLunch(james, Home)`: James has lunch at home.\n     - `WorksRemotelyFromHome(james)`: James works remotely from home.\n     - Combined using conjunction: HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)\n   - Second possibility:\n     - Neither `HasLunch(james, Home)` nor `WorksRemotelyFromHome(james)` translates to the negation of the disjunction:\n       - ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n   - Combined using exclusive or (⊕):\n     - (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))\n4. Formulate the FOL expression:\n   - (Manager(james) ⊕ InOtherCountries(james)) → (HasLunch(james, Home) ∧ WorksRemotelyFromHome(james)) ⊕ ¬(HasLunch(james, Home) ∨ WorksRemotelyFromHome(james))"
+    },
+    "skip": false
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "nl_rules": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "nl_conc": "Symptons of Monkeypox include coughing."
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Dependent(x)",
+        "Drinks(x)",
+        "Jokes(x)",
+        "Unaware(x)",
+        "Student(x)",
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "Virus(x)",
+        "OccursIn(x, y)",
+        "Human(x)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "FeelTired(x)",
+        "Glu(x)",
+        "Coughing(x)"
+      ],
+      "fol_rules": [
+        "∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))",
+        "∀x (MonkeypoxVirus(x) → (∃y (OccursIn(x, y) ∧ Animal(y)) ∧ ∃z (OccursIn(x, z) ∧ Human(z)))",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "∀x (Glu(x) → FeelTired(x))",
+        "∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+        "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))",
+        "∀x (Drinks(x) → Dependent(x))",
+        "∀x (Drinks(x) ⊕ Jokes(x))",
+        "∀x (Jokes(x) → ¬Unaware(x))"
+      ],
+      "fol_conc": "Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we will follow the same steps as before.\n\n**Predicates:**\n\n1. InfectiousDisease(x): x is an infectious disease.\n2. CausedBy(x, y): x is caused by y.\n3. Virus(x): x is a virus.\n4. OccursIn(x, y): x occurs in y.\n5. Human(x): x is a human.\n6. Mammal(x): x is a mammal.\n7. Animal(x): x is an animal.\n8. Symptom(x, y): x is a symptom of y.\n9. FeelTired(x): x feels tired.\n10. Glu(x): x gets a glu.\n\n**Premise 1:**\n\"Monkeypox is an infectious disease caused by the monkeypox virus.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox is an infectious disease caused by the monkeypox virus\" to \"For all x, if x is monkeypox, then x is an infectious disease and x is caused by the monkeypox virus.\"\n3. Using predicates:\n   - InfectiousDisease(x): x is an infectious disease.\n   - CausedBy(x, y): x is caused by y.\n   - Virus(x): x is a virus.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))\n\n**Premise 2:**\n\"Monkeypox virus can occur in certain animals, including humans.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox virus can occur in certain animals, including humans\" to \"For all x, if x is a monkeypox virus, then x occurs in some animal and x occurs in some human.\"\n3. Using predicates:\n   - OccursIn(x, y): x occurs in y.\n   - Human(x): x is a human.\n   - Animal(x): x is an animal.\n   - MonkeypoxVirus: monkeypox virus (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (MonkeypoxVirus(x) → ∃y (OccursIn(x, y) ∧ Animal(y)) ∧ ∃z (OccursIn(x, z) ∧ Human(z)))\n\n**Premise 3:**\n\"Humans are mammals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Humans are mammals\" to \"For all x, if x is a human, then x is a mammal.\"\n3. Using predicates:\n   - Mammal(x): x is a mammal.\n   - Human(x): x is a human.\n4. Formulate the FOL expression: ∀x (Human(x) → Mammal(x))\n\n**Premise 4:**\n\"Mammals are animals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Mammals are animals\" to \"For all x, if x is a mammal, then x is an animal.\"\n3. Using predicates:\n   - Animal(x): x is an animal.\n   - Mammal(x): x is a mammal.\n4. Formulate the FOL expression: ∀x (Mammal(x) → Animal(x))\n\n**Premise 5:**\n\"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on\" to \"For all x, if x is a symptom of monkeypox, then x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\n**Premise 6:**\n\"People feel tired when they get a glu.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"People feel tired when they get a glu\" to \"For all x, if x gets a glu, then x feels tired.\"\n3. Using predicates:\n   - FeelTired(x): x feels tired.\n   - Glu(x): x gets a glu.\n4. Formulate the FOL expression: ∀x (Glu(x) → FeelTired(x))\n\n**Conclusion:**\n\"Symptons of Monkeypox include coughing.\"\n\nSteps to Convert:\n1. Recognize the use of \"include,\" implying a disjunction.\n2. Translate \"Symptons of Monkeypox include coughing\" to \"For all x, if x is a symptom of monkeypox, then x is coughing or x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Coughing(x): x is coughing.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\nNote that we've used constants for monkeypox and monkeypox virus, assuming they are specific entities. If they are not, we would need to use variables instead."
+    },
+    "refined_problem": {
+      "fol_preds": [
+        "Dependent(x)",
+        "Drinks(x)",
+        "Jokes(x)",
+        "Unaware(x)",
+        "Student(x)",
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "Virus(x)",
+        "OccursIn(x, y)",
+        "Human(x)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "FeelTired(x)",
+        "Glu(x)",
+        "Coughing(x)"
+      ],
+      "fol_rules": [
+        "∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))",
+        "∀x(¬(Student(x)∨Unaware(x)))",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "∀x (Glu(x) → FeelTired(x))",
+        "∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))",
+        "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+        "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))",
+        "∀x (Drinks(x) → Dependent(x))",
+        "∀x (Drinks(x) ⊕ Jokes(x))",
+        "∀x (Jokes(x) → ¬Unaware(x))"
+      ],
+      "fol_conc": "Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)",
+      "reasoning": "To convert the given natural language reasoning problem into First-Order Logic (FOL), we will follow the same steps as before.\n\n**Predicates:**\n\n1. InfectiousDisease(x): x is an infectious disease.\n2. CausedBy(x, y): x is caused by y.\n3. Virus(x): x is a virus.\n4. OccursIn(x, y): x occurs in y.\n5. Human(x): x is a human.\n6. Mammal(x): x is a mammal.\n7. Animal(x): x is an animal.\n8. Symptom(x, y): x is a symptom of y.\n9. FeelTired(x): x feels tired.\n10. Glu(x): x gets a glu.\n\n**Premise 1:**\n\"Monkeypox is an infectious disease caused by the monkeypox virus.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox is an infectious disease caused by the monkeypox virus\" to \"For all x, if x is monkeypox, then x is an infectious disease and x is caused by the monkeypox virus.\"\n3. Using predicates:\n   - InfectiousDisease(x): x is an infectious disease.\n   - CausedBy(x, y): x is caused by y.\n   - Virus(x): x is a virus.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Monkeypox(x) → (InfectiousDisease(x) ∧ CausedBy(x, MonkeypoxVirus)))\n\n**Premise 2:**\n\"Monkeypox virus can occur in certain animals, including humans.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Monkeypox virus can occur in certain animals, including humans\" to \"For all x, if x is a monkeypox virus, then x occurs in some animal and x occurs in some human.\"\n3. Using predicates:\n   - OccursIn(x, y): x occurs in y.\n   - Human(x): x is a human.\n   - Animal(x): x is an animal.\n   - MonkeypoxVirus: monkeypox virus (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (MonkeypoxVirus(x) → ∃y (OccursIn(x, y) ∧ Animal(y)) ∧ ∃z (OccursIn(x, z) ∧ Human(z)))\n\n**Premise 3:**\n\"Humans are mammals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Humans are mammals\" to \"For all x, if x is a human, then x is a mammal.\"\n3. Using predicates:\n   - Mammal(x): x is a mammal.\n   - Human(x): x is a human.\n4. Formulate the FOL expression: ∀x (Human(x) → Mammal(x))\n\n**Premise 4:**\n\"Mammals are animals.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Mammals are animals\" to \"For all x, if x is a mammal, then x is an animal.\"\n3. Using predicates:\n   - Animal(x): x is an animal.\n   - Mammal(x): x is a mammal.\n4. Formulate the FOL expression: ∀x (Mammal(x) → Animal(x))\n\n**Premise 5:**\n\"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on\" to \"For all x, if x is a symptom of monkeypox, then x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\n**Premise 6:**\n\"People feel tired when they get a glu.\"\n\nSteps to Convert:\n1. Recognize that this is a universal affirmative statement.\n2. Translate \"People feel tired when they get a glu\" to \"For all x, if x gets a glu, then x feels tired.\"\n3. Using predicates:\n   - FeelTired(x): x feels tired.\n   - Glu(x): x gets a glu.\n4. Formulate the FOL expression: ∀x (Glu(x) → FeelTired(x))\n\n**Conclusion:**\n\"Symptons of Monkeypox include coughing.\"\n\nSteps to Convert:\n1. Recognize the use of \"include,\" implying a disjunction.\n2. Translate \"Symptons of Monkeypox include coughing\" to \"For all x, if x is a symptom of monkeypox, then x is coughing or x is fever or x is headache or x is muscle pains or x is feeling tired.\"\n3. Using predicates:\n   - Symptom(x, y): x is a symptom of y.\n   - Coughing(x): x is coughing.\n   - Fever(x): x is fever.\n   - Headache(x): x is headache.\n   - MusclePains(x): x is muscle pains.\n   - FeelTired(x): x feels tired.\n   - Monkeypox: monkeypox (we'll use a constant for it)\n4. Formulate the FOL expression: ∀x (Symptom(x, Monkeypox) → (Coughing(x) ∨ Fever(x) ∨ Headache(x) ∨ MusclePains(x) ∨ FeelTired(x)))\n\nNote that we've used constants for monkeypox and monkeypox virus, assuming they are specific entities. If they are not, we would need to use variables instead."
+    },
+    "skip": false
+  }
+]
