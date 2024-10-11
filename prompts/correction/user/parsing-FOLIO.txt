@@ -1,53 +1,69 @@
-Natural Language Statement: Mia's favorite season is not the same as Emma's.
+The task is to correct a First-Order-Logic (FOL) formula containing syntax errors.
 
-Sketch First Order Logic Statement: FavoriteSeason(mia, y) ∧ y ≠ FavoriteSeason(emma, y)
+For conversion, you must adhere to the following rules:
+1. You SHOULD USE the following logical operators and quantifiers: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ∀ (universal), ∃ (existential), ¬ (negation), ↔ (equivalence)
+2. You SHOULD NEVER USE the following symbols for FOL: "%", "≠"
+3. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"; expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
 
-Predicates:
-"""
-Season(x) ::: x is a season
-WantlongVacation(x) ::: x wants a long vacation
-Love(x,y) ::: y is the favourite season of x
-"""
+Here's an example of how to perform the correction:
+
+Original FOL problem: 
+
+∀x (Eel(x) → Fish(x))
+∀x (Fish(x) ≠ ¬Plant(x))
+∀x (Plant(x) ∨ Animal(x))
+∀x (Breathe(x) → ¬Paper(x))
+∀x (Animal(Breathe(x)))
+Eel(seaEel) ⊕ Plant(seaEel) → Eel(seaEel) ∨ Animal(seaEel)
+Eel(seaEel)
+
+Incorrect FOL formula: (Animal(Breathe(x)))
+
 ######
-Valid FOL Statement: FavoriteSeason(mia, y) ∧ ¬(FavoriteSeason(emma, y))"
+
+Valid FOL formula: ∀x (Animal(x) → Breathe(x))
 ------
-Natural Language Statement: All restaurants with a rating greater than 9 are listed in Yelp’s recommendations.
 
-Sketch First Order Logic Statement: ∀x (Rating(x, y) ∧ y > 9 → Listed(x))
+Here's another example:
 
-Predicates:
-"""
-Listed(x) ::: x is listed in Yelp’s recommendations
-RatingGreaterThan9(x) ::: x has a rating greater than 9
-NegativeReview(x) ::: x receives many negative reviews
-PopularAmongLocalResidents(x) ::: x is popular among local residents
-NoTakeOutService(x) ::: x has no takeout service
-"""
+Original FOL problem: 
+
+UniversalLanguage(languageA)
+∀x ∀y ∃z Know(x, z ∧ Know(y, z ∧ UniversalLanguage(z) → Communicate(x, y))
+Know(katya, languageA)
+¬Communicate(katya, danil)
+
+Incorrect FOL formula: ∀x ∀y ∃z Know(x, z ∧ Know(y, z ∧ UniversalLanguage(z) → Communicate(x, y))
+
 ######
-Valid FOL Statement: ∀x (RatingGreaterThan9(x)→ Listed(x))
+
+Valid FOL formula: ∀x ∀y (∃z (Know(x, z) ∧ Know(y, z) ∧ UniversalLanguage(z)) → Communicate(x, y))
 ------
-Natural Language Statement: When a person reads a book, that person gains knowledge.
 
-Sketch First Order Logic Statement: ∀x ∀y (ReadBook(x, y) → Gain(Knowledge(x)))
+Here's a third example:
 
-Predicates:
-"""
-Book(x) ::: x is a book
-Knowledge(x) ::: x contains knowledge
-ReadBook(x, y) ::: x reads book y
-GainKnowledge(x) ::: x gains knowledge
-Smarter(x) ::: x becomes smarter
-"""
+Original FOL problem: 
+
+∃x ∃y (Fish(x) → Sting(x,y))
+Fish(stonefish)
+∀x (StepOn(stonefish, x) → Sting(stonefish, x))
+∀x (Sting(stonefish, x) ∧ ¬Treated(x) → CauseDeath(x))
+∀x Sting(stonefish, ApplyHeat(x) ∨ UseAntivenom(x) → Treated(x)
+
+Incorrect FOL formula: ∀x Sting(stonefish, ApplyHeat(x) ∨ UseAntivenom(x) → Treated(x)
+
 ######
-Valid FOL Statement: ∀x ∀y (ReadBook(x, y) → GainKnowledge(x))
+
+Valid FOL formula: ∀x (Sting(stonefish, x) ∧ (ApplyHeat(x) ∨ UseAntivenom(x)) → Treated(x))
 ------
-Natural Language Statement: [[NLSTATEMENT]]
 
-Sketch First Order Logic Statement: [[SKETCH]]
+Now let's work on this one:
 
-Predicates:
-"""
-[[PREDICATES]]
-"""
+Original FOL problem: 
+
+[[PROBLEM]]
+
+Incorrect FOL formula: [[ERROR]]
 ######
+
 Valid FOL Statement: 
