@@ -6,6 +6,7 @@ import dotenv
 import os
 import logging
 import sys
+from datetime import datetime
 
 dotenv.load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -23,13 +24,16 @@ def send_notification(message, title):
     po.send(msg)
     
 def get_logger(script_name):
+    
+    
+    current_datetime = datetime.now().strftime("%d%m%Y_%H%M%S")
 
     # Create a logger
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
     # Create file handler which logs even debug messages
-    log_file_name = f"logs/{script_name}.log"
+    log_file_name = f"logs/{script_name}_{current_datetime}.log"
     file_handler = logging.FileHandler(log_file_name, encoding='utf-8')
     file_handler.setLevel(logging.DEBUG)
 

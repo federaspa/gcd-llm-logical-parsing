@@ -9,10 +9,6 @@ import sys
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from utils import get_logger, send_notification
 
-script_name = os.path.splitext(os.path.basename(__file__))[0]
-
-logger = get_logger(script_name)
-
 class LogicInferenceEngine:
     def __init__(self, args):
         self.args = args
@@ -30,9 +26,9 @@ class LogicInferenceEngine:
         self.sketcher_name = os.path.splitext(self.sketcher_path)[0].split('/')[-1]
         self.program_executor = program_executor_map[self.dataset_name]
         
-        self.dataset = self.load_logic_programs()
+        self.dataset = self.load_logic_problems()
 
-    def load_logic_programs(self) -> List[dict]:
+    def load_logic_problems(self) -> List[dict]:
         
         if self.self_refine_round > 0:
             programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
@@ -116,13 +112,23 @@ def parse_args():
     parser.add_argument('--data_path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
-    parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--programs_path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--self_refine_round', type=int, default=0)
     args = parser.parse_args()
     return args
 
 if __name__ == "__main__":
     args = parse_args()
+    
+    script_name = os.path.splitext(os.path.basename(__file__))[0]
+
+    logger = get_logger(script_name)
+    
+    logger.info(f"Dataset: {args.dataset_name}")
+    logger.info(f"Sketcher: {args.sketcher_path}")
+    logger.info(f"Self-refine-round: {args.self_refine_round}")
+    logger.info(f"Split: {args.split}")
+    logger.info(f"Save path: {args.save_path}")
     
     engine = LogicInferenceEngine(args)
     

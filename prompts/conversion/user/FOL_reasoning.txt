@@ -1,0 +1,141 @@
+The task is to convert a natrual language reasoning problem into first-order logic.
+
+For conversion, you must adhere to the following rules:
+1. You SHOULD USE the following logical operators and quantifiers: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ∀ (universal), ∃ (existential), ¬ (negation), ↔ (equivalence)
+2. You SHOULD NEVER USE the following symbols for FOL: "%", "≠"
+3. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"; expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+
+Here's an example of how to perform the conversion:
+
+The reasoning problem is:
+
+NL premises:
+"""
+All people who regularly drink coffee are dependent on caffeine. 
+People either regularly drink coffee or joke about being addicted to caffeine. 
+No one who jokes about being addicted to caffeine is unaware that caffeine is a drug. 
+Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug. 
+If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student.
+"""
+
+NL conclusion:
+"""
+Rina is either a person who jokes about being addicted to caffeine or is unaware that caffeine is a drug.
+"""
+
+Conversion Steps from NL Premises and Conclusion to FOL Rules and Conclusion:
+
+Predicates:
+- Dependent(x): x is a person dependent on caffeine.
+- Drinks(x): x regularly drinks coffee.
+- Jokes(x): x jokes about being addicted to caffeine.
+- Unaware(x): x is unaware that caffeine is a drug.
+- Student(x): x is a student.
+
+---
+
+Premise 1:
+"All people who regularly drink coffee are dependent on caffeine."
+
+Steps to Convert:
+1. Recognize that this is a universal affirmative statement.
+2. Translate "All people who regularly drink coffee are dependent on caffeine" to "For all x, if x regularly drinks coffee, then x is dependent on caffeine."
+3. Using predicates:
+   - Drinks(x): x regularly drinks coffee.
+   - Dependent(x): x is dependent on caffeine.
+4. Formulate the FOL expression: ∀x (Drinks(x) → Dependent(x))
+
+---
+
+Premise 2:
+"People either regularly drink coffee or joke about being addicted to caffeine."
+
+Steps to Convert:
+1. Recognize the use of "either...or...", which implies an exclusive or.
+2. Translate to "For all x, x either regularly drinks coffee or jokes about being addicted to caffeine, but not both."
+3. Using predicates:
+   - Drinks(x): x regularly drinks coffee.
+   - Jokes(x): x jokes about being addicted to caffeine.
+4. Use the exclusive or operator (⊕):
+   - Formulate the FOL expression: ∀x (Drinks(x) ⊕ Jokes(x))
+
+---
+
+Premise 3:
+"No one who jokes about being addicted to caffeine is unaware that caffeine is a drug."
+
+Steps to Convert:
+1. Recognize that "No one who jokes..." translates to "For all x, if x jokes about being addicted to caffeine, then x is not unaware that caffeine is a drug."
+2. "Not unaware" is equivalent to "aware," but we'll keep it in terms of Unaware(x) for consistency.
+3. Using predicates:
+   - Jokes(x): x jokes about being addicted to caffeine.
+   - Unaware(x): x is unaware that caffeine is a drug.
+4. Apply negation to Unaware(x): ¬Unaware(x)
+5. Formulate the FOL expression: ∀x (Jokes(x) → ¬Unaware(x))
+
+---
+
+Premise 4:
+"Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug."
+
+Steps to Convert:
+1. Recognize the structure: "either (A and B) or neither A nor B," which is an exclusive or between two possibilities.
+2. First possibility:
+   - Student(rina): Rina is a student.
+   - Unaware(rina): Rina is unaware that caffeine is a drug.
+   - Combined using conjunction: Student(rina) ∧ Unaware(rina)
+3. Second possibility:
+   - Neither Student(rina) nor Unaware(rina) translates to the negation of the disjunction:
+     - ¬(Student(rina) ∨ Unaware(rina))
+4. Use the exclusive or operator (⊕) between the two possibilities.
+5. Formulate the FOL expression:
+   - (Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))
+
+---
+
+Premise 5:
+"If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student."
+
+Steps to Convert:
+1. Recognize the conditional statement "If A, then B."
+2. Antecedent (A):
+   - "Rina is not a person dependent on caffeine and a student."
+   - Combined using conjunction and negation:
+     - ¬(Dependent(rina) ∧ Student(rina))
+3. Consequent (B):
+   - First possibility:
+     - Dependent(rina) ∧ Student(rina)
+   - Second possibility:
+     - Neither Dependent(rina) nor Student(rina):
+       - ¬(Dependent(rina) ∨ Student(rina))
+   - Combined using exclusive or (⊕):
+     - (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))
+4. Formulate the FOL expression:
+   - ¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))
+
+---
+
+Conclusion:
+"Rina is either a person who jokes about being addicted to caffeine or is unaware that caffeine is a drug."
+
+Steps to Convert:
+1. Recognize the use of "either...or...", implying an exclusive or.
+2. Using predicates:
+   - Jokes(rina): Rina jokes about being addicted to caffeine.
+   - Unaware(rina): Rina is unaware that caffeine is a drug.
+3. Use the exclusive or operator (⊕):
+   - Formulate the FOL expression: Jokes(rina) ⊕ Unaware(rina)
+
+---
+
+Now let's think step by step about how to convert this problem to first-order logic:
+
+NL premises:
+"""
+[[nl_problem]]
+"""
+
+NL conclusion:
+"""
+[[nl_conclusion]]
+"""

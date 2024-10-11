@@ -13,10 +13,6 @@ from typing import Tuple, List, Callable
 
 import traceback
 
-script_name = os.path.splitext(os.path.basename(__file__))[0]
-
-logger = get_logger(script_name)
-
 class PromptGenerator:
     def __init__(self, args):
         self.args = args
@@ -24,66 +20,107 @@ class PromptGenerator:
         self.sketcher_path = args.sketcher_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.prompt_mode = args.prompt_mode
+        # self.prompt_mode = args.prompt_mode
                         
 
-        self.parsing_error_prompters: Callable = {'FOLIO': self.parsing_prompt_folio,
-                            'LogicNLI': self.parsing_prompt_folio}
+        self.parsing_prompters: Callable = {'FOL': self.parsing_prompt_fol
+                            # 'LogicNLI': self.parsing_prompt_folio
+                            }
         
         
-        self.execution_error_prompters: Callable = {'FOLIO': self.execution_prompt_folio,
-                            'LogicNLI': self.execution_prompt_folio}
+        self.execution_prompters: Callable = {'FOL': self.execution_prompt_fol,
+                            # 'LogicNLI': self.execution_prompt_folio
+                            }
+        
+        self.types = {
+            'FOLIO': 'FOL',
+            'FOLIOv2': 'FOL',
+            'LogicNLI': 'FOL'
+        }
+        
+        self.type = self.types[self.dataset_name]
+        
         self.load_prompt_templates()
         
     def load_prompt_templates(self):
-        parsing_prompt_file = f'./prompts/correction/user/parsing-{self.dataset_name}.txt'
-        execution_prompt_file = f'./prompts/correction/user/execution-{self.dataset_name}.txt'
-        task_description_parsing_file = f'./prompts/correction/system/parsing-{self.dataset_name}.txt'
-        task_description_execution_file = f'./prompts/correction/system/execution-{self.dataset_name}.txt'
-        grammar_file = f'./LLMs/grammars/{self.dataset_name}.gbnf'
+        templates = {
+            'parsing_user': f'./prompts/correction/user/{self.type}_parsing.txt',
+            'execution_user': f'./prompts/correction/user/{self.type}_execution.txt',
+            'parsing_reasoning_user': f'./prompts/correction/user/{self.type}_parsing_reasoning.txt',
+            'execution_reasoning_user': f'./prompts/correction/user/{self.type}_execution_reasoning.txt',
+            
+            'parsing_system': f'./prompts/correction/system/{self.type}_parsing.txt',
+            'execution_system': f'./prompts/correction/system/{self.type}_execution.txt',
+            
+            'grammar_file': f'./LLMs/grammars/{self.type}.gbnf'
+        }
+
+        self.parsing_template = self._read_file(templates['parsing_user'])
+        self.execution_template = self._read_file(templates['execution_user'])
+        self.parsing_reasoning_template = self._read_file(templates['parsing_reasoning_user'])
+        self.execution_reasoning_template = self._read_file(templates['execution_reasoning_user'])
         
-        with open(parsing_prompt_file, 'r') as f:
-            self.parsing_prompt_template = f.read()
-            
-        with open(execution_prompt_file, 'r') as f:
-            self.execution_prompt_template = f.read()
-            
-        with open(task_description_parsing_file, 'r') as f:
-            self.task_description_parsing = f.read()
-            
-        with open(task_description_execution_file, 'r') as f:
-            self.task_description_execution = f.read()
-            
-        with open(grammar_file, 'r') as f:
-            self.grammar_template = f.read()
+        self.parsing_system = self._read_file(templates['parsing_system'])
+        self.execution_system = self._read_file(templates['execution_system'])
+        
+        self.grammar_template = self._read_file(templates['grammar_file'])
+
+    def _read_file(self, path):
+        with open(path, 'r') as f:
+            return f.read()
     
-    def parsing_prompt_folio(self, logic_problem, error):
-
-        problem = '\n'.join(f for f in logic_problem['fol_rules'])
-        problem += '\n' + logic_problem['fol_conc']
+    def parsing_prompt_fol(self, mode:str, logic_problem:dict, error:str, reasoning:str|None = None):
         
-        full_prompt = self.parsing_prompt_template.replace('[[PROBLEM]]', problem).replace('[[ERROR]]', error)
+        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
 
-        if not self.gcd:
-            return full_prompt, None
+        premises = '\n'.join(f for f in logic_problem['fol_rules'])
+        conclusion = logic_problem['fol_conc']
         
-        predicates = '\"' + logic_problem['fol_preds'][0].split('(')[0] + '\"'
-        for pred in logic_problem['fol_preds'][1:]:
-            predicates += ' | \"' + pred.split('(')[0] + '\"'
+        if mode == 'reasoning':
+            full_prompt = self.parsing_reasoning_template.replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error)
+            grammar = None
+                
+        elif mode == 'generation' and not self.gcd:
             
-        grammar = self.grammar_template.replace('[[PREDICATES]]', predicates)
-        
+            full_prompt = self.parsing_template.replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning)
+            grammar = None
+            
+            print('#'*50)
+            print('#'*10, 'PROMPT', '#'*10)
+            print('#'*50, '\n\n')
 
+            print(full_prompt, '\n\n')
+
+        elif mode == 'generation' and self.gcd:
+            full_prompt = self.parsing_template.replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning)
+            
+            predicates = '\"' + logic_problem['fol_preds'][0].split('(')[0] + '\"'
+            for pred in logic_problem['fol_preds'][1:]:
+                predicates += ' | \"' + pred.split('(')[0] + '\"'
+                
+            grammar = self.grammar_template.replace('[[PREDICATES]]', predicates)
+
+            print('#'*50)
+            print('#'*10, 'PROMPT', '#'*10)
+            print('#'*50, '\n\n')
+
+            print(full_prompt, '\n\n')
+        
         return full_prompt, grammar
     
     
-    def execution_prompt_folio(self, program, status):
+    def execution_prompt_fol(self, mode:str, logic_problem:dict, error:str, reasoning:str|None = None):
         
-        program_string = json.dumps(program).replace('{', '\\{').replace('}', '\\}')
+        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
         
-        full_prompt = self.execution_prompt_template.replace('[[PROGRAM]]', program_string).replace('[[ERROR MESSAGE]]', status)
+        problem_string = json.dumps(logic_problem)
         
-        return full_prompt
+        if mode == 'reasoning':
+            return self.execution_reasoning_template.replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error)
+        
+        elif mode == 'generation':
+            return self.execution_template.replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning)
+    
    
     def load_dynamic_examples(self, split):
         with open(os.path.join(self.data_path, self.dataset_name, f'{split}_examples.json')) as f:
@@ -93,7 +130,7 @@ class PromptGenerator:
 class SelfRefinementEngine(PromptGenerator):
     def __init__(self, args, current_round, refiner):
         
-        raise NotImplemented('missing execution fixing')
+        # raise NotImplemented('missing execution fixing')
         
         #super init
         super().__init__(args)
@@ -102,23 +139,23 @@ class SelfRefinementEngine(PromptGenerator):
         
         self.dataset_name = args.dataset_name
         self.data_path = args.data_path
-        self.load_dir = args.load_dir
+        self.save_path = args.save_path
         self.split = args.split
-        self.prompt_mode = args.prompt_mode
+        # self.prompt_mode = args.prompt_mode
         
         self.current_round = current_round
         
         self.sketcher_name = os.path.splitext(args.sketcher_path)[0].split('/')[-1]
            
-        self.refiner_api = refiner
+        self.refiner_api: OSModel = refiner
         self.refiner_name = os.path.splitext(args.refiner_path)[0].split('/')[-1]
         
         self.gcd = args.gcd
         self.gcd_dir = 'GCD' if self.gcd else 'NO_GCD'
 
 
-        self.parsing_error_prompter = self.parsing_error_prompters[self.dataset_name]
-        self.execution_error_prompter = self.execution_error_prompters[self.dataset_name]
+        self.parsing_prompter:Callable = self.parsing_prompters[self.type]
+        self.execution_prompter:Callable = self.execution_prompters[self.type]
         
         self.program_executor = FOL_Prover9_Program
                 
@@ -128,10 +165,10 @@ class SelfRefinementEngine(PromptGenerator):
         prefix = ""
         if self.current_round > 1:
             prefix = f'self-refine-{self.current_round-1}_'            
-            programs_path = os.path.join(self.load_dir, 'logic_programs', self.gcd_dir, self.refiner_name, f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+            programs_path = os.path.join(self.save_path, self.gcd_dir, self.refiner_name, f'{prefix}{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
             
         else:
-            programs_path = os.path.join(self.load_dir, 'logic_programs', f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
+            programs_path = os.path.join(self.save_path.replace('refinement', 'logic_problems'), f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
             
         with open(programs_path) as f:
             dataset = json.load(f)
@@ -139,36 +176,80 @@ class SelfRefinementEngine(PromptGenerator):
         return dataset
     
     
-    def parsing_correction_generator(self, logic_problem:dict, error:str) -> dict:
+    def parsing_reasoning_generator(self, logic_problem:dict, error:str) -> str:
         
-        user, grammar = self.parsing_error_prompter(logic_problem, error)
+        user, _ = self.parsing_prompter(
+            mode = 'reasoning', 
+            logic_problem = logic_problem, 
+            error = error)
         
         response = self.refiner_api.invoke(
             user=user,
-            task_description=self.task_description_parsing,
-            raw_grammar=grammar
+            task_description=self.parsing_system,
         )
         
         content = response['choices'][0]['message']['content']
-        
-        logger.debug(user + '\n\n' + content)
         
         return content
     
-    def execution_correction_generation(self, error:str) -> dict:
+    def parsing_correction_generator(self, logic_problem:dict, error:str, reasoning:str) -> str:
         
-        user, grammar = self.execution_error_prompter(error)
+        user, grammar = self.parsing_prompter(
+            mode = 'generation',
+            logic_problem = logic_problem, 
+            error = error,
+            reasoning = reasoning)
         
         response = self.refiner_api.invoke(
             user=user,
-            task_description=self.task_description_parsing,
+            task_description=self.parsing_system,
             raw_grammar=grammar
         )
         
         content = response['choices'][0]['message']['content']
         
+        return content
+    
+    def execution_reasoning_generation(self, logic_problem:dict, error:str) -> str:
+        
+        user = self.execution_prompter(
+            mode = 'reasoning',
+            logic_problem = logic_problem,
+            error = error
+        )
+        
+        response = self.refiner_api.invoke(
+            user=user,
+            task_description=self.parsing_system,
+        )
+        
+        content = response['choices'][0]['message']['content']
         
         return content
+    
+    def execution_correction_generation(self, logic_problem:dict, error:str, reasoning:str) -> dict:
+        
+        user = self.execution_prompter(
+            mode = 'generation',
+            logic_problem = logic_problem,
+            error = error,
+            reasoning = reasoning
+        )
+        
+        response = self.refiner_api.invoke(
+            user=user,
+            task_description=self.parsing_system,
+            json_format=True
+        )
+        
+        content = response['choices'][0]['message']['content']
+        problem:dict = json.loads(content)
+        
+        problem['reasoning'] = reasoning
+        
+        return content
+    
+    
   
     
     def safe_execute_program(self, logic_program:dict) -> Tuple[str,str, str]:
@@ -188,8 +269,8 @@ class SelfRefinementEngine(PromptGenerator):
         
         logic_problems = self.load_logic_problems()
         
-        save_path = os.path.join(self.load_dir, 'refinement', self.gcd_dir, self.refiner_name)
-        save_file = os.path.join(save_path, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json')
+        save_path = os.path.join(self.save_path, self.gcd_dir, self.refiner_name)
+        save_file = os.path.join(save_path, f'self-refine-{self.current_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
         
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -211,73 +292,74 @@ class SelfRefinementEngine(PromptGenerator):
                 if sample['skip']:
                     outputs.append(sample)
                     # print(f'Skipped {example["id"]}')
+                    logger.info(f'Skipped {sample["id"]}')
                     continue
 
             logic_problem = sample['logic_problem']
             _, status, error = self.safe_execute_program(logic_problem)
+            
+            skip = False
 
             if status == 'parsing error' and error:
-
+                
+                logger.info(f'Fixing parsing error for {sample["id"]}')
+                
                 try:
                     
-                    correction = self.parsing_correction_generator(logic_problem, error)
-                    refined_problem_string = json.dumps(logic_problem, ensure_ascii=False).replace(error, correction)
-                    refined_problem = json.loads(refined_problem_string)
+                    reasoning = self.parsing_reasoning_generator(logic_problem, error)
+                    correction = self.parsing_correction_generator(logic_problem, error, reasoning)
+                    # refined_problem_string = json.dumps(logic_problem, ensure_ascii=False).replace(error, correction)
+                    # refined_problem = json.loads(refined_problem_string)
+                    
+                    print('#'*50)
+                    print('#'*10, 'CORRECTION', '#'*10)
+                    print('#'*50, '\n\n')
+
+                    print(correction, '\n\n')
+                    
+                except Exception as e:
+                    error_message = f'Exception for {sample["id"]} for parsing error correction: {traceback.format_exc()}'
+                    logger.error(error_message)
+                    send_notification(error_message, "self_refinement.py parsing correction error")
+                    
+                    refined_problem = logic_problem
+                
+            elif status == 'execution error' and error:
+                
+                logger.info(f'Fixing execution error for {sample["id"]}')
+                
+                
+                try:
+                    
+                    reasoning = self.execution_reasoning_generation(logic_problem, error)
+                    refined_problem = self.execution_correction_generation(logic_problem, error, reasoning)
+
 
                 except Exception as e:
-                    error_message = f'Exception for {sample["id"]} for parsing response generation: {traceback.format_exc()}'
+                    error_message = f'Exception for {sample["id"]} for execution error correction: {traceback.format_exc()}'
                     logger.error(error_message)
-                    send_notification(error_message, "self_refinement.py sample error")
+                    send_notification(error_message, "self_refinement.py execution correction error")
                     
                     refined_problem = logic_problem
 
-                sample.update(
-                    {
-                        'refined_problem':refined_problem,
-                        'skip': False
-                    }
-                )
+            elif status == 'success':
+                refined_problem = logic_problem
+                skip = True
                 
-                outputs.append(sample)
+            else:
+                refined_problem = None
+                skip = True
                 
-            # elif status == 'execution error' and error:
+            sample.update(
+                {
+                    'refined_problem':refined_problem,
+                    'skip': skip
+                }
+            )
+            
+            outputs.append(sample)
                 
-            #     full_prompt = self.execution_error_prompt[self.dataset_name](logic_problem, error)
 
-            #     try:
-
-            #         # open('this')
-
-            #         response_string = self.refiner_api.generate(full_prompt, self.task_description_execution, {"type": "json_object"})
-
-            #         response = json.loads(response_string)
-
-            #         assert 'Correct Program' in response.keys(), 'Correct Program not in response.keys()'
-            #         refined_problem = response['Correct Program']
-
-            #         # programs = revised_program
-            #     except Exception as e:
-            #         print(f'Exception for {sample["id"]} for execution response: {e}')
-            #         # print(traceback.format_exc())
-            #         refined_problem = logic_problem
-
-            #     output = {'id': sample['id'], 
-            #             'context': sample['context'],
-            #             'question': sample['question'], 
-            #             'answer': sample['answer'],
-            #             # 'options': example['options'],
-            #             'raw_logic_programs': refined_problem,
-            #               'skip': False}
-            #     outputs.append(output)
-            # elif status == 'success':
-            #     sample.update({'skip':True})
-            #     outputs.append(sample)
-
-            # else:
-                # print(f'Something went wrong with {example["id"]}. This sample will be skipped in the next iterations.')
-                # sample.update({'skip':True})
-                # outputs.append(sample)
-                
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
 
@@ -295,11 +377,11 @@ def parse_args():
     parser.add_argument('--dataset_name', type=str, required=True)
     
     parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--load_dir', type=str, default='./outputs/')
+    parser.add_argument('--save_path', type=str, default='./outputs/refinement')
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
+    # parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     
-    parser.add_argument('--starting_round', type=int, default=0)
+    parser.add_argument('--starting_round', type=int, default=1)
     parser.add_argument('--maximum_rounds', type=int, default=3)
     
     parser.add_argument('--n_gpu_layers', type=int, default=0)
@@ -310,7 +392,18 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     
-    starting_round = args.starting_round + 1
+    script_name = os.path.splitext(os.path.basename(__file__))[0]
+
+    logger = get_logger(script_name)
+    
+    logger.info(f"Dataset: {args.dataset_name}")
+    logger.info(f"Sketcher: {args.sketcher_path}")
+    logger.info(f"Refiner: {args.refiner_path}")
+    # logger.info(f"Self-refine-round: {args.self_refine_round}")
+    logger.info(f"Grammar-Constrained: {args.gcd}")
+    logger.info(f"Split: {args.split}")
+    logger.info(f"Save path: {args.save_path}")
+    
         
     refiner=OSModel(
             model_path=args.refiner_path,
@@ -320,7 +413,7 @@ if __name__ == "__main__":
         
     try:    
     
-        for round in range(starting_round, args.maximum_rounds+1):
+        for round in range(args.starting_round, args.maximum_rounds+1):
             logger.info(f"Round {round} self-refinement")
             engine = SelfRefinementEngine(args, round, refiner = refiner)
             engine.single_round_self_refinement()
