@@ -385,6 +385,7 @@ def parse_args():
     parser.add_argument('--maximum_rounds', type=int, default=3)
     
     parser.add_argument('--n_gpu_layers', type=int, default=0)
+    parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
     return args
@@ -408,7 +409,7 @@ if __name__ == "__main__":
     refiner=OSModel(
             model_path=args.refiner_path,
             n_gpu_layers=args.n_gpu_layers,
-            verbose=False
+            verbose=args.verbose
         )
         
     try:    
