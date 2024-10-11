@@ -3,34 +3,48 @@
 import json
 import os
 from tqdm.autonotebook import tqdm
-from os_utils import OSModel
-import sys
+from utils import OSModel, send_notification, get_logger
 import argparse
-from collections.abc import Callable, Awaitable
+from collections.abc import Callable
+import traceback
+import sys
+
+# Get the name of the current script
+script_name = os.path.splitext(os.path.basename(__file__))[0]
+
+logger = get_logger(script_name)
 
 class PromptGenerator:
     def __init__(self, args):
         self.dataset_name = args.dataset_name
 
-        self.generation_prompt_creators = {'FOLIO': self.prompt_generation_folio,
-                            'FOLIOv2': self.prompt_generation_folio,
-                                'LogicNLI': self.prompt_generation_folio
+        self.generation_prompters = {'FOL': self.prompt_generation_fol,
+                            # 'FOLIOv2': self.prompt_generation_folio,
+                            #     'LogicNLI': self.prompt_generation_folio
                                 }
         
-        self.reasoning_prompt_creators = {'FOLIO': self.prompt_reasoning_folio,
-                            'FOLIOv2': self.prompt_reasoning_folio,
-                                'LogicNLI': self.prompt_reasoning_folio
+        self.reasoning_prompters = {'FOL': self.prompt_reasoning_fol,
+                            # 'FOLIOv2': self.prompt_reasoning_folio,
+                            #     'LogicNLI': self.prompt_reasoning_folio
                                 }
+        
+        self.types = {
+            'FOLIO': 'FOL',
+            'FOLIOv2': 'FOL',
+            'LogicNLI': 'FOL'
+        }
+        
+        self.type = self.types[self.dataset_name]
             
         self.load_prompt_templates()
   
     def load_prompt_templates(self):
 
-        generation_user = f'./prompts/generation/user/{self.dataset_name}_program.txt'
-        generation_system = f'./prompts/generation/system/{self.dataset_name}_program.txt'
+        generation_user = f'./prompts/generation/user/{self.type}_program.txt'
+        generation_system = f'./prompts/generation/system/{self.type}_program.txt'
         
-        reasoning_user = f'./prompts/reasoning/user/{self.dataset_name}_program.txt'
-        reasoning_system = f'./prompts/reasoning/system/{self.dataset_name}_program.txt'
+        reasoning_user = f'./prompts/reasoning/user/{self.type}_program.txt'
+        reasoning_system = f'./prompts/reasoning/system/{self.type}_program.txt'
         
         with open(generation_user, 'r') as f:
             self.generation_template = f.read()
@@ -44,7 +58,7 @@ class PromptGenerator:
         with open(reasoning_system, 'r') as f:
             self.reasoning_system = f.read()
     
-    def prompt_generation_folio(self, sample:dict, reasoning:str):
+    def prompt_generation_fol(self, sample:dict, reasoning:str):
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
         
@@ -52,7 +66,7 @@ class PromptGenerator:
         
         return full_prompt
     
-    def prompt_reasoning_folio(self, sample):
+    def prompt_reasoning_fol(self, sample):
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
         
@@ -76,8 +90,8 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_api = OSModel(model_path=self.sketcher_path, n_gpu_layers=self.n_gpu_layers, verbose=args.verbose)
         self.sketcher_name = os.path.splitext(self.sketcher_path)[0].split('/')[-1]
         
-        self.generation_prompt_creator:Callable[[dict],str] = self.generation_prompt_creators[self.dataset_name]
-        self.reasoning_prompt_creator:Callable[[dict],str] = self.reasoning_prompt_creators[self.dataset_name]
+        self.generation_prompter:Callable[[dict],str] = self.generation_prompters[self.type]
+        self.reasoning_prompter:Callable[[dict],str] = self.reasoning_prompters[self.type]
             
     def load_raw_dataset(self):
         with open(os.path.join(self.data_path, self.dataset_name, f'{self.split}.json')) as f:
@@ -85,7 +99,7 @@ class LogicProgramGenerator(PromptGenerator):
         return raw_dataset
     
     def reasoning_generator(self, sample:dict) -> str:
-        user = self.reasoning_prompt_creator(sample)
+        user = self.reasoning_prompter(sample)
 
         response = self.sketcher_api.invoke(
             user=user,
@@ -98,7 +112,7 @@ class LogicProgramGenerator(PromptGenerator):
         return content
   
     def logic_program_generator(self, sample:dict, reasoning:str) -> dict:
-        user = self.generation_prompt_creator(sample, reasoning)
+        user = self.generation_prompter(sample, reasoning)
         
         response = self.sketcher_api.invoke(
             user=user,
@@ -119,62 +133,78 @@ class LogicProgramGenerator(PromptGenerator):
 
         save_file = os.path.join(self.save_path, f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json')
 
-        existing_samples = []
+        outputs = []
+
         if os.path.exists(save_file):
             with open(save_file, 'r') as f:
-                existing_samples = json.load(f)
+                outputs = json.load(f)
 
-            existing_ids = [s["id"] for s in existing_samples]
+            existing_ids = [s["id"] for s in outputs]
             raw_dataset = [s for s in raw_dataset if s["id"] not in existing_ids]
 
-        print(f"{len(existing_samples)} already exist.\nLoaded {len(raw_dataset)} examples from {self.split} split.")
-
+        logger.info(f"{len(outputs)} already exist.\nLoaded {len(raw_dataset)} examples from {self.split} split.")
 
         
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
-
-
-        
-        outputs = []
-
+            
         for i, sample in enumerate(tqdm(raw_dataset)):
             
-            reasoning = self.reasoning_generator(sample)
-        
-            fol_problem = self.logic_program_generator(sample, reasoning)
             
-            if i%100 == 0:
-                print(reasoning)
-                print(fol_problem)
+            try:
+                
+                reasoning = self.reasoning_generator(sample)
             
-            output = {'id': sample['id'], 
-                        'nl_problem': {
-                    'nl_rules': sample['context'],
-                    'nl_conc': sample['question']
-                        },
-                    'answer': sample['answer'],
-                    'fol_problem': fol_problem}
+                logic_problem = self.logic_program_generator(sample, reasoning)
+                
+                if i%20 == 0:
+                    logger.debug(reasoning)
+                    logger.debug(logic_problem)
+                
+                output = {'id': sample['id'], 
+                            'nl_problem': {
+                        'nl_rules': sample['context'],
+                        'nl_conc': sample['question']
+                            },
+                        'answer': sample['answer'],
+                        'logic_problem': logic_problem}
+                
+                outputs.append(output)
+                
+                
             
-            outputs.append(output)
+            except Exception as e:
+                
+                # Get the full error traceback
+                error_message = f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+                
+                # Send error notification
+                send_notification(error_message, "logic_programs.py sample error")
+                
+                # Optionally, you can also print the error message
+                logger.error(error_message)
+                
+
             
             # save outputs
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
 
-        print(f"Generated {len(outputs)} examples.")
+        logger.info(f"Generated {len(outputs)} examples.")
         
 
    
      
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--dataset_name', type=str, required=True)
-    parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--save_path', type=str, default='./outputs/generate_fol')
-    parser.add_argument('--n_gpu_layers', type=int, default=0)
     parser.add_argument('--sketcher_path', type=str, required=True)
+    parser.add_argument('--dataset_name', type=str, required=True)
+    
+    parser.add_argument('--data_path', type=str, default='./data')
+    parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--save_path', type=str, default='./outputs/logic_programs')
+    parser.add_argument('--n_gpu_layers', type=int, default=0)
+    
     parser.add_argument('--verbose', action='store_true')
     args = parser.parse_args()
     return args
@@ -183,4 +213,19 @@ if __name__ == '__main__':
     args = parse_args()
     
     logic_program_generator = LogicProgramGenerator(args)
-    logic_program_generator.run()
+    
+    try:
+        logic_program_generator.run()
+        
+    except KeyboardInterrupt:
+        logger.error("KeyboardInterrupt")
+        sys.exit(0)
+        
+    except Exception as e:
+        error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        send_notification(error_message, "logic_programs.py fatal error")
+        logger.error(error_message)
+        sys.exit(0)
+        
+    logger.info("Finished Successfully")
+    send_notification("Yippiee!", "logic_programs.py finished successfully")

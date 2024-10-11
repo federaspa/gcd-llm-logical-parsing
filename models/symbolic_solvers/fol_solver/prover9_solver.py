@@ -18,8 +18,8 @@ class FOL_Prover9_Program:
     def parse_logic_program(self) -> Tuple[bool, str|None]:
         try:
             # Extract premises and conclusion
-            premises = self.logic_program["First-Order-Logic Rules"]
-            conclusion = self.logic_program["First-Order-Logic Question"]
+            premises = self.logic_program["fol_rules"]
+            conclusion = self.logic_program["fol_conc"]
             
             if isinstance(premises, str):
                 premises = premises.strip().split('\n')

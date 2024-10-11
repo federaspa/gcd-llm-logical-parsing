@@ -1,6 +1,52 @@
 from llama_cpp.llama import LlamaGrammar
 from llama_cpp import Llama
 import warnings
+from pushover import Pushover
+import dotenv
+import os
+import logging
+import sys
+
+dotenv.load_dotenv()
+API_KEY = os.getenv("API_KEY")
+USER_KEY = os.getenv("USER_KEY")
+
+def send_notification(message, title):
+
+    po = Pushover(token=API_KEY)
+    po.user(USER_KEY)
+
+    msg = po.msg(message=message)
+
+    msg.set("title", title)
+
+    po.send(msg)
+    
+def get_logger(script_name):
+
+    # Create a logger
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+
+    # Create file handler which logs even debug messages
+    log_file_name = f"logs/{script_name}.log"
+    file_handler = logging.FileHandler(log_file_name, encoding='utf-8')
+    file_handler.setLevel(logging.DEBUG)
+
+    # Create console handler with a higher log level
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(logging.DEBUG)
+
+    # Create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # Add the handlers to the logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    return logger
 
 class OSModel:
     def __init__(self,
@@ -22,7 +68,7 @@ class OSModel:
             model_path=model_path,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
-            n_ctx = 4096,
+            n_ctx = 12288,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
             verbose = verbose
         )
