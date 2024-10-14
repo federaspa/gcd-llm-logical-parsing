@@ -84,12 +84,7 @@ class PromptGenerator:
             
             full_prompt = self.parsing_template.replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning)
             grammar = None
-            
-            print('#'*50)
-            print('#'*10, 'PROMPT', '#'*10)
-            print('#'*50, '\n\n')
 
-            print(full_prompt, '\n\n')
 
         elif mode == 'generation' and self.gcd:
             full_prompt = self.parsing_template.replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning)
@@ -100,12 +95,6 @@ class PromptGenerator:
                 
             grammar = self.grammar_template.replace('[[PREDICATES]]', predicates)
 
-            print('#'*50)
-            print('#'*10, 'PROMPT', '#'*10)
-            print('#'*50, '\n\n')
-
-            print(full_prompt, '\n\n')
-        
         return full_prompt, grammar
     
     
@@ -308,14 +297,8 @@ class SelfRefinementEngine(PromptGenerator):
                     
                     reasoning = self.parsing_reasoning_generator(logic_problem, error)
                     correction = self.parsing_correction_generator(logic_problem, error, reasoning)
-                    # refined_problem_string = json.dumps(logic_problem, ensure_ascii=False).replace(error, correction)
-                    # refined_problem = json.loads(refined_problem_string)
-                    
-                    print('#'*50)
-                    print('#'*10, 'CORRECTION', '#'*10)
-                    print('#'*50, '\n\n')
-
-                    print(correction, '\n\n')
+                    refined_problem_string = json.dumps(logic_problem, ensure_ascii=False).replace(error, correction)
+                    refined_problem = json.loads(refined_problem_string)
                     
                 except Exception as e:
                     error_message = f'Exception for {sample["id"]} for parsing error correction: {traceback.format_exc()}'
