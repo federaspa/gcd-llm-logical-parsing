@@ -120,25 +120,34 @@ class SelfRefinementEngine(PromptGenerator):
     
     def parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
         user, _ = self.parsing_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
+        # logger.debug('REASONING GENERATION')
         response = self.refiner_api.invoke(
             user=user,
             task_description=self.templates['parsing_system'],
-            temperature=1.0
+            temperature=1.0,
+            top_p = 0.95,
+            top_k=50,
+            min_p=0.1
         )
         return response['choices'][0]['message']['content']
 
     def parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
         user, grammar = self.parsing_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
+        # logger.debug('CORRECTION GENERATION')
         response = self.refiner_api.invoke(
             user=user,
             task_description=self.templates['parsing_system'],
             raw_grammar=grammar,
             temperature=0.5,
-            top_k=10
+            top_p = 1,
+            top_k=10,
+            min_p=0.1,
+            tfs_z=1,
+            repeat_penalty=1,
         )
         
-        logger.debug(grammar)
-        logger.debug(response)
+        # logger.debug(grammar)
+        # logger.debug(response)
         
         return response['choices'][0]['message']['content']
 
@@ -206,12 +215,13 @@ class SelfRefinementEngine(PromptGenerator):
                     
                     logic_problem["parsing_errors"][error] = (correction, reasoning)
                     
-                    logger.debug([f for f in logic_problem["fol_rules"] if f == error])
+                    # logger.debug([f for f in logic_problem["fol_rules"] if f == error])
                     
                     logic_problem["fol_rules"] = [correction if f == error else f for f in logic_problem["fol_rules"]]
                     
-                    
-                    
+                    # logger.debug(error + '\n')
+                    # logger.debug(reasoning+ '\n')
+                    # logger.debug(correction+ '\n')
 
                 elif status == 'execution error' and error:
                     logger.info(f'Fixing execution error for {sample["id"]}')
