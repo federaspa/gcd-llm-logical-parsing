@@ -234,9 +234,7 @@ class SelfRefinementEngine(PromptGenerator):
         content = response['choices'][0]['message']['content']
         problem:dict = json.loads(content)
         
-        problem['reasoning'] = reasoning
-        
-        return content
+        return problem
     
     
   
@@ -284,9 +282,14 @@ class SelfRefinementEngine(PromptGenerator):
                     logger.info(f'Skipped {sample["id"]}')
                     continue
 
-            logic_problem = sample['logic_problem']
+            logic_problem:dict = sample['logic_problem']
             _, status, error = self.safe_execute_program(logic_problem)
             
+            if not logic_problem:
+                outputs.append(sample)
+                continue
+            
+            reasoning = None
             skip = False
 
             if status == 'parsing error' and error:
@@ -295,17 +298,29 @@ class SelfRefinementEngine(PromptGenerator):
                 
                 try:
                     
+                    if not "parsing_errors" in logic_problem.keys():
+                        logic_problem["parsing_errors"] = {}
+                    
                     reasoning = self.parsing_reasoning_generator(logic_problem, error)
                     correction = self.parsing_correction_generator(logic_problem, error, reasoning)
-                    refined_problem_string = json.dumps(logic_problem, ensure_ascii=False).replace(error, correction)
-                    refined_problem = json.loads(refined_problem_string)
+                    # refined_problem_string = json.dumps(logic_problem, ensure_ascii=False)
                     
+                    for formula in logic_problem["fol_rules"]:
+                        if formula == error:
+                            logic_problem["fol_rules"].remove(formula)
+                            logic_problem["fol_rules"].append(correction)
+                            break
+                    
+                    logic_problem["parsing_errors"][error] = correction
+                    # print(reasoning)
+                    # print(correction)
+                    # print(refined_problem)
+                        
                 except Exception as e:
                     error_message = f'Exception for {sample["id"]} for parsing error correction: {traceback.format_exc()}'
                     logger.error(error_message)
                     send_notification(error_message, "self_refinement.py parsing correction error")
                     
-                    refined_problem = logic_problem
                 
             elif status == 'execution error' and error:
                 
@@ -313,29 +328,26 @@ class SelfRefinementEngine(PromptGenerator):
                 
                 
                 try:
-                    
                     reasoning = self.execution_reasoning_generation(logic_problem, error)
-                    refined_problem = self.execution_correction_generation(logic_problem, error, reasoning)
-
+                    logic_problem = self.execution_correction_generation(logic_problem, error, reasoning)
 
                 except Exception as e:
                     error_message = f'Exception for {sample["id"]} for execution error correction: {traceback.format_exc()}'
                     logger.error(error_message)
                     send_notification(error_message, "self_refinement.py execution correction error")
                     
-                    refined_problem = logic_problem
 
             elif status == 'success':
-                refined_problem = logic_problem
                 skip = True
                 
             else:
-                refined_problem = None
                 skip = True
+            
+            logic_problem['reasoning'] = reasoning
                 
             sample.update(
                 {
-                    'refined_problem':refined_problem,
+                    'logic_problem':logic_problem,
                     'skip': skip
                 }
             )
@@ -355,19 +367,19 @@ class SelfRefinementEngine(PromptGenerator):
 def parse_args():
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--sketcher_path', type=str, required=True)
-    parser.add_argument('--refiner_path', type=str, required=True)
-    parser.add_argument('--dataset_name', type=str, required=True)
+    parser.add_argument('--sketcher-path', type=str, required=True)
+    parser.add_argument('--refiner-path', type=str, required=True)
+    parser.add_argument('--dataset-name', type=str, required=True)
     
-    parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--save_path', type=str, default='./outputs/refinement')
+    parser.add_argument('--data-path', type=str, default='./data')
+    parser.add_argument('--save-path', type=str, default='./outputs/refinement')
     parser.add_argument('--split', type=str, default='dev')
     # parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static'], default='dynamic')
     
-    parser.add_argument('--starting_round', type=int, default=1)
-    parser.add_argument('--maximum_rounds', type=int, default=3)
+    parser.add_argument('--starting-round', type=int, default=1)
+    parser.add_argument('--maximum-rounds', type=int, default=3)
     
-    parser.add_argument('--n_gpu_layers', type=int, default=0)
+    parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--gcd', action='store_true')
     args = parser.parse_args()
