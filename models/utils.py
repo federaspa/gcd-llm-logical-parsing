@@ -84,6 +84,11 @@ class OSModel:
                task_description,
                json_format = False,
                raw_grammar = None,
+                top_p = 1,
+                top_k=0,
+                min_p=0.1,
+                tfs_z=1,
+                repeat_penalty=1,
                **kwargs):
 
         """
@@ -110,6 +115,11 @@ class OSModel:
             ],
         grammar = grammar,
         response_format=response_format,
+        top_p = top_p, 
+        top_k= top_k,
+        min_p= min_p,
+        tfs_z= tfs_z,
+        repeat_penalty = repeat_penalty,
         **kwargs
         )
 
