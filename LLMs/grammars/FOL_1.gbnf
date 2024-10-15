@@ -1,0 +1,21 @@
+root ::= S
+
+S ::= "¬"? (F | (QUANT VAR ws)+ "(" F ")")
+
+F ::= "¬"? (A | "(" A (ws OP ws A)+ ")")
+
+A ::= "¬"? (B | "(" B (ws OP ws B)+ ")")
+B ::= "¬"? (C | "(" C (ws OP ws C)+ ")")
+C ::= "¬"? (L | "(" L (ws OP ws L)+ ")")
+
+OP ::= "\u2295" | "\u2228" | "\u2227" | "\u2192" | "\u2194"
+L ::= "¬"? PRED "(" TERMS ")"
+TERMS ::= TERM ("," ws TERM)*
+TERM ::= VAR | CONST
+QUANT ::= "\u2200" | "\u2203"
+CONST ::= [a-z0-9]{2,15}
+VAR ::= "x" | "y" | "z"
+PRED ::= [[PREDICATES]]
+
+# Optional space: can appear zero or more times
+ws ::= " "

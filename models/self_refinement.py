@@ -25,6 +25,7 @@ class Config:
     n_gpu_layers: int
     verbose: bool
     gcd: bool
+    debug_mode: bool
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -212,14 +213,9 @@ class SelfRefinementEngine(PromptGenerator):
                     
                     logic_problem["parsing_errors"][error] = (correction, reasoning)
                     
-                    # logger.debug([f for f in logic_problem["fol_rules"] if f == error])
                     
                     logic_problem["fol_rules"] = [correction if f == error else f for f in logic_problem["fol_rules"]]
                     
-                    # logger.debug(error + '\n')
-                    # logger.debug(reasoning+ '\n')
-                    # logger.debug(correction+ '\n')
-
                 elif status == 'execution error' and error:
                     logger.info(f'Fixing execution error for {sample["id"]}')
                     reasoning = self.execution_reasoning_generation(logic_problem, error)
@@ -249,6 +245,39 @@ class SelfRefinementEngine(PromptGenerator):
 
         logger.info(f"Completed round {self.current_round} self-refinement")
 
+    def single_round_self_refinement_debug_mode(self):
+        logic_problems = self.load_logic_problems()
+        
+        for sample in logic_problems:
+
+            logic_problem:dict = sample.get('logic_problem', {})
+            if not logic_problem:
+                continue
+
+            _, status, error = self.safe_execute_program(logic_problem)
+            
+            if status == 'parsing error' and error:
+                
+                nl = '\n'.join(r for r in sample['nl_problem']['nl_rules'])
+                fol = '\n'.join(r for r in logic_problem['fol_rules'])
+                
+                print(f"Original NL:\n\n{nl}\n")
+                print(f"Original FOL:\n\n{fol}\n")
+                print("Error:", error)
+                
+                input("Press Enter to continue...")
+                
+                print("Reasoning...")
+                reasoning = self.parsing_reasoning_generator(logic_problem, error)
+                print("Fixing...")
+                correction = self.parsing_correction_generator(logic_problem, error, reasoning)
+                
+
+                print("Correction:", correction)    
+                
+            
+
+
 def parse_args() -> Config:
     parser = argparse.ArgumentParser()
     parser.add_argument('--sketcher-path', type=str, required=True)
@@ -262,6 +291,7 @@ def parse_args() -> Config:
     parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--gcd', action='store_true')
+    parser.add_argument('--debug_mode', action='store_true')
     args = parser.parse_args()
     return Config(**vars(args))
 
@@ -288,7 +318,7 @@ if __name__ == "__main__":
         for round in range(config.starting_round, config.maximum_rounds + 1):
             logger.info(f"Round {round} self-refinement")
             engine = SelfRefinementEngine(config, round, refiner=refiner)
-            engine.single_round_self_refinement()
+            engine.single_round_self_refinement() if not config.debug_mode else engine.single_round_self_refinement_debug_mode()
             
     except KeyboardInterrupt:
         logger.error("KeyboardInterrupt")

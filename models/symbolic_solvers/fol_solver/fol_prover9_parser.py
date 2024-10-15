@@ -1,4 +1,3 @@
-# from z3 import *
 from ply import lex, yacc
 from .Formula import FOL_Formula
 
@@ -17,7 +16,7 @@ QUANT -> '∀' | '∃'
 """
 Revised grammar:
 S -> F | QUANT VAR S | '¬' S
-F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | TERM '=' TERM | QUANT VAR F
+F -> '¬' '(' F ')' | '(' F ')' | F OP F | L
 OP -> '⊕' | '∨' | '∧' | '→' | '↔'
 L -> '¬' PRED '(' TERMS ')' | PRED '(' TERMS ')'
 TERMS -> TERM | TERM ',' TERMS
@@ -27,7 +26,7 @@ QUANT -> '∀' | '∃'
 
 class Prover9_FOL_Formula:
     def __init__(self, fol_formula : FOL_Formula) -> None:
-        self.tokens = ['QUANT', 'VAR', 'NOT', 'LPAREN', 'RPAREN', 'OP', 'PRED', 'COMMA', 'CONST', 'EQ']
+        self.tokens = ['QUANT', 'VAR', 'NOT', 'LPAREN', 'RPAREN', 'OP', 'PRED', 'COMMA', 'CONST']
 
         self.t_QUANT = r'∀|∃'
         self.t_NOT = r'¬'
@@ -35,7 +34,6 @@ class Prover9_FOL_Formula:
         self.t_RPAREN = r'\)'
         self.t_OP = r'⊕|∨|∧|→|↔'
         self.t_COMMA = r','
-        self.t_EQ = r'='
 
         if len(fol_formula.variables) > 0:
             self.t_VAR = r'|'.join(list(fol_formula.variables))
@@ -118,19 +116,6 @@ class Prover9_FOL_Formula:
     def p_F_L(self, p):
         '''F : L'''
         p[0] = p[1]
-        
-    # F -> TERM '=' TERM
-    def p_F_eq(self, p):
-        '''F : TERM EQ TERM'''
-        p[0] = f"({p[1]}) = ({p[3]})"
-        
-    # F -> QUANT VAR F
-    def p_F_quantified_F(self, p):
-        '''F : QUANT VAR F'''
-        if p[1] == "∀":
-            p[0] = f"all {p[2]}.({p[3]})"
-        elif p[1] == "∃":
-            p[0] = f"some {p[2]}.({p[3]})"        
 
     # L -> '¬' PRED '(' TERMS ')'
     def p_L_not(self, p):

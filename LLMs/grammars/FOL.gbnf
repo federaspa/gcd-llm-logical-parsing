@@ -1,21 +1,27 @@
 root ::= S
 
-S ::= "¬"? (F | (QUANT VAR ws)+ "(" F ")")
+S ::= F | QUANT VAR S | "¬" S
 
-F ::= "¬"? (A | "(" A (ws OP ws A)+ ")")
+F ::= FB FT?
 
-A ::= "¬"? (B | "(" B (ws OP ws B)+ ")")
-B ::= "¬"? (C | "(" C (ws OP ws C)+ ")")
-C ::= "¬"? (L | "(" L (ws OP ws L)+ ")")
+FB ::= "¬" "(" F ")" | "(" F ")" | L
 
-OP ::= "\u2295" | "\u2228" | "\u2227" | "\u2192" | "\u2194"
-L ::= "¬"? PRED "(" TERMS ")"
-TERMS ::= TERM ("," ws TERM)*
-TERM ::= VAR | CONST
-QUANT ::= "\u2200" | "\u2203"
+FT ::= OP FB FT? | OP FB OP FB FT? | OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB OP FB FT?
+
+OP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
+
+L ::= "¬" PRED "(" TERMS ")" | PRED "(" TERMS ")"
+
+TERMS ::= TERM (", " TERMS)?
+
+TERM ::= CONST | VAR
+
+QUANT ::= "∀" | "∃"
+
 CONST ::= [a-z0-9]{2,15}
+
 VAR ::= "x" | "y" | "z"
+
 PRED ::= [[PREDICATES]]
 
-# Optional space: can appear zero or more times
 ws ::= " "
