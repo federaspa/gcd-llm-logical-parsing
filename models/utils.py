@@ -84,6 +84,9 @@ class OSModel:
                task_description,
                json_format = False,
                raw_grammar = None,
+                top_p = 0.95,
+                top_k=50,
+                min_p=0.1,
                **kwargs):
 
         """
@@ -110,6 +113,9 @@ class OSModel:
             ],
         grammar = grammar,
         response_format=response_format,
+        top_p = top_p, 
+        top_k= top_k,
+        min_p= min_p,
         **kwargs
         )
 

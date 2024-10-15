@@ -125,9 +125,6 @@ class SelfRefinementEngine(PromptGenerator):
             user=user,
             task_description=self.templates['parsing_system'],
             temperature=1.0,
-            top_p = 0.95,
-            top_k=50,
-            min_p=0.1
         )
         return response['choices'][0]['message']['content']
 
@@ -145,7 +142,7 @@ class SelfRefinementEngine(PromptGenerator):
             tfs_z=1,
             repeat_penalty=1,
         )
-        
+    
         # logger.debug(grammar)
         # logger.debug(response)
         
