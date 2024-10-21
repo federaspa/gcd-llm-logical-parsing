@@ -1,0 +1,74 @@
+I will provide a set of FOL formulas, one of which contains a syntax error. Your task is to understand why it's wrong, and explain how to fix it.
+You MUST ONLY FOCUS on the provided incorrect formula. If more that one formula is incorrect, ignore all formulas that are not provided as incorrect. 
+
+Here's some rules about FOL formulas:
+1. Logical Operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication) ¬ (negation), ↔ (equivalence)
+2. Quantifiers: ∀ (universal), ∃ (existential)
+3. Forbidden symbols: "%", "≠", "="
+4. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"
+5. Expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+6. The quantifiers SHALL ALWAYS be ONLY at the beginning of the formula.
+
+Here's an example:
+
+FOL formulas:
+
+"""
+∀x (Eel(x) → Fish(x))
+∀x (Fish(x) ≠ ¬Plant(x))
+∀x (Plant(x) ∨ Animal(x))
+∀x (Breathe(x) → ¬Paper(x))
+∀x (Animal(Breathe(x)))
+Eel(seaEel) ⊕ Plant(seaEel) → Eel(seaEel) ∨ Animal(seaEel)
+Eel(seaEel)
+"""
+
+Incorrect FOL formula: (Animal(Breathe(x)))
+
+Let's think step-by-step about how to fix this formula:
+
+1. The current formula is incorrect because the predicate "Breathe" is nested inside another predicate.
+2. We need to change it so that "Animal" and "Breathe" are separate predicates.
+3. The original intent seems to be that all animals breathe.
+4. We should use a universal quantifier (∀) to express this.
+5. We need to use an implication (→) to show that if something is an animal, then it breathes.
+6. The correct structure should be: ∀x (Animal(x) → Breathe(x))
+------
+
+Here's another example:
+
+Original FOL problem: 
+
+FOL formulas:
+"""
+UniversalLanguage(languageA)
+∀x ∀y ∃z Know(x, z ∧ Know(y, z ∧ UniversalLanguage(z) → Communicate(x, y))
+Know(katya, languageA)
+¬Communicate(katya, danil)
+"""
+
+Incorrect FOL formula: ∀x ∀y ∃z Know(x, z ∧ Know(y, z ∧ UniversalLanguage(z) → Communicate(x, y))
+
+Let's think step-by-step about how to fix this formula:
+
+1. The current formula has incorrect parentheses placement, causing logical errors.
+2. We need to separate the conditions within the existential quantifier.
+3. The implication should be the main logical operator, with the conditions on the left side.
+4. We should group "Know(x, z)" and "Know(y, z)" as separate conjuncts.
+5. "UniversalLanguage(z)" should be part of the conditions, not the conclusion.
+6. The correct structure should be: ∀x ∀y (∃z (Know(x, z) ∧ Know(y, z) ∧ UniversalLanguage(z)) → Communicate(x, y))
+------
+
+Now let's work on this one:
+
+FOL formulas: 
+
+Premises:
+"""
+[[PREMISES]]
+[[CONCLUSION]]
+"""
+
+Incorrect FOL formula: [[ERROR]]
+
+How can we fix this formula?

@@ -106,7 +106,6 @@ class SelfRefinementEngine(PromptGenerator):
         
         with open(programs_path) as f:
             dataset = json.load(f)
-        logger.info(f"Loaded {len(dataset)} examples from {self.config.split} split.")
         return dataset
 
     def safe_execute_program(self, logic_program: dict) -> tuple[str, str, str]:
@@ -170,82 +169,37 @@ class SelfRefinementEngine(PromptGenerator):
     def single_round_self_refinement(self):
         logic_problems = self.load_logic_problems()
         
-        save_path = Path(self.config.save_path) / self.gcd_dir / self.refiner_name
-        save_file = save_path / f'self-refine-{self.current_round}_{self.config.dataset_name}_{self.config.split}_{self.sketcher_name}.json'
-        
-        save_path.mkdir(parents=True, exist_ok=True)
-        
-        outputs = []
-
-        if save_file.exists():
-            with open(save_file, 'r') as f:
-                outputs = json.load(f)
-
-            existing_ids = {s["id"] for s in outputs}
-            logic_problems = [s for s in logic_problems if s["id"] not in existing_ids]
-
-        logger.info(f"{len(outputs)} already exist.\nLoaded {len(logic_problems)} examples from {self.config.split} split.")
-        
         for sample in logic_problems:
-            if sample.get('skip', False):
-                outputs.append(sample)
-                logger.info(f'Skipped {sample["id"]}')
-                continue
 
             logic_problem:dict = sample.get('logic_problem', {})
             if not logic_problem:
-                outputs.append(sample)
                 continue
 
             _, status, error = self.safe_execute_program(logic_problem)
             
-            skip = False
+            if status == 'parsing error' and error:
+                
+                nl = '\n'.join(r for r in sample['nl_problem']['nl_rules'])
+                fol = '\n'.join(r for r in logic_problem['fol_rules'])
+                
+                print(f"Original NL:\n\n{nl}\n")
+                print(f"Original FOL:\n\n{fol}\n")
+                print("Error:", error)
+                
+                input("Press Enter to continue...")
+                
+                print("Reasoning...")
+                reasoning = self.parsing_reasoning_generator(logic_problem, error)
+                
+                print(reasoning)
+                
+                print("Fixing...")
+                correction = self.parsing_correction_generator(logic_problem, error, reasoning)
+                
 
-            logic_problem.setdefault('parsing_errors', {})
-            logic_problem.setdefault('execution_errors', '')
+                print("Correction:", correction)    
+                
             
-            try:
-                if status == 'parsing error' and error:
-                    logger.info(f'Fixing parsing error for {sample["id"]}')
-                    
-                    print("Reasoning...")
-                    reasoning = self.parsing_reasoning_generator(logic_problem, error)
-                    print("Fixing...")
-                    correction = self.parsing_correction_generator(logic_problem, error, reasoning)
-                    
-                    logic_problem["parsing_errors"][error] = (correction, reasoning)
-                    
-                    
-                    logic_problem["fol_rules"] = [correction if f == error else f for f in logic_problem["fol_rules"]]
-                    
-                elif status == 'execution error' and error:
-                    logger.info(f'Fixing execution error for {sample["id"]}')
-                    reasoning = self.execution_reasoning_generation(logic_problem, error)
-                    logic_problem = self.execution_correction_generation(logic_problem, error, reasoning)
-                    logic_problem['execution_errors'][error] = reasoning
-
-
-                else:
-                    skip = True
-            
-            except Exception as e:
-                error_message = f'Exception for {sample["id"]}: {traceback.format_exc()}'
-                logger.error(error_message)
-                send_notification(error_message, "self_refinement.py correction error")
-                skip = True
-
-            
-            sample.update({
-                'logic_problem': logic_problem,
-                'skip': skip
-            })
-            
-            outputs.append(sample)
-
-            with open(save_file, 'w') as f:
-                json.dump(outputs, f, indent=2, ensure_ascii=False)
-
-        logger.info(f"Completed round {self.current_round} self-refinement")          
 
 
 def parse_args() -> Config:
@@ -267,16 +221,6 @@ def parse_args() -> Config:
 if __name__ == "__main__":
     config = parse_args()
     
-    script_name = Path(__file__).stem
-    logger = get_logger(script_name)
-    
-    logger.info(f"Dataset: {config.dataset_name}")
-    logger.info(f"Sketcher: {config.sketcher_path}")
-    logger.info(f"Refiner: {config.refiner_path}")
-    logger.info(f"Grammar-Constrained: {config.gcd}")
-    logger.info(f"Split: {config.split}")
-    logger.info(f"Save path: {config.save_path}")
-    
     refiner = OSModel(
         model_path=config.refiner_path,
         n_gpu_layers=config.n_gpu_layers,
@@ -285,19 +229,8 @@ if __name__ == "__main__":
     
     try:
         for round in range(config.starting_round, config.maximum_rounds + 1):
-            logger.info(f"Round {round} self-refinement")
             engine = SelfRefinementEngine(config, round, refiner=refiner)
             engine.single_round_self_refinement()
             
     except KeyboardInterrupt:
-        logger.error("KeyboardInterrupt")
         sys.exit(0)
-            
-    except Exception as e:
-        error_message = f'A fatal error occurred: {traceback.format_exc()}'
-        send_notification(error_message, "self_refinement.py fatal error")
-        logger.error(error_message)
-        sys.exit(0)
-        
-    logger.info("Finished Successfully")
-    send_notification("Yippiee!", "self_refinement.py finished successfully")
