@@ -16,7 +16,7 @@ QUANT -> '∀' | '∃'
 """
 Revised grammar:
 S -> F | QUANT VAR S | '¬' S
-F -> '¬' '(' F ')' | '(' F ')' | F OP F | L
+F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | QUANT VAR F
 OP -> '⊕' | '∨' | '∧' | '→' | '↔'
 L -> '¬' PRED '(' TERMS ')' | PRED '(' TERMS ')'
 TERMS -> TERM | TERM ',' TERMS
@@ -116,6 +116,13 @@ class Prover9_FOL_Formula:
     def p_F_L(self, p):
         '''F : L'''
         p[0] = p[1]
+        
+    def p_F_quantified(self, p):
+        '''F : QUANT VAR F'''
+        if p[1] == "∀":
+            p[0] = f"all {p[2]}.({p[3]})"
+        elif p[1] == "∃":
+            p[0] = f"some {p[2]}.({p[3]})"
 
     # L -> '¬' PRED '(' TERMS ')'
     def p_L_not(self, p):

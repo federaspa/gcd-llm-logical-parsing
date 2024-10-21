@@ -164,8 +164,6 @@ class LogicProgramGenerator(PromptGenerator):
                 
                 outputs.append(output)
                 
-                
-            
             except Exception as e:
                 
                 # Get the full error traceback
@@ -176,8 +174,6 @@ class LogicProgramGenerator(PromptGenerator):
                 
                 # Optionally, you can also print the error message
                 logger.error(error_message)
-                
-
             
             # save outputs
             with open(save_file, 'w') as f:

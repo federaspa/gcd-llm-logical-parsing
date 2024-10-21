@@ -54,17 +54,15 @@ def get_logger(script_name):
 
 class OSModel:
     def __init__(self,
-                model_path,
-                n_gpu_layers = -1,
-                n_batch = 512,
-                verbose = False):
-
+                 model_path,
+                 n_gpu_layers=-1,
+                 n_batch=512,
+                 verbose=False):
         """
         model_path: The path to the model.
-        grammar_path: The path to the grammar. The default is "GCD/grammars/grammar_unrolled.gbnf".
-        n_ctx: The context length of the model. The default is 1024, but you can change it to 512 if you have a smaller model.
         n_gpu_layers: The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
         n_batch: Should be between 1 and n_ctx, consider the amount of RAM of your Apple Silicon Chip.
+        verbose: Whether to print verbose output.
         """
 
         # Make sure the model path is correct for your system!
@@ -72,51 +70,60 @@ class OSModel:
             model_path=model_path,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
-            n_ctx = 12288,
+            n_threads=1 if n_gpu_layers==-1 else None,
+            n_ctx=0,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose = verbose
+            verbose=verbose
         )
-
-        # input("Press Enter to continue...")
+        
+        # Check if system role is supported and define the message format
+        if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
+            warnings.warn('System role not supported, adapting format', UserWarning)
+            self.format_messages = lambda task_description, user: [
+                {"role": "user", "content": f"{task_description}\n\n{user}"}
+            ]
+        else:
+            self.format_messages = lambda task_description, user: [
+                {"role": "system", "content": task_description},
+                {"role": "user", "content": user}
+            ]
 
     def invoke(self,
                user,
                task_description,
-               json_format = False,
-               raw_grammar = None,
-                top_p = 0.95,
-                top_k=50,
-                min_p=0.1,
+               json_format=False,
+               raw_grammar=None,
+               top_p=0.95,
+               top_k=50,
+               min_p=0.1,
                **kwargs):
-
         """
         user: The user input.
         task_description: The task description.
         raw_grammar: The grammar to use for the model.
-        max_tokens: The maximum number of tokens to generate.
-        echo: Whether to echo the user input.
-        stop: The stop words to use for the model.
+        json_format: Whether to format the response as JSON.
+        top_p, top_k, min_p: Sampling parameters.
+        **kwargs: Additional keyword arguments for create_chat_completion.
         """
 
-        if bool(json_format)*bool(raw_grammar):
+        if bool(json_format) * bool(raw_grammar):
             warnings.warn("Using json_format and grammar constraints together is unstable", UserWarning)
 
         grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
         response_format = {"type": "json_object"} if json_format else None
 
+        messages = self.format_messages(task_description, user)
 
         response = self.llm.create_chat_completion(
-        messages=[
-            {"role": "system", "content": task_description},
-            {"role": "user", "content": user},
-            # {"role": "user", "content": task_description + "\nHere's some examples:\n------\n" + user}
-            ],
-        grammar = grammar,
-        response_format=response_format,
-        top_p = top_p, 
-        top_k= top_k,
-        min_p= min_p,
-        **kwargs
+            messages=messages,
+            grammar=grammar,
+            response_format=response_format,
+            top_p=top_p,
+            top_k=top_k,
+            min_p=min_p,
+            **kwargs
         )
-
+        
+        if response['choices'][0]["finish_reason"] != 'stop':
+            raise Exception(f'Failed to generate response: stopping reason = "{response["choices"][0]["finish_reason"]}"')
         return response

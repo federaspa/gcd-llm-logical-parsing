@@ -1,13 +1,13 @@
-The task is to convert a natrual language reasoning problem into first-order logic.
+The task is to convert a natrual language reasoning problem into first-order logic. I will provide a reasoning of how to perform the conversion, and you must perform it.
 
-For conversion, you must adhere to the following rules:
-1. You SHOULD USE the following logical operators and quantifiers: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ∀ (universal), ∃ (existential), ¬ (negation), ↔ (equivalence)
-2. You SHOULD NEVER USE the following symbols for FOL: "%", "≠"
-3. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"; expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+For generating the FOL formulas, you must adhere to the following rules:
+1. Logical Operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication) ¬ (negation), ↔ (equivalence)
+2. Quantifiers: ∀ (universal), ∃ (existential)
+3. Forbidden symbols: "%", "≠", "="
+4. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"
+5. Expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
 
 Here's an example of how to perform the conversion:
-
-The reasoning problem is:
 
 NL premises:
 """
@@ -32,6 +32,8 @@ Predicates:
 - Unaware(x): x is unaware that caffeine is a drug.
 - Student(x): x is a student.
 
+Constants:
+- rina: Rina
 ---
 
 Premise 1:
@@ -131,10 +133,154 @@ Steps to Convert:
 Output
 
 {"fol_preds": ["Dependent(x)", "Drinks(x)", "Jokes(x)", "Unaware(x)", "Student(x)"],
+"fol_consts": ["rina]
 "fol_rules": ["∀x (Drinks(x) → Dependent(x))", "∀x (Drinks(x) ⊕ Jokes(x))", "∀x (Jokes(x) → ¬Unaware(x))", "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))", "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"],
 "fol_conc": "Jokes(rina) ⊕ Unaware(rina)"}
 
+###
+
+Here's another example:
+
+NL premises:
+"""
+Sam is doing a project.
+A project is written either in Rust or in Python.
+If Sam does a project written in Python, he will not use a Mac.
+Sam is using a Mac.
+If Sam uses a Mac, he will play a song.
+If a song is not "Perfect", Sam will never play it.
+"""
+
+NL conclusion:
+"""
+The project Sam is doing is written in Rust.
+"""
+
+Conversion Steps from NL Premises and Conclusion to FOL Rules and Conclusion:
+
+Predicates:
+- Project(x): x is a project
+- Do(x, y): x is doing y
+- WrittenIn(x, y): x is written in language y
+- Use(x, y): x uses y
+- Play(x, y): x plays y
+- Song(x): x is a song
+- Be(x, y): x is y
+
+Constants:
+- sam: Sam
+- mac: Mac computer
+- python: Python programming language
+- rust: Rust programming language
+- perfect: The song "Perfect"
+
 ---
+
+Premise 1:
+"Sam is doing a project."
+
+Steps to Convert:
+1. Recognize that this statement asserts the existence of a project that Sam is doing.
+2. Use the existential quantifier (∃) to represent "there exists a project".
+3. Using predicates:
+   - Project(x): x is a project
+   - Do(sam, x): Sam is doing x
+4. Formulate the FOL expression: ∃x (Project(x) ∧ Do(sam, x))
+
+---
+
+Premise 2:
+"A project is written either in Rust or in Python."
+
+Steps to Convert:
+1. Recognize that this is a universal statement about all projects.
+2. Translate to "For all x, if x is a project, then x is written in Rust or x is written in Python, but not both."
+3. Using predicates:
+   - Project(x): x is a project
+   - WrittenIn(x, y): x is written in language y
+4. Use the exclusive or operator (⊕):
+5. Formulate the FOL expression: ∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))
+
+---
+
+Premise 3:
+"If Sam does a project written in Python, he will not use a Mac."
+
+Steps to Convert:
+1. Recognize this as a conditional statement.
+2. Translate to "For all x, if x is a project and x is written in Python and Sam is doing x, then Sam does not use a Mac."
+3. Using predicates:
+   - Project(x): x is a project
+   - WrittenIn(x, python): x is written in Python
+   - Do(sam, x): Sam is doing x
+   - Use(sam, mac): Sam uses a Mac
+4. Apply negation to Use(sam, mac): ¬Use(sam, mac)
+5. Formulate the FOL expression: ∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))
+
+---
+
+Premise 4:
+"Sam is using a Mac."
+
+Steps to Convert:
+1. This is a simple statement about Sam using a Mac.
+2. Using predicates:
+   - Use(sam, mac): Sam uses a Mac
+3. Formulate the FOL expression: Use(sam, mac)
+
+---
+
+Premise 5:
+"If Sam uses a Mac, he will play a song."
+
+Steps to Convert:
+1. Recognize this as a conditional statement.
+2. Translate to "If Sam uses a Mac, then there exists a song that Sam plays."
+3. Using predicates:
+   - Use(sam, mac): Sam uses a Mac
+   - Song(x): x is a song
+   - Play(sam, x): Sam plays x
+4. Formulate the FOL expression: Use(sam, mac) → ∃x (Song(x) ∧ Play(sam, x))
+
+---
+
+Premise 6:
+"If a song is not "Perfect", Sam will never play it."
+
+Steps to Convert:
+1. Recognize this as a universal statement about all songs.
+2. Translate to "For all x, if x is a song and x is not Perfect, then Sam does not play x."
+3. Using predicates:
+   - Song(x): x is a song
+   - Be(x, perfect): x is Perfect
+   - Play(sam, x): Sam plays x
+4. Apply negation to Be(x, perfect) and Play(sam, x)
+5. Formulate the FOL expression: ∀x ((Song(x) ∧ ¬Be(x, perfect)) → ¬Play(sam, x))
+
+---
+
+Conclusion:
+"The project Sam is doing is written in Rust."
+
+Steps to Convert:
+1. Recognize that this statement asserts the existence of a project that Sam is doing and is written in Rust.
+2. Using predicates:
+   - Project(x): x is a project
+   - Do(sam, x): Sam is doing x
+   - WrittenIn(x, rust): x is written in Rust
+3. Formulate the FOL expression: ∃x (Project(x) ∧ Do(sam, x) ∧ WrittenIn(x, rust))
+
+---
+
+Output:
+
+\{
+  "fol_preds": ["Project(x)", "Do(x, y)", "WrittenIn(x, y)", "Use(x, y)", "Play(x, y)", "Song(x)", "Be(x, y)"],
+  "fol_consts": ["sam", "mac", "python", "rust", "perfect"],
+  "fol_rules": ["∃x (Project(x) ∧ Do(sam, x))", "∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))", "∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))", "Use(sam, mac)", "Use(sam, mac) → ∃x (Song(x) ∧ Play(sam, x))", "∀x ((Song(x) ∧ ¬Be(x, perfect)) → ¬Play(sam, x))"],
+  "fol_conc": "∃x (Project(x) ∧ Do(sam, x) ∧ WrittenIn(x, rust))"
+\}
+###
 
 Now let's think step by step about how to convert this problem to first-order logic:
 

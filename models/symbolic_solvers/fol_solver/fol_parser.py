@@ -11,7 +11,7 @@ class FOL_Parser:
         self.cfg_template = """
         S -> F | Q F | '¬' S | '(' S ')'
         Q -> QUANT VAR | QUANT VAR Q
-        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L
+        F -> '¬' '(' F ')' | '(' F ')' | F OP F | L | QUANT VAR F
         OP -> '⊕' | '∨' | '∧' | '→' | '↔'
         L -> '¬' PRED '(' TERMS ')' | PRED '(' TERMS ')'
         TERMS -> TERM | TERM ',' TERMS
