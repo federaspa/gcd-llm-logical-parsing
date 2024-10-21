@@ -25,14 +25,16 @@ class Config:
     n_gpu_layers: int
     verbose: bool
     gcd: bool
+    static_preds: bool
+    static_consts: bool
 
 class PromptGenerator:
     def __init__(self, config: Config):
         self.config = config
-        self.type = self.get_type()
-        self.load_prompt_templates()
+        self.type = self._get_type()
+        self._load_prompt_templates()
 
-    def get_type(self) -> str:
+    def _get_type(self) -> str:
         types = {
             'FOLIO': 'FOL',
             'FOLIOv2': 'FOL',
@@ -40,7 +42,7 @@ class PromptGenerator:
         }
         return types[self.config.dataset_name]
 
-    def load_prompt_templates(self):
+    def _load_prompt_templates(self):
         templates = {
             'parsing_user': f'./prompts/correction/user/{self.type}_parsing.txt',
             'execution_user': f'./prompts/correction/user/{self.type}_execution.txt',
@@ -56,6 +58,18 @@ class PromptGenerator:
     def _read_file(self, path: str) -> str:
         with open(path, 'r') as f:
             return f.read()
+        
+    def _get_predicates(self, logic_problem: str) -> str:
+        if self.config.static_preds:
+            return '[A-Z][a-z0-9]{2,15}'
+        else:
+            return ' | '.join(f'"{pred.split("(")[0]}"' for pred in logic_problem['fol_preds'])
+        
+    def _get_constants(self, logic_problem: str) -> str:
+        if self.config.static_consts:
+            return'[A-Z][a-z0-9]{2,15}'
+        else:
+            return' | '.join(con for con in logic_problem['fol_consts'])
 
     def parsing_prompt_fol(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -73,8 +87,11 @@ class PromptGenerator:
         return full_prompt, grammar
 
     def get_grammar(self, logic_problem: dict) -> str:
-        predicates = ' | '.join(f'"{pred.split("(")[0]}"' for pred in logic_problem['fol_preds'])
-        return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates)
+        
+        predicates = self._get_predicates(logic_problem)
+        constants = self._get_constants(logic_problem)
+                    
+        return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
 
     def execution_prompt_fol(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> str:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -96,7 +113,7 @@ class SelfRefinementEngine(PromptGenerator):
         self.gcd_dir = 'GCD' if config.gcd else 'NO_GCD'
         self.program_executor = FOL_Prover9_Program
 
-    def load_logic_problems(self) -> List[dict]:
+    def _load_logic_problems(self) -> List[dict]:
         prefix = f'self-refine-{self.current_round-1}_' if self.current_round > 1 else ""
         
         if self.current_round == 1:
@@ -109,7 +126,7 @@ class SelfRefinementEngine(PromptGenerator):
         logger.info(f"Loaded {len(dataset)} examples from {self.config.split} split.")
         return dataset
 
-    def safe_execute_program(self, logic_program: dict) -> tuple[str, str, str]:
+    def _safe_execute_program(self, logic_program: dict) -> tuple[str, str, str]:
         program = self.program_executor(logic_program)
         if program.flag == False:
             return 'N/A', 'parsing error', program.formula_error
@@ -118,8 +135,11 @@ class SelfRefinementEngine(PromptGenerator):
             return 'N/A', 'execution error', error_message
         return answer, 'success', ''
     
-    def parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
+    def _parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
         user, _ = self.parsing_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
+        if config.debug_mode:
+            print('Parsing prompt: ', user)
+            input('Press Enter to continue...')
         # logger.debug('REASONING GENERATION')
         response = self.refiner_api.invoke(
             user=user,
@@ -128,7 +148,7 @@ class SelfRefinementEngine(PromptGenerator):
         )
         return response['choices'][0]['message']['content']
 
-    def parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
+    def _parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
         user, grammar = self.parsing_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         # logger.debug('CORRECTION GENERATION')
         response = self.refiner_api.invoke(
@@ -142,13 +162,16 @@ class SelfRefinementEngine(PromptGenerator):
             tfs_z=1,
             repeat_penalty=1,
         )
-    
+
+        if config.debug_mode:
+            print('Grammar: ', grammar)
+            input('Press Enter to continue...')
         # logger.debug(grammar)
         # logger.debug(response)
         
         return response['choices'][0]['message']['content']
 
-    def execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
+    def _execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
         user = self.execution_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
         response = self.refiner_api.invoke(
             user=user,
@@ -157,7 +180,7 @@ class SelfRefinementEngine(PromptGenerator):
         )
         return response['choices'][0]['message']['content']
 
-    def execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
+    def _execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
         user = self.execution_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         response = self.refiner_api.invoke(
             user=user,
@@ -168,7 +191,7 @@ class SelfRefinementEngine(PromptGenerator):
         return json.loads(response['choices'][0]['message']['content'])
 
     def single_round_self_refinement(self):
-        logic_problems = self.load_logic_problems()
+        logic_problems = self._load_logic_problems()
         
         save_path = Path(self.config.save_path) / self.gcd_dir / self.refiner_name
         save_file = save_path / f'self-refine-{self.current_round}_{self.config.dataset_name}_{self.config.split}_{self.sketcher_name}.json'
@@ -197,7 +220,7 @@ class SelfRefinementEngine(PromptGenerator):
                 outputs.append(sample)
                 continue
 
-            _, status, error = self.safe_execute_program(logic_problem)
+            _, status, error = self._safe_execute_program(logic_problem)
             
             skip = False
 
@@ -207,11 +230,8 @@ class SelfRefinementEngine(PromptGenerator):
             try:
                 if status == 'parsing error' and error:
                     logger.info(f'Fixing parsing error for {sample["id"]}')
-                    
-                    print("Reasoning...")
-                    reasoning = self.parsing_reasoning_generator(logic_problem, error)
-                    print("Fixing...")
-                    correction = self.parsing_correction_generator(logic_problem, error, reasoning)
+                    reasoning = self._parsing_reasoning_generator(logic_problem, error)
+                    correction = self._parsing_correction_generator(logic_problem, error, reasoning)
                     
                     logic_problem["parsing_errors"][error] = (correction, reasoning)
                     
@@ -220,8 +240,8 @@ class SelfRefinementEngine(PromptGenerator):
                     
                 elif status == 'execution error' and error:
                     logger.info(f'Fixing execution error for {sample["id"]}')
-                    reasoning = self.execution_reasoning_generation(logic_problem, error)
-                    logic_problem = self.execution_correction_generation(logic_problem, error, reasoning)
+                    reasoning = self._execution_reasoning_generation(logic_problem, error)
+                    logic_problem = self._execution_correction_generation(logic_problem, error, reasoning)
                     logic_problem['execution_errors'][error] = reasoning
 
 
@@ -247,6 +267,42 @@ class SelfRefinementEngine(PromptGenerator):
 
         logger.info(f"Completed round {self.current_round} self-refinement")          
 
+    def single_round_self_refinement_debug_mode(self):
+        logic_problems = self._load_logic_problems()
+        
+        for sample in logic_problems:
+
+            logic_problem:dict = sample.get('logic_problem', {})
+            if not logic_problem:
+                continue
+
+            _, status, error = self._safe_execute_program(logic_problem)
+            
+            if status == 'parsing error' and error:
+                
+                nl = '\n'.join(r for r in sample['nl_problem']['nl_rules'])
+                fol = '\n'.join(r for r in logic_problem['fol_rules'])
+                
+                print(f"Original NL:\n\n{nl}\n")
+                print(f"Original FOL:\n\n{fol}\n")
+                print("Error: ", error)
+                
+                input("Press Enter to continue...")
+                
+                print("Reasoning...")
+                reasoning = self._parsing_reasoning_generator(logic_problem, error)
+                
+                print("\nReasoning: ", reasoning)
+
+                input("Press Enter to continue...")                
+                print("Fixing...")
+                correction = self._parsing_correction_generator(logic_problem, error, reasoning)
+                
+
+                print("\nCorrection: ", correction)    
+                
+            
+
 
 def parse_args() -> Config:
     parser = argparse.ArgumentParser()
@@ -261,6 +317,9 @@ def parse_args() -> Config:
     parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--gcd', action='store_true')
+    parser.add_argument('--static_preds', action='store_true')
+    parser.add_argument('--static_consts', action='store_true')
+    parser.add_argument('--debug_mode', action='store_true')
     args = parser.parse_args()
     return Config(**vars(args))
 
