@@ -4,6 +4,7 @@ import sys
 from typing import Dict, List, Callable, Any
 from dataclasses import dataclass
 from pathlib import Path
+from pprint import pp
 
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
@@ -27,6 +28,9 @@ class Config:
     gcd: bool
     static_preds: bool
     static_consts: bool
+    
+script_name = Path(__file__).stem
+logger = get_logger(script_name)
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -137,9 +141,6 @@ class SelfRefinementEngine(PromptGenerator):
     
     def _parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
         user, _ = self.parsing_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
-        if config.debug_mode:
-            print('Parsing prompt: ', user)
-            input('Press Enter to continue...')
         # logger.debug('REASONING GENERATION')
         response = self.refiner_api.invoke(
             user=user,
@@ -162,10 +163,6 @@ class SelfRefinementEngine(PromptGenerator):
             tfs_z=1,
             repeat_penalty=1,
         )
-
-        if config.debug_mode:
-            print('Grammar: ', grammar)
-            input('Press Enter to continue...')
         # logger.debug(grammar)
         # logger.debug(response)
         
@@ -217,21 +214,22 @@ class SelfRefinementEngine(PromptGenerator):
 
             logic_problem:dict = sample.get('logic_problem', {})
             if not logic_problem:
+                sample.update({'skip': True})
                 outputs.append(sample)
                 continue
 
             _, status, error = self._safe_execute_program(logic_problem)
             
             skip = False
-
-            logic_problem.setdefault('parsing_errors', {})
-            logic_problem.setdefault('execution_errors', '')
             
             try:
                 if status == 'parsing error' and error:
                     logger.info(f'Fixing parsing error for {sample["id"]}')
                     reasoning = self._parsing_reasoning_generator(logic_problem, error)
                     correction = self._parsing_correction_generator(logic_problem, error, reasoning)
+                    
+                    logic_problem.setdefault('parsing_errors', {})
+                    logic_problem.setdefault('execution_errors', {})
                     
                     logic_problem["parsing_errors"][error] = (correction, reasoning)
                     
@@ -242,6 +240,10 @@ class SelfRefinementEngine(PromptGenerator):
                     logger.info(f'Fixing execution error for {sample["id"]}')
                     reasoning = self._execution_reasoning_generation(logic_problem, error)
                     logic_problem = self._execution_correction_generation(logic_problem, error, reasoning)
+                    
+                    logic_problem.setdefault('parsing_errors', {})
+                    logic_problem.setdefault('execution_errors', {})
+                    
                     logic_problem['execution_errors'][error] = reasoning
 
 
@@ -267,43 +269,6 @@ class SelfRefinementEngine(PromptGenerator):
 
         logger.info(f"Completed round {self.current_round} self-refinement")          
 
-    def single_round_self_refinement_debug_mode(self):
-        logic_problems = self._load_logic_problems()
-        
-        for sample in logic_problems:
-
-            logic_problem:dict = sample.get('logic_problem', {})
-            if not logic_problem:
-                continue
-
-            _, status, error = self._safe_execute_program(logic_problem)
-            
-            if status == 'parsing error' and error:
-                
-                nl = '\n'.join(r for r in sample['nl_problem']['nl_rules'])
-                fol = '\n'.join(r for r in logic_problem['fol_rules'])
-                
-                print(f"Original NL:\n\n{nl}\n")
-                print(f"Original FOL:\n\n{fol}\n")
-                print("Error: ", error)
-                
-                input("Press Enter to continue...")
-                
-                print("Reasoning...")
-                reasoning = self._parsing_reasoning_generator(logic_problem, error)
-                
-                print("\nReasoning: ", reasoning)
-
-                input("Press Enter to continue...")                
-                print("Fixing...")
-                correction = self._parsing_correction_generator(logic_problem, error, reasoning)
-                
-
-                print("\nCorrection: ", correction)    
-                
-            
-
-
 def parse_args() -> Config:
     parser = argparse.ArgumentParser()
     parser.add_argument('--sketcher-path', type=str, required=True)
@@ -319,15 +284,11 @@ def parse_args() -> Config:
     parser.add_argument('--gcd', action='store_true')
     parser.add_argument('--static_preds', action='store_true')
     parser.add_argument('--static_consts', action='store_true')
-    parser.add_argument('--debug_mode', action='store_true')
     args = parser.parse_args()
     return Config(**vars(args))
 
 if __name__ == "__main__":
     config = parse_args()
-    
-    script_name = Path(__file__).stem
-    logger = get_logger(script_name)
     
     logger.info(f"Dataset: {config.dataset_name}")
     logger.info(f"Sketcher: {config.sketcher_path}")
