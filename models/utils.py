@@ -75,27 +75,35 @@ class OSModel:
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
             verbose=verbose
         )
-        
-        # Check if system role is supported and define the message format
         if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
             warnings.warn('System role not supported, adapting format', UserWarning)
-            self.format_messages = lambda task_description, user: [
-                {"role": "user", "content": f"{task_description}\n\n{user}"}
+        
+    def _format_messages(self, task_description:str|None, user:str):
+        
+        if not task_description:
+            return [
+                {"role": "user", "content": user}
             ]
+        
+        elif "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
+            warnings.warn('System role not supported, adapting format', UserWarning)
+            return [
+                {"role": "user", "content": f"{task_description}\n\n{user}"}
+                ]
         else:
-            self.format_messages = lambda task_description, user: [
+            return [
                 {"role": "system", "content": task_description},
                 {"role": "user", "content": user}
             ]
 
     def invoke(self,
-               user,
-               task_description,
-               json_format=False,
-               raw_grammar=None,
-               top_p=0.95,
-               top_k=50,
-               min_p=0.1,
+               user:str,
+               task_description:str|None=None,
+               json_format:bool=False,
+               raw_grammar:bool=None,
+               top_p:float=0.95,
+               top_k:float=50,
+               min_p:float=0.1,
                **kwargs):
         """
         user: The user input.
@@ -112,7 +120,7 @@ class OSModel:
         grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
         response_format = {"type": "json_object"} if json_format else None
 
-        messages = self.format_messages(task_description, user)
+        messages = self._format_messages(task_description, user)
 
         response = self.llm.create_chat_completion(
             messages=messages,

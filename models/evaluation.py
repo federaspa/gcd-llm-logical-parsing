@@ -123,10 +123,10 @@ def get_res(metric):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset_name', type=str)
-    parser.add_argument('--sketcher_path', type=str)
+    parser.add_argument('--dataset-name', type=str, required=True)
+    parser.add_argument('--sketcher-path', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--result_path', type=str, default='./outputs/logic_inference')
+    parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
     return args
 
