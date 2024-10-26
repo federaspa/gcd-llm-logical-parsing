@@ -57,7 +57,10 @@ class OSModel:
                  model_path,
                  n_gpu_layers=-1,
                  n_batch=512,
-                 verbose=False):
+                 n_ctx = 12288,
+                 verbose=False,
+                 logits_all = True,
+                 **kwargs):
         """
         model_path: The path to the model.
         n_gpu_layers: The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
@@ -71,9 +74,11 @@ class OSModel:
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
             n_threads=1 if n_gpu_layers==-1 else None,
-            n_ctx=0,
+            n_ctx=n_ctx,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose=verbose
+            verbose=verbose,
+            logits_all = logits_all,
+            **kwargs
         )
         if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
             warnings.warn('System role not supported, adapting format', UserWarning)
@@ -97,41 +102,28 @@ class OSModel:
             ]
 
     def invoke(self,
-               user:str,
-               task_description:str|None=None,
-               json_format:bool=False,
+               prompt:str,
                raw_grammar:bool=None,
+               logprobs = 5,
+               max_tokens = -1,
                top_p:float=0.95,
                top_k:float=50,
                min_p:float=0.1,
                **kwargs):
-        """
-        user: The user input.
-        task_description: The task description.
-        raw_grammar: The grammar to use for the model.
-        json_format: Whether to format the response as JSON.
-        top_p, top_k, min_p: Sampling parameters.
-        **kwargs: Additional keyword arguments for create_chat_completion.
-        """
-
-        if bool(json_format) * bool(raw_grammar):
-            warnings.warn("Using json_format and grammar constraints together is unstable", UserWarning)
 
         grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
-        response_format = {"type": "json_object"} if json_format else None
 
-        messages = self._format_messages(task_description, user)
-
-        response = self.llm.create_chat_completion(
-            messages=messages,
+        response = self.llm.create_completion(
+            prompt=prompt,
+            logprobs=logprobs,
+            max_tokens = max_tokens,
             grammar=grammar,
-            response_format=response_format,
             top_p=top_p,
             top_k=top_k,
             min_p=min_p,
             **kwargs
         )
         
-        if response['choices'][0]["finish_reason"] != 'stop':
-            raise Exception(f'Failed to generate response: stopping reason = "{response["choices"][0]["finish_reason"]}"')
+        # if response['choices'][0]["finish_reason"] != 'stop':
+        #     raise Exception(f'Failed to generate response: stopping reason = "{response["choices"][0]["finish_reason"]}"')
         return response

@@ -36,7 +36,7 @@ class PromptGenerator:
     def __init__(self, config: Config):
         self.config = config
         self.type = self._get_type()
-        self._load_prompt_templates()
+        self._load_templates()
 
     def _get_type(self) -> str:
         types = {
@@ -46,15 +46,14 @@ class PromptGenerator:
         }
         return types[self.config.dataset_name]
 
-    def _load_prompt_templates(self):
+    def _load_templates(self):
         templates = {
             'parsing_user': f'./prompts/correction/user/{self.type}_parsing.txt',
             'execution_user': f'./prompts/correction/user/{self.type}_execution.txt',
             'parsing_reasoning_user': f'./prompts/correction/user/{self.type}_parsing_reasoning.txt',
             'execution_reasoning_user': f'./prompts/correction/user/{self.type}_execution_reasoning.txt',
-            'parsing_system': f'./prompts/correction/system/{self.type}_parsing.txt',
-            'execution_system': f'./prompts/correction/system/{self.type}_execution.txt',
-            'grammar_file': f'./LLMs/grammars/{self.type}.gbnf'
+            'grammar_file': f'./LLMs/grammars/{self.type}.gbnf',
+            'json_grammar': './LLMs/grammars/json.gbnf'
         }
 
         self.templates = {key: self._read_file(path) for key, path in templates.items()}
@@ -143,18 +142,16 @@ class SelfRefinementEngine(PromptGenerator):
         user, _ = self.parsing_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
         # logger.debug('REASONING GENERATION')
         response = self.refiner_api.invoke(
-            user=user,
-            task_description=self.templates['parsing_system'],
+            prompt=user,
             temperature=1.0,
         )
-        return response['choices'][0]['message']['content']
+        return response['choices'][0]['text']
 
     def _parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
         user, grammar = self.parsing_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         # logger.debug('CORRECTION GENERATION')
         response = self.refiner_api.invoke(
-            user=user,
-            task_description=self.templates['parsing_system'],
+            prompt=user,
             raw_grammar=grammar,
             temperature=0.5,
             top_p = 1,
@@ -166,26 +163,24 @@ class SelfRefinementEngine(PromptGenerator):
         # logger.debug(grammar)
         # logger.debug(response)
         
-        return response['choices'][0]['message']['content']
+        return response['choices'][0]['text']
 
     def _execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
         user = self.execution_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
         response = self.refiner_api.invoke(
-            user=user,
-            task_description=self.templates['parsing_system'],
+            prompt=user,
             temperature=1.0
         )
-        return response['choices'][0]['message']['content']
+        return response['choices'][0]['text']
 
     def _execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
         user = self.execution_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         response = self.refiner_api.invoke(
-            user=user,
-            task_description=self.templates['parsing_system'],
-            json_format=True,
+            prompt=user,
+            raw_grammar=self.templates['json_grammar'],
             temperature=0.5,
         )
-        return json.loads(response['choices'][0]['message']['content'])
+        return json.loads(response['choices'][0]['text'])
 
     def single_round_self_refinement(self):
         logic_problems = self._load_logic_problems()
