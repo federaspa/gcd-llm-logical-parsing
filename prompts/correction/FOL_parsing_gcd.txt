@@ -1,0 +1,47 @@
+I will provide a FOL reasoning problem and an error raised by a symbolic solver when attempting to solve the problem. You must understand why the symbolic solver raised the error, and propose a correct formula.
+You MUST ONLY FOCUS on the provided incorrect formula. If more that one formula is incorrect, ignore all formulas that are not provided as incorrect. 
+
+Here's the FOL grammar:
+"""
+root ::= S
+S ::= F | QUANT VAR S | "¬" S
+F ::= FB FT?
+FB ::= "¬"? "(" F ")" | L
+FT ::= OP FB FT? | OP FB OP FB FT? | OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB OP FB FT?
+OP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
+
+L ::= "¬"? PRED "(" TERMS ")"
+TERMS ::= TERM (", " TERMS)?
+TERM ::= CONST | VAR
+
+QUANT ::= "∀" | "∃"
+CONST ::= [[CONSTANTS]]
+VAR ::= "x" | "y" | "z"
+PRED ::= [[PREDICATES]]
+"""
+
+Here's an example of how to perform the correction:
+
+Incorrect FOL formula: (Animal(Breathe(x)))
+
+The current formula is incorrect because the predicate "Breathe" is nested within the predicate "Animal", which is not allowed. We need to change it so that "Animal" and "Breathe" are separate predicates. The original intent seems to be that all animals breathe, therefore we should use a universal quantifier (∀) and an implication (→) to show that if something is an animal, then it breathes. The correct structure should be: ∀x (Animal(x) → Breathe(x))
+
+Correct FOL formula: ∀x (Animal(x) → Breathe(x))
+------
+
+Incorrect FOL formula: ∀x (Sting(stonefish, x) ∧ (ApplyHeat(x) ∨ UseAntivenom(x)) → Treated(x)
+
+Let's about how to fix this formula:
+
+The current formula has inbalanced parentheses. It appears that the bracket opened after "∀x" is never closed. Therefore, we must add a closed bracket at the end of the formula.
+
+Correct FOL formula: ∀x (Sting(stonefish, x) ∧ (ApplyHeat(x) ∨ UseAntivenom(x)) → Treated(x))
+------
+
+Now let's work on this one:
+
+Incorrect FOL formula: [[ERROR]]
+
+[[REASONING]]
+
+Correct FOL formula:

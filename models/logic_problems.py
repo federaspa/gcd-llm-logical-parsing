@@ -7,6 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from utils import OSModel, send_notification, get_logger, calculate_perplexity
+from prompters import FOL_Prompter, LP_Prompter
 
 import traceback
 
@@ -29,14 +30,26 @@ class PromptGenerator:
         self.config = config
         self.type = self._get_type()
         self._load_templates()
+        self.prompter = self._get_prompter()
 
     def _get_type(self) -> str:
         types = {
             'FOLIO': 'FOL',
             'FOLIOv2': 'FOL',
-            'LogicNLI': 'FOL'
+            'LogicNLI': 'FOL',
+            'ProntoQA': 'LP',
+            'ProofWriter': 'LP'
         }
         return types[self.config.dataset_name]
+    
+    def _get_prompter(self):
+        prompters = {
+            'FOL': FOL_Prompter,
+            'LP': LP_Prompter
+        }
+        
+        prompter = prompters[self.type](self.config, self.templates)
+        return prompter
 
     def _load_templates(self):
         templates = {
@@ -57,14 +70,6 @@ class PromptGenerator:
                         content = prompt_template.replace('[[user]]', content)
                 self.templates[key] = content
 
-    def unstructured_prompt(self, sample: dict) -> str:
-        problem = '\n'.join(sample['context'])
-        question = sample['question'].strip()
-        return self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
-
-    def structured_prompt(self, unstructured: str) -> str:
-        return self.templates['structured_user'].replace('[[unstructured]]', unstructured)
-
 class LogicProgramGenerator(PromptGenerator):
     def __init__(self, config: Config):
         super().__init__(config)
@@ -76,7 +81,7 @@ class LogicProgramGenerator(PromptGenerator):
             n_gpu_layers=config.n_gpu_layers,
             verbose=config.verbose
         )
-
+        
     def _load_raw_dataset(self) -> List[dict]:
         dataset_path = Path(self.config.data_path) / self.config.dataset_name / f'{self.config.split}.json'
         with open(dataset_path) as f:
@@ -84,7 +89,7 @@ class LogicProgramGenerator(PromptGenerator):
         return raw_dataset
 
     def _unstructured_generator(self, sample: dict) -> Tuple[str, float]:
-        user = self.unstructured_prompt(sample)
+        user = self.prompter.unstructured(sample = sample)
         response = self.sketcher_api.invoke(prompt=user)
         
         content = response['choices'][0]['text']
@@ -93,7 +98,7 @@ class LogicProgramGenerator(PromptGenerator):
         return content, perplexity
 
     def _structured_generator(self, unstructured: str) -> dict:
-        user = self.structured_prompt(unstructured)
+        user = self.prompter.structured(unstructured)
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.templates['json_grammar']

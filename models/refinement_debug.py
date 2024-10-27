@@ -25,12 +25,12 @@ class SelfRefinementEngine(SelfRefinementEngine):
                 input("Press Enter to continue...")
                 
                 print("Reasoning...")
-                reasoning = self._parsing_reasoning_generator(logic_problem, error)
+                reasoning, _ = self._parsing_reasoning_generator(logic_problem, error)
                 
                 print(reasoning)
                 
                 print("Fixing...")
-                correction = self._parsing_correction_generator(logic_problem, error, reasoning)
+                correction, _ = self._parsing_correction_generator(logic_problem, error, reasoning)
                 
 
                 print("Correction:", correction)    

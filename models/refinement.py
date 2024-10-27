@@ -10,6 +10,7 @@ from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
 from utils import OSModel, get_logger, send_notification, calculate_perplexity
+from prompters import FOL_Prompter, LP_Prompter
 
 import traceback
 
@@ -37,76 +38,54 @@ class PromptGenerator:
         self.config = config
         self.type = self._get_type()
         self._load_templates()
+        self.prompter = self._get_prompter()
 
     def _get_type(self) -> str:
         types = {
             'FOLIO': 'FOL',
             'FOLIOv2': 'FOL',
-            'LogicNLI': 'FOL'
+            'LogicNLI': 'FOL',
+            'ProntoQA': 'LP',
+            'ProofWriter': 'LP'
         }
         return types[self.config.dataset_name]
+    
+    def _get_prompter(self):
+        prompters = {
+            'FOL': FOL_Prompter,
+            'LP': LP_Prompter
+        }
+        
+        prompter = prompters[self.type](self.config, self.templates)
+        return prompter
 
     def _load_templates(self):
         templates = {
-            'parsing_user': f'./prompts/correction/{self.type}_parsing.txt',
+            'parsing_user': f'./prompts/correction/{self.type}_parsing_gcd.txt' if self.config.gcd else f'./prompts/correction/{self.type}_parsing_nogcd.txt',
             'execution_user': f'./prompts/correction/{self.type}_execution.txt',
             'parsing_reasoning_user': f'./prompts/correction/{self.type}_parsing_reasoning.txt',
             'execution_reasoning_user': f'./prompts/correction/{self.type}_execution_reasoning.txt',
             'grammar_file': f'./LLMs/grammars/{self.type}.gbnf',
-            'json_grammar': './LLMs/grammars/json.gbnf'
+            'json_grammar': './LLMs/grammars/json.gbnf',
+            'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_path else 'prompts/prompt_templates/llama.txt',
         }
+        # Load and process templates
+        self.templates = {}
+        for key, path in templates.items():
+            with open(path, 'r') as f:
+                content = f.read()
+                if 'user' in key:
+                    with open(templates['prompt_template'], 'r') as pt:
+                        prompt_template = pt.read()
+                        content = prompt_template.replace('[[user]]', content)
+                self.templates[key] = content
 
-        self.templates = {key: self._read_file(path) for key, path in templates.items()}
 
     def _read_file(self, path: str) -> str:
         with open(path, 'r') as f:
             return f.read()
         
-    def _get_predicates(self, logic_problem: str) -> str:
-        if self.config.static_preds:
-            return '[A-Z][a-z0-9]{2,15}'
-        else:
-            return ' | '.join(f'"{pred.split("(")[0]}"' for pred in logic_problem['fol_preds'])
-        
-    def _get_constants(self, logic_problem: str) -> str:
-        if self.config.static_consts:
-            return'[A-Z][a-z0-9]{2,15}'
-        else:
-            return' | '.join(f'"{con}"' for con in logic_problem['fol_consts'])
 
-    def parsing_prompt_fol(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
-        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
-
-        premises = '\n'.join(logic_problem['fol_rules'])
-        conclusion = logic_problem['fol_conc']
-
-        if mode == 'reasoning':
-            full_prompt = self.templates['parsing_reasoning_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error)
-            grammar = None
-        elif mode == 'generation':
-            full_prompt = self.templates['parsing_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
-            grammar = self.get_grammar(logic_problem) if self.config.gcd else None
-
-            # raise Exception(grammar)
-
-        return full_prompt, grammar
-
-    def get_grammar(self, logic_problem: dict) -> str:
-        
-        predicates = self._get_predicates(logic_problem)
-        constants = self._get_constants(logic_problem)
-                    
-        return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
-
-    def execution_prompt_fol(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> str:
-        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
-
-        problem_string = json.dumps(logic_problem)
-
-        if mode == 'reasoning':
-            return self.templates['execution_reasoning_user'].replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error)
-        elif mode == 'generation':
-            return self.templates['execution_user'].replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
 
 class SelfRefinementEngine(PromptGenerator):
     def __init__(self, config: Config, current_round: int, refiner: OSModel):
@@ -141,7 +120,7 @@ class SelfRefinementEngine(PromptGenerator):
         return answer, 'success', ''
     
     def _parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
-        user, _ = self.parsing_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
+        user, _ = self.prompter.parsing(mode='reasoning', logic_problem=logic_problem, error=error)
         # logger.debug('REASONING GENERATION')
         response = self.refiner_api.invoke(
             prompt=user,
@@ -154,7 +133,7 @@ class SelfRefinementEngine(PromptGenerator):
         return content, perplexity
 
     def _parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
-        user, grammar = self.parsing_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
+        user, grammar = self.prompter.parsing(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         # logger.debug('CORRECTION GENERATION')
         response = self.refiner_api.invoke(
             prompt=user,
@@ -168,12 +147,16 @@ class SelfRefinementEngine(PromptGenerator):
         )
         
         content = response['choices'][0]['text']
+        
+        if not self.config.gcd:
+            content = json.loads(response['choices'][0]['text']).get('corrt_formula', error)
+        
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
         return content, perplexity
 
     def _execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
-        user = self.execution_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
+        user = self.prompter.execution(mode='reasoning', logic_problem=logic_problem, error=error)
         response = self.refiner_api.invoke(
             prompt=user,
             temperature=1.0
@@ -185,7 +168,7 @@ class SelfRefinementEngine(PromptGenerator):
         return content, perplexity
 
     def _execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
-        user = self.execution_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
+        user = self.prompter.execution(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         response = self.refiner_api.invoke(
             prompt=user,
             raw_grammar=self.templates['json_grammar'],
@@ -286,7 +269,10 @@ class SelfRefinementEngine(PromptGenerator):
 
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
-
+                
+        with open(save_file, 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
+                
         logger.info(f"Completed round {self.current_round} self-refinement")          
 
 def parse_args() -> Config:

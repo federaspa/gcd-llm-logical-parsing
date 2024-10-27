@@ -4,13 +4,13 @@ S ::= F | QUANT VAR S | "¬" S
 
 F ::= FB FT?
 
-FB ::= "¬" "(" F ")" | "(" F ")" | L
+FB ::= "¬"? "(" F ")" | L
 
-FT ::= OP FB FT? | OP FB OP FB FT? | OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB OP FB OP FB FT?
+FT ::= OP FB FT? | OP FB OP FB FT? | OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB FT?
 
 OP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
 
-L ::= "¬" PRED "(" TERMS ")" | PRED "(" TERMS ")"
+L ::= "¬"? PRED "(" TERMS ")"
 
 TERMS ::= TERM (", " TERMS)?
 
@@ -23,5 +23,3 @@ CONST ::= [[CONSTANTS]]
 VAR ::= "x" | "y" | "z"
 
 PRED ::= [[PREDICATES]]
-
-ws ::= " "
