@@ -3,7 +3,7 @@
 import json
 import os
 from tqdm.autonotebook import tqdm
-from utils import OSModel, send_notification, get_logger
+from utils import OSModel, send_notification, get_logger, calculate_perplexity
 import argparse
 from collections.abc import Callable
 import traceback
@@ -89,21 +89,12 @@ class LogicProgramGenerator(PromptGenerator):
         self.prompter:Callable = self.prompters[self.type]
         # self.reasoning_prompter:Callable[[dict],str] = self.reasoning_prompters[self.type]
         
-    
-    def _handle_logprobs(self, logprobs):
-        logprobs['token_logprobs'] = [float(p) for p in logprobs['token_logprobs']]    
-        for step in logprobs['top_logprobs']:
-            for key, value in step.items():
-                step[key] = float(value)
-                
-        return logprobs
-        
     def load_raw_dataset(self):
         with open(os.path.join(self.data_path, self.dataset_name, f'{self.split}.json')) as f:
             raw_dataset = json.load(f)
         return raw_dataset
     
-    def unstructured_generator(self, sample:dict) -> Tuple[str, dict]:
+    def unstructured_generator(self, sample:dict) -> Tuple[str, float]:
         user = self.prompter(sample = sample, mode = 'unstructured')
 
         response = self.sketcher_api.invoke(
@@ -111,11 +102,11 @@ class LogicProgramGenerator(PromptGenerator):
         )
         
         content = response['choices'][0]['text']
-        logprobs = self._handle_logprobs(response['choices'][0]['logprobs'])
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
-        return content, logprobs
+        return content, perplexity
   
-    def structured_generator(self, unstructured:str) -> Tuple[dict, dict]:
+    def structured_generator(self, unstructured:str) -> dict:
         user = self.prompter(mode = 'structured', unstructured = unstructured)
         
         response = self.sketcher_api.invoke(
@@ -124,11 +115,11 @@ class LogicProgramGenerator(PromptGenerator):
         )
         
         content = response['choices'][0]['text']
-        logprobs = self._handle_logprobs(response['choices'][0]['logprobs'])
+        # logprobs = self._handle_logprobs(response['choices'][0]['logprobs'])
         
         problem:dict = json.loads(content)
         
-        return problem, logprobs
+        return problem
   
     def run(self):
         # load raw dataset
@@ -155,16 +146,16 @@ class LogicProgramGenerator(PromptGenerator):
             
             try:
                 
-                unstructured, unstructured_logprobs = self.unstructured_generator(sample)
+                unstructured, perplexity = self.unstructured_generator(sample)
             
                 
                 if i%20 == 0:
                     logger.debug(unstructured)
                     
-                logic_problem, structured_logprobs = self.structured_generator(unstructured)
+                logic_problem = self.structured_generator(unstructured)
                 
-                logic_problem['unstructured_logprobs'] = unstructured_logprobs
-                logic_problem['structured_logprobs'] = structured_logprobs
+                # logic_problem['unstructured_logprobs'] = unstructured_logprobs
+                logic_problem['perplexity'] = perplexity
                     
                 if i%20 == 0:
                     logger.debug(logic_problem)

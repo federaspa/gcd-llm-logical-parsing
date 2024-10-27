@@ -36,7 +36,8 @@
       ],
       "fol_conc": "PerformOften(bonnie)",
       "perplexity": 1.0581606687188472
-    }
+    },
+    "skip": true
   },
   {
     "id": 1,
@@ -74,8 +75,18 @@
         "(AttendEvents(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEvents(bonnie) ∨ Student(bonnie))"
       ],
       "fol_conc": "((YoungChildTeenager(bonnie) ∧ WishesAcademic(bonnie) ∧ ChaperoneDance(bonnie)) ⊕ ¬(YoungChildTeenager(bonnie) ∧ WishesAcademic(bonnie))) → (Student(bonnie) ∨ InactiveDisinterested(bonnie)))",
-      "perplexity": 1.0524911950766944
-    }
+      "perplexity": 1.0524911950766944,
+      "parsing_errors": {
+        "((YoungChildTeenager(bonnie) ∧ WishesAcademic(bonnie) ∧ ChaperoneDance(bonnie)) ⊕ ¬(YoungChildTeenager(bonnie) ∧ WishesAcademic(bonnie))) → (Student(bonnie) ∨ InactiveDisinterested(bonnie)))": {
+          "reasoning": " \n\nLet's about how to fix this formula:\n\nThe current formula has an incorrect use of the logical operator \"⊕\" (either or). This operator requires two arguments, but it appears to be applied to three arguments: \"YoungChildTeenager(bonnie)\", \"WishesAcademic(bonnie)\", and \"ChaperoneDance(bonnie)\".  We need to re-arrange the formula to correctly apply the \"⊕\" operator. \n\nCorrect FOL formula: ((YoungChildTeenager(bonnie) ∧ WishesAcademic(bonnie)) ⊕ ChaperoneDance(bonnie)) → (Student(bonnie) ∨ InactiveDisinterested(bonnie)))\n\n\n\n",
+          "reasoning_perplexity": 1.4932887554168701,
+          "correction": "InactiveDisinterested(bonnie)",
+          "correction_perplexity": 181.87567138671875
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 2,
@@ -113,7 +124,8 @@
       ],
       "fol_conc": "(Chaperone(bonnie) ∨ ¬Chaperone(bonnie) ∧ PerformOften(bonnie)) → (YoungWishes(bonnie) ∧ InactiveDisinterested(bonnie))",
       "perplexity": 1.0438770436029614
-    }
+    },
+    "skip": true
   },
   {
     "id": 3,
@@ -155,7 +167,8 @@
       ],
       "fol_conc": "LunchInCompany(james)",
       "perplexity": 1.1146710216641675
-    }
+    },
+    "skip": true
   },
   {
     "id": 4,
@@ -197,7 +210,8 @@
       ],
       "fol_conc": "¬HaveLunch(james, company)",
       "perplexity": 1.063120056106773
-    }
+    },
+    "skip": true
   },
   {
     "id": 5,
@@ -241,7 +255,8 @@
       ],
       "fol_conc": "(Manager(james) ∨ InOtherCountries(james)) → ((LunchAtHome(james) ∧ WorkRemotely(james)) ⊕ ¬(LunchAtHome(james) ∨ WorkRemotely(james)))",
       "perplexity": 1.0901222631327467
-    }
+    },
+    "skip": true
   },
   {
     "id": 6,
@@ -287,8 +302,17 @@
         "Feel(human, tiredness) → Glu(human)"
       ],
       "fol_conc": "∃x Animal(x)",
-      "perplexity": 1.1800341791050137
-    }
+      "perplexity": 1.1800341791050137,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Mammal/1, Mammal/0, Animal/1, Animal/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Mammal/1, Mammal/0, Animal/1, Animal/0": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error: \n\n\n\nLet's break down the error and how to fix it:\n\n* **Understanding the Error:** The Prover9 solver encountered the error \"The following symbols are used with multiple arities: Mammal/1, Mammal/0, Animal/1, Animal/0.\" This means that the predicates \"Mammal\" and \"Animal\" are being used with both one argument (e.g., Mammal(human)) and no arguments (e.g., Mammal).  \n\n* **Why This Happens:** In First-Order Logic, predicates need to have a consistent number of arguments. Using the same predicate with different numbers of arguments leads to ambiguity and prevents the solver from understanding the intended meaning.\n\n* **Fixing the Problem:** To resolve this, we need to make sure each predicate consistently takes a specific number of arguments. Let's analyze the provided rules:\n\n    * **Mammal:**\n        * `Mammal(human)` implies Mammal should take one argument.\n\n    * **Animal:**\n        * `OccurIn(monkeypoxvirus, animal)` and `Animal(mammal)` imply Animal should take one argument.\n\n **Corrected FOL Problem:**\n\n```json\n{\"fol_preds\": [\"MonkeypoxDisease(x)\", \"CausedBy(x, y)\", \"OccurIn(x, y)\", \"Mammal(x)\", \"Animal(x)\", \"SymptomOf(x, y)\", \"Feel(x, y)\", \"Glu(x)\"], \"fol_consts\": [\"monkeypox\", \"monkeypoxvirus\", \"human\"], \"fol_rules\": [\"MonkeypoxDisease(monkeypox)\", \"CausedBy(monkeypox, monkeypoxvirus)\", \"OccurIn(monkeypoxvirus, human)\", \"OccurIn(monkeypoxvirus, animal)\", \"Mammal(human)\", \"Animal(mammal)\", \"SymptomOf(fever, monkeypox)\", \"SymptomOf(headache, monkeypox)\", \"SymptomOf(musclePain, monkeypox)\", \"SymptomOf(tiredness, monkeypox)\", \"Feel(human, tiredness) → Glu(human)\"], \"fol_conc\": \"\\u2203x Animal(x)\", \"perplexity\": 1.1800341791050137}\n\n```\n\n**Explanation of the Corrections:**\n\n\n\n* Removed the instances where Mammal and Animal were used without arguments.",
+          "reasoning_perplexity": 1.2371164560317993,
+          "correction_perplexity": 1.092576265335083
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 7,
@@ -311,7 +335,7 @@
         "OccurIn(x, y)",
         "Mammal(x)",
         "Animal(x)",
-        "Human(x)",
+        "IsHuman(x)",
         "Symptom(x, y)",
         "Tired(x)",
         "Flu(x)",
@@ -325,8 +349,8 @@
       ],
       "fol_rules": [
         "CausedBy(Monkeypox, mpv)",
-        "OccurIn(mpv, Human)",
-        "Human(x) → Mammal(x)",
+        "OccurIn(mpv, IsHuman)",
+        "IsHuman(x) → Mammal(x)",
         "Mammal(x) → Animal(x)",
         "Symptom(fever, Monkeypox)",
         "Symptom(headache, Monkeypox)",
@@ -334,8 +358,17 @@
         "Tired(x) → Get(x, Flu)"
       ],
       "fol_conc": "¬∃x Get(x, Flu)",
-      "perplexity": 1.1772452674798881
-    }
+      "perplexity": 1.1772452674798881,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Human/1, Human/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Human/1, Human/0": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error:\n\nThe error message indicates that the predicate \"Human\" is being used with both one argument (Human(x)) and zero arguments (Human).\n\nThis suggests that in some part of your FOL rules, you might be using \"Human\" as a standalone term or fact, rather than a predicate applied to an entity.\n\nTo fix this, make sure \"Human\" is consistently used as a predicate requiring one argument (a variable or constant representing an entity). If you need to express the general concept of being human without specifying a particular entity, consider introducing a new predicate like \"IsHuman\" which doesn't take any arguments.\n\nLet me know your proposed solution for fixing this FOL problem.",
+          "reasoning_perplexity": 1.7266085147857666,
+          "correction_perplexity": 1.0505341291427612
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 8,
@@ -387,7 +420,8 @@
       ],
       "fol_conc": "¬SymptomOf(cough, monkeypox)",
       "perplexity": 1.1312261216304431
-    }
+    },
+    "skip": true
   },
   {
     "id": 9,
@@ -430,7 +464,8 @@
       ],
       "fol_conc": "Ocellated(tom)",
       "perplexity": 1.0410173000259637
-    }
+    },
+    "skip": true
   },
   {
     "id": 10,
@@ -468,7 +503,8 @@
       ],
       "fol_conc": "Ocellated(tom)",
       "perplexity": 1.134966922352753
-    }
+    },
+    "skip": true
   },
   {
     "id": 11,
@@ -505,7 +541,8 @@
       ],
       "fol_conc": [],
       "perplexity": 1.1982085652590353
-    }
+    },
+    "skip": true
   },
   {
     "id": 12,
@@ -538,7 +575,8 @@
       ],
       "fol_conc": "Top10(zelda)",
       "perplexity": 1.1211325710688906
-    }
+    },
+    "skip": true
   },
   {
     "id": 13,
@@ -572,7 +610,8 @@
       ],
       "fol_conc": "JapaneseCompany(y)",
       "perplexity": 1.1589908701872405
-    }
+    },
+    "skip": true
   },
   {
     "id": 14,
@@ -606,7 +645,8 @@
       ],
       "fol_conc": "¬Top10(legend_of_zelda)",
       "perplexity": 1.121246685860484
-    }
+    },
+    "skip": true
   },
   {
     "id": 15,
@@ -631,7 +671,8 @@
       ],
       "fol_conc": "∀x (Square(x) → Shape(x))",
       "perplexity": 1.094743154187193
-    }
+    },
+    "skip": true
   },
   {
     "id": 16,
@@ -670,7 +711,8 @@
       ],
       "fol_conc": "Turtle(rock)",
       "perplexity": 1.0668990551811437
-    }
+    },
+    "skip": true
   },
   {
     "id": 17,
@@ -709,7 +751,8 @@
       ],
       "fol_conc": "¬Turtle(rock)",
       "perplexity": 1.0564961490433253
-    }
+    },
+    "skip": true
   },
   {
     "id": 18,
@@ -748,7 +791,8 @@
       ],
       "fol_conc": "Turtle(rock) ⊕ Cute(rock)",
       "perplexity": 1.0543839672936552
-    }
+    },
+    "skip": true
   },
   {
     "id": 19,
@@ -786,7 +830,8 @@
       ],
       "fol_conc": "¬(Turtle(rock) ∧ Squirrel(rock)) → (Cute(rock) ⊕ Skittish(rock))",
       "perplexity": 1.053589681383462
-    }
+    },
+    "skip": true
   },
   {
     "id": 20,
@@ -825,7 +870,8 @@
       ],
       "fol_conc": "(Cute(rock) ∧ Still(rock)) → (Turtle(rock) ∧ Skittish(rock))",
       "perplexity": 1.0503984501472285
-    }
+    },
+    "skip": true
   },
   {
     "id": 21,
@@ -865,7 +911,8 @@
       ],
       "fol_conc": "Share(karen, stranger_things, lisa)",
       "perplexity": 1.040197621262894
-    }
+    },
+    "skip": true
   },
   {
     "id": 22,
@@ -905,7 +952,8 @@
       ],
       "fol_conc": "Popular(black_mirror)",
       "perplexity": 1.0741006661725006
-    }
+    },
+    "skip": true
   },
   {
     "id": 23,
@@ -945,7 +993,8 @@
       ],
       "fol_conc": "Share(karen, blackMirror, lisa)",
       "perplexity": 1.0573300109490276
-    }
+    },
+    "skip": true
   },
   {
     "id": 24,
@@ -992,7 +1041,8 @@
       ],
       "fol_conc": "Hosted(beijing, olympics_2008_summer) ∧ Hosted(beijing, olympics_winter)",
       "perplexity": 1.0429884714947792
-    }
+    },
+    "skip": true
   },
   {
     "id": 25,
@@ -1038,7 +1088,8 @@
       ],
       "fol_conc": [],
       "perplexity": 1.1249502341649065
-    }
+    },
+    "skip": true
   },
   {
     "id": 26,
@@ -1087,7 +1138,8 @@
       ],
       "fol_conc": [],
       "perplexity": 1.1760699810438768
-    }
+    },
+    "skip": true
   },
   {
     "id": 27,
@@ -1124,7 +1176,8 @@
       ],
       "fol_conc": "Alien(marvin)",
       "perplexity": 1.0529283351407561
-    }
+    },
+    "skip": true
   },
   {
     "id": 28,
@@ -1161,7 +1214,8 @@
       ],
       "fol_conc": "¬Human(marvin) ∧ ¬FromMars(marvin)",
       "perplexity": 1.041868365045304
-    }
+    },
+    "skip": true
   },
   {
     "id": 29,
@@ -1198,7 +1252,8 @@
       ],
       "fol_conc": "¬FromMars(marvin) → Human(marvin)",
       "perplexity": 1.0463614257023017
-    }
+    },
+    "skip": true
   },
   {
     "id": 30,
@@ -1242,7 +1297,8 @@
       ],
       "fol_conc": "GrandSlamChampion(djokovic)",
       "perplexity": 1.0445787519570187
-    }
+    },
+    "skip": true
   },
   {
     "id": 31,
@@ -1286,7 +1342,8 @@
       ],
       "fol_conc": "LiveInTaxHaven(djokovic)",
       "perplexity": 1.0368887338375934
-    }
+    },
+    "skip": true
   },
   {
     "id": 32,
@@ -1330,7 +1387,8 @@
       ],
       "fol_conc": "¬LiveInTaxHaven(djokovic)",
       "perplexity": 1.0311930198201635
-    }
+    },
+    "skip": true
   },
   {
     "id": 33,
@@ -1370,7 +1428,8 @@
       ],
       "fol_conc": "Leads(roderick_strong, x) ∧ WrestlingStable(x)",
       "perplexity": 1.0696308483110484
-    }
+    },
+    "skip": true
   },
   {
     "id": 34,
@@ -1410,7 +1469,8 @@
       ],
       "fol_conc": "Leads(roderick_strong, creed_brothers)",
       "perplexity": 1.0512445739603788
-    }
+    },
+    "skip": true
   },
   {
     "id": 35,
@@ -1450,7 +1510,8 @@
       ],
       "fol_conc": "¬∃x (Stable(x) ∧ Includes(x, ivy_nile) ∧ FeudWith(imperium, x))",
       "perplexity": 1.036414632687211
-    }
+    },
+    "skip": true
   },
   {
     "id": 36,
@@ -1493,7 +1554,8 @@
       ],
       "fol_conc": "Composer(beethoven)",
       "perplexity": 1.0407090051613768
-    }
+    },
+    "skip": true
   },
   {
     "id": 37,
@@ -1535,7 +1597,8 @@
       ],
       "fol_conc": "∃x (Orchestra(x) ∧ ∃y (MusicPiece(y) ∧ PremieredBy(x, y)))",
       "perplexity": 1.049338104295522
-    }
+    },
+    "skip": true
   },
   {
     "id": 38,
@@ -1578,7 +1641,8 @@
       ],
       "fol_conc": "¬Conductor(beethoven)",
       "perplexity": 1.0480113915297868
-    }
+    },
+    "skip": true
   },
   {
     "id": 39,
@@ -1617,7 +1681,8 @@
       ],
       "fol_conc": "∃x (MassProduct(x) ∧ DesignBy(x, max))",
       "perplexity": 1.071559633527318
-    }
+    },
+    "skip": true
   },
   {
     "id": 40,
@@ -1658,7 +1723,8 @@
       ],
       "fol_conc": "Evocative(x) ∧ Dreamy(x)",
       "perplexity": 1.0684026012029892
-    }
+    },
+    "skip": true
   },
   {
     "id": 41,
@@ -1697,7 +1763,8 @@
       ],
       "fol_conc": "Evocative(x) ∨ Dreamy(x)",
       "perplexity": 1.047496653691718
-    }
+    },
+    "skip": true
   },
   {
     "id": 42,
@@ -1738,7 +1805,8 @@
       ],
       "fol_conc": "Active(coco_Gauff)",
       "perplexity": 1.0453709435335343
-    }
+    },
+    "skip": true
   },
   {
     "id": 43,
@@ -1778,7 +1846,8 @@
       ],
       "fol_conc": "LostTo(coco, rafa)",
       "perplexity": 1.1526231965605325
-    }
+    },
+    "skip": true
   },
   {
     "id": 44,
@@ -1818,7 +1887,8 @@
       ],
       "fol_conc": "¬(LostTo(cocoGauff, igaSwiatek) ∨ ActivePlayer(cocoGauff))",
       "perplexity": 1.0502222996672614
-    }
+    },
+    "skip": true
   },
   {
     "id": 45,
@@ -1843,7 +1913,8 @@
       ],
       "fol_conc": "¬∃x (Pet(x) ∧ Cat(x))",
       "perplexity": 1.1697405674811538
-    }
+    },
+    "skip": true
   },
   {
     "id": 46,
@@ -1863,16 +1934,13 @@
         "Season(x)",
         "Student(x)",
         "LongVacation(x)",
-        "Favorite(x, y)",
-        "Spring(x)",
-        "Summer(x)",
-        "Fall(x)",
-        "Winter(x)"
+        "Favorite(x, y)"
       ],
       "fol_consts": [
         "emma",
         "mia",
-        "james"
+        "james",
+        "Summer"
       ],
       "fol_rules": [
         "∀x (Season(x) ↔ (Spring(x) ∨ Summer(x) ∨ Fall(x) ∨ Winter(x)))",
@@ -1882,8 +1950,17 @@
         "LongVacation(james)"
       ],
       "fol_conc": "Favorite(james, Summer)",
-      "perplexity": 1.0712820786564934
-    }
+      "perplexity": 1.0712820786564934,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Summer/1, Summer/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Summer/1, Summer/0": {
+          "reasoning": "\n\n\n\nLet's think step by step about how to fix this error:\n\n**Explanation:**\n\nThe error message indicates that the predicate \"Summer\" is being used with both one argument (Summer(x)) and zero arguments (Summer). This is not allowed in first-order logic. \n\n**Steps to correct:**\n\n1. **Analyze Usage:** Look at where \"Summer\" is used in the `fol_rules` and `fol_conc`. Identify instances where it's used with and without arguments.\n\n2. **Choose Representation:** Decide whether \"Summer\" should represent a season (a concept) or a specific instance of summer (like a particular year's summer).\n\n   - **If \"Summer\" is a concept:** It should be a predicate without arguments (Summer()).  \n   - **If \"Summer\" is a specific instance:** It should be a constant (like Summer2023) and used as such.\n\n3. **Modify the Formulas:** Replace all occurrences of \"Summer\" consistently based on your chosen representation.\n\n\nLet me know if you have any questions.",
+          "reasoning_perplexity": 1.4673969745635986,
+          "correction_perplexity": 1.0695143938064575
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 47,
@@ -1924,7 +2001,8 @@
       ],
       "fol_conc": "Favorite(james, fall)",
       "perplexity": 1.1272602633186668
-    }
+    },
+    "skip": true
   },
   {
     "id": 48,
@@ -1964,7 +2042,8 @@
       ],
       "fol_conc": "Favorite(mia, spring)",
       "perplexity": 1.0510460677947573
-    }
+    },
+    "skip": true
   },
   {
     "id": 49,
@@ -1999,7 +2078,8 @@
       ],
       "fol_conc": "PrintedText(1984)",
       "perplexity": 1.0921324469256126
-    }
+    },
+    "skip": true
   },
   {
     "id": 50,
@@ -2034,7 +2114,8 @@
       ],
       "fol_conc": "StreamingService(nineteen_eighty_four)",
       "perplexity": 1.0864885629305614
-    }
+    },
+    "skip": true
   },
   {
     "id": 51,
@@ -2069,7 +2150,8 @@
       ],
       "fol_conc": "¬StreamingService(_1984)",
       "perplexity": 1.0569198371765733
-    }
+    },
+    "skip": true
   },
   {
     "id": 52,
@@ -2101,15 +2183,24 @@
       ],
       "fol_rules": [
         "∀x (Romance(x) → IndoEuropean(x))",
-        "LanguageFamily(romance)",
+        "∀x (Romance(x) → MemberOf(x, romance))",
         "∀x ∀y (MemberOf(x, y) ∧ LanguageFamily(y) → Related(x, y))",
         "Romance(french) ∧ Romance(spanish)",
         "Related(german, spanish)",
         "¬∃x Related(basque, x)"
       ],
       "fol_conc": "¬Romance(basque)",
-      "perplexity": 1.085176070679684
-    }
+      "perplexity": 1.085176070679684,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Romance/1, Romance/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Romance/1, Romance/0": {
+          "reasoning": "\n\n\n\nLet's think step by step about how to fix this error:\n\n**Explanation:**\n\nThe error arises because the predicate \"Romance\" is used both as a unary predicate (taking one argument) and a zero-ary predicate (taking no arguments).  In the rule \"Romance(french) ∧ Romance(spanish)\", \"Romance\" is used with one argument (french and spanish). However, in the rule \"LanguageFamily(romance)\", \"Romance\" is used without any arguments.\n\n**Correction:**\n\nTo fix this, we need to make \"Romance\" consistently either unary or zero-ary. Since it seems to primarily refer to individual languages, it's more appropriate to make it unary.\n\n1. **Modify \"LanguageFamily(romance)\"**:  \n\nWe can change this rule to:\n\n```\n\\u2200x (Romance(x) \\u2192 MemberOf(x, romance)) \n```\n\nThis rule now states that if a language is Romance, then it is a member of the Romance language family.\n\n2. **Remove any instances where \"Romance\" is used without arguments.**\n\n\n\nBy making these changes, we ensure that \"Romance\" is consistently used as a unary predicate, eliminating the arity conflict.",
+          "reasoning_perplexity": 1.418197751045227,
+          "correction_perplexity": 1.0421459674835205
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 53,
@@ -2127,11 +2218,11 @@
     "answer": "C",
     "logic_problem": {
       "fol_preds": [
-        "Romance(x)",
-        "IndoEuropean(x)",
-        "LanguageFamily(x)",
-        "Related(x, y)",
-        "Member(x, y)"
+        "Romance",
+        "IndoEuropean",
+        "LanguageFamily",
+        "Related",
+        "Member"
       ],
       "fol_consts": [
         "french",
@@ -2148,8 +2239,17 @@
         "¬∃x (Related(basque, x))"
       ],
       "fol_conc": "Romance(german)",
-      "perplexity": 1.1569235640806763
-    }
+      "perplexity": 1.1569235640806763,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Romance/1, Romance/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Romance/1, Romance/0": {
+          "reasoning": "\n\n\n\nLet's think step by step about how to fix this error: \n",
+          "reasoning_perplexity": 1.4520773887634277,
+          "correction_perplexity": 1.1957770586013794
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 54,
@@ -2188,7 +2288,8 @@
       ],
       "fol_conc": "IndoEuropeanLanguage(french)",
       "perplexity": 1.0744660392153116
-    }
+    },
+    "skip": true
   },
   {
     "id": 55,
@@ -2221,7 +2322,8 @@
       ],
       "fol_conc": "¬PlayFor(robert_lewandowski, bayern_munchen)",
       "perplexity": 1.0388744729642205
-    }
+    },
+    "skip": true
   },
   {
     "id": 56,
@@ -2254,7 +2356,8 @@
       ],
       "fol_conc": "¬PlaysFor(robert_lewandowski, bayern_munchen)",
       "perplexity": 1.1210769042084456
-    }
+    },
+    "skip": true
   },
   {
     "id": 57,
@@ -2288,7 +2391,8 @@
       ],
       "fol_conc": "Star(robert_lewandowski)",
       "perplexity": 1.1167258279813146
-    }
+    },
+    "skip": true
   },
   {
     "id": 58,
@@ -2329,7 +2433,8 @@
       ],
       "fol_conc": "¬SameState(butte, pierre)",
       "perplexity": 1.0618686448009178
-    }
+    },
+    "skip": true
   },
   {
     "id": 59,
@@ -2369,7 +2474,8 @@
       ],
       "fol_conc": "InState(pierre, x) ∧ InState(bismarck, x)",
       "perplexity": 1.1373890036499983
-    }
+    },
+    "skip": true
   },
   {
     "id": 60,
@@ -2408,7 +2514,8 @@
       ],
       "fol_conc": "InState(missoula, montana)",
       "perplexity": 1.0924260619369208
-    }
+    },
+    "skip": true
   },
   {
     "id": 61,
@@ -2444,7 +2551,8 @@
       ],
       "fol_conc": "F1Visa(mike)",
       "perplexity": 1.0802008042609865
-    }
+    },
+    "skip": true
   },
   {
     "id": 62,
@@ -2480,7 +2588,8 @@
       ],
       "fol_conc": "J1Visa(mike)",
       "perplexity": 1.054468174985555
-    }
+    },
+    "skip": true
   },
   {
     "id": 63,
@@ -2515,7 +2624,8 @@
       ],
       "fol_conc": "Pet(ted)",
       "perplexity": 1.0731987828360876
-    }
+    },
+    "skip": true
   },
   {
     "id": 64,
@@ -2550,7 +2660,8 @@
       ],
       "fol_conc": "¬(Pet(ted) ∧ Cow(ted))",
       "perplexity": 1.132806875110895
-    }
+    },
+    "skip": true
   },
   {
     "id": 65,
@@ -2585,7 +2696,8 @@
       ],
       "fol_conc": "Cow(ted) → ¬Pet(ted)",
       "perplexity": 1.049314718262037
-    }
+    },
+    "skip": true
   },
   {
     "id": 66,
@@ -2627,7 +2739,8 @@
       ],
       "fol_conc": "∃x (Private(x) ∧ IvyLeague(x) ∧ ResearchUniversity(x) ∧ MovedTo(x, new_haven))",
       "perplexity": 1.1154692016989012
-    }
+    },
+    "skip": true
   },
   {
     "id": 67,
@@ -2670,11 +2783,21 @@
         "MovedTo(yale, new_haven, 1716)",
         "EndowmentValued(yale, 42.3_billion)",
         "OrganizedInto(yale, 27)",
-        "ResidentialCollege(benjamin_franklin_college) ∧ ... ∧ ResidentialCollege(trumbull_college)"
+        "IvyLeague(y) ∧ ResidentialCollege(y) ∧ (ResidentialCollege(benjamin_franklin_college) ∨ ResidentialCollege(y)) → IvyLeague(y)"
       ],
       "fol_conc": "∀x (University(x) → LargerEndowmentThan(yale, x))",
-      "perplexity": 1.164167544884001
-    }
+      "perplexity": 1.164167544884001,
+      "parsing_errors": {
+        "ResidentialCollege(benjamin_franklin_college) ∧ ... ∧ ResidentialCollege(trumbull_college)": {
+          "reasoning": "\n\nLet's about how to fix this formula:\n\n\n",
+          "reasoning_perplexity": 1.544556736946106,
+          "correction": "IvyLeague(y) ∧ ResidentialCollege(y) ∧ (ResidentialCollege(benjamin_franklin_college) ∨ ResidentialCollege(y)) → IvyLeague(y)",
+          "correction_perplexity": 5.870650768280029
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 68,
@@ -2726,13 +2849,23 @@
       "fol_rules": [
         "University(yale) ∧ Private(yale) ∧ IvyLeague(yale) ∧ ResearchUniversity(yale)",
         "LocatedIn(yale, new_haven)",
-        "Endowment(yale, 42.3 * billion)",
+        "IvyLeague(yale)",
         "ConstituentCollege(benjamin_franklin, yale) ∧ ConstituentCollege(berkeley, yale) ∧ ConstituentCollege(branford, yale) ∧ ConstituentCollege(davenport, yale) ∧ ConstituentCollege(ezra_stiles, yale) ∧ ConstituentCollege(grace_hopper, yale) ∧ ConstituentCollege(jonathan_edwards, yale) ∧ ConstituentCollege(morse, yale) ∧ ConstituentCollege(pauli_murray, yale) ∧ ConstituentCollege(pierson, yale) ∧ ConstituentCollege(saybrook, yale) ∧ ConstituentCollege(silliman, yale) ∧ ConstituentCollege(timothy_dwight, yale) ∧ ConstituentCollege(trumbull, yale)",
         "ResidentialCollegesList(benjamin_franklin, yale) ∧ ResidentialCollegesList(berkeley, yale) ∧ ResidentialCollegesList(branford, yale) ∧ ResidentialCollegesList(davenport, yale) ∧ ResidentialCollegesList(ezra_stiles, yale) ∧ ResidentialCollegesList(grace_hopper, yale) ∧ ResidentialCollegesList(jonathan_edwards, yale) ∧ ResidentialCollegesList(morse, yale) ∧ ResidentialCollegesList(pauli_murray, yale) ∧ ResidentialCollegesList(pierson, yale) ∧ ResidentialCollegesList(saybrook, yale) ∧ ResidentialCollegesList(silliman, yale) ∧ ResidentialCollegesList(timothy_dwight, yale) ∧ ResidentialCollegesList(trumbull, yale)"
       ],
       "fol_conc": "ResidentialCollege(pierson) ∧ ResidentialCollegesList(pierson, yale) → ConstituentCollege(pierson, yale)",
-      "perplexity": 1.1140246274963934
-    }
+      "perplexity": 1.1140246274963934,
+      "parsing_errors": {
+        "Endowment(yale, 42.3 * billion)": {
+          "reasoning": "\n\nThe problem here is that the formula tries to use mathematical operations like \"*\" within the predicate argument. This is not allowed in FOL.  Instead, we need to define a new predicate to represent the endowment amount.\n\nLet's say we create a new predicate \"HasEndowment(x, y)\" where x is the institution and y is the endowment amount.\n\nCorrect FOL formula: HasEndowment(yale, 42.3billion)",
+          "reasoning_perplexity": 1.8259530067443848,
+          "correction": "IvyLeague(yale)",
+          "correction_perplexity": 489.35443115234375
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 69,
@@ -2771,7 +2904,8 @@
       ],
       "fol_conc": "ScriptEditor(andrewCollins, x) ∧ WorkingTitle(x, secretDudeSociety)",
       "perplexity": 1.0916457256754022
-    }
+    },
+    "skip": true
   },
   {
     "id": 70,
@@ -2810,7 +2944,8 @@
       ],
       "fol_conc": "¬∃x (Member(x, pappy) ∧ ∃y (Pilot(y, _, bbc_two) ∨ Pilot(y, _, bbc_three)))",
       "perplexity": 1.1008813878907258
-    }
+    },
+    "skip": true
   },
   {
     "id": 71,
@@ -2846,7 +2981,8 @@
       ],
       "fol_conc": "Stock(KO)",
       "perplexity": 1.150663685891032
-    }
+    },
+    "skip": true
   },
   {
     "id": 72,
@@ -2881,7 +3017,8 @@
       ],
       "fol_conc": "∃y (StockOf(KO, y) ∧ GrowthStock(KO))",
       "perplexity": 1.1323843794252806
-    }
+    },
+    "skip": true
   },
   {
     "id": 73,
@@ -2916,7 +3053,8 @@
       ],
       "fol_conc": "(GrowthStock(ko) ∨ Volatile(ko)) → ¬(StockOf(ko, _) ∨ Volatile(ko))",
       "perplexity": 1.1989763702024723
-    }
+    },
+    "skip": true
   },
   {
     "id": 74,
@@ -2952,7 +3090,8 @@
       ],
       "fol_conc": "BeginsWith(joe, thirtyfour)",
       "perplexity": 1.0688466769917269
-    }
+    },
+    "skip": true
   },
   {
     "id": 75,
@@ -2988,7 +3127,8 @@
       ],
       "fol_conc": "¬FromIstanbul(tom)",
       "perplexity": 1.069298817344818
-    }
+    },
+    "skip": true
   },
   {
     "id": 76,
@@ -3026,7 +3166,8 @@
       ],
       "fol_conc": "NeedMoney(mary)",
       "perplexity": 1.0558646211546754
-    }
+    },
+    "skip": true
   },
   {
     "id": 77,
@@ -3064,7 +3205,8 @@
       ],
       "fol_conc": "¬PickyEater(mary) ∧ TimeDining(mary)",
       "perplexity": 1.0593259554411811
-    }
+    },
+    "skip": true
   },
   {
     "id": 78,
@@ -3102,7 +3244,8 @@
       ],
       "fol_conc": "¬PickyEater(mary) ∨ (PickyEater(mary) → SpendTimeDining(mary))",
       "perplexity": 1.0732857308060992
-    }
+    },
+    "skip": true
   },
   {
     "id": 79,
@@ -3138,7 +3281,8 @@
       ],
       "fol_conc": "ProductOf(dried_thai_chilies, baked_by_melissa)",
       "perplexity": 1.0693574382294784
-    }
+    },
+    "skip": true
   },
   {
     "id": 80,
@@ -3173,7 +3317,8 @@
       ],
       "fol_conc": "¬ProductOfBakedByMelissa(dried_thai_chilies)",
       "perplexity": 1.0576578644205612
-    }
+    },
+    "skip": true
   },
   {
     "id": 81,
@@ -3209,7 +3354,8 @@
       ],
       "fol_conc": "Hotpot(dried_thai_chilies)",
       "perplexity": 1.0568383251280868
-    }
+    },
+    "skip": true
   },
   {
     "id": 82,
@@ -3244,7 +3390,8 @@
       ],
       "fol_conc": "¬(ProductOfBakedByMelissa(driedThaiChilies) ∨ Bakery(driedThaiChilies))",
       "perplexity": 1.0773340010814754
-    }
+    },
+    "skip": true
   },
   {
     "id": 83,
@@ -3280,7 +3427,8 @@
       ],
       "fol_conc": "Cupcake(thai_chilies) ∧ ProductOf(thai_chilies, melissa)",
       "perplexity": 1.0628931826737302
-    }
+    },
+    "skip": true
   },
   {
     "id": 84,
@@ -3315,7 +3463,8 @@
       ],
       "fol_conc": "(TakeOut(subway) ∧ NegativeReviews(subway)) → (RatingGreater9(subway) ∧ ¬TakeOut(subway))",
       "perplexity": 1.109393584219642
-    }
+    },
+    "skip": true
   },
   {
     "id": 85,
@@ -3350,7 +3499,8 @@
       ],
       "fol_conc": "TakeOut(subway) ∧ ¬NegativeReviews(subway)",
       "perplexity": 1.1600880892209182
-    }
+    },
+    "skip": true
   },
   {
     "id": 86,
@@ -3385,7 +3535,8 @@
       ],
       "fol_conc": "¬TakeOut(subway)",
       "perplexity": 1.131022346058448
-    }
+    },
+    "skip": true
   },
   {
     "id": 87,
@@ -3430,7 +3581,8 @@
       ],
       "fol_conc": "¬Wins(Nemesis, SirDigby)",
       "perplexity": 1.067111922307958
-    }
+    },
+    "skip": true
   },
   {
     "id": 88,
@@ -3466,8 +3618,17 @@
         "Reads(harry, walden)"
       ],
       "fol_conc": "Contains(walden, Knowledge)",
-      "perplexity": 1.1271565678051658
-    }
+      "perplexity": 1.1271565678051658,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Knowledge/1, Knowledge/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Knowledge/1, Knowledge/0": {
+          "reasoning": "\n\n\n\nPlease follow the steps mentioned above to analyze the error and propose a solution.",
+          "reasoning_perplexity": 2.6258749961853027,
+          "correction_perplexity": 1.0580599308013916
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 89,
@@ -3485,7 +3646,7 @@
       "fol_preds": [
         "Book(x)",
         "Contains(x, y)",
-        "Knowledge(x)",
+        "Knowledge",
         "Read(x, y)",
         "Gain(x, y)",
         "Smarter(x, y)"
@@ -3493,17 +3654,27 @@
       "fol_consts": [
         "harry",
         "walden",
-        "henry_thoreau"
+        "henry_thoreau",
+        "philosophy"
       ],
       "fol_rules": [
-        "∀x (Book(x) → ∃y (Contains(x, y) ∧ Knowledge(y)))",
+        "∀x (Book(x) ⊗ ∃y (Contains(x, y) ∧ Knowledge(y)))",
         "∀x ∀y (Read(x, y) ∧ Book(y) → Gain(x, Knowledge))",
         "∀x ∀y (Gain(x, Knowledge) → Smarter(x, y))",
         "Read(harry, walden)"
       ],
       "fol_conc": "Smarter(harry, harry_before)",
-      "perplexity": 1.1531795606511372
-    }
+      "perplexity": 1.1531795606511372,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Knowledge/1, Knowledge/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Knowledge/1, Knowledge/0": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error:\n\nThe error message indicates that the predicate \"Knowledge\" is being used inconsistently. In some places, it's treated as a unary predicate (taking one argument) and in other places as a zero-ary predicate (taking no arguments).\n\n\n\nTo fix this, you need to decide how you want \"Knowledge\" to be used and ensure consistency throughout the FOL rules.\n\n1. **If \"Knowledge\" represents a specific piece of knowledge:**\n\n   - It should be a unary predicate.\n\n   - Replace instances of \"Knowledge\" without arguments (Knowledge/0) with a specific entity representing the knowledge, e.g., \"Knowledge(philosophy)\".\n\n   - Modify the rules accordingly to reflect this change.\n\n2. **If \"Knowledge\" represents the general concept of knowledge:**\n\n   - It should be a zero-ary predicate.\n\n   - Remove any instances of \"Knowledge\" taking an argument (Knowledge/1).\n\n   - Modify the rules accordingly to reflect this change.\n\n\n\nOnce you've made a consistent choice, the error should be resolved.\n\nLet me know which option you choose and I can help you modify the FOL rules accordingly.",
+          "reasoning_perplexity": 1.5112313032150269,
+          "correction_perplexity": 1.0830190181732178
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 90,
@@ -3538,7 +3709,8 @@
       ],
       "fol_conc": "Smarter(harry)",
       "perplexity": 1.1849459411525356
-    }
+    },
+    "skip": true
   },
   {
     "id": 91,
@@ -3571,7 +3743,8 @@
       ],
       "fol_conc": "Language_Generation(machine_translation)",
       "perplexity": 1.0554122859807042
-    }
+    },
+    "skip": true
   },
   {
     "id": 92,
@@ -3603,7 +3776,8 @@
       ],
       "fol_conc": "¬Language_Generation(Machine_Translation)",
       "perplexity": 1.1710695801672715
-    }
+    },
+    "skip": true
   },
   {
     "id": 93,
@@ -3644,7 +3818,7 @@
       "fol_rules": [
         "∀x ∃y (ManagedBuilding(x) → Allowed(y, x))",
         "∀x (ManagedBuilding(x) → DepositRequired(x))",
-        "∀x ∀y (SecurityDeposit(x, y) → (Equal(y, Rent(x)) ⊕ More(y, Rent(x))))",
+        "Allowed(x)",
         "Pet(fluffy)",
         "CatsArePets",
         "ManagedBuilding(olive_garden)",
@@ -3653,8 +3827,18 @@
         "More(2000, 1500)"
       ],
       "fol_conc": "RentApartment(tom, olive_garden)",
-      "perplexity": 1.1048887853344938
-    }
+      "perplexity": 1.1048887853344938,
+      "parsing_errors": {
+        "∀x ∀y (SecurityDeposit(x, y) → (Equal(y, Rent(x)) ⊕ More(y, Rent(x))))": {
+          "reasoning": "\n\nLet's about how to fix this formula:\n\nThe current formula uses the operator \"⊕\" which is not allowed. We need to replace it with an allowed logical operator. It seems the formula wants to express that a security deposit is either equal to the rent or more than the rent. The appropriate operator to use in this case is the \"∨\" (disjunction) operator.\n\nCorrect FOL formula: ∀x ∀y (SecurityDeposit(x, y) → (Equal(y, Rent(x)) ∨ More(y, Rent(x))))",
+          "reasoning_perplexity": 1.4348528385162354,
+          "correction": "Allowed(x)",
+          "correction_perplexity": 3028.677978515625
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 94,
@@ -3694,7 +3878,7 @@
         "fifteen_hundred"
       ],
       "fol_rules": [
-        "∃x (Managed(x) ∧ Allowed(Pet(x), x))",
+        "(Pet(x) ∧ Allowed(x, x))",
         "∀x (Managed(x) → DepositRequired(x))",
         "∀x (DepositRequired(x) → (DepositEqual(x, one_month_rent) ∨ DepositMore(x, one_month_rent)))",
         "Cat(fluffy)",
@@ -3705,8 +3889,18 @@
         "DepositMore(olive_garden, fifteen_hundred)"
       ],
       "fol_conc": "¬Allowed(tom, olive_garden)",
-      "perplexity": 1.143126593141013
-    }
+      "perplexity": 1.143126593141013,
+      "parsing_errors": {
+        "∃x (Managed(x) ∧ Allowed(Pet(x), x))": {
+          "reasoning": "\n\nThe formula attempts to express that there exists something which is managed and is allowed to be a pet of itself. However, the use of \"Pet(x)\" as an argument for \"Allowed\" violates the rule forbidding nested predicates.\n\nWe need to separate \"Pet\" and \"Allowed\" to ensure a correct FOL structure.\n\nCorrect FOL formula: ∃x (Managed(x) ∧ Allowed(x, Pet(x)))\n",
+          "reasoning_perplexity": 1.9439703226089478,
+          "correction": "(Pet(x) ∧ Allowed(x, x))",
+          "correction_perplexity": 5.664842128753662
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 95,
@@ -3746,7 +3940,7 @@
       "fol_rules": [
         "∃x (ManagedBuilding(x) ∧ Allowed(pet, x))",
         "∀x (ManagedBuilding(x) → Rent(x))",
-        "∀x (Deposit(x, y) → (Equal(y, Rent(x)) ∨ More(y, Rent(x))))",
+        "(Deposit(x, y) → (Equal(y, x) ∨ More(y, x)))",
         "Cat(fluffy)",
         "∀x (Cat(x) → Pet(x))",
         "ManagedBuilding(olive_garden)",
@@ -3755,8 +3949,18 @@
         "More(two_thousand, fifteen_hundred)"
       ],
       "fol_conc": "(Deposit(olive_garden, two_thousand) ∨ More(Deposit(olive_garden, two_thousand), two_thousand))",
-      "perplexity": 1.1457429877704224
-    }
+      "perplexity": 1.1457429877704224,
+      "parsing_errors": {
+        "∀x (Deposit(x, y) → (Equal(y, Rent(x)) ∨ More(y, Rent(x))))": {
+          "reasoning": "\n\n\n\nLet's about how to fix this formula:\n\nThe current formula is incorrect because it is not clear if \"x\" and \"y\" are related in the Deposit predicate. Therefore, we must add a quantifier for \"y\" to make the relationship explicit. We can achieve this by changing \"∀x\" to \"∀x ∀y\" \n\nCorrect FOL formula: ∀x ∀y (Deposit(x, y) → (Equal(y, Rent(x)) ∨ More(y, Rent(x))))",
+          "reasoning_perplexity": 1.6039003133773804,
+          "correction": "(Deposit(x, y) → (Equal(y, x) ∨ More(y, x)))",
+          "correction_perplexity": 3.1329269409179688
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 96,
@@ -3793,7 +3997,8 @@
       ],
       "fol_conc": "∀x (Koala(x) → LoveToSleep(x))",
       "perplexity": 1.1224827800081871
-    }
+    },
+    "skip": true
   },
   {
     "id": 97,
@@ -3816,7 +4021,8 @@
         "FromAustralia(x)",
         "Quokka(x)",
         "Fluffy(x)",
-        "SleepLover(x)"
+        "SleepLover(x)",
+        "Koala"
       ],
       "fol_consts": [
         "max",
@@ -3828,11 +4034,20 @@
         "∀x (Quokka(x) → FromAustralia(x))",
         "∀x (Favorite(x, max) → Fluffy(x))",
         "∀x (Favorite(x, max) → SleepLover(x))",
-        "∀x (Fluffy(x) ∧ Quokka(x) → ¬Koala(x))"
+        "∀x (Fluffy(x) ∧ Quokka(x) → ¬Koala)"
       ],
       "fol_conc": "SleepLover(koala) ∧ Quokka(koala)",
-      "perplexity": 1.073249093045016
-    }
+      "perplexity": 1.073249093045016,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Koala/1, Koala/0.\n\n\nFatal error:  The following symbols are used with multiple arities: Koala/1, Koala/0": {
+          "reasoning": "\n\n\n\nLet's think step by step about how to fix this error:\n\n**Answer:**\nThe error message indicates that the predicate \"Koala\" is being used with both one and zero arguments. This means it's likely being used inconsistently somewhere in your FOL rules or conclusion.\n\n**To fix this:**\n\n1. **Identify the inconsistent uses:** Carefully examine each rule and the conclusion to locate where \"Koala\" is used with different arities.\n\n2. **Choose a consistent arity:** Decide whether \"Koala\" should represent a property of an entity (taking one argument) or a standalone concept (taking zero arguments).\n\n3. **Modify the FOL rules:**\n   * If \"Koala\" should be a property, ensure it's always used with one argument, e.g., `Koala(x)`.\n   * If \"Koala\" should be a standalone concept, remove any instances where it's used with an argument.\n\n4. **Adjust the conclusion (if necessary):** Make sure the conclusion also uses the chosen arity for \"Koala\".\n\n\n\nBy following these steps, you can eliminate the arity error and ensure your FOL logic is consistent.",
+          "reasoning_perplexity": 1.4140046834945679,
+          "correction_perplexity": 1.0418275594711304
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 98,
@@ -3869,7 +4084,8 @@
       ],
       "fol_conc": "∀x (Koala(x) ∧ Quokka(x) → (LoveToSleep(x) ∨ Fluffy(x)))",
       "perplexity": 1.0718982422408856
-    }
+    },
+    "skip": true
   },
   {
     "id": 99,
@@ -3908,7 +4124,8 @@
       ],
       "fol_conc": "CEO(harry)",
       "perplexity": 1.0806344230972251
-    }
+    },
+    "skip": true
   },
   {
     "id": 100,
@@ -3947,7 +4164,8 @@
       ],
       "fol_conc": "Kind(harry) ⊕ CEO(harry)",
       "perplexity": 1.0821486845558979
-    }
+    },
+    "skip": true
   },
   {
     "id": 101,
@@ -3986,7 +4204,8 @@
       ],
       "fol_conc": "( (Evil(harry) ∧ Ugly(harry)) ⊕ (¬Evil(harry) ∧ ¬Ugly(harry)) ) → ¬(Kind(harry) ∨ CEO(harry))",
       "perplexity": 1.0630853140853815
-    }
+    },
+    "skip": true
   },
   {
     "id": 102,
@@ -4024,7 +4243,8 @@
       ],
       "fol_conc": "SpendTimeSiblings(luke)",
       "perplexity": 1.0681719431233447
-    }
+    },
+    "skip": true
   },
   {
     "id": 103,
@@ -4062,7 +4282,8 @@
       ],
       "fol_conc": "ComplainSiblings(luke)",
       "perplexity": 1.0546661541254507
-    }
+    },
+    "skip": true
   },
   {
     "id": 104,
@@ -4101,7 +4322,8 @@
       ],
       "fol_conc": "¬(Twin(luke) ∨ Triplet(luke)) ∧ ¬Complain(luke)",
       "perplexity": 1.0577300562259895
-    }
+    },
+    "skip": true
   },
   {
     "id": 105,
@@ -4145,7 +4367,8 @@
       ],
       "fol_conc": "GREApplicant(tom) ∧ ProveHardship(tom)",
       "perplexity": 1.3053565604851998
-    }
+    },
+    "skip": true
   },
   {
     "id": 106,
@@ -4188,8 +4411,18 @@
         "OutOfWork(tom's dad, 1)"
       ],
       "fol_conc": "Cost(gre, y) ∧ y < 300",
-      "perplexity": 1.261984372377311
-    }
+      "perplexity": 1.261984372377311,
+      "parsing_errors": {
+        "Cost(gre, y) ∧ y < 300": {
+          "reasoning": " → Expensive(y)\n\nLet's about how to fix this formula:\n\nThe current formula mixes predicates and numerical comparisons in a way that violates the rules of FOL. We need to separate the numerical comparison from the predicates.\n\nCorrect FOL formula: (Cost(gre, y) ∧ y < 300) → Expensive(y)",
+          "reasoning_perplexity": 1.5157029628753662,
+          "correction": "ProvidesAid(x) ∧ ProvidesAid(y) → ProvidesAid(x, y)",
+          "correction_perplexity": 21.084007263183594
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 107,
@@ -4227,13 +4460,23 @@
       "fol_rules": [
         "Cost(gre, 205)",
         "∀x (Applicant(x) ∧ Hardship(x) → ProvidesAid(ets, x))",
-        "∀x (Hardship(x) ↔ (Difficulty(x, LowMoney(x)) ∨ Difficulty(x, FewResources(x))))",
+        "LowMoney(x)",
         "LivesIn(tom, SingleParent(tom))",
         "OutOfWork(tom's dad, year)"
       ],
       "fol_conc": "¬∃x (ProvidesAid(ets, x))",
-      "perplexity": 1.1684418610570932
-    }
+      "perplexity": 1.1684418610570932,
+      "parsing_errors": {
+        "∀x (Hardship(x) ↔ (Difficulty(x, LowMoney(x)) ∨ Difficulty(x, FewResources(x))))": {
+          "reasoning": "\n\n\n\nLet's break down why this formula might be incorrect and how to fix it:\n\nThe formula aims to express that hardship is equivalent to experiencing difficulty due to either low money or few resources. However, there are two potential issues:\n\n1. **Predicate nesting:** While not explicitly forbidden, nesting predicates like `Difficulty(x, LowMoney(x))` can make the formula harder to read and potentially lead to ambiguity.\n\n2. **Clarity:** It might be clearer to separate the two conditions for difficulty instead of combining them within the `Difficulty` predicate.\n\nLet's propose a revised formula:\n\n**Correct FOL formula:** ∀x (Hardship(x) ↔ (Difficulty(x, LowMoney) ∨ Difficulty(x, FewResources)))\n\nThis revision addresses both concerns:\n\n* **Predicate nesting:** We removed the nested `LowMoney(x)` and `FewResources(x)` within the `Difficulty` predicate, making it more straightforward.\n\n* **Clarity:** The two conditions for difficulty are now clearly separated using the disjunction operator (`∨`).\n\n\n\nLet me know if you have any other FOL formulas you'd like me to analyze!",
+          "reasoning_perplexity": 1.4718180894851685,
+          "correction": "LowMoney(x)",
+          "correction_perplexity": 412.4644470214844
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 108,
@@ -4273,7 +4516,8 @@
       ],
       "fol_conc": "Tidy(peter) ∧ EnjoyCleaning(peter)",
       "perplexity": 1.0472802440057205
-    }
+    },
+    "skip": true
   },
   {
     "id": 109,
@@ -4313,7 +4557,8 @@
       ],
       "fol_conc": "Foodie(peter) ∧ Frequent(peter) ⊕ HighIncome(peter)",
       "perplexity": 1.0335651915184882
-    }
+    },
+    "skip": true
   },
   {
     "id": 110,
@@ -4353,7 +4598,8 @@
       ],
       "fol_conc": "(Foodie(peter) ∧ FrequentOuting(peter) ∧ HighIncome(peter)) ⊕ (Foodie(peter) ∧ FrequentOuting(peter) ∧ ¬HighIncome(peter))",
       "perplexity": 1.0587855162272308
-    }
+    },
+    "skip": true
   },
   {
     "id": 111,
@@ -4378,7 +4624,8 @@
       ],
       "fol_conc": "∃x (Evergreen(x) ∧ ¬Worship(x))",
       "perplexity": 1.1046726875784765
-    }
+    },
+    "skip": true
   },
   {
     "id": 112,
@@ -4417,7 +4664,8 @@
       ],
       "fol_conc": "Visited(onate, x) ∧ In(x, newmexico)",
       "perplexity": 1.0712520121415916
-    }
+    },
+    "skip": true
   },
   {
     "id": 113,
@@ -4454,7 +4702,8 @@
       ],
       "fol_conc": "∃x (MountainRange(x) ∧ LocatedIn(x, texas) ∧ Visited(juan, x))",
       "perplexity": 1.068996374979937
-    }
+    },
+    "skip": true
   },
   {
     "id": 114,
@@ -4489,11 +4738,21 @@
         "Mine(harding_pegmatite)",
         "LocatedIn(harding_pegmatite, picuris)",
         "Donated(harding_pegmatite)",
-        "∀x ((MountainRange(x) ∧ LocatedIn(x, texas)) → ¬∃y (Mine(y) ∧ LocatedIn(y, x) ∧ Donated(y)))"
+        "Donated(y) ∧ LocatedIn(y, x) ∧ Mine(y) ∧ LocatedIn(x, texas) ∧ MountainRange(x) → ¬Donated(y)"
       ],
       "fol_conc": "¬LocatedIn(picuris, new_mexico)",
-      "perplexity": 1.128295633777201
-    }
+      "perplexity": 1.128295633777201,
+      "parsing_errors": {
+        "∀x ((MountainRange(x) ∧ LocatedIn(x, texas)) → ¬∃y (Mine(y) ∧ LocatedIn(y, x) ∧ Donated(y)))": {
+          "reasoning": "\n\n\n\n",
+          "reasoning_perplexity": 7.689142227172852,
+          "correction": "Donated(y) ∧ LocatedIn(y, x) ∧ Mine(y) ∧ LocatedIn(x, texas) ∧ MountainRange(x) → ¬Donated(y)",
+          "correction_perplexity": 3.2348947525024414
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 115,
@@ -4535,8 +4794,17 @@
         "∀x (Jump(x) ∧ Shoot(x) → GreatShooter(x))"
       ],
       "fol_conc": "∃x (Man(x) ∧ Classmate(x, michael) ∧ Taller(x, peter))",
-      "perplexity": 1.0620129848276567
-    }
+      "perplexity": 1.0620129848276567,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(MAX_SECONDS)": {
+          "reasoning": "\n\n\n\nLet's think step by step about why this error appeared, and propose steps to correct it:\n\n\n\nLet's analyze why you're encountering the \"MAX_SECONDS\" error in Prover9. This typically means the prover has hit a predefined time limit without finding a proof or refutation for your FOL problem.\n\nHere's a breakdown of potential causes and solutions:\n\n**1. Complexity of the Problem:**\n\n* **Many Variables and Rules:** Your FOL problem involves quantifiers (∀, ∃), which can significantly increase the search space for Prover9. A large number of variables, rules, and complex relationships can make finding a solution computationally expensive.\n* **Nested Quantifiers:** Deeply nested quantifiers can further complicate the search.\n\n**Solution:**\n\n* **Simplification:** Carefully examine your FOL rules. Are there any redundancies or unnecessary complexities you can remove? Can you express the same relationships more concisely?\n* **Domain Restrictions:** If possible, introduce domain restrictions to limit the scope of your variables. For example, if you're only interested in a subset of \"Men,\" explicitly state this in your rules.\n\n**2. Prover9 Configuration:**\n\n* **Time Limit (MAX_SECONDS):** Prover9 has a default time limit. If your problem is complex, you might need to increase this limit.\n\n**Solution:**\n\n* **Adjust Time Limit:** Consult Prover9's documentation on how to modify the time limit. Experiment with different values to see if it helps.\n\n**3. Proof Strategy:**\n\n* **Ineffective Strategies:** Prover9 uses various proof strategies. Sometimes, the default strategy might not be well-suited for your specific problem.\n\n**Solution:**\n\n* **Explore Strategies:** Look into Prover9's documentation for different proof strategies (e.g., resolution, paramodulation). You might need to experiment with different strategies or combinations to find one that works better for your problem.\n\n**4. Problem Structure:**\n\n* **Undecidable Problems:** Some FOL problems are inherently undecidable, meaning there's no algorithmic way to determine if a proof or refutation exists.\n\n**Solution:**\n\n* **Analyze the Problem:** Carefully review the logical structure of your problem. If you suspect it might be undecidable, you'll need to rethink your approach or look for approximations.\n\nLet me know if you want to try simplifying the FOL rules or exploring other solutions.",
+          "reasoning_perplexity": 1.4712426662445068,
+          "correction_perplexity": 1.0791691541671753
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 116,
@@ -4578,7 +4846,8 @@
       ],
       "fol_conc": "GreatShooter(windy)",
       "perplexity": 1.0843657079568498
-    }
+    },
+    "skip": true
   },
   {
     "id": 117,
@@ -4620,7 +4889,8 @@
       ],
       "fol_conc": "BlockShooting(peter, windy)",
       "perplexity": 1.065335481192474
-    }
+    },
+    "skip": true
   },
   {
     "id": 118,
@@ -4662,7 +4932,8 @@
       ],
       "fol_conc": "∀x (Island(x) ∧ LocatedIn(x, antarctica) → NamedAfter(x, barutin))",
       "perplexity": 1.1330208412154228
-    }
+    },
+    "skip": true
   },
   {
     "id": 119,
@@ -4702,7 +4973,8 @@
       ],
       "fol_conc": "∃x (Cove(x) ∧ LocatedIn(x, antarctica) ∧ ∃y (NamedAfter(x, y) ∧ LocatedIn(y, bulgaria)))",
       "perplexity": 1.0705732583059078
-    }
+    },
+    "skip": true
   },
   {
     "id": 120,
@@ -4742,8 +5014,17 @@
         "∀x ∀y ∀z ((LocatedIn(x, y) ∧ LocatedIn(y, z)) → LocatedIn(x, z))"
       ],
       "fol_conc": "¬LocatedIn(barutin, antarctica)",
-      "perplexity": 1.0571873165046721
-    }
+      "perplexity": 1.0571873165046721,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(MAX_SECONDS)": {
+          "reasoning": "\n\n\n\nLet's think step by step about why this error appeared and how to fix it:\n\nThe error message indicates that Prover9 reached its maximum allowed time for proving the conjecture. This often happens when the problem is too complex or the provided axioms are insufficient to derive the conclusion within the time limit.\n\n\n\nHere are some possible steps to address this issue:\n\n1. **Simplify the problem:** Examine the axioms and the conjecture carefully. See if any redundancies or irrelevant information can be removed.\n\n2. **Add more axioms:** The current axioms might not be sufficient to prove the conjecture. Consider adding additional axioms that capture relevant relationships between the entities involved.\n\n3. **Rewrite axioms:**\n\nThe axioms might be expressed in a way that makes it difficult for the prover to identify relevant connections. Try rewriting them in different, potentially more concise or direct forms.\n\n4. **Increase the time limit:** If the problem seems fundamentally sound, you could simply increase the maximum time allowed for Prover9 to run.\n\n5. **Use a different prover:** Different provers may have different strengths and weaknesses. Try using a different first-order logic prover to see if it can handle the problem more effectively.\n\nLet me know if you need help with any of these steps!",
+          "reasoning_perplexity": 1.601529598236084,
+          "correction_perplexity": 1.0801286697387695
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 121,
@@ -4768,7 +5049,8 @@
       ],
       "fol_conc": "∃x (Affection(x) ∧ Positive(x))",
       "perplexity": 1.0986518933572853
-    }
+    },
+    "skip": true
   },
   {
     "id": 122,
@@ -4800,11 +5082,21 @@
         "∀x (Airline(x) → TransportMultiple(x))",
         "∀x (Plane(x) → Empty(x))",
         "∀x (Boeing707(x) → Plane(x))",
-        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))"
+        "Airline(greyhound)"
       ],
       "fol_conc": "Airline(greyhound)",
-      "perplexity": 1.0541434476075542
-    }
+      "perplexity": 1.0541434476075542,
+      "parsing_errors": {
+        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))": {
+          "reasoning": "\n\nLet's analyze this formula and figure out the correction:\n\nThe current formula is trying to express that if something is not an airline, then there does not exist a Boeing707 that is also a Greyhound. This reasoning seems flawed. A correct representation would be that if something is not a Greyhound, then there does not exist a Boeing707 that is also a Greyhound.\n\n\n\nCorrect FOL formula: ¬Greyhound(x) → ¬∃x (Boeing707(x) ∧ Greyhound(x))",
+          "reasoning_perplexity": 1.5081288814544678,
+          "correction": "Airline(greyhound)",
+          "correction_perplexity": 55.07094192504883
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 123,
@@ -4836,11 +5128,21 @@
         "∀x (Airline(x) → TransportMultiple(x))",
         "∀x (Plane(x) → Empty(x))",
         "∀x (Boeing707(x) → Plane(x))",
-        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))"
+        "(Greyhound(x) ∧ ¬Airline(x)) → ¬(Boeing707(x))"
       ],
       "fol_conc": "Boeing707(greyhound)",
-      "perplexity": 1.0519863093561785
-    }
+      "perplexity": 1.0519863093561785,
+      "parsing_errors": {
+        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))": {
+          "reasoning": "\n\nThe current formula seems to have a mismatch between the negation and the existential quantifier. We need to ensure that the negation applies to the entire existential quantifier, not just to the predicate \"Boeing707\".\n\nValid FOL formula: ¬Airline(greyhound) → ¬(∃x (Boeing707(x) ∧ Greyhound(x)))\n\n\n\n",
+          "reasoning_perplexity": 1.686149001121521,
+          "correction": "(Greyhound(x) ∧ ¬Airline(x)) → ¬(Boeing707(x))",
+          "correction_perplexity": 4.036353588104248
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 124,
@@ -4872,11 +5174,21 @@
         "∀x (Airline(x) → TransportMultiple(x))",
         "∀x (Plane(x) → Empty(x))",
         "∀x (Boeing707(x) → Plane(x))",
-        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))"
+        "(Airline(x) → ¬Greyhound(x))"
       ],
       "fol_conc": "¬(Boeing707(greyhound))",
-      "perplexity": 1.048566124423615
-    }
+      "perplexity": 1.048566124423615,
+      "parsing_errors": {
+        "¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Greyhound(x))": {
+          "reasoning": "\n\nLet's about how to fix this formula:\n\nThe current formula is trying to express that if something is not an airline, then there doesn't exist anything that is both a Boeing707 and a Greyhound. This logic is flawed because it mixes the concept of being an airline with specific aircraft models and names.\n\nCorrect FOL formula: ¬Airline(greyhound) → ¬∃x (Boeing707(x) ∧ Airline(x)) \n\n\n",
+          "reasoning_perplexity": 1.5248407125473022,
+          "correction": "(Airline(x) → ¬Greyhound(x))",
+          "correction_perplexity": 7.261953353881836
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 125,
@@ -4917,7 +5229,8 @@
       ],
       "fol_conc": "Monkey(rock)",
       "perplexity": 1.044814488242227
-    }
+    },
+    "skip": true
   },
   {
     "id": 126,
@@ -4958,7 +5271,8 @@
       ],
       "fol_conc": "HasWings(rock)",
       "perplexity": 1.0563468447002715
-    }
+    },
+    "skip": true
   },
   {
     "id": 127,
@@ -4999,7 +5313,8 @@
       ],
       "fol_conc": "¬HasWings(rock)",
       "perplexity": 1.067739092137858
-    }
+    },
+    "skip": true
   },
   {
     "id": 128,
@@ -5036,7 +5351,8 @@
       ],
       "fol_conc": "WellAttended(x) ∧ Wedding(john)",
       "perplexity": 1.0660976596477099
-    }
+    },
+    "skip": true
   },
   {
     "id": 129,
@@ -5073,7 +5389,8 @@
       ],
       "fol_conc": "¬WellAttended(john)",
       "perplexity": 1.0573387777537162
-    }
+    },
+    "skip": true
   },
   {
     "id": 130,
@@ -5111,7 +5428,8 @@
       ],
       "fol_conc": "HasChild(john)",
       "perplexity": 1.2086813329569281
-    }
+    },
+    "skip": true
   },
   {
     "id": 131,
@@ -5145,11 +5463,21 @@
         "∀x (Wedding(x) ∧ OccursInJuly(x) → HoneymoonParis(x))",
         "∃x (Wedding(x) ∧ OccursInJuly(x) ∧ WellAttended(x))",
         "HasChild(john) → ¬HoneymoonParis(john) ∧ ¬Wedding(john)",
-        "WellAttended(john) → (Wedding(john) ∧ OccursInJuly(john)) ⊕ HoneymoonParis(john))"
+        "WellAttended(john) → (Wedding(john) ∧ OccursInJuly(john) ∧ HoneymoonParis(john))"
       ],
       "fol_conc": "¬(WellAttended(john)) ∧ ¬HoneymoonParis(john)",
-      "perplexity": 1.0667688445226826
-    }
+      "perplexity": 1.0667688445226826,
+      "parsing_errors": {
+        "WellAttended(john) → (Wedding(john) ∧ OccursInJuly(john)) ⊕ HoneymoonParis(john))": {
+          "reasoning": "\n\nThe error in this formula is the use of the \"⊕\" operator (either or) after the implication (→). The implication should be a single statement that is either true or false, not connected to another statement with \"⊕\".\n\nWhat should be the correct formula?\n\n",
+          "reasoning_perplexity": 2.4497320652008057,
+          "correction": "WellAttended(john) → (Wedding(john) ∧ OccursInJuly(john) ∧ HoneymoonParis(john))",
+          "correction_perplexity": 1.2604910135269165
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 132,
@@ -5180,7 +5508,8 @@
       ],
       "fol_conc": "Mammal(platypus) ∧ ¬HaveTeeth(platypus)",
       "perplexity": 1.075991633653434
-    }
+    },
+    "skip": true
   },
   {
     "id": 133,
@@ -5212,7 +5541,8 @@
       ],
       "fol_conc": "Reptile(platypus)",
       "perplexity": 1.1345420666785913
-    }
+    },
+    "skip": true
   },
   {
     "id": 134,
@@ -5243,7 +5573,8 @@
       ],
       "fol_conc": "Mammal(humans)",
       "perplexity": 1.1543977220111994
-    }
+    },
+    "skip": true
   },
   {
     "id": 135,
@@ -5278,7 +5609,8 @@
       ],
       "fol_conc": "Suck(space)",
       "perplexity": 1.068141026244003
-    }
+    },
+    "skip": true
   },
   {
     "id": 136,
@@ -5314,7 +5646,8 @@
       ],
       "fol_conc": "Vampire(space)",
       "perplexity": 1.1791746057356696
-    }
+    },
+    "skip": true
   },
   {
     "id": 137,
@@ -5352,7 +5685,8 @@
       ],
       "fol_conc": "∀x (IsHouseholdAppliance(x) → Sucks(x))",
       "perplexity": 1.132036902124913
-    }
+    },
+    "skip": true
   },
   {
     "id": 138,
@@ -5369,13 +5703,13 @@
     "answer": "A",
     "logic_problem": {
       "fol_preds": [
-        "MachineLearning(x)",
-        "Supervised(x)",
-        "Unsupervised(x)",
-        "Reinforcement(x)",
-        "RequiresLabelledData(x)",
-        "Train(x, y)",
-        "StateOfTheArtSummarizationModel(x)"
+        "MachineLearning",
+        "Supervised",
+        "Unsupervised",
+        "Reinforcement",
+        "RequiresLabelledData",
+        "Train",
+        "StateOfTheArtSummarizationModel"
       ],
       "fol_consts": [
         "summarizationModel"
@@ -5388,8 +5722,17 @@
         "RequiresLabelledData(summarizationModel)"
       ],
       "fol_conc": "Train(summarizationModel, Supervised)",
-      "perplexity": 1.082426594308458
-    }
+      "perplexity": 1.082426594308458,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: MachineLearning/1, MachineLearning/0, Supervised/1, Supervised/0.\n\n\nFatal error:  The following symbols are used with multiple arities: MachineLearning/1, MachineLearning/0, Supervised/1, Supervised/0": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error:\n\nThe error message indicates that the predicates \"MachineLearning\" and \"Supervised\" are used with different arities (number of arguments) in the FOL rules. \n\n\nLet me know your analysis and the steps you would take to correct the error!",
+          "reasoning_perplexity": 1.5726335048675537,
+          "correction_perplexity": 1.0670526027679443
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 139,
@@ -5426,7 +5769,8 @@
       ],
       "fol_conc": "Unsupervised(x) ∧ Train(model, x)",
       "perplexity": 1.0852712247576768
-    }
+    },
+    "skip": true
   },
   {
     "id": 140,
@@ -5464,7 +5808,8 @@
       ],
       "fol_conc": "LovedByChildren(ben)",
       "perplexity": 1.0610998128310307
-    }
+    },
+    "skip": true
   },
   {
     "id": 141,
@@ -5502,7 +5847,8 @@
       ],
       "fol_conc": "Ugly(ben) ⊕ Yellow(ben)",
       "perplexity": 1.0808673717263408
-    }
+    },
+    "skip": true
   },
   {
     "id": 142,
@@ -5540,7 +5886,8 @@
       ],
       "fol_conc": "(Yellow(ben) ∧ Ugly(ben)) ⊕ ¬(Yellow(ben) ∨ Ugly(ben))",
       "perplexity": 1.045143684213837
-    }
+    },
+    "skip": true
   },
   {
     "id": 143,
@@ -5580,7 +5927,8 @@
       ],
       "fol_conc": "∃x (Animal(x) ∧ BreedingBack(breeding_back) ∧ ArtificialSelection(breeding_back))",
       "perplexity": 1.1088833162275562
-    }
+    },
+    "skip": true
   },
   {
     "id": 144,
@@ -5618,7 +5966,8 @@
       ],
       "fol_conc": "Extinct(aurochs)",
       "perplexity": 1.1941924948168012
-    }
+    },
+    "skip": true
   },
   {
     "id": 145,
@@ -5657,7 +6006,8 @@
       ],
       "fol_conc": "Young(jerry)",
       "perplexity": 1.0822216690945912
-    }
+    },
+    "skip": true
   },
   {
     "id": 146,
@@ -5696,7 +6046,8 @@
       ],
       "fol_conc": "¬Young(jerry)",
       "perplexity": 1.0430676440607765
-    }
+    },
+    "skip": true
   },
   {
     "id": 147,
@@ -5735,7 +6086,8 @@
       ],
       "fol_conc": "Human(rose) ⊕ Manager(rose)",
       "perplexity": 1.0475062610208696
-    }
+    },
+    "skip": true
   },
   {
     "id": 148,
@@ -5774,7 +6126,8 @@
       ],
       "fol_conc": "Human(rose) ∨ Manager(jerry)",
       "perplexity": 1.0514986405187199
-    }
+    },
+    "skip": true
   },
   {
     "id": 149,
@@ -5813,7 +6166,8 @@
       ],
       "fol_conc": "¬(Student(rose) ∧ Human(jerry))",
       "perplexity": 1.0927119149773883
-    }
+    },
+    "skip": true
   },
   {
     "id": 150,
@@ -5853,7 +6207,8 @@
       ],
       "fol_conc": "InEnglish(neapolitanChronicles)",
       "perplexity": 1.1055040454717604
-    }
+    },
+    "skip": true
   },
   {
     "id": 151,
@@ -5887,15 +6242,25 @@
       ],
       "fol_rules": [
         "PublishingHouse(new_vessel_press)",
-        "SpecializesIn(new_vessel_press, Translate(x, y, english))",
+        "InLanguage(english)",
         "∀x ((PublishedBy(x, new_vessel_press) ) → InLanguage(x, english))",
         "PublishedBy(neapolitan_chronicles, new_vessel_press)",
         "Translate(neapolitan_chronicles, italian, english)",
         "PublishedBy(palace_of_flies, new_vessel_press)"
       ],
       "fol_conc": "PublishedBy(harry_potter, new_vessel_press)",
-      "perplexity": 1.110961626099107
-    }
+      "perplexity": 1.110961626099107,
+      "parsing_errors": {
+        "SpecializesIn(new_vessel_press, Translate(x, y, english))": {
+          "reasoning": "\n\nThe current formula is incorrect because \"Translate\" is a predicate and is being used as a noun.\n\nLet's think about how to fix this formula.\n\nThe original intent seems to be to say that the \"new_vessel_press\" specializes in translating from x to y in English. Therefore, we should use an implication (→) to show that if something is the \"new_vessel_press\" then it specializes in translating from x to y in English. The correct structure should be:\n\nSpecializesIn(new_vessel_press, x, y, english) → Translate(x, y, english)\n\nValid FOL formula: SpecializesIn(new_vessel_press, x, y, english) → Translate(x, y, english)",
+          "reasoning_perplexity": 1.473850131034851,
+          "correction": "InLanguage(english)",
+          "correction_perplexity": 507.2100524902344
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 152,
@@ -5935,7 +6300,8 @@
       ],
       "fol_conc": "TranslatedFrom(palaceOfFlies, italian)",
       "perplexity": 1.0413485487708485
-    }
+    },
+    "skip": true
   },
   {
     "id": 153,
@@ -5974,7 +6340,8 @@
       ],
       "fol_conc": "VisitOfficeSupply(remy)",
       "perplexity": 1.0399083191916778
-    }
+    },
+    "skip": true
   },
   {
     "id": 154,
@@ -6013,7 +6380,8 @@
       ],
       "fol_conc": "FullyStockedOffice(remy) ∧ VisitOfficeSupply(remy)",
       "perplexity": 1.0661715289118376
-    }
+    },
+    "skip": true
   },
   {
     "id": 155,
@@ -6051,7 +6419,8 @@
       ],
       "fol_conc": "(BedLateWakeNoon(remy) ∨ VisitsOfficeSupply(remy)) → ¬(TidyHome(remy) ∧ FullyStockedOffice(remy))",
       "perplexity": 1.042197836321634
-    }
+    },
+    "skip": true
   },
   {
     "id": 156,
@@ -6076,7 +6445,8 @@
       ],
       "fol_conc": "∃x (Greek(x) ∧ Mortal(x))",
       "perplexity": 1.2501886158545121
-    }
+    },
+    "skip": true
   },
   {
     "id": 157,
@@ -6119,7 +6489,8 @@
       ],
       "fol_conc": "HasPartTimeJob(james)",
       "perplexity": 1.0394295967114635
-    }
+    },
+    "skip": true
   },
   {
     "id": 158,
@@ -6162,7 +6533,8 @@
       ],
       "fol_conc": "¬PartTimeJob(james)",
       "perplexity": 1.0375675440388217
-    }
+    },
+    "skip": true
   },
   {
     "id": 159,
@@ -6205,7 +6577,8 @@
       ],
       "fol_conc": "TakeDatabase(james) ⊕ PartTimeJob(james)",
       "perplexity": 1.067441787536558
-    }
+    },
+    "skip": true
   },
   {
     "id": 160,
@@ -6248,7 +6621,8 @@
       ],
       "fol_conc": "TakeDatabase(jack)",
       "perplexity": 1.0591282843904697
-    }
+    },
+    "skip": true
   },
   {
     "id": 161,
@@ -6279,7 +6653,8 @@
       ],
       "fol_conc": "(LikesMusic(george) ∧ HasAccessToProgram(george)) → Compose(george)",
       "perplexity": 1.0573442152657564
-    }
+    },
+    "skip": true
   },
   {
     "id": 162,
@@ -6310,7 +6685,8 @@
       ],
       "fol_conc": "¬WillCompose(george) → ¬CanCompose(george)",
       "perplexity": 1.0726338638287092
-    }
+    },
+    "skip": true
   },
   {
     "id": 163,
@@ -6335,7 +6711,8 @@
       ],
       "fol_conc": "∀x (Bird(x) → Lands(x))",
       "perplexity": 1.122373328400319
-    }
+    },
+    "skip": true
   },
   {
     "id": 164,
@@ -6353,7 +6730,7 @@
     "logic_problem": {
       "fol_preds": [
         "RoseGivenOut(x, y, z)",
-        "OnShow(x, y)",
+        "OnShow(x, y, z)",
         "PortraysLives(x, y)",
         "RealPeople(x)",
         "RealityTV(x)"
@@ -6366,14 +6743,23 @@
       ],
       "fol_rules": [
         "∃x RoseGivenOut(x, monday, pm8)",
-        "∀x (RoseGivenOut(x, y, z) → OnShow(x, bachelor))",
-        "∀x (OnShow(x, bachelor) → PortraysLives(x, RealPeople))",
+        "∀x (RoseGivenOut(x, y, z) → OnShow(x, y, z))",
+        "∀x (OnShow(x, y, z) → PortraysLives(x, RealPeople))",
         "∀x (PortraysLives(x, RealPeople) → RealityTV(x))",
         "¬RealityTV(breakingbad)"
       ],
       "fol_conc": "¬OnShow(breakingbad, monday, pm8)",
-      "perplexity": 1.1325245206228325
-    }
+      "perplexity": 1.1325245206228325,
+      "parsing_errors": {},
+      "execution_errors": {
+        "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: OnShow/2, OnShow/3.\n\n\nFatal error:  The following symbols are used with multiple arities: OnShow/2, OnShow/3": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error:\n\nThe error indicates that the predicate \"OnShow\" is defined with two and three arguments, which is not allowed in First-Order Logic.\n\nTo fix this, we need to make the arity of \"OnShow\" consistent throughout the rules.  Let's choose to define \"OnShow\" with three arguments, representing the show, the day, and the time.\n\n\n\nPlease provide a solution for this error.",
+          "reasoning_perplexity": 1.679485559463501,
+          "correction_perplexity": 1.0486021041870117
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 165,
@@ -6412,7 +6798,8 @@
       ],
       "fol_conc": "TVShow(breakingBad) ∧ ∃x ∃y (RoseOnTV(x, y) ∧ Be(y, monday) ∧ Be(x, 8pm))",
       "perplexity": 1.1142918717383379
-    }
+    },
+    "skip": true
   },
   {
     "id": 166,
@@ -6443,15 +6830,25 @@
         "pm8"
       ],
       "fol_rules": [
-        "∃x, y (RosesGiven(x, pm8, monday))",
+        "PortraysRealLives(x)",
         "∀x (RosesGiven(x, y, z) → OnTV(x))",
         "∀x (OnTV(x) ∧ OnBachelor(x) → PortraysRealLives(x))",
         "∀x (PortraysRealLives(x) → RealityTV(x))",
         "¬RealityTV(breakingBad)"
       ],
       "fol_conc": "RosesGiven(breakingBad, pm8, monday) → (∃x, y (RosesGiven(x, y, monday)))",
-      "perplexity": 1.1838154764723934
-    }
+      "perplexity": 1.1838154764723934,
+      "parsing_errors": {
+        "∃x, y (RosesGiven(x, pm8, monday))": {
+          "reasoning": " ∧ (RosesGiven(y, pm8, tuesday))\n\nThe current formula has a comma instead of a logical operator between two predicates.\n\nCorrect FOL formula: ∃x, y (RosesGiven(x, pm8, monday) ∧ RosesGiven(y, pm8, tuesday))",
+          "reasoning_perplexity": 1.3381905555725098,
+          "correction": "PortraysRealLives(x)",
+          "correction_perplexity": 24763.5546875
+        }
+      },
+      "execution_errors": {}
+    },
+    "skip": false
   },
   {
     "id": 167,
@@ -6482,7 +6879,8 @@
       ],
       "fol_conc": "German(heinrich_schmidt) ⊕ Russian(heinrich_schmidt)",
       "perplexity": 1.2288648950215189
-    }
+    },
+    "skip": true
   },
   {
     "id": 168,
@@ -6510,7 +6908,8 @@
       ],
       "fol_conc": "∃x (NaziGermanPolitician(x) ∧ MemberOfPrussianParliament(x) ∧ MemberOfNaziReichstag(x))",
       "perplexity": 1.099298504462494
-    }
+    },
+    "skip": true
   },
   {
     "id": 169,
@@ -6541,7 +6940,8 @@
       ],
       "fol_conc": "¬∃x (Politician(x) ∧ Member(x, NaziReichstag))",
       "perplexity": 1.1314088293576925
-    }
+    },
+    "skip": true
   },
   {
     "id": 170,
@@ -6578,7 +6978,8 @@
       ],
       "fol_conc": "SevereCancer(colorectalCancer)",
       "perplexity": 1.0600886654991684
-    }
+    },
+    "skip": true
   },
   {
     "id": 171,
@@ -6615,7 +7016,8 @@
       ],
       "fol_conc": "(BileDuctCancer(ColorectalCancer) ⊕ Cholangiocarcinoma(ColorectalCancer)) → (BileDuctCancer(ColorectalCancer) ∧ MildFlu(ColorectalCancer))",
       "perplexity": 1.054409443017138
-    }
+    },
+    "skip": true
   },
   {
     "id": 172,
@@ -6654,7 +7056,8 @@
       ],
       "fol_conc": "(¬MildFlu(colorectal cancer) ∧ Cholangiocarcinoma(colorectal cancer)) → (BileDuctCancer(colorectal cancer) ∨ Cholangiocarcinoma(colorectal cancer))",
       "perplexity": 1.0988277021241086
-    }
+    },
+    "skip": true
   },
   {
     "id": 173,
@@ -6694,7 +7097,8 @@
       ],
       "fol_conc": "EatsSalads(taylor)",
       "perplexity": 1.044171124630215
-    }
+    },
+    "skip": true
   },
   {
     "id": 174,
@@ -6734,7 +7138,8 @@
       ],
       "fol_conc": "VisitGym(taylor)",
       "perplexity": 1.0715588328467651
-    }
+    },
+    "skip": true
   },
   {
     "id": 175,
@@ -6774,7 +7179,8 @@
       ],
       "fol_conc": "¬HealthConsciousHome(taylor) ∧ ¬VisitGym(taylor)",
       "perplexity": 1.039164665705075
-    }
+    },
+    "skip": true
   },
   {
     "id": 176,
@@ -6808,7 +7214,8 @@
       ],
       "fol_conc": "SportingEvent(world_championships)",
       "perplexity": 1.1830486995115896
-    }
+    },
+    "skip": true
   },
   {
     "id": 177,
@@ -6839,7 +7246,8 @@
       ],
       "fol_conc": "¬Location(lastOlympicGames, tokyo)",
       "perplexity": 1.1891291415935514
-    }
+    },
+    "skip": true
   },
   {
     "id": 178,
@@ -6870,7 +7278,8 @@
       ],
       "fol_conc": "WonMostMedals(usa, last_olympic)",
       "perplexity": 1.1204089756089386
-    }
+    },
+    "skip": true
   },
   {
     "id": 179,
@@ -6895,7 +7304,8 @@
       ],
       "fol_conc": "∃x (Human(x) ∧ Horse(x))",
       "perplexity": 1.1835009443358857
-    }
+    },
+    "skip": true
   },
   {
     "id": 180,
@@ -6926,7 +7336,8 @@
       ],
       "fol_conc": "Flies(susan, lga)",
       "perplexity": 1.2177882806924067
-    }
+    },
+    "skip": true
   },
   {
     "id": 181,
@@ -6957,7 +7368,8 @@
       ],
       "fol_conc": "∃x (FliesTo(john, lga))",
       "perplexity": 1.237668655253527
-    }
+    },
+    "skip": true
   },
   {
     "id": 182,
@@ -6992,7 +7404,8 @@
       ],
       "fol_conc": "Grumpy(tom)",
       "perplexity": 1.0757681414881943
-    }
+    },
+    "skip": true
   },
   {
     "id": 183,
@@ -7027,7 +7440,8 @@
       ],
       "fol_conc": "¬(Grumpy(tom) ∧ Mean(tom, y))",
       "perplexity": 1.1287853435019646
-    }
+    },
+    "skip": true
   },
   {
     "id": 184,
@@ -7062,7 +7476,8 @@
       ],
       "fol_conc": "(¬(Grumpy(tom) ∧ Mean(tom, animals))) → ¬(Grumpy(tom) ∨ AnimalLover(tom))",
       "perplexity": 1.1288428569834363
-    }
+    },
+    "skip": true
   },
   {
     "id": 185,
@@ -7082,12 +7497,12 @@
     "answer": "A",
     "logic_problem": {
       "fol_preds": [
-        "Podcast(x)",
-        "Novel(x)",
-        "BornIn(x, y)",
-        "American(x)",
-        "WrittenBy(x, y)",
-        "NovelWriter(x)"
+        "Podcast",
+        "Novel",
+        "BornIn",
+        "American",
+        "WrittenBy",
+        "NovelWriter"
       ],
       "fol_consts": [
         "dani_shapiro",
@@ -7102,13 +7517,22 @@
         "∀x (Novel(x) ∧ WrittenBy(x, y) → NovelWriter(y))",
         "American(dani_shapiro)",
         "WrittenBy(family_history, dani_shapiro)",
-        "Novel(family_history) ∧ Be(family_history, 2003)",
+        "Novel(family_history)",
         "Created(dani_shapiro, family_secrets)",
         "Be(boston, american_city)"
       ],
       "fol_conc": "NovelWriter(dani_shapiro)",
-      "perplexity": 1.0969843935776702
-    }
+      "perplexity": 1.0969843935776702,
+      "parsing_errors": {},
+      "execution_errors": {
+        "'NoneType' object has no attribute 'rstrip'": {
+          "reasoning": "\n\nLet's think step by step about how to fix this error:\n\n\n\n",
+          "reasoning_perplexity": 1.1896270513534546,
+          "correction_perplexity": 1.0829004049301147
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 186,
@@ -7128,14 +7552,14 @@
     "answer": "B",
     "logic_problem": {
       "fol_preds": [
-        "Podcast(x)",
-        "Novel(x)",
-        "WrittenBy(x, y)",
-        "American(x)",
-        "BornIn(x, y)",
-        "Writer(x)",
-        "NovelWriter(x)",
-        "Created(x, y)"
+        "Podcast",
+        "Novel",
+        "WrittenBy",
+        "American",
+        "BornIn",
+        "Writer",
+        "NovelWriter",
+        "Created"
       ],
       "fol_consts": [
         "dani_shapiro",
@@ -7145,7 +7569,7 @@
         "american_city"
       ],
       "fol_rules": [
-        "¬(Podcast(x) ∧ Novel(x))",
+        "¬(Podcast(x) ∨ Novel(x))",
         "∀x (BornIn(x, american_city) → American(x))",
         "∀x ∀y ((Novel(x) ∧ WrittenBy(x, y)) → NovelWriter(y))",
         "Writer(dani_shapiro)",
@@ -7155,8 +7579,17 @@
         "BornIn(boston, american_city)"
       ],
       "fol_conc": "Novel(family_secrets)",
-      "perplexity": 1.0630942792937983
-    }
+      "perplexity": 1.0630942792937983,
+      "parsing_errors": {},
+      "execution_errors": {
+        "'NoneType' object has no attribute 'rstrip'": {
+          "reasoning": "\n\n\n\nLet's think step by step about how to fix this error:\n\nThis error suggests that the Prover9 solver encountered a problem with the input format. The message \"NoneType object has no attribute 'rstrip'\" typically occurs when a method is called on a variable that hasn't been assigned a value or holds a 'None' value.\n\nIn this case, it's likely that one of the FOL rules or the conclusion is not being properly parsed due to a formatting issue.\n\nHere's a breakdown of potential issues and solutions:\n\n1. **Whitespace Issues:** Ensure that there are no extraneous whitespace characters (spaces, tabs, newlines) within the FOL formulas or predicates. Prover9 might interpret them incorrectly.\n\n2. **Incorrect Syntax:** Double-check the syntax of the FOL formulas, especially the use of logical operators and quantifiers.\n\n3. **Data Type Mismatch:** Ensure that the data types of the constants and variables are consistent with what Prover9 expects. For instance, make sure string constants are properly enclosed in quotes.\n\n4. **Encoding Issues:**\n\n If the input file is not in a compatible encoding (like UTF-8), Prover9 might encounter parsing errors.\n\nI'd suggest carefully reviewing the provided FOL formulas, paying close attention to the points mentioned above. If you can share the specific lines of code where these formulas are defined, I might be able to pinpoint the exact problem.\n\n\n\n",
+          "reasoning_perplexity": 1.8325988054275513,
+          "correction_perplexity": 1.0751383304595947
+        }
+      }
+    },
+    "skip": false
   },
   {
     "id": 187,
@@ -7202,7 +7635,8 @@
       ],
       "fol_conc": "BornIn(dani_shapiro, boston)",
       "perplexity": 1.0724966035063837
-    }
+    },
+    "skip": true
   },
   {
     "id": 188,
@@ -7237,7 +7671,8 @@
       ],
       "fol_conc": "American(yuri)",
       "perplexity": 1.0528349140997577
-    }
+    },
+    "skip": true
   },
   {
     "id": 189,
@@ -7272,7 +7707,8 @@
       ],
       "fol_conc": "¬(BasketballPlayer(yuri) ∧ American(yuri))",
       "perplexity": 1.063935902103919
-    }
+    },
+    "skip": true
   },
   {
     "id": 190,
@@ -7307,7 +7743,8 @@
       ],
       "fol_conc": "¬BasketballPlayer(yuri) ∨ American(yuri)",
       "perplexity": 1.1341049578400912
-    }
+    },
+    "skip": true
   },
   {
     "id": 191,
@@ -7342,7 +7779,8 @@
       ],
       "fol_conc": "¬WearsLargeShoes(yuri) → (¬BasketballPlayer(yuri) ∨ American(yuri))",
       "perplexity": 1.06406993286084
-    }
+    },
+    "skip": true
   },
   {
     "id": 192,
@@ -7377,7 +7815,8 @@
       ],
       "fol_conc": "¬(BasketballPlayer(yuri) ∧ American(yuri)) → BasketballPlayer(yuri)",
       "perplexity": 1.048985709106843
-    }
+    },
+    "skip": true
   },
   {
     "id": 193,
@@ -7402,7 +7841,8 @@
       ],
       "fol_conc": "∀x (Event(x) → Sad(x))",
       "perplexity": 1.218341600483511
-    }
+    },
+    "skip": true
   },
   {
     "id": 194,
@@ -7439,7 +7879,8 @@
       ],
       "fol_conc": "¬Winner(steinhauer, classic)",
       "perplexity": 1.1504824447309394
-    }
+    },
+    "skip": true
   },
   {
     "id": 195,
@@ -7478,7 +7919,8 @@
       ],
       "fol_conc": "Leaderboard(descampe, six_way_tie)",
       "perplexity": 1.090092448569721
-    }
+    },
+    "skip": true
   },
   {
     "id": 196,
@@ -7518,7 +7960,8 @@
       ],
       "fol_conc": "Terricolous(kiki)",
       "perplexity": 1.0568250579293148
-    }
+    },
+    "skip": true
   },
   {
     "id": 197,
@@ -7558,7 +8001,8 @@
       ],
       "fol_conc": "Bark(kiki) ∧ Dog(kiki)",
       "perplexity": 1.0706720765595752
-    }
+    },
+    "skip": true
   },
   {
     "id": 198,
@@ -7598,7 +8042,8 @@
       ],
       "fol_conc": "¬Bark(kiki) ∧ ¬Dog(kiki)",
       "perplexity": 1.0420246912760658
-    }
+    },
+    "skip": true
   },
   {
     "id": 199,
@@ -7641,7 +8086,8 @@
       ],
       "fol_conc": "¬∃x (PlaysFor(x, nautical) ∧ Brazilian(x))",
       "perplexity": 1.0762900804409257
-    }
+    },
+    "skip": true
   },
   {
     "id": 200,
@@ -7686,7 +8132,8 @@
       ],
       "fol_conc": "¬∃x (PlaysFor(aiton_silva, x) ∧ FootballClub(x))",
       "perplexity": 1.1352574665467108
-    }
+    },
+    "skip": true
   },
   {
     "id": 201,
@@ -7732,7 +8179,8 @@
       ],
       "fol_conc": "¬∃x (FootballClub(x) ∧ LoanedTo(ailton, x))",
       "perplexity": 1.163700949655462
-    }
+    },
+    "skip": true
   },
   {
     "id": 202,
@@ -7778,7 +8226,8 @@
       ],
       "fol_conc": "PlaysFor(aiton_silva, fluminense)",
       "perplexity": 1.0722796495955578
-    }
+    },
+    "skip": true
   },
   {
     "id": 203,
@@ -7824,2166 +8273,7 @@
       ],
       "fol_conc": "LoanedTo(aiton_silva, x) ∧ FootballClub(x)",
       "perplexity": 1.0619235561984286
-    }
-  },
-  {
-    "id": 204,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Brandi is not cultural."
     },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "clarence",
-        "katelynn",
-        "seymour",
-        "brandi",
-        "lyndon",
-        "luka",
-        "lewis"
-      ],
-      "fol_rules": [
-        "Lovely(clarence)",
-        "¬Shiny(katelynn)",
-        "¬Shiny(seymour)",
-        "Southern(katelynn)",
-        "¬Creative(clarence)",
-        "¬Lovely(seymour)",
-        "¬Cultural(brandi)",
-        "¬Lovely(lyndon)",
-        "Cultural(seymour)",
-        "Shiny(luka)",
-        "Cultural(katelynn)",
-        "¬Creative(lyndon)",
-        "(Cultural(brandi) ∨ Creative(seymour)) → ¬Southern(katelynn)",
-        "∃x Shiny(x) → (¬Cultural(lewis) ∧ Creative(seymour))",
-        "∃x (¬Creative(x) ∨ ¬Southern(x)) → ¬Hollow(brandi)",
-        "¬Southern(seymour) ↔ ¬Lovely(clarence)",
-        "∃x Shiny(x) ↔ ∃x Hollow(x)",
-        "∀x (Cultural(x) → (Shiny(x) ∧ ¬Creative(x)))",
-        "∀x ((Southern(x) ∧ Lovely(x)) → ¬Cultural(x))",
-        "Southern(katelynn) → (¬Cultural(seymour) ∧ Shiny(lewis))",
-        "∃x (Hollow(x) ∧ Lovely(x)) ↔ ∃x (Cultural(x) ∧ ¬Southern(x))",
-        "∃x (¬Cultural(x) ∧ ¬Southern(x)) → Creative(seymour)",
-        "Creative(x) ∧ ¬Hollow(x) ↔ Southern(x) ∧ Lovely(x)",
-        "Creative(seymour) ↔ (Cultural(katelynn) ∧ Southern(katelynn))"
-      ],
-      "fol_conc": "¬Cultural(brandi)",
-      "perplexity": 1.0230615139007568
-    }
-  },
-  {
-    "id": 205,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Clarence is southern."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "Clarence",
-        "Katelynn",
-        "Seymour",
-        "Brandi",
-        "Lyndon",
-        "Luka",
-        "Lewis"
-      ],
-      "fol_rules": [
-        "Lovely(Clarence)",
-        "¬Shiny(Katelynn)",
-        "¬Shiny(Seymour)",
-        "Southern(Katelynn)",
-        "¬Creative(Clarence)",
-        "¬Lovely(Seymour)",
-        "¬Cultural(Brandi)",
-        "¬Lovely(Lyndon)",
-        "Cultural(Seymour)",
-        "Shiny(Luka)",
-        "Cultural(Katelynn)",
-        "¬Creative(Lyndon)",
-        "(Cultural(Brandi) ∨ Creative(Seymour)) → ¬Southern(Katelynn)",
-        "∃x Shiny(x) → (¬Cultural(Lewis) ∧ Creative(Seymour))",
-        "∃x (¬Creative(x) ∨ ¬Southern(x)) → ¬Hollow(Brandi)",
-        "¬Southern(Seymour) ↔ ¬Lovely(Clarence)",
-        "∃x Shiny(x) ↔ ∃x Hollow(x)",
-        "Cultural(x) → (Shiny(x) ∧ ¬Creative(x))",
-        "(Southern(x) ∧ Lovely(x)) → ¬Cultural(x)",
-        "Southern(Katelynn) → (¬Cultural(Seymour) ∧ Shiny(Lewis))",
-        "(Hollow(x) ∧ Lovely(x)) ↔ (Cultural(x) ∧ ¬Southern(x))",
-        "∃x (¬Cultural(x) ∨ ¬Southern(x)) → Creative(Seymour)",
-        "(Creative(x) ∧ ¬Hollow(x)) ↔ (Southern(x) ∧ Lovely(x))",
-        "Creative(Seymour) ↔ (Cultural(Katelynn) ∧ Southern(Katelynn))"
-      ],
-      "fol_conc": "Southern(Clarence)",
-      "perplexity": 1.0335829257965088
-    }
-  },
-  {
-    "id": 206,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Seymour is lovely."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "clarence",
-        "katelynn",
-        "seymour",
-        "brandi",
-        "lyndon",
-        "luka",
-        "lewis"
-      ],
-      "fol_rules": [
-        "Lovely(clarence)",
-        "¬Shiny(katelynn)",
-        "¬Shiny(seymour)",
-        "Southern(katelynn)",
-        "¬Creative(clarence)",
-        "¬Lovely(seymour)",
-        "¬Cultural(brandi)",
-        "¬Lovely(lyndon)",
-        "Cultural(seymour)",
-        "Shiny(luka)",
-        "Cultural(katelynn)",
-        "¬Creative(lyndon)",
-        "(Cultural(brandi) ∨ Creative(seymour)) → ¬Southern(katelynn)",
-        "∃x Shiny(x) → (¬Cultural(lewis) ∧ Creative(seymour))",
-        "∃x (¬Creative(x) ∨ ¬Southern(x)) → ¬Hollow(brandi)",
-        "¬Southern(seymour) ↔ ¬Lovely(clarence)",
-        "∃x Shiny(x) ↔ ∃x Hollow(x)",
-        "∀x (Cultural(x) → (Shiny(x) ∧ ¬Creative(x)))",
-        "∀x ((Southern(x) ∧ Lovely(x)) → ¬Cultural(x))",
-        "Southern(katelynn) → (¬Cultural(seymour) ∧ Shiny(lewis))",
-        "∃x (Hollow(x) ∧ Lovely(x)) ↔ ∃x (Cultural(x) ∧ ¬Southern(x))",
-        "∃x (¬Cultural(x) ∧ ¬Southern(x)) → Creative(seymour)",
-        "∃x (Creative(x) ∧ ¬Hollow(x)) ↔ ∃x (Southern(x) ∧ Lovely(x))",
-        "Creative(seymour) ↔ (Cultural(katelynn) ∧ Southern(katelynn))"
-      ],
-      "fol_conc": "Lovely(seymour)",
-      "perplexity": 1.0374386310577393
-    }
-  },
-  {
-    "id": 207,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Lewis is not cultural."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "clarence",
-        "katelynn",
-        "seymour",
-        "brandi",
-        "lyndon",
-        "luka",
-        "lewis"
-      ],
-      "fol_rules": [
-        "Lovely(clarence)",
-        "¬Shiny(katelynn)",
-        "¬Shiny(seymour)",
-        "Southern(katelynn)",
-        "¬Creative(clarence)",
-        "¬Lovely(seymour)",
-        "¬Cultural(brandi)",
-        "¬Lovely(lyndon)",
-        "Cultural(seymour)",
-        "Shiny(luka)",
-        "Cultural(katelynn)",
-        "¬Creative(lyndon)",
-        "(Cultural(brandi) ∨ Creative(seymour)) → ¬Southern(katelynn)",
-        "∃x Shiny(x) → (¬Cultural(lewis) ∧ Creative(seymour))",
-        "(∃x (¬Creative(x) ∨ ¬Southern(x))) → ¬Hollow(brandi)",
-        "¬Southern(seymour) ↔ ¬Lovely(clarence)",
-        "∃x Shiny(x) ↔ ∃x Hollow(x)",
-        "∀x (Cultural(x) → (Shiny(x) ∧ ¬Creative(x)))",
-        "∀x ((Southern(x) ∧ Lovely(x)) → ¬Cultural(x))",
-        "Southern(katelynn) → (¬Cultural(seymour) ∧ Shiny(lewis))",
-        "∃x (Hollow(x) ∧ Lovely(x)) ↔ ∃x (Cultural(x) ∧ ¬Southern(x))",
-        "∃x (¬Cultural(x) ∧ ¬Southern(x)) → Creative(seymour)",
-        "∃x (Creative(x) ∧ ¬Hollow(x)) ↔ ∃x (Southern(x) ∧ Lovely(x))",
-        "Creative(seymour) ↔ (Cultural(katelynn) ∧ Southern(katelynn))"
-      ],
-      "fol_conc": "¬Cultural(lewis)",
-      "perplexity": 1.0235824584960938
-    }
-  },
-  {
-    "id": 208,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Seymour is southern."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "Clarence",
-        "Katelynn",
-        "Seymour",
-        "Brandi",
-        "Lyndon",
-        "Luka",
-        "Lewis"
-      ],
-      "fol_rules": [
-        "Lovely(Clarence)",
-        "¬Shiny(Katelynn)",
-        "¬Shiny(Seymour)",
-        "Southern(Katelynn)",
-        "¬Creative(Clarence)",
-        "¬Lovely(Seymour)",
-        "¬Cultural(Brandi)",
-        "¬Lovely(Lyndon)",
-        "Cultural(Seymour)",
-        "Shiny(Luka)",
-        "Cultural(Katelynn)",
-        "¬Creative(Lyndon)",
-        "(Cultural(Brandi) ∨ Creative(Seymour)) → ¬Southern(Katelynn)",
-        "∃x Shiny(x) → (¬Cultural(Lewis) ∧ Creative(Seymour))",
-        "∃x (¬Creative(x) ∨ ¬Southern(x)) → ¬Hollow(Brandi)",
-        "¬Southern(Seymour) ↔ ¬Lovely(Clarence)",
-        "Shiny(x) ↔ Hollow(x)",
-        "Cultural(x) → (Shiny(x) ∧ ¬Creative(x))",
-        "(Southern(x) ∧ Lovely(x)) → ¬Cultural(x)",
-        "Southern(Katelynn) → (¬Cultural(Seymour) ∧ Shiny(Lewis))",
-        "(Hollow(x) ∧ Lovely(x)) ↔ (Cultural(x) ∧ ¬Southern(x))",
-        "∃x (¬Cultural(x) ∧ ¬Southern(x)) → Creative(Seymour)",
-        "(Creative(x) ∧ ¬Hollow(x)) ↔ (Southern(x) ∧ Lovely(x))",
-        "Creative(Seymour) ↔ (Cultural(Katelynn) ∧ Southern(Katelynn))"
-      ],
-      "fol_conc": "Southern(Seymour)",
-      "perplexity": 1.0485330820083618
-    }
-  },
-  {
-    "id": 209,
-    "nl_problem": {
-      "nl_rules": [
-        "Clarence is lovely.",
-        "Katelynn is not shiny.",
-        "Seymour is not shiny.",
-        "Katelynn is southern.",
-        "Clarence is not creative.",
-        "Seymour is not lovely.",
-        "Brandi is not cultural.",
-        "Lyndon is not lovely.",
-        "Seymour is cultural.",
-        "Luka is shiny.",
-        "Katelynn is cultural.",
-        "Lyndon is not creative.",
-        "It can be concluded that Katelynn is not southern once knowing that Brandi is cultural or Seymour is creative.",
-        "If there is someone who is shiny, then Lewis is not cultural and Seymour is creative.",
-        "If there is at least one people who is not creative or not southern, then Brandi is not hollow.",
-        "Seymour is not southern if and only if Clarence is not lovely.",
-        "Someone is shiny if and only if he is hollow.",
-        "Someone who is cultural is always both shiny and not creative.",
-        "Someone who is both southern and lovely is always not cultural.",
-        "If Katelynn is southern, then Seymour is not cultural and Lewis is shiny.",
-        "Someone being both hollow and lovely is equivalent to being cultural and not southern.",
-        "If there is at least one people who is neither cultural nor southern, then Seymour is creative.",
-        "Someone is creative and not hollow if and only if he is southern and lovely.",
-        "Seymour being creative is equivalent to Katelynn being cultural and Katelynn being southern."
-      ],
-      "nl_conc": "Luka is hollow."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Lovely(x)",
-        "Shiny(x)",
-        "Southern(x)",
-        "Creative(x)",
-        "Cultural(x)",
-        "Hollow(x)"
-      ],
-      "fol_consts": [
-        "Clarence",
-        "Katelynn",
-        "Seymour",
-        "Brandi",
-        "Lyndon",
-        "Luka",
-        "Lewis"
-      ],
-      "fol_rules": [
-        "Lovely(Clarence)",
-        "¬Shiny(Katelynn)",
-        "¬Shiny(Seymour)",
-        "Southern(Katelynn)",
-        "¬Creative(Clarence)",
-        "¬Lovely(Seymour)",
-        "¬Cultural(Brandi)",
-        "¬Lovely(Lyndon)",
-        "Cultural(Seymour)",
-        "Shiny(Luka)",
-        "Cultural(Katelynn)",
-        "¬Creative(Lyndon)",
-        "(Cultural(Brandi) ∨ Creative(Seymour)) → ¬Southern(Katelynn)",
-        "∃x Shiny(x) → (¬Cultural(Lewis) ∧ Creative(Seymour))",
-        "(∃x (¬Creative(x) ∨ ¬Southern(x))) → ¬Hollow(Brandi)",
-        "¬Southern(Seymour) ↔ ¬Lovely(Clarence)",
-        "∃x Shiny(x) ↔ ∃x Hollow(x)",
-        "(Cultural(x)) → (Shiny(x) ∧ ¬Creative(x))",
-        "(Southern(x) ∧ Lovely(x)) → ¬Cultural(x)",
-        "Southern(Katelynn) → (¬Cultural(Seymour) ∧ Shiny(Lewis))",
-        "(Hollow(x) ∧ Lovely(x)) ↔ (Cultural(x) ∧ ¬Southern(x))",
-        "(∃x (¬Cultural(x) ∧ ¬Southern(x))) → Creative(Seymour)",
-        "(Creative(x) ∧ ¬Hollow(x)) ↔ (Southern(x) ∧ Lovely(x))",
-        "Creative(Seymour) ↔ (Cultural(Katelynn) ∧ Southern(Katelynn))"
-      ],
-      "fol_conc": "Hollow(Luka)",
-      "perplexity": 1.0320340394973755
-    }
-  },
-  {
-    "id": 210,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Lamont is significant."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Fearless(x)",
-        "Combative(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x))",
-        "∀x (Fearless(x) ∧ ¬Precious(x) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → ¬Hollow(x) ∧ ¬Soft(x))",
-        "∀x (Combative(x) ∧ Fearless(x) ↔ Significant(x) ∧ ¬Precious(x))",
-        "∀x (¬Soft(x) ∨ ¬Significant(x) → Hollow(x))",
-        "¬Soft(seymour) ↔ ¬Combative(max) ∧ Hollow(gregory)",
-        "Precious(adler) ↔ ¬Soft(lamont)",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "Hollow(adler) → ¬Fearless(adler) ∧ ¬Soft(lamont)",
-        "Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "Significant(lamont)",
-      "perplexity": 1.084842562675476
-    }
-  },
-  {
-    "id": 211,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Conrad is not precious."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "(Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x))",
-        "(Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "Significant(x) → ¬Fearless(x)",
-        "¬Precious(x) → ¬(Hollow(x) ∨ Soft(x))",
-        "(Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x))",
-        "(¬Soft(x) ∨ ¬Significant(x)) → Hollow(x)",
-        "(¬Soft(seymour)) ↔ (¬Combative(max) ∧ Hollow(gregory))",
-        "¬Precious(adler) ↔ Soft(lamont)",
-        "¬Significant(x) → Hollow(x)",
-        "Fearless(x) → ¬Significant(x)",
-        "(Hollow(adler)) → (¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "¬Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "¬Precious(conrad)",
-      "perplexity": 1.037078857421875
-    }
-  },
-  {
-    "id": 212,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Lamont is not hollow."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Fearless(x)",
-        "Precious(x)",
-        "Combative(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x)))",
-        "∀x (Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "¬Precious(adler) ↔ Soft(lamont)",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "¬Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "¬Hollow(lamont)",
-      "perplexity": 1.0556622743606567
-    }
-  },
-  {
-    "id": 213,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Conrad is not significant."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Significant(conrad)",
-      "perplexity": 1.0253543853759766
-    }
-  },
-  {
-    "id": 214,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Cary is combative."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "(Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x)",
-        "(Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "Significant(x) → ¬Fearless(x)",
-        "¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x))",
-        "(Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x))",
-        "(¬Soft(x) ∨ ¬Significant(x)) → Hollow(x)",
-        "(¬Soft(seymour)) ↔ (¬Combative(max) ∧ Hollow(gregory))",
-        "Precious(adler) ↔ ¬Soft(lamont)",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "Fearless(x) → ¬Significant(x)",
-        "(Hollow(adler)) → (¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "Combative(cary)",
-      "perplexity": 1.071054220199585
-    }
-  },
-  {
-    "id": 215,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Adler is precious."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Fearless(x)",
-        "Precious(x)",
-        "Combative(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "(Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x)",
-        "(Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "Significant(x) → ¬Fearless(x)",
-        "¬Precious(x) → ¬(Hollow(x) ∨ Soft(x))",
-        "(Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x))",
-        "(¬Soft(x) ∨ ¬Significant(x)) → Hollow(x)",
-        "¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory))",
-        "Precious(adler) ↔ ¬Soft(lamont)",
-        "¬Significant(x) → Hollow(x)",
-        "Fearless(x) → ¬Significant(x)",
-        "Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "¬Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "Precious(adler)",
-      "perplexity": 1.0401538610458374
-    }
-  },
-  {
-    "id": 216,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Gregory is not hollow."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Fearless(x)",
-        "Precious(x)",
-        "Combative(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → ¬(Hollow(x) ∨ Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x (¬Soft(x) ∨ ¬Significant(x) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Hollow(gregory)",
-      "perplexity": 1.0286020040512085
-    }
-  },
-  {
-    "id": 217,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Adler is significant."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "(Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x)",
-        "(Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "Significant(x) → ¬Fearless(x)",
-        "¬Precious(x) → ¬(Hollow(x) ∨ Soft(x))",
-        "(Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x))",
-        "(¬Soft(x) ∨ ¬Significant(x)) → Hollow(x)",
-        "(¬Soft(seymour)) ↔ (¬Combative(max) ∧ Hollow(gregory))",
-        "Precious(adler) ↔ ¬Soft(lamont)",
-        "¬Significant(x) → Hollow(x)",
-        "Fearless(x) → ¬Significant(x)",
-        "(Hollow(adler)) → (¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "Significant(adler)",
-      "perplexity": 1.0406843423843384
-    }
-  },
-  {
-    "id": 218,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Conrad is not soft."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Soft(conrad)",
-      "perplexity": 1.0236362218856812
-    }
-  },
-  {
-    "id": 219,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Conrad is not fearless."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x)))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Fearless(conrad)",
-      "perplexity": 1.0340518951416016
-    }
-  },
-  {
-    "id": 220,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Conrad is not combative."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Fearless(x)",
-        "Precious(x)",
-        "Combative(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x)))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Combative(conrad)",
-      "perplexity": 1.0296807289123535
-    }
-  },
-  {
-    "id": 221,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Gregory is fearless."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x)))",
-        "∀x ((Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x ((Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "Fearless(gregory)",
-      "perplexity": 1.0355777740478516
-    }
-  },
-  {
-    "id": 222,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Lamont is not combative."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ (¬Soft(x) ∧ ¬Significant(x)))",
-        "∀x (Fearless(x) ∧ ¬Precious(x) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x)))",
-        "∀x (Combative(x) ∧ Fearless(x) ↔ (Significant(x) ∧ ¬Precious(x)))",
-        "∀x ((¬Soft(x) ∨ ¬Significant(x)) → Hollow(x))",
-        "(¬Soft(seymour) ↔ (¬Combative(max) ∧ Hollow(gregory)))",
-        "(¬Precious(adler) ↔ Soft(lamont))",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → (¬Fearless(adler) ∧ ¬Soft(lamont)))",
-        "(¬Hollow(lamont) ↔ Significant(max))"
-      ],
-      "fol_conc": "¬Combative(lamont)",
-      "perplexity": 1.0395838022232056
-    }
-  },
-  {
-    "id": 223,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Seymour is combative."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Combative(x)",
-        "Precious(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "∀x ((Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x))",
-        "∀x (Fearless(x) ∧ ¬Precious(x) ↔ Significant(x))",
-        "∀x (Significant(x) → ¬Fearless(x))",
-        "∀x (¬Precious(x) → ¬(Hollow(x) ∨ Soft(x)))",
-        "∀x (Combative(x) ∧ Fearless(x) ↔ Significant(x) ∧ ¬Precious(x))",
-        "∀x (¬Soft(x) ∨ ¬Significant(x) → Hollow(x))",
-        "(¬Soft(seymour) ↔ ¬Combative(max) ∧ Hollow(gregory))",
-        "Precious(adler) ↔ ¬Soft(lamont)",
-        "∀x (¬Significant(x) → Hollow(x))",
-        "∀x (Fearless(x) → ¬Significant(x))",
-        "(Hollow(adler) → ¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "¬Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "Combative(seymour)",
-      "perplexity": 1.0313684940338135
-    }
-  },
-  {
-    "id": 224,
-    "nl_problem": {
-      "nl_rules": [
-        "Gregory is not soft.",
-        "Max is not significant.",
-        "Max is hollow.",
-        "Conrad is not significant.",
-        "Adler is not significant.",
-        "Lamont is combative.",
-        "Max is not precious.",
-        "Cary is hollow.",
-        "Adler is not combative.",
-        "Cary is significant.",
-        "Seymour is significant.",
-        "Conrad is not fearless.",
-        "If someone is precious and not significant, then he is not soft, and vice versa.",
-        "Someone being both fearless and not precious is equivalent to being significant.",
-        "Someone who is significant is always not fearless.",
-        "If someone is not precious, then he is neither hollow nor soft.",
-        "Someone being both combative and fearless is equivalent to being significant and not precious.",
-        "If someone is not soft or not significant, then he is hollow.",
-        "Seymour being not soft is equivalent to Max being not combative and Gregory being hollow.",
-        "Adler is not precious if and only if Lamont is soft.",
-        "All not significant people are hollow.",
-        "If someone is fearless, then he is not significant.",
-        "If Adler is hollow, then Adler is not fearless and Lamont is not soft.",
-        "Lamont is not hollow if and only if Max is significant."
-      ],
-      "nl_conc": "Adler is not combative."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Soft(x)",
-        "Significant(x)",
-        "Hollow(x)",
-        "Precious(x)",
-        "Combative(x)",
-        "Fearless(x)"
-      ],
-      "fol_consts": [
-        "gregory",
-        "max",
-        "conrad",
-        "adler",
-        "lamont",
-        "cary",
-        "seymour"
-      ],
-      "fol_rules": [
-        "¬Soft(gregory)",
-        "¬Significant(max)",
-        "Hollow(max)",
-        "¬Significant(conrad)",
-        "¬Significant(adler)",
-        "Combative(lamont)",
-        "¬Precious(max)",
-        "Hollow(cary)",
-        "¬Combative(adler)",
-        "Significant(cary)",
-        "Significant(seymour)",
-        "¬Fearless(conrad)",
-        "(Precious(x) ∧ ¬Significant(x)) ↔ ¬Soft(x)",
-        "(Fearless(x) ∧ ¬Precious(x)) ↔ Significant(x)",
-        "Significant(x) → ¬Fearless(x)",
-        "¬Precious(x) → (¬Hollow(x) ∧ ¬Soft(x))",
-        "(Combative(x) ∧ Fearless(x)) ↔ (Significant(x) ∧ ¬Precious(x))",
-        "(¬Soft(x) ∨ ¬Significant(x)) → Hollow(x)",
-        "(¬Soft(seymour)) ↔ (¬Combative(max) ∧ Hollow(gregory))",
-        "¬Precious(adler) ↔ Soft(lamont)",
-        "¬Significant(x) → Hollow(x)",
-        "Fearless(x) → ¬Significant(x)",
-        "(Hollow(adler)) → (¬Fearless(adler) ∧ ¬Soft(lamont))",
-        "Hollow(lamont) ↔ Significant(max)"
-      ],
-      "fol_conc": "¬Combative(adler)",
-      "perplexity": 1.0425689220428467
-    }
-  },
-  {
-    "id": 225,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Iver is supportive."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Energetic(x)",
-        "Bewildered(x)",
-        "Wild(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bad(jasper)",
-        "Energetic(lowell)",
-        "∃x ¬Wild(x) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "¬Wild(x) ∧ Bad(x) → ¬Bewildered(x)",
-        "(Poor(x) ∨ Bad(x)) → Energetic(x)",
-        "(¬Supportive(lowell) ∨ ¬Energetic(barry)) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → (Supportive(x) ∧ Wild(x))",
-        "Bewildered(barry) ∨ Energetic(iver) → ¬Poor(montague)",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "Bewildered(luka) → ¬Supportive(luka)",
-        "¬Wild(lowell) → (Poor(luka) ∧ Bad(ansel))",
-        "∃x (Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "Supportive(iver)",
-      "perplexity": 1.032638669013977
-    }
-  },
-  {
-    "id": 226,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Ansel is poor."
-    },
-    "answer": "C",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Energetic(x)",
-        "Bewildered(x)",
-        "Wild(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bewildered(jasper)",
-        "Energetic(lowell)",
-        "∃x (¬Wild(x)) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "¬Wild(x) ∧ Bad(x) → ¬Bewildered(x)",
-        "Poor(x) ∨ Bad(x) → Energetic(x)",
-        "¬Supportive(lowell) ∨ ¬Energetic(barry) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → Supportive(x) ∧ Wild(x)",
-        "Bewildered(barry) ∨ Energetic(iver) → ¬Poor(montague)",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "Bewildered(luka) → ¬Supportive(luka)",
-        "¬Wild(lowell) → Poor(luka) ∧ Bad(ansel)",
-        "∃x (Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "Poor(ansel)",
-      "perplexity": 1.0368725061416626
-    }
-  },
-  {
-    "id": 227,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Ansel is not supportive."
-    },
-    "answer": "B",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Energetic(x)",
-        "Bewildered(x)",
-        "Wild(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bad(jasper)",
-        "Energetic(lowell)",
-        "∃x(¬Wild(x)) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "(¬Wild(x) ∧ Bad(x)) → ¬Bewildered(x)",
-        "(Poor(x) ∨ Bad(x)) → Energetic(x)",
-        "(¬Supportive(lowell) ∨ ¬Energetic(barry)) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → (Supportive(x) ∧ Wild(x))",
-        "¬Poor(montague)",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "¬Supportive(luka)",
-        "¬Wild(lowell) → (Poor(luka) ∧ Bad(ansel))",
-        "∃x (Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "¬Supportive(ansel)",
-      "perplexity": 1.0461033582687378
-    }
-  },
-  {
-    "id": 228,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Montague is wild."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Wild(x)",
-        "Bewildered(x)",
-        "Energetic(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bad(jasper)",
-        "Energetic(lowell)",
-        "∃x (¬Wild(x)) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "(¬Wild(x) ∧ Bad(x)) → ¬Bewildered(x)",
-        "(Poor(x) ∨ Bad(x)) → Energetic(x)",
-        "(¬Supportive(lowell) ∨ ¬Energetic(barry)) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → (Supportive(x) ∧ Wild(x))",
-        "¬Poor(montague)",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "¬Supportive(luka)",
-        "¬Wild(lowell) → (Poor(luka) ∧ Bad(ansel))",
-        "∃x (Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "Wild(montague)",
-      "perplexity": 1.024982213973999
-    }
-  },
-  {
-    "id": 229,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Luka is not poor."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Energetic(x)",
-        "Bewildered(x)",
-        "Wild(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bad(jasper)",
-        "Energetic(lowell)",
-        "∃x (¬Wild(x)) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "¬Wild(x) ∧ Bad(x) → ¬Bewildered(x)",
-        "Poor(x) ∨ Bad(x) → Energetic(x)",
-        "¬Supportive(lowell) ∨ ¬Energetic(barry) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → (Supportive(x) ∧ Wild(x))",
-        "Bewildered(barry) ∨ Energetic(iver) → ¬Poor(montague)",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "Bewildered(luka) → ¬Supportive(luka)",
-        "¬Wild(lowell) → (Poor(luka) ∧ Bad(ansel))",
-        "∃x (Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "¬Poor(luka)",
-      "perplexity": 1.0233640670776367
-    }
-  },
-  {
-    "id": 230,
-    "nl_problem": {
-      "nl_rules": [
-        "Montague is not bad.",
-        "Ansel is energetic.",
-        "Iver is bewildered.",
-        "Barry is not bad.",
-        "Jasper is not bewildered.",
-        "Barry is wild.",
-        "Ansel is not bad.",
-        "Barry is bewildered.",
-        "Luka is not poor.",
-        "Ansel is bewildered.",
-        "Jasper is not bad.",
-        "Lowell is energetic.",
-        "If there is at least one people who is not wild, then Montague is bewildered and Luka is not poor.",
-        "If Ansel is bewildered, then Montague is wild.",
-        "If someone who is not wild is also bad, then he is not bewildered.",
-        "If someone is poor or he is bad, then he is energetic.",
-        "Lowell being not supportive or Barry being not energetic implies that Ansel is not wild.",
-        "Ansel being bewildered is equivalent to Barry being not wild.",
-        "As long as someone is energetic, he is supportive and wild.",
-        "It can be concluded that Montague is not poor once knowing that Barry is bewildered or Iver is energetic.",
-        "If someone is not energetic or not bad, then he is not bewildered.",
-        "It can be concluded that Luka is not supportive once knowing that Luka is bewildered.",
-        "Lowell being not wild implies that Luka is poor and Ansel is bad.",
-        "If there is at least one people who is supportive or not wild, then Barry is bewildered."
-      ],
-      "nl_conc": "Lowell is energetic."
-    },
-    "answer": "A",
-    "logic_problem": {
-      "fol_preds": [
-        "Bad(x)",
-        "Energetic(x)",
-        "Bewildered(x)",
-        "Wild(x)",
-        "Poor(x)",
-        "Supportive(x)"
-      ],
-      "fol_consts": [
-        "montague",
-        "ansel",
-        "iver",
-        "barry",
-        "jasper",
-        "luka",
-        "lowell"
-      ],
-      "fol_rules": [
-        "¬Bad(montague)",
-        "Energetic(ansel)",
-        "Bewildered(iver)",
-        "¬Bad(barry)",
-        "¬Bewildered(jasper)",
-        "Wild(barry)",
-        "¬Bad(ansel)",
-        "Bewildered(barry)",
-        "¬Poor(luka)",
-        "Bewildered(ansel)",
-        "¬Bad(jasper)",
-        "Energetic(lowell)",
-        "∃x(¬Wild(x)) → (Bewildered(montague) ∧ ¬Poor(luka))",
-        "Bewildered(ansel) → Wild(montague)",
-        "(¬Wild(x) ∧ Bad(x)) → ¬Bewildered(x)",
-        "(Poor(x) ∨ Bad(x)) → Energetic(x)",
-        "(¬Supportive(lowell) ∨ ¬Energetic(barry)) → ¬Wild(ansel)",
-        "Bewildered(ansel) ↔ ¬Wild(barry)",
-        "Energetic(x) → (Supportive(x) ∧ Wild(x))",
-        "¬Poor(montague) ",
-        "¬Energetic(x) ∨ ¬Bad(x) → ¬Bewildered(x)",
-        "¬Supportive(luka)",
-        "¬Wild(lowell) → (Poor(luka) ∧ Bad(ansel))",
-        "∃x(Supportive(x) ∨ ¬Wild(x)) → Bewildered(barry)"
-      ],
-      "fol_conc": "Energetic(lowell)",
-      "perplexity": 1.0283089876174927
-    }
+    "skip": true
   }
 ]

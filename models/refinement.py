@@ -9,7 +9,7 @@ from pprint import pp
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
-from utils import OSModel, get_logger, send_notification
+from utils import OSModel, get_logger, send_notification, calculate_perplexity
 
 import traceback
 
@@ -48,10 +48,10 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'parsing_user': f'./prompts/correction/user/{self.type}_parsing.txt',
-            'execution_user': f'./prompts/correction/user/{self.type}_execution.txt',
-            'parsing_reasoning_user': f'./prompts/correction/user/{self.type}_parsing_reasoning.txt',
-            'execution_reasoning_user': f'./prompts/correction/user/{self.type}_execution_reasoning.txt',
+            'parsing_user': f'./prompts/correction/{self.type}_parsing.txt',
+            'execution_user': f'./prompts/correction/{self.type}_execution.txt',
+            'parsing_reasoning_user': f'./prompts/correction/{self.type}_parsing_reasoning.txt',
+            'execution_reasoning_user': f'./prompts/correction/{self.type}_execution_reasoning.txt',
             'grammar_file': f'./LLMs/grammars/{self.type}.gbnf',
             'json_grammar': './LLMs/grammars/json.gbnf'
         }
@@ -72,7 +72,7 @@ class PromptGenerator:
         if self.config.static_consts:
             return'[A-Z][a-z0-9]{2,15}'
         else:
-            return' | '.join(con for con in logic_problem['fol_consts'])
+            return' | '.join(f'"{con}"' for con in logic_problem['fol_consts'])
 
     def parsing_prompt_fol(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -86,6 +86,8 @@ class PromptGenerator:
         elif mode == 'generation':
             full_prompt = self.templates['parsing_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
             grammar = self.get_grammar(logic_problem) if self.config.gcd else None
+
+            # raise Exception(grammar)
 
         return full_prompt, grammar
 
@@ -145,7 +147,11 @@ class SelfRefinementEngine(PromptGenerator):
             prompt=user,
             temperature=1.0,
         )
-        return response['choices'][0]['text']
+        
+        content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
+        return content, perplexity
 
     def _parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
         user, grammar = self.parsing_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
@@ -160,10 +166,11 @@ class SelfRefinementEngine(PromptGenerator):
             tfs_z=1,
             repeat_penalty=1,
         )
-        # logger.debug(grammar)
-        # logger.debug(response)
         
-        return response['choices'][0]['text']
+        content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
+        return content, perplexity
 
     def _execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
         user = self.execution_prompt_fol(mode='reasoning', logic_problem=logic_problem, error=error)
@@ -171,7 +178,11 @@ class SelfRefinementEngine(PromptGenerator):
             prompt=user,
             temperature=1.0
         )
-        return response['choices'][0]['text']
+        
+        content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
+        return content, perplexity
 
     def _execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
         user = self.execution_prompt_fol(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
@@ -180,7 +191,11 @@ class SelfRefinementEngine(PromptGenerator):
             raw_grammar=self.templates['json_grammar'],
             temperature=0.5,
         )
-        return json.loads(response['choices'][0]['text'])
+        
+        content = json.loads(response['choices'][0]['text'])
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
+        return content, perplexity
 
     def single_round_self_refinement(self):
         logic_problems = self._load_logic_problems()
@@ -220,26 +235,36 @@ class SelfRefinementEngine(PromptGenerator):
             try:
                 if status == 'parsing error' and error:
                     logger.info(f'Fixing parsing error for {sample["id"]}')
-                    reasoning = self._parsing_reasoning_generator(logic_problem, error)
-                    correction = self._parsing_correction_generator(logic_problem, error, reasoning)
+                    reasoning, reasoning_perplexity = self._parsing_reasoning_generator(logic_problem, error)
+                    correction, correction_perplexity = self._parsing_correction_generator(logic_problem, error, reasoning)
                     
                     logic_problem.setdefault('parsing_errors', {})
                     logic_problem.setdefault('execution_errors', {})
                     
-                    logic_problem["parsing_errors"][error] = (correction, reasoning)
+                    # logic_problem["parsing_errors"][error] = (correction, reasoning)
+                    logic_problem["parsing_errors"][error] = {
+                        'reasoning': reasoning,
+                        'reasoning_perplexity': reasoning_perplexity,
+                        'correction': correction,
+                        'correction_perplexity': correction_perplexity
+                    }
                     
                     
                     logic_problem["fol_rules"] = [correction if f == error else f for f in logic_problem["fol_rules"]]
                     
                 elif status == 'execution error' and error:
                     logger.info(f'Fixing execution error for {sample["id"]}')
-                    reasoning = self._execution_reasoning_generation(logic_problem, error)
-                    logic_problem = self._execution_correction_generation(logic_problem, error, reasoning)
+                    reasoning, reasoning_perplexity = self._execution_reasoning_generation(logic_problem, error)
+                    logic_problem, correction_perplexity = self._execution_correction_generation(logic_problem, error, reasoning)
                     
                     logic_problem.setdefault('parsing_errors', {})
                     logic_problem.setdefault('execution_errors', {})
                     
-                    logic_problem['execution_errors'][error] = reasoning
+                    logic_problem['execution_errors'][error] = {
+                        'reasoning': reasoning,
+                        'reasoning_perplexity': reasoning_perplexity,
+                        'correction_perplexity': correction_perplexity
+                    }
 
 
                 else:

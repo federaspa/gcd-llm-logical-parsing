@@ -7,6 +7,7 @@ import os
 import logging
 import sys
 from datetime import datetime
+import numpy as np
 
 dotenv.load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -52,6 +53,9 @@ def get_logger(script_name):
 
     return logger
 
+def calculate_perplexity(logprobs):
+    return float(np.exp(-np.mean(logprobs['token_logprobs'])))
+
 class OSModel:
     def __init__(self,
                  model_path,
@@ -80,8 +84,8 @@ class OSModel:
             logits_all = logits_all,
             **kwargs
         )
-        if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
-            warnings.warn('System role not supported, adapting format', UserWarning)
+        # if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
+        #     warnings.warn('System role not supported, adapting format', UserWarning)
         
     def _format_messages(self, task_description:str|None, user:str):
         
@@ -104,7 +108,7 @@ class OSModel:
     def invoke(self,
                prompt:str,
                raw_grammar:bool=None,
-               logprobs = 5,
+               logprobs = 1,
                max_tokens = -1,
                top_p:float=0.95,
                top_k:float=50,
