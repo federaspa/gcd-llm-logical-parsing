@@ -1,12 +1,17 @@
 The task is to think about a First-Order-Logic problem that throws an error.
 I will provide the original problem and the error returned by the Prover9 solver, and you must reason on why that error appeared, and propose steps to correct it. 
 
-For generating the FOL formulas, you must adhere to the following rules:
-1. You SHOULD USE the following logical operators and quantifiers: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ∀ (universal), ∃ (existential), ¬ (negation), ↔ (equivalence)
-2. You SHOULD NEVER USE the following symbols for FOL: "%", "≠"
-3. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"; expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+Here are the rules for First-Order Logic:
+1. Logical operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ¬ (negation), ↔ (equivalence).
+2. Quantifiers: ∀ (universal), ∃ (existential).
+3. Forbidden symbols: "%", "≠".
+4. It is FORBIDDEN to nest predicates, e.g. "Rounded(Square(x))" is NOT ALLOWED.
+5. Formulas must ALWAYS be relations between predicates, and it is FORBIDDEN to use relationships between variables. For example, "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED.
+6. Parentheses MUST ALWAYS be balanced.
+
 ------
-Here's an example of how to perform the correction:
+
+Here's an example of how to reason about the error:
 
 Original FOL problem:
 
@@ -16,10 +21,10 @@ Original FOL problem:
 
 Error Message: "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1.\n\n\nFatal error:  The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1"
 
-Let's think step by step about how to fix this error: 
-
 In the second fol rule, the predicate LeadSingle appears before LeadSingleOf. Since a predicate cannot be a subset of another, this leads to a multiple arities error. To fix this, we can change LeadSingleOf to EPLeadSingle wherever it appears, so that it's not a subset of any other predicate.
+
 ------
+
 Here's another example:
 
 Original FOL problem:
@@ -30,10 +35,10 @@ Original FOL problem:
 
 Error Message: "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Department/2, Department/1.\n\n\nFatal error: The following symbols are used with multiple arities: Department/2, Department/1"
 
-Let's think step by step about how to fix this error:
-
 The error occurs because the predicate "Department" is used with different arities (number of arguments) in different parts of the FOL rules. In the first rule, it's used with two arguments (Department(computerscience, stanford)), but the error suggests it's also used somewhere with only one argument. To fix this, we need to ensure consistent use of the Department predicate. We can modify it to always take two arguments: the department name and the university it belongs to. We'll update the relevant rule and add the Department predicate to the fol_preds list with the correct arity.
+
 ------
+
 Now let's do the same for the following problem:
 
 Original FOL problem:

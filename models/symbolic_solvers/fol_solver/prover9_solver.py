@@ -62,8 +62,8 @@ class FOL_Prover9_Program:
             #prover = Prover9()
             #result = prover.prove(goal, assumptions)
             
-            prover = Prover9Command(goal, assumptions, timeout=timeout)
-            result = prover.prove(verbose=False)
+            self.prover = Prover9Command(goal, assumptions, timeout=timeout)
+            result = self.prover.prove(verbose=False)
             # print(prover.proof())
             if result:
                 return 'True', ''
@@ -72,8 +72,8 @@ class FOL_Prover9_Program:
                 # by running Prover9 with the negation of the goal
                 negated_goal = NegatedExpression(goal)
                 # negation_result = prover.prove(negated_goal, assumptions)
-                prover = Prover9Command(negated_goal, assumptions, timeout=timeout)
-                negation_result = prover.prove()
+                self.prover = Prover9Command(negated_goal, assumptions, timeout=timeout)
+                negation_result = self.prover.prove()
                 if negation_result:
                     return 'False', ''
                 else:

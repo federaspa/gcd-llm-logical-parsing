@@ -1,5 +1,6 @@
 from nltk.tree import Tree
 from .fol_parser import FOL_Parser
+from timeout_decorator import timeout, TimeoutError
 # from concurrent.futures import ThreadPoolExecutor, TimeoutError, ProcessPoolExecutor
 # import signal
 # import sys
@@ -12,17 +13,18 @@ class FOL_Formula:
         self.parser = FOL_Parser()
         self.is_valid = False
 
+        @timeout(seconds=10)
         def parse_with_timeout():
             return self.parser.parse_text_FOL_to_tree(str_fol)
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(parse_with_timeout)
-            try:
-                tree = future.result(timeout=60)
-            except concurrent.futures.TimeoutError:
-                tree = None
-            except Exception as exc:
-                tree = None
+        # with concurrent.futures.ThreadPoolExecutor() as executor:
+        # future = executor.submit(parse_with_timeout)
+        try:
+            tree = parse_with_timeout()
+        except TimeoutError:
+            tree = None
+        except Exception as exc:
+            tree = None
 
         self.tree = tree
         if tree is None:

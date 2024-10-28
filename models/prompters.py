@@ -33,7 +33,7 @@ class FOL_Prompter:
         if len(logic_problem['fol_consts']) > 0 and not self.config.static_consts:
             return' | '.join(f'"{con}"' for con in logic_problem['fol_consts'])
         else:
-            return'[A-Z][a-z0-9]{2,15}'
+            return'[a-z0-9]{2,15}'
         
     def get_grammar(self, logic_problem: dict) -> str:
         
@@ -91,11 +91,48 @@ class SAT_Prompter:
         self.config = config
         self.templates = templates
         
-    def _get_predicates(self, logic_problem: str) -> str:
-        pass
+    def unstructured(self, sample: Dict) -> str:
+        problem = sample['context']
+        question = sample['question'].strip()
+        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
-    def _get_constants(self, logic_problem: str) -> str:
-        pass
+        full_prompt = self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = full_prompt.replace('[[choices]]', choices_str)
+        
+        return full_prompt
+    
+    def structured(self, unstructured: str) -> str:
+        
+        full_prompt = self.templates['structured_user'].replace('[[unstructured]]', unstructured).replace(r'```python', '').replace(r'```', '')
+        
+        return full_prompt
+    
+    def parsing_prompt(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
+        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
+
+        full_prompt, grammar = '', ''
+
+        return full_prompt, grammar
+
+    def get_grammar(self, logic_problem: dict) -> str:
+        
+        return ''
+
+    def execution_prompt(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> str:
+        assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
+
+        problem_string = json.dumps(logic_problem)
+
+        if mode == 'reasoning':
+            return ''
+        elif mode == 'generation':
+            return ''
+        
+        
+class LP_Prompter:
+    def __init__(self, config: Config, templates: Dict[str,str]):
+        self.config = config
+        self.templates = templates
         
     def unstructured(self, sample: Dict) -> str:
         problem = sample['context']

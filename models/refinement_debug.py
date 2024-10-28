@@ -26,14 +26,27 @@ class SelfRefinementEngine(SelfRefinementEngine):
                 
                 print("Reasoning...")
                 reasoning, _ = self._parsing_reasoning_generator(logic_problem, error)
+#                 reasoning = """To correct the given FOL formula, let's identify the issue.
+# The current formula is:
+
+# ∀x (∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y) ∧ Chaperone(y)) ⊕ ¬∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y))) → (∃x (Student(x) ∧ Student(x)) ⊕ ¬∃x (Student(x) ∨ Student(x)))
+
+# The issue with this formula is that the predicate "Student(x) ∨ Student(x)" is not allowed because it is a disjunction between the same variable "x", which is a forbidden relationship in FOL.
+
+# To correct this, we need to change the formula so that the predicates are relations between variables and not relationships between the same variable.
+
+# Correct FOL formula: ∀x (∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y) ∧ Chaperone(y)) ⊕ ¬∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y))) → (∃x (Student(x) ∧ Student(x)) ⊕ ¬∃x (Student(x)))"""
                 
                 print(reasoning)
                 
-                print("Fixing...")
-                correction, _ = self._parsing_correction_generator(logic_problem, error, reasoning)
+                input("Press Enter to continue...")
                 
+                print("Fixing...")
+                correction, perplexity = self._parsing_correction_generator(logic_problem, error, reasoning)
+            
+                print("Correction:", correction, perplexity)    
 
-                print("Correction:", correction)    
+                input("Press Enter to continue...")
 
 if __name__ == "__main__":
     config = parse_args()

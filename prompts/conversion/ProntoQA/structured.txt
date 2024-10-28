@@ -1,0 +1,69 @@
+Wrap the provided predicates, facts, rules and query in a valid JSON, with the following schema:
+"""
+\{
+"predicates": [list of required Predicates],
+"facts": [list of known Facts],
+"rules": [list of generated Rules],
+"query": [generated Query]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Predicates:
+- Jompus($x, bool) ::: Does x belong to Jompus?
+- Fruity($x, bool) ::: Is x fruity?
+- Wumpus($x, bool) ::: Does x belong to Wumpus?
+- Transparent($x, bool) ::: Is x transparent?
+- Tumpuses($x, bool) ::: Does x belong to Tumpuses?
+- Mean($x, bool) ::: Is x mean?
+- Vumpuses($x, bool) ::: Does x belong to Vumpuses?
+- Cold($x, bool) ::: Is x cold?
+- Yumpus($x, bool) ::: Does x belong to Yumpus?
+- Orange($x, bool) ::: Is x orange?
+- Numpus($x, bool) ::: Does x belong to Numpus?
+- Dull($x, bool) ::: Is x dull?
+- Dumpus($x, bool) ::: Does x belong to Dumpus?
+- Shy($x, bool) ::: Is x shy?
+- Impuses($x, bool) ::: Does x belong to Impuses?
+- Rompus($x, bool) ::: Does x belong to Rompus?
+- Liquid($x, bool) ::: Is x liquid?
+- Zumpus($x, bool) ::: Does x belong to Zumpus?
+
+Facts:
+- Tumpuses(Alex, True) ::: Alex is a tumpus.
+
+Rules:
+- Jompus($x, True) >>> Fruity($x, True)
+- Jompus($x, True) >>> Wumpus($x, True)
+- Wumpus($x, True) >>> Transparent($x, False)
+- Wumpuses($x, True) >>> Tumpuses($x, True)
+- Tumpuses($x, True) >>> Mean($x, True)
+- Tumpuses($x, True) >>> Vumpuses($x, True)
+- Vumpuses($x, True) >>> Cold($x, True)
+- Vumpuses($x, True) >>> Yumpus($x, True)
+- Yumpus($x, True) >>> Orange($x, True)
+- Yumpus($x, True) >>> Numpus($x, True)
+- Numpus($x, True) >>> Dull($x, True)
+- Numpus($x, True) >>> Dumpus($x, True)
+- Dumpus($x, True) >>> Shy($x, False)
+- Impuses($x, True) >>> Shy($x, True)
+- Dumpus($x, True) >>> Rompus($x, True)
+- Rompus($x, True) >>> Liquid($x, True)
+- Rompus($x, True) >>> Zumpus($x, True)
+
+Query:
+- Shy(Alex, False)
+
+Output
+
+{"predicates": ["Jompus($x, bool)", "Fruity($x, bool)", "Wumpus($x, bool)", "Transparent($x, bool)", "Tumpuses($x, bool)", "Mean($x, bool)", "Vumpuses($x, bool)", "Cold($x, bool)", "Yumpus($x, bool)", "Orange($x, bool)", "Numpus($x, bool)", "Dull($x, bool)", "Dumpus($x, bool)", "Shy($x, bool)", "Impuses($x, bool)", "Rompus($x, bool)", "Liquid($x, bool)", "Zumpus($x, bool)"],
+"facts": ["Tumpuses(Alex, True)"],
+"rules": ["Jompus($x, True) >>> Fruity($x, True)", "Jompus($x, True) >>> Wumpus($x, True)", "Wumpus($x, True) >>> Transparent($x, False)", "Wumpuses($x, True) >>> Tumpuses($x, True)", "Tumpuses($x, True) >>> Mean($x, True)", "Tumpuses($x, True) >>> Vumpuses($x, True)", "Vumpuses($x, True) >>> Cold($x, True)", "Vumpuses($x, True) >>> Yumpus($x, True)", "Yumpus($x, True) >>> Orange($x, True)", "Yumpus($x, True) >>> Numpus($x, True)", "Numpus($x, True) >>> Dull($x, True)", "Numpus($x, True) >>> Dumpus($x, True)", "Dumpus($x, True) >>> Shy($x, False)", "Impuses($x, True) >>> Shy($x, True)", "Dumpus($x, True) >>> Rompus($x, True)", "Rompus($x, True) >>> Liquid($x, True)", "Rompus($x, True) >>> Zumpus($x, True)"],
+"query": "Shy(Alex, False)"}
+
+###
+
+Now let's convert this problem:
+
+[[unstructured]]

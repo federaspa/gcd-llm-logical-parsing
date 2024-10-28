@@ -56,10 +56,11 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'structured_user': f'./prompts/conversion/{self.config.dataset_name}/structured.txt',
-            'unstructured_user': f'./prompts/conversion/{self.config.dataset_name}/unstructured.txt',
+            # 'structured_user': f'./prompts/conversion/{self.config.dataset_name}/structured.txt',
+            'unstructured_user': f'./prompts/conversion/{self.config.dataset_name}/crazy.txt',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
-            'json_grammar': './LLMs/grammars/json.gbnf'
+            'json_grammar': './LLMs/grammars/json.gbnf',
+            'crazy_grammar': './LLMs/grammars/FOL_crazy.gbnf'
         }
 
         # Load and process templates
@@ -91,28 +92,40 @@ class LogicProgramGenerator(PromptGenerator):
             raw_dataset = json.load(f)
         return raw_dataset
 
-    @timeout(seconds=120)
-    def _unstructured_generator(self, sample: dict) -> Tuple[str, float]:
-        user = self.prompter.unstructured(sample=sample)
-        response = self.sketcher_api.invoke(prompt=user)
+    # @timeout(seconds=120)
+    # def _unstructured_generator(self, sample: dict) -> Tuple[str, float]:
+    #     user = self.prompter.unstructured(sample=sample)
+    #     response = self.sketcher_api.invoke(prompt=user)
         
-        content = response['choices'][0]['text']
-        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+    #     content = response['choices'][0]['text']
+    #     perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
-        return content, perplexity
+    #     return content, perplexity
 
     @timeout(seconds=120)
-    def _structured_generator(self, unstructured: str) -> dict:
-        user = self.prompter.structured(unstructured)
+    def _structured_generator(self, sample: str) -> dict:
+        user = self.prompter.unstructured(sample)
         response = self.sketcher_api.invoke(
             prompt=user,
-            raw_grammar=self.templates['json_grammar']
+            raw_grammar=self.templates['crazy_grammar'],
+            temperature=0.5,
+            top_p = 1,
+            top_k=10,
+            min_p=0.1,
+            tfs_z=1,
+            repeat_penalty=1
         )
         
         content = response['choices'][0]['text']
+        
+        try:
+            content = json.loads(content)
+        except:
+            raise Exception(content)
+        
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
 
-        return json.loads(content), perplexity
+        return content , perplexity
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -133,19 +146,19 @@ class LogicProgramGenerator(PromptGenerator):
 
         for i, sample in enumerate(tqdm(raw_dataset)):
             try:
-                try:
-                    unstructured, perplexity = self._unstructured_generator(sample)
-                except TimeoutError:
-                    logger.warning(f"Timeout occurred during unstructured generation for sample {sample['id']}")
-                    continue
+                # try:
+                #     unstructured, perplexity = self._unstructured_generator(sample)
+                # except TimeoutError:
+                #     logger.warning(f"Timeout occurred during unstructured generation for sample {sample['id']}")
+                #     continue
                     
                 try:
-                    logic_problem, struct_perplexity = self._structured_generator(unstructured)
+                    logic_problem, perplexity = self._structured_generator(sample)
                 except TimeoutError:
                     logger.warning(f"Timeout occurred during structured generation for sample {sample['id']}")
                     continue
                 
-                logic_problem['perplexity'] = (perplexity, struct_perplexity)
+                logic_problem['perplexity'] = perplexity
                     
                 if i % 20 == 0:
                     logger.debug(logic_problem)

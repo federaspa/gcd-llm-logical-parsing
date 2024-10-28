@@ -1,25 +1,32 @@
-root ::= S
+root ::= OBJECT
 
-S ::= F | QUANT VAR S | "¬" S
+OBJECT ::= 
+  "{\"correct_formula\": \"" FORMULA "\"}"
 
-F ::= FB FT?
+# Start with the most basic elements and build up
+FORMULA ::= BASIC TAIL{0,5}
+TAIL ::= BINOP BASIC
 
-FB ::= "¬"? "(" F ")" | L
+# Basic formula without recursion
+BASIC ::= ATOMIC | QUANTIFIED | "¬" "(" FORMULA ")" | "(" FORMULA ")"
 
-FT ::= OP FB FT? | OP FB OP FB FT? | OP FB OP FB OP FB FT? | OP FB OP FB OP FB OP FB FT?
+# Quantified formulas
+QUANTIFIED ::= (quantifier variable " "){1,4} "(" FORMULA ")"
+quantifier ::= "∀" | "∃"
+variable ::= [w-z]
 
-OP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
+# Binary operators
+BINOP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
 
-L ::= "¬"? PRED "(" TERMS ")"
+# Atomic formulas
+ATOMIC ::= predicate "(" terms ")" | "¬" predicate "(" terms ")"
 
-TERMS ::= TERM (", " TERMS)?
+# Terms in predicates
+terms ::= term | term ", " terms
 
-TERM ::= CONST | VAR
+# Individual terms
+term ::= constant | variable
 
-QUANT ::= "∀" | "∃"
-
-CONST ::= [[CONSTANTS]]
-
-VAR ::= "x" | "y" | "z"
-
-PRED ::= [[PREDICATES]]
+# Basic elements
+predicate ::= [[PREDICATES]]
+constant ::= [[CONSTANTS]]

@@ -31,13 +31,11 @@ Options:
 - is_valid(Exists([m:meals], eats(Vladimir, m) == omelet)) ::: Vladimir must eat omelet
 - is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs)) ::: Vladimir must eat poached eggs
 
-------
+Output:
 
-\{
-"declarations": ["people = EnumSort([Vladimir, Wendy])", "meals = EnumSort([breakfast, lunch, dinner, snack])", "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])", "eats = Function([people, meals] -> [foods])"],
+{"declarations": ["people = EnumSort([Vladimir, Wendy])", "meals = EnumSort([breakfast, lunch, dinner, snack])", "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])", "eats = Function([people, meals] -> [foods])"],
 "constraints": ["ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))", "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)", "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))", "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))", "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))", "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))", "eats(Wendy, lunch) == omelet"],
-"options": ["is_valid(Exists([m:meals], eats(Vladimir, m) == fish))", "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))", "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))", "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))", "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"]
-\}
+"options": ["is_valid(Exists([m:meals], eats(Vladimir, m) == fish))", "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))", "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))", "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))", "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"]}
 
 ###
 
@@ -64,13 +62,11 @@ Options:
 - is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) ::: (D)
 - is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) ::: (E)
 
-------
+Output:
 
-\{
-"declarations": ["technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])", "machines = EnumSort([radios, televisions, VCRs])", "repairs = Function([technicians, machines] -> [bool])"],
+{"declarations": ["technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])", "machines = EnumSort([radios, televisions, VCRs])", "repairs = Function([technicians, machines] -> [bool])"],
 "constraints": ["ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)", "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)", "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))", "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))", "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))", "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))", "Count([m:machines], repairs(Urma, m)) == 2"],
-"options": ["is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"]
-\}
+"options": ["is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"]}
 
 ###
 

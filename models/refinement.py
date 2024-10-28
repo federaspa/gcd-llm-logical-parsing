@@ -5,6 +5,7 @@ from typing import Dict, List, Callable, Any
 from dataclasses import dataclass
 from pathlib import Path
 from pprint import pp
+from timeout_decorator import timeout, TimeoutError
 
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
@@ -16,10 +17,10 @@ import traceback
 
 @dataclass
 class Config:
-    sketcher_path: str
-    refiner_path: str
+    sketcher_name: str
+    refiner_name: str
     dataset_name: str
-    data_path: str
+    models_path: str
     save_path: str
     split: str
     starting_round: int
@@ -61,13 +62,13 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'parsing_user': f'./prompts/correction/{self.type}/parsing_gcd.txt' if self.config.gcd else f'./prompts/correction/{self.type}/parsing_nogcd.txt',
-            'execution_user': f'./prompts/correction/{self.type}/execution.txt',
-            'parsing_reasoning_user': f'./prompts/correction/{self.type}/parsing_reasoning.txt',
-            'execution_reasoning_user': f'./prompts/correction/{self.type}/execution_reasoning.txt',
+            'parsing_user': f'./prompts/correction/{self.config.dataset_name}/parsing.txt',
+            'execution_user': f'./prompts/correction/{self.config.dataset_name}/execution.txt',
+            'parsing_reasoning_user': f'./prompts/correction/{self.config.dataset_name}/parsing_reasoning.txt',
+            'execution_reasoning_user': f'./prompts/correction/{self.config.dataset_name}/execution_reasoning.txt',
             'grammar_file': f'./LLMs/grammars/{self.type}.gbnf',
             'json_grammar': './LLMs/grammars/json.gbnf',
-            'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_path else 'prompts/prompt_templates/llama.txt',
+            'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
         }
         # Load and process templates
         self.templates = {}
@@ -92,8 +93,8 @@ class SelfRefinementEngine(PromptGenerator):
         super().__init__(config)
         self.current_round = current_round
         self.refiner_api = refiner
-        self.sketcher_name = Path(config.sketcher_path).stem
-        self.refiner_name = Path(config.refiner_path).stem
+        self.sketcher_path = Path(config.models_path) / f"{config.sketcher_name}.gguf"
+        self.refiner_path = Path(config.models_path) / f"{config.refiner_name}.gguf"
         self.gcd_dir = 'GCD' if config.gcd else 'NO_GCD'
         self.program_executor = FOL_Prover9_Program
 
@@ -101,9 +102,9 @@ class SelfRefinementEngine(PromptGenerator):
         prefix = f'self-refine-{self.current_round-1}_' if self.current_round > 1 else ""
         
         if self.current_round == 1:
-            programs_path = Path(self.config.save_path).parent / 'logic_problems' / f'{self.config.dataset_name}_{self.config.split}_{self.sketcher_name}.json'
+            programs_path = Path(self.config.save_path).parent / 'logic_problems' / f'{self.config.dataset_name}_{self.config.split}_{config.sketcher_name}.json'
         else:
-            programs_path = Path(self.config.save_path) / self.gcd_dir / self.refiner_name / f'{prefix}{self.config.dataset_name}_{self.config.split}_{self.sketcher_name}.json'
+            programs_path = Path(self.config.save_path) / self.gcd_dir / config.refiner_name / f'{prefix}{self.config.dataset_name}_{self.config.split}_{config.sketcher_name}.json'
         
         with open(programs_path) as f:
             dataset = json.load(f)
@@ -119,6 +120,7 @@ class SelfRefinementEngine(PromptGenerator):
             return 'N/A', 'execution error', error_message
         return answer, 'success', ''
     
+    @timeout(seconds=120)
     def _parsing_reasoning_generator(self, logic_problem: dict, error: str) -> str:
         user, _ = self.prompter.parsing(mode='reasoning', logic_problem=logic_problem, error=error)
         # logger.debug('REASONING GENERATION')
@@ -132,6 +134,7 @@ class SelfRefinementEngine(PromptGenerator):
         
         return content, perplexity
 
+    @timeout(seconds=120)
     def _parsing_correction_generator(self, logic_problem: dict, error: str, reasoning: str) -> str:
         user, grammar = self.prompter.parsing(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         # logger.debug('CORRECTION GENERATION')
@@ -154,7 +157,8 @@ class SelfRefinementEngine(PromptGenerator):
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
         return content, perplexity
-
+    
+    @timeout(seconds=120)
     def _execution_reasoning_generation(self, logic_problem: dict, error: str) -> str:
         user = self.prompter.execution(mode='reasoning', logic_problem=logic_problem, error=error)
         response = self.refiner_api.invoke(
@@ -167,6 +171,7 @@ class SelfRefinementEngine(PromptGenerator):
         
         return content, perplexity
 
+    @timeout(seconds=120)
     def _execution_correction_generation(self, logic_problem: dict, error: str, reasoning: str) -> dict:
         user = self.prompter.execution(mode='generation', logic_problem=logic_problem, error=error, reasoning=reasoning)
         response = self.refiner_api.invoke(
@@ -180,11 +185,12 @@ class SelfRefinementEngine(PromptGenerator):
         
         return content, perplexity
 
+    @timeout(seconds=6500)
     def single_round_self_refinement(self):
         logic_problems = self._load_logic_problems()
         
-        save_path = Path(self.config.save_path) / self.gcd_dir / self.refiner_name
-        save_file = save_path / f'self-refine-{self.current_round}_{self.config.dataset_name}_{self.config.split}_{self.sketcher_name}.json'
+        save_path = Path(self.config.save_path) / self.gcd_dir / config.refiner_name
+        save_file = save_path / f'self-refine-{self.current_round}_{self.config.dataset_name}_{self.config.split}_{config.sketcher_name}.json'
         
         save_path.mkdir(parents=True, exist_ok=True)
         
@@ -227,8 +233,8 @@ class SelfRefinementEngine(PromptGenerator):
                     # logic_problem["parsing_errors"][error] = (correction, reasoning)
                     logic_problem["parsing_errors"][error] = {
                         'reasoning': reasoning,
-                        'reasoning_perplexity': reasoning_perplexity,
                         'correction': correction,
+                        'reasoning_perplexity': reasoning_perplexity,
                         'correction_perplexity': correction_perplexity
                     }
                     
@@ -277,10 +283,10 @@ class SelfRefinementEngine(PromptGenerator):
 
 def parse_args() -> Config:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-path', type=str, required=True)
-    parser.add_argument('--refiner-path', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str, required=True)
+    parser.add_argument('--refiner-name', type=str, required=True)
     parser.add_argument('--dataset-name', type=str, required=True)
-    parser.add_argument('--data-path', type=str, default='./data')
+    parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/refinement')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--starting-round', type=int, default=1)
@@ -297,14 +303,14 @@ if __name__ == "__main__":
     config = parse_args()
     
     logger.info(f"Dataset: {config.dataset_name}")
-    logger.info(f"Sketcher: {config.sketcher_path}")
-    logger.info(f"Refiner: {config.refiner_path}")
+    logger.info(f"Sketcher: {config.sketcher_name}")
+    logger.info(f"Refiner: {config.refiner_name}")
     logger.info(f"Grammar-Constrained: {config.gcd}")
     logger.info(f"Split: {config.split}")
     logger.info(f"Save path: {config.save_path}")
     
     refiner = OSModel(
-        model_path=config.refiner_path,
+        model_path= f"{config.models_path}/{config.refiner_name}.gguf",
         n_gpu_layers=config.n_gpu_layers,
         verbose=config.verbose
     )
