@@ -23,14 +23,6 @@ class FOL_Prompter:
         self.config = config
         self.templates = templates
 
-    def unstructured(self, sample: Dict) -> str:
-        problem = '\n'.join(sample['context'])
-        question = sample['question'].strip()
-        return self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
-
-    def structured(self, unstructured: str) -> str:
-        return self.templates['structured_user'].replace('[[unstructured]]', unstructured)
-
     def _get_predicates(self, logic_problem: str) -> str:
         if self.config.static_preds:
             return '[A-Z][a-z0-9]{2,15}'
@@ -50,6 +42,13 @@ class FOL_Prompter:
                     
         return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
     
+    def unstructured(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+
+    def structured(self, unstructured: str) -> str:
+        return self.templates['structured_user'].replace('[[unstructured]]', unstructured)
     
     def parsing(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -87,46 +86,43 @@ class FOL_Prompter:
         
         
         
-class LP_Prompter:
+class SAT_Prompter:
     def __init__(self, config: Config, templates: Dict[str,str]):
         self.config = config
         self.templates = templates
         
     def _get_predicates(self, logic_problem: str) -> str:
-        if self.config.static_preds:
-            return '[A-Z][a-z0-9]{2,15}'
-        else:
-            return ' | '.join(f'"{pred.split("(")[0]}"' for pred in logic_problem['fol_preds'])
+        pass
         
     def _get_constants(self, logic_problem: str) -> str:
-        if self.config.static_consts:
-            return'[A-Z][a-z0-9]{2,15}'
-        else:
-            return' | '.join(f'"{con}"' for con in logic_problem['fol_consts'])
-
+        pass
+        
+    def unstructured(self, sample: Dict) -> str:
+        problem = sample['context']
+        question = sample['question'].strip()
+        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
+        
+        full_prompt = self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = full_prompt.replace('[[choices]]', choices_str)
+        
+        return full_prompt
+    
+    def structured(self, unstructured: str) -> str:
+        
+        full_prompt = self.templates['structured_user'].replace('[[unstructured]]', unstructured).replace(r'```python', '').replace(r'```', '')
+        
+        return full_prompt
+    
     def parsing_prompt(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
 
-        premises = '\n'.join(logic_problem['fol_rules'])
-        conclusion = logic_problem['fol_conc']
-
-        if mode == 'reasoning':
-            full_prompt = self.templates['parsing_reasoning_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error)
-            grammar = None
-        elif mode == 'generation':
-            full_prompt = self.templates['parsing_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
-            grammar = self.get_grammar(logic_problem) if self.config.gcd else None
-
-            # raise Exception(grammar)
+        full_prompt, grammar = '', ''
 
         return full_prompt, grammar
 
     def get_grammar(self, logic_problem: dict) -> str:
         
-        predicates = self._get_predicates(logic_problem)
-        constants = self._get_constants(logic_problem)
-                    
-        return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
+        return ''
 
     def execution_prompt(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> str:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -134,6 +130,6 @@ class LP_Prompter:
         problem_string = json.dumps(logic_problem)
 
         if mode == 'reasoning':
-            return self.templates['execution_reasoning_user'].replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error)
+            return ''
         elif mode == 'generation':
-            return self.templates['execution_user'].replace('[[PROBLEM]]', problem_string).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
+            return ''

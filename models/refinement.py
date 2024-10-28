@@ -61,10 +61,10 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'parsing_user': f'./prompts/correction/{self.type}_parsing_gcd.txt' if self.config.gcd else f'./prompts/correction/{self.type}_parsing_nogcd.txt',
-            'execution_user': f'./prompts/correction/{self.type}_execution.txt',
-            'parsing_reasoning_user': f'./prompts/correction/{self.type}_parsing_reasoning.txt',
-            'execution_reasoning_user': f'./prompts/correction/{self.type}_execution_reasoning.txt',
+            'parsing_user': f'./prompts/correction/{self.type}/parsing_gcd.txt' if self.config.gcd else f'./prompts/correction/{self.type}/parsing_nogcd.txt',
+            'execution_user': f'./prompts/correction/{self.type}/execution.txt',
+            'parsing_reasoning_user': f'./prompts/correction/{self.type}/parsing_reasoning.txt',
+            'execution_reasoning_user': f'./prompts/correction/{self.type}/execution_reasoning.txt',
             'grammar_file': f'./LLMs/grammars/{self.type}.gbnf',
             'json_grammar': './LLMs/grammars/json.gbnf',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_path else 'prompts/prompt_templates/llama.txt',

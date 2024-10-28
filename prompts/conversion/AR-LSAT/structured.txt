@@ -1,0 +1,79 @@
+Wrap the provided declarations, constraints and options in a valid JSON, with the following schema:
+"""
+\{
+"declarations": [list of declarations],
+"constraints": [list of constraints],
+"options": [list of options]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Declarations: 
+- people = EnumSort([Vladimir, Wendy])
+- meals = EnumSort([breakfast, lunch, dinner, snack])
+- foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])
+- eats = Function([people, meals] -> [foods])
+
+Constraints: 
+- ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m)) ::: At no meal does Vladimir eat the same kind of food as Wendy
+- ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1) ::: Neither of them eats the same kind of food more than once during the day
+- ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet)) ::: For breakfast, each eats exactly one of the following: hot cakes, poached eggs, or omelet
+- ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet)) ::: For lunch, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet)) ::: For dinner, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet)) ::: For a snack, each eats exactly one of the following: fish or omelet
+eats(Wendy, lunch) == omelet ::: Wendy eats an omelet for lunch
+
+Options: 
+- is_valid(Exists([m:meals], eats(Vladimir, m) == fish)) ::: Vladimir must eat fish
+- is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes)) ::: Vladimir must eat hot cakes
+- is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni)) ::: Vladimir must eat macaroni
+- is_valid(Exists([m:meals], eats(Vladimir, m) == omelet)) ::: Vladimir must eat omelet
+- is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs)) ::: Vladimir must eat poached eggs
+
+------
+
+\{
+"declarations": ["people = EnumSort([Vladimir, Wendy])", "meals = EnumSort([breakfast, lunch, dinner, snack])", "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])", "eats = Function([people, meals] -> [foods])"],
+"constraints": ["ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))", "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)", "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))", "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))", "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))", "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))", "eats(Wendy, lunch) == omelet"],
+"options": ["is_valid(Exists([m:meals], eats(Vladimir, m) == fish))", "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))", "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))", "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))", "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"]
+\}
+
+###
+
+Here's another example:
+        
+Declarations:
+- technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])
+- machines = EnumSort([radios, televisions, VCRs])
+- repairs = Function([technicians, machines] -> [bool])
+
+Constraints:
+- ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1) ::: each technician repairs machines of at least one of the following three types
+- And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3) ::: Xena and exactly three other technicians repair radios
+- And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)) ::: Yolanda repairs both televisions and VCRs
+- ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))) ::: Stacy does not repair any type of machine that Yolanda repairs
+- Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m)) ::: Zane repairs more types of machines than Yolanda repairs
+- ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))) ::: Wim does not repair any type of machine that Stacy repairs
+- Count([m:machines], repairs(Urma, m)) == 2 ::: Urma repairs exactly two types of machines
+
+Options:
+- is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m))) ::: (A)
+- is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m))) ::: (B)
+- is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m))) ::: (C)
+- is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) ::: (D)
+- is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) ::: (E)
+
+------
+
+\{
+"declarations": ["technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])", "machines = EnumSort([radios, televisions, VCRs])", "repairs = Function([technicians, machines] -> [bool])"],
+"constraints": ["ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)", "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)", "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))", "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))", "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))", "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))", "Count([m:machines], repairs(Urma, m)) == 2"],
+"options": ["is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))", "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))", "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"]
+\}
+
+###
+
+Now let's convert this problem:
+
+[[unstructured]]

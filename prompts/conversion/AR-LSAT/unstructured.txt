@@ -1,0 +1,106 @@
+The task is to convert a natrual language reasoning problem into a SAT problem. The problem must consist of three parts: Declarations, Constraints, and Options.
+- Declarations: Declare the variables and functions.
+- Constraints: Write the constraints in the problem description as logic formulas.
+- Options: Write the options in the question as logic formulas.
+Do not attempt to solve the problem, limit yourself to converting.
+
+Here's an example of how to perform the conversion:
+
+NL problem:
+"""
+On Tuesday Vladimir and Wendy each eat exactly four separate meals: breakfast, lunch, dinner, and a snack. The following is all that is known about what they eat during that day: At no meal does Vladimir eat the same kind of food as Wendy. Neither of them eats the same kind of food more than once during the day. For breakfast, each eats exactly one of the following: hot cakes, poached eggs, or omelet. For lunch, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet. For dinner, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet. For a snack, each eats exactly one of the following: fish or omelet. Wendy eats an omelet for lunch.
+"""
+
+NL question:
+"""
+Vladimir must eat which one of the following foods?
+Choices:
+(A) fish
+(B) hot cakes
+(C) macaroni
+(D) omelet
+(E) poached eggs
+"""
+
+------
+
+Declarations: 
+- people = EnumSort([Vladimir, Wendy])
+- meals = EnumSort([breakfast, lunch, dinner, snack])
+- foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])
+- eats = Function([people, meals] -> [foods])
+
+Constraints: 
+- ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m)) ::: At no meal does Vladimir eat the same kind of food as Wendy
+- ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1) ::: Neither of them eats the same kind of food more than once during the day
+- ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet)) ::: For breakfast, each eats exactly one of the following: hot cakes, poached eggs, or omelet
+- ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet)) ::: For lunch, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet)) ::: For dinner, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet)) ::: For a snack, each eats exactly one of the following: fish or omelet
+eats(Wendy, lunch) == omelet ::: Wendy eats an omelet for lunch
+
+Options: 
+- is_valid(Exists([m:meals], eats(Vladimir, m) == fish)) ::: Vladimir must eat fish
+- is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes)) ::: Vladimir must eat hot cakes
+- is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni)) ::: Vladimir must eat macaroni
+- is_valid(Exists([m:meals], eats(Vladimir, m) == omelet)) ::: Vladimir must eat omelet
+- is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs)) ::: Vladimir must eat poached eggs
+
+###
+
+Here's another example:
+
+NL problem:
+"""
+In a repair facility there are exactly six technicians: Stacy, Urma, Wim, Xena, Yolanda, and Zane. Each technician repairs machines of at least one of the following three types—radios, televisions, and VCRs—and no other types. The following conditions apply: Xena and exactly three other technicians repair radios. Yolanda repairs both televisions and VCRs. Stacy does not repair any type of machine that Yolanda repairs. Zane repairs more types of machines than Yolanda repairs. Wim does not repair any type of machine that Stacy repairs. Urma repairs exactly two types of machines.
+"""
+
+NL question:
+"""
+Which one of the following pairs of technicians could repair all and only the same types of machines as each other?
+Choices:
+(A) Stacy and Urma
+(B) Urma and Yolanda
+(C) Urma and Xena
+(D) Wim and Xena
+(E) Xena and Yolanda
+"""
+
+------
+
+Declarations:
+- technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])
+- machines = EnumSort([radios, televisions, VCRs])
+- repairs = Function([technicians, machines] -> [bool])
+
+Constraints:
+- ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1) ::: each technician repairs machines of at least one of the following three types
+- And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3) ::: Xena and exactly three other technicians repair radios
+- And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)) ::: Yolanda repairs both televisions and VCRs
+- ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))) ::: Stacy does not repair any type of machine that Yolanda repairs
+- Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m)) ::: Zane repairs more types of machines than Yolanda repairs
+- ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))) ::: Wim does not repair any type of machine that Stacy repairs
+- Count([m:machines], repairs(Urma, m)) == 2 ::: Urma repairs exactly two types of machines
+
+Options:
+- is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m))) ::: Stacy and Urma could repair all and only the same types of machines as each other
+- is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m))) ::: Urma and Yolanda could repair all and only the same types of machines as each other
+- is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m))) ::: Urma and Xena could repair all and only the same types of machines as each other
+- is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) ::: Wim and Xena could repair all and only the same types of machines as each other
+- is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) ::: Xena and Yolanda could repair all and only the same types of machines as each other
+
+------
+
+Now let's convert this problem to SAT:
+
+NL problem:
+"""
+[[nl_problem]]
+"""
+
+NL question:
+"""
+[[nl_question]]
+Choices:
+[[choices]]
+"""

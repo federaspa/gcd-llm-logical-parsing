@@ -7,7 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 
 from utils import OSModel, send_notification, get_logger, calculate_perplexity
-from prompters import FOL_Prompter, LP_Prompter
+from prompters import FOL_Prompter, SAT_Prompter
 
 import traceback
 
@@ -38,14 +38,15 @@ class PromptGenerator:
             'FOLIOv2': 'FOL',
             'LogicNLI': 'FOL',
             'ProntoQA': 'LP',
-            'ProofWriter': 'LP'
+            'ProofWriter': 'LP',
+            'AR-LSAT': 'SAT'
         }
         return types[self.config.dataset_name]
     
     def _get_prompter(self):
         prompters = {
             'FOL': FOL_Prompter,
-            'LP': LP_Prompter
+            'SAT': SAT_Prompter
         }
         
         prompter = prompters[self.type](self.config, self.templates)
@@ -53,8 +54,8 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'structured_user': f'./prompts/conversion/{self.type}_structured.txt',
-            'unstructured_user': f'./prompts/conversion/{self.type}_unstructured.txt',
+            'structured_user': f'./prompts/conversion/{self.config.dataset_name}/structured.txt',
+            'unstructured_user': f'./prompts/conversion/{self.config.dataset_name}/unstructured.txt',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
             'json_grammar': './LLMs/grammars/json.gbnf'
         }
@@ -73,7 +74,7 @@ class PromptGenerator:
 class LogicProgramGenerator(PromptGenerator):
     def __init__(self, config: Config):
         super().__init__(config)
-        self.sketcher_path = Path(config.models_path) / config.sketcher_name
+        self.sketcher_path = Path(config.models_path) / f"{config.sketcher_name}.gguf"
         assert self.sketcher_path.exists(), f"Model path does not exist: {self.sketcher_path}"
         
         self.sketcher_api = OSModel(
@@ -105,7 +106,9 @@ class LogicProgramGenerator(PromptGenerator):
         )
         
         content = response['choices'][0]['text']
-        return json.loads(content)
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+
+        return json.loads(content), perplexity
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -128,11 +131,11 @@ class LogicProgramGenerator(PromptGenerator):
             try:
                 unstructured, perplexity = self._unstructured_generator(sample)
                 
-                if i % 20 == 0:
-                    logger.debug(unstructured)
+                # if i % 20 == 0:
+                #     logger.debug(unstructured)
                     
-                logic_problem = self._structured_generator(unstructured)
-                logic_problem['perplexity'] = perplexity
+                logic_problem, struct_perplexity = self._structured_generator(unstructured)
+                logic_problem['perplexity'] = (perplexity, struct_perplexity)
                     
                 if i % 20 == 0:
                     logger.debug(logic_problem)
@@ -141,7 +144,8 @@ class LogicProgramGenerator(PromptGenerator):
                     'id': sample['id'], 
                     'nl_problem': {
                         'nl_rules': sample['context'],
-                        'nl_conc': sample['question']
+                        'nl_conc': sample['question'],
+                        'options': sample.get('options', [])
                     },
                     'answer': sample['answer'],
                     'logic_problem': logic_problem
