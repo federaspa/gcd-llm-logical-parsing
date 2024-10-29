@@ -4,7 +4,7 @@ The task is to convert a natrual language reasoning problem into a SAT problem. 
 - Options: Write the options in the question as logic formulas.
 Do not attempt to solve the problem, limit yourself to converting.
 
-Here's an example of how to perform the conversion:
+Example 1:
 
 NL problem:
 """
@@ -48,7 +48,7 @@ Options:
 
 ###
 
-Here's another example:
+Example 2:
 
 NL problem:
 """
@@ -89,7 +89,135 @@ Options:
 - is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) ::: Wim and Xena could repair all and only the same types of machines as each other
 - is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) ::: Xena and Yolanda could repair all and only the same types of machines as each other
 
+###
+
+Example 3:
+
+NL problem:
+"""
+Workers at a water treatment plant open eight valves—G, H, I, K, L, N, O, and P—to flush out a system of pipes that needs emergency repairs. To maximize safety and efficiency, each valve is opened exactly once, and no two valves are opened at the same time. The valves are opened in accordance with the following conditions: Both K and P are opened before H. O is opened before L but after H. L is opened after G. N is opened before H. I is opened after K.
+"""
+
+NL question:
+"""
+Each of the following could be the fifth valve opened EXCEPT:
+Choices:
+(A) H
+(B) I
+(C) K
+(D) N
+(E) O
+"""
+
 ------
+
+Declarations:
+- valves = EnumSort([G, H, I, K, L, N, O, P])
+- opened = Function([valves] -> [int])
+- ForAll([v:valves], And(1 <= opened(v), opened(v) <= 8))
+
+Constraints:
+- Distinct([v:valves], opened(v)) ::: no two valves are opened at the same time
+- And(opened(K) < opened(H), opened(P) < opened(H)) ::: Both K and P are opened before H
+- And(opened(O) > opened(H), opened(O) < opened(L)) ::: O is opened before L but after H
+- opened(L) > opened(G) ::: L is opened after G
+- opened(N) < opened(H) ::: N is opened before H
+- opened(I) > opened(K) ::: I is opened after K
+
+Options:
+- is_exception(is_sat(opened(H) == 5)) ::: H could not be the fifth valve
+- is_exception(is_sat(opened(I) == 5)) ::: I could not be the fifth valve
+- is_exception(is_sat(opened(K) == 5)) ::: K could not be the fifth valve
+- is_exception(is_sat(opened(N) == 5)) ::: N could not be the fifth valve
+- is_exception(is_sat(opened(O) == 5)) ::: O could not be the fifth valve
+
+###
+
+Example 4:
+
+NL problem:
+"""
+Five candidates for mayor—Q, R, S, T, and U—will each speak exactly once at each of three town meetings—meetings 1, 2, and 3. At each meeting, each candidate will speak in one of five consecutive time slots. No two candidates will speak in the same time slot as each other at any meeting. The order in which the candidates will speak will meet the following conditions: Each candidate must speak either first or second at at least one of the meetings. Any candidate who speaks fifth at any of the meetings must speak first at at least one of the other meetings. No candidate can speak fourth at more than one of the meetings.
+"""
+
+NL question:
+"""
+If R speaks second at meeting 2 and first at meeting 3, which one of the following is a complete and accurate list of those time slots any one of which could be the time slot in which R speaks at meeting 1?
+Choices:
+(A) fourth, fifth
+(B) first, second, fifth
+(C) second, third, fifth
+(D) third, fourth, fifth
+(E) second, third, fourth, fifth
+"""
+
+------
+
+Declarations:
+- candidates = EnumSort([Q, R, S, T, U])
+- meetings = EnumSort([1, 2, 3])
+- speaks = Function([meetings, candidates] -> [int])
+- ForAll([m:meetings, c:candidates], And(1 <= speaks(m, c), speaks(m, c) <= 5))
+
+Constraints:
+- ForAll([m:meetings], Distinct([c:candidates], speaks(m, c))) ::: no two candidates will speak in the same time slot as each other at any meeting
+- ForAll([c:candidates], Exists([m:meetings], Or(speaks(m, c) == 1, speaks(m, c) == 2))) ::: each candidate must speak either first or second at at least one of the meetings
+- ForAll([c:candidates], Implies(Exists([m:meetings], speaks(m, c) == 5), Exists([m:meetings], speaks(m, c) == 1))) ::: any candidate who speaks fifth at any of the meetings must speak first at at least one of the other meetings
+- ForAll([c:candidates], Count([m:meetings], speaks(m, c) == 4) <= 1) ::: no candidate can speak fourth at more than one of the meetings
+And(speaks(2, R) == 2, speaks(3, R) == 1) ::: if R speaks second at meeting 2 and first at meeting 3
+
+Options:
+- is_accurate_list([speaks(1, R) == 4, speaks(1, R) == 5]) ::: (A)
+- is_accurate_list([speaks(1, R) == 1, speaks(1, R) == 2, speaks(1, R) == 5]) ::: (B)
+- is_accurate_list([speaks(1, R) == 2, speaks(1, R) == 3, speaks(1, R) == 5]) ::: (C)
+- is_accurate_list([speaks(1, R) == 3, speaks(1, R) == 4, speaks(1, R) == 5]) ::: (D)
+- is_accurate_list([speaks(1, R) == 2, speaks(1, R) == 3, speaks(1, R) == 4, speaks(1, R) == 5]) ::: (E)
+
+###
+
+Example 5:
+
+NL problem:
+"""
+A travel magazine has hired six interns—Farber, Gombarick, Hall, Jackson, Kanze, and Lha—to assist in covering three stories—Romania, Spain, and Tuscany. Each intern will be trained either as a photographer's assistant or as a writer's assistant. Each story is assigned a team of two interns—one photographer's assistant and one writer's assistant—in accordance with the following conditions: Gombarick and Lha will be trained in the same field. Farber and Kanze will be trained in different fields. Hall will be trained as a photographer's assistant. Jackson is assigned to Tuscany. Kanze is not assigned to Spain.
+"""
+
+NL question:
+"""
+Which one of the following interns CANNOT be assigned to Tuscany?
+Choices:
+(A) Farber
+(B) Gombarick
+(C) Hall
+(D) Kanze
+(E) Lha
+"""
+
+------
+
+Declarations:
+- interns = EnumSort([Farber, Gombarick, Hall, Jackson, Kanze, Lha])
+- stories = EnumSort([Romania, Spain, Tuscany])
+- assistants = EnumSort([photographer, writer])
+- assigned = Function([interns] -> [stories])
+- trained = Function([interns] -> [assistants])
+
+Constraints:
+- ForAll([s:stories], Exists([i1:interns, i2:interns], And(i1 != i2, And(assigned(i1) == s, assigned(i2) == s, trained(i1) == photographer, trained(i2) == writer)))) ::: each story is assigned a team of two interns—one photographer's assistant and one writer's assistant
+- trained(Gombarick) == trained(Lha) ::: Gombarick and Lha will be trained in the same field
+- trained(Farber) != trained(Kanze) ::: Farber and Kanze will be trained in different fields
+- trained(Hall) == photographer ::: Hall will be trained as a photographer's assistant
+- assigned(Jackson) == Tuscany ::: Jackson is assigned to Tuscany
+- assigned(Kanze) != Spain ::: Kanze is not assigned to Spain
+
+Options:
+- is_unsat(assigned(Farber) == Tuscany) ::: (A)
+- is_unsat(assigned(Gombarick) == Tuscany) ::: (B)
+- is_unsat(assigned(Hall) == Tuscany) ::: (C)
+- is_unsat(assigned(Kanze) == Tuscany) ::: (D)
+- is_unsat(assigned(Lha) == Tuscany) ::: (E)
+
+###
 
 Now let's convert this problem to SAT:
 
