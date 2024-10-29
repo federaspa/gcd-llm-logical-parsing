@@ -45,15 +45,25 @@ def compute_accuracy(samples):
     
     return accuracy
         
-
-def evaluate_metrics(QA_results, average='weighted'):
+def compute_metrics(all_samples):
     
-    predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
-    gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
+    executable_samples = [sample for sample in all_samples if sample['status'] == 'success']
+        
+    total_accuracy = compute_accuracy(all_samples)
+    covered_accuracy = compute_accuracy(executable_samples)
+    coverage = len(executable_samples)/len(all_samples)
     
-    # return f1_score(gold_answers, predictions, average=average, zero_division=np.nan), precision_score(gold_answers, predictions, average=average, zero_division=np.nan), recall_score(gold_answers, predictions, average=average, zero_division=np.nan)
+    return total_accuracy, covered_accuracy, coverage
     
-    return precision_recall_fscore_support(gold_answers, predictions, average=average, zero_division=np.nan)
+    
+# def evaluate_metrics(QA_results, average='weighted'):
+    
+#     predictions = [text_to_index[sample['predicted_answer']] for sample in QA_results]
+#     gold_answers = [text_to_index[sample['answer']] for sample in QA_results]
+    
+#     # return f1_score(gold_answers, predictions, average=average, zero_division=np.nan), precision_score(gold_answers, predictions, average=average, zero_division=np.nan), recall_score(gold_answers, predictions, average=average, zero_division=np.nan)
+    
+#     return precision_recall_fscore_support(gold_answers, predictions, average=average, zero_division=np.nan)
 
 def parse_answers(samples):
     
@@ -105,12 +115,14 @@ def full_evaluation(result_file):
     
     with open(result_file, 'r') as f:
         all_samples = json.load(f)
+        
+    total_accuracy, covered_accuracy, coverage = compute_metrics(all_samples)
 
-    executable_samples = [sample for sample in all_samples if sample['status'] == 'success']
-
-    print(compute_accuracy(all_samples))
-    print(compute_accuracy(executable_samples))
-
+    print('Evaluating file', result_file)
+    print()
+    print(f'Total accuracy: {total_accuracy:.2}')
+    print(f'Covered accuracy: {covered_accuracy:.2}')
+    print(f'Coverage: {coverage:.2}')
 
 
 def get_res(metric):
@@ -124,18 +136,23 @@ def get_res(metric):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset-name', type=str, required=True)
-    parser.add_argument('--sketcher-path', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str, required=True)
     parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
     return args
 
 if __name__ == "__main__":
     args = parse_args()
+      
+    if args.self_refine_round > 0:
+        programs_file = f'self-refine-{args.self_refine_round}_{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
+    else:
+        programs_file = f'{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
     
-    sketcher_name = os.path.splitext(args.sketcher_path)[0].split('/')[-1]
+    result_file = os.path.join(args.result_path, programs_file)
     
-    result_file = os.path.join(args.result_path, f'{args.dataset_name}_{args.split}_{sketcher_name}.json')
     
     # backup_file = os.path.join('./baselines/results', f'CoT_{args.dataset_name}_{args.split}_{args.model_name}.json')
     

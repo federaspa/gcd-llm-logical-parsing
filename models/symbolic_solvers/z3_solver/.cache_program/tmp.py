@@ -1,25 +1,32 @@
 from z3 import *
 
-vehicles_sort, (hatchback, limousine, pickup, roadster, sedan, van) = EnumSort('vehicles', ['hatchback', 'limousine', 'pickup', 'roadster', 'sedan', 'van'])
-days_sort = IntSort()
-Monday, Tuesday, Wednesday, Thursday, Friday, Saturday = Ints('Monday Tuesday Wednesday Thursday Friday Saturday')
-days = [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-vehicles = [hatchback, limousine, pickup, roadster, sedan, van]
-serviced = Function('serviced', vehicles_sort, days_sort)
+computers_sort, (P, Q, R, S, T, U) = EnumSort('computers', ['P', 'Q', 'R', 'S', 'T', 'U'])
+computers = [P, Q, R, S, T, U]
+received = Function('received', computers_sort, BoolSort())
+transmitted = Function('transmitted', computers_sort, computers_sort, BoolSort())
+infected = Function('infected', computers_sort, BoolSort())
 
 pre_conditions = []
-pre_conditions.append(And(Monday == 1, Tuesday == 2, Wednesday == 3, Thursday == 4, Friday == 5))
-v = Const('v', vehicles_sort)
-pre_conditions.append(Exists([v], serviced(v) > serviced(hatchback)))
-pre_conditions.append(And(serviced(roadster) > serviced(van), serviced(roadster) < serviced(hatchback)))
-pre_conditions.append(Xor(Abs(serviced(pickup) - serviced(van)) == 1, Abs(serviced(pickup) - serviced(sedan)) == 1))
-pre_conditions.append(Xor(serviced(sedan) < serviced(pickup), serviced(sedan) < serviced(limousine)))
-pre_conditions.append(And(Monday == 1, Tuesday == 2, Wednesday == 3, Thursday == 4, Friday == 5))
-v = Const('v', vehicles_sort)
-pre_conditions.append(Exists([v], serviced(v) > serviced(hatchback)))
-pre_conditions.append(And(serviced(roadster) > serviced(van), serviced(roadster) < serviced(hatchback)))
-pre_conditions.append(Xor(Abs(serviced(pickup) - serviced(van)) == 1, Abs(serviced(pickup) - serviced(sedan)) == 1))
-pre_conditions.append(Xor(serviced(sedan) < serviced(pickup), serviced(sedan) < serviced(limousine)))
+pre_conditions.append(Sum([infected(c) for c in computers]) == 1)
+c = Const('c', computers_sort)
+pre_conditions.append(ForAll([c], Sum([transmitted(c, d) for d in computers]) <= 2))
+pre_conditions.append(Sum([transmitted(S, d) for d in computers]) == 1)
+pre_conditions.append(And(transmitted(d, R), transmitted(d, S)))
+pre_conditions.append(Or(transmitted(R, Q), transmitted(T, Q)))
+pre_conditions.append(Or(transmitted(T, P), transmitted(U, P)))
+c = Const('c', computers_sort)
+pre_conditions.append(ForAll([c], Sum([received(c, d) for d in computers]) == 1))
+pre_conditions.append(infected(S))
+pre_conditions.append(Sum([infected(c) for c in computers]) == 1)
+c = Const('c', computers_sort)
+pre_conditions.append(ForAll([c], Sum([transmitted(c, d) for d in computers]) <= 2))
+pre_conditions.append(Sum([transmitted(S, d) for d in computers]) == 1)
+pre_conditions.append(And(transmitted(d, R), transmitted(d, S)))
+pre_conditions.append(Or(transmitted(R, Q), transmitted(T, Q)))
+pre_conditions.append(Or(transmitted(T, P), transmitted(U, P)))
+c = Const('c', computers_sort)
+pre_conditions.append(ForAll([c], Sum([received(c, d) for d in computers]) == 1))
+pre_conditions.append(infected(S))
 
 def is_valid(option_constraints):
     solver = Solver()
@@ -46,8 +53,8 @@ def is_exception(x):
     return not x
 
 
-if is_sat(And(serviced(pickup) == Tuesday, serviced(hatchback) == Wednesday, serviced(limousine) == Friday)): print('(A)')
-if is_sat(And(serviced(pickup) == Tuesday, serviced(roadster) == Wednesday, serviced(hatchback) == Friday)): print('(B)')
-if is_sat(And(serviced(sedan) == Tuesday, serviced(limousine) == Wednesday, serviced(hatchback) == Friday)): print('(C)')
-if is_sat(And(serviced(van) == Tuesday, serviced(limousine) == Wednesday, serviced(hatchback) == Friday)): print('(D)')
-if is_sat(And(serviced(van) == Tuesday, serviced(roadster) == Wednesday, serviced(limousine) == Friday)): print('(E)')
+if is_sat(transmitted(S, T)): print('(A)')
+if is_sat(transmitted(T, P)): print('(B)')
+if is_sat(Not(transmitted(Q, _))): print('(C)')
+if is_sat(Not(transmitted(R, _))): print('(D)')
+if is_sat(Not(transmitted(U, _))): print('(E)')

@@ -51,7 +51,7 @@ def get_logger(script_name):
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 
-    return logger
+    return logger, log_file_name
 
 def calculate_perplexity(logprobs):
     return float(np.exp(-np.mean(logprobs['token_logprobs'])))
@@ -61,7 +61,7 @@ class OSModel:
                  model_path,
                  n_gpu_layers=-1,
                  n_batch=512,
-                 n_ctx = 12288,
+                 n_ctx = 0,
                  verbose=False,
                  logits_all = True,
                  **kwargs):

@@ -24,7 +24,7 @@ class Config:
     verbose: bool = False
 
 script_name = Path(__file__).stem
-logger = get_logger(script_name)
+logger, log_file_name = get_logger(script_name)
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -102,7 +102,7 @@ class LogicProgramGenerator(PromptGenerator):
         
     #     return content, perplexity
 
-    @timeout(seconds=120)
+    @timeout(seconds=180)
     def _structured_generator(self, sample: str) -> dict:
         user = self.prompter.unstructured(sample)
         response = self.sketcher_api.invoke(
@@ -146,12 +146,6 @@ class LogicProgramGenerator(PromptGenerator):
 
         for i, sample in enumerate(tqdm(raw_dataset)):
             try:
-                # try:
-                #     unstructured, perplexity = self._unstructured_generator(sample)
-                # except TimeoutError:
-                #     logger.warning(f"Timeout occurred during unstructured generation for sample {sample['id']}")
-                #     continue
-                    
                 try:
                     logic_problem, perplexity = self._structured_generator(sample)
                 except TimeoutError:
@@ -162,19 +156,10 @@ class LogicProgramGenerator(PromptGenerator):
                     
                 if i % 20 == 0:
                     logger.debug(logic_problem)
+
+                sample['logic_problem_gcd'] = logic_problem
                 
-                output = {
-                    'id': sample['id'], 
-                    'nl_problem': {
-                        'nl_rules': sample['context'],
-                        'nl_conc': sample['question'],
-                        'options': sample.get('options', [])
-                    },
-                    'answer': sample['answer'],
-                    'logic_problem': logic_problem
-                }
-                
-                outputs.append(output)
+                outputs.append(sample)
                 
             except Exception as e:
                 error_message = f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
@@ -183,6 +168,9 @@ class LogicProgramGenerator(PromptGenerator):
             
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
+                
+        with open(save_file, 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
 
         logger.info(f"Generated {len(outputs)} examples.")
 
@@ -194,7 +182,7 @@ def parse_args() -> Config:
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
-    parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
+    parser.add_argument('--save-path', type=str, default='./outputs/logic_problems_gcd')
     parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     
@@ -215,6 +203,7 @@ if __name__ == '__main__':
         
     except KeyboardInterrupt:
         logger.error("KeyboardInterrupt")
+        os.remove(log_file_name)
         sys.exit(0)
         
     except Exception as e:

@@ -32,7 +32,7 @@ class Config:
     static_consts: bool
     
 script_name = Path(__file__).stem
-logger = get_logger(script_name)
+logger, log_file_name = get_logger(script_name)
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -323,6 +323,7 @@ if __name__ == "__main__":
             
     except KeyboardInterrupt:
         logger.error("KeyboardInterrupt")
+        os.remove(log_file_name)
         sys.exit(0)
             
     except Exception as e:

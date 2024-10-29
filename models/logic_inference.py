@@ -7,6 +7,7 @@ from tqdm import tqdm
 import sys
 
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
+from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 from utils import get_logger, send_notification
 
 class LogicInferenceEngine:
@@ -21,7 +22,9 @@ class LogicInferenceEngine:
         self.self_refine_round = args.self_refine_round
         
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
-                                'LogicNLI': FOL_Prover9_Program}
+                                'LogicNLI': FOL_Prover9_Program,
+                                'AR-LSAT': LSAT_Z3_Program
+                                }
         
         self.sketcher_name = os.path.splitext(self.sketcher_path)[0].split('/')[-1]
         self.program_executor = program_executor_map[self.dataset_name]
@@ -122,7 +125,7 @@ if __name__ == "__main__":
     
     script_name = os.path.splitext(os.path.basename(__file__))[0]
 
-    logger = get_logger(script_name)
+    logger, log_file_name = get_logger(script_name)
     
     logger.info(f"Dataset: {args.dataset_name}")
     logger.info(f"Sketcher: {args.sketcher_path}")

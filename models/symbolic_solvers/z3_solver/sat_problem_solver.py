@@ -6,8 +6,9 @@ from os.path import join
 import os
 
 class LSAT_Z3_Program:
-    def __init__(self, logic_program:str, dataset_name:str) -> None:
+    def __init__(self, logic_program:dict) -> None:
         self.logic_program = logic_program
+        self.formula_error = ''
         try:
             self.parse_logic_program()
             self.standard_code = self.to_standard_code()
@@ -17,7 +18,6 @@ class LSAT_Z3_Program:
             return
         
         self.flag = True
-        self.dataset_name = dataset_name
 
         # create the folder to save the Pyke program
         cache_dir = os.path.join(os.path.dirname(__file__), '.cache_program')
@@ -26,22 +26,14 @@ class LSAT_Z3_Program:
         self.cache_dir = cache_dir
 
     def parse_logic_program(self):
-        # split the logic program into different parts
-        lines = [x for x in self.logic_program.splitlines() if not x.strip() == ""]
 
-        decleration_start_index = lines.index("# Declarations")
-        constraint_start_index = lines.index("# Constraints")
-        option_start_index = lines.index("# Options")
- 
-        declaration_statements = lines[decleration_start_index + 1:constraint_start_index]
-        constraint_statements = lines[constraint_start_index + 1:option_start_index]
-        option_statements = lines[option_start_index + 1:]
+        declaration_statements = self.logic_program.get('declarations', [])
+        self.constraints = self.logic_program.get('constraints', [])
+        self.options = self.logic_program.get('options', [])
 
         try:
             (self.declared_enum_sorts, self.declared_int_sorts, self.declared_lists, self.declared_functions, self.variable_constrants) = self.parse_declaration_statements(declaration_statements)
 
-            self.constraints = [x.split(':::')[0].strip() for x in constraint_statements]
-            self.options = [x.split(':::')[0].strip() for x in option_statements if not x.startswith("Question :::")]
         except Exception as e:
             return False
         

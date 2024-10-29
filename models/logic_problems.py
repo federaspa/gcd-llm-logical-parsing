@@ -24,7 +24,7 @@ class Config:
     verbose: bool = False
 
 script_name = Path(__file__).stem
-logger = get_logger(script_name)
+logger, log_file_name = get_logger(script_name)
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -91,7 +91,7 @@ class LogicProgramGenerator(PromptGenerator):
             raw_dataset = json.load(f)
         return raw_dataset
 
-    @timeout(seconds=120)
+    @timeout(seconds=180)
     def _unstructured_generator(self, sample: dict) -> Tuple[str, float]:
         user = self.prompter.unstructured(sample=sample)
         response = self.sketcher_api.invoke(prompt=user)
@@ -101,7 +101,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         return content, perplexity
 
-    @timeout(seconds=120)
+    @timeout(seconds=180)
     def _structured_generator(self, unstructured: str) -> dict:
         user = self.prompter.structured(unstructured)
         response = self.sketcher_api.invoke(
@@ -111,7 +111,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         content = response['choices'][0]['text']
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
-
+        
         return json.loads(content), perplexity
 
     def run(self):
@@ -202,6 +202,7 @@ if __name__ == '__main__':
         
     except KeyboardInterrupt:
         logger.error("KeyboardInterrupt")
+        os.remove(f"./{log_file_name}")
         sys.exit(0)
         
     except Exception as e:
