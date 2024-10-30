@@ -141,6 +141,30 @@ class LogicProgramGenerator(PromptGenerator):
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
 
         return content , perplexity
+    
+    def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
+        
+        outputs = []
+        
+        if save_file.exists():
+            with open(save_file, 'r') as f:
+                existing = json.load(f)
+                existing_ids = [s['id'] for s in existing]
+               
+        complete_ids = set() 
+        for sample in raw_dataset:
+            if sample['id'] in existing_ids:
+                
+                sample = [s for s in existing if s['id'] == sample['id']][0]  
+                
+                if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
+                    outputs.append(sample)
+                    complete_ids.add(sample['id'])
+        
+        raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
+                    
+        return raw_dataset, outputs, existing, existing_ids
+        
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -149,29 +173,25 @@ class LogicProgramGenerator(PromptGenerator):
         
         save_file = save_path / f'{self.config.dataset_name}_{self.config.split}_{self.config.sketcher_name}.json'
         
-        outputs = []
-        if save_file.exists():
-            with open(save_file, 'r') as f:
-                existing = json.load(f)
-                existing_ids = [s['id'] for s in existing]
+        raw_dataset, outputs, existing, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
 
-        #     existing_ids = {s["id"] for s in outputs}
-        #     raw_dataset = [s for s in raw_dataset if s["id"] not in existing_ids]
-
-        # logger.info(f"{len(outputs)} already exist.\nLoaded {len(raw_dataset)} examples from {self.config.split} split.")
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         for i, sample in enumerate(pbar := tqdm(raw_dataset)):
-            
+        
             if sample['id'] in existing_ids:
-                sample = [s for s in existing if s['id'] == sample['id']][0]
+                
+                sample = [s for s in existing if s['id'] == sample['id']][0]               
+                nl_problem = sample['nl_problem']
+            
+            else:
+                nl_problem = sample
             
             try:
-                
                 if not 'logic_problem' in sample.keys():
                 
                     pbar.set_description("Generating unconstrained problem %s" % sample['id'])
-                    unconstrained, perplexity = self._unconstrained_generator(sample)
+                    unconstrained, perplexity = self._unconstrained_generator(nl_problem)
                     
                     pbar.set_description("Json wrapping problem %s" % sample['id'])
                     logic_problem, json_perplexity = self._json_wrapper(unconstrained)
@@ -188,7 +208,7 @@ class LogicProgramGenerator(PromptGenerator):
                 if not 'logic_problem_gcd' in sample.keys():
                     
                     pbar.set_description("Generating constrained problem %s" % sample['id'])
-                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(sample)
+                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
                     
                     logic_problem_gcd['perplexity'] = gcd_perplexity
                     
@@ -201,9 +221,9 @@ class LogicProgramGenerator(PromptGenerator):
                 output = {
                     'id': sample['id'], 
                     'nl_problem': {
-                        'nl_rules': sample['context'],
-                        'nl_conc': sample['question'],
-                        'options': sample.get('options', [])
+                        'context': nl_problem['context'],
+                        'question': nl_problem['question'],
+                        'options': nl_problem.get('options', [])
                     },
                     'answer': sample['answer'],
                     'logic_problem': logic_problem,
@@ -218,6 +238,7 @@ class LogicProgramGenerator(PromptGenerator):
             except Exception as e:
                 logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
             
+            pbar.update()
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
 
