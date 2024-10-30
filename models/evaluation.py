@@ -114,15 +114,29 @@ def get_backup_answers(samples, backup):
 def full_evaluation(result_file):
     
     with open(result_file, 'r') as f:
-        all_samples = json.load(f)
+        raw_samples = json.load(f)
         
-    total_accuracy, covered_accuracy, coverage = compute_metrics(all_samples)
+    unconstrained = [s.get('logic_problem', {}) for s in raw_samples]
+    unconstrained = [s for s in unconstrained if s]
+    
+    constrained = [s.get('logic_problem_gcd', {}) for s in raw_samples]
+    constrained = [s for s in constrained if s]
+        
+    total_accuracy, covered_accuracy, coverage = compute_metrics(unconstrained)
+    total_accuracy_constrained, covered_accuracy_constrained, coverage_constrained = compute_metrics(constrained)
 
     print('Evaluating file', result_file)
     print()
+    print('UNCONSTRAINED\n')
     print(f'Total accuracy: {total_accuracy:.2}')
     print(f'Covered accuracy: {covered_accuracy:.2}')
     print(f'Coverage: {coverage:.2}')
+    print()
+    print('CONSTRAINED\n')
+    print(f'Total accuracy: {total_accuracy_constrained:.2}')
+    print(f'Covered accuracy: {covered_accuracy_constrained:.2}')
+    print(f'Coverage: {coverage_constrained:.2}')
+
 
 
 def get_res(metric):

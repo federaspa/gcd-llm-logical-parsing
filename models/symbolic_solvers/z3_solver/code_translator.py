@@ -224,8 +224,9 @@ class CodeTranslator:
         ]
 
         lines += header_lines
+        lines += ["## Declarations"]
         lines += [x.line for x in declaration_lines]
-        lines += [""]
+        lines += ["", "## Constraints", ""]
 
         lines += ["pre_conditions = []"]
         for line in pre_condidtion_lines:
@@ -264,7 +265,7 @@ class CodeTranslator:
 
 
         lines += function_lines
-        lines += [""]
+        lines += ["", "## Options", ""]
 
         # handle option blocks
         for option_block, choice_name in zip(option_blocks, CHOICE_INDEXES):

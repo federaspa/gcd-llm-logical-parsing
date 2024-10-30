@@ -145,25 +145,27 @@ class LogicProgramGenerator(PromptGenerator):
     def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
         
         outputs = []
+        existing_ids = []
+        existing_samples = []
         
         if save_file.exists():
             with open(save_file, 'r') as f:
-                existing = json.load(f)
-                existing_ids = [s['id'] for s in existing]
+                existing_samples = json.load(f)
+                existing_ids = [s['id'] for s in existing_samples]
                
-        complete_ids = set() 
-        for sample in raw_dataset:
-            if sample['id'] in existing_ids:
-                
-                sample = [s for s in existing if s['id'] == sample['id']][0]  
-                
-                if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
-                    outputs.append(sample)
-                    complete_ids.add(sample['id'])
-        
-        raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
+            complete_ids = set() 
+            for sample in raw_dataset:
+                if sample['id'] in existing_ids:
                     
-        return raw_dataset, outputs, existing, existing_ids
+                    sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
+                    
+                    if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
+                        outputs.append(sample)
+                        complete_ids.add(sample['id'])
+        
+                raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
+                    
+        return raw_dataset, outputs, existing_samples, existing_ids
         
 
     def run(self):
@@ -173,7 +175,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         save_file = save_path / f'{self.config.dataset_name}_{self.config.split}_{self.config.sketcher_name}.json'
         
-        raw_dataset, outputs, existing, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
+        raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
 
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
@@ -181,7 +183,7 @@ class LogicProgramGenerator(PromptGenerator):
         
             if sample['id'] in existing_ids:
                 
-                sample = [s for s in existing if s['id'] == sample['id']][0]               
+                sample = [s for s in existing_samples if s['id'] == sample['id']][0]               
                 nl_problem = sample['nl_problem']
             
             else:

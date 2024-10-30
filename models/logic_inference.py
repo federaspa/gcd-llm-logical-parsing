@@ -4,6 +4,7 @@ import argparse
 import traceback
 from typing import Tuple, List
 from tqdm import tqdm
+from timeout_decorator import timeout, TimeoutError
 import sys
 
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
@@ -16,7 +17,7 @@ class LogicInferenceEngine:
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_path = args.sketcher_path
+        self.sketcher_name = args.sketcher_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.self_refine_round = args.self_refine_round
@@ -26,7 +27,6 @@ class LogicInferenceEngine:
                                 'AR-LSAT': LSAT_Z3_Program
                                 }
         
-        self.sketcher_name = os.path.splitext(self.sketcher_path)[0].split('/')[-1]
         self.program_executor = program_executor_map[self.dataset_name]
         
         self.dataset = self.load_logic_problems()
@@ -42,6 +42,7 @@ class LogicInferenceEngine:
         logger.info(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
 
+    @timeout(seconds=60)
     def safe_execute_program(self, logic_program:dict) -> Tuple[str,str, str]:
         program = self.program_executor(logic_program)
         # cannot parse the program
@@ -62,6 +63,7 @@ class LogicInferenceEngine:
         
         outputs = []
         error_count = 0
+        error_count_constrained = 0
         
         if self.self_refine_round > 0:
             save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
@@ -75,29 +77,57 @@ class LogicInferenceEngine:
         
         for sample in tqdm(self.dataset):
             # execute the logic program
-            
-            logic_problem = sample['logic_problem']
-            
-            answer, status, error = self.safe_execute_program(logic_problem)
-            
-            if not status == 'success':
-                error_count += 1
-
-            if status == 'parsing error':
-                print(error)
+                           
+            if 'logic_problem' in sample.keys():
+                
+                try:
+                
+                    logic_problem = sample.get('logic_problem', {})
                     
-            sample.update({
-                'predicted_answer': answer,
-                'status': status,
-                'error': error
-            })
+                    answer, status, error = self.safe_execute_program(logic_problem)
+                    
+                    if not status == 'success':
+                        error_count += 1
+                        
+                    sample['logic_problem'].update({
+                        'answer': sample['answer'],
+                        'predicted_answer': answer,
+                        'status': status,
+                        'error': error
+                    })
+                    
+                except TimeoutError:
+                    error_count += 1
+                    pass
+                
+            if 'logic_problem_gcd' in sample.keys():
+                
+                try:
+                                
+                    logic_problem_constrained = sample.get('logic_problem_gcd', {})
+                    answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
 
+                    if not status_constrained == 'success':
+                        error_count_constrained += 1
+                        
+                    sample['logic_problem_gcd'].update({
+                        'answer': sample['answer'],
+                        'predicted_answer': answer_constrained,
+                        'status': status_constrained,
+                        'error': error_constrained
+                    })
+                        
+                except TimeoutError:
+                    error_count_constrained += 1
+                    pass
+                
             outputs.append(sample)
             
             with open(os.path.join(self.save_path, save_file), 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
         
-        logger.info(f"Error count: {error_count}")
+        logger.info(f"Error count unconstrained: {error_count}")
+        logger.info(f"Error count constrained: {error_count_constrained}")
             
         self.cleanup()
 
@@ -109,7 +139,7 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-path', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str, required=True)
     parser.add_argument('--dataset-name', type=str, required=True)
     
     parser.add_argument('--data-path', type=str, default='./data')
@@ -128,7 +158,7 @@ if __name__ == "__main__":
     logger, log_file_name = get_logger(script_name)
     
     logger.info(f"Dataset: {args.dataset_name}")
-    logger.info(f"Sketcher: {args.sketcher_path}")
+    logger.info(f"Sketcher: {args.sketcher_name}")
     logger.info(f"Self-refine-round: {args.self_refine_round}")
     logger.info(f"Split: {args.split}")
     logger.info(f"Save path: {args.save_path}")
@@ -145,7 +175,6 @@ if __name__ == "__main__":
     except Exception as e:
 
         error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        send_notification(error_message, "logic_inference.py fatal error")
         logger.error(error_message)
         sys.exit(0)
                 

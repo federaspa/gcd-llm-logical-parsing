@@ -13,14 +13,10 @@ class FOL_Formula:
         self.parser = FOL_Parser()
         self.is_valid = False
 
-        @timeout(seconds=10)
-        def parse_with_timeout():
-            return self.parser.parse_text_FOL_to_tree(str_fol)
-
         # with concurrent.futures.ThreadPoolExecutor() as executor:
         # future = executor.submit(parse_with_timeout)
         try:
-            tree = parse_with_timeout()
+            tree = self.parser.parse_text_FOL_to_tree(str_fol)
         except TimeoutError:
             tree = None
         except Exception as exc:

@@ -13,6 +13,7 @@ class LSAT_Z3_Program:
             self.parse_logic_program()
             self.standard_code = self.to_standard_code()
         except Exception as e:
+            print(e)
             self.standard_code = None
             self.flag = False
             return
