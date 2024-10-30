@@ -21,6 +21,7 @@ class Config:
     models_path: str = '/data/users/fraspant/LLMs'
     save_path: str = './outputs/logic_problems'
     n_gpu_layers: int = 0
+    n_ctx: int = 0
     verbose: bool = False
 
 script_name = Path(__file__).stem
@@ -56,18 +57,19 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'structured_user': f'./prompts/conversion/{self.config.dataset_name}/structured.txt',
-            'unstructured_user': f'./prompts/conversion/{self.config.dataset_name}/unstructured.txt',
+            'json_user': f'./prompts/conversion/{self.config.dataset_name}/json.txt',
+            'constrained_user': f'./prompts/conversion/{self.config.dataset_name}/constrained.txt',
+            'unconstrained_user': f'./prompts/conversion/{self.config.dataset_name}/unconstrained.txt',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
-            'json_grammar': './LLMs/grammars/json.gbnf'
-        }
+            'json_grammar': './LLMs/grammars/json.gbnf',
+            'constrained_grammar': './LLMs/grammars/FOL_constrained.gbnf'}
 
         # Load and process templates
         self.templates = {}
         for key, path in templates.items():
             with open(path, 'r') as f:
                 content = f.read()
-                if key in ['structured_user', 'unstructured_user']:
+                if key in ['json_user', 'unconstrained_user']:
                     with open(templates['prompt_template'], 'r') as pt:
                         prompt_template = pt.read()
                         content = prompt_template.replace('[[user]]', content)
@@ -82,6 +84,7 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_api = OSModel(
             model_path=str(self.sketcher_path), 
             n_gpu_layers=config.n_gpu_layers,
+            n_ctx=config.n_ctx,
             verbose=config.verbose
         )
 
@@ -92,8 +95,8 @@ class LogicProgramGenerator(PromptGenerator):
         return raw_dataset
 
     @timeout(seconds=180)
-    def _unstructured_generator(self, sample: dict) -> Tuple[str, float]:
-        user = self.prompter.unstructured(sample=sample)
+    def _unconstrained_generator(self, sample: dict) -> Tuple[str, float]:
+        user = self.prompter.unconstrained(sample=sample)
         response = self.sketcher_api.invoke(prompt=user)
         
         content = response['choices'][0]['text']
@@ -102,8 +105,8 @@ class LogicProgramGenerator(PromptGenerator):
         return content, perplexity
 
     @timeout(seconds=180)
-    def _structured_generator(self, unstructured: str) -> dict:
-        user = self.prompter.structured(unstructured)
+    def _json_wrapper(self, unconstrained: str) -> dict:
+        user = self.prompter.json_wrap(unconstrained)
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.templates['json_grammar']
@@ -113,6 +116,31 @@ class LogicProgramGenerator(PromptGenerator):
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
         return json.loads(content), perplexity
+    
+    @timeout(seconds=180)
+    def _constrained_generator(self, sample: str) -> dict:
+        user = self.prompter.unconstrained(sample)
+        response = self.sketcher_api.invoke(
+            prompt=user,
+            raw_grammar=self.templates['constrained_grammar'],
+            temperature=0.5,
+            top_p = 1,
+            top_k=10,
+            min_p=0.1,
+            tfs_z=1,
+            repeat_penalty=1
+        )
+        
+        content = response['choices'][0]['text']
+        
+        try:
+            content = json.loads(content)
+        except:
+            raise Exception(content)
+        
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+
+        return content , perplexity
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -124,31 +152,51 @@ class LogicProgramGenerator(PromptGenerator):
         outputs = []
         if save_file.exists():
             with open(save_file, 'r') as f:
-                outputs = json.load(f)
+                existing = json.load(f)
+                existing_ids = [s['id'] for s in existing]
 
-            existing_ids = {s["id"] for s in outputs}
-            raw_dataset = [s for s in raw_dataset if s["id"] not in existing_ids]
+        #     existing_ids = {s["id"] for s in outputs}
+        #     raw_dataset = [s for s in raw_dataset if s["id"] not in existing_ids]
 
-        logger.info(f"{len(outputs)} already exist.\nLoaded {len(raw_dataset)} examples from {self.config.split} split.")
+        # logger.info(f"{len(outputs)} already exist.\nLoaded {len(raw_dataset)} examples from {self.config.split} split.")
+        logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
-        for i, sample in enumerate(tqdm(raw_dataset)):
+        for i, sample in enumerate(pbar := tqdm(raw_dataset)):
+            
+            if sample['id'] in existing_ids:
+                sample = [s for s in existing if s['id'] == sample['id']][0]
+            
             try:
-                try:
-                    unstructured, perplexity = self._unstructured_generator(sample)
-                except TimeoutError:
-                    logger.warning(f"Timeout occurred during unstructured generation for sample {sample['id']}")
-                    continue
-                    
-                try:
-                    logic_problem, struct_perplexity = self._structured_generator(unstructured)
-                except TimeoutError:
-                    logger.warning(f"Timeout occurred during structured generation for sample {sample['id']}")
-                    continue
                 
-                logic_problem['perplexity'] = (perplexity, struct_perplexity)
+                if not 'logic_problem' in sample.keys():
+                
+                    pbar.set_description("Generating unconstrained problem %s" % sample['id'])
+                    unconstrained, perplexity = self._unconstrained_generator(sample)
+                    
+                    pbar.set_description("Json wrapping problem %s" % sample['id'])
+                    logic_problem, json_perplexity = self._json_wrapper(unconstrained)
+
+                    
+                    logic_problem['perplexity'] = (perplexity, json_perplexity)
+                    
+                else:
+                    logic_problem = sample['logic_problem']
                     
                 if i % 20 == 0:
                     logger.debug(logic_problem)
+                        
+                if not 'logic_problem_gcd' in sample.keys():
+                    
+                    pbar.set_description("Generating constrained problem %s" % sample['id'])
+                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(sample)
+                    
+                    logic_problem_gcd['perplexity'] = gcd_perplexity
+                    
+                else:
+                    logic_problem_gcd = sample['logic_problem_gcd']
+                
+                if i % 20 == 0:
+                    logger.debug(logic_problem_gcd)
                 
                 output = {
                     'id': sample['id'], 
@@ -158,15 +206,17 @@ class LogicProgramGenerator(PromptGenerator):
                         'options': sample.get('options', [])
                     },
                     'answer': sample['answer'],
-                    'logic_problem': logic_problem
+                    'logic_problem': logic_problem,
+                    'logic_problem_gcd': logic_problem_gcd
                 }
                 
                 outputs.append(output)
                 
+            except TimeoutError:
+                logger.warning(f"Timeout occurred during constrained generation for sample {sample['id']}")
+                
             except Exception as e:
-                error_message = f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-                send_notification(error_message, f"{script_name} sample error")
-                logger.error(error_message)
+                logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
             
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
@@ -183,6 +233,7 @@ def parse_args() -> Config:
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--n-gpu-layers', type=int, default=0)
+    parser.add_argument('--n-ctx', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     
     args = parser.parse_args()

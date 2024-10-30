@@ -34,6 +34,35 @@
       ],
       "fol_conc": "Perform(bonnie)",
       "perplexity": 1.182013988494873
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Chaperone(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Student(x)",
+        "Young(x)",
+        "Teenager(x)",
+        "Wish(x)",
+        "Career(x)",
+        "Opportunity(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Engaged(x)))",
+        "Perform(x) ⊕ (Inactive(x) ∧ Disinterested(x))",
+        "Chaperone(x) → ¬Student(x)",
+        "∀x (Inactive(x) ∧ Disinterested(x) → Chaperone(x))",
+        "∀x ((Young(x) ∧ Teenager(x) ∧ Wish(x) ∧ Career(x) ∧ Opportunity(x)) → Student(x))",
+        "(Attend(bonnie) ∧ Engaged(bonnie)) ⊕ ¬(Student(bonnie) ∨ Attend(bonnie))"
+      ],
+      "fol_conc": "Perform(bonnie)",
+      "perplexity": 1.2068071365356445
     }
   },
   {
@@ -75,6 +104,33 @@
       ],
       "fol_conc": "∀x (∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y) ∧ Chaperone(y)) ⊕ ¬∃y (YoungChildOrTeenager(y) ∧ WishToFurtherCareer(y))) → (∃x (Student(x) ∧ Student(x)) ⊕ ¬∃x (Student(x) ∨ Student(x)))",
       "perplexity": 1.2235240936279297
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Chaperone(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Student(x)",
+        "Young(x)",
+        "Wish(x)",
+        "Career(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Engaged(x)))",
+        "Perform(x) ⊕ (Inactive(x) ∧ Disinterested(x))",
+        "Chaperone(x) → ¬Student(x)",
+        "∀x ((Inactive(x) ∧ Disinterested(x)) → Chaperone(x))",
+        "∀x ((Young(x) ∧ Wish(x, x)) → Student(x))",
+        "(Attend(bonnie) ∧ Engaged(bonnie)) ⊕ ¬(Student(bonnie) ∨ Attend(bonnie))"
+      ],
+      "fol_conc": "(Young(bonnie) ∧ Wish(bonnie, x)) ⊕ (Chaperone(bonnie) → (Student(bonnie) ⊕ (Inactive(bonnie) ∧ Disinterested(bonnie))))",
+      "perplexity": 1.2585086822509766
     }
   },
   {
@@ -113,6 +169,34 @@
       ],
       "fol_conc": "(Chaperone(bonnie) ∨ ¬Chaperone(bonnie)) → (Young(bonnie) ∧ Inactive(bonnie))",
       "perplexity": 1.116593360900879
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Chaperone(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Student(x)",
+        "Young(x)",
+        "Wish(x)",
+        "Career(x)",
+        "Opportunity(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Engaged(x)))",
+        "Perform(x) ⊕ Inactive(x)",
+        "Chaperone(x) → ¬Student(x)",
+        "∀x (Inactive(x) → Chaperone(x))",
+        "∀x (Young(x) ∧ Wish(x, x) ∧ Career(x) ∧ Opportunity(x) → Student(x))",
+        "(Attend(bonnie) ∧ Engaged(bonnie)) ⊕ ¬(Student(bonnie) ∨ Attend(bonnie))"
+      ],
+      "fol_conc": "(Chaperone(bonnie) ∨ ¬Chaperone(bonnie) → (Young(bonnie) ∧ Wish(bonnie, bonnie) ∧ Career(bonnie) ∧ Opportunity(bonnie) ∧ Inactive(bonnie)))",
+      "perplexity": 1.2337931394577026
     }
   },
   {
@@ -154,6 +238,30 @@
       ],
       "fol_conc": "Lunch(james, company)",
       "perplexity": 1.1278765201568604
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Schedule(x, y)",
+        "Appear(x)",
+        "Lunch(x, y)",
+        "Manager(x)",
+        "Remote(x, y)",
+        "Country(x, y)"
+      ],
+      "fol_consts": [
+        "james"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Schedule(x, y) → Appear(x))",
+        "∀x (Lunch(x, company) → Schedule(x, customers))",
+        "∀x (Lunch(x, company) ⊕ Lunch(x, home))",
+        "Lunch(x, home) → Remote(x, home)",
+        "∀x ∀y (Country(x, y) → Remote(x, home))",
+        "∀x (Remote(x, home) → ¬Manager(x))",
+        "Manager(james) ∧ Appear(james) ⊕ ¬(Manager(james) ∨ Appear(james))"
+      ],
+      "fol_conc": "Lunch(james, company)",
+      "perplexity": 1.2230887413024902
     }
   },
   {
@@ -198,6 +306,30 @@
       ],
       "fol_conc": "¬LunchInCompany(james)",
       "perplexity": 1.289900541305542
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Schedule(x, y)",
+        "Appear(x)",
+        "Lunch(x, y)",
+        "Manager(x)",
+        "Remote(x)",
+        "Country(x)"
+      ],
+      "fol_consts": [
+        "james"
+      ],
+      "fol_rules": [
+        "∀x (Schedule(x, y) → Appear(x))",
+        "∀x (Lunch(x, y) → Schedule(x, y))",
+        "Lunch(x, y) ⊕ Lunch(x, home)",
+        "Lunch(x, home) → Remote(x)",
+        "∀x (Country(x) → Remote(x))",
+        "¬Manager(x) → Remote(x)",
+        "Manager(james) ∧ Appear(james) ⊕ ¬(Manager(james) ∨ Appear(james))"
+      ],
+      "fol_conc": "¬Lunch(james, company)",
+      "perplexity": 1.291906714439392
     }
   },
   {
@@ -241,6 +373,31 @@
       ],
       "fol_conc": "((Manager(james) ∨ OtherCountries(james)) → (Lunch(james, Home(james)) ∧ Remote(james)) ⊕ ¬(Lunch(james, Home(james)) ∨ Remote(james))",
       "perplexity": 1.1060149669647217
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Schedule(x, y)",
+        "Appear(x)",
+        "Lunch(x, y)",
+        "Manager(x)",
+        "Country(x)",
+        "Remote(x, y)",
+        "Inothercountries(x)"
+      ],
+      "fol_consts": [
+        "james"
+      ],
+      "fol_rules": [
+        "∀x (Schedule(x, y) → Appear(x))",
+        "∀x (Lunch(x, y) → Schedule(x, y))",
+        "Lunch(x, y) ⊕ Lunch(x, home)",
+        "Lunch(x, home) → Remote(x, home)",
+        "Inothercountries(x) → Remote(x, home)",
+        "¬Manager(x) → ¬Remote(x, home)",
+        "Manager(james) ∧ Appear(james) ⊕ ¬(Manager(james) ∨ Appear(james))"
+      ],
+      "fol_conc": "Manager(james) ∨ Inothercountries(james) → (Lunch(james, home) ∧ Remote(james, home)) ⊕ ¬(Lunch(james, home) ∨ Remote(james, home))",
+      "perplexity": 1.2890413999557495
     }
   },
   {
@@ -289,6 +446,36 @@
       ],
       "fol_conc": "∃x (Animal(x))",
       "perplexity": 1.291255235671997
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Virus(x)",
+        "Animal(x)",
+        "Human(x)",
+        "Mammal(x)",
+        "Symptom(x, y)",
+        "Feel(x, y)",
+        "Glu(x)",
+        "Disease(x)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus"
+      ],
+      "fol_rules": [
+        "Disease(monkeypox) ∧ Caused(monkeypox, monkeypoxvirus)",
+        "Virus(monkeypoxvirus)",
+        "Animal(x) ∧ Human(x)",
+        "Mammal(x) → Animal(x)",
+        "Animal(x)",
+        "Symptom(x, fever) ∧ Symptom(x, headache) ∧ Symptom(x, musclepains) ∧ Symptom(x, tired)",
+        "Glu(x) → Feel(x, tired)",
+        "Disease(monkeypox) ∧ Caused(monkeypox, monkeypoxvirus) → ∃x (Virus(x) ∧ Animal(x))"
+      ],
+      "fol_conc": "∃x (Animal(x))",
+      "perplexity": 1.3364171981811523
     }
   },
   {
@@ -335,6 +522,35 @@
       ],
       "fol_conc": "¬∃x Flu(x)",
       "perplexity": 1.1463462114334106
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Virus(x)",
+        "Animal(x)",
+        "Human(x)",
+        "Mammal(x)",
+        "Symptom(x, y)",
+        "Feel(x, y)",
+        "Glu(x)",
+        "Flu(x)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox) ∧ Caused(monkeypox, monkeypoxvirus)",
+        "Virus(monkeypoxvirus)",
+        "Human(x) → Animal(x)",
+        "Animal(x) → Mammal(x)",
+        "Mammal(x) → Animal(x)",
+        "Symptom(monkeypox, fever) ∧ Symptom(monkeypox, headache) ∧ Symptom(monkeypox, musclepains) ∧ Symptom(monkeypox, tired)",
+        "Feel(x, glu) → Feel(x, tired)"
+      ],
+      "fol_conc": "¬Flu(x)",
+      "perplexity": 1.2949070930480957
     }
   },
   {
@@ -387,6 +603,36 @@
       ],
       "fol_conc": "Symptom(monkeypox) ∧ Coughing(monkeypox)",
       "perplexity": 1.1764196157455444
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Virus(x)",
+        "Animal(x)",
+        "Human(x)",
+        "Mammal(x)",
+        "Symptom(x)",
+        "Disease(x)",
+        "Feel(x, y)",
+        "Glu(x)",
+        "Cough(x)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox) ∧ Caused(monkeypox, monkeypoxvirus)",
+        "Virus(monkeypoxvirus) ∧ Animal(monkeypoxvirus)",
+        "Human(x) → Mammal(x)",
+        "Mammal(x) → Animal(x)",
+        "Symptom(monkeypox) ∧ (Fever(x) ∨ Headache(x) ∨ Musclepain(x) ∨ Tired(x))",
+        "Tired(x) → Glu(x)",
+        "Glu(x) → Feel(x, y)"
+      ],
+      "fol_conc": "Symptom(monkeypox) ∧ Cough(x)",
+      "perplexity": 1.3729920387268066
     }
   },
   {
@@ -427,6 +673,30 @@
       ],
       "fol_conc": "Type(tom, ocellated)",
       "perplexity": 1.0812116861343384
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Rio(x)",
+        "Ocellated(x)",
+        "Wild(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∀x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Rio(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ⊕ Merriams(tom) ⊕ Rio(tom))",
+        "Wild(tom)",
+        "Wild(tom) → (∃x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Rio(x) ∨ Ocellated(x)))"
+      ],
+      "fol_conc": "Ocellated(tom)",
+      "perplexity": 1.2846068143844604
     }
   },
   {
@@ -465,6 +735,29 @@
       ],
       "fol_conc": "Eastern(tom)",
       "perplexity": 1.3366317749023438
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Rio(x)",
+        "Ocellated(x)",
+        "Wild(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∀x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Rio(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ⊕ Merriams(tom) ⊕ Rio(tom))",
+        "Wild(tom)"
+      ],
+      "fol_conc": "Eastern(tom)",
+      "perplexity": 1.3346086740493774
     }
   },
   {
@@ -505,6 +798,32 @@
       ],
       "fol_conc": "WildTurkey(joey)",
       "perplexity": 1.058101773262024
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Rio(x)",
+        "Ocellated(x)",
+        "Wild(x)",
+        "Isnt(x)"
+      ],
+      "fol_consts": [
+        "tom",
+        "joey"
+      ],
+      "fol_rules": [
+        "∀x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Rio(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ∨ Merriams(tom) ∨ Rio(tom))",
+        "Wild(tom)",
+        "Wild(joey) ⊕ ¬Wild(joey)"
+      ],
+      "fol_conc": "Wild(joey)",
+      "perplexity": 1.4136245250701904
     }
   },
   {
@@ -542,6 +861,32 @@
       ],
       "fol_conc": "InList(legendOfZelda, top10)",
       "perplexity": 1.4293317794799805
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Japanese(x)",
+        "Game(x)",
+        "Created(x, y)",
+        "In10(x)",
+        "Made(x, y)",
+        "Sells(x, y)",
+        "Selected(x, y)",
+        "Copies(x, y)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "legend"
+      ],
+      "fol_rules": [
+        "Created(legend, zelda)",
+        "∀x (In10(x) → Made(x, legend))",
+        "∀x (Sells(x, 1000000) → Selected(x, y))",
+        "Sells(zelda, 1000000)",
+        "∀x (In10(x) → ∃y (Selected(x, y)))",
+        "∀x (Selected(x, y) → In10(x))"
+      ],
+      "fol_conc": "In10(zelda)",
+      "perplexity": 1.5021657943725586
     }
   },
   {
@@ -579,6 +924,30 @@
       ],
       "fol_conc": "∃x (Japanese(x) ∧ MadeBy(x, fifa22))",
       "perplexity": 1.3830487728118896
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Japanese(x)",
+        "Game(x)",
+        "Created(x, y)",
+        "Top10(x)",
+        "Sells(x, y)",
+        "Selected(x, y)",
+        "Made(x, y)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "fifa22"
+      ],
+      "fol_rules": [
+        "Created(zelda, x)",
+        "∀x (Top10(x) → Japanese(x))",
+        "∀x (Sells(x, 1000000) → Selected(x, y))",
+        "Sells(zelda, 1000000)",
+        "∀x (Selected(x, y) → Top10(x))"
+      ],
+      "fol_conc": "Japanese(x) ∧ Made(fifa22, x)",
+      "perplexity": 1.3831064701080322
     }
   },
   {
@@ -614,6 +983,31 @@
       ],
       "fol_conc": "¬Top10(zelda)",
       "perplexity": 1.1273609399795532
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Japanese(x)",
+        "Game(x)",
+        "Created(x, y)",
+        "In10(x)",
+        "Made(x, y)",
+        "Sells(x, y)",
+        "Selected(x, y)",
+        "Copies(x, y)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "legend"
+      ],
+      "fol_rules": [
+        "Created(legend, zelda)",
+        "∀x (In10(x) → Made(x, legend))",
+        "∀x (Sells(x, 1000000) → Selected(x, y))",
+        "Sells(zelda, 1000000)",
+        "∀x (In10(x) → ¬Made(x, zelda))"
+      ],
+      "fol_conc": "¬In10(zelda)",
+      "perplexity": 1.5429959297180176
     }
   },
   {
@@ -641,6 +1035,22 @@
       ],
       "fol_conc": "∀x (Square(x) → Shape(x))",
       "perplexity": 1.1544393301010132
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Square(x)",
+        "Four(x)",
+        "Shape(x)"
+      ],
+      "fol_consts": [
+        "x1"
+      ],
+      "fol_rules": [
+        "∀x (Square(x) → Four(x))",
+        "∀x (Four(x) → Shape(x))"
+      ],
+      "fol_conc": "∀x (Square(x) → Shape(x))",
+      "perplexity": 1.7427046298980713
     }
   },
   {
@@ -680,6 +1090,29 @@
       ],
       "fol_conc": "Turtle(rock)",
       "perplexity": 1.552467703819275
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Rabbit(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock)",
+      "perplexity": 1.2560100555419922
     }
   },
   {
@@ -722,6 +1155,29 @@
       ],
       "fol_conc": "¬Turtle(rock)",
       "perplexity": 1.1495110988616943
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Rabbit(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "¬Turtle(rock)",
+      "perplexity": 1.2614845037460327
     }
   },
   {
@@ -761,6 +1217,29 @@
       ],
       "fol_conc": "Turtle(rock) ⊕ Cute(rock)",
       "perplexity": 1.1616179943084717
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Rabbit(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock) ⊕ Cute(rock)",
+      "perplexity": 1.2759499549865723
     }
   },
   {
@@ -799,6 +1278,28 @@
       ],
       "fol_conc": "∀x (¬(Turtle(x) ∧ Squirrel(x)) → (Cute(x) ∨ Skittish(x)))",
       "perplexity": 1.1707271337509155
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "(Turtle(rock) ∧ Squirrel(rock)) → (Cute(rock) ⊕ Skittish(rock))",
+      "perplexity": 1.2267241477966309
     }
   },
   {
@@ -839,6 +1340,29 @@
       ],
       "fol_conc": "(Cute(rock) ∧ Still(rock)) → (Turtle(rock) ∧ Skittish(rock))",
       "perplexity": 1.2704076766967773
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cute(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Rabbit(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Rabbit(x) ⊕ Squirrel(x))",
+        "Skittish(x) → ¬Still(x)",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "(Cute(rock) ∧ Still(rock)) → (Turtle(rock) ∧ Skittish(rock))",
+      "perplexity": 1.232654333114624
     }
   },
   {
@@ -881,6 +1405,34 @@
       ],
       "fol_conc": "Share(karen, strangerThings, lisa)",
       "perplexity": 1.1679850816726685
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y)",
+        "Netflix(x)",
+        "Show(x)"
+      ],
+      "fol_consts": [
+        "strangerthings",
+        "blackmirror",
+        "karen",
+        "lisa"
+      ],
+      "fol_rules": [
+        "Netflix(strangerthings)",
+        "Popular(strangerthings)",
+        "Popular(x) → Binge(karen, x)",
+        "Binge(karen, x) ⊕ Download(karen, x)",
+        "¬Download(karen, blackmirror)",
+        "Netflix(blackmirror)",
+        "Binge(karen, x) → Download(karen, x)",
+        "Binge(karen, x) → Share(karen, lisa)"
+      ],
+      "fol_conc": "Share(karen, strangerthings)",
+      "perplexity": 1.3667277097702026
     }
   },
   {
@@ -923,6 +1475,35 @@
       ],
       "fol_conc": "Popular(black_mirror)",
       "perplexity": 1.114630937576294
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Netflix(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y)",
+        "Show(x)",
+        "Person(x)",
+        "Binge(x, y)"
+      ],
+      "fol_consts": [
+        "karen",
+        "lisa",
+        "netflix",
+        "blackmirror",
+        "strangerthings"
+      ],
+      "fol_rules": [
+        "Show(strangerthings) ∧ Netflix(strangerthings)",
+        "Netflix(x) → Popular(x) → Binge(karen, x)",
+        "Binge(karen, x) ⊕ ¬Binge(karen, x) → Download(karen, x)",
+        "¬Download(karen, blackmirror)",
+        "Netflix(blackmirror)",
+        "Binge(karen, x) → Share(karen, lisa, x)"
+      ],
+      "fol_conc": "Popular(blackmirror)",
+      "perplexity": 1.4217031002044678
     }
   },
   {
@@ -964,6 +1545,34 @@
       ],
       "fol_conc": "Share(karen, black_mirror, lisa)",
       "perplexity": 1.0818771123886108
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y)",
+        "Netflix(x)",
+        "Show(x)"
+      ],
+      "fol_consts": [
+        "karen",
+        "lisa",
+        "blackmirror",
+        "strangerthings"
+      ],
+      "fol_rules": [
+        "Netflix(strangerthings)",
+        "Popular(strangerthings)",
+        "Popular(x) → Binge(karen, x)",
+        "Binge(karen, x) ⊕ Download(karen, x)",
+        "¬Download(karen, blackmirror)",
+        "Netflix(blackmirror)",
+        "Binge(karen, x) → Download(karen, x)",
+        "Binge(karen, x) → Share(karen, lisa)"
+      ],
+      "fol_conc": "Share(karen, blackmirror)",
+      "perplexity": 1.3773330450057983
     }
   },
   {
@@ -1004,6 +1613,38 @@
       ],
       "fol_conc": "∃y (∃z (z = Winter Olympics ∧ Hosted(beijing, z)) ∧ ∃w (∃u (u = 2008 Summer Olympics ∧ w = Summer Olympics) → Hosted(beijing, u))",
       "perplexity": 1.217137336730957
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Mostpopulous(x)",
+        "Located(x, y)",
+        "Hosted(x, y, z)",
+        "University(x)",
+        "Ranked(x, y, z)",
+        "Has(x, y, z)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "asia",
+        "world",
+        "2008",
+        "summer",
+        "winter",
+        "paralympics"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Mostpopulous(beijing)",
+        "Located(beijing, china)",
+        "Hosted(beijing, 2008, summer)",
+        "Hosted(beijing, 2008, paralympics)",
+        "Hosted(beijing, z, winter) ⊕ Hosted(beijing, z, summer) ⊕ Hosted(beijing, z, paralympics)",
+        "∃x (University(x) ∧ Ranked(x, asia, world))"
+      ],
+      "fol_conc": "Hosted(beijing, 2008, summer) ∧ Hosted(beijing, z, winter)",
+      "perplexity": 1.3414239883422852
     }
   },
   {
@@ -1045,6 +1686,44 @@
       ],
       "fol_conc": "LocatedIn(beijing, Southern China)",
       "perplexity": 1.3108713626861572
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Located(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "Rank(x, y)",
+        "Located(x, z)",
+        "Hosted(x, y, z)",
+        "University(x, y)",
+        "Best(x, y, z)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "asia",
+        "world",
+        "2008",
+        "summer",
+        "paralympics",
+        "winter",
+        "olympics"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Located(beijing, china)",
+        "Located(beijing, asia)",
+        "Hosted(beijing, 2008, summer)",
+        "Hosted(beijing, 2008, paralympics)",
+        "Hosted(beijing, olympics, summer)",
+        "Hosted(beijing, paralympics, summer)",
+        "Hosted(beijing, olympics, winter)",
+        "Hosted(beijing, paralympics, winter)",
+        "∃x (University(x) ∧ Rank(x, asia, world))"
+      ],
+      "fol_conc": "Located(beijing, south)",
+      "perplexity": 1.3675535917282104
     }
   },
   {
@@ -1086,6 +1765,36 @@
       ],
       "fol_conc": "∃x (City(x) ∧ LocatedIn(x, china) ∧ ¬(UrbanPopulation(x, beijing) > UrbanPopulation(x, x))) ∧ ∃y (City(y) ∧ LocatedIn(y, china) ∧ UrbanPopulation(y, beijing) > UrbanPopulation(x, x))",
       "perplexity": 1.457289218902588
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Mostpopulous(x)",
+        "Located(x, y)",
+        "Hosted(x, y, z)",
+        "University(x)",
+        "Rank(x, y, z)",
+        "Chinese(x)",
+        "Largest(x, y, z)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "asia",
+        "world"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Mostpopulous(beijing)",
+        "Located(beijing, china)",
+        "Hosted(beijing, 2008, olympics)",
+        "Hosted(beijing, 2008, paralympics)",
+        "Hosted(beijing, 2008, olympics) ∧ Hosted(beijing, 2008, paralympics)",
+        "∃x (University(x) ∧ Rank(x, asia, world))",
+        "∀x (University(x) ∧ Rank(x, asia, world) → ∃y (Chinese(y) ∧ University(y) ∧ Rank(y, asia, world)))"
+      ],
+      "fol_conc": "Largest(beijing, chinese, 2nd)",
+      "perplexity": 1.4105697870254517
     }
   },
   {
@@ -1124,6 +1833,30 @@
       ],
       "fol_conc": "Alien(marvin)",
       "perplexity": 1.0557146072387695
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)",
+        "From(x, z)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "mars",
+        "earth"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Alien(marvin)"
+      ],
+      "fol_conc": "Alien(marvin)",
+      "perplexity": 1.2541700601577759
     }
   },
   {
@@ -1164,6 +1897,30 @@
       ],
       "fol_conc": "¬(Human(marvin) ∨ Martian(marvin))",
       "perplexity": 1.0547767877578735
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)",
+        "From(x, z)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "mars",
+        "earth"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Alien(marvin)"
+      ],
+      "fol_conc": "¬Human(marvin) ∧ ¬From(marvin, mars)",
+      "perplexity": 1.2500587701797485
     }
   },
   {
@@ -1204,6 +1961,30 @@
       ],
       "fol_conc": "¬From(marvin, Mars) → Human(marvin)",
       "perplexity": 1.0532795190811157
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)",
+        "From(x, z)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "mars",
+        "earth"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Alien(marvin)"
+      ],
+      "fol_conc": "¬From(marvin, mars) → Human(marvin)",
+      "perplexity": 1.2454394102096558
     }
   },
   {
@@ -1248,6 +2029,35 @@
       ],
       "fol_conc": "∃x (GrandSlamChampion(x) ∧ x = djokovic)",
       "perplexity": 1.252543568611145
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Grandslam(x)",
+        "Oscarnominated(x)",
+        "Professionaltenn(player)",
+        "Celebrity(x)",
+        "Athlete(x)",
+        "Wellpaid(x)",
+        "Famous(x)",
+        "Taxhaven(x)",
+        "Lives(x, y)",
+        "Person(x)"
+      ],
+      "fol_consts": [
+        "djokovic"
+      ],
+      "fol_rules": [
+        "∀x (Person(x) → (Grandslam(x) ⊕ Oscarnominated(x)))",
+        "∀x (Grandslam(x) → Professionaltenn(x))",
+        "∀x (Oscarnominated(x) → Celebrity(x))",
+        "∀x (Professionaltenn(x) → Athlete(x))",
+        "∀x (Celebrity(x) → Wellpaid(x))",
+        "∀x (Athlete(x) → Famous(x))",
+        "∀x (Wellpaid(x) → Taxhaven(x))",
+        "Famous(djokovic) ∧ Athlete(djokovic) → Lives(djokovic, djokovic)"
+      ],
+      "fol_conc": "Grandslam(djokovic)",
+      "perplexity": 1.358401894569397
     }
   },
   {
@@ -1292,6 +2102,34 @@
       ],
       "fol_conc": "LivesInTaxHaven(djokovic)",
       "perplexity": 1.1139508485794067
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Grandslam(x)",
+        "Oscarnominated(x)",
+        "Professionaltenn(player)",
+        "Celebrity(x)",
+        "Athlete(x)",
+        "Wellpaid(x)",
+        "Famous(x)",
+        "Taxhaven(x)",
+        "Lives(x, y)"
+      ],
+      "fol_consts": [
+        "djokovic"
+      ],
+      "fol_rules": [
+        "∀x (Grandslam(x) ⊕ Oscarnominated(x))",
+        "∀x (Grandslam(x) → Professionaltenn(x))",
+        "∀x (Oscarnominated(x) → Celebrity(x))",
+        "∀x (Professionaltenn(x) → Athlete(x))",
+        "∀x (Celebrity(x) → Wellpaid(x))",
+        "∀x (Athlete(x) → Famous(x))",
+        "∀x (Wellpaid(x) → Taxhaven(x))",
+        "Famous(djokovic) ∧ Athlete(djokovic) → Lives(djokovic, y)"
+      ],
+      "fol_conc": "Lives(djokovic, y)",
+      "perplexity": 1.3679189682006836
     }
   },
   {
@@ -1337,6 +2175,34 @@
       ],
       "fol_conc": "¬TaxHaven(djokovic)",
       "perplexity": 1.038046956062317
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Grandslam(x)",
+        "Oscarnominated(x)",
+        "Professionaltenn(player)",
+        "Celebrity(x)",
+        "Athlete(x)",
+        "Wellpaid(x)",
+        "Famous(x)",
+        "Taxhaven(x)",
+        "Lives(x, y)"
+      ],
+      "fol_consts": [
+        "djokovic"
+      ],
+      "fol_rules": [
+        "∀x (Grandslam(x) ⊕ Oscarnominated(x))",
+        "∀x (Grandslam(x) → Professionaltenn(x))",
+        "∀x (Oscarnominated(x) → Celebrity(x))",
+        "∀x (Professionaltenn(x) → Athlete(x))",
+        "∀x (Celebrity(x) → Wellpaid(x))",
+        "∀x (Athlete(x) → Famous(x))",
+        "∀x (Wellpaid(x) → Taxhaven(x))",
+        "Famous(djokovic) ∧ Athlete(djokovic) → Lives(djokovic, taxhaven)"
+      ],
+      "fol_conc": "¬Lives(djokovic, taxhaven)",
+      "perplexity": 1.3599330186843872
     }
   },
   {
@@ -1373,6 +2239,39 @@
       ],
       "fol_conc": "∃x (Stable(x) ∧ Leads(roderick_strong, x))",
       "perplexity": 1.1605052947998047
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Professional(x)",
+        "Wrestling(x)",
+        "Stable(x)",
+        "Lead(x, y)",
+        "Includes(x, y)",
+        "Feud(x, y)",
+        "Formed(x, y)",
+        "Brother(x, y)",
+        "Member(x, y)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "diamondmine",
+        "roderickstrong",
+        "creedbrothers",
+        "ivyine",
+        "imperium"
+      ],
+      "fol_rules": [
+        "Professional(diamondmine) ∧ Formed(diamondmine, wwe)",
+        "Lead(diamondmine, roderickstrong)",
+        "Includes(diamondmine, creedbrothers) ∧ Includes(diamondmine, ivyine)",
+        "Feud(imperium, diamondmine)",
+        "Lead(diamondmine, roderickstrong) → Professional(diamondmine) ∧ Stable(diamondmine)",
+        "Lead(diamondmine, roderickstrong) → ∃x (Includes(diamondmine, x))",
+        "∃x (Includes(diamondmine, x)) → ∃y (Brother(x, y) ∧ Member(diamondmine, y))",
+        "∃y (Brother(x, y) ∧ Member(diamondmine, y)) → ∃z (Member(diamondmine, z))"
+      ],
+      "fol_conc": "Lead(diamondmine, roderickstrong)",
+      "perplexity": 1.3103681802749634
     }
   },
   {
@@ -1412,6 +2311,37 @@
       ],
       "fol_conc": "Leads(roderick_strong, creed_brothers)",
       "perplexity": 1.0841282606124878
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Professional(x)",
+        "Wrestling(x)",
+        "Lead(x, y)",
+        "Includes(x, y)",
+        "Feud(x, y)",
+        "Stable(x)",
+        "Formed(x, y)",
+        "Brother(x)",
+        "Member(x, y)"
+      ],
+      "fol_consts": [
+        "diamondmine",
+        "roderickstrong",
+        "creedbrothers",
+        "ivyine",
+        "imperium"
+      ],
+      "fol_rules": [
+        "Professional(diamondmine) ∧ Wrestling(diamondmine) ∧ Stable(diamondmine) ∧ Formed(diamondmine, wwe)",
+        "Lead(diamondmine, roderickstrong)",
+        "Includes(diamondmine, creedbrothers) ∧ Includes(diamondmine, ivyine)",
+        "Feud(imperium, diamondmine)",
+        "Lead(diamondmine, roderickstrong) → Lead(diamondmine, x) → Member(x, diamondmine)",
+        "Lead(diamondmine, roderickstrong) → Member(roderickstrong, diamondmine)",
+        "Member(roderickstrong, diamondmine) → Brother(roderickstrong) → Lead(diamondmine, roderickstrong) → Lead(diamondmine, creedbrothers)"
+      ],
+      "fol_conc": "Lead(diamondmine, roderickstrong) → Lead(diamondmine, creedbrothers)",
+      "perplexity": 1.3210474252700806
     }
   },
   {
@@ -1449,6 +2379,39 @@
       ],
       "fol_conc": "Stable(imperium) ∧ Stable(diamond_mine) ∧ Member(ivy_nile, diamond_mine) → ¬HasFeud(imperium, diamond_mine)",
       "perplexity": 1.238708257675171
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Professional(x)",
+        "Lead(x, y)",
+        "Include(x, y)",
+        "Feud(x, y)",
+        "Wrestling(x)",
+        "Stable(x)",
+        "Brother(x, y)",
+        "Female(x)",
+        "Name(x, y)"
+      ],
+      "fol_consts": [
+        "diamondmine",
+        "roderickstrong",
+        "creedbrothers",
+        "ivyine",
+        "imperium"
+      ],
+      "fol_rules": [
+        "Professional(diamondmine)",
+        "Lead(diamondmine, roderickstrong)",
+        "Include(diamondmine, creedbrothers)",
+        "Include(diamondmine, ivyine)",
+        "Feud(imperium, diamondmine)",
+        "∀x (Professional(x) → Wrestling(x))",
+        "∀x (Wrestling(x) → Stable(x))",
+        "Female(ivyine)",
+        "∀x (Stable(x) ∧ Include(x, ivyine) → Professional(x))"
+      ],
+      "fol_conc": "¬Feud(imperium, x) ∧ Include(x, ivyine) → ¬Professional(x)",
+      "perplexity": 1.332634687423706
     }
   },
   {
@@ -1494,6 +2457,34 @@
       ],
       "fol_conc": "Composer(beethoven)",
       "perplexity": 1.3296184539794922
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Music(x)",
+        "Compose(x, y)",
+        "Wrote(x, y)",
+        "Premiered(x, y)",
+        "Orchestra(x)",
+        "Lead(x, y)",
+        "Conductor(x)",
+        "Composer(x)"
+      ],
+      "fol_consts": [
+        "symphony9",
+        "beethoven",
+        "viennamusic"
+      ],
+      "fol_rules": [
+        "Music(symphony9)",
+        "∀x (Composer(x) → Music(x))",
+        "Wrote(beethoven, symphony9)",
+        "Premiered(viennamusic, symphony9)",
+        "Orchestra(viennamusic)",
+        "Lead(beethoven, viennamusic)",
+        "∀x (Orchestra(x) → Conductor(x))"
+      ],
+      "fol_conc": "Composer(beethoven)",
+      "perplexity": 1.27679443359375
     }
   },
   {
@@ -1537,6 +2528,34 @@
       ],
       "fol_conc": "∃x (Orchestra(x) ∧ ∃y (MusicPiece(y) ∧ Premiered(x, y)))",
       "perplexity": 1.1874393224716187
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Music(x)",
+        "Compose(x, y)",
+        "Wrote(x, y)",
+        "Premiered(x, y)",
+        "Orchestra(x)",
+        "Lead(x, y)",
+        "Conductor(x)",
+        "Piece(x)"
+      ],
+      "fol_consts": [
+        "symphony9",
+        "beethoven",
+        "viennamusic"
+      ],
+      "fol_rules": [
+        "Music(symphony9)",
+        "∀x (Compose(x, y) → Music(y))",
+        "Wrote(beethoven, symphony9)",
+        "Premiered(viennamusic, symphony9)",
+        "Orchestra(viennamusic)",
+        "Lead(beethoven, viennamusic)",
+        "∀x (Orchestra(x) → Conductor(x))"
+      ],
+      "fol_conc": "∃x (Orchestra(x) ∧ Premiered(x, y))",
+      "perplexity": 1.253762125968933
     }
   },
   {
@@ -1581,6 +2600,33 @@
       ],
       "fol_conc": "¬Conductor(beethoven)",
       "perplexity": 1.2405027151107788
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Music(x)",
+        "Compose(x, y)",
+        "Wrote(x, y)",
+        "Premiered(x, y)",
+        "Orchestra(x)",
+        "Lead(x, y)",
+        "Conductor(x)"
+      ],
+      "fol_consts": [
+        "symphony9",
+        "beethoven",
+        "viennamusic"
+      ],
+      "fol_rules": [
+        "Music(symphony9)",
+        "∀x (Compose(x, y) → Music(y))",
+        "Wrote(beethoven, symphony9)",
+        "Premiered(viennamusic, symphony9)",
+        "Orchestra(viennamusic)",
+        "Lead(beethoven, viennamusic)",
+        "∀x (Orchestra(x) → Lead(x, y) → Conductor(y))"
+      ],
+      "fol_conc": "¬Conductor(beethoven)",
+      "perplexity": 1.2585299015045166
     }
   },
   {
@@ -1622,6 +2668,30 @@
       ],
       "fol_conc": "MassProduct(y)",
       "perplexity": 1.0956860780715942
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Timeless(x)",
+        "Mass(x)",
+        "Evocative(x)",
+        "Dreamy(x)",
+        "Design(x, y)"
+      ],
+      "fol_consts": [
+        "zaha",
+        "kelly",
+        "max"
+      ],
+      "fol_rules": [
+        "∀x (Design(x, zaha) → Timeless(x))",
+        "¬Mass(x) → ¬Timeless(x)",
+        "Design(x, zaha) ⊕ Design(x, kelly)",
+        "∀x (Design(x, kelly) → Evocative(x))",
+        "∀x (Design(x, kelly) → Dreamy(x))",
+        "Timeless(x) → (Mass(x) ∧ Evocative(x))"
+      ],
+      "fol_conc": "Mass(x) ∧ Design(x, max)",
+      "perplexity": 1.2711743116378784
     }
   },
   {
@@ -1663,6 +2733,30 @@
       ],
       "fol_conc": "∃x (DesignBy(max, x) ∧ Evocative(x) ∧ Dreamy(x))",
       "perplexity": 1.242038369178772
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Timeless(x)",
+        "Mass(x)",
+        "Evocative(x)",
+        "Dreamy(x)",
+        "Design(x, y)"
+      ],
+      "fol_consts": [
+        "zaha",
+        "kelly",
+        "max"
+      ],
+      "fol_rules": [
+        "∀x (Design(x, zaha) → Timeless(x))",
+        "¬Mass(x) → ¬Timeless(x)",
+        "Design(x, zaha) ⊕ Design(x, kelly)",
+        "∀x (Design(x, kelly) → Evocative(x))",
+        "∀x (Design(x, kelly) → Dreamy(x))",
+        "Timeless(x) → (Mass(x) ∧ Evocative(x))"
+      ],
+      "fol_conc": "Evocative(x) ∧ Dreamy(x)",
+      "perplexity": 1.2584480047225952
     }
   },
   {
@@ -1704,6 +2798,30 @@
       ],
       "fol_conc": "(Evocative(By(max, x)) ⊕ Dreamy(By(max, x)))",
       "perplexity": 1.1432154178619385
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Timeless(x)",
+        "Mass(x)",
+        "Evocative(x)",
+        "Dreamy(x)",
+        "Design(x, y)"
+      ],
+      "fol_consts": [
+        "zaha",
+        "kelly",
+        "max"
+      ],
+      "fol_rules": [
+        "∀x (Design(x, zaha) → Timeless(x))",
+        "¬Mass(x) → ¬Timeless(x)",
+        "Design(x, zaha) ⊕ Design(x, kelly)",
+        "∀x (Design(x, kelly) → Evocative(x))",
+        "∀x (Design(x, kelly) → Dreamy(x))",
+        "Timeless(x) → (Mass(x) ∧ Evocative(x))"
+      ],
+      "fol_conc": "Evocative(x) ⊕ Dreamy(x)",
+      "perplexity": 1.2559837102890015
     }
   },
   {
@@ -1750,6 +2868,43 @@
       ],
       "fol_conc": "Active(coco)",
       "perplexity": 1.1228125095367432
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Player(x)",
+        "Female(x)",
+        "Male(x)",
+        "Tennis(x)",
+        "At2022(x)",
+        "At2022(y, z)",
+        "At2022(x, y, z)"
+      ],
+      "fol_consts": [
+        "iga",
+        "coco",
+        "rafael",
+        "swiatek",
+        "gauff",
+        "nad",
+        "roland",
+        "garros",
+        "women",
+        "tennis",
+        "association"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Player(x) ∧ At2022(x, roland, garros) → Lost(x, iga))",
+        "At2022(women, tennis, association) ⊕ At2022(male, tennis, association)",
+        "∀x (Player(x) ∧ At2022(x, roland, garros) → Male(x))",
+        "¬(Ranked(x) ⊕ Lost(x, rafa)) → ¬Male(x)"
+      ],
+      "fol_conc": "Active(coco)",
+      "perplexity": 1.3965262174606323
     }
   },
   {
@@ -1793,6 +2948,37 @@
       ],
       "fol_conc": "LostTo(cocogauff, rafaelnadal)",
       "perplexity": 1.1042994260787964
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Player(x)",
+        "Female(x)",
+        "Male(x)",
+        "Tennis(x)",
+        "Event(x, y)",
+        "Player(x, y)"
+      ],
+      "fol_consts": [
+        "iga",
+        "coco",
+        "rafael",
+        "roland",
+        "garros",
+        "2022"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Player(x, roland, garros, 2022) ∧ Female(x) → Lost(x, iga))",
+        "Player(x, roland, garros, 2022) ⊕ Player(x, roland, garros, 2022)",
+        "∀x (Player(x, roland, garros, 2022) ∧ Male(x) → Lost(x, rafa))",
+        "Lost(x, rafa) → ¬Male(x, roland, garros, 2022)"
+      ],
+      "fol_conc": "Lost(coco, rafa)",
+      "perplexity": 1.326790452003479
     }
   },
   {
@@ -1838,6 +3024,39 @@
       ],
       "fol_conc": "¬(LostTo(cocolgauff, igaswiatek) ⊕ RankedHighly(cocolgauff))",
       "perplexity": 1.101960301399231
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Player(x)",
+        "Female(x)",
+        "Male(x)",
+        "Tennis(x)",
+        "At2022(x)",
+        "At2022(y, z)",
+        "At2022(x, y, z)"
+      ],
+      "fol_consts": [
+        "iga",
+        "coco",
+        "rafael",
+        "swiatek",
+        "gauff",
+        "nadl"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Player(x) ∧ At2022(x, y, z) → Lost(x, iga))",
+        "At2022(y, z) ⊕ At2022(x, y, z)",
+        "∀x (Player(x) ∧ At2022(x, y, z) → Male(x))",
+        "∀x (Player(x) ∧ At2022(x, y, z) ∧ Lost(x, rafa) → Male(x))",
+        "(Ranked(x) ∨ Lost(x, rafa)) → ¬Male(x)"
+      ],
+      "fol_conc": "¬(Lost(coco, iga) ∨ Active(coco))",
+      "perplexity": 1.3699073791503906
     }
   },
   {
@@ -1865,6 +3084,22 @@
       ],
       "fol_conc": "¬∃x (Cat(x) ∧ Pet(x))",
       "perplexity": 1.2597160339355469
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Cat(x)",
+        "Mammal(x)",
+        "Pet(x)"
+      ],
+      "fol_consts": [
+        "c1"
+      ],
+      "fol_rules": [
+        "∀x (Cat(x) → Mammal(x))",
+        "∃x (Pet(x) ∧ ¬Mammal(x))"
+      ],
+      "fol_conc": "¬(Pet(x) ∧ Cat(x))",
+      "perplexity": 1.6213295459747314
     }
   },
   {
@@ -1906,6 +3141,34 @@
       ],
       "fol_conc": "FavoriteSeason(james, summer)",
       "perplexity": 1.2427159547805786
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Season(x)",
+        "Student(x)",
+        "Want(x)",
+        "Love(x, y)",
+        "Favorite(x, y)",
+        "Vacation(x)"
+      ],
+      "fol_consts": [
+        "emma",
+        "mia",
+        "james",
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fol_rules": [
+        "∀x (Season(x))",
+        "∀x (Student(x) ∧ Want(x, long) → Love(x, summer))",
+        "Favorite(emma, summer)",
+        "¬Favorite(mia, emma)",
+        "Want(james, long)"
+      ],
+      "fol_conc": "Favorite(james, summer)",
+      "perplexity": 1.3550270795822144
     }
   },
   {
@@ -1942,6 +3205,34 @@
       ],
       "fol_conc": "FavoriteSeason(james, fall)",
       "perplexity": 1.1291450262069702
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Season(x)",
+        "Student(x)",
+        "Want(x)",
+        "Love(x, y)",
+        "Favorite(x, y)",
+        "Vacation(x)"
+      ],
+      "fol_consts": [
+        "emma",
+        "mia",
+        "james",
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fol_rules": [
+        "∀x (Season(x))",
+        "∀x (Student(x) ∧ Want(x, long) → Love(x, summer))",
+        "Favorite(emma, summer)",
+        "¬Favorite(mia, emma)",
+        "Want(james, long)"
+      ],
+      "fol_conc": "Favorite(james, fall)",
+      "perplexity": 1.3590342998504639
     }
   },
   {
@@ -1982,6 +3273,34 @@
       ],
       "fol_conc": "FavoriteSeason(mia, spring)",
       "perplexity": 1.2460265159606934
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Season(x)",
+        "Student(x)",
+        "Want(x)",
+        "Love(x, y)",
+        "Favorite(x, y)",
+        "Vacation(x)"
+      ],
+      "fol_consts": [
+        "emma",
+        "mia",
+        "james",
+        "spring",
+        "summer",
+        "fall",
+        "winter"
+      ],
+      "fol_rules": [
+        "∀x (Season(x))",
+        "∀x (Student(x) ∧ Want(x, long) → Love(x, summer))",
+        "Favorite(emma, summer)",
+        "¬Favorite(mia, emma)",
+        "Want(james, long)"
+      ],
+      "fol_conc": "Favorite(mia, spring)",
+      "perplexity": 1.3590130805969238
     }
   },
   {
@@ -2017,6 +3336,28 @@
       ],
       "fol_conc": "PrintedText(book1984)",
       "perplexity": 1.2054754495620728
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Analog(x)",
+        "Digital(x)",
+        "Printed(x)",
+        "Streaming(x)",
+        "Hardcover(x)",
+        "Book(x)"
+      ],
+      "fol_consts": [
+        "1984"
+      ],
+      "fol_rules": [
+        "¬Digital(x)",
+        "∀x (Printed(x) → Analog(x))",
+        "∀x (Streaming(x) → Digital(x))",
+        "Hardcover(x) → Printed(x)",
+        "Streaming(1984) → Hardcover(1984)"
+      ],
+      "fol_conc": "Printed(1984)",
+      "perplexity": 1.3300361633300781
     }
   },
   {
@@ -2053,6 +3394,28 @@
       ],
       "fol_conc": "StreamingService(1984)",
       "perplexity": 1.1425939798355103
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Analog(x)",
+        "Digital(x)",
+        "Printed(x)",
+        "Streaming(x)",
+        "Hardcover(x)",
+        "Book(x)"
+      ],
+      "fol_consts": [
+        "1984"
+      ],
+      "fol_rules": [
+        "¬Digital(x)",
+        "∀x (Printed(x) → Analog(x))",
+        "∀x (Streaming(x) → Digital(x))",
+        "Hardcover(x) → Printed(x)",
+        "Streaming(1984) → Hardcover(1984)"
+      ],
+      "fol_conc": "Streaming(1984)",
+      "perplexity": 1.3186061382293701
     }
   },
   {
@@ -2090,6 +3453,28 @@
       ],
       "fol_conc": "¬StreamingService(\"1984\")",
       "perplexity": 1.1544468402862549
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Analog(x)",
+        "Digital(x)",
+        "Printed(x)",
+        "Streaming(x)",
+        "Hardcover(x)",
+        "Book(x)"
+      ],
+      "fol_consts": [
+        "1984"
+      ],
+      "fol_rules": [
+        "¬Digital(x)",
+        "∀x (Printed(x) → Analog(x))",
+        "∀x (Streaming(x) → Digital(x))",
+        "Hardcover(x) → Printed(x)",
+        "Streaming(1984) → Hardcover(1984)"
+      ],
+      "fol_conc": "¬Streaming(1984)",
+      "perplexity": 1.3255925178527832
     }
   },
   {
@@ -2130,6 +3515,31 @@
       ],
       "fol_conc": "Romance(basque)",
       "perplexity": 1.151451826095581
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Romance(x)",
+        "Indouropean(x)",
+        "Language(x)",
+        "Related(x, y)",
+        "Family(x, y)"
+      ],
+      "fol_consts": [
+        "basque",
+        "french",
+        "spanish",
+        "german"
+      ],
+      "fol_rules": [
+        "∀x (Romance(x) → Indouropean(x))",
+        "Family(romance, romance)",
+        "∀x (Family(x, y) → ∀z (Member(z, x) → Related(z, y)))",
+        "Romance(french) ∧ Romance(spanish)",
+        "Related(spanish, german)",
+        "¬Related(basque, x)"
+      ],
+      "fol_conc": "Romance(basque)",
+      "perplexity": 1.4267781972885132
     }
   },
   {
@@ -2170,6 +3580,32 @@
       ],
       "fol_conc": "Romance(german)",
       "perplexity": 1.425380825996399
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Romance(x)",
+        "Indouropean(x)",
+        "Language(x)",
+        "Related(x, y)",
+        "Family(x)"
+      ],
+      "fol_consts": [
+        "german",
+        "french",
+        "spanish",
+        "basque"
+      ],
+      "fol_rules": [
+        "∀x (Romance(x) → Indouropean(x))",
+        "Family(romance)",
+        "∀x (Family(x) → ∀y (Language(y) ∧ Member(y, x) → Related(x, y)))",
+        "Romance(french) ∧ Romance(spanish)",
+        "Related(spanish, german)",
+        "¬Related(basque, x)",
+        "∀x (Related(x, y) → Related(y, x))"
+      ],
+      "fol_conc": "Romance(german)",
+      "perplexity": 1.4133013486862183
     }
   },
   {
@@ -2213,6 +3649,31 @@
       ],
       "fol_conc": "∃x (IndoEuropean(x) ∧ Romance(french) ∧ LanguageFamily(x))",
       "perplexity": 1.365235686302185
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Romance(x)",
+        "Indo(x)",
+        "Language(x)",
+        "Related(x, y)",
+        "Family(x, y)"
+      ],
+      "fol_consts": [
+        "french",
+        "spanish",
+        "german",
+        "basque"
+      ],
+      "fol_rules": [
+        "∀x (Romance(x) → Indo(x))",
+        "∀x (Romance(x))",
+        "∀x ∀y (Family(x, y) → Related(x, y))",
+        "Romance(french) ∧ Romance(spanish)",
+        "Related(spanish, german)",
+        "¬Related(basque, x)"
+      ],
+      "fol_conc": "Indo(french)",
+      "perplexity": 1.391289234161377
     }
   },
   {
@@ -2247,6 +3708,30 @@
       ],
       "fol_conc": "Player(robert_lewandowski)",
       "perplexity": 1.1968048810958862
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Striker(x)",
+        "Soccer(x)",
+        "Left(x, y)",
+        "Play(x, y)",
+        "Player(x)",
+        "Team(x)"
+      ],
+      "fol_consts": [
+        "robert",
+        "lewandowski",
+        "bayern",
+        "munchen"
+      ],
+      "fol_rules": [
+        "Striker(robert)",
+        "Striker(robert) → Soccer(robert)",
+        "Left(robert, bayern)",
+        "Left(x, y) → ¬Play(x, y)"
+      ],
+      "fol_conc": "Soccer(robert)",
+      "perplexity": 1.459252953529358
     }
   },
   {
@@ -2280,6 +3765,30 @@
       ],
       "fol_conc": "Play(robert_lewandowski, bayern_munchen)",
       "perplexity": 1.286649465560913
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Striker(x)",
+        "Soccer(x)",
+        "Left(x, y)",
+        "Play(x, y)",
+        "Player(x)",
+        "Team(x)"
+      ],
+      "fol_consts": [
+        "robert",
+        "lewandowski",
+        "bayern",
+        "munchen"
+      ],
+      "fol_rules": [
+        "Striker(robert)",
+        "Striker(robert) → Soccer(robert)",
+        "Left(robert, bayern)",
+        "Left(x, y) → ¬Play(x, y)"
+      ],
+      "fol_conc": "Play(robert, bayern)",
+      "perplexity": 1.453774094581604
     }
   },
   {
@@ -2314,6 +3823,31 @@
       ],
       "fol_conc": "Star(robert_lewandowski)",
       "perplexity": 1.2510768175125122
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Striker(x)",
+        "Soccer(x)",
+        "Player(x)",
+        "Left(x, y)",
+        "Star(x)",
+        "Team(x, y)"
+      ],
+      "fol_consts": [
+        "robert",
+        "lewandowski",
+        "bayern",
+        "munchen"
+      ],
+      "fol_rules": [
+        "Striker(robert)",
+        "Striker(robert) → Soccer(robert)",
+        "Left(robert, bayern)",
+        "Left(x, y) → ¬Team(x, y)",
+        "Team(robert, bayern) → Team(robert, munchen)"
+      ],
+      "fol_conc": "Star(robert)",
+      "perplexity": 1.4300801753997803
     }
   },
   {
@@ -2354,6 +3888,32 @@
       ],
       "fol_conc": "InState(butte, white_sulphur_springs)",
       "perplexity": 1.3260334730148315
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "City(x)",
+        "Instate(x, y)",
+        "State(x)",
+        "Samestate(x, y)"
+      ],
+      "fol_consts": [
+        "billings",
+        "montana",
+        "butte",
+        "helen",
+        "missoula",
+        "white",
+        "pierre"
+      ],
+      "fol_rules": [
+        "City(billings) ∧ Instate(billings, montana)",
+        "Instate(montana, butte) ∧ Instate(montana, helen) ∧ Instate(montana, missoula)",
+        "Instate(white, montana) ∧ Instate(butte, montana)",
+        "¬Instate(pierre, montana)",
+        "Instate(x, butte) → ¬Instate(x, pierre)"
+      ],
+      "fol_conc": "Instate(butte, pierre)",
+      "perplexity": 1.300971269607544
     }
   },
   {
@@ -2394,6 +3954,33 @@
       ],
       "fol_conc": "In(bismarck, state) → In(pierre, state)",
       "perplexity": 1.3828543424606323
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "City(x)",
+        "Instate(x, y)",
+        "State(x)",
+        "Samestate(x, y)"
+      ],
+      "fol_consts": [
+        "billings",
+        "montana",
+        "butte",
+        "helen",
+        "missoula",
+        "white",
+        "pierre",
+        "bismarck"
+      ],
+      "fol_rules": [
+        "City(billings) ∧ Instate(billings, montana)",
+        "Instate(montana, butte) ∧ Instate(montana, helen) ∧ Instate(montana, missoula)",
+        "Instate(white, montana) ∧ Instate(butte, montana)",
+        "¬Instate(pierre, montana)",
+        "City(x) ∧ Instate(x, butte) → ¬Instate(x, pierre)"
+      ],
+      "fol_conc": "Instate(pierre, x) ∧ Instate(bismarck, x) → Samestate(pierre, bismarck)",
+      "perplexity": 1.2481340169906616
     }
   },
   {
@@ -2434,6 +4021,82 @@
       ],
       "fol_conc": "InState(missoula, montana)",
       "perplexity": 1.124047040939331
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "City(x)",
+        "Instate(x, y)",
+        "Instate(x, z)",
+        "Instate(x, w)",
+        "Instate(x, v)",
+        "Instate(x, u)",
+        "Instate(x, t)",
+        "Instate(x, s)",
+        "Instate(x, r)",
+        "Instate(x, q)",
+        "Instate(x, p)",
+        "Instate(x, o)",
+        "Instate(x, n)",
+        "Instate(x, m)",
+        "Instate(x, l)",
+        "Instate(x, k)",
+        "Instate(x, j)",
+        "Instate(x, i)",
+        "Instate(x, h)",
+        "Instate(x, g)",
+        "Instate(x, f)",
+        "Instate(x, e)",
+        "Instate(x, d)",
+        "Instate(x, c)",
+        "Instate(x, b)",
+        "Instate(x, a)",
+        "Home(x, y)",
+        "Home(x, z)",
+        "Home(x, w)",
+        "Home(x, v)",
+        "Home(x, u)",
+        "Home(x, t)",
+        "Home(x, s)",
+        "Home(x, r)",
+        "Home(x, q)",
+        "Home(x, p)",
+        "Home(x, o)",
+        "Home(x, n)",
+        "Home(x, m)",
+        "Home(x, l)",
+        "Home(x, k)",
+        "Home(x, j)",
+        "Home(x, i)",
+        "Home(x, h)",
+        "Home(x, g)",
+        "Home(x, f)",
+        "Home(x, e)",
+        "Home(x, d)",
+        "Home(x, c)",
+        "Home(x, b)",
+        "Home(x, a)"
+      ],
+      "fol_consts": [
+        "billings",
+        "montana",
+        "butte",
+        "helena",
+        "missoula",
+        "white",
+        "pierre"
+      ],
+      "fol_rules": [
+        "City(billings)",
+        "Instate(montana, butte)",
+        "Instate(montana, helena)",
+        "Instate(montana, missoula)",
+        "Instate(white, butte)",
+        "¬Instate(pierre, montana)",
+        "¬Instate(x, y) → ¬Instate(x, z)",
+        "Instate(x, y) → Instate(x, z)"
+      ],
+      "fol_conc": "Home(montana, missoula)",
+      "perplexity": 1.1673150062561035
     }
   },
   {
@@ -2468,6 +4131,35 @@
       ],
       "fol_conc": "HasF1(mike)",
       "perplexity": 1.2441171407699585
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "International(x)",
+        "Student(x)",
+        "Inx(x, y)",
+        "Has(x, y)",
+        "Needs(x, y)",
+        "Apply(x, y)",
+        "Work(x, y)",
+        "F1visa(x)",
+        "J1visa(x)",
+        "Cpt(x)",
+        "Opt(x)"
+      ],
+      "fol_consts": [
+        "mike",
+        "us"
+      ],
+      "fol_rules": [
+        "∀x (∀y (∀z (Inx(x, y) ∧ International(x) ∧ Has(x, z) ∧ (F1visa(z) ⊕ J1visa(z))) → (Inx(x, y) ∧ International(x) ∧ Has(x, z) ∧ F1visa(z) → (Cpt(z) ⊕ Opt(z)))))",
+        "International(mike)",
+        "Inx(mike, us)",
+        "Needs(mike, y) → Apply(mike, y)",
+        "Needs(mike, y) → Work(mike, y)",
+        "Needs(mike, y)"
+      ],
+      "fol_conc": "Has(mike, x) ∧ F1visa(x)",
+      "perplexity": 1.508122444152832
     }
   },
   {
@@ -2504,6 +4196,32 @@
       ],
       "fol_conc": "HasVisa(mike, j1)",
       "perplexity": 1.2774171829223633
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "International(x)",
+        "Student(x)",
+        "Incountry(x)",
+        "Has(x, y)",
+        "Needs(x, y)",
+        "Apply(x, y)",
+        "Work(x)",
+        "F1visa(x)",
+        "J1visa(x)",
+        "Cpt(x)",
+        "Opt(x)"
+      ],
+      "fol_consts": [
+        "mike"
+      ],
+      "fol_rules": [
+        "∀x (International(x) ∧ Incountry(x) → (Has(x, f1visa) ⊕ Has(x, j1visa)))",
+        "∀x (International(x) ∧ Incountry(x) ∧ Has(x, f1visa) ∧ Work(x) → (Apply(x, cpt) ⊕ Apply(x, opt)))",
+        "International(mike) ∧ Incountry(mike)",
+        "International(mike) ∧ Incountry(mike) ∧ Work(mike) → Needs(mike, cpt)"
+      ],
+      "fol_conc": "Has(mike, j1visa)",
+      "perplexity": 1.4744776487350464
     }
   },
   {
@@ -2539,6 +4257,26 @@
       ],
       "fol_conc": "Pet(ted)",
       "perplexity": 1.051196575164795
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Bovine(x)",
+        "Pet(x)",
+        "Domesticated(x)",
+        "Alligator(x)"
+      ],
+      "fol_consts": [
+        "ted"
+      ],
+      "fol_rules": [
+        "∀x (Bovine(x))",
+        "∃x (Pet(x) ∧ Bovine(x))",
+        "∀x (Bovine(x) → Domesticated(x))",
+        "¬(Domesticated(x) ∧ Alligator(x))",
+        "Alligator(ted)"
+      ],
+      "fol_conc": "Pet(ted)",
+      "perplexity": 1.297105073928833
     }
   },
   {
@@ -2574,6 +4312,27 @@
       ],
       "fol_conc": "Pet(ted) ∧ Cow(ted)",
       "perplexity": 1.0287210941314697
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Bovine(x)",
+        "Pet(x)",
+        "Cow(x)",
+        "Domesticated(x)",
+        "Alligator(x)"
+      ],
+      "fol_consts": [
+        "ted"
+      ],
+      "fol_rules": [
+        "∀x (Cow(x) → Bovine(x))",
+        "∃x (Pet(x) ∧ Cow(x))",
+        "∀x (Bovine(x) → Domesticated(x))",
+        "¬(Domesticated(x) ∧ Alligator(x))",
+        "Alligator(ted)"
+      ],
+      "fol_conc": "Pet(ted) ∧ Cow(ted)",
+      "perplexity": 1.2665050029754639
     }
   },
   {
@@ -2609,6 +4368,27 @@
       ],
       "fol_conc": "(Cow(ted) → ¬Pet(ted))",
       "perplexity": 1.0255876779556274
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Bovine(x)",
+        "Cow(x)",
+        "Pet(x)",
+        "Domesticated(x)",
+        "Alligator(x)"
+      ],
+      "fol_consts": [
+        "ted"
+      ],
+      "fol_rules": [
+        "∀x (Cow(x) → Bovine(x))",
+        "∃x (Pet(x) ∧ Cow(x))",
+        "∀x (Bovine(x) → Domesticated(x))",
+        "¬(Domesticated(x) ∧ Alligator(x))",
+        "Alligator(ted)"
+      ],
+      "fol_conc": "(Cow(ted) → ¬Pet(ted))",
+      "perplexity": 1.2790911197662354
     }
   },
   {
@@ -2666,6 +4446,42 @@
       ],
       "fol_conc": "∃y (PrivateIvyLeagueResearchUniversity(y) ∧ MovedToNewHaven(y, 1716))",
       "perplexity": 1.1235687732696533
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Private(x)",
+        "Ivy(x)",
+        "Research(x)",
+        "Moved(x, y)",
+        "Endowed(x, z)",
+        "Organized(x, y)",
+        "List(x, y)",
+        "Residential(x)",
+        "Graduate(x)",
+        "Professional(x)",
+        "College(x)",
+        "School(x)",
+        "University(x)"
+      ],
+      "fol_consts": [
+        "yale"
+      ],
+      "fol_rules": [
+        "University(yale) → Private(yale)",
+        "University(yale) → Ivy(yale)",
+        "University(yale) → Research(yale)",
+        "University(yale) → Moved(yale, newhaven)",
+        "Endowed(yale, 42, 300, 000, 000)",
+        "Organized(yale, 27)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege) → Residential(yale)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege) → College(yale)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege) → School(yale)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege) → Graduate(yale)",
+        "List(yale, benjaminfrankl, incollege, berkeleycollege, branfordcollege, davenport, college, ezrastiles, college, gracehopper, college, jonathanedwards, college, morsecollege, paulimurray, college, piersoncollege, saybrookcollege, silliman, college, timothydwight, college, trumbullcollege) → Professional(yale)"
+      ],
+      "fol_conc": "Moved(yale, newhaven)",
+      "perplexity": 1.1586029529571533
     }
   },
   {
@@ -2766,6 +4582,46 @@
       ],
       "fol_conc": "ResidentialCollege(pierson)",
       "perplexity": 1.1127599477767944
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Private(x)",
+        "Ivy(x)",
+        "Research(x)",
+        "Moved(x, y)",
+        "Endowed(x, y)",
+        "Organized(x, y)",
+        "Residential(x)",
+        "Graduate(x)",
+        "Professional(x)",
+        "List(x, y)",
+        "Inlist(x, y)",
+        "College(x)",
+        "School(x)",
+        "University(x)"
+      ],
+      "fol_consts": [
+        "yale",
+        "newhaven",
+        "pierson"
+      ],
+      "fol_rules": [
+        "University(yale) → Private(yale)",
+        "University(yale) → Ivy(yale)",
+        "University(yale) → Research(yale)",
+        "Moved(yale, newhaven)",
+        "Endowed(yale, 42, 3e9)",
+        "Organized(yale, 27)",
+        "∃x (List(x, yale) ∧ Residential(x))",
+        "List(yale, 27)",
+        "∃x (List(x, yale) ∧ Graduate(x))",
+        "∃x (List(x, yale) ∧ Professional(x))",
+        "List(yale, 14)",
+        "∃x (College(x) ∧ Inlist(x, yale))",
+        "∃x (College(x) ∧ Inlist(x, yale) ∧ Residential(x))"
+      ],
+      "fol_conc": "Residential(pierson)",
+      "perplexity": 1.404151201248169
     }
   },
   {
@@ -2802,6 +4658,32 @@
       ],
       "fol_conc": "ScriptEditor(badults, andrew_collins) ∧ WorkingTitle(badults, secret_dude_society)",
       "perplexity": 1.4306278228759766
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "British(x)",
+        "Sitcom(x)",
+        "Starring(x, y)",
+        "Piloted(x, y)",
+        "Workingtitle(x, y)",
+        "Scripteditor(x, y)",
+        "Member(x, y)"
+      ],
+      "fol_consts": [
+        "badults",
+        "andrewcollins",
+        "pappys"
+      ],
+      "fol_rules": [
+        "British(badults)",
+        "Sitcom(badults)",
+        "Starring(pappys, badults)",
+        "Piloted(badults, 2013)",
+        "Workingtitle(badults, thesecretdudes)",
+        "Scripteditor(andrewcollins, badults)"
+      ],
+      "fol_conc": "Scripteditor(andrewcollins, badults) ∧ Workingtitle(badults, thesecretdudes)",
+      "perplexity": 1.478818416595459
     }
   },
   {
@@ -2844,6 +4726,40 @@
       ],
       "fol_conc": "∀x (∃y (Member(x, y) ∧ Starring(y, badults)) → ¬∃z (∃w (Member(w, y) ∧ PiledOn(z, bbc_two)) ∨ ∃v (Member(v, y) ∧ PiledOn(v, bbc_three))))",
       "perplexity": 1.2286837100982666
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "British(x)",
+        "Sitcom(x)",
+        "Starring(x, y)",
+        "Piloted(x, y)",
+        "Scripted(x, y)",
+        "Editor(x, y)",
+        "Member(x, y)",
+        "Starred(x, y, z)",
+        "Piloted(x, y, z)",
+        "Show(x, y, z)",
+        "Channel(x, y, z)"
+      ],
+      "fol_consts": [
+        "badults",
+        "pappys",
+        "andrewcollins",
+        "july2013",
+        "bbcthree",
+        "bbctwo"
+      ],
+      "fol_rules": [
+        "British(badults)",
+        "Sitcom(badults)",
+        "Starring(pappys, badults)",
+        "Piloted(badults, july2013, bbcthree)",
+        "Workingtitle(badults, thesecretdude)",
+        "Scripted(badults, andrewcollins)",
+        "Editor(badults, andrewcollins)"
+      ],
+      "fol_conc": "¬(∃x (Member(x, pappys) ∧ ∃y (Starred(x, y, z) ∧ Piloted(y, z, bbctwo) ∨ Piloted(y, z, bbcthree))))",
+      "perplexity": 1.390884518623352
     }
   },
   {
@@ -2881,6 +4797,28 @@
       ],
       "fol_conc": "CompanyStock(ko)",
       "perplexity": 1.2992918491363525
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Volatile(x)",
+        "Growth(x)",
+        "Mature(x)",
+        "Suitable(x)",
+        "Stock(x, y)",
+        "Company(x)"
+      ],
+      "fol_consts": [
+        "ko"
+      ],
+      "fol_rules": [
+        "∀x (Growth(x) → Volatile(x))",
+        "∀x (Volatile(x) → ¬Suitable(x))",
+        "∃x ∃y (Stock(x, y) ∧ Growth(x))",
+        "∀x (Stock(x, y) ∧ Mature(y) → Suitable(x))",
+        "Stock(ko, y) ∧ Mature(y)"
+      ],
+      "fol_conc": "Stock(ko, y)",
+      "perplexity": 1.317109227180481
     }
   },
   {
@@ -2917,6 +4855,28 @@
       ],
       "fol_conc": "(CompanyStock(ko) ∧ GrowthStock(ko))",
       "perplexity": 1.249428629875183
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Volatile(x)",
+        "Growth(x)",
+        "Mature(x)",
+        "Suitable(x)",
+        "Stock(x, y)",
+        "Company(x)"
+      ],
+      "fol_consts": [
+        "ko"
+      ],
+      "fol_rules": [
+        "∀x (Growth(x) → Volatile(x))",
+        "∀x (Volatile(x) → ¬Suitable(x))",
+        "∃x ∃y (Stock(x, y) ∧ Growth(x))",
+        "∀x (Stock(x, y) ∧ Mature(y) → Suitable(x))",
+        "Stock(ko, y) ∧ Mature(y)"
+      ],
+      "fol_conc": "Stock(ko, x) ∧ Growth(x)",
+      "perplexity": 1.3197956085205078
     }
   },
   {
@@ -2953,6 +4913,29 @@
       ],
       "fol_conc": "(GrowthStock(ko) ∨ Volatile(ko)) → ¬(StockOf(ko) ∨ Volatile(ko))",
       "perplexity": 1.525543451309204
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Growth(x)",
+        "Volatile(x)",
+        "Suitable(x)",
+        "Stock(x, y)",
+        "Mature(x)",
+        "Company(x)"
+      ],
+      "fol_consts": [
+        "ko"
+      ],
+      "fol_rules": [
+        "∀x (Growth(x) → Volatile(x))",
+        "∀x (Volatile(x) → ¬Suitable(x))",
+        "∃x ∃y (Stock(x, y) ∧ Growth(x))",
+        "∀x (Stock(x, y) → Mature(y)) → Suitable(x)",
+        "Stock(ko, y) ∧ Mature(y)",
+        "Volatile(x) ⊕ ¬(Stock(x, y) ∨ Volatile(x))"
+      ],
+      "fol_conc": "(Growth(x) ∨ Volatile(x)) → ¬(Stock(x, y) ∨ Volatile(x))",
+      "perplexity": 1.305008888244629
     }
   },
   {
@@ -2990,6 +4973,29 @@
       ],
       "fol_conc": "BeginsWith(joe, thirtyfour)",
       "perplexity": 1.3431397676467896
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "From(x)",
+        "Begin(x, y)",
+        "License(x, y)",
+        "Plate(x, y)"
+      ],
+      "fol_consts": [
+        "joe",
+        "tom",
+        "34",
+        "35"
+      ],
+      "fol_rules": [
+        "∀x (Plate(x, 34) → From(x, istanbul))",
+        "¬From(x, istanbul) → ¬Plate(x, 34)",
+        "License(joe, 34) → From(joe, istanbul)",
+        "License(tom, 35)",
+        "License(x, 35) → ¬License(x, 34)"
+      ],
+      "fol_conc": "License(joe, 34)",
+      "perplexity": 1.3918123245239258
     }
   },
   {
@@ -3028,6 +5034,29 @@
       ],
       "fol_conc": "From(toms_plate, Istanbul)",
       "perplexity": 1.2423127889633179
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Begin(x, y)",
+        "From(x, y)",
+        "Plate(x)",
+        "License(x)"
+      ],
+      "fol_consts": [
+        "joe",
+        "tom",
+        "34",
+        "35"
+      ],
+      "fol_rules": [
+        "∀x (Plate(x) ∧ From(x, istanbul) → Begin(x, 34))",
+        "¬(Plate(x) ∧ From(x, istanbul)) → ¬Begin(x, 34)",
+        "From(joe, istanbul)",
+        "Begin(licenseplate, 35)",
+        "Begin(licenseplate, 35) → ¬Begin(licenseplate, 34)"
+      ],
+      "fol_conc": "From(tom, istanbul)",
+      "perplexity": 1.4258664846420288
     }
   },
   {
@@ -3068,6 +5097,33 @@
       ],
       "fol_conc": "NeedMoney(Mary)",
       "perplexity": 1.167931079864502
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Work(x)",
+        "Need(x)",
+        "Order(x)",
+        "Enjoy(x)",
+        "Picky(x)",
+        "Eat(x, y)",
+        "Catch(x, y)",
+        "Student(x)",
+        "College(x)",
+        "Tuition(x)"
+      ],
+      "fol_consts": [
+        "mary"
+      ],
+      "fol_rules": [
+        "∀x (Work(x) ∧ Student(x) ∧ College(x) → Need(x, x))",
+        "∀x (Order(x) ∧ College(x) → Work(x))",
+        "Order(x) ⊕ (Enjoy(x) ∧ ¬Picky(x))",
+        "Enjoy(x) → ¬Picky(x)",
+        "Enjoy(x) → Eat(x, x) ∧ Catch(x, x)",
+        "Work(x) ∧ Need(x, x) → ¬Picky(x) ∧ ¬Need(x, x)"
+      ],
+      "fol_conc": "Need(mary, mary)",
+      "perplexity": 1.3317804336547852
     }
   },
   {
@@ -3106,6 +5162,36 @@
       ],
       "fol_conc": "¬PickyEater(mary) ∧ SpendTimeEating(mary, campus)",
       "perplexity": 1.0832734107971191
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Work(x)",
+        "Need(x)",
+        "Order(x)",
+        "Enjoy(x)",
+        "Picky(x)",
+        "Eat(x, y)",
+        "Catch(x, y)",
+        "Student(x)",
+        "Campus(x)",
+        "Tuition(x)",
+        "College(x)",
+        "Hall(x)",
+        "Friend(x)"
+      ],
+      "fol_consts": [
+        "mary"
+      ],
+      "fol_rules": [
+        "∀x (Work(x, student) ∧ Campus(x) → Need(x, tuition))",
+        "∀x (Order(x, college) → Work(x, student))",
+        "Order(x, college) ⊕ (Enjoy(x, hall) ∧ ¬Picky(x))",
+        "Enjoy(x, hall) → ¬Picky(x)",
+        "Enjoy(x, hall) → Eat(x, hall) ∧ Catch(x, hall)",
+        "Work(x, student) ∧ Need(x, tuition) → ¬Picky(x) ∧ ¬Need(x, tuition)"
+      ],
+      "fol_conc": "¬Picky(mary) ∧ Eat(mary, hall) ∧ Catch(mary, hall)",
+      "perplexity": 1.3083490133285522
     }
   },
   {
@@ -3144,6 +5230,32 @@
       ],
       "fol_conc": "(¬Picky(mary)) ⊕ (∃x ((Work(mary) ∧ NeedMoney(mary)) ∧ Picky(mary) → SpendTimeEating(x)))",
       "perplexity": 1.0659539699554443
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Work(x)",
+        "Need(x)",
+        "Order(x)",
+        "Enjoy(x)",
+        "Picky(x)",
+        "Eat(x, y)",
+        "Catch(x, y)",
+        "Student(x)"
+      ],
+      "fol_consts": [
+        "mary"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) ∧ Work(x) → Need(x))",
+        "∀x (Order(x) → Work(x))",
+        "Order(x) ⊕ (Enjoy(x) ∧ ¬Picky(x))",
+        "Enjoy(x) → ¬Picky(x)",
+        "Enjoy(x) → Eat(x, x)",
+        "Eat(x, x) → Catch(x, x)",
+        "Work(x) ∧ Need(x) → ¬Picky(x) ∧ ¬Need(x)"
+      ],
+      "fol_conc": "Picky(mary) ⊕ (Picky(mary) → Eat(mary, mary) → Catch(mary, mary))",
+      "perplexity": 1.3105883598327637
     }
   },
   {
@@ -3182,6 +5294,29 @@
       ],
       "fol_conc": "Product(chilies, melissa)",
       "perplexity": 1.0951427221298218
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spicy(x)",
+        "Bakery(x)",
+        "Cupcake(x)",
+        "Hotpot(x)",
+        "Product(x, y)",
+        "Bakery(x, y)"
+      ],
+      "fol_consts": [
+        "driedthai",
+        "bymelissa"
+      ],
+      "fol_rules": [
+        "¬Bakery(driedthai)",
+        "∀x (Cupcake(x) → Bakery(x))",
+        "∀x (Hotpot(x) → Spicy(x))",
+        "∀x (Product(x, bymelissa) → Cupcake(x))",
+        "(Spicy(driedthai) ∨ Bakery(driedthai)) → (Hotpot(driedthai) ∨ Spicy(driedthai))"
+      ],
+      "fol_conc": "Product(driedthai, bymelissa)",
+      "perplexity": 1.2593623399734497
     }
   },
   {
@@ -3218,6 +5353,29 @@
       ],
       "fol_conc": "¬(DriedThaiChilies(x) ∧ Product(x, melissa))",
       "perplexity": 1.278584599494934
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spicy(x)",
+        "Bakery(x)",
+        "Cupcake(x)",
+        "Hotpot(x)",
+        "Product(x, y)",
+        "Bakery(x, y)"
+      ],
+      "fol_consts": [
+        "driedthai",
+        "bymelissa"
+      ],
+      "fol_rules": [
+        "¬Bakery(driedthai)",
+        "∀x (Cupcake(x) → Bakery(x))",
+        "∀x (Hotpot(x) → Spicy(x))",
+        "∀x (Product(x, bymelissa) → Cupcake(x))",
+        "(Spicy(driedthai) ∨ Bakery(driedthai)) → (Hotpot(driedthai) ∨ Spicy(driedthai))"
+      ],
+      "fol_conc": "¬Product(driedthai, bymelissa)",
+      "perplexity": 1.2601447105407715
     }
   },
   {
@@ -3254,6 +5412,29 @@
       ],
       "fol_conc": "Hotpot(thailand)",
       "perplexity": 1.0824252367019653
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spicy(x)",
+        "Bakery(x)",
+        "Cupcake(x)",
+        "Hotpot(x)",
+        "Product(x, y)",
+        "Bakery(x, y)"
+      ],
+      "fol_consts": [
+        "driedthai",
+        "melissa"
+      ],
+      "fol_rules": [
+        "¬Bakery(driedthai)",
+        "∀x (Cupcake(x) → Bakery(x))",
+        "∀x (Hotpot(x) → Spicy(x))",
+        "∀x (Product(x, melissa) → Cupcake(x))",
+        "(Spicy(driedthai) ∨ Bakery(driedthai)) → (Hotpot(driedthai) ∨ Spicy(driedthai))"
+      ],
+      "fol_conc": "Hotpot(driedthai)",
+      "perplexity": 1.2721456289291382
     }
   },
   {
@@ -3291,6 +5472,29 @@
       ],
       "fol_conc": "¬(Product(driedThaiChilies, melissa) ⊕ Bakery(driedThaiChilies))",
       "perplexity": 1.0576512813568115
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spicy(x)",
+        "Bakery(x)",
+        "Cupcake(x)",
+        "Hotpot(x)",
+        "Product(x, y)",
+        "Bakery(x)"
+      ],
+      "fol_consts": [
+        "driedthai",
+        "bymelissa"
+      ],
+      "fol_rules": [
+        "¬Bakery(driedthai)",
+        "∀x (Cupcake(x) → Bakery(x))",
+        "∀x (Hotpot(x) → Spicy(x))",
+        "∀x (Product(x, bymelissa) → Cupcake(x))",
+        "(Spicy(driedthai) ∨ Bakery(driedthai)) → (Hotpot(driedthai) ∨ Spicy(driedthai))"
+      ],
+      "fol_conc": "¬(Product(driedthai, bymelissa) ∨ Bakery(driedthai))",
+      "perplexity": 1.2476751804351807
     }
   },
   {
@@ -3328,6 +5532,29 @@
       ],
       "fol_conc": "(Cupcake(chilies) ∧ ProductOf(chilies, melissa))",
       "perplexity": 1.0595413446426392
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spicy(x)",
+        "Bakery(x)",
+        "Cupcake(x)",
+        "Hotpot(x)",
+        "Product(x, y)",
+        "Bakery(x, y)"
+      ],
+      "fol_consts": [
+        "driedthai",
+        "bymelissa"
+      ],
+      "fol_rules": [
+        "¬Bakery(driedthai)",
+        "∀x (Cupcake(x) → Bakery(x))",
+        "∀x (Hotpot(x) → Spicy(x))",
+        "∀x (Product(x, bymelissa) → Cupcake(x))",
+        "(Spicy(driedthai) ∨ Bakery(driedthai)) → (Hotpot(driedthai) ∨ Spicy(driedthai))"
+      ],
+      "fol_conc": "Cupcake(driedthai) ∧ Product(driedthai, bymelissa)",
+      "perplexity": 1.2428449392318726
     }
   },
   {
@@ -3481,6 +5708,39 @@
       ],
       "fol_conc": "Lose(nemesis, sirDigby)",
       "perplexity": 1.169266700744629
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Superhero(x)",
+        "Good(x)",
+        "Bad(x)",
+        "Fight(x, y)",
+        "Win(x, y)",
+        "Lose(x, y)",
+        "Named(x, y)",
+        "Character(x)",
+        "Movie(x)",
+        "Appears(x, y)"
+      ],
+      "fol_consts": [
+        "sirdigby",
+        "nemesis",
+        "thesurprisingad",
+        "goodguys",
+        "badguys"
+      ],
+      "fol_rules": [
+        "∀x (Superhero(x) → Good(x))",
+        "Superhero(thesurprisingad)",
+        "∀x (Good(x) ∧ Bad(y) → Fight(x, y) ∧ Fight(y, x))",
+        "Fight(sirdigby, nemesis)",
+        "∀x (Superhero(x) ∧ Named(x, y) → Character(y))",
+        "Named(thesurprisingad, sirdigby)",
+        "∀x (Win(x, y) → Lose(y, x))",
+        "∀x (Superhero(x) ∧ Named(x, y) → Appears(y, x))"
+      ],
+      "fol_conc": "Lose(nemesis, sirdigby)",
+      "perplexity": 1.3625726699829102
     }
   },
   {
@@ -3518,6 +5778,35 @@
       ],
       "fol_conc": "ContainKnowledge(walden)",
       "perplexity": 1.2585692405700684
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Contains(x, y)",
+        "Reads(x, y)",
+        "Gains(x, y)",
+        "Smarter(x)",
+        "Book(x)",
+        "Author(x, y)",
+        "Person(x)",
+        "Knowledge(x)"
+      ],
+      "fol_consts": [
+        "harry",
+        "walden",
+        "henry",
+        "thoreau"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Book(x) → Contains(x, y))",
+        "∀x ∀y (Reads(x, y) → Gains(x, y))",
+        "∀x ∀y (Gains(x, y) → Smarter(x))",
+        "Book(walden)",
+        "Author(walden, henry)",
+        "Person(harry)",
+        "Reads(harry, walden)"
+      ],
+      "fol_conc": "Contains(walden, knowledge)",
+      "perplexity": 1.30276358127594
     }
   },
   {
@@ -3557,6 +5846,34 @@
       ],
       "fol_conc": "∃x (Book(x) ∧ Read(harry, x) → ∃y (Person(y) ∧ SmarterThan(y, harry)))",
       "perplexity": 1.4206892251968384
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Contain(x, y)",
+        "Reads(x, y)",
+        "Gain(x)",
+        "Smarter(x, y)",
+        "Book(x)",
+        "Author(x, y)",
+        "Person(x)",
+        "Knowledge(x)",
+        "Smarter(x)",
+        "Before(x, y)"
+      ],
+      "fol_consts": [
+        "harry",
+        "walden",
+        "henry",
+        "thoreau"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Book(x) ∧ Contain(x, y) → Knowledge(y))",
+        "∀x ∀y (Reads(x, y) → Gain(x))",
+        "∀x ∀y (Gain(x) → Smarter(x, y))",
+        "Book(walden) ∧ Author(walden, henry) ∧ Reads(harry, walden)"
+      ],
+      "fol_conc": "Smarter(harry, before)",
+      "perplexity": 1.3912830352783203
     }
   },
   {
@@ -3591,6 +5908,29 @@
       ],
       "fol_conc": "∃x (Smarter(x) → ∃y (Know(y)))",
       "perplexity": 1.3384466171264648
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Contain(x, y)",
+        "Reads(x, y)",
+        "Gain(x)",
+        "Smarter(x)",
+        "Knowledge(x)"
+      ],
+      "fol_consts": [
+        "harry",
+        "walden",
+        "henry"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Contain(x, y) → Knowledge(x))",
+        "∀x ∀y (Reads(x, y) → Gain(x))",
+        "∀x (Gain(x) → Smarter(x))",
+        "Reads(harry, walden)",
+        "Reads(harry, walden) → Contains(walden, henry)"
+      ],
+      "fol_conc": "∀x (Smarter(x) → Gain(x))",
+      "perplexity": 1.3040577173233032
     }
   },
   {
@@ -3656,6 +5996,29 @@
       ],
       "fol_conc": "¬LanguageGenerationTask(machine_translation) → LanguageUnderstandingTask(machine_translation)",
       "perplexity": 1.24003267288208
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Language(x)",
+        "Generation(x)",
+        "Understanding(x)",
+        "Output(x, y)",
+        "Machine(x)",
+        "Translation(x)"
+      ],
+      "fol_consts": [
+        "machine"
+      ],
+      "fol_rules": [
+        "∀x (Language(x) → (Generation(x) ⊕ Understanding(x)))",
+        "∀x ((Output(x, y) ∧ Language(x)) → Generation(x))",
+        "Machine(translation)",
+        "Output(translation, y)",
+        "Machine(translation) → Language(translation)",
+        "Language(translation) → Output(translation, y)"
+      ],
+      "fol_conc": "Understanding(translation)",
+      "perplexity": 1.5722171068191528
     }
   },
   {
@@ -3764,6 +6127,38 @@
       ],
       "fol_conc": "MoveIn(tom, olive_garden, fluffy)",
       "perplexity": 1.234136939048767
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Allowed(x, y)",
+        "Managed(x)",
+        "Deposit(x, y)",
+        "More(x, y)",
+        "Pet(x)",
+        "Cat(x)",
+        "Building(x)",
+        "Rent(x, y)",
+        "Allowed(x)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "olivegarden",
+        "1500",
+        "2000"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(x, y))",
+        "∀x (Managed(x) → ∀y (Deposit(x, y, z) → More(z, y)))",
+        "Cat(fluffy)",
+        "Pet(fluffy)",
+        "Building(olivegarden)",
+        "Rent(olivegarden, 2000)",
+        "Allowed(tom) ⊕ (Allowed(tom) ∧ Managed(olivegarden) ∧ Deposit(olivegarden, 1500, 2000))",
+        "More(2000, 1500)"
+      ],
+      "fol_conc": "Allowed(tom, olivegarden) ∧ Managed(olivegarden) ∧ Deposit(olivegarden, 1500, 2000)",
+      "perplexity": 1.3303337097167969
     }
   },
   {
@@ -3851,6 +6246,30 @@
       ],
       "fol_conc": "Sleeps(koala)",
       "perplexity": 1.1061712503433228
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Loved(x, y)",
+        "Favorite(x, y)",
+        "From(x, y)",
+        "Fluffy(x)",
+        "Sleep(x)",
+        "Quokka(x)",
+        "Koala(x)"
+      ],
+      "fol_consts": [
+        "max"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Loved(x, y) → Favorite(max, y))",
+        "∀x (From(x, australia) → Loved(x, tourists))",
+        "∀x (Quokka(x) → From(x, australia))",
+        "∀x (Favorite(max, x) → Fluffy(x))",
+        "∀x (Favorite(max, x) → Sleep(x))",
+        "Koala(x) → ¬Quokka(x) → ¬Fluffy(x)"
+      ],
+      "fol_conc": "∃x (Koala(x) ∧ Sleep(x))",
+      "perplexity": 1.258724331855774
     }
   },
   {
@@ -3893,6 +6312,31 @@
       ],
       "fol_conc": "(Sleep(koala) ∧ Quokka(koala))",
       "perplexity": 1.102050542831421
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Loved(x, y)",
+        "Favorite(x, y)",
+        "From(x, y)",
+        "Fluffy(x)",
+        "Sleep(x)",
+        "Quokka(x)",
+        "Koala(x)"
+      ],
+      "fol_consts": [
+        "max",
+        "australia"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Loved(x, y) → Favorite(max, y))",
+        "∀x (From(x, australia) → Loved(x, tourists))",
+        "∀x (Quokka(x) → From(x, australia))",
+        "∀x (Favorite(max, x) → Fluffy(x))",
+        "∀x (Favorite(max, x) → Sleep(x))",
+        "Koala(x) → ¬Quokka(x)"
+      ],
+      "fol_conc": "Koala(x) ∧ Quokka(x) ∧ Sleep(x)",
+      "perplexity": 1.2457497119903564
     }
   },
   {
@@ -3934,6 +6378,30 @@
       ],
       "fol_conc": "(Quokka(koala) → (Sleep(koala) ⊕ Fluffy(koala)))",
       "perplexity": 1.2914435863494873
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Loved(x, y)",
+        "Favorite(x, y)",
+        "From(x, y)",
+        "Fluffy(x)",
+        "Sleep(x)",
+        "Quokka(x)",
+        "Koala(x)"
+      ],
+      "fol_consts": [
+        "max"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Loved(x, y) → Favorite(max, x))",
+        "∀x (From(x, australia) → Loved(x, tourists))",
+        "∀x (Quokka(x) → From(x, australia))",
+        "∀x (Favorite(max, x) → Fluffy(x))",
+        "∀x (Favorite(max, x) → Sleep(x))",
+        "Koala(x) → ¬Quokka(x)"
+      ],
+      "fol_conc": "Koala(x) → (Sleep(x) ⊕ Fluffy(x))",
+      "perplexity": 1.2486541271209717
     }
   },
   {
@@ -3972,6 +6440,29 @@
       ],
       "fol_conc": "CEO(harry)",
       "perplexity": 1.1953837871551514
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Kind(x)",
+        "Evil(x)",
+        "Ugly(x)",
+        "Handsome(x)",
+        "Gentleman(x)",
+        "Ceo(x)"
+      ],
+      "fol_consts": [
+        "harry"
+      ],
+      "fol_rules": [
+        "∀x (Kind(x) ⊕ Evil(x))",
+        "¬(Ugly(x) ∧ Handsome(x))",
+        "∀x (Evil(x) → Ugly(x))",
+        "∀x (Gentleman(x) → Handsome(x))",
+        "∀x (Ceo(x) → Gentleman(x))",
+        "Gentleman(harry)"
+      ],
+      "fol_conc": "Ceo(harry)",
+      "perplexity": 1.2571932077407837
     }
   },
   {
@@ -4010,6 +6501,31 @@
       ],
       "fol_conc": "(Kind(harry) ∨ CEO(harry))",
       "perplexity": 1.0899977684020996
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Kind(x)",
+        "Evil(x)",
+        "Ugly(x)",
+        "Handsome(x)",
+        "Gentleman(x)",
+        "Ceo(x)"
+      ],
+      "fol_consts": [
+        "harry"
+      ],
+      "fol_rules": [
+        "∀x (Gentleman(x) → Handsome(x))",
+        "∀x (Ceo(x) → Gentleman(x))",
+        "Gentleman(harry)",
+        "∀x (Handsome(x) → ¬Ugly(x))",
+        "∀x (Ugly(x) → Evil(x))",
+        "∀x (Evil(x) → Ugly(x))",
+        "∀x (Ugly(x) → ¬Handsome(x))",
+        "∀x (Evil(x) ⊕ Kind(x))"
+      ],
+      "fol_conc": "Kind(harry) ⊕ Ceo(harry)",
+      "perplexity": 1.2495895624160767
     }
   },
   {
@@ -4048,6 +6564,34 @@
       ],
       "fol_conc": "(Evil(harry) ∧ Ugly(harry)) ⊕ ¬(Evil(harry) ∨ Ugly(harry)) → ¬(Kind(harry) ⊕ CEO(harry))",
       "perplexity": 1.2003614902496338
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Kind(x)",
+        "Evil(x)",
+        "Ugly(x)",
+        "Handsome(x)",
+        "Gentleman(x)",
+        "Ceo(x)"
+      ],
+      "fol_consts": [
+        "harry"
+      ],
+      "fol_rules": [
+        "∀x (Gentleman(x) → Handsome(x))",
+        "∀x (Ceo(x) → Gentleman(x))",
+        "Gentleman(harry)",
+        "∀x (Evil(x) → Ugly(x))",
+        "∀x (Ugly(x) → ¬Handsome(x))",
+        "∀x (Evil(x) → Ugly(x))",
+        "∀x (Ugly(x) → ¬Handsome(x))",
+        "∀x (Handsome(x) → ¬Evil(x))",
+        "∀x (Handsome(x) → ¬Ugly(x))",
+        "∀x (Kind(x) ∨ Evil(x))",
+        "¬(Ugly(x) ∧ Handsome(x))"
+      ],
+      "fol_conc": "(Evil(harry) ∧ Ugly(harry)) ⊕ ¬(Evil(harry) ∨ Ugly(harry)) → ¬(Kind(harry) ∨ Ceo(harry))",
+      "perplexity": 1.2049164772033691
     }
   },
   {
@@ -4088,6 +6632,35 @@
       ],
       "fol_conc": "∃y (Siblings(luke, y) ∧ Hangout(luke, y) ∧ Play(luke, y))",
       "perplexity": 1.0586246252059937
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Twin(x)",
+        "Triplet(x)",
+        "Siblings(x, y)",
+        "Sameage(x, y)",
+        "Annoying(x, y)",
+        "Complain(x)",
+        "Home(x)",
+        "Bond(x, y)",
+        "Regular(x)",
+        "Often(x, y)",
+        "Hangingout(x, y)",
+        "Playing(x, y)"
+      ],
+      "fol_consts": [
+        "luke"
+      ],
+      "fol_rules": [
+        "(Twin(x) ∨ Triplet(x)) → Hangingout(x, y) ∧ Playing(x, y)",
+        "(Sameage(x, y) → Twin(x) ∨ Triplet(x))",
+        "Complain(x) → Sameage(x, y)",
+        "¬Regular(x) → ¬Bond(x, y)",
+        "Hangingout(x, y) ∧ Playing(x, y) → ¬Regular(x)",
+        "(Twin(luke) ∧ Bond(luke, y)) ⊕ ¬(Twin(luke) ∨ Bond(luke, y))"
+      ],
+      "fol_conc": "Hangingout(luke, y) ∧ Playing(luke, y)",
+      "perplexity": 1.3030680418014526
     }
   },
   {
@@ -4127,6 +6700,34 @@
       ],
       "fol_conc": "Complain(luke)",
       "perplexity": 1.1113066673278809
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Twin(x)",
+        "Triplet(x)",
+        "Siblings(x, y)",
+        "Sameage(x, y)",
+        "Annoying(x, y)",
+        "Complain(x)",
+        "Home(x)",
+        "Bond(x, y)",
+        "Regular(x)",
+        "Often(x)"
+      ],
+      "fol_consts": [
+        "luke"
+      ],
+      "fol_rules": [
+        "(Twin(x) ⊕ Triplet(x)) → Siblings(x, y) ∧ Play(x, y)",
+        "Sameage(x, y) → (Twin(x) ⊕ Triplet(x))",
+        "Complain(x) → Sameage(x, y)",
+        "¬Regular(x) → ¬Bond(x, y)",
+        "Often(x) → ¬Regular(x)",
+        "Siblings(x, y) ∧ Play(x, y) → Often(x)",
+        "(Twin(luke) ∧ Bond(luke, y)) ⊕ ¬(Twin(luke) ∨ Bond(luke, y))"
+      ],
+      "fol_conc": "Complain(luke)",
+      "perplexity": 1.298171877861023
     }
   },
   {
@@ -4166,6 +6767,36 @@
       ],
       "fol_conc": "¬(Twin(luke) ∨ Triplet(luke) ∨ Siblings(luke))",
       "perplexity": 1.0860861539840698
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Twin(x)",
+        "Triplet(x)",
+        "Siblings(x, y)",
+        "Sameage(x, y)",
+        "Annoying(x, y)",
+        "Complain(x, y)",
+        "Hangingout(x, y)",
+        "Play(x, y)",
+        "Home(x)",
+        "Bonds(x, y)",
+        "Regular(x)",
+        "Often(x, y)",
+        "Didnotlive(x)"
+      ],
+      "fol_consts": [
+        "luke"
+      ],
+      "fol_rules": [
+        "(Twin(x) ∨ Triplet(x)) → (Hangingout(x, y) ∧ Play(x, y))",
+        "Sameage(x, y) → (Twin(x) ∨ Triplet(x))",
+        "Complain(x, y) → Sameage(x, y)",
+        "¬Regular(x) → ¬Bonds(x, y)",
+        "Hangingout(x, y) ∧ Play(x, y) → Didnotlive(x)",
+        "(Twin(luke) ∧ Bonds(luke, y)) ⊕ ¬(Twin(luke) ∨ Bonds(luke, y))"
+      ],
+      "fol_conc": "¬(Twin(luke) ∨ Triplet(luke) ∨ Complain(luke, y))",
+      "perplexity": 1.263951301574707
     }
   },
   {
@@ -4204,6 +6835,38 @@
       ],
       "fol_conc": "Apply(tom, ets)",
       "perplexity": 1.1899406909942627
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Costs(x, y)",
+        "Provides(x, y)",
+        "Has(x, y)",
+        "Economic(x)",
+        "Single(x)",
+        "Parent(x)",
+        "Work(x)",
+        "Year(x)",
+        "Apply(x, y)",
+        "Aid(x, y)",
+        "Test(x)"
+      ],
+      "fol_consts": [
+        "tom",
+        "gre",
+        "ets"
+      ],
+      "fol_rules": [
+        "Costs(gre, 205)",
+        "Provides(ets, x) → Economic(x)",
+        "Economic(x) → (Has(x, money) ∧ ¬Has(x, money))",
+        "Single(tom) ∧ Parent(tom)",
+        "Work(x) → Year(x)",
+        "¬Work(tom) ∧ Year(1year)",
+        "Apply(x, y) → Aid(x, y)",
+        "Aid(x, y) → Test(y)"
+      ],
+      "fol_conc": "Apply(ets, tom) ∧ Aid(ets, tom)",
+      "perplexity": 1.5956834554672241
     }
   },
   {
@@ -4245,6 +6908,38 @@
       ],
       "fol_conc": "∃x (x < 300 ∧ Costs(gre, x))",
       "perplexity": 1.336175560951233
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Costs(x, y)",
+        "Provides(x, y)",
+        "Has(x, y)",
+        "Lives(x, y)",
+        "Single(x)",
+        "Parent(x)",
+        "Work(x, y)",
+        "Year(x, y)",
+        "Economic(x)",
+        "Applicant(x)",
+        "Financial(x)"
+      ],
+      "fol_consts": [
+        "tom",
+        "gre",
+        "ets",
+        "205",
+        "300"
+      ],
+      "fol_rules": [
+        "Costs(gre, 205)",
+        "Provides(ets, x) → Applicant(x) ∧ Economic(x)",
+        "Economic(x) → (Has(x, money) ∧ ¬Has(x, money)) ⊕ (Has(x, resources) ∧ ¬Has(x, resources))",
+        "Lives(tom, x) ∧ Single(x) ∧ Parent(x)",
+        "Has(tom, dad) ∧ Work(tom, dad, y) ∧ Year(y, 1year) ∧ Year(y, 1year)",
+        "Applicant(x) ∧ Economic(x) → Financial(x)"
+      ],
+      "fol_conc": "Costs(gre, 300)",
+      "perplexity": 1.5234060287475586
     }
   },
   {
@@ -4289,6 +6984,32 @@
       ],
       "fol_conc": "¬∃x (GREApplicant(x) ∧ FinancialAid(x))",
       "perplexity": 1.5041842460632324
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Costs(x, y)",
+        "Provides(x, y)",
+        "Has(x, y)",
+        "Economichardship(x)",
+        "Singleparent(x)",
+        "Unemployed(x)",
+        "Financialaid(x, y)"
+      ],
+      "fol_consts": [
+        "tom",
+        "gre",
+        "ets"
+      ],
+      "fol_rules": [
+        "Costs(gre, 205)",
+        "Provides(ets, y) → Economichardship(y)",
+        "Economichardship(x) → (Has(x, littlemoney) ∨ Has(x, fewresources))",
+        "Singleparent(tom)",
+        "Unemployed(ets)",
+        "¬Unemployed(ets) → Has(ets, job)"
+      ],
+      "fol_conc": "¬Exists(x, y) ∧ Financialaid(ets, x)",
+      "perplexity": 1.942600131034851
     }
   },
   {
@@ -4328,6 +7049,35 @@
       ],
       "fol_conc": "(TidySpace(peters) ∧ EnjoyCleaning(peters))",
       "perplexity": 1.0544133186340332
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spills(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Grew(x)",
+        "Busy(x)",
+        "High(x)",
+        "Household(x)",
+        "Parent(x, y)",
+        "Child(x, y)",
+        "Person(x)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "(Spills(x) → ¬Tidy(x) ∧ Enjoy(x))",
+        "∀x (Foodie(x) → Spills(x))",
+        "(Grew(x) → Tidy(x) ∧ Enjoy(x))",
+        "(Busy(x) → Grew(x))",
+        "∀x (High(x) → Busy(x))",
+        "¬(Spills(peter) ∧ Grew(peter)) → (Spills(peter) ∧ Grew(peter)) ⊕ ¬(Spills(peter) ∨ Grew(peter))"
+      ],
+      "fol_conc": "Tidy(peter) ∧ Enjoy(peter)",
+      "perplexity": 1.293432593345642
     }
   },
   {
@@ -4366,6 +7116,38 @@
       ],
       "fol_conc": "(Foodie(peter) ∧ Spill(peter)) ⊕ (HighIncome(peter) ∧ BusyParent(peter))",
       "perplexity": 1.0470874309539795
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spills(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Grew(x)",
+        "Busy(x)",
+        "High(x)",
+        "Household(x)",
+        "Person(x)",
+        "Child(x)",
+        "Siblings(x)",
+        "Parent(x)",
+        "Job(x)",
+        "Income(x)",
+        "Belongs(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "(Spills(x) → ¬Tidy(x) ∧ Enjoy(x))",
+        "∀x (Foodie(x) → Spills(x))",
+        "(Grew(x) → Tidy(x) ∧ Enjoy(x))",
+        "(Busy(x) → Grew(x))",
+        "∀x (High(x) → Busy(x))",
+        "¬(Spills(peter) ∧ Grew(peter)) → (Spills(peter) ∧ Grew(peter)) ⊕ ¬(Spills(peter) ∨ Grew(peter))"
+      ],
+      "fol_conc": "Foodie(peter) ⊕ Belongs(peter, x)",
+      "perplexity": 1.3283774852752686
     }
   },
   {
@@ -4405,6 +7187,31 @@
       ],
       "fol_conc": "((Foodie(peter) ∧ Belong(peter, ∃x (Household(x, x)))) ⊕ ¬(Foodie(peter) ∨ Belong(peter, ∃x (Household(x, x)))))",
       "perplexity": 1.0943573713302612
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Grew(x)",
+        "Busy(x)",
+        "High(x)",
+        "Belong(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "(Spill(x) → ¬Tidy(x) ∧ Enjoy(x))",
+        "∀x (Foodie(x) → Spill(x))",
+        "(Grew(x) → Tidy(x) ∧ Enjoy(x))",
+        "(Busy(x) → Grew(x))",
+        "∀x (High(x) → Busy(x))",
+        "¬(Spill(peter) ∧ Grew(peter)) → (Spill(peter) ∧ Grew(peter)) ⊕ ¬(Spill(peter) ∨ Grew(peter))"
+      ],
+      "fol_conc": "Foodie(peter) ∧ High(peter) ⊕ ¬(Foodie(peter) ∨ High(peter))",
+      "perplexity": 1.2613840103149414
     }
   },
   {
@@ -4432,6 +7239,23 @@
       ],
       "fol_conc": "∃x (Evergreen(x) ∧ ¬ObjectOfWorship(x))",
       "perplexity": 1.0750436782836914
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Evergreen(x)",
+        "Fir(x)",
+        "Object(x)",
+        "Worship(x)"
+      ],
+      "fol_consts": [
+        "fir"
+      ],
+      "fol_rules": [
+        "∀x (Fir(x) → Evergreen(x))",
+        "∃x (Fir(x) ∧ Object(x))"
+      ],
+      "fol_conc": "∃x (Evergreen(x) ∧ ¬Object(x))",
+      "perplexity": 1.5127850770950317
     }
   },
   {
@@ -4471,6 +7295,41 @@
       ],
       "fol_conc": "In(picuris_mountains, new_mexico)",
       "perplexity": 1.2495423555374146
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mountain(x)",
+        "Range(x)",
+        "Visited(x, y)",
+        "Located(x, y)",
+        "Donated(x)",
+        "Instate(x, y)",
+        "New(x)",
+        "Texas(x)",
+        "Mine(x)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "juan",
+        "newmexico",
+        "texas",
+        "picurismtns",
+        "hardingpegmatit",
+        "picurismtns",
+        "juan",
+        "newmexico",
+        "texas",
+        "picurismtns",
+        "hardingpegmatit"
+      ],
+      "fol_rules": [
+        "(Range(picurismtns) ∧ Instate(newmexico, picurismtns)) ⊕ (Range(picurismtns) ∧ Instate(texas, picurismtns))",
+        "Visited(juan, picurismtns)",
+        "Located(hardingpegmatit, picurismtns) ∧ Donated(hardingpegmatit)",
+        "¬(Range(x) ∧ Instate(texas, x) ∧ ∃y (Mine(y) ∧ Located(y, x) ∧ Donated(y)))"
+      ],
+      "fol_conc": "Visited(juan, x) ∧ Instate(newmexico, x) ∧ Range(x)",
+      "perplexity": 1.3952481746673584
     }
   },
   {
@@ -4510,6 +7369,34 @@
       ],
       "fol_conc": "Visited(juan_de_onate, x) ∧ LocatedIn(x, texas)",
       "perplexity": 1.12162184715271
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mountain(x)",
+        "Range(x)",
+        "Visited(x, y)",
+        "Located(x, y)",
+        "Donated(x)",
+        "Instate(x, y)",
+        "Mine(x)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "picuris",
+        "newmexico",
+        "texas",
+        "juan",
+        "harding"
+      ],
+      "fol_rules": [
+        "(Range(picuris) ∧ Instate(picuris, newmexico)) ⊕ (Range(picuris) ∧ Instate(picuris, texas))",
+        "Visited(juan, picuris)",
+        "Located(harding, picuris) ∧ Donated(harding)",
+        "¬(Range(x) ∧ Instate(x, texas) ∧ Mine(x) ∧ Has(x, y) ∧ Donated(y))",
+        "Visited(juan, picuris) → ∃x ((Range(x) ∧ Instate(x, texas)) → (Visited(juan, x)))"
+      ],
+      "fol_conc": "Visited(juan, x) ∧ Range(x) ∧ Instate(x, texas)",
+      "perplexity": 1.3541053533554077
     }
   },
   {
@@ -4548,6 +7435,37 @@
       ],
       "fol_conc": "¬(LocatedIn(harding_pegmatite_mine, new_mexico))",
       "perplexity": 1.2063119411468506
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mountain(x)",
+        "Range(x)",
+        "Located(x, y)",
+        "Visited(x, y)",
+        "Donated(x)",
+        "Instate(x, y)",
+        "Mine(x)",
+        "New(x)",
+        "Texas(x)",
+        "Newmexico(x)",
+        "Picuris(x)",
+        "Harding(x)"
+      ],
+      "fol_consts": [
+        "juan",
+        "harding",
+        "newmexico",
+        "texas"
+      ],
+      "fol_rules": [
+        "(Range(picuris) ∧ Instate(picuris, newmexico)) ⊕ (Range(picuris) ∧ Instate(picuris, texas))",
+        "Visited(juan, picuris)",
+        "Located(harding, picuris) ∧ Donated(harding)",
+        "¬(Range(x) ∧ Instate(x, texas) ∧ Mine(x) ∧ Donated(x))",
+        "¬(Mine(x) ∧ Donated(x)) → ¬(Range(x) ∧ Instate(x, texas))"
+      ],
+      "fol_conc": "¬(Located(harding, picuris) ∧ Instate(picuris, newmexico))",
+      "perplexity": 1.4230878353118896
     }
   },
   {
@@ -4591,6 +7509,35 @@
       ],
       "fol_conc": "∃x (Man(x) ∧ Classmate(x, michael) ∧ ¬Taller(x, peter))",
       "perplexity": 1.1168620586395264
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Man(x)",
+        "Taller(x, y)",
+        "Can(x, y)",
+        "Jump(x)",
+        "Great(x)",
+        "Shooting(x)",
+        "Block(x, y)",
+        "Shorter(x, y)",
+        "Class(x)"
+      ],
+      "fol_consts": [
+        "michael",
+        "peter",
+        "windy"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Taller(x, y) → Can(x, y))",
+        "Man(michael) ∧ ∀x (Class(x) → ¬Taller(michael, x))",
+        "∀x ∀y ∀z ((Taller(x, y) ∧ Taller(y, z)) → Taller(x, z))",
+        "Man(peter) ∧ Taller(peter, michael)",
+        "∀x ∀y ((¬Jump(y) ∧ Shooting(y)) → Can(x, y))",
+        "¬Can(michael, windy)",
+        "∀x (Jump(x) → Great(x))"
+      ],
+      "fol_conc": "Class(y) ∧ ¬Taller(peter, y)",
+      "perplexity": 1.2920602560043335
     }
   },
   {
@@ -4633,6 +7580,34 @@
       ],
       "fol_conc": "GreatShooter(windy)",
       "perplexity": 1.0742599964141846
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Man(x)",
+        "Taller(x, y)",
+        "Can(x, y)",
+        "Block(x, y)",
+        "Shooting(x)",
+        "Jump(x)",
+        "Great(x)",
+        "Person(x)"
+      ],
+      "fol_consts": [
+        "michael",
+        "peter",
+        "windy"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Taller(x, y) → Can(x, y))",
+        "Man(michael) ∧ ∀x (Man(x) ∧ Class(x) ∧ Not(x, michael) → Taller(michael, x))",
+        "∀x ∀y ∀z ((Taller(x, y) ∧ Taller(y, z)) → Taller(x, z))",
+        "Man(peter) ∧ Taller(peter, michael)",
+        "∀x ∀y (Can(x, y) → ¬Jump(y) ∨ Block(x, y))",
+        "¬Block(michael, windy)",
+        "∀x (Jump(x) → Great(x))"
+      ],
+      "fol_conc": "Great(windy)",
+      "perplexity": 1.3170559406280518
     }
   },
   {
@@ -4674,6 +7649,34 @@
       ],
       "fol_conc": "Block(peter, windy)",
       "perplexity": 1.072265625
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Man(x)",
+        "Taller(x, y)",
+        "Can(x, y)",
+        "Jump(x)",
+        "Great(x)",
+        "Shooting(x)",
+        "Block(x, y)"
+      ],
+      "fol_consts": [
+        "michael",
+        "peter",
+        "windy"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Taller(x, y) → Can(x, y))",
+        "Man(michael) ∧ ∀x (Man(x) ∧ Class(x) ∧ Taller(michael, x))",
+        "∀x ∀y ∀z ((Taller(x, y) ∧ Taller(y, z)) → Taller(x, z))",
+        "Man(peter) ∧ Taller(peter, michael)",
+        "∀x ∀y (Man(x) ∧ Man(y) ∧ ¬Jump(y) → Can(x, y))",
+        "¬Can(michael, windy)",
+        "∀x (Great(x) → Jump(x))",
+        "∀x (Shooting(x) → Block(x, y))"
+      ],
+      "fol_conc": "Can(peter, windy)",
+      "perplexity": 1.3053691387176514
     }
   },
   {
@@ -4713,6 +7716,45 @@
       ],
       "fol_conc": "∀x (Island(x) ∧ LocatedIn(x, antarctica) → NamedAfter(barutin, x))",
       "perplexity": 1.2201416492462158
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Named(x, y)",
+        "Located(x, y)",
+        "Island(x)",
+        "Settlement(x)",
+        "Part(x, y)",
+        "Antarctica(x)"
+      ],
+      "fol_consts": [
+        "barutin",
+        "barutin",
+        "cove",
+        "bulgarian",
+        "barutin",
+        "snow",
+        "south",
+        "shetland",
+        "islands",
+        "greenwich",
+        "deception",
+        "antarctica"
+      ],
+      "fol_rules": [
+        "Named(barutin, bulgarian)",
+        "Located(barutin, cove)",
+        "Island(snow)",
+        "Island(greenwich)",
+        "Island(deception)",
+        "Part(south, antarctica)",
+        "Located(snow, south)",
+        "Located(greenwich, south)",
+        "Located(deception, south)",
+        "Located(cove, snow)",
+        "∀x ∀y ∀z ((Located(x, y) ∧ Located(y, z)) → Located(x, z))"
+      ],
+      "fol_conc": "∀x (Island(x) ∧ Antarctica(x) → Named(barutin, x))",
+      "perplexity": 1.3494778871536255
     }
   },
   {
@@ -4803,6 +7845,41 @@
       ],
       "fol_conc": "¬LocatedIn(barutin, antarctica)",
       "perplexity": 1.1994796991348267
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Named(x, y)",
+        "Located(x, y)",
+        "Part(x, y)",
+        "Settlement(x)",
+        "Island(x)",
+        "Cove(x)",
+        "Antarctica(x)"
+      ],
+      "fol_consts": [
+        "barutin",
+        "barutin",
+        "barutin",
+        "barutin",
+        "barutin",
+        "barutin",
+        "barutin",
+        "barutin",
+        "snow",
+        "greenwich",
+        "deception",
+        "south",
+        "antarctica"
+      ],
+      "fol_rules": [
+        "Named(barutin, barutin)",
+        "Located(barutin, snow)",
+        "Located(snow, south)",
+        "Part(south, antarctica)",
+        "∀x ∀y ∀z (Located(x, y) ∧ Located(y, z) → Located(x, z))"
+      ],
+      "fol_conc": "¬Located(barutin, antarctica)",
+      "perplexity": 1.4572958946228027
     }
   },
   {
@@ -4830,6 +7907,23 @@
       ],
       "fol_conc": "∃x (Affection(x) ∧ Positive(x))",
       "perplexity": 1.1285960674285889
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Affection(x)",
+        "Love(x)",
+        "Positive(x)"
+      ],
+      "fol_consts": [
+        "affection",
+        "love"
+      ],
+      "fol_rules": [
+        "∃x (Affection(x) ∧ Love(x))",
+        "∃x (Love(x) ∧ Positive(x))"
+      ],
+      "fol_conc": "∃x (Affection(x) ∧ Positive(x))",
+      "perplexity": 1.462922215461731
     }
   },
   {
@@ -4868,6 +7962,28 @@
       ],
       "fol_conc": "Airlines(greyhound)",
       "perplexity": 1.1048308610916138
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Transport(x, y)",
+        "Empty(x)",
+        "Airline(x)",
+        "Plane(x)",
+        "Boeing707(x)",
+        "Passengers(x)"
+      ],
+      "fol_consts": [
+        "greyhound"
+      ],
+      "fol_rules": [
+        "∀x (Transport(x, y) ∧ Passengers(y) → ¬Empty(x))",
+        "∀x (Airline(x) → Transport(x, y))",
+        "∀x (Plane(x) → Empty(x))",
+        "∀x (Plane(x) → Boeing707(x))",
+        "¬Airline(greyhound) → ∀x (¬Plane(x))"
+      ],
+      "fol_conc": "Airline(greyhound)",
+      "perplexity": 1.2780495882034302
     }
   },
   {
@@ -4905,6 +8021,28 @@
       ],
       "fol_conc": "∃x (Greyhound(x) ∧ Boeing707(x))",
       "perplexity": 1.3600884675979614
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Transport(x, y)",
+        "Empty(x)",
+        "Airline(x)",
+        "Plane(x)",
+        "Boeing707(x)",
+        "Greyhound(x)"
+      ],
+      "fol_consts": [
+        "greyhound"
+      ],
+      "fol_rules": [
+        "∀x (Transport(x, y) → ¬Empty(x))",
+        "∀x (Airline(x) → Transport(x, y))",
+        "∀x (Plane(x) → Empty(x))",
+        "∀x (Plane(x) → Boeing707(x))",
+        "¬Airline(greyhound) → ¬Plane(greyhound)"
+      ],
+      "fol_conc": "Greyhound(greyhound) → Boeing707(greyhound)",
+      "perplexity": 1.2709572315216064
     }
   },
   {
@@ -4942,6 +8080,28 @@
       ],
       "fol_conc": "¬(Boeing707(greyhound) ∧ Entity(greyhound))",
       "perplexity": 1.4045040607452393
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Transport(x, y)",
+        "Empty(x)",
+        "Airline(x)",
+        "Plane(x)",
+        "Boeing707(x)",
+        "Greyhound(x)"
+      ],
+      "fol_consts": [
+        "greyhound"
+      ],
+      "fol_rules": [
+        "∀x (Transport(x, y) → ¬Empty(x))",
+        "∀x (Airline(x) → Transport(x, y))",
+        "∀x (Plane(x) → Empty(x))",
+        "∀x (Plane(x) → Boeing707(x))",
+        "¬Airline(greyhound) → ¬Plane(greyhound)"
+      ],
+      "fol_conc": "¬Boeing707(greyhound)",
+      "perplexity": 1.2743171453475952
     }
   },
   {
@@ -4984,6 +8144,32 @@
       ],
       "fol_conc": "Monkey(rock)",
       "perplexity": 1.328827142715454
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mammal(x)",
+        "Animal(x)",
+        "Monkey(x)",
+        "Bird(x)",
+        "Fly(x)",
+        "Breathe(x)",
+        "Wing(x)",
+        "Fly(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Monkey(x) → Mammal(x))",
+        "∀x (Animal(x) → (Monkey(x) ⊕ Bird(x)))",
+        "∀x (Bird(x) → Fly(x))",
+        "∀x (Animal(x) → Breathe(x))",
+        "∀x (Fly(x) → Wing(x))",
+        "¬(Fly(rock) ⊕ Bird(rock)) → ¬(Fly(rock) ∨ Breathe(rock))"
+      ],
+      "fol_conc": "Monkey(rock)",
+      "perplexity": 1.2249515056610107
     }
   },
   {
@@ -5025,6 +8211,32 @@
       ],
       "fol_conc": "HasWings(rock)",
       "perplexity": 1.2187066078186035
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mammal(x)",
+        "Animal(x)",
+        "Monkey(x)",
+        "Bird(x)",
+        "Fly(x)",
+        "Breathe(x)",
+        "Wing(x)",
+        "Fly(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Monkey(x) → Mammal(x))",
+        "∀x (Animal(x) → (Monkey(x) ⊕ Bird(x)))",
+        "∀x (Bird(x) → Fly(x))",
+        "∀x (Animal(x) → Breathe(x))",
+        "∀x (Fly(x) → Wing(x))",
+        "¬(Fly(rock) ⊕ Bird(rock)) → ¬(Fly(rock) ∨ Breathe(rock))"
+      ],
+      "fol_conc": "Wing(rock)",
+      "perplexity": 1.2203224897384644
     }
   },
   {
@@ -5069,6 +8281,32 @@
       ],
       "fol_conc": "¬HasWings(rock)",
       "perplexity": 1.225730538368225
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mammal(x)",
+        "Animal(x)",
+        "Monkey(x)",
+        "Bird(x)",
+        "Fly(x)",
+        "Breathe(x)",
+        "Wing(x)",
+        "Fly(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Mammal(x) → Animal(x))",
+        "∀x (Monkey(x) → Mammal(x))",
+        "∀x (Animal(x) → (Monkey(x) ⊕ Bird(x)))",
+        "∀x (Bird(x) → Fly(x))",
+        "∀x (Animal(x) → Breathe(x))",
+        "∀x (Fly(x) → Wing(x))",
+        "¬(Fly(rocks) ⊕ Bird(rocks)) → ¬(Fly(rocks) ∨ Breathe(rocks))"
+      ],
+      "fol_conc": "¬Wing(rocks)",
+      "perplexity": 1.2270764112472534
     }
   },
   {
@@ -5106,6 +8344,29 @@
       ],
       "fol_conc": "∃x (Wedding(x) ∧ WellAttended(x))",
       "perplexity": 1.058941125869751
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wedding(x)",
+        "Child(x)",
+        "Travel(x, y)",
+        "Wellattended(x)",
+        "Inmonth(x, y)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "john"
+      ],
+      "fol_rules": [
+        "∀x (Wedding(x) → ∃y (Child(y) ∧ Has(x, y)))",
+        "∀x (Travel(x, paris) → Wedding(x))",
+        "∀x (Wedding(x) ∧ Inmonth(x, july) → Travel(x, paris))",
+        "∃x (Wedding(x) ∧ Inmonth(x, july) ∧ Wellattended(x))",
+        "Child(john) → ¬(Travel(john, paris) ∧ Wedding(john))",
+        "Wedding(john) ∧ Wellattended(john) → (Wedding(john) ∧ Inmonth(john, july)) ⊕ ¬Travel(john, paris)"
+      ],
+      "fol_conc": "Wedding(john) ∧ Wellattended(john)",
+      "perplexity": 1.2488948106765747
     }
   },
   {
@@ -5145,6 +8406,29 @@
       ],
       "fol_conc": "¬(Wedding(john) ∧ WellAttended(john))",
       "perplexity": 1.0941780805587769
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wedding(x)",
+        "Child(x)",
+        "Travel(x, y)",
+        "Wellattended(x)",
+        "Inmonth(x, y)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "john"
+      ],
+      "fol_rules": [
+        "∀x (Wedding(x) → ∃y (Child(y) ∧ Has(x, y)))",
+        "∀x (Travel(x, paris) → Wedding(x))",
+        "∀x (Wedding(x) ∧ Inmonth(x, july) → Travel(x, paris))",
+        "∃x (Wedding(x) ∧ Inmonth(x, july) ∧ Wellattended(x))",
+        "Child(john) → ¬(Travel(john, paris) ∧ Wedding(john))",
+        "Wedding(john) ∧ Wellattended(john) → (Wedding(john) ∧ Inmonth(john, july)) ⊕ ¬Travel(john, paris)"
+      ],
+      "fol_conc": "¬(Wedding(john) ∧ Wellattended(john))",
+      "perplexity": 1.263695478439331
     }
   },
   {
@@ -5184,6 +8468,30 @@
       ],
       "fol_conc": "Child(john)",
       "perplexity": 1.1891157627105713
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wedding(x)",
+        "Child(x)",
+        "Travel(x, y)",
+        "Wellattended(x)",
+        "Inmonth(x, y)",
+        "Belong(x, y)"
+      ],
+      "fol_consts": [
+        "john"
+      ],
+      "fol_rules": [
+        "∀x (Wedding(x) → ∃y (Child(y)))",
+        "∀x (Travel(x, paris) → Wedding(x))",
+        "∀x (Wedding(x) ∧ Inmonth(x, july) → Travel(x, paris))",
+        "∃x (Wedding(x) ∧ Inmonth(x, july) ∧ Wellattended(x))",
+        "Child(john) → ¬(Travel(john, paris) ∧ Wedding(john))",
+        "Child(john) → ¬(Travel(john, paris) ∧ Wedding(john))",
+        "Wellattended(john) → (Wedding(john) ∧ Inmonth(john, july)) ⊕ (¬Wedding(john) → Travel(john, paris))"
+      ],
+      "fol_conc": "Child(john)",
+      "perplexity": 1.3018271923065186
     }
   },
   {
@@ -5223,6 +8531,29 @@
       ],
       "fol_conc": "¬(WellAttended(john) ⊕ Travel(john, paris))",
       "perplexity": 1.0531337261199951
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wedding(x)",
+        "Child(x)",
+        "Travel(x, y)",
+        "Wellattended(x)",
+        "Inmonth(x, y)",
+        "Has(x, y)"
+      ],
+      "fol_consts": [
+        "john"
+      ],
+      "fol_rules": [
+        "∀x (Wedding(x) → ∃y (Child(y) ∧ Has(x, y)))",
+        "∀x (Travel(x, paris) → Wedding(x))",
+        "∀x (Wedding(x) ∧ Inmonth(x, july) → Travel(x, paris))",
+        "∃x (Wedding(x) ∧ Inmonth(x, july) ∧ Wellattended(x))",
+        "Child(john) → ¬(Travel(john, paris) ∧ Wedding(john))",
+        "Wedding(john) ∧ Wellattended(john) → (Wedding(john) ∧ Inmonth(john, july)) ⊕ ¬Travel(john, paris)"
+      ],
+      "fol_conc": "¬(Wellattended(john) ∨ Travel(john, paris))",
+      "perplexity": 1.2688323259353638
     }
   },
   {
@@ -5253,6 +8584,27 @@
       ],
       "fol_conc": "∀x (Platypus(x) → (Mammal(x) ∧ ¬Teeth(x)))",
       "perplexity": 1.1888283491134644
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mammal(x)",
+        "Teeth(x)",
+        "Has(x, y)",
+        "Platypus(x)",
+        "Human(x)"
+      ],
+      "fol_consts": [
+        "platypus"
+      ],
+      "fol_rules": [
+        "∃x (Mammal(x) ∧ Teeth(x))",
+        "¬Teeth(platypus)",
+        "Mammal(platypus)",
+        "∃x (Mammal(x) ∧ Teeth(x))",
+        "Mammal(platypus)"
+      ],
+      "fol_conc": "Mammal(platypus) ∧ ¬Teeth(platypus)",
+      "perplexity": 1.3151911497116089
     }
   },
   {
@@ -5287,6 +8639,25 @@
       ],
       "fol_conc": "∀x (Platypus(x) → Reptile(x))",
       "perplexity": 1.2115286588668823
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mammal(x)",
+        "Teeth(x)",
+        "Reptile(x)"
+      ],
+      "fol_consts": [
+        "platypus",
+        "human"
+      ],
+      "fol_rules": [
+        "∃x (Mammal(x) ∧ Teeth(x))",
+        "¬Teeth(platypus)",
+        "Mammal(platypus)",
+        "Teeth(human)"
+      ],
+      "fol_conc": "Reptile(platypus)",
+      "perplexity": 1.3606964349746704
     }
   },
   {
@@ -5321,6 +8692,26 @@
       ],
       "fol_conc": "∀x (Human(x) → Mammal(x))",
       "perplexity": 1.2720259428024292
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Have(x)",
+        "Mammal(x)",
+        "Teeth(x)"
+      ],
+      "fol_consts": [
+        "platypus",
+        "human"
+      ],
+      "fol_rules": [
+        "∃x (Mammal(x) ∧ Have(x))",
+        "¬Have(platypus)",
+        "Mammal(platypus)",
+        "Have(human)",
+        "Mammal(human)"
+      ],
+      "fol_conc": "Mammal(human)",
+      "perplexity": 1.4613311290740967
     }
   },
   {
@@ -5357,6 +8748,27 @@
       ],
       "fol_conc": "Suck(Space)",
       "perplexity": 1.4342796802520752
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Suck(x)",
+        "Vacuum(x)",
+        "Appliance(x)",
+        "Household(x)",
+        "Isvacuum(x)"
+      ],
+      "fol_consts": [
+        "space"
+      ],
+      "fol_rules": [
+        "Suck(plunger)",
+        "Suck(vacuum)",
+        "Suck(vampire)",
+        "Isvacuum(space)",
+        "Appliance(duster) ∧ ¬Suck(duster) ∧ Household(duster)"
+      ],
+      "fol_conc": "Suck(space)",
+      "perplexity": 1.507772445678711
     }
   },
   {
@@ -5396,6 +8808,28 @@
       ],
       "fol_conc": "IsSpace(space) → IsVampire(space)",
       "perplexity": 1.1540738344192505
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Suck(x)",
+        "Isvacuum(x)",
+        "Isvampire(x)",
+        "Isappliance(x)",
+        "Isvacuum(x)"
+      ],
+      "fol_consts": [
+        "space",
+        "duster"
+      ],
+      "fol_rules": [
+        "Suck(plunger)",
+        "Suck(vacuum)",
+        "Suck(vampire)",
+        "Isvacuum(space)",
+        "Isappliance(duster) ∧ ¬Suck(duster)"
+      ],
+      "fol_conc": "Isvacuum(space) → Isvampire(space)",
+      "perplexity": 1.4861701726913452
     }
   },
   {
@@ -5431,6 +8865,28 @@
       ],
       "fol_conc": "∀x (HouseholdAppliance(x) → Suck(x))",
       "perplexity": 1.3584754467010498
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Suck(x)",
+        "Vacuum(x)",
+        "Household(x)",
+        "Appliance(x)",
+        "Duster(x)",
+        "Vampire(x)"
+      ],
+      "fol_consts": [
+        "space"
+      ],
+      "fol_rules": [
+        "Suck(plunger)",
+        "Suck(vacuum)",
+        "Suck(vampire)",
+        "Vacuum(space)",
+        "¬(Appliance(x) ∧ Duster(x) → Suck(x))"
+      ],
+      "fol_conc": "Appliance(x) → Suck(x)",
+      "perplexity": 1.4772608280181885
     }
   },
   {
@@ -5469,6 +8925,28 @@
       ],
       "fol_conc": "Category(mlAlgorithm, SupervisedLearning)",
       "perplexity": 1.151416301727295
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Supervised(x)",
+        "Unsupervised(x)",
+        "Reinforcement(x)",
+        "Trained(x, y)",
+        "Requires(x, y)",
+        "Stateoftheart(x)"
+      ],
+      "fol_consts": [
+        "textsummarizatn"
+      ],
+      "fol_rules": [
+        "∀x (Supervised(x) ⊕ Unsupervised(x) ⊕ Reinforcement(x))",
+        "∀x (Unsupervised(x) → ¬Requires(x, y))",
+        "Stateoftheart(textsummarizatn) → ∃x (Trained(x, textsummarizatn))",
+        "¬Reinforcement(x) → ¬Trained(x, textsummarizatn)",
+        "Trained(x, textsummarizatn) → Requires(x, y)"
+      ],
+      "fol_conc": "Supervised(x) → Trained(x, textsummarizatn)",
+      "perplexity": 1.3753396272659302
     }
   },
   {
@@ -5505,6 +8983,28 @@
       ],
       "fol_conc": "∃x (MLAlgorithm(x) ∧ Unsupervised(x) ∧ Train(x, text_summarization))",
       "perplexity": 1.0939747095108032
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Supervised(x)",
+        "Unsupervised(x)",
+        "Reinforcement(x)",
+        "Trained(x, y)",
+        "Requires(x, y)",
+        "Stateoftheart(x)"
+      ],
+      "fol_consts": [
+        "textsummarizatn"
+      ],
+      "fol_rules": [
+        "∀x (Supervised(x) ⊕ Unsupervised(x) ⊕ Reinforcement(x))",
+        "¬Unsupervised(x) → ¬Requires(x, y)",
+        "Stateoftheart(textsummarizatn) → ∃x (Trained(x, textsummarizatn))",
+        "¬Reinforcement(x) → Trained(x, textsummarizatn)",
+        "Trained(x, textsummarizatn) → Requires(x, y)"
+      ],
+      "fol_conc": "Unsupervised(x) → Trained(x, textsummarizatn)",
+      "perplexity": 1.3889566659927368
     }
   },
   {
@@ -5544,6 +9044,31 @@
       ],
       "fol_conc": "LovedByChildren(ben)",
       "perplexity": 1.1794979572296143
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Funny(x)",
+        "Popular(x)",
+        "Ugly(x)",
+        "Loved(x)",
+        "From(x, y)",
+        "Yellow(x)",
+        "Simpsons(x)"
+      ],
+      "fol_consts": [
+        "ben"
+      ],
+      "fol_rules": [
+        "∀x (Funny(x) → Popular(x))",
+        "∀x (Ugly(x) → ¬Popular(x))",
+        "∀x (Loved(x) → Funny(x))",
+        "∀x (From(x, simpsons) → Loved(x))",
+        "∀x (From(x, simpsons) → From(x, yellow))",
+        "∀x (Yellow(x) → From(x, simpsons))",
+        "From(ben, simpsons) ⊕ Funny(ben)"
+      ],
+      "fol_conc": "Loved(ben)",
+      "perplexity": 1.2567596435546875
     }
   },
   {
@@ -5582,6 +9107,30 @@
       ],
       "fol_conc": "∀x (Ugly(x) → ¬Popular(x)) ∧ ∀x (FromSimpsons(x) → LovedByChildren(x)) ∧ ∀x (LovedByChildren(x) → Funny(x)) ∧ ∀x (Yellow(x) → FromSimpsons(x)) ∧ ∀x (FromSimpsons(x) ⊕ Funny(x)) → (Ugly(Ben) ∨ Yellow(Ben))",
       "perplexity": 1.2452419996261597
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Funny(x)",
+        "Popular(x)",
+        "Ugly(x)",
+        "Loved(x)",
+        "From(x, y)",
+        "Yellow(x)",
+        "Ben(x)"
+      ],
+      "fol_consts": [
+        "ben"
+      ],
+      "fol_rules": [
+        "∀x (Funny(x) → Popular(x))",
+        "∀x (Ugly(x) → ¬Popular(x))",
+        "∀x (Loved(x) → Funny(x))",
+        "∀x (From(x, thesimpsons) → Loved(x))",
+        "∀x (Yellow(x) → From(x, thesimpsons))",
+        "From(ben, thesimpsons) ⊕ Funny(ben)"
+      ],
+      "fol_conc": "Ugly(ben) ⊕ Yellow(ben)",
+      "perplexity": 1.3054145574569702
     }
   },
   {
@@ -5620,6 +9169,30 @@
       ],
       "fol_conc": "(Yellow(ben) ∧ Ugly(ben)) ⊕ ¬(Yellow(ben) ∨ Ugly(ben))",
       "perplexity": 1.0532472133636475
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Funny(x)",
+        "Popular(x)",
+        "Ugly(x)",
+        "Loved(x)",
+        "From(x, y)",
+        "Yellow(x)",
+        "Ben(x)"
+      ],
+      "fol_consts": [
+        "ben"
+      ],
+      "fol_rules": [
+        "∀x (Funny(x) → Popular(x))",
+        "∀x (Ugly(x) → ¬Popular(x))",
+        "∀x (Loved(x) → Funny(x))",
+        "∀x (From(x, thesimpsons) → Loved(x))",
+        "∀x (Yellow(x) → From(x, thesimpsons))",
+        "From(ben, thesimpsons) ⊕ Funny(ben)"
+      ],
+      "fol_conc": "Yellow(ben) ∧ Ugly(ben) ⊕ ¬(Yellow(ben) ∨ Ugly(ben))",
+      "perplexity": 1.2736589908599854
     }
   },
   {
@@ -5655,6 +9228,31 @@
       ],
       "fol_conc": "∃x (HeckCattle(x) ∧ ArtificiallySelected(x))",
       "perplexity": 1.2725627422332764
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Bred(x)",
+        "Artificially(x)",
+        "Domestic(x)",
+        "Resemble(x, y)",
+        "Extinct(x)",
+        "Animal(x)",
+        "Heck(x)",
+        "Aurochs(x)"
+      ],
+      "fol_consts": [
+        "heck",
+        "aurochs"
+      ],
+      "fol_rules": [
+        "Bred(x) → Artificially(x)",
+        "Bred(heck) ∧ Resemble(heck, aurochs)",
+        "Animal(heck)",
+        "Animal(aurochs)",
+        "∃x (Animal(x) ∧ Extinct(x) ∧ Resemble(x, y))"
+      ],
+      "fol_conc": "∃x (Heck(x) ∧ Artificially(x))",
+      "perplexity": 1.5496560335159302
     }
   },
   {
@@ -5691,6 +9289,29 @@
       ],
       "fol_conc": "Aurochs(aurochs)",
       "perplexity": 1.2727885246276855
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Bred(x)",
+        "Artificial(x)",
+        "Selective(x)",
+        "Domestic(x)",
+        "Resemble(x, y)",
+        "Extinct(x)",
+        "Animal(x)"
+      ],
+      "fol_consts": [
+        "heck",
+        "aurochs"
+      ],
+      "fol_rules": [
+        "Bred(back) → Artificial(back) ∧ Selective(back) ∧ Domestic(back)",
+        "Bred(heck) ∧ Resemble(heck, aurochs) ∧ Animal(heck)",
+        "Animal(aurochs)",
+        "∃x (Animal(x) ∧ Extinct(x) ∧ Resemble(x, y))"
+      ],
+      "fol_conc": "Extinct(aurochs)",
+      "perplexity": 1.4706825017929077
     }
   },
   {
@@ -5731,6 +9352,30 @@
       ],
       "fol_conc": "Young(jerry)",
       "perplexity": 1.062803030014038
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Human(x)",
+        "Student(x)",
+        "Studys(x)",
+        "Teaches(x)",
+        "Young(x)",
+        "Manager(x)"
+      ],
+      "fol_consts": [
+        "jerry",
+        "rose"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) → Human(x))",
+        "∀x (Studys(x) → Student(x))",
+        "∀x (Studys(x) ⊕ Teaches(x))",
+        "∀x (Young(x) ∧ Teaches(x) → False(x))",
+        "¬(Teaches(jerry) ∨ Manager(jerry))",
+        "Young(rose) ∨ Student(rose)"
+      ],
+      "fol_conc": "Young(jerry)",
+      "perplexity": 1.288059115409851
     }
   },
   {
@@ -5770,6 +9415,30 @@
       ],
       "fol_conc": "¬Young(jerry)",
       "perplexity": 1.0662689208984375
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Human(x)",
+        "Student(x)",
+        "Studys(x)",
+        "Teaches(x)",
+        "Young(x)",
+        "Manager(x)"
+      ],
+      "fol_consts": [
+        "jerry",
+        "rose"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) → Human(x))",
+        "∀x (Studys(x) → Student(x))",
+        "∀x (Studys(x) ⊕ Teaches(x))",
+        "∀x (Young(x) ∧ Teaches(x) → False(x))",
+        "¬(Teaches(jerry) ∨ Manager(jerry))",
+        "Young(rose) ∨ Student(rose)"
+      ],
+      "fol_conc": "¬Young(jerry)",
+      "perplexity": 1.2838945388793945
     }
   },
   {
@@ -5809,6 +9478,30 @@
       ],
       "fol_conc": "Human(rose) ⊕ Manager(rose)",
       "perplexity": 1.0572153329849243
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Human(x)",
+        "Student(x)",
+        "Studys(x)",
+        "Teaches(x)",
+        "Young(x)",
+        "Manager(x)"
+      ],
+      "fol_consts": [
+        "jerry",
+        "rose"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) → Human(x))",
+        "∀x (Studys(x) → Student(x))",
+        "∀x (Studys(x) ⊕ Teaches(x))",
+        "∀x (Young(x) ∧ Teaches(x) → False(x))",
+        "¬(Teaches(jerry) ∨ Manager(jerry))",
+        "Young(rose) ⊕ Student(rose)"
+      ],
+      "fol_conc": "Human(rose) ∨ Manager(rose)",
+      "perplexity": 1.2941546440124512
     }
   },
   {
@@ -5848,6 +9541,30 @@
       ],
       "fol_conc": "Human(rose) ∨ Manager(jerry)",
       "perplexity": 1.0710431337356567
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Human(x)",
+        "Student(x)",
+        "Studys(x)",
+        "Teaches(x)",
+        "Young(x)",
+        "Manager(x)"
+      ],
+      "fol_consts": [
+        "jerry",
+        "rose"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) → Human(x))",
+        "∀x (Studys(x) → Student(x))",
+        "∀x (Studys(x) ⊕ Teaches(x))",
+        "∀x (Young(x) ∧ Teaches(x) → False(x))",
+        "¬(Teaches(jerry) ∨ Manager(jerry))",
+        "Young(rose) ⊕ Student(rose)"
+      ],
+      "fol_conc": "Human(rose) ∨ Manager(jerry)",
+      "perplexity": 1.2908803224563599
     }
   },
   {
@@ -5888,6 +9605,30 @@
       ],
       "fol_conc": "¬(Student(rose) ∧ Human(jerry))",
       "perplexity": 1.0713529586791992
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Human(x)",
+        "Student(x)",
+        "Studys(x)",
+        "Teaches(x)",
+        "Young(x)",
+        "Manager(x)"
+      ],
+      "fol_consts": [
+        "jerry",
+        "rose"
+      ],
+      "fol_rules": [
+        "∀x (Student(x) → Human(x))",
+        "∀x (Studys(x) → Student(x))",
+        "∀x (Studys(x) ⊕ Teaches(x))",
+        "∀x (Young(x) ∧ Teaches(x) → False(x))",
+        "¬(Teaches(jerry) ∨ Manager(jerry))",
+        "Young(rose) ⊕ Student(rose)"
+      ],
+      "fol_conc": "¬(Student(rose) ∧ Human(jerry))",
+      "perplexity": 1.28830885887146
     }
   },
   {
@@ -5928,6 +9669,32 @@
       ],
       "fol_conc": "Publishes(newVesselPress, neapolitanChronicles) → InEnglish(neapolitanChronicles)",
       "perplexity": 1.1105778217315674
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Publishing(x)",
+        "Book(x)",
+        "English(x)",
+        "Translated(x, y)",
+        "Specialize(x, y)",
+        "Publish(x, y)"
+      ],
+      "fol_consts": [
+        "newvesselpress",
+        "neapolitanchron",
+        "palaceofflies",
+        "italian",
+        "english"
+      ],
+      "fol_rules": [
+        "Publishing(newvesselpress) ∧ Specialize(newvesselpress, english)",
+        "∀x (Publish(newvesselpress, x) → English(x))",
+        "Publish(newvesselpress, neapolitanchron)",
+        "Translated(neapolitanchron, italian)",
+        "Publish(newvesselpress, palaceofflies)"
+      ],
+      "fol_conc": "Publish(newvesselpress, neapolitanchron) → English(neapolitanchron)",
+      "perplexity": 1.4099936485290527
     }
   },
   {
@@ -5970,6 +9737,32 @@
       ],
       "fol_conc": "Publish(newVesselPress, harryPotter)",
       "perplexity": 1.1319046020507812
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Publishing(x)",
+        "Book(x)",
+        "Inenglish(x)",
+        "Translatedfrom(x, y)",
+        "Publishedby(x, y)",
+        "Specializesin(x, y)"
+      ],
+      "fol_consts": [
+        "newvesselpress",
+        "neapolitanchron",
+        "palaceofflies",
+        "harrypotter"
+      ],
+      "fol_rules": [
+        "Publishing(newvesselpress) ∧ Specializesin(newvesselpress, english)",
+        "∀x (Publishedby(newvesselpress, x) → Inenglish(x))",
+        "Publishedby(newvesselpress, neapolitanchron)",
+        "Translatedfrom(neapolitanchron, italian)",
+        "Publishedby(newvesselpress, palaceofflies)",
+        "∀x (Publishedby(newvesselpress, x) → Inenglish(x))"
+      ],
+      "fol_conc": "Publishedby(newvesselpress, harrypotter)",
+      "perplexity": 1.4539271593093872
     }
   },
   {
@@ -6010,6 +9803,33 @@
       ],
       "fol_conc": "PublishedBy(palaceOfFlies, newVesselPress) → TranslatedFrom(palaceOfFlies, italian)",
       "perplexity": 1.0830144882202148
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Publishing(x)",
+        "Book(x)",
+        "Inenglish(x)",
+        "Translatedfrom(x, y)",
+        "Specialize(x, y)",
+        "Publishedby(x, y)",
+        "Translated(x, y)"
+      ],
+      "fol_consts": [
+        "newvesselpress",
+        "neapolitanchron",
+        "palaceofflies",
+        "italian",
+        "english"
+      ],
+      "fol_rules": [
+        "Publishing(newvesselpress) ∧ Specialize(newvesselpress, english)",
+        "∀x (Publishedby(newvesselpress, x) → Inenglish(x))",
+        "Publishedby(newvesselpress, neapolitanchron)",
+        "Publishedby(newvesselpress, neapolitanchron) → Translatedfrom(neapolitanchron, italian)",
+        "Publishedby(newvesselpress, palaceofflies)"
+      ],
+      "fol_conc": "Publishedby(newvesselpress, palaceofflies) → Translatedfrom(palaceofflies, italian)",
+      "perplexity": 1.4142686128616333
     }
   },
   {
@@ -6050,6 +9870,29 @@
       ],
       "fol_conc": "VisitOfficeSupply(remy)",
       "perplexity": 1.1271933317184448
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Owns(x, y)",
+        "Work(x)",
+        "Home(x)",
+        "Tidy(x)",
+        "Visit(x, y)",
+        "Bed(x, y, z)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "(Owns(x, y) → Work(x) ∧ Home(x))",
+        "(Work(x) ∧ Home(x) → Owns(x, y))",
+        "(Work(x) ∧ Home(x) → Tidy(x))",
+        "(Work(x) ∧ Home(x) → Visit(x, y))",
+        "(Tidy(x) → ¬Bed(x, late, noon))",
+        "(Bed(x, late, noon) ∧ Tidy(x)) ⊕ ¬(Bed(x, late, noon) ∨ Tidy(x))"
+      ],
+      "fol_conc": "Visit(x, y)",
+      "perplexity": 1.3272491693496704
     }
   },
   {
@@ -6089,6 +9932,33 @@
       ],
       "fol_conc": "(FullyStockedOffice(remy) ∧ VisitOffice(remy)) ⊕ ¬(FullyStockedOffice(remy) ∨ VisitOffice(remy))",
       "perplexity": 1.0589933395385742
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Owns(x, y)",
+        "Work(x)",
+        "Home(x)",
+        "Tidy(x)",
+        "Visit(x, y)",
+        "Bed(x, y)",
+        "Wake(x, y)",
+        "Office(x)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "(Owns(x, y) → Work(x) ∧ Home(x))",
+        "(Office(x) → Owns(x, y))",
+        "(Office(x) → Owns(x, y))",
+        "(Work(x) ∧ Home(x) → Tidy(x))",
+        "(Work(x) ∧ Home(x) → Visit(x, y))",
+        "(Tidy(x) → ¬(Bed(x, y) ∧ Wake(x, y)))",
+        "(Bed(x, y) ∧ Wake(x, y)) ⊕ ¬(Bed(x, y) ∧ Wake(x, y))",
+        "¬(Bed(x, y) ∧ Wake(x, y)) → ¬(Bed(x, y) ∧ Wake(x, y)) ⊕ ¬(Tidy(x))"
+      ],
+      "fol_conc": "(Office(remy) ∧ Visit(remy, y))",
+      "perplexity": 1.259069561958313
     }
   },
   {
@@ -6128,6 +9998,32 @@
       ],
       "fol_conc": "((BedLate(remy) ∨ Visit(remy)) → ¬(Tidy(remy) ∧ HomeOffice(remy)))",
       "perplexity": 1.062355875968933
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Owns(x, y)",
+        "Work(x)",
+        "Home(x)",
+        "Tidy(x)",
+        "Visit(x, y)",
+        "Bed(x, y)",
+        "Wakes(x, y)",
+        "Office(x)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "(Owns(x, y) ∧ Home(x)) → (Work(x) ∧ Home(x))",
+        "Office(x) → Owns(x, y)",
+        "Work(x) ∧ Home(x) → Tidy(x)",
+        "Work(x) ∧ Home(x) → Visit(x, y)",
+        "Tidy(x) → ¬(Bed(x, y) ∧ Wakes(x, y))",
+        "(Bed(x, y) ∧ Wakes(x, y)) ⊕ Tidy(x) → ¬(Bed(x, y) ∧ Wakes(x, y)) ⊕ Tidy(x)",
+        "(Bed(x, y) ∧ Wakes(x, y)) ⊕ Tidy(x) → ¬(Bed(x, y) ∧ Wakes(x, y)) ⊕ Tidy(x) → (Bed(x, y) ∧ Wakes(x, y)) ⊕ Tidy(x)"
+      ],
+      "fol_conc": "(Bed(x, y) ∧ Wakes(x, y)) ⊕ Visit(x, y) → ¬(Tidy(x) ⊕ Office(x))",
+      "perplexity": 1.2265180349349976
     }
   },
   {
@@ -6153,6 +10049,22 @@
       ],
       "fol_conc": "∃x (Greek(x) ∧ Mortal(x))",
       "perplexity": 1.19356107711792
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Mortal(x)",
+        "Human(x)",
+        "Greek(x)"
+      ],
+      "fol_consts": [
+        "greek"
+      ],
+      "fol_rules": [
+        "∀x (Human(x) → Mortal(x))",
+        "∀x (Greek(x) → Human(x))"
+      ],
+      "fol_conc": "∃x (Greek(x) ∧ Mortal(x))",
+      "perplexity": 1.4690043926239014
     }
   },
   {
@@ -6196,6 +10108,35 @@
       ],
       "fol_conc": "HasPartTimeJob(james)",
       "perplexity": 1.109770655632019
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Student(x)",
+        "From(x, y)",
+        "Work(x, y)",
+        "Instruct(x, y)",
+        "Parttime(x)",
+        "Lab(x)",
+        "David(x)",
+        "Database(x)",
+        "Lab(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "jack",
+        "david"
+      ],
+      "fol_rules": [
+        "¬(Student(x) ∧ Work(x, library) ∧ From(x, cs))",
+        "∀x (Parttime(x) → (Student(x) ∧ Work(x, library)))",
+        "∀x (Student(x) ∧ Database(x) → From(x, cs))",
+        "∀x (Instruct(x, david) → (Student(x) ∧ Database(x)))",
+        "∀x (Instruct(x, david) → Lab(x))",
+        "Lab(james)",
+        "¬(Parttime(jack) ∨ Lab(jack))"
+      ],
+      "fol_conc": "Parttime(james)",
+      "perplexity": 1.3115595579147339
     }
   },
   {
@@ -6248,6 +10189,35 @@
       ],
       "fol_conc": "¬Offered(james, University)",
       "perplexity": 1.0977226495742798
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Student(x)",
+        "From(x, y)",
+        "Work(x, y)",
+        "Instruct(x, y)",
+        "Parttime(x)",
+        "Lab(x)",
+        "David(x)",
+        "Database(x)",
+        "Lab(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "jack",
+        "david"
+      ],
+      "fol_rules": [
+        "¬(Student(x) ∧ Work(x, library) ∧ From(x, cs))",
+        "∀x (Parttime(x) → (Student(x) ∧ Work(x, library)))",
+        "∀x (Student(x) ∧ Database(x) → From(x, cs))",
+        "∀x (Instruct(x, david) → (Student(x) ∧ Database(x)))",
+        "∀x (Instruct(x, david) → Lab(x))",
+        "Lab(james)",
+        "¬(Parttime(jack) ∨ Lab(jack))"
+      ],
+      "fol_conc": "¬Parttime(james)",
+      "perplexity": 1.3083828687667847
     }
   },
   {
@@ -6300,6 +10270,33 @@
       ],
       "fol_conc": "(∃x (Student(x) ∧ Course(x, database))) ⊕ (∃x (Student(x) ∧ PartTimeJob(x) ∧ OfferedBy(university, x)))",
       "perplexity": 1.1360102891921997
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Student(x)",
+        "From(x, y)",
+        "Work(x, y)",
+        "Instruct(x, y)",
+        "Parttime(x)",
+        "Lab(x)",
+        "Database(x)",
+        "David(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "jack"
+      ],
+      "fol_rules": [
+        "¬(Student(x) ∧ Work(x, library) ∧ From(x, cs))",
+        "∀x (Parttime(x) → (Student(x) ∧ Work(x, library)))",
+        "∀x (Student(x) ∧ Database(x) → From(x, cs))",
+        "∀x (Instruct(x, david) → Database(x))",
+        "∀x (Lab(x) → Instruct(x, david))",
+        "Student(james) ∧ Lab(james)",
+        "¬(Parttime(jack) ∨ Lab(jack))"
+      ],
+      "fol_conc": "Database(james) ⊕ Parttime(james)",
+      "perplexity": 1.3039065599441528
     }
   },
   {
@@ -6348,6 +10345,39 @@
       ],
       "fol_conc": "Database(jack)",
       "perplexity": 1.0888192653656006
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Student(x)",
+        "From(x, y)",
+        "Work(x, y)",
+        "Parttime(x)",
+        "Lab(x)",
+        "Instruct(x, y)",
+        "Course(x)",
+        "Department(x)",
+        "Name(x, y)",
+        "Lab(x)",
+        "David(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "jack",
+        "david",
+        "lab",
+        "cs"
+      ],
+      "fol_rules": [
+        "¬(Student(x) ∧ Work(x, library) ∧ From(x, cs))",
+        "∀x (Parttime(x) → (Student(x) ∧ Work(x, library)))",
+        "∀x (Course(x) → From(x, cs))",
+        "∀x (Instruct(x, david) → Course(x))",
+        "∀x (Lab(x) → Instruct(x, david))",
+        "Student(james) ∧ Lab(lab)",
+        "¬(Parttime(jack) ∨ Lab(lab))"
+      ],
+      "fol_conc": "Course(cs)",
+      "perplexity": 1.3434867858886719
     }
   },
   {
@@ -6381,6 +10411,27 @@
       ],
       "fol_conc": "(LikesMusic(George) ∧ HasAccess(George, AccessToProgram(George))) → WillCompose(George)",
       "perplexity": 1.4036197662353516
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Likes(x)",
+        "Wants(x)",
+        "Has(x)",
+        "Can(x)",
+        "Will(x)",
+        "Compose(x)"
+      ],
+      "fol_consts": [
+        "george"
+      ],
+      "fol_rules": [
+        "Likes(george) → Wants(george)",
+        "Has(george) → Can(george)",
+        "Can(george) ∧ Wants(george) → Will(george)",
+        "Will(george) → Compose(george)"
+      ],
+      "fol_conc": "Likes(george) ∧ Has(george) → Will(george)",
+      "perplexity": 1.3293277025222778
     }
   },
   {
@@ -6411,6 +10462,27 @@
       ],
       "fol_conc": "(∃x ¬Compose(x) → ∃x ¬Can(x, compose))",
       "perplexity": 1.3890926837921143
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Likes(x)",
+        "Wants(x)",
+        "Has(x)",
+        "Can(x)",
+        "Will(x)",
+        "Compose(x)"
+      ],
+      "fol_consts": [
+        "george"
+      ],
+      "fol_rules": [
+        "Likes(george) → Wants(george)",
+        "Has(george) → Can(george)",
+        "Can(george) ∧ Wants(george) → Will(george)",
+        "Will(george) → Compose(george)"
+      ],
+      "fol_conc": "¬Will(george) → ¬Can(george)",
+      "perplexity": 1.3315091133117676
     }
   },
   {
@@ -6436,6 +10508,23 @@
       ],
       "fol_conc": "∀x (Bird(x) → Land(x))",
       "perplexity": 1.1270633935928345
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Hawk(x)",
+        "Bird(x)",
+        "Land(x)"
+      ],
+      "fol_consts": [
+        "hawk",
+        "bird"
+      ],
+      "fol_rules": [
+        "∀x (Hawk(x) → ¬Land(x))",
+        "∃x (Bird(x) ∧ Hawk(x))"
+      ],
+      "fol_conc": "∀x (Bird(x) → Land(x))",
+      "perplexity": 1.4713934659957886
     }
   },
   {
@@ -6596,6 +10685,32 @@
       ],
       "fol_conc": "∃x (German(x) ⊕ Russian(x) ∧ Be(x, heinrichSchmidt))",
       "perplexity": 1.596175193786621
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nazi(x)",
+        "Politician(x)",
+        "German(x)",
+        "Russian(x)",
+        "Member(x, y)",
+        "State(x)",
+        "Parliament(x, y)",
+        "Reichstag(x, y)",
+        "Person(x)"
+      ],
+      "fol_consts": [
+        "heinrich",
+        "schmidt"
+      ],
+      "fol_rules": [
+        "Nazi(heinrich)",
+        "Politician(heinrich)",
+        "Member(heinrich, prussian)",
+        "Member(heinrich, reichstag)",
+        "Member(prussian, reichstag)"
+      ],
+      "fol_conc": "German(heinrich) ⊕ Russian(heinrich)",
+      "perplexity": 1.4039690494537354
     }
   },
   {
@@ -6625,6 +10740,26 @@
       ],
       "fol_conc": "∃x (Politician(x) ∧ ∃y MemberOfParliament(x, y) ∧ MemberOfParliament(x, PrussianStateParliament(y)) ∧ MemberOfParliament(x, NaziReichstag(y)))",
       "perplexity": 1.1389572620391846
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nazi(x)",
+        "German(x)",
+        "Politician(x)",
+        "Member(x, y)",
+        "State(x)",
+        "Part(x, y)"
+      ],
+      "fol_consts": [
+        "heinrich",
+        "schmidt"
+      ],
+      "fol_rules": [
+        "Nazi(heinrich) ∧ German(heinrich) ∧ Politician(heinrich)",
+        "Member(heinrich, prussian) ∧ Member(heinrich, reichstag)"
+      ],
+      "fol_conc": "∃x (Nazi(x) ∧ German(x) ∧ Politician(x) ∧ Member(x, prussian) ∧ Member(x, reichstag))",
+      "perplexity": 1.3475459814071655
     }
   },
   {
@@ -6654,6 +10789,28 @@
       ],
       "fol_conc": "∀x (Politician(x) → ¬NaziReichstag(x))",
       "perplexity": 1.2578423023223877
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nazi(x)",
+        "Politician(x)",
+        "Member(x, y)",
+        "German(x)",
+        "State(x, y)",
+        "Reichstag(x)"
+      ],
+      "fol_consts": [
+        "heinrich",
+        "schmidt"
+      ],
+      "fol_rules": [
+        "Nazi(heinrich)",
+        "German(heinrich)",
+        "Member(heinrich, schmidt)",
+        "Member(heinrich, schmidt) ∧ Member(heinrich, schmidt) → Member(heinrich, schmidt)"
+      ],
+      "fol_conc": "¬(Politician(x) ∧ Reichstag(x))",
+      "perplexity": 1.414365530014038
     }
   },
   {
@@ -6696,6 +10853,31 @@
       ],
       "fol_conc": "CancerType(colorectalCancer, severeCancer)",
       "perplexity": 1.1211320161819458
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Deadly(x)",
+        "Severe(x)",
+        "Survival(x)",
+        "Cancer(x)",
+        "Bile(x)",
+        "Cholangiocarcin(x)",
+        "Mild(x)",
+        "Colorectal(x)"
+      ],
+      "fol_consts": [
+        "colorectal"
+      ],
+      "fol_rules": [
+        "∀x (Deadly(x) → Low(x))",
+        "∀x (Severe(x) → Deadly(x))",
+        "Bile(duct) ∧ Severe(duct)",
+        "∀x (Cholangiocarcin(x) → Bile(x))",
+        "¬Mild(flu) → ¬Low(survival)",
+        "Bile(colorectal) ∧ Low(survival) → ¬Bile(colorectal)"
+      ],
+      "fol_conc": "Severe(colorectal)",
+      "perplexity": 1.4392776489257812
     }
   },
   {
@@ -6733,6 +10915,31 @@
       ],
       "fol_conc": "(BileDuctCancer(colorectalCancer) ⊕ Cholangiocarcinoma(colorectalCancer)) → (BileDuctCancer(colorectalCancer) ∧ MildFlu(colorectalCancer))",
       "perplexity": 1.129290223121643
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Deadly(x)",
+        "Severe(x)",
+        "Survival(x)",
+        "Mild(x)",
+        "Cancer(x)",
+        "Bile(x)",
+        "Cholangiocarcin(x)",
+        "Colorectal(x)"
+      ],
+      "fol_consts": [
+        "colorectal"
+      ],
+      "fol_rules": [
+        "∀x (Deadly(x) → Low(x))",
+        "∀x (Severe(x) → Deadly(x))",
+        "Bile(duct) ∧ Severe(duct)",
+        "∀x (Cholangiocarcin(x) → Bile(x))",
+        "¬Mild(flu) → ¬Low(survival)",
+        "Bile(colorectal) ∧ Low(survival) → ¬Bile(colorectal)"
+      ],
+      "fol_conc": "(Bile(colorectal) ∨ Cholangiocarcin(colorectal)) → (Bile(colorectal) ∧ Mild(flu))",
+      "perplexity": 1.392663836479187
     }
   },
   {
@@ -6777,6 +10984,31 @@
       ],
       "fol_conc": "¬(Mild(Flu(colorectal_cancer)) ∧ Cholangiocarcinoma(colorectal_cancer)) → (BileDuctCancer(colorectal_cancer) ⊕ Cholangiocarcinoma(colorectal_cancer))",
       "perplexity": 1.1251510381698608
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Deadly(x)",
+        "Survival(x)",
+        "Severe(x)",
+        "Mild(x)",
+        "Cholangiocarcin(x)",
+        "Bile(x)",
+        "Colorectal(x)"
+      ],
+      "fol_consts": [
+        "colorectal",
+        "cholangiocarcin"
+      ],
+      "fol_rules": [
+        "∀x (Deadly(x) → Low(x))",
+        "∀x (Severe(x) → Deadly(x))",
+        "Bile(cholangiocarcin)",
+        "∀x (Cholangiocarcin(x) → Bile(x))",
+        "¬Mild(x) → ¬Low(x)",
+        "Bile(colorectal) ∧ Low(x) → ¬Bile(colorectal)"
+      ],
+      "fol_conc": "Bile(colorectal) ⊕ Cholangiocarcin(colorectal) → (Bile(colorectal) ∨ Cholangiocarcin(colorectal))",
+      "perplexity": 1.4237644672393799
     }
   },
   {
@@ -6818,6 +11050,32 @@
       ],
       "fol_conc": "EatsSalads(taylor)",
       "perplexity": 1.2074893712997437
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eat(x)",
+        "Conscious(x)",
+        "Grow(x, y)",
+        "Fulfill(x)",
+        "Good(x, y)",
+        "Visit(x, y)",
+        "Salad(x)",
+        "Taylor(x)"
+      ],
+      "fol_consts": [
+        "taylor"
+      ],
+      "fol_rules": [
+        "∀x (Salad(x) → Conscious(x))",
+        "∀x (Grow(x, y) → Salad(x))",
+        "∀x (Fulfill(x) → Grow(x, y))",
+        "Good(x, y) → Fulfill(x)",
+        "Good(x, y) → ¬Salad(x)",
+        "Visit(x, y) → Fulfill(x)",
+        "(Grow(taylor, y) ∧ Good(taylor, y)) ⊕ ¬(Grow(taylor, y) ∨ Good(taylor, y))"
+      ],
+      "fol_conc": "Salad(taylor)",
+      "perplexity": 1.2830077409744263
     }
   },
   {
@@ -6858,6 +11116,36 @@
       ],
       "fol_conc": "VisitGym(taylor)",
       "perplexity": 1.0473829507827759
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eat(x)",
+        "Conscious(x)",
+        "Grow(x, y)",
+        "Fulfill(x)",
+        "Good(x, y)",
+        "Visit(x, y)",
+        "Salad(x)",
+        "Home(x)",
+        "Parent(x, y)",
+        "Nutrient(x)",
+        "Gym(x)",
+        "Day(x)"
+      ],
+      "fol_consts": [
+        "taylor"
+      ],
+      "fol_rules": [
+        "∀x (Salad(x) → Conscious(x))",
+        "∀x (Grow(x, y) → Salad(x))",
+        "∀x (Fulfill(x) → Grow(x, y))",
+        "Good(x, y) → Fulfill(x)",
+        "Good(x, y) → ¬Salad(x)",
+        "Visit(x, y) → Fulfill(x)",
+        "(Grow(taylor, y) ∧ Good(taylor, y)) ⊕ ¬(Grow(taylor, y) ∨ Good(taylor, y))"
+      ],
+      "fol_conc": "Visit(taylor, y)",
+      "perplexity": 1.3231799602508545
     }
   },
   {
@@ -6898,6 +11186,31 @@
       ],
       "fol_conc": "¬(HealthConsciousChildhood(taylor) ∨ VisitGym(taylor))",
       "perplexity": 1.0520970821380615
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Eat(x)",
+        "Conscious(x)",
+        "Grow(x, y)",
+        "Fulfill(x)",
+        "Good(x, y)",
+        "Visit(x, y)",
+        "Health(x, y)"
+      ],
+      "fol_consts": [
+        "taylor"
+      ],
+      "fol_rules": [
+        "∀x (Eat(x) → Conscious(x))",
+        "∀x (Grow(x, y) → Eat(x))",
+        "∀x (Fulfill(x) → Grow(x, y))",
+        "Good(x, y) → Fulfill(x)",
+        "Good(x, y) → ¬Eat(x)",
+        "Visit(x, y) → Fulfill(x)",
+        "¬(Grow(taylor, y) ∧ Good(taylor, y)) ⊕ ¬(Grow(taylor, y) ∨ Good(taylor, y))"
+      ],
+      "fol_conc": "¬(Grow(taylor, y) ∨ Visit(taylor, y))",
+      "perplexity": 1.3111071586608887
     }
   },
   {
@@ -6934,6 +11247,30 @@
       ],
       "fol_conc": "∃x (SportingEvent(x) ∧ x = worldChampionships)",
       "perplexity": 1.4229393005371094
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Sporting(x)",
+        "Won(x, y, z)",
+        "Inplace(x, y, z)",
+        "Wonmost(x, y, z)",
+        "Championship(x)",
+        "Event(x)"
+      ],
+      "fol_consts": [
+        "olympic",
+        "tokyo",
+        "unitedstates"
+      ],
+      "fol_rules": [
+        "Sporting(olympic)",
+        "Inplace(olympic, olympic, tokyo)",
+        "Wonmost(unitedstates, olympic, tokyo)",
+        "Championship(world) → Event(world)",
+        "Event(world)"
+      ],
+      "fol_conc": "Championship(world)",
+      "perplexity": 1.6148403882980347
     }
   },
   {
@@ -6968,6 +11305,29 @@
       ],
       "fol_conc": "¬∃x (LastOlympicGames(x) ∧ In(x, tokyo))",
       "perplexity": 1.251509428024292
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Sporting(x)",
+        "Olympic(x)",
+        "Won(x, y)",
+        "Medals(x, y)",
+        "Inplace(x, y)",
+        "Last(x, y)"
+      ],
+      "fol_consts": [
+        "olympic",
+        "tokyo",
+        "unitedstates"
+      ],
+      "fol_rules": [
+        "Olympic(olympic) → Sporting(olympic)",
+        "Last(olympic, tokyo)",
+        "Won(unitedstates, tokyo)",
+        "∀x (Won(x, tokyo) → Medals(x, tokyo))"
+      ],
+      "fol_conc": "¬Inplace(olympic, tokyo)",
+      "perplexity": 1.567777395248413
     }
   },
   {
@@ -7005,6 +11365,32 @@
       ],
       "fol_conc": "WonMostMedals(united_states)",
       "perplexity": 1.4849296808242798
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Sporting(x)",
+        "Olympic(x)",
+        "Won(x, y)",
+        "Medals(x, y)",
+        "Last(x)",
+        "Inverted(x, y)",
+        "Most(x, y)"
+      ],
+      "fol_consts": [
+        "olympic",
+        "tokyo",
+        "unitedstates"
+      ],
+      "fol_rules": [
+        "Olympic(olympic) → Sporting(olympic)",
+        "Last(tokyo)",
+        "Won(unitedstates, tokyo)",
+        "∀x (Medals(x, y) → Most(x, y) ⊕ Most(x, z))",
+        "∀x (Last(x) → Inverted(x, y))",
+        "∀x (Inverted(x, y) → ∃z (Won(z, y) ∧ Most(z, x)))"
+      ],
+      "fol_conc": "Won(unitedstates, tokyo)",
+      "perplexity": 1.6026183366775513
     }
   },
   {
@@ -7030,6 +11416,22 @@
       ],
       "fol_conc": "∃x (Human(x) ∧ Horse(x))",
       "perplexity": 1.296933650970459
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Horse(x)",
+        "Human(x)",
+        "Hooves(x)"
+      ],
+      "fol_consts": [
+        "somehuman"
+      ],
+      "fol_rules": [
+        "∀x (Horse(x) → Hooves(x))",
+        "∀x (Human(x) → ¬Hooves(x))"
+      ],
+      "fol_conc": "∃x (Human(x) ∧ Horse(x))",
+      "perplexity": 1.5266748666763306
     }
   },
   {
@@ -7062,6 +11464,27 @@
       ],
       "fol_conc": "∃x (Flies(Susan, x) ∧ x = LGA)",
       "perplexity": 1.4427545070648193
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Flies(x, y)",
+        "Departure(x, y)",
+        "Arrival(x, y)",
+        "Same(x, y)"
+      ],
+      "fol_consts": [
+        "susan",
+        "john",
+        "lga"
+      ],
+      "fol_rules": [
+        "Flies(susan, lga)",
+        "¬Same(lga, lga)",
+        "Flies(john, lga)",
+        "¬(Departure(x, y) ∧ Arrival(x, y)) → ¬Same(x, y)"
+      ],
+      "fol_conc": "Flies(susan, lga)",
+      "perplexity": 1.3410199880599976
     }
   },
   {
@@ -7093,6 +11516,27 @@
       ],
       "fol_conc": "∃x (Fly(john, x) ∧ Arrival(x, lga))",
       "perplexity": 1.1616095304489136
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Flies(x, y)",
+        "Departure(x, y)",
+        "Arrival(x, y)",
+        "Same(x, y)"
+      ],
+      "fol_consts": [
+        "susan",
+        "john",
+        "lga"
+      ],
+      "fol_rules": [
+        "Flies(susan, lga)",
+        "¬Same(lga, lga)",
+        "Flies(john, lga)",
+        "¬(Departure(x, y) ∧ Arrival(x, y)) → ¬Same(x, y)"
+      ],
+      "fol_conc": "Flies(john, lga)",
+      "perplexity": 1.3459502458572388
     }
   },
   {
@@ -7128,6 +11572,30 @@
       ],
       "fol_conc": "Grumpy(tom)",
       "perplexity": 1.0730509757995605
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nice(x)",
+        "Mean(x)",
+        "Grumpy(x)",
+        "Lover(x)",
+        "Pet(x)",
+        "Owns(x, y)",
+        "Love(x, y)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∀x (Nice(x) → ¬Mean(x))",
+        "∃x (Grumpy(x) ∧ Mean(x))",
+        "∀x (Lover(x) → Nice(x))",
+        "∀x (Owns(x, y) → Love(x, y))",
+        "Owns(tom, y)",
+        "∃y (Pet(y) ∧ Owns(tom, y))"
+      ],
+      "fol_conc": "Grumpy(tom)",
+      "perplexity": 1.342780590057373
     }
   },
   {
@@ -7163,6 +11631,29 @@
       ],
       "fol_conc": "¬Grumpy(tom) ∧ ¬MeanToAnimals(tom)",
       "perplexity": 1.0821597576141357
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nice(x)",
+        "Mean(x)",
+        "Grumpy(x)",
+        "Love(x)",
+        "Owns(x)",
+        "Pet(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∀x (Nice(x) → ¬Mean(x))",
+        "∃x (Grumpy(x) ∧ Mean(x))",
+        "∀x (Love(x) → Nice(x))",
+        "∀x (Owns(x) → Love(x))",
+        "Owns(tom)",
+        "¬(Grumpy(x) ∧ Mean(x)) → (Grumpy(x) ∧ Mean(x)) ⊕ ¬(Grumpy(x) ∨ Mean(x))"
+      ],
+      "fol_conc": "¬(Grumpy(tom) ∧ Mean(tom))",
+      "perplexity": 1.255814790725708
     }
   },
   {
@@ -7200,6 +11691,28 @@
       ],
       "fol_conc": "(¬Grumpy(tom) ∨ ¬Mean(tom)) → (¬Grumpy(tom) ∨ ¬AnimalLover(tom))",
       "perplexity": 1.312149167060852
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Nice(x)",
+        "Mean(x)",
+        "Grumpy(x)",
+        "Pet(x)",
+        "Love(x)",
+        "Owns(x, y)",
+        "Animal(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∀x (Nice(x) ∧ Animal(x) → ¬Mean(x))",
+        "∃x (Grumpy(x) ∧ Mean(x) ∧ Animal(x))",
+        "∀x (Love(x) ∧ Animal(x) → Nice(x))",
+        "Owns(tom, y) → Love(tom)"
+      ],
+      "fol_conc": "¬Grumpy(tom) ∧ ¬Mean(tom) → ¬(Grumpy(tom) ⊕ Love(tom))",
+      "perplexity": 1.3788007497787476
     }
   },
   {
@@ -7251,6 +11764,47 @@
       ],
       "fol_conc": "NovelWriter(dani_shapiro)",
       "perplexity": 1.12888765335083
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Podcast(x)",
+        "Novel(x)",
+        "American(x)",
+        "Writer(x)",
+        "Book(x)",
+        "Person(x)",
+        "City(x)",
+        "Year(x)",
+        "Created(x, y)",
+        "Written(x, y)",
+        "Born(x, y)",
+        "Called(x, y)",
+        "American(x, y)"
+      ],
+      "fol_consts": [
+        "dani",
+        "shapiro",
+        "family",
+        "history",
+        "boston",
+        "2003",
+        "family",
+        "secrets"
+      ],
+      "fol_rules": [
+        "¬Podcast(x)",
+        "Born(x, boston) → American(x)",
+        "Novel(x) ∧ Written(x, y) → Writer(y)",
+        "American(dani)",
+        "Written(family, dani)",
+        "Novel(family)",
+        "Year(family, 2003)",
+        "Created(dani, family)",
+        "Called(family, secrets)",
+        "American(boston)"
+      ],
+      "fol_conc": "Writer(dani)",
+      "perplexity": 1.4089819192886353
     }
   },
   {
@@ -7301,6 +11855,43 @@
       ],
       "fol_conc": "∃x (Book(x) ∧ Name(x, family_secrets) ∧ Novel(x))",
       "perplexity": 1.216318964958191
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Podcast(x)",
+        "Novel(x)",
+        "American(x)",
+        "Writer(x)",
+        "Book(x)",
+        "Written(x, y)",
+        "Created(x, y)",
+        "City(x)",
+        "Year(x)",
+        "Person(x)",
+        "Novel(x)"
+      ],
+      "fol_consts": [
+        "dani",
+        "shapiro",
+        "family",
+        "history",
+        "boston",
+        "secrets",
+        "2003"
+      ],
+      "fol_rules": [
+        "¬Podcast(family)",
+        "∀x (City(x) ∧ City(boston) → American(x))",
+        "∀x (Novel(x) ∧ Written(x, y) ∧ Person(y) → Writer(y))",
+        "American(dani)",
+        "Written(family, dani)",
+        "Novel(family)",
+        "Year(family, 2003)",
+        "Created(secrets, dani)",
+        "City(boston) ∧ City(boston) → American(boston)"
+      ],
+      "fol_conc": "Novel(secrets)",
+      "perplexity": 1.4406651258468628
     }
   },
   {
@@ -7353,6 +11944,57 @@
       ],
       "fol_conc": "∃y (Person(y) ∧ BornIn(y, boston))",
       "perplexity": 1.195751428604126
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Podcast(x)",
+        "Novel(x)",
+        "American(x)",
+        "Writer(x)",
+        "Book(x)",
+        "Person(x)",
+        "City(x)",
+        "Year(x)",
+        "Created(x, y)",
+        "Born(x, y)",
+        "Wrote(x, y)",
+        "Called(x, y)",
+        "American(x, y)",
+        "Novel(x, y)",
+        "Writer(x, y)",
+        "City(x, y)",
+        "Year(x, y)"
+      ],
+      "fol_consts": [
+        "dani",
+        "shapiro",
+        "family",
+        "history",
+        "podcast",
+        "secrets",
+        "boston",
+        "american",
+        "city",
+        "2003",
+        "novel",
+        "writer",
+        "american",
+        "city",
+        "year"
+      ],
+      "fol_rules": [
+        "¬Podcast(family)",
+        "∀x (American(x) → American(x, american, city))",
+        "∀x (Novel(x) ∧ Wrote(x, y) → Writer(y))",
+        "Writer(dani)",
+        "Wrote(family, dani)",
+        "Novel(family) ∧ Year(family, 2003)",
+        "Created(dani, podcast)",
+        "Called(podcast, secrets)",
+        "American(boston) → American(boston, american, city)"
+      ],
+      "fol_conc": "Born(dani, boston)",
+      "perplexity": 1.390080213546753
     }
   },
   {
@@ -7390,6 +12032,27 @@
       ],
       "fol_conc": "¬(BasketballPlayer(yuri) ∨ Tall(yuri))",
       "perplexity": 1.104565978050232
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketball(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "Clothes(x, y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketball(x) ∧ ¬American(x))",
+        "∀x (Basketball(x) → Tall(x))",
+        "∀x (Tall(x) → Wear(x, large))",
+        "∀x (Wear(x, large) → Clothes(x, large))",
+        "¬Clothes(yuri, large)"
+      ],
+      "fol_conc": "American(yuri)",
+      "perplexity": 1.3231399059295654
     }
   },
   {
@@ -7426,6 +12089,28 @@
       ],
       "fol_conc": "¬(BasketballPlayer(yuri) ∧ American(yuri))",
       "perplexity": 1.1473232507705688
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketball(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "Clothes(x, y)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketball(x) ∧ ¬American(x))",
+        "∀x (Basketball(x) → Tall(x))",
+        "∀x (Tall(x) → Wear(x, large))",
+        "∀x (Wear(x, large) → Clothes(x, large))",
+        "¬Clothes(yuri, large)"
+      ],
+      "fol_conc": "¬(Basketball(yuri) ∧ American(yuri))",
+      "perplexity": 1.3303593397140503
     }
   },
   {
@@ -7462,6 +12147,28 @@
       ],
       "fol_conc": "BasketballPlayer(yuri) ∧ American(yuri)",
       "perplexity": 1.0696299076080322
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketball(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "Clothes(x, y)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketball(x) ∧ ¬American(x))",
+        "∀x (Basketball(x) → Tall(x))",
+        "∀x (Tall(x) → Wear(x, large))",
+        "∀x (Wear(x, large) → Clothes(x, large))",
+        "¬Clothes(yuri, large)"
+      ],
+      "fol_conc": "Basketball(yuri) ∧ American(yuri)",
+      "perplexity": 1.3293825387954712
     }
   },
   {
@@ -7499,6 +12206,30 @@
       ],
       "fol_conc": "((∃x (BasketballPlayer(x) ∧ ¬Wear(yuri, LargeShoes(x)))) → (BasketballPlayer(yuri) ∧ American(yuri)))",
       "perplexity": 1.3464597463607788
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketball(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "Large(x)",
+        "Clothes(x, y)",
+        "Large(x, y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketball(x) ∧ ¬American(x))",
+        "∀x (Basketball(x) → Tall(x))",
+        "∀x (Tall(x) → Large(x))",
+        "∀x (Large(x) → Large(x, y))",
+        "¬Wear(yuri, y)",
+        "¬Large(x, y) → (American(x) ∧ Basketball(x))"
+      ],
+      "fol_conc": "¬Wear(yuri, x) → (American(yuri) ∧ Basketball(yuri))",
+      "perplexity": 1.3916279077529907
     }
   },
   {
@@ -7535,6 +12266,28 @@
       ],
       "fol_conc": "(¬American(yuri) → BasketballPlayer(yuri))",
       "perplexity": 1.2225422859191895
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketball(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "Clothes(x, y)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketball(x) ∧ ¬American(x))",
+        "∀x (Basketball(x) → Tall(x))",
+        "∀x (Tall(x) → Wear(x, large))",
+        "∀x (Wear(x, large) → Wear(x, largeclothes))",
+        "¬Wear(yuri, largeclothes)"
+      ],
+      "fol_conc": "(¬American(yuri) → Basketball(yuri))",
+      "perplexity": 1.3931680917739868
     }
   },
   {
@@ -7560,6 +12313,22 @@
       ],
       "fol_conc": "∀x (Event(x) → Sad(x))",
       "perplexity": 1.0523841381072998
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Happy(x)",
+        "Sad(x)",
+        "Event(x)"
+      ],
+      "fol_consts": [
+        "none"
+      ],
+      "fol_rules": [
+        "∀x (Event(x) → (Happy(x) ⊕ Sad(x)))",
+        "∃x (Event(x) ∧ Happy(x))"
+      ],
+      "fol_conc": "∀x (Event(x) → Sad(x))",
+      "perplexity": 1.4424313306808472
     }
   },
   {
@@ -7598,6 +12367,32 @@
       ],
       "fol_conc": "\\u00afWinner(steinhauer, du_mauroi_1992)",
       "perplexity": 1.1769834756851196
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "From(x, y)",
+        "Onboard(x, y)",
+        "Leaderboard(y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "1992",
+        "du",
+        "maurier",
+        "classic"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, 1992du)",
+        "Participated(steinhauer, 1992du)",
+        "∃x (Leaderboard(1992du) ∧ Sixwaytie(1992du) ∧ From(x, belgium) ∧ Onboard(x, 1992du))",
+        "From(descampe, belgium) ∧ Onboard(descampe, 1992du)",
+        "∀x (Onboard(x, 1992du) → Participated(x, 1992du))"
+      ],
+      "fol_conc": "¬Winner(steinhauer, 1992du)",
+      "perplexity": 1.4607083797454834
     }
   },
   {
@@ -7637,6 +12432,34 @@
       ],
       "fol_conc": "Participated(descampe, 1992_du_maurier_classic) ∧ ∃x (Tie(6, Leaderboard(1992_du_maurier_classic)) ∧ In(descampe, x))",
       "perplexity": 1.1277869939804077
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "From(x, y)",
+        "Onleaderboard(x, y)",
+        "Sixwaytie(x, y)",
+        "Tie(x, y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "1992",
+        "du",
+        "maurier",
+        "classic",
+        "belgium"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, 1992, du, maurier, classic)",
+        "Participated(steinhauer, 1992, du, maurier, classic)",
+        "Sixwaytie(1992, du, maurier, classic) ∧ ∃x (From(x, belgium) ∧ Onleaderboard(x, 1992, du, maurier, classic))",
+        "From(descampe, belgium) ∧ Onleaderboard(descampe, 1992, du, maurier, classic)",
+        "∀x (Onleaderboard(x, 1992, du, maurier, classic) → Participated(x, 1992, du, maurier, classic))"
+      ],
+      "fol_conc": "Onleaderboard(descampe, 1992, du, maurier, classic) ∧ Sixwaytie(1992, du, maurier, classic)",
+      "perplexity": 1.2307404279708862
     }
   },
   {
@@ -7678,6 +12501,32 @@
       ],
       "fol_conc": "Terricolous(KiKi)",
       "perplexity": 1.2657603025436401
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Terricolous(x)",
+        "Has(x, y)",
+        "Jumps(x)",
+        "Likes(x, y)",
+        "Animal(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "Barks(x) → ¬Likes(jane, x)",
+        "Dog(x) → Animal(x) ∧ Barks(x)",
+        "Jumps(x) → Likes(jane, x)",
+        "Has(x, y) → Jumps(x)",
+        "Has(x, y) → Terricolous(x)",
+        "¬(Jumps(kiki) ∨ Has(kiki, y)) → (Terricolous(kiki) ∨ Has(kiki, y))"
+      ],
+      "fol_conc": "Terricolous(kiki)",
+      "perplexity": 1.3175705671310425
     }
   },
   {
@@ -7722,6 +12571,35 @@
       ],
       "fol_conc": "BarksKiKi ∧ Dog(KiKi)",
       "perplexity": 1.31826913356781
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Terricolous(x)",
+        "Has(x, y)",
+        "Jumps(x)",
+        "Likes(x, y)",
+        "Terricolous(x)",
+        "Has(x, y)",
+        "Legs(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "Barks(x) → ¬Likes(jane, x)",
+        "Dog(x) → Animal(x) ∧ Barks(x)",
+        "Jumps(x) → Likes(jane, x)",
+        "Has(x, y) → Jumps(x)",
+        "Terricolous(x) → Has(x, y)",
+        "Terricolous(x) ⊕ Has(x, y) → (Terricolous(x) ∨ Has(x, y))"
+      ],
+      "fol_conc": "Barks(kiki) ∧ Dog(kiki)",
+      "perplexity": 1.335821509361267
     }
   },
   {
@@ -7804,6 +12682,39 @@
       ],
       "fol_conc": "∀x (PlaysFor(x, nautico) → ¬Brazilian(x))",
       "perplexity": 1.1304997205734253
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Player(x)",
+        "Loan(x, y)",
+        "Club(x, y)",
+        "Brazilian(x)",
+        "Play(x, y)",
+        "Brazillian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "1995",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "Known(ailton, ailton)",
+        "Player(ailton)",
+        "Loan(ailton, braga)",
+        "Footballer(ailton)",
+        "Footballer(ailton) ∧ Brazillian(ailton) → Club(nautico, ailton)",
+        "Club(nautico, ailton) ∧ Club(braga, ailton)",
+        "Club(nautico, ailton) ∧ Club(braga, ailton) ∧ Club(fluminense, x) → False(x)",
+        "Club(nautico, ailton) ∧ Club(braga, ailton)"
+      ],
+      "fol_conc": "¬(Brazilian(x) ∧ Play(x, nautico))",
+      "perplexity": 1.3249266147613525
     }
   },
   {
@@ -7846,6 +12757,41 @@
       ],
       "fol_conc": "¬∃x (FootballClub(x) ∧ PlaysFor(ailton, x))",
       "perplexity": 1.1579370498657227
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Player(x)",
+        "Loan(x, y)",
+        "Brazillian(x)",
+        "Play(x, y)",
+        "Club(x, y)",
+        "Fluminense(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "1995",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "Known(ailton, silva)",
+        "Known(ailton, ailton)",
+        "Player(ailton)",
+        "Loan(ailton, braga)",
+        "Footballer(ailton)",
+        "Brazillian(ailton)",
+        "Club(nautico, braga)",
+        "Club(nautico, ailton)",
+        "Club(braga, ailton)",
+        "Club(fluminense, x)"
+      ],
+      "fol_conc": "¬Play(ailton, x)",
+      "perplexity": 1.3349133729934692
     }
   },
   {
@@ -7887,6 +12833,41 @@
       ],
       "fol_conc": "∀x (FootballPlayer(x) ∧ LoanedOut(x, y) → ¬FootballClub(y))",
       "perplexity": 1.1446478366851807
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Player(x)",
+        "Loan(x, y)",
+        "Club(x)",
+        "Brazillian(x)",
+        "Plays(x, y)",
+        "Along(x, y)",
+        "Fluminense(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "1995",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "Known(ailton, ailton)",
+        "Player(ailton)",
+        "Loan(ailton, braga)",
+        "Footballer(ailton)",
+        "Brazillian(ailton)",
+        "Plays(ailton, nautico)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Along(nautico, braga)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬Loan(ailton, x)",
+      "perplexity": 1.3440251350402832
     }
   },
   {
@@ -7930,6 +12911,41 @@
       ],
       "fol_conc": "∃x (Footballer(x) ∧ KnownAs(x, ailtonSilva) ∧ PlayFor(x, fluminense))",
       "perplexity": 1.1775652170181274
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Player(x)",
+        "Loan(x, y)",
+        "Club(x, y)",
+        "Brazillian(x)",
+        "Plays(x, y)",
+        "For(x, y)",
+        "Commonly(x, y)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "1995",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "Known(ailton, silva)",
+        "Born(ailton, 1995)",
+        "Player(ailton)",
+        "Loan(ailton, braga)",
+        "Footballer(ailton)",
+        "Plays(ailton, nautico)",
+        "Club(nautico, braga)",
+        "Club(nautico, braga) → Club(fluminense, braga)",
+        "Club(fluminense, braga)"
+      ],
+      "fol_conc": "For(ailton, fluminense)",
+      "perplexity": 1.3213287591934204
     }
   },
   {
@@ -7972,6 +12988,43 @@
       ],
       "fol_conc": "∃y (FootballClub(y) ∧ LoanedOut(ailton, y))",
       "perplexity": 1.0925506353378296
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Player(x)",
+        "Loan(x, y)",
+        "Brazillian(x)",
+        "Club(x)",
+        "Play(x, y)",
+        "For(x, y)",
+        "Along(x, y)",
+        "Fluminense(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "1995",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "Known(ailton, silva)",
+        "Born(ailton, 1995)",
+        "Player(ailton)",
+        "Loan(ailton, braga)",
+        "Footballer(ailton)",
+        "Brazillian(ailton)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Along(nautico, braga)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "Loan(ailton, x) ∧ Club(x)",
+      "perplexity": 1.318294882774353
     }
   }
 ]

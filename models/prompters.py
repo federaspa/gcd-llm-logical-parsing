@@ -42,13 +42,13 @@ class FOL_Prompter:
                     
         return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
     
-    def unstructured(self, sample: Dict) -> str:
+    def unconstrained(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
-        return self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+        return self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
 
-    def structured(self, unstructured: str) -> str:
-        return self.templates['structured_user'].replace('[[unstructured]]', unstructured)
+    def json_wrap(self, unconstrained: str) -> str:
+        return self.templates['json_user'].replace('[[unconstrained]]', unconstrained)
     
     def parsing(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -91,19 +91,19 @@ class SAT_Prompter:
         self.config = config
         self.templates = templates
         
-    def unstructured(self, sample: Dict) -> str:
+    def unconstrained(self, sample: Dict) -> str:
         problem = sample['context']
         question = sample['question'].strip()
         choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
-        full_prompt = self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
     
-    def structured(self, unstructured: str) -> str:
+    def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['structured_user'].replace('[[unstructured]]', unstructured).replace(r'```python', '').replace(r'```', '')
+        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```python', '').replace(r'```', '')
         
         return full_prompt
     
@@ -134,19 +134,19 @@ class LP_Prompter:
         self.config = config
         self.templates = templates
         
-    def unstructured(self, sample: Dict) -> str:
+    def unconstrained(self, sample: Dict) -> str:
         problem = sample['context']
         question = sample['question'].strip()
         choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
-        full_prompt = self.templates['unstructured_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
     
-    def structured(self, unstructured: str) -> str:
+    def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['structured_user'].replace('[[unstructured]]', unstructured).replace(r'```python', '').replace(r'```', '')
+        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```python', '').replace(r'```', '')
         
         return full_prompt
     

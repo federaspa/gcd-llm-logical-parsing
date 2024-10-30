@@ -262,7 +262,6 @@ class SelfRefinementEngine(PromptGenerator):
             except Exception as e:
                 error_message = f'Exception for {sample["id"]}: {traceback.format_exc()}'
                 logger.error(error_message)
-                send_notification(error_message, "self_refinement.py correction error")
                 skip = True
 
             
