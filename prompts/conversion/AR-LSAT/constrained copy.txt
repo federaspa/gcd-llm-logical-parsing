@@ -1,6 +1,14 @@
 The task is to convert a natrual language reasoning problem into a SAT problem in SMTLIB2 format. Add comments to the code to explain what each part does. After writing the code, state whether to answer the question we are looking for a "sat" or an "unsat" result.
 Do not attempt to solve the problem, limit yourself to converting.
 
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"program": [program in string format],
+"type": [solution we are looking for, either "sat" or "unsat"],
+\}
+"""
+
 Example 1:
 
 NL problem:
@@ -21,7 +29,7 @@ Choices:
 
 ------
 
-"""(set-logic ALL)
+{"program":"(set-logic ALL)
 
 ; Declare sorts for people, meals, and foods
 (declare-datatypes ((People 0)) (((Vladimir) (Wendy))))
@@ -100,9 +108,7 @@ Choices:
 (push)
 (assert (not (exists ((m Meals)) (= (eats Vladimir m) poached_eggs))))
 (check-sat)
-(pop)"""
-
-For this problem, we are looking for an "unsat" solution.
+(pop)", "type": "unsat"}
 
 ###
 
@@ -126,8 +132,7 @@ Choices:
 
 ------
 
-"""
-(set-logic ALL)
+{"program": "(set-logic ALL)
 
 ; Declare sorts for technicians and machines
 (declare-datatypes ((Technicians 0)) (((Stacy) (Urma) (Wim) (Xena) (Yolanda) (Zane))))
@@ -210,10 +215,96 @@ Choices:
 (check-sat)
 (pop)
 
-(exit)
+(exit)", "type: "sat"}
 """
 
-For this problem, we are looking for a "sat" solution.
+###
+
+Example 3:
+
+NL problem:
+"""
+Workers at a water treatment plant open eight valves—G, H, I, K, L, N, O, and P—to flush out a system of pipes that needs emergency repairs. To maximize safety and efficiency, each valve is opened exactly once, and no two valves are opened at the same time. The valves are opened in accordance with the following conditions: Both K and P are opened before H. O is opened before L but after H. L is opened after G. N is opened before H. I is opened after K.
+"""
+
+NL question:
+"""
+Each of the following could be the fifth valve opened EXCEPT:
+Choices:
+(A) H
+(B) I
+(C) K
+(D) N
+(E) O
+"""
+
+------
+
+{"program": "(set-logic ALL)
+
+; Declare valves as an enumerated type
+(declare-datatypes ((Valves 0)) (((G) (H) (I) (K) (L) (N) (O) (P))))
+
+; Declare the opened function
+(declare-fun opened (Valves) Int)
+
+; Constraint: All valves must be opened between 1 and 8
+(assert (forall ((v Valves))
+    (and (<= 1 (opened v)) (<= (opened v) 8))))
+
+; Constraint: No two valves are opened at the same time
+(assert (distinct (opened G) (opened H) (opened I) (opened K) 
+                 (opened L) (opened N) (opened O) (opened P)))
+
+; Constraint: Both K and P are opened before H
+(assert (and (< (opened K) (opened H))
+             (< (opened P) (opened H))))
+
+; Constraint: O is opened before L but after H
+(assert (and (> (opened O) (opened H))
+             (< (opened O) (opened L))))
+
+; Constraint: L is opened after G
+(assert (> (opened L) (opened G)))
+
+; Constraint: N is opened before H
+(assert (< (opened N) (opened H)))
+
+; Constraint: I is opened after K
+(assert (> (opened I) (opened K)))
+
+; Check if H could be the fifth valve
+(push)
+(assert (= (opened H) 5))
+(check-sat)
+(pop)
+
+; Check if I could be the fifth valve
+(push)
+(assert (= (opened I) 5))
+(check-sat)
+(pop)
+
+; Check if K could be the fifth valve
+(push)
+(assert (= (opened K) 5))
+(check-sat)
+(pop)
+
+; Check if N could be the fifth valve
+(push)
+(assert (= (opened N) 5))
+(check-sat)
+(pop)
+
+; Check if O could be the fifth valve
+(push)
+(assert (= (opened O) 5))
+(check-sat)
+(pop)
+
+(exit)", "type": "unsat"}
+"""
 
 ###
 

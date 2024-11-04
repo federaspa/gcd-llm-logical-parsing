@@ -65,7 +65,7 @@ class PromptGenerator:
             'unconstrained_user': f'./prompts/conversion/{self.config.dataset_name}/unconstrained.txt',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
             'json_grammar': './LLMs/grammars/json.gbnf',
-            'constrained_grammar': './LLMs/grammars/FOL_constrained.gbnf'}
+            'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'}
 
         self.templates = {}
         for key, path in templates.items():
@@ -171,17 +171,17 @@ class LogicProgramGenerator(PromptGenerator):
                 existing_samples = json.load(f)
                 existing_ids = [s['id'] for s in existing_samples]
                
-            complete_ids = set() 
-            for sample in raw_dataset:
-                if sample['id'] in existing_ids:
+        #     complete_ids = set() 
+        #     for sample in raw_dataset:
+        #         if sample['id'] in existing_ids:
                     
-                    sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
+        #             sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
                     
-                    if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
-                        outputs.append(sample)
-                        complete_ids.add(sample['id'])
+        #             if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
+        #                 outputs.append(sample)
+        #                 complete_ids.add(sample['id'])
         
-                raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
+        #         raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
                     
         return raw_dataset, outputs, existing_samples, existing_ids
 
@@ -196,7 +196,7 @@ class LogicProgramGenerator(PromptGenerator):
 
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
-        for i, sample in enumerate(pbar := tqdm(raw_dataset)):
+        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset))):
             if self._check_time_limit():
                 break
         
@@ -221,13 +221,13 @@ class LogicProgramGenerator(PromptGenerator):
                 if i % 20 == 0:
                     logger.debug(logic_problem)
                         
-                if not 'logic_problem_gcd' in sample.keys():
-                    pbar.set_description("Generating constrained problem %s" % sample['id'])
-                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
-                    
-                    logic_problem_gcd['perplexity'] = gcd_perplexity
-                else:
-                    logic_problem_gcd = sample['logic_problem_gcd']
+                # if not 'logic_problem_gcd' in sample.keys():
+                pbar.set_description("Generating constrained problem %s" % sample['id'])
+                logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
+                
+                logic_problem_gcd['perplexity'] = gcd_perplexity
+                # else:
+                #     logic_problem_gcd = sample['logic_problem_gcd']
                 
                 if i % 20 == 0:
                     logger.debug(logic_problem_gcd)

@@ -1,58 +1,56 @@
-#### Wrap SMTLIB2 program and solution type in JSON ####
-root ::= "{" ws program ws type ws "}"
+#### Wrap declarations, constraints, options and type in a JSON ####
+root ::= "{" ws decls ws consts ws opts ws type ws "}"
 
-ws ::= [ \t\n\r]+
+ws ::= [ \t\n\r]*
 
-program ::= "\"program\":" ws "\"" smtlib2program "\""
+decls ::= "\"declarations\":" ws "[" ws decllist ws "],"
+decllist ::= "\"" DECL "\"" (ws "," ws "\"" DECL "\"")*
+
+consts ::= "\"constraints\":" ws "[" ws constlist ws "],"
+constlist ::= "\"" CONSTRAINT "\"" (ws "," ws "\"" CONSTRAINT "\"")*
+
+opts ::= "\"options\":" ws "[" ws optlist ws "],"
+optlist ::= "\"" OPTION "\"" (ws "," ws "\"" OPTION "\"")*
+
 type ::= "\"type\":" ws "\"" ("sat" | "unsat") "\""
 
-#### Generate SMTLIB2 Program ####
-smtlib2program ::= logicdecl declarations assertions checks
 
-# Logic declaration
-logicdecl ::= "(set-logic ALL)\n\n"
+#### Generate SMTLIB2 Formulas ####
 
-# Declarations section
-declarations ::= datatypesdecls? functionsdecl? helpersdecl?
+# Declarations
+DECL ::= "(declare-datatypes" ws "(" TYPEDECL ")" ws "(" CONSTRUCTORS ")" ")" |
+         "(declare-fun" ws ID ws "(" PARAMS ")" ws TYPE ")" |
+         "(define-fun" ws ID ws "(" PARAMS ")" ws TYPE ws BODY ")"
 
-datatypesdecls ::= datatypesdecl ""
-datatypesdecl ::= "(declare-datatypes ((" identifier " 0)) ((" constructorlist ")))"
-constructorlist ::= constructor (" " constructor)*
-constructor ::= "(" identifier ")"
+TYPEDECL ::= "(" ID ws NUMBER ")"
+CONSTRUCTORS ::= "(" CONSTRUCTOR (ws CONSTRUCTOR)* ")"
+CONSTRUCTOR ::= "(" ID ")"
+PARAMS ::= (TYPE ws)*
+TYPE ::= ID | "Bool" | "Int"
+BODY ::= TERM
 
-functionsdecl ::= functiondecl ("\n" functiondecl)*
-functiondecl ::= "(declare-fun " identifier " (" paramtypes ") " returntype ")"
-paramtypes ::= identifier (" " identifier)*
-returntype ::= identifier | "Bool" | "Int"
+# Constraints
+CONSTRAINT ::= "(" QUANTIFIER ws "(" BOUNDVARS ")" ws FORMULA ")" |
+              "(" OPERATOR ws TERMS ")" |
+              "(" "=" ws TERM ws TERM ")" |
+              "(" RELATION ws TERM ws TERM ")"
 
-helpersdecl ::= "(define-fun " identifier " (" paramlist ") " returntype body ")"
-paramlist ::= "(" param (" " param)* ")"
-param ::= "(" [a-z] " " identifier ")"
-body ::= expr
+# Options (typically negations of possible answers)
+OPTION ::= "(" "not" ws "(" QUANTIFIER ws "(" BOUNDVARS ")" ws FORMULA ")" ")" |
+           "(" "=" ws TERM ws NUMBER ")"
 
-# Assertions section
-assertions ::= "(assert " constraint ")"+ 
-
-constraint ::= basicconstraint | forallconstraint | existsconstraint
-basicconstraint ::= "(" comparison | booleanop | functioncall ")"
-forallconstraint ::= "(forall (" boundvars ") " constraint ")"
-existsconstraint ::= "(exists (" boundvars ") " constraint ")"
-
-comparison ::= op expr expr
-op ::= "= " | "> " | "< " | ">= " | "<= " | "distinct "
-booleanop ::= "and " constraint+ | "or " constraint+ | "not " constraint
-functioncall ::= identifier expr*
-
-# Check-sat section with push/pop
-checks ::= checkblock+
-checkblock ::= "(push)\n" assertion "\n(check-sat)\n(pop)"
-assertion ::= "(assert " constraint ")"
+# Common elements
+QUANTIFIER ::= "forall" | "exists"
+BOUNDVARS ::= "(" VAR ws TYPE ")" (ws "(" VAR ws TYPE ")")*
+FORMULA ::= "(" OPERATOR ws TERMS ")" |
+           "(" RELATION ws TERM ws TERM ")" |
+           "(" "=" ws TERM ws TERM ")"
+OPERATOR ::= "and" | "or" | "not" | "=>" | "distinct"
+RELATION ::= "<" | ">" | "<=" | ">="
+TERM ::= ID | NUMBER | "(" OPERATOR ws TERMS ")" | "(" ID ws TERMS ")"
+TERMS ::= TERM (ws TERM)*
 
 # Basic elements
-identifier ::= [A-Za-z][A-Za-z0-9]*
-expr ::= "(" number | identifier | functioncall | arithmeticexpr ")"
-arithmeticexpr ::= arithop expr expr
-arithop ::= "+ " | "- " | "* " | "/ "
-number ::= [0-9]+
-
-boundvars ::= "(" param ")"+
+ID ::= [a-zA-Z_][a-zA-Z0-9_]*
+NUMBER ::= [0-9]+
+VAR ::= [a-zA-Z_][a-zA-Z0-9_]*

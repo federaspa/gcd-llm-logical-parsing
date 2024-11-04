@@ -46,6 +46,11 @@ class FOL_Prompter:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
         return self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+    
+    def constrained(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
 
     def json_wrap(self, unconstrained: str) -> str:
         return self.templates['json_user'].replace('[[unconstrained]]', unconstrained)
@@ -97,6 +102,16 @@ class SAT_Prompter:
         choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
         full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = full_prompt.replace('[[choices]]', choices_str)
+        
+        return full_prompt
+    
+    def constrained(self, sample: Dict) -> str:
+        problem = sample['context']
+        question = sample['question'].strip()
+        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
+        
+        full_prompt = self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
