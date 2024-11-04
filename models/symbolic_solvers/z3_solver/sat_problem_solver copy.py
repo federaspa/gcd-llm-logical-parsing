@@ -10,12 +10,11 @@ class LSAT_Z3_Program:
         self.logic_program = logic_program
         self.formula_error = ''
         try:
-            self.smtlib2 = self.parse_logic_program()
-            # self.standard_code = self.to_standard_code()
+            self.parse_logic_program()
+            self.standard_code = self.to_standard_code()
         except Exception as e:
             print(e)
-            # self.standard_code = None
-            self.smtlib2 = None
+            self.standard_code = None
             self.flag = False
             return
         
@@ -23,7 +22,8 @@ class LSAT_Z3_Program:
 
         # create the folder to save the Pyke program
         cache_dir = os.path.join(os.path.dirname(__file__), '.cache_program')
-        os.makedirs(cache_dir, exist_ok=True)
+        if not os.path.exists(cache_dir):
+            os.makedirs(cache_dir)
         self.cache_dir = cache_dir
 
     def parse_logic_program(self):

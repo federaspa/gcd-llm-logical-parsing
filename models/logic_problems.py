@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from tqdm import tqdm
 from timeout_decorator import timeout, TimeoutError
+from datetime import datetime
 
 from utils import OSModel, send_notification, get_logger, calculate_perplexity
 from prompters import FOL_Prompter, SAT_Prompter, LP_Prompter
@@ -23,6 +24,8 @@ class Config:
     n_gpu_layers: int = 0
     n_ctx: int = 0
     verbose: bool = False
+    stop_time: str = None
+    timeout_seconds: int = 180  # Default timeout of 180 seconds
 
 script_name = Path(__file__).stem
 logger, log_file_name = get_logger(script_name)
@@ -64,7 +67,6 @@ class PromptGenerator:
             'json_grammar': './LLMs/grammars/json.gbnf',
             'constrained_grammar': './LLMs/grammars/FOL_constrained.gbnf'}
 
-        # Load and process templates
         self.templates = {}
         for key, path in templates.items():
             with open(path, 'r') as f:
@@ -87,15 +89,34 @@ class LogicProgramGenerator(PromptGenerator):
             n_ctx=config.n_ctx,
             verbose=config.verbose
         )
+        
+        # Convert stop_time string to datetime object if provided
+        self.stop_time = None
+        if config.stop_time:
+            try:
+                self.stop_time = datetime.strptime(config.stop_time, "%d-%m-%y:%H-%M-%S")
+            except ValueError as e:
+                raise ValueError(f"Invalid stop_time format. Use dd-mm-yy:hh-mm-ss. Error: {str(e)}")
+        
+        # Set up timeout decorator with config timeout
+        self._unconstrained_generator = timeout(seconds=config.timeout_seconds)(self._unconstrained_generator_base)
+        self._json_wrapper = timeout(seconds=config.timeout_seconds)(self._json_wrapper_base)
+        self._constrained_generator = timeout(seconds=config.timeout_seconds)(self._constrained_generator_base)
 
+    def _check_time_limit(self):
+        """Check if we've reached the stop time"""
+        if self.stop_time and datetime.now() >= self.stop_time:
+            logger.info(f"Stop time {self.stop_time} reached. Saving progress and exiting...")
+            return True
+        return False
+    
     def _load_raw_dataset(self) -> List[dict]:
         dataset_path = Path(self.config.data_path) / self.config.dataset_name / f'{self.config.split}.json'
         with open(dataset_path) as f:
             raw_dataset = json.load(f)
         return raw_dataset
 
-    @timeout(seconds=180)
-    def _unconstrained_generator(self, sample: dict) -> Tuple[str, float]:
+    def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
         user = self.prompter.unconstrained(sample=sample)
         response = self.sketcher_api.invoke(prompt=user)
         
@@ -104,8 +125,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         return content, perplexity
 
-    @timeout(seconds=180)
-    def _json_wrapper(self, unconstrained: str) -> dict:
+    def _json_wrapper_base(self, unconstrained: str) -> dict:
         user = self.prompter.json_wrap(unconstrained)
         response = self.sketcher_api.invoke(
             prompt=user,
@@ -117,8 +137,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         return json.loads(content), perplexity
     
-    @timeout(seconds=180)
-    def _constrained_generator(self, sample: str) -> dict:
+    def _constrained_generator_base(self, sample: str) -> dict:
         user = self.prompter.unconstrained(sample)
         response = self.sketcher_api.invoke(
             prompt=user,
@@ -140,10 +159,9 @@ class LogicProgramGenerator(PromptGenerator):
         
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
 
-        return content , perplexity
+        return content, perplexity
     
     def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
-        
         outputs = []
         existing_ids = []
         existing_samples = []
@@ -166,7 +184,6 @@ class LogicProgramGenerator(PromptGenerator):
                 raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
                     
         return raw_dataset, outputs, existing_samples, existing_ids
-        
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -180,27 +197,24 @@ class LogicProgramGenerator(PromptGenerator):
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         for i, sample in enumerate(pbar := tqdm(raw_dataset)):
+            if self._check_time_limit():
+                break
         
             if sample['id'] in existing_ids:
-                
                 sample = [s for s in existing_samples if s['id'] == sample['id']][0]               
                 nl_problem = sample['nl_problem']
-            
             else:
                 nl_problem = sample
             
             try:
                 if not 'logic_problem' in sample.keys():
-                
                     pbar.set_description("Generating unconstrained problem %s" % sample['id'])
                     unconstrained, perplexity = self._unconstrained_generator(nl_problem)
                     
                     pbar.set_description("Json wrapping problem %s" % sample['id'])
                     logic_problem, json_perplexity = self._json_wrapper(unconstrained)
-
                     
                     logic_problem['perplexity'] = (perplexity, json_perplexity)
-                    
                 else:
                     logic_problem = sample['logic_problem']
                     
@@ -208,12 +222,10 @@ class LogicProgramGenerator(PromptGenerator):
                     logger.debug(logic_problem)
                         
                 if not 'logic_problem_gcd' in sample.keys():
-                    
                     pbar.set_description("Generating constrained problem %s" % sample['id'])
                     logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
                     
                     logic_problem_gcd['perplexity'] = gcd_perplexity
-                    
                 else:
                     logic_problem_gcd = sample['logic_problem_gcd']
                 
@@ -244,7 +256,10 @@ class LogicProgramGenerator(PromptGenerator):
             with open(save_file, 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"Generated {len(outputs)} examples.")
+        if self._check_time_limit():
+            logger.info("Script stopped due to reaching stop time")
+        else:
+            logger.info(f"Generated {len(outputs)} examples.")
 
 def parse_args() -> Config:
     import argparse
@@ -258,6 +273,8 @@ def parse_args() -> Config:
     parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--n-ctx', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--stop-time', type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
+    parser.add_argument('--timeout-seconds', default=None, help='Timeout in seconds for generation operations')
     
     args = parser.parse_args()
     return Config(**vars(args))
@@ -269,6 +286,9 @@ if __name__ == '__main__':
     logger.info(f"Sketcher: {config.sketcher_name}")
     logger.info(f"Split: {config.split}")
     logger.info(f"Save path: {config.save_path}")
+    if config.stop_time:
+        logger.info(f"Stop time: {config.stop_time}")
+    logger.info(f"Operation timeout: {config.timeout_seconds} seconds")
     
     try:
         generator = LogicProgramGenerator(config)

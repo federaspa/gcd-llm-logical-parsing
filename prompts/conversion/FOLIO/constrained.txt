@@ -33,6 +33,25 @@ Rina is either a person who jokes about being addicted to caffeine or is unaware
 
 {"fol_preds": ["Dependent(x)", "Drinks(x)", "Jokes(x)", "Unaware(x)", "Student(x)"], "fol_consts": ["rina"], "fol_rules": ["∀x (Drinks(x) → Dependent(x))", "∀x (Drinks(x) ⊕ Jokes(x))", "∀x (Jokes(x) → ¬Unaware(x))", "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))", "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"], "fol_conc": "Jokes(rina) ⊕ Unaware(rina)"}
 
+###
+
+Here's another example:
+
+NL premises:
+"""
+Sam is doing a project.
+A project is written either in Rust or in Python.
+If Sam does a project written in Python, he will not use a Mac.
+Sam is using a Mac.
+If Sam uses a Mac, he will play a song.
+If a song is not "Perfect", Sam will never play it.
+"""
+
+NL conclusion:
+"""
+The project Sam is doing is written in Rust.
+"""
+
 ------
 
 {"fol_preds": ["Project(x)", "Do(x, y)", "WrittenIn(x, y)", "Use(x, y)", "Play(x, y)", "Song(x)", "Be(x, y)"], "fol_consts": ["sam", "mac", "python", "rust", "perfect"], "fol_rules": ["∃x (Project(x) ∧ Do(sam, x))", "∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))", "∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))", "Use(sam, mac)", "Use(sam, mac) → ∃x (Song(x) ∧ Play(sam, x))", "∀x ((Song(x) ∧ ¬Be(x, perfect)) → ¬Play(sam, x))"], "fol_conc": "∃x (Project(x) ∧ Do(sam, x) ∧ WrittenIn(x, rust))"}
