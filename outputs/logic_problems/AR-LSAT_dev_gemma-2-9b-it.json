@@ -1,0 +1,141 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "Which one of the following is a complete and accurate list of the children who must be among those assigned to shared lockers?",
+      "options": [
+        "A) Fred, Juan",
+        "B) Juan, Paul",
+        "C) Juan, Marc, Paul",
+        "D) Juan, Marc, Trisha",
+        "E) Juan, Nita, Trisha"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Children 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((1) (2) (3) (4) (5))))",
+        "(declare-fun assigns (Children Lockers) Bool)"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (or (= (count ((lambda (c) (assigns c l)) Children)) 1) (= (count ((lambda (c) (assigns c l)) Children)) 2)))",
+        "(forall ((c Children)) (= (count ((lambda (l) (assigns c l)) Lockers)) 1))",
+        "(forall ((l Lockers)) (and (= (count ((lambda (c) (if (and (assigns c l) (not (= c Nita) (not (= c Rachel) (not (= c Trisha) (not (= c Fred) (not (= c Marc) (not (= c Paul))))) (assigns c l)) 1 0)) Children) 1) (= (count ((lambda (c) (if (and (assigns c l) (and (= c Nita) (not (= c Rachel) (not (= c Trisha) (not (= c Fred) (not (= c Marc) (not (= c Paul))))))) (assigns c l)) 1 0)) Children) 1))))))",
+        "(and (exists ((l Lockers)) (and (assigns Juan l) (assigns (distinct Juan) l) (not (assigns Rachel l)))) (forall ((l Lockers)) (not (and (assigns Rachel l) (assigns (distinct Rachel) l)))))",
+        "(not (and (exists ((l Lockers)) (and (assigns Nita l) (assigns Trisha (+ l 1)))) (exists ((l Lockers)) (and (assigns Trisha l) (assigns Nita (+ l 1))))))",
+        "(assigns Fred 3)"
+      ],
+      "options": [
+        "(and (assigns Juan l1) (assigns (distinct Juan) l1) (assigns Fred l3) (assigns Paul l5) (assigns Marc l2) (assigns Nita l4))",
+        "(and (assigns Juan l1) (assigns (distinct Juan) l2) (assigns Fred l3) (assigns Paul l5) (assigns Marc l4) (assigns Nita l4))",
+        "(and (assigns Juan l1) (assigns (distinct Juan) l2) (assigns Fred l3) (assigns Paul l4) (assigns Marc l5) (assigns Nita l3))",
+        "(and (assigns Juan l1) (assigns (distinct Juan) l2) (assigns Fred l3) (assigns Paul l4) (assigns Marc l5) (assigns Nita l3))"
+      ],
+      "type": "sat",
+      "perplexity": [
+        1.1200919151306152,
+        1.0050548315048218
+      ]
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If Trisha is assigned to locker 3 and Marc alone is assigned to locker 1, then which one of the following must be true?",
+      "options": [
+        "A) Juan is assigned to locker 4.",
+        "B) Juan is assigned to locker 5.",
+        "C) Paul is assigned to locker 2.",
+        "D) Rachel is assigned to locker 2.",
+        "E) Rachel is assigned to locker 5."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Children 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((1) (2) (3) (4) (5))))",
+        "(declare-fun assigned-to (Children Lockers) Bool)",
+        "(declare-fun is_shared (Lockers) Bool)"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (or (<= (count (filter (lambda (c) (and (assigned-to c l) (not (is_shared l)))) Children) 1) (>= (count (filter (lambda (c) (and (assigned-to c l) (is_shared l)))) Children) 1)))",
+        "(forall ((c Children)) (<= (count (filter (lambda (l) (assigned-to c l)) Lockers)) 1))",
+        "(forall ((l Lockers)) (and (is_shared l) (= (count (filter (lambda (c) (and (assigned-to c l) (member c Children))) Children) 1) (= (count (filter (lambda (c) (and (assigned-to c l) (not (member c Children))) Children) 1)))))",
+        "(exists ((l Lockers)) (and (is_shared l) (assigned-to Juan l)))",
+        "(forall ((l Lockers)) (not (and (is_shared l) (assigned-to Rachel l)))),",
+        "(not (and (assigned-to Nita 1) (assigned-to Trisha 2) ) )",
+        "(not (and (assigned-to Nita 2) (assigned-to Trisha 3) ) )",
+        "(not (and (assigned-to Nita 3) (assigned-to Trisha 4) ) )",
+        "(not (and (assigned-to Nita 4) (assigned-to Trisha 5) ) )",
+        "(assert (assigned-to Fred 3))",
+        "(assert (assigned-to Marc 1))",
+        "(assert (assigned-to Trisha 3))",
+        "options",
+        [
+          "(assert (assigned-to Juan 4))",
+          "(assert (assigned-to Juan 5))",
+          "(assert (assigned-to Paul 2))",
+          "(assert (assigned-to Rachel 2))",
+          "(assert (assigned-to Rachel 5))",
+          "type",
+          "sat"
+        ],
+        "type",
+        "sat"
+      ],
+      "perplexity": [
+        1.0976812839508057,
+        1.2222445011138916
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If the four boys are assigned to consecutively numbered lockers and Juan is assigned to locker 5, then which one of the following is a complete and accurate list of lockers each of which CANNOT be a shared locker?",
+      "options": [
+        "A) locker 2",
+        "B) locker 4",
+        "C) locker 1, locker 2",
+        "D) locker 1, locker 4",
+        "E) locker 2, locker 4"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((People 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((1) (2) (3) (4) (5))))",
+        "(declare-fun shared (Lockers Bool))",
+        "(declare-fun shared (Lockers Bool)) "
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (or (not (shared l)) (shared l)))",
+        "(forall ((p People)) (<= (+ (ite (shared 1 p) 1 0) (ite (shared 2 p) 1 0) (ite (shared 3 p) 1 0) (ite (shared 4 p) 1 0) (ite (shared 5 p) 1 0)) 1))",
+        "(forall ((l Lockers)) (=> (shared l) (and (exists ((g People) (b People)) (and (= g (Nita) (Rachel) (Trisha)) (= b (Fred) (Juan) (Marc) (Paul)) (shared l g) (shared l b)))))))",
+        "(exists ((l Lockers)) (shared l))",
+        "(forall ((l Lockers)) (=> (shared l) (not (= l Rachel))))",
+        "(not (or (and (shared 1 Nita) (shared 2 Trisha)) (and (shared 2 Nita) (shared 3 Trisha)) (and (shared 3 Nita) (shared 4 Trisha))))",
+        "(shared 3)",
+        "(shared 5)"
+      ],
+      "options": [
+        "(not (shared 2))",
+        "(not (shared 4))",
+        "(and (not (shared 1)) (not (shared 2)))",
+        "(and (not (shared 1)) (not (shared 4)))",
+        "(and (not (shared 2)) (not (shared 4)))"
+      ],
+      "type": "sat",
+      "perplexity": [
+        1.093948245048523,
+        1.0336458683013916
+      ]
+    }
+  }
+]

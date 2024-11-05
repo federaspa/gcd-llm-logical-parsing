@@ -49,5 +49,233 @@
       "type": "sat",
       "perplexity": 1.6445813179016113
     }
+  },
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "Which one of the following is a complete and accurate list of the children who must be among those assigned to shared lockers?",
+      "options": [
+        "A) Fred, Juan",
+        "B) Juan, Paul",
+        "C) Juan, Marc, Paul",
+        "D) Juan, Marc, Trisha",
+        "E) Juan, Nita, Trisha"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Children 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((locker1) (locker2) (locker3) (locker4) (locker5))))",
+        "(declare-datatypes ((Genders 0)) (((boy) (girl))))",
+        "(declare-fun assigned (Children Lockers) Bool)",
+        "(define-fun to-int ((b Bool)) Int (ite b 1 0))",
+        "(declare-fun shared (Lockers) Bool)"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (or (not (assigned Fred l)) (not (assigned Juan l)) (not (assigned Marc l)) (not (assigned Paul l)) (not (assigned Nita l)) (not (assigned Rachel l)) (not (assigned Trisha l)) (let ((child1 (ite (assigned Fred l) Fred Juan)) (child2 (ite (and (assigned Fred l) (not (assigned Juan l))) Marc Paul))) (or (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child1 l)) 1) (= (to-int (assigned child2 l)) 1)))))",
+        "(forall ((c Children)) (not (or (assigned c locker1) (assigned c locker2) (assigned c locker3) (assigned c locker4) (assigned c locker5) (let ((l1 (ite (assigned c locker1) 1 0)) (l2 (ite (assigned c locker2) 1 0)) (l3 (ite (assigned c locker3) 1 0)) (l4 (ite (assigned c locker4) 1 0)) (l5 (ite (assigned c locker5) 1 0))) (= (+ l1 l2 l3 l4 l5) 1))))))",
+        "(forall ((l Lockers)) (let ((shared1 (ite (assigned Juan l) 1 0)) (shared2 (ite (assigned Marc l) 1 0)) (shared3 (ite (assigned Paul l) 1 0)) (shared4 (ite (assigned Nita l) 1 0)) (shared5 (ite (assigned Rachel l) 1 0)) (shared6 (ite (assigned Trisha l) 1 0))) (or (= (shared l) 0) (and (not (shared l)) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1) (= (to-int (ite (and (shared l) (= (to-int (assigned Nita l)) 1) (= (to-int (assigned Juan l)) 1)) (boy girl) (boy boy))) 1)))))",
+        "(shared locker2)",
+        "(not (shared locker2))",
+        "(not (shared locker3))",
+        "(not (shared locker4))",
+        "(not (shared locker5))",
+        "(not (and (shared locker2) (shared locker3)))",
+        "(assigned Fred locker3)",
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker2) (not (assigned Marc locker2)) (not (assigned Paul locker2))) (and (not (shared locker2)) (not (shared locker3)) (shared locker4) (not (shared locker5)) (assigned Fred locker3) (not (assigned Juan locker4)) (not (assigned Marc locker4)) (assigned Paul locker4)))",
+        "(or (and (shared locker2) (not (shared locker3)) (shared locker4) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker3) (assigned Paul locker3)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker5) (assigned Marc locker5) (not (assigned Paul locker5))))",
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Paul locker3)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker4) (not (assigned Marc locker4)) (assigned Paul locker4)))",
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Trisha locker2)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker4) (not (assigned Marc locker4)) (assigned Nita locker4)))",
+        "(or (and (shared locker2) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Nita locker2)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker5) (assigned Marc locker5) (assigned Trisha locker5)))"
+      ],
+      "options": [
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker2) (not (assigned Marc locker2)) (not (assigned Paul locker2))) (and (not (shared locker2)) (not (shared locker3)) (shared locker4) (not (shared locker5)) (assigned Fred locker3) (not (assigned Juan locker4)) (not (assigned Marc locker4)) (assigned Paul locker4)))",
+        "(or (and (shared locker2) (not (shared locker3)) (shared locker4) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker3) (assigned Paul locker3)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker5) (assigned Marc locker5) (not (assigned Paul locker5))))",
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Paul locker3)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker4) (not (assigned Marc locker4)) (assigned Paul locker4)))",
+        "(or (and (shared locker2) (shared locker3) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Trisha locker2)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (not (shared locker5)) (assigned Fred locker3) (assigned Juan locker4) (not (assigned Marc locker4)) (assigned Nita locker4)))",
+        "(or (and (shared locker2) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker2) (assigned Marc locker5) (assigned Nita locker2)) (and (not (shared locker2)) (not (shared locker3)) (not (shared locker4)) (shared locker5) (assigned Fred locker3) (assigned Juan locker5) (assigned Marc locker5) (assigned Trisha locker5)))"
+      ],
+      "type": "sat",
+      "perplexity": [
+        1.1485391855239868,
+        1.0225040912628174
+      ]
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If Trisha is assigned to locker 3 and Marc alone is assigned to locker 1, then which one of the following must be true?",
+      "options": [
+        "A) Juan is assigned to locker 4.",
+        "B) Juan is assigned to locker 5.",
+        "C) Paul is assigned to locker 2.",
+        "D) Rachel is assigned to locker 2.",
+        "E) Rachel is assigned to locker 5."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Children 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((1) (2) (3) (4) (5))))",
+        "(declare-datatypes ((Genders 0)) (((boy) (girl))))",
+        "(declare-fun assigned (Children Lockers) (Genders Bool))"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (let ((p1 (assigned ?p1 l)) (p2 (assigned ?p2 l))) (= (ite p1 p2 (ite p2 p1 0)) 1)))",
+        "(forall ((c Children)) (exists ((l Lockers)) (assigned c l)))",
+        "(forall ((l Lockers)) (let ((p1 (assigned ?p1 l)) (p2 (assigned ?p2 l))) (and (ite p1 p2 (let ((g1 (gender ?p1)) (g2 (gender ?p2))) (ite (and (= g1 girl) (= g2 boy)) true false))) (ite p2 p1 (let ((g1 (gender ?p2)) (g2 (gender ?p1)) (g1 (gender ?p2)) (g2 (gender ?p1))) (ite (and (= g1 girl) (= g2 boy)) true false)))))",
+        "(exists ((l Lockers)) (and (assigned Juan l) (not (assigned Rachel l))))",
+        "(forall ((l Lockers)) (not (and (assigned ?p l) (assigned ?q l) (distinct ?p Rachel) (distinct ?q Rachel))))",
+        "(forall ((l Lockers)) (let ((p1 (assigned Nita l)) (p2 (assigned Trisha l)) (l1 (ite (= l 1) 2 (ite (= l 5) 4 (ite (ite (< l 4) (< l (+ l 1)) (ite (> l 2) (> l (+ l -1))) l) (+ l 1))))) (l2 (ite (= l 2) 1 (ite (= l 4) 3 (ite (ite (< l 4) (< l (+ l 1)) (ite (> l 2) (> l (+ l -1))) l) (+ l 1)) 5))) (not (and p1 p2 (or (= l l1) (= l l2))))))",
+        "(assigned Fred 3)",
+        "(assigned Trisha 3)",
+        "(forall ((l Lockers)) (not (assigned Marc l)) (ite (not (= l 1)) true (assigned Marc l)))"
+      ],
+      "options": [
+        "(assigned Juan 4)",
+        "(assigned Juan 5)",
+        "(assigned Paul 2)",
+        "(assigned Rachel 2)",
+        "(assigned Rachel 5)"
+      ],
+      "type": "sat",
+      "perplexity": [
+        1.2838796377182007,
+        1.0648943185806274
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If the four boys are assigned to consecutively numbered lockers and Juan is assigned to locker 5, then which one of the following is a complete and accurate list of lockers each of which CANNOT be a shared locker?",
+      "options": [
+        "A) locker 2",
+        "B) locker 4",
+        "C) locker 1, locker 2",
+        "D) locker 1, locker 4",
+        "E) locker 2, locker 4"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((People 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha))))",
+        "(declare-datatypes ((Lockers 0)) (((locker1) (locker2) (locker3) (locker4) (locker5))))",
+        "(declare-fun assigns (People Lockers) Bool)"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (or (not (exists ((p People)) (and (assigns p l) (assigns p l)))) (exists ((p People) (q People)) (and (assigns p l) (assigns q l) (distinct p q)))))",
+        "(forall ((p People)) (exists ((l Lockers)) (assigns p l)))",
+        "(forall ((l Lockers) (p People) (q People)) (=> (and (assigns p l) (assigns q l) (distinct p q)) (or (and (and (member p '(Nita Rachel Trisha)) (member q '(Fred Juan Marc Paul))) (distinct (assigns p (locker1)) (assigns q (locker1))) (distinct (assigns p (locker1)) (assigns q (locker2))) (distinct (assigns p (locker2)) (assigns q (locker2))) (distinct (assigns p (locker1)) (assigns q (locker3))) (distinct (assigns p (locker3)) (assigns q (locker3))) (distinct (assigns p (locker2)) (assigns q (locker4))) (distinct (assigns p (locker4)) (assigns q (locker4))) (distinct (assigns p (locker3)) (assigns q (locker5))) (distinct (assigns p (locker5)) (assigns q (locker5)))))",
+        "(exists ((p People) (q People)) (and (assigns p (locker5)) (assigns q (locker5)) (distinct p q) (or (and (member p '(Nita Rachel Trisha)) (member q '(Fred Juan Marc Paul))) (and (member p '(Fred Juan Marc Paul)) (member q '(Nita Rachel Trisha))))))",
+        "(not (exists ((p People) (q People)) (and (assigns p (locker5)) (assigns q (locker5)) (distinct p q) (and (member p '(Nita Rachel Trisha)) (member q '(Nita Rachel Trisha)))))",
+        "(not (or (and (assigns Nita (locker2)) (assigns Trisha (locker3))) (and (assigns Nita (locker3)) (assigns Trisha (locker2))) (and (assigns Nita (locker3)) (assigns Trisha (locker4))) (and (assigns Nita (locker4)) (assigns Trisha (locker3)))))",
+        "(assigns Fred (locker3))"
+      ],
+      "options": [
+        "(not (exists ((l Lockers)) (and (assigns Paul l) (assigns Juan l))))",
+        "(not (exists ((l Lockers)) (and (assigns Paul l) (assigns Marc l))))",
+        "(not (exists ((l Lockers)) (and (assigns Paul l) (assigns Fred l))))",
+        "(not (exists ((l Lockers)) (and (assigns Juan l) (assigns Marc l))))",
+        "(not (exists ((l Lockers)) (and (assigns Juan l) (assigns Fred l))))"
+      ],
+      "type": "unsat",
+      "perplexity": [
+        1.0472279787063599,
+        1.0543460845947266
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "Once Rachel has been assigned to a locker, what is the maximum number of different lockers each of which could be the locker to which Juan is assigned?",
+      "options": [
+        "A) one",
+        "B) two",
+        "C) three",
+        "D) four",
+        "E) five"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Children 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha)))",
+        "(declare-datatypes ((Lockers 0)) (((locker1) (locker2) (locker3) (locker4) (locker5)))",
+        "(declare-fun assigns (Children Lockers) Bool)",
+        "(define-fun to-int ((b Bool)) Int (ite b 1 0))"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (let ((c1 (to-int (exists ((c Children)) (assigns c l)))) (c2 (to-int (exists ((c1 c2 Children)) (and (assigns c1 l) (assigns c2 l))))) (c3 (to-int (exists ((c1 c2 c3 Children)) (and (assigns c1 l) (assigns c2 l) (assigns c3 l))))) (c4 (to-int (exists ((c1 c2 c3 c4 Children)) (and (assigns c1 l) (assigns c2 l) (assigns c3 l) (assigns c4 l))))) (or (= c1 1) (= c2 1) (= c3 1) (= c4 1))))",
+        "(forall ((c Children)) (= (+ (to-int (assigns c locker1)) (to-int (assigns c locker2)) (to-int (assigns c locker3)) (to-int (assigns c locker4)) (to-int (assigns c locker5))) 1))",
+        "(forall ((l Lockers)) (let ((g (to-int (exists ((g Children)) (and (member g '(Nita Rachel Trisha)) (assigns g l)))) (b (to-int (exists ((b Children)) (and (member b '(Fred Juan Marc Paul)) (assigns b l)))) (gb (to-int (exists ((g b Children)) (and (member g '(Nita Rachel Trisha)) (member b '(Fred Juan Marc Paul)) (assigns g l) (assigns b l))))) (= (+ g b gb) 1)))",
+        "(exists ((g Children)) (and (member g '(Nita Rachel Trisha)) (exists ((b Children)) (and (member b '(Fred Juan Marc Paul)) (assigns g locker2) (assigns b locker2))))",
+        "(forall ((l Lockers)) (not (exists ((g b Children)) (and (member g '(Nita Rachel Trisha)) (member b '(Fred Juan Marc Paul)) (assigns g l) (assigns b l))))",
+        "(forall ((l1 Lockers) (l2 Lockers)) (or (= l1 l2) (not (and (assigns Nita l1) (assigns Trisha l2) (or (= (+ abs (- (ite (equal l1 locker3) 1 0) (ite (equal l2 locker3) 1 0)) 0) 1) (= (+ abs (- (ite (equal l1 locker1) 1 0) (ite (equal l2 locker5) 1 0)) 0) 1)))))",
+        "(assigns Fred locker3)",
+        "(exists ((r Lockers)) (assigns Rachel r))"
+      ],
+      "options": [
+        "5"
+      ],
+      "type": "sat",
+      "perplexity": [
+        1.2050117254257202,
+        1.0550175905227661
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If the first three lockers are assigned to girls, which one of the following must be true?",
+      "options": [
+        "A) Juan is assigned to locker 1.",
+        "B) Nita is assigned to locker 3.",
+        "C) Trisha is assigned to locker 1.",
+        "D) Juan is assigned to the same locker as Trisha.",
+        "E) Paul is assigned to the same locker as Trisha."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "(declare-datatypes ((Lockers 0)) (((1) (2) (3) (4) (5))))",
+        "(declare-datatypes ((People 0)) (((Fred) (Juan) (Marc) (Paul) (Nita) (Rachel) (Trisha)))",
+        "(declare-fun assigned (Lockers People) Bool)",
+        "(define-fun to-int ((b Bool)) Int (ite b 1 0))"
+      ],
+      "constraints": [
+        "(forall ((l Lockers)) (=> (not (= (to-int (assigned l Juan)) 0)) (= (to-int (assigned l Nita)) 0)) (=> (not (= (to-int (assigned l Nita)) 0)) (= (to-int (assigned l Juan)) 0)))",
+        "(forall ((p People)) (= (or (assigned 1 p) (assigned 2 p) (assigned 3 p) (assigned 4 p) (assigned 5 p)) 1))",
+        "(forall ((l Lockers)) (let ((g (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1))) (b (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1))))) (=> (exists ((g Girl) (b Boy)) (= (assigned l g) (assigned l b))) (= (exists ((g Girl) (b Boy)) (= (assigned l g) (assigned l b))) 1)))",
+        "(exists ((g Girl) (b Boy)) (and (not (= g Nita)) (not (= g Rachel)) (not (= b Fred)) (not (= b Marc)) (not (= b Paul)) (assigned 1 (and g b))))",
+        "(forall ((l Lockers)) (let ((g (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1))) (g (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1))))) (=> (exists ((g Girl) (b Boy)) (= (assigned l g) (assigned l b))) (not (= g Rachel))))",
+        "(forall ((l Lockers)) (=> (and (= (assigned (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) Nita) (= (assigned (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)) Trisha) (= l (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1))))) (not (= l (ite (ite (ite (ite (= l 1) (= l 2) (= l 3) (= l 4)) (= l 5)) 1) (= l 1)))))",
+        "(assigned 3 Fred)"
+      ],
+      "options": [
+        "(assigned 1 Juan)",
+        "(assigned 3 Nita)",
+        "(assigned 1 Trisha)",
+        "(and (assigned 1 Juan) (= (assigned 1 Trisha)))",
+        "(and (assigned 1 Trisha) (assigned 1 Paul))"
+      ],
+      "type": "unsat",
+      "perplexity": [
+        1.1793639659881592,
+        1.0341565608978271
+      ]
+    }
   }
 ]

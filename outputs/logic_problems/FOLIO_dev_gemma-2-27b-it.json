@@ -5903,6 +5903,92 @@
     }
   },
   {
+    "id": 94,
+    "nl_problem": {
+      "context": [
+        "Pets are allowed in some managed buildings.",
+        "[BG] A deposit is required to rent an apartment in a managed building.",
+        "The security deposit can be either equal to one month's rent or more.",
+        "Fluffy is Tom's cat.",
+        "Cats are pets.",
+        "The Olive Garden is a managed building.",
+        "The monthly rent at the Olive Garden is $2000.",
+        "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "2000$ is more than $1500."
+      ],
+      "question": "Tom is allowed to move in an apartment in The Olive Garden with Fluffy.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Pet(x)",
+        "Managed(x)",
+        "Allowed(x, y)",
+        "Rent(x, y)",
+        "DepositRequired(x)",
+        "SecurityDeposit(x, y)",
+        "MoreThan(x, y)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "oliveGarden",
+        "monthRent",
+        "depositLimit"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(pet, x))",
+        "∀x (Managed(x) → DepositRequired(x))",
+        "∀x (DepositRequired(x) → (SecurityDeposit(x, monthRent) ⊕ ∃y (SecurityDeposit(x, y) ∧ MoreThan(y, monthRent))))",
+        "Pet(fluffy)",
+        "Pet(fluffy)",
+        "Managed(oliveGarden)",
+        "Rent(oliveGarden, monthRent)",
+        "∀x (Allowed(tom, x) ↔ (Allowed(fluffy, x) ∧ ¬(SecurityDeposit(x, depositLimit) ∧ MoreThan(depositLimit, monthRent))))",
+        "MoreThan(monthRent, depositLimit)"
+      ],
+      "fol_conc": "Allowed(tom, oliveGarden)",
+      "perplexity": [
+        1.0983092784881592,
+        1.015049695968628
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Pet(x)",
+        "Managed(x)",
+        "Allowed(x, y)",
+        "Deposit(x)",
+        "Rent(x, y)",
+        "More(x, y)",
+        "Cat(x)",
+        "Building(x)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "olivegarden",
+        "month",
+        "dollar"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(x, pet))",
+        "∀x (Managed(x) → Deposit(x))",
+        "∀x (Deposit(x) → (Equal(x, month) ∨ More(x, month)))",
+        "Cat(fluffy)",
+        "Pet(fluffy)",
+        "Building(olivegarden)",
+        "Managed(olivegarden)",
+        "Rent(olivegarden, 2000)",
+        "∀x (Allowed(x, fluffy) ∧ ¬More(deposit, 1500) ↔ Allowed(x, olivegarden))",
+        "More(2000, 1500)"
+      ],
+      "fol_conc": "Allowed(tom, olivegarden)",
+      "perplexity": 1.4545905590057373
+    }
+  },
+  {
     "id": 96,
     "nl_problem": {
       "context": [
@@ -6753,6 +6839,144 @@
       ],
       "fol_conc": "¬Provide(ets, gre)",
       "perplexity": 1.3731863498687744
+    }
+  },
+  {
+    "id": 108,
+    "nl_problem": {
+      "context": [
+        "If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.",
+        "All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.",
+        "If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.",
+        "If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.",
+        "All households with a high net income have people who have parents who are very busy with their regular jobs.",
+        "Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. "
+      ],
+      "question": "Peter tidies his space consistently and enjoys the process of cleaning.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "SpillsFood(x)",
+        "TidySpaces(x)",
+        "EnjoyCleaning(x)",
+        "Foodie(x)",
+        "FrequentEater(x)",
+        "OnlyChild(x)",
+        "BusyParents(x)",
+        "HighIncome(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "∀x (SpillsFood(x) → ¬TidySpaces(x) ∧ EnjoyCleaning(x))",
+        "∀x (Foodie(x) ∧ FrequentEater(x) → SpillsFood(x))",
+        "∀x (OnlyChild(x) → TidySpaces(x) ∧ EnjoyCleaning(x))",
+        "∀x (BusyParents(x) → OnlyChild(x))",
+        "∀x (HighIncome(x) → BusyParents(x))",
+        "(SpillsFood(peter) ⊕ ¬SpillsFood(peter)) ∧ (OnlyChild(peter) ⊕ ¬OnlyChild(peter))"
+      ],
+      "fol_conc": "TidySpaces(peter) ∧ EnjoyCleaning(peter)",
+      "perplexity": [
+        1.0379656553268433,
+        1.0122891664505005
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Frequent(x)",
+        "Only(x)",
+        "Busy(x)",
+        "High(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "∀x (Spill(x) → ¬Tidy(x) ∧ Enjoy(x))",
+        "∀x (Foodie(x) ∧ Frequent(x) → Spill(x))",
+        "∀x (Only(x) → Tidy(x) ∧ Enjoy(x))",
+        "∀x (Busy(x) → Only(x))",
+        "∀x (High(x) → Busy(x))",
+        "(Spill(peter) ∧ Only(peter)) ⊕ ¬(Spill(peter) ∨ Only(peter))"
+      ],
+      "fol_conc": "Tidy(peter) ∧ Enjoy(peter)",
+      "perplexity": 1.3460785150527954
+    }
+  },
+  {
+    "id": 109,
+    "nl_problem": {
+      "context": [
+        "If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.",
+        "All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.",
+        "If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.",
+        "If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.",
+        "All households with a high net income have people who have parents who are very busy with their regular jobs.",
+        "Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. "
+      ],
+      "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try or belongs to a household with a high net income.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "EnjoyClean(x)",
+        "Foodie(x)",
+        "FrequentEater(x)",
+        "OnlyChild(x)",
+        "BusyParents(x)",
+        "HighIncome(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "∀x (Spill(x) → ¬Tidy(x) ∧ EnjoyClean(x))",
+        "∀x (Foodie(x) ∧ FrequentEater(x) → Spill(x))",
+        "∀x (OnlyChild(x) → Tidy(x) ∧ EnjoyClean(x))",
+        "∀x (BusyParents(x) → OnlyChild(x))",
+        "∀x (HighIncome(x) → BusyParents(x))",
+        "(Spill(peter) ⊕ OnlyChild(peter))"
+      ],
+      "fol_conc": "Foodie(peter) ∧ FrequentEater(peter) ⊕ HighIncome(peter)",
+      "perplexity": [
+        1.0230896472930908,
+        1.0152651071548462
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Frequent(x)",
+        "Only(x)",
+        "Busy(x)",
+        "High(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "∀x (Spill(x) → ¬Tidy(x) ∧ Enjoy(x))",
+        "∀x (Foodie(x) ∧ Frequent(x) → Spill(x))",
+        "∀x (Only(x) → Tidy(x) ∧ Enjoy(x))",
+        "∀x (Busy(x) → Only(x))",
+        "∀x (High(x) → Busy(x))",
+        "(Spill(peter) ∧ Only(peter)) ⊕ ¬(Spill(peter) ∨ Only(peter))"
+      ],
+      "fol_conc": "Foodie(peter) ∧ Frequent(peter) ⊕ High(peter)",
+      "perplexity": 1.3384524583816528
     }
   },
   {
@@ -12118,6 +12342,1535 @@
       ],
       "fol_conc": "∃x (Tie(x, dumaurierclassic1992) ∧ Onleaderboard(descampe, x))",
       "perplexity": 1.3286362886428833
+    }
+  },
+  {
+    "id": 196,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi is terricolous.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "HasLegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (HasLegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → HasLegs(x))",
+        "¬(Jumps(kiki) ∨ HasLegs(kiki)) → (Terricolous(kiki) ∨ HasLegs(kiki))"
+      ],
+      "fol_conc": "Terricolous(kiki)",
+      "perplexity": [
+        1.0405436754226685,
+        1.0156168937683105
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Likes(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Likes(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(kiki) ∨ Haslegs(kiki)) → (Terricolous(kiki) ∨ Haslegs(kiki))"
+      ],
+      "fol_conc": "Terricolous(kiki)",
+      "perplexity": 1.3296314477920532
+    }
+  },
+  {
+    "id": 197,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi barks and is a dog.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Bark(x)",
+        "Like(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jump(x)",
+        "HasLegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Bark(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Bark(x)))",
+        "∀x (Jump(x) → Like(jane, x))",
+        "∀x (HasLegs(x) → Jump(x))",
+        "∀x (Terricolous(x) → HasLegs(x))",
+        "¬(Jump(kiki) ∨ HasLegs(kiki)) → (Terricolous(kiki) ⊕ HasLegs(kiki))"
+      ],
+      "fol_conc": "Bark(kiki) ∧ Dog(kiki)",
+      "perplexity": [
+        1.027800440788269,
+        1.0087215900421143
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Likes(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Likes(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(kiki) ∨ Haslegs(kiki)) → (Terricolous(kiki) ∨ Haslegs(kiki))"
+      ],
+      "fol_conc": "Barks(kiki) ∧ Dog(kiki)",
+      "perplexity": 1.3216677904129028
+    }
+  },
+  {
+    "id": 42,
+    "nl_problem": {
+      "context": [
+        "If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. ",
+        "Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association.",
+        "All female tennis players at Roland Garros 2022 lost to Iga Swiatek.",
+        "Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. ",
+        "All male tennis players at Roland Garros 2022 lost to Rafael Nadal.",
+        "If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022."
+      ],
+      "question": "Coco Gauff is among the most active players in major tennis.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "RankedHighly(x)",
+        "Active(x)",
+        "LostTo(x, y)",
+        "FemalePlayer(x)",
+        "MalePlayer(x)",
+        "AtRolandGarros2022(x)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "iga_swiatek",
+        "rafael_nadal",
+        "coco_gauff"
+      ],
+      "fol_rules": [
+        "∀x (RankedHighly(x) → Active(x))",
+        "∀x (LostTo(x, iga_swiatek) → RankedHighly(x))",
+        "∀x (FemalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, iga_swiatek))",
+        "∀x (FemalePlayer(x) ∧ AtRolandGarros2022(x)) ∨ (MalePlayer(x) ∧ AtRolandGarros2022(x))",
+        "∀x (MalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, rafael_nadal))",
+        "∀x ((RankedHighly(x) ∨ LostTo(x, rafael_nadal)) ∧ Player(x) → ¬(MalePlayer(x) ∧ AtRolandGarros2022(x)))"
+      ],
+      "fol_conc": "Active(coco_gauff)",
+      "perplexity": [
+        1.0246150493621826,
+        1.0074570178985596
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Female(x)",
+        "Male(x)",
+        "At2022(x)",
+        "Roland(x)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "iga",
+        "rafa",
+        "coco",
+        "roland"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Female(x) ∧ At2022(x) ∧ Roland(x) → Lost(x, iga))",
+        "∀x (At2022(x) ∧ Roland(x) → (Female(x) ∨ Male(x)))",
+        "∀x (Male(x) ∧ At2022(x) ∧ Roland(x) → Lost(x, rafa))",
+        "∀x ((Ranked(x) ∨ Lost(x, rafa)) → ¬(Male(x) ∧ At2022(x) ∧ Roland(x)))"
+      ],
+      "fol_conc": "Active(coco)",
+      "perplexity": 1.3326691389083862
+    }
+  },
+  {
+    "id": 43,
+    "nl_problem": {
+      "context": [
+        "If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. ",
+        "Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association.",
+        "All female tennis players at Roland Garros 2022 lost to Iga Swiatek.",
+        "Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. ",
+        "All male tennis players at Roland Garros 2022 lost to Rafael Nadal.",
+        "If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022."
+      ],
+      "question": "Coco Gauff has lost to Rafael Nadal.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "RankedHighly(x)",
+        "Active(x)",
+        "LostTo(x, y)",
+        "FemalePlayer(x)",
+        "MalePlayer(x)",
+        "AtRolandGarros2022(x)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "iga",
+        "rafael",
+        "coco"
+      ],
+      "fol_rules": [
+        "∀x (RankedHighly(x) → Active(x))",
+        "∀x (LostTo(x, iga) → RankedHighly(x))",
+        "∀x (FemalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, iga))",
+        "∀x (AtRolandGarros2022(x) → (FemalePlayer(x) ∨ MalePlayer(x)))",
+        "∀x (MalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, rafael))",
+        "∀x ( (RankedHighly(x) ∨ LostTo(x, rafael)) ∧ Player(x) → ¬(MalePlayer(x) ∧ AtRolandGarros2022(x)) )"
+      ],
+      "fol_conc": "LostTo(coco, rafael)",
+      "perplexity": [
+        1.0468411445617676,
+        1.0117628574371338
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Female(x)",
+        "Male(x)",
+        "At2022(x)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "iga",
+        "rafa",
+        "coco",
+        "roland"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Female(x) ∧ At2022(x) → Lost(x, iga))",
+        "∀x (At2022(x) → (Female(x) ∨ Male(x)))",
+        "∀x (Male(x) ∧ At2022(x) → Lost(x, rafa))",
+        "∀x ((Ranked(x) ∨ Lost(x, rafa)) → ¬(Male(x) ∧ At2022(x)))"
+      ],
+      "fol_conc": "Lost(coco, rafa)",
+      "perplexity": 1.36208975315094
+    }
+  },
+  {
+    "id": 44,
+    "nl_problem": {
+      "context": [
+        "If a player is ranked highly by the Women's Tennis Association, then they are among the most active players in major tennis. ",
+        "Everyone who lost to Iga Swiatek is ranked highly by the Women's Tennis Association.",
+        "All female tennis players at Roland Garros 2022 lost to Iga Swiatek.",
+        "Either female tennis players at Roland Garros 2022 or male tennis players at Roland Garros 2022. ",
+        "All male tennis players at Roland Garros 2022 lost to Rafael Nadal.",
+        "If Coco Gauff is a player who is ranked highly by the Women's Tennis Association or a player who lost to Rafael Nadal, then Coco Gauff is not a male tennis player at Roland Garros 2022."
+      ],
+      "question": "Coco Gauff is not a player who lost to Iga Swiatek or one of the most active players in major tennis.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "RankedHighly(x)",
+        "Active(x)",
+        "LostTo(x, y)",
+        "FemalePlayer(x)",
+        "MalePlayer(x)",
+        "AtRolandGarros2022(x)",
+        "Player(x)"
+      ],
+      "fol_consts": [
+        "iga_swiatek",
+        "rafael_nadal",
+        "coco_gauff"
+      ],
+      "fol_rules": [
+        "∀x (RankedHighly(x) → Active(x))",
+        "∀x (LostTo(x, iga_swiatek) → RankedHighly(x))",
+        "∀x (FemalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, iga_swiatek))",
+        "∀x (FemalePlayer(x) ∧ AtRolandGarros2022(x)) ∨ (MalePlayer(x) ∧ AtRolandGarros2022(x))",
+        "∀x (MalePlayer(x) ∧ AtRolandGarros2022(x) → LostTo(x, rafael_nadal))",
+        "∀x ( (RankedHighly(x) ∨ LostTo(x, rafael_nadal)) → ¬(MalePlayer(x) ∧ AtRolandGarros2022(x)))"
+      ],
+      "fol_conc": "¬(LostTo(coco_gauff, iga_swiatek) ∨ Active(coco_gauff))",
+      "perplexity": [
+        1.0329837799072266,
+        1.0085986852645874
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Ranked(x)",
+        "Active(x)",
+        "Lost(x, y)",
+        "Female(x)",
+        "Male(x)",
+        "Player(x)",
+        "Roland(x)"
+      ],
+      "fol_consts": [
+        "iga",
+        "rafa",
+        "coco",
+        "roland2022"
+      ],
+      "fol_rules": [
+        "∀x (Ranked(x) → Active(x))",
+        "∀x (Lost(x, iga) → Ranked(x))",
+        "∀x (Female(x) ∧ Roland(x) → Lost(x, iga))",
+        "∀x (Roland(x) → (Female(x) ∨ Male(x)))",
+        "∀x (Male(x) ∧ Roland(x) → Lost(x, rafa))",
+        "∀x ((Ranked(x) ∨ Lost(x, rafa)) → ¬(Male(x) ∧ Roland(x)))"
+      ],
+      "fol_conc": "¬(Lost(coco, iga) ∨ Active(coco))",
+      "perplexity": 1.3508036136627197
+    }
+  },
+  {
+    "id": 67,
+    "nl_problem": {
+      "context": [
+        "Yale University is a private Ivy League research university.",
+        "Yale University moved to New Haven in 1716.",
+        "Yale university's endowment was valued at $42.3 billion.",
+        "Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.",
+        "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+      ],
+      "question": "Yale University has the largest university endowment of any educational institution.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "PrivateUniversity(x)",
+        "IvyLeague(x)",
+        "ResearchUniversity(x)",
+        "LocatedIn(x, y)",
+        "EndowmentValue(x, y)",
+        "ConstituentCollege(x, y)",
+        "ResidentialCollege(x)",
+        "GraduateSchool(x)",
+        "ProfessionalSchool(x)"
+      ],
+      "fol_consts": [
+        "yale",
+        "new_haven",
+        "benjamin_franklin",
+        "berkeley",
+        "branford"
+      ],
+      "fol_rules": [
+        "PrivateUniversity(yale) ∧ IvyLeague(yale) ∧ ResearchUniversity(yale)",
+        "LocatedIn(yale, new_haven)",
+        "EndowmentValue(yale, 42300000000)",
+        "ConstituentCollege(benjamin_franklin, yale) ∧ ConstituentCollege(berkeley, yale) ∧ ConstituentCollege(branford, yale)",
+        "ResidentialCollege(benjamin_franklin) ∧ ResidentialCollege(berkeley) ∧ ResidentialCollege(branford)"
+      ],
+      "fol_conc": "∀x (EndowmentValue(x, y) → EndowmentValue(yale, y))",
+      "perplexity": [
+        1.1001856327056885,
+        1.0317414999008179
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "University(x)",
+        "Private(x)",
+        "Ivy(x)",
+        "Research(x)",
+        "Moved(x, y, z)",
+        "Endowment(x, y)",
+        "Organized(x, z)",
+        "Residential(x)",
+        "Graduate(x)",
+        "Professional(x)",
+        "College(x)",
+        "List(x, y)"
+      ],
+      "fol_consts": [
+        "yale",
+        "newhaven",
+        "1716",
+        "423billion",
+        "benjaminfranklin",
+        "berkeley",
+        "branford",
+        "davenport",
+        "ezrastiles",
+        "gracehopper",
+        "jonathanedwards",
+        "morse",
+        "paulimurray",
+        "pierson",
+        "saybrook",
+        "silliman",
+        "timothydwight",
+        "trumbull"
+      ],
+      "fol_rules": [
+        "University(yale)",
+        "Private(yale)",
+        "Ivy(yale)",
+        "Research(yale)",
+        "Moved(yale, newhaven, 1716)",
+        "Endowment(yale, 423billion)",
+        "Organized(yale, 27)",
+        "College(benjaminfranklin)",
+        "College(berkeley)",
+        "College(branford)",
+        "College(davenport)",
+        "College(ezrastiles)",
+        "College(gracehopper)",
+        "College(jonathanedwards)",
+        "College(morse)",
+        "College(paulimurray)",
+        "College(pierson)",
+        "College(saybrook)",
+        "College(silliman)",
+        "College(timothydwight)",
+        "College(trumbull)",
+        "Residential(benjaminfranklin)",
+        "Residential(berkeley)",
+        "Residential(branford)",
+        "Residential(davenport)",
+        "Residential(ezrastiles)",
+        "Residential(gracehopper)",
+        "Residential(jonathanedwards)",
+        "Residential(morse)",
+        "Residential(paulimurray)",
+        "Residential(pierson)",
+        "Residential(saybrook)",
+        "Residential(silliman)",
+        "Residential(timothydwight)",
+        "Residential(trumbull)",
+        "Graduate(yale)",
+        "Professional(yale)",
+        "List(yale, benjaminfranklin)",
+        "List(yale, berkeley)",
+        "List(yale, branford)",
+        "List(yale, davenport)",
+        "List(yale, ezrastiles)",
+        "List(yale, gracehopper)",
+        "List(yale, jonathanedwards)",
+        "List(yale, morse)",
+        "List(yale, paulimurray)",
+        "List(yale, pierson)",
+        "List(yale, saybrook)",
+        "List(yale, silliman)",
+        "List(yale, timothywright)",
+        "List(yale, trumbull)"
+      ],
+      "fol_conc": "∀x (University(x) → Endowment(x, y) ∧ ¬(Endowment(yale, y) ∧ Endowment(x, y)))",
+      "perplexity": 1.1647007465362549
+    }
+  },
+  {
+    "id": 68,
+    "nl_problem": {
+      "context": [
+        "Yale University is a private Ivy League research university.",
+        "Yale University moved to New Haven in 1716.",
+        "Yale university's endowment was valued at $42.3 billion.",
+        "Yale University has been organized into 27 constituent colleges and schools: the residential colleges, the Yale Graduate School of Arts and Sciences, and twelve professional schools.",
+        "A list of residential colleges at Yale: Benjamin Franklin College, Berkeley College, Branford College, Davenport College, Ezra Stiles College, Grace Hopper College, Jonathan Edwards College, Morse College, Pauli Murray College, Pierson College, Saybrook College, Silliman College, Timothy Dwight College, and Trumbull College."
+      ],
+      "question": "Pierson College is a residential college at Yale.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "PrivateUniversity(x)",
+        "IvyLeague(x)",
+        "ResearchUniversity(x)",
+        "MovedTo(x, y, z)",
+        "EndowmentValuedAt(x, y)",
+        "OrganizedInto(x, y)",
+        "ResidentialCollege(x)",
+        "ProfessionalSchool(x)",
+        "ConstituentOf(x, y)"
+      ],
+      "fol_consts": [
+        "yale",
+        "new_haven",
+        "benjamin_franklin",
+        "berkeley",
+        "branford",
+        "davenport",
+        "ezra_stiles",
+        "grace_hopper",
+        "jonathan_edwards",
+        "morse",
+        "pauli_murray",
+        "pierson",
+        "saybrook",
+        "silliman",
+        "timothy_dwight",
+        "trumbull"
+      ],
+      "fol_rules": [
+        "PrivateUniversity(yale) ∧ IvyLeague(yale) ∧ ResearchUniversity(yale)",
+        "MovedTo(yale, new_haven, 1716)",
+        "EndowmentValuedAt(yale, 42300000000)",
+        "OrganizedInto(yale, 27)",
+        "ResidentialCollege(benjamin_franklin) ∧ ConstituentOf(benjamin_franklin, yale)",
+        "ResidentialCollege(berkeley) ∧ ConstituentOf(berkeley, yale)",
+        "ResidentialCollege(branford) ∧ ConstituentOf(branford, yale)",
+        "ResidentialCollege(davenport) ∧ ConstituentOf(davenport, yale)",
+        "ResidentialCollege(ezra_stiles) ∧ ConstituentOf(ezra_stiles, yale)",
+        "ResidentialCollege(grace_hopper) ∧ ConstituentOf(grace_hopper, yale)",
+        "ResidentialCollege(jonathan_edwards) ∧ ConstituentOf(jonathan_edwards, yale)",
+        "ResidentialCollege(morse) ∧ ConstituentOf(morse, yale)",
+        "ResidentialCollege(pauli_murray) ∧ ConstituentOf(pauli_murray, yale)",
+        "ResidentialCollege(pierson) ∧ ConstituentOf(pierson, yale)",
+        "ResidentialCollege(saybrook) ∧ ConstituentOf(saybrook, yale)",
+        "ResidentialCollege(silliman) ∧ ConstituentOf(silliman, yale)",
+        "ResidentialCollege(timothy_dwight) ∧ ConstituentOf(timothy_dwight, yale)",
+        "ResidentialCollege(trumbull) ∧ ConstituentOf(trumbull, yale)"
+      ],
+      "fol_conc": "ResidentialCollege(pierson) ∧ ConstituentOf(pierson, yale)",
+      "perplexity": [
+        1.0270006656646729,
+        1.0044270753860474
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "University(x)",
+        "Private(x)",
+        "Ivy(x)",
+        "Research(x)",
+        "Moved(x, y, z)",
+        "Endowment(x, y)",
+        "Organized(x, z)",
+        "Residential(x)",
+        "Graduate(x)",
+        "Professional(x)",
+        "Constituent(x, y)",
+        "College(x)",
+        "List(x, y)"
+      ],
+      "fol_consts": [
+        "yale",
+        "newhaven",
+        "1716",
+        "423billion",
+        "benjaminfranklin",
+        "berkeley",
+        "branford",
+        "davenport",
+        "ezrastiles",
+        "gracehopper",
+        "jonathanedwards",
+        "morse",
+        "paulimurray",
+        "pierson",
+        "saybrook",
+        "silliman",
+        "timothydwight",
+        "trumbull"
+      ],
+      "fol_rules": [
+        "University(yale)",
+        "Private(yale)",
+        "Ivy(yale)",
+        "Research(yale)",
+        "Moved(yale, newhaven, 1716)",
+        "Endowment(yale, 423billion)",
+        "Organized(yale, 27)",
+        "Residential(benjaminfranklin)",
+        "Residential(berkeley)",
+        "Residential(branford)",
+        "Residential(davenport)",
+        "Residential(ezrastiles)",
+        "Residential(gracehopper)",
+        "Residential(jonathanedwards)",
+        "Residential(morse)",
+        "Residential(paulimurray)",
+        "Residential(pierson)",
+        "Residential(saybrook)",
+        "Residential(silliman)",
+        "Residential(timothydwight)",
+        "Residential(trumbull)",
+        "Graduate(yale)",
+        "Professional(yale)",
+        "Constituent(benjaminfranklin, yale)",
+        "Constituent(berkeley, yale)",
+        "Constituent(branford, yale)",
+        "Constituent(davenport, yale)",
+        "Constituent(ezrastiles, yale)",
+        "Constituent(gracehopper, yale)",
+        "Constituent(jonathanedwards, yale)",
+        "Constituent(morse, yale)",
+        "Constituent(paulimurray, yale)",
+        "Constituent(pierson, yale)",
+        "Constituent(saybrook, yale)",
+        "Constituent(silliman, yale)",
+        "Constituent(timothydwight, yale)",
+        "Constituent(trumbull, yale)",
+        "List(yale, benjaminfranklin)",
+        "List(yale, berkeley)",
+        "List(yale, branford)",
+        "List(yale, davenport)",
+        "List(yale, ezrastiles)",
+        "List(yale, gracehopper)",
+        "List(yale, jonathanedwards)",
+        "List(yale, morse)",
+        "List(yale, paulimurray)",
+        "List(yale, pierson)",
+        "List(yale, saybrook)",
+        "List(yale, silliman)",
+        "List(yale, timothywright)",
+        "List(yale, trumbull)"
+      ],
+      "fol_conc": "Constituent(pierson, yale)",
+      "perplexity": 1.1397426128387451
+    }
+  },
+  {
+    "id": 93,
+    "nl_problem": {
+      "context": [
+        "Pets are allowed in some managed buildings.",
+        "[BG] A deposit is required to rent an apartment in a managed building.",
+        "The security deposit can be either equal to one month's rent or more.",
+        "Fluffy is Tom's cat.",
+        "Cats are pets.",
+        "The Olive Garden is a managed building.",
+        "The monthly rent at the Olive Garden is $2000.",
+        "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "2000$ is more than $1500."
+      ],
+      "question": "Tom will rent an apartment in The Olive Garden.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Pet(x)",
+        "ManagedBuilding(x)",
+        "AllowedPets(x)",
+        "Rent(x, y)",
+        "DepositRequired(x)",
+        "DepositAmount(x, y)",
+        "MoreThan(x, y)",
+        "Owns(x, y)",
+        "Cat(x)",
+        "WillRent(x, y)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "oliveGarden",
+        "2000",
+        "1500"
+      ],
+      "fol_rules": [
+        "∃x (ManagedBuilding(x) ∧ AllowedPets(x))",
+        "∀x (ManagedBuilding(x) → DepositRequired(x))",
+        "∀x (DepositAmount(x, y) → (y = Rent(x) ∨ MoreThan(y, Rent(x))))",
+        "Owns(tom, fluffy)",
+        "Cat(fluffy)",
+        "ManagedBuilding(oliveGarden)",
+        "Rent(oliveGarden, 2000)",
+        "∀x ∀y (WillRent(x, y) ↔ (AllowedPets(y) ∧ Owns(x, z) ∧ Pet(z) ∧ ¬MoreThan(DepositAmount(y, w), 1500)))",
+        "MoreThan(2000, 1500)"
+      ],
+      "fol_conc": "WillRent(tom, oliveGarden)",
+      "perplexity": [
+        1.0768673419952393,
+        1.012058973312378
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Pet(x)",
+        "Managed(x)",
+        "Allowed(x, y)",
+        "Deposit(x)",
+        "Rent(x, y)",
+        "More(x, y)",
+        "Cat(x)",
+        "Building(x)",
+        "Security(x, y)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "olivegarden",
+        "month",
+        "dollar"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(x, pet))",
+        "∀x (Managed(x) → Deposit(x))",
+        "∀x (Deposit(x) → (Rent(x, month) ⊕ More(x, month)))",
+        "Cat(fluffy)",
+        "Pet(fluffy)",
+        "Building(olivegarden)",
+        "Managed(olivegarden)",
+        "Rent(olivegarden, 2000)",
+        "∀x (Allowed(x, fluffy) ∧ ¬More(x, 1500) ↔ Rent(x, olivegarden))",
+        "More(2000, 1500)"
+      ],
+      "fol_conc": "Rent(tom, olivegarden)",
+      "perplexity": 1.4522013664245605
+    }
+  },
+  {
+    "id": 95,
+    "nl_problem": {
+      "context": [
+        "Pets are allowed in some managed buildings.",
+        "[BG] A deposit is required to rent an apartment in a managed building.",
+        "The security deposit can be either equal to one month's rent or more.",
+        "Fluffy is Tom's cat.",
+        "Cats are pets.",
+        "The Olive Garden is a managed building.",
+        "The monthly rent at the Olive Garden is $2000.",
+        "Tom will rent an apartment in a managed building if and only if he is allowed to move in with Fluffy, and the security deposit is no more than $1500.",
+        "2000$ is more than $1500."
+      ],
+      "question": "The security deposit at the Olive Garden is either $2000 or more.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Pet(x)",
+        "Allowed(x, y)",
+        "Managed(x)",
+        "DepositRequired(x)",
+        "SecurityDeposit(x, y)",
+        "Cat(x)",
+        "MoreThan(x, y)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "oliveGarden",
+        "$2000",
+        "$1500"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(Pet, x))",
+        "∀x (Managed(x) → DepositRequired(x))",
+        "∀x (DepositRequired(x) → (SecurityDeposit(x, $2000) ⊕ ∃y (MoreThan(y, $2000) ∧ SecurityDeposit(x, y))))",
+        "Cat(fluffy)",
+        "∀x (Cat(x) → Pet(x))",
+        "Managed(oliveGarden)",
+        "SecurityDeposit(oliveGarden, $2000)",
+        "(Allowed(fluffy, x) ∧ ¬MoreThan(SecurityDeposit(x, $1500)) ↔ (Tom will rent an apartment in x))",
+        "MoreThan($2000, $1500)"
+      ],
+      "fol_conc": "(SecurityDeposit(oliveGarden, $2000) ⊕ ∃y (MoreThan(y, $2000) ∧ SecurityDeposit(oliveGarden, y)))",
+      "perplexity": [
+        1.0506154298782349,
+        1.0118221044540405
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Pet(x)",
+        "Managed(x)",
+        "Allowed(x)",
+        "Deposit(x)",
+        "Rent(x, y)",
+        "More(x, y)",
+        "Cat(x)",
+        "Building(x)",
+        "Security(x, y)"
+      ],
+      "fol_consts": [
+        "fluffy",
+        "tom",
+        "olivegarden",
+        "month",
+        "twothousand",
+        "fifteenhundred"
+      ],
+      "fol_rules": [
+        "∃x (Managed(x) ∧ Allowed(x, pet))",
+        "∀x (Managed(x) → Deposit(x))",
+        "∀x (Deposit(x) → (Rent(x, month) ⊕ More(x, month)))",
+        "Cat(fluffy)",
+        "Pet(fluffy)",
+        "Building(olivegarden)",
+        "Managed(olivegarden)",
+        "Rent(olivegarden, twothousand)",
+        "∀x (Managed(x) ∧ Allowed(x, fluffy) ∧ ¬More(x, fifteenhundred) ↔ Rent(x, tom))",
+        "More(twothousand, fifteenhundred)"
+      ],
+      "fol_conc": "Deposit(olivegarden) ⊕ More(olivegarden, month)",
+      "perplexity": 1.447784662246704
+    }
+  },
+  {
+    "id": 110,
+    "nl_problem": {
+      "context": [
+        "If people spill a lot of food on their clothing, then they do not tidy their spaces consistently and enjoy the process of cleaning.",
+        "All foodies who go out frequently to find new food restaurants to try are people who spill a lot of food on their clothing.",
+        "If people grew up as only children with no siblings, then they tidy their spaces consistently and enjoy the process of cleaning.",
+        "If people have parents who are very busy with their regular jobs, then they grew up as only children with no siblings.",
+        "All households with a high net income have people who have parents who are very busy with their regular jobs.",
+        "Peter is either both a person who spills a lot of food on his clothing and grew up as an only child with no siblings, or he is neither a person who spills a lot of food on his clothing nor grew up as an only child with no siblings. "
+      ],
+      "question": "Peter is either a foodie who goes out frequently to find new food restaurants to try and belong to a household with a high net income or he is a foodie who goes out frequently to find new food restaurants to try nor belongs to a household with a high net income.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "EnjoyCleaning(x)",
+        "Foodie(x)",
+        "FrequentEater(x)",
+        "OnlyChild(x)",
+        "BusyParents(x)",
+        "HighIncome(x)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "∀x (Spill(x) → ¬Tidy(x) ∧ EnjoyCleaning(x))",
+        "∀x (Foodie(x) ∧ FrequentEater(x) → Spill(x))",
+        "∀x (OnlyChild(x) → Tidy(x) ∧ EnjoyCleaning(x))",
+        "∀x (BusyParents(x) → OnlyChild(x))",
+        "∀x (HighIncome(x) → BusyParents(x))",
+        "(Spill(peter) ⊕ OnlyChild(peter))"
+      ],
+      "fol_conc": "(Foodie(peter) ∧ FrequentEater(peter) ∧ HighIncome(peter)) ⊕ (Foodie(peter) ∧ FrequentEater(peter) ∧ ¬HighIncome(peter))",
+      "perplexity": [
+        1.0256016254425049,
+        1.0087798833847046
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Spill(x)",
+        "Tidy(x)",
+        "Enjoy(x)",
+        "Foodie(x)",
+        "Frequent(x)",
+        "Only(x)",
+        "Busy(x)",
+        "High(x)",
+        "Belong(x, y)"
+      ],
+      "fol_consts": [
+        "peter"
+      ],
+      "fol_rules": [
+        "Spill(x) → ¬Tidy(x) ∧ Enjoy(x)",
+        "Foodie(x) ∧ Frequent(x) → Spill(x)",
+        "Only(x) → Tidy(x) ∧ Enjoy(x)",
+        "Busy(x) → Only(x)",
+        "High(y) → Busy(x) ∧ Belong(x, y)",
+        "(Spill(peter) ∧ Only(peter)) ⊕ ¬(Spill(peter) ∨ Only(peter))"
+      ],
+      "fol_conc": "(Foodie(peter) ∧ Frequent(peter) ∧ High(y) ∧ Belong(peter, y)) ⊕ ¬(Foodie(peter) ∧ Frequent(peter) ∧ High(y) ∧ Belong(peter, y))",
+      "perplexity": 1.304274320602417
+    }
+  },
+  {
+    "id": 154,
+    "nl_problem": {
+      "context": [
+        "If people own a large desktop monitor at their home, then they work regularly and often at home.",
+        "All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.",
+        "All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.",
+        "All people who work regularly and often at home visit the office supply store regularly.",
+        "If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon. ",
+        "Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home. "
+      ],
+      "question": "Remy has a fully stocked and impressive home office and also visits the office supply store regularly.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "OwnLargeMonitor(x)",
+        "WorkRegularlyAtHome(x)",
+        "FullyStockedHomeOffice(x)",
+        "SpendTimeTidying(x)",
+        "VisitOfficeSupply(x)",
+        "GoToBedLate(x)",
+        "WakeUpAfterNoon(x)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "∀x (OwnLargeMonitor(x) → WorkRegularlyAtHome(x))",
+        "∀x (FullyStockedHomeOffice(x) → OwnLargeMonitor(x))",
+        "∀x (WorkRegularlyAtHome(x) → SpendTimeTidying(x))",
+        "∀x (WorkRegularlyAtHome(x) → VisitOfficeSupply(x))",
+        "∀x (SpendTimeTidying(x) → ¬(GoToBedLate(x) ∧ WakeUpAfterNoon(x)))",
+        "(GoToBedLate(remy) ∧ WakeUpAfterNoon(remy) ∧ SpendTimeTidying(remy)) ⊕ ¬(GoToBedLate(remy) ∨ WakeUpAfterNoon(remy) ∨ SpendTimeTidying(remy))"
+      ],
+      "fol_conc": "FullyStockedHomeOffice(remy) ∧ VisitOfficeSupply(remy)",
+      "perplexity": [
+        1.0329279899597168,
+        1.0066406726837158
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Own(x, y)",
+        "Large(y)",
+        "Desktop(y)",
+        "Home(y)",
+        "Work(x)",
+        "Regularly(x)",
+        "Often(x)",
+        "Home(x)",
+        "Fully(x)",
+        "Stocked(x)",
+        "Impressive(x)",
+        "Office(x)",
+        "Spend(x, y)",
+        "Free(y)",
+        "Tidying(y)",
+        "Organizing(y)",
+        "Spaces(y)",
+        "Gotobedlate(x)",
+        "Wakeupafternoon(x)",
+        "Visit(x, y)"
+      ],
+      "fol_consts": [
+        "remy",
+        "monitor",
+        "office"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Own(x, y) ∧ Large(y) ∧ Desktop(y) ∧ Home(y) → Work(x) ∧ Regularly(x))",
+        "∀x (Fully(x) ∧ Stocked(x) ∧ Impressive(x) ∧ Office(x) → Own(x, monitor))",
+        "∀x (Work(x) ∧ Regularly(x) ∧ Often(x) ∧ Home(x) → ∃y (Spend(x, y) ∧ Free(y) ∧ Tidying(y) ∧ Organizing(y) ∧ Spaces(y)))",
+        "∀x (Work(x) ∧ Regularly(x) ∧ Often(x) ∧ Home(x) → Visit(x, office))",
+        "∀x (Spend(x, y) ∧ Free(y) ∧ Tidying(y) ∧ Organizing(y) ∧ Spaces(y) → ¬(Gotobedlate(x) ∧ Wakeupafternoon(x)))",
+        "(Gotobedlate(remy) ∧ Wakeupafternoon(remy) ∧ Spend(remy, y) ∧ Free(y) ∧ Tidying(y) ∧ Organizing(y)) ∧ Spaces(y) ⊕ ¬(Gotobedlate(remy) ∧ Wakeupafternoon(remy) ∧ Spend(remy, y) ∧ Free(y) ∧ Tidying(y) ∧ Organizing(y))",
+        "Spaces(y)"
+      ],
+      "fol_conc": "Own(remy, monitor) ∧ Fully(remy) ∧ Stocked(remy) ∧ Impressive(remy) ∧ Office(remy) ∧ Visit(remy, office)",
+      "perplexity": 1.2745742797851562
+    }
+  },
+  {
+    "id": 155,
+    "nl_problem": {
+      "context": [
+        "If people own a large desktop monitor at their home, then they work regularly and often at home.",
+        "All people who have a fully stocked and impressive home office are people who own a large desktop monitor at their home.",
+        "All people who work regularly and often at home spend their free time tidying and organizing the spaces in their homes.",
+        "All people who work regularly and often at home visit the office supply store regularly.",
+        "If people spend their free time tidying and organizing the spaces in their home, then they do not go to bed late and wake up every day after noon. ",
+        "Remy either both goes to bed late and wakes up every day after noon and spends their free time tidying and organizing the spaces in their home, or they do not go to bed late and wake up every day after noon nor spend their free time tidying and organizing the spaces in their home. "
+      ],
+      "question": "If Remy either goes to bed late and wakes up every day after noon or visits the office supply store regularly, then Remy neither spends their free time tidying and organizing the spaces in their home nor has a fully stocked and impressive home office.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "OwnLargeMonitor(x)",
+        "WorkRegularlyAtHome(x)",
+        "FullyStockedOffice(x)",
+        "TidyHome(x)",
+        "VisitOfficeSupply(x)",
+        "BedLateWakeNoon(x)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "∀x (OwnLargeMonitor(x) → WorkRegularlyAtHome(x))",
+        "∀x (FullyStockedOffice(x) → OwnLargeMonitor(x))",
+        "∀x (WorkRegularlyAtHome(x) → TidyHome(x))",
+        "∀x (WorkRegularlyAtHome(x) → VisitOfficeSupply(x))",
+        "∀x (TidyHome(x) → ¬BedLateWakeNoon(x))",
+        "(BedLateWakeNoon(remy) ∧ TidyHome(remy)) ⊕ ¬(BedLateWakeNoon(remy) ∨ TidyHome(remy))"
+      ],
+      "fol_conc": "(BedLateWakeNoon(remy) ∨ VisitOfficeSupply(remy)) → (¬TidyHome(remy) ∧ ¬FullyStockedOffice(remy))",
+      "perplexity": [
+        1.0369858741760254,
+        1.009543776512146
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Own(x, y)",
+        "Large(y)",
+        "Desktop(y)",
+        "Home(y)",
+        "Work(x)",
+        "Regularly(x)",
+        "Often(x)",
+        "Home(x)",
+        "Fully(x)",
+        "Stocked(x)",
+        "Impressive(x)",
+        "Office(x)",
+        "Spend(x)",
+        "Free(x)",
+        "Tidying(x)",
+        "Organizing(x)",
+        "Spaces(x)",
+        "Gotobedlate(x)",
+        "Wakeupafternoon(x)",
+        "Visit(x, y)"
+      ],
+      "fol_consts": [
+        "remy",
+        "monitor"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Own(x, y) ∧ Large(y) ∧ Desktop(y) ∧ Home(y) → Work(x) ∧ Regularly(x))",
+        "∀x (Fully(x) ∧ Stocked(x) ∧ Impressive(x) ∧ Office(x) → Own(x, monitor))",
+        "∀x (Work(x) ∧ Regularly(x) ∧ Often(x) ∧ Home(x) → Spend(x, tidying) ∧ Spend(x, organizing))",
+        "∀x (Work(x) ∧ Regularly(x) ∧ Often(x) ∧ Home(x) → Visit(x, office))",
+        "∀x (Spend(x, tidying) ∧ Spend(x, organizing) → ¬(Gotobedlate(x) ∧ Wakeupafternoon(x)))",
+        "(Gotobedlate(remy) ∧ Wakeupafternoon(remy) ∧ Spend(remy, tidying) ∧ Spend(remy, organizing)) ⊕ ¬(Gotobedlate(remy) ∨ Wakeupafternoon(remy) ∨ Spend(remy, tidying) ∨ Spend(remy, organizing))"
+      ],
+      "fol_conc": "((Gotobedlate(remy) ∨ Visit(remy, office)) → ¬(Spend(remy, tidying) ∨ Spend(remy, organizing) ∨ (Fully(remy) ∧ Stocked(remy) ∧ Impressive(remy) ∧ Office(remy))))",
+      "perplexity": 1.2631468772888184
+    }
+  },
+  {
+    "id": 198,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi neither barks nor is a dog.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "HasLegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Likes(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Likes(jane, x))",
+        "∀x (HasLegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → HasLegs(x))",
+        "¬(Jumps(kiki) ∨ HasLegs(kiki)) → (Terricolous(kiki) ∨ HasLegs(kiki))"
+      ],
+      "fol_conc": "¬Barks(kiki) ∧ ¬Dog(kiki)",
+      "perplexity": [
+        1.042250633239746,
+        1.0115330219268799
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Likes(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Likes(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(kiki) ∨ Haslegs(kiki)) → (Terricolous(kiki) ∨ Haslegs(kiki))"
+      ],
+      "fol_conc": "¬Barks(kiki) ⊕ ¬Dog(kiki)",
+      "perplexity": 1.3165522813796997
+    }
+  },
+  {
+    "id": 199,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "No one playing for Nautico is Brazilian.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "CommonlyKnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedOutTo(x, y)",
+        "Brazilian(x)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "ailton_common",
+        "braga",
+        "nautico",
+        "fluminense",
+        "brazil",
+        "nineteen_ninety_five"
+      ],
+      "fol_rules": [
+        "Born(ailton, nineteen_ninety_five)",
+        "CommonlyKnownAs(ailton, ailton_common)",
+        "FootballPlayer(ailton)",
+        "LoanedOutTo(ailton, braga)",
+        "Brazilian(ailton)",
+        "PlaysFor(ailton, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "¬∃x (PlaysFor(x, nautico) ∧ Brazilian(x))",
+      "perplexity": [
+        1.077357292175293,
+        1.0226106643676758
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Player(x)",
+        "Loaned(x, y)",
+        "Born(x, y)",
+        "Club(x)",
+        "Plays(x, y)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautic",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995) ∧ Player(ailton)",
+        "Loaned(ailton, braga)",
+        "Brazilian(silva) ∧ Player(silva) ∧ Plays(silva, nautic)",
+        "Club(braga) ∧ Club(nautic)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬(∃x (Plays(x, nautic) ∧ Brazilian(x)))",
+      "perplexity": 1.469222903251648
+    }
+  },
+  {
+    "id": 200,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva foes not play for a football club.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedTo(x, y)",
+        "Brazillian(x)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautico",
+        "fluminense",
+        "brazil",
+        "nineteen_ninety_five"
+      ],
+      "fol_rules": [
+        "Born(ailton, nineteen_ninety_five)",
+        "KnownAs(ailton, silva)",
+        "FootballPlayer(ailton)",
+        "LoanedTo(ailton, braga)",
+        "Brazillian(ailton)",
+        "PlaysFor(ailton, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "¬PlaysFor(ailton, x)",
+      "perplexity": [
+        1.146503210067749,
+        1.0135143995285034
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Player(x)",
+        "Loaned(x, y)",
+        "Born(x, y)",
+        "Known(x, y)",
+        "Plays(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautic",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Known(ailton, silva) ∧ Born(silva, 1995)",
+        "Player(ailton) ∧ Loaned(ailton, braga)",
+        "Player(ailton) ∧ Brazilian(ailton) ∧ Plays(ailton, nautic)",
+        "Club(braga) ∧ Club(nautic)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬(∃x (Club(x) ∧ Plays(ailton, x)))",
+      "perplexity": 1.4531311988830566
+    }
+  },
+  {
+    "id": 201,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton was not loaned out to a football club.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedOut(x, y)",
+        "BrazilianFootballer(x)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "ailton_known_as",
+        "braga",
+        "nautico",
+        "fluminense",
+        "brazil",
+        "nineteen_ninety_five"
+      ],
+      "fol_rules": [
+        "Born(ailton, nineteen_ninety_five)",
+        "KnownAs(ailton, ailton_known_as)",
+        "FootballPlayer(ailton)",
+        "LoanedOut(ailton, braga)",
+        "BrazilianFootballer(ailton)",
+        "PlaysFor(ailton, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "¬LoanedOut(ailton, x) ∧ FootballClub(x)",
+      "perplexity": [
+        1.0902425050735474,
+        1.0147249698638916
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Player(x)",
+        "Loaned(x, y)",
+        "Born(x, y)",
+        "Known(x, y)",
+        "Club(x)",
+        "Brazilian(x)",
+        "Plays(x, y)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautic",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Known(ailton, silva) ∧ Born(silva, 1995)",
+        "Player(ailton) ∧ Loaned(ailton, braga)",
+        "Player(ailton) ∧ Brazilian(ailton) ∧ Plays(ailton, nautic)",
+        "Club(braga) ∧ Club(nautic)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬Loaned(ailton, x) ∧ Club(x)",
+      "perplexity": 1.4303070306777954
+    }
+  },
+  {
+    "id": 202,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva played for Fluminense.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "BornIn(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedTo(x, y)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton_silva",
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "brazil",
+        "nineteen_ninety_five"
+      ],
+      "fol_rules": [
+        "BornIn(ailton_silva, nineteen_ninety_five)",
+        "KnownAs(ailton_silva, ailton)",
+        "FootballPlayer(ailton_silva)",
+        "LoanedTo(ailton_silva, braga)",
+        "PlaysFor(ailton_silva, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "PlaysFor(ailton_silva, fluminense)",
+      "perplexity": [
+        1.0362861156463623,
+        1.0141545534133911
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Loaned(x, y)",
+        "Plays(x, y)",
+        "Club(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautic",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, silva)",
+        "Footballer(ailton)",
+        "Loaned(ailton, braga)",
+        "Plays(ailton, nautic)",
+        "Club(braga)",
+        "Club(nautic)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "Plays(ailton, fluminense)",
+      "perplexity": 1.5493481159210205
+    }
+  },
+  {
+    "id": 203,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva was loaned out to a football club.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedTo(x, y)",
+        "Brazillian(x)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "brazil",
+        "nineteen_ninety_five"
+      ],
+      "fol_rules": [
+        "Born(ailton, nineteen_ninety_five)",
+        "KnownAs(ailton, \"Ailton\")",
+        "FootballPlayer(ailton)",
+        "LoanedTo(ailton, braga)",
+        "Brazillian(ailton)",
+        "PlaysFor(ailton, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "LoanedTo(ailton, x) ∧ FootballClub(x)",
+      "perplexity": [
+        1.0564019680023193,
+        1.0099529027938843
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Loaned(x, y)",
+        "Plays(x, y)",
+        "Club(x)",
+        "Brazillian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "silva",
+        "braga",
+        "nautic",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995) ∧ Known(ailton, silva)",
+        "Footballer(ailton) ∧ Loaned(ailton, braga)",
+        "Footballer(silva) ∧ Plays(silva, nautic)",
+        "Club(braga) ∧ Club(nautic)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "Loaned(silva, x) ∧ Club(x)",
+      "perplexity": 1.4755789041519165
     }
   }
 ]

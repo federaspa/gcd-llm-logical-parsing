@@ -1,8 +1,9 @@
 Wrap the provided programs in a valid JSON, with the following schema:
 """
-\{
-"program": [program in string format],
-"type": [solution we are looking for, either "sat" or "unsat"],
+\{"declarations": [list of declarations],
+"constraints": [list of constraints],
+"options": [list of options to check], 
+"type": [solution we are looking for, either "sat" or "unsat"], 
 \}
 """
 
@@ -93,87 +94,29 @@ For this problem, we are looking for an "unsat" solution.
 
 Output:
 
-{"program": "(set-logic ALL)
-
-; Declare sorts for people, meals, and foods
-(declare-datatypes ((People 0)) (((Vladimir) (Wendy))))
-(declare-datatypes ((Meals 0)) (((breakfast) (lunch) (dinner) (snack))))
-(declare-datatypes ((Foods 0)) (((fish) (hot_cakes) (macaroni) (omelet) (poached_eggs))))
-
-; Declare the eats function
-(declare-fun eats (People Meals) Foods)
-
-; Define constraints
-
-; At no meal does Vladimir eat the same kind of food as Wendy.
-(assert (forall ((m Meals)) 
-    (not (= (eats Vladimir m) (eats Wendy m)))))
-
-; Neither of them eats the same kind of food more than once during the day.
-(assert (forall ((p People) (f Foods))
-    (<= (+ (ite (= (eats p breakfast) f) 1 0)
-           (ite (= (eats p lunch) f) 1 0)
-           (ite (= (eats p dinner) f) 1 0)
-           (ite (= (eats p snack) f) 1 0)) 1)))
-
-; For breakfast, each eats exactly one of the following: hot cakes, poached eggs, or omelet.
-(assert (forall ((p People))
-    (or (= (eats p breakfast) hot_cakes)
-        (= (eats p breakfast) poached_eggs)
-        (= (eats p breakfast) omelet))))
-
-; For lunch, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet.
-(assert (forall ((p People))
-    (or (= (eats p lunch) fish)
-        (= (eats p lunch) hot_cakes)
-        (= (eats p lunch) macaroni)
-        (= (eats p lunch) omelet))))
-
-; For dinner, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet.
-(assert (forall ((p People))
-    (or (= (eats p dinner) fish)
-        (= (eats p dinner) hot_cakes)
-        (= (eats p dinner) macaroni)
-        (= (eats p dinner) omelet))))
-
-; For a snack, each eats exactly one of the following: fish or omelet.
-(assert (forall ((p People))
-    (or (= (eats p snack) fish)
-        (= (eats p snack) omelet))))
-
-; Wendy eats omelet for lunch.
-(assert (= (eats Wendy lunch) omelet))
-
-; Vladimir must eat fish
-(push)
-(assert (not (exists ((m Meals)) (= (eats Vladimir m) fish))))
-(check-sat)
-(pop)
-
-; Vladimir must eat hot cakes
-(push)
-(assert (not (exists ((m Meals)) (= (eats Vladimir m) hot_cakes))))
-(check-sat)
-(pop)
-
-; Vladimir must eat macaroni
-(push)
-(assert (not (exists ((m Meals)) (= (eats Vladimir m) macaroni))))
-(check-sat)
-(pop)
-
-; Vladimir must eat omelet
-(push)
-(assert (not (exists ((m Jane)) (= (eats Vladimir m) omelet))))
-(check-sat)
-(pop)
-
-; Vladimir must eat poached eggs
-(push)
-(assert (not (exists ((m Meals)) (= (eats Vladimir m) poached_eggs))))
-(check-sat)
-(pop)",
-"type": "unsat"}
+{"declarations": [
+    "(declare-datatypes ((People 0)) (((Vladimir) (Wendy))))",
+    "(declare-datatypes ((Meals 0)) (((breakfast) (lunch) (dinner) (snack))))",
+    "(declare-datatypes ((Foods 0)) (((fish) (hot_cakes) (macaroni) (omelet) (poached_eggs))))",
+    "(declare-fun eats (People Meals) Foods)"
+  ],
+  "constraints": [
+    "(forall ((m Meals)) (not (= (eats Vladimir m) (eats Wendy m))))",
+    "(forall ((p People) (f Foods)) (<= (+ (ite (= (eats p breakfast) f) 1 0) (ite (= (eats p lunch) f) 1 0) (ite (= (eats p dinner) f) 1 0) (ite (= (eats p snack) f) 1 0)) 1))",
+    "(forall ((p People)) (or (= (eats p breakfast) hot_cakes) (= (eats p breakfast) poached_eggs) (= (eats p breakfast) omelet)))",
+    "(forall ((p People)) (or (= (eats p lunch) fish) (= (eats p lunch) hot_cakes) (= (eats p lunch) macaroni) (= (eats p lunch) omelet)))",
+    "(forall ((p People)) (or (= (eats p dinner) fish) (= (eats p dinner) hot_cakes) (= (eats p dinner) macaroni) (= (eats p dinner) omelet)))",
+    "(forall ((p People)) (or (= (eats p snack) fish) (= (eats p snack) omelet)))",
+    "(= (eats Wendy lunch) omelet)"
+  ],
+  "options": [
+    "(not (exists ((m Meals)) (= (eats Vladimir m) fish)))",
+    "(not (exists ((m Meals)) (= (eats Vladimir m) hot_cakes)))",
+    "(not (exists ((m Meals)) (= (eats Vladimir m) macaroni)))",
+    "(not (exists ((m Meals)) (= (eats Vladimir m) omelet)))",
+    "(not (exists ((m Meals)) (= (eats Vladimir m) poached_eggs)))"
+  ],
+  "type": "unsat"}
 
 ###
 

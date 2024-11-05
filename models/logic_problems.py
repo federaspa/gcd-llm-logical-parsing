@@ -196,7 +196,7 @@ class LogicProgramGenerator(PromptGenerator):
 
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
-        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset))):
+        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
             if self._check_time_limit():
                 break
         
@@ -205,52 +205,68 @@ class LogicProgramGenerator(PromptGenerator):
                 nl_problem = sample['nl_problem']
             else:
                 nl_problem = sample
-            
+                       
+            logic_problem = None
+            logic_problem_gcd = None
+                        
             try:
                 if not 'logic_problem' in sample.keys():
-                    pbar.set_description("Generating unconstrained problem %s" % sample['id'])
+                    pbar.set_description_str("Generating unconstrained problem %s" % sample['id'])
                     unconstrained, perplexity = self._unconstrained_generator(nl_problem)
                     
-                    pbar.set_description("Json wrapping problem %s" % sample['id'])
+                    pbar.set_description_str("Json wrapping problem %s" % sample['id'])
                     logic_problem, json_perplexity = self._json_wrapper(unconstrained)
                     
                     logic_problem['perplexity'] = (perplexity, json_perplexity)
                 else:
                     logic_problem = sample['logic_problem']
                     
+                    
                 if i % 20 == 0:
                     logger.debug(logic_problem)
                         
-                if not 'logic_problem_gcd' in sample.keys():
-                    pbar.set_description("Generating constrained problem %s" % sample['id'])
-                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
                     
-                    logic_problem_gcd['perplexity'] = gcd_perplexity
-                else:
-                    logic_problem_gcd = sample['logic_problem_gcd']
-                
-                if i % 20 == 0:
-                    logger.debug(logic_problem_gcd)
-                
-                output = {
-                    'id': sample['id'], 
-                    'nl_problem': {
-                        'context': nl_problem['context'],
-                        'question': nl_problem['question'],
-                        'options': nl_problem.get('options', [])
-                    },
-                    'answer': sample['answer'],
-                    'logic_problem': logic_problem,
-                    'logic_problem_gcd': logic_problem_gcd
-                }
-                
-                outputs.append(output)
-                
             except TimeoutError:
-                logger.warning(f"Timeout occurred during constrained generation for sample {sample['id']}")
-                
+                logger.warning(f"Timeout occurred during unconstrained generation for sample {sample['id']}")
+
             except Exception as e:
                 logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
+                
+            # try:
+            #     if not 'logic_problem_gcd' in sample.keys():
+            #         pbar.set_description_str("Generating constrained problem %s" % sample['id'])
+            #         logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
+                    
+            #         logic_problem_gcd['perplexity'] = gcd_perplexity
+            #     else:
+            #         logic_problem_gcd = sample['logic_problem_gcd']
+                
+            #     if i % 20 == 0:
+            #         logger.debug(logic_problem_gcd)
+                    
+            # except TimeoutError:
+            #     logger.warning(f"Timeout occurred during constrained generation for sample {sample['id']}")
+                
+            # except Exception as e:
+            #     logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
+                
+            output = {
+                'id': sample['id'], 
+                'nl_problem': {
+                    'context': nl_problem['context'],
+                    'question': nl_problem['question'],
+                    'options': nl_problem.get('options', [])
+                },
+                'answer': sample['answer']
+            }
+            
+            if logic_problem:
+                output.update({'logic_problem': logic_problem})
+            
+            if logic_problem_gcd:
+                output.update({'logic_problem_gcd': logic_problem_gcd})
+            
+            outputs.append(output)
             
             pbar.update()
             with open(save_file, 'w') as f:
@@ -274,7 +290,7 @@ def parse_args() -> Config:
     parser.add_argument('--n-ctx', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--stop-time', type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--timeout-seconds', default=None, help='Timeout in seconds for generation operations')
+    parser.add_argument('--timeout-seconds', type=int, default=None, help='Timeout in seconds for generation operations')
     
     args = parser.parse_args()
     return Config(**vars(args))
