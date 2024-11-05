@@ -1,0 +1,53 @@
+[
+  {
+    "id": 39,
+    "nl_problem": {
+      "context": "Each of the seven members of the board of directors—Guzman, Hawking, Lepp, Miyauchi, Upchurch, Wharton, and Zhu—serves on exactly one of two committees—the finance committee or the incentives committee. Only board members serve on these committees. Committee membership is consistent with the following conditions: If Guzman serves on the finance committee, then Hawking serves on the incentives committee. If Lepp serves on the finance committee, then Miyauchi and Upchurch both serve on the incentives committee. Wharton serves on a different committee from the one on which Zhu serves. Upchurch serves on a different committee from the one on which Guzman serves. If Zhu serves on the finance committee, so does Hawking.",
+      "question": "If Guzman serves on the incentives committee, then which one of the following must be true?",
+      "options": [
+        "A) Hawking serves on the finance committee.",
+        "B) Lepp serves on the incentives committee.",
+        "C) Miyauchi serves on the finance committee.",
+        "D) Wharton serves on the incentives committee.",
+        "E) Zhu serves on the finance committee."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "program": "(set-logic ALL)\n\n; Declare sorts for people and committees\n(declare-datatypes ((People 0)) (((Guzman) (Hawking) (Lepp) (Miyauchi) (Upchurch) (Wharton) (Zhu))))\n(declare-datatypes ((Committees 0)) (((finance) (incentives))))\n\n; Declare the serves function\n(declare-fun serves (People Committees) Bool)\n\n; Helper function for counting - returns 1 if true, 0 if false\n(define-fun to-int ((b Bool)) Int\n  (ite b 1 0))\n\n; Constraint: each person serves on exactly one committee\n(assert (forall ((p People))\n    (= (+ (to-int (and (= (serves p finance) true) (serves p incentives)))\n          (to-int (and (= (serves p finance) false) (= (serves p incentives) false)))) 1)))\n\n; Constraint: If Guzman serves on the finance committee, then Hawking serves on the incentives committee\n(assert (=> (serves Guzman finance) (serves Hawking incentives)))\n\n; Constraint: If Lepp serves on the finance committee, then Miyauchi and Upchurch both serve on the incentives committee\n(assert (=> (serves Lepp finance)\n           (and (serves Miyauchi incentives)\n                (serves Upchurch incentives))))\n\n; Constraint: Wharton serves on a different committee from the one on which Zhu serves\n(assert (or (not (and (serves Wharton finance) (serves Zhu finance)))\n           (not (and (serves Wharton incentives) (serves Zhu incentives)))))\n\n; Constraint: Upchurch serves on a different committee from the one on which Guzman serves\n(assert (or (not (and (serves Upchurch finance) (serves Guzman finance)))\n           (not (and (serves Upchurch incentives) (serves Guzman incentives)))))\n\n; Constraint: If Zhu serves on the finance committee, so does Hawking\n(assert (=> (serves Zhu finance) (serves Hawking finance)))\n\n; Check each option\n(push)\n(assert (not (serves Guzman finance)))\n(assert (serves Guzman incentives))\n(assert (serves Hawking finance))\n(check-sat)\n(pop)\n\n(push)\n(assert (not (serves Guzman finance)))\n(assert (serves Guzman incentives))\n(assert (serves Lepp incentives))\n(check-sat)\n(pop)\n\n(push)\n(assert (not (serves Guzman finance)))\n(assert (serves Guzman incentives))\n(assert (serves Miyauchi finance))\n(check-sat)\n(pop)\n\n(push)\n(assert (not (serves Guzman finance)))\n(assert (serves Guzman incentives))\n(assert (serves Wharton incentives))\n(check-sat)\n(pop)\n\n(push)\n(assert (not (serves Guzman finance)))\n(assert (serves Guzman incentives))\n(assert (serves Zhu finance))\n(check-sat)\n(pop)\n\n(exit)",
+      "type": "sat",
+      "perplexity": [
+        1.1213550567626953,
+        1.0596306324005127
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "(declare-datatypes ((Committees 0)) (((finance) (incentives))))",
+        "(declare-datatypes ((BoardMembers 0)) (((Guzman) (Hawking) (Lepp) (Miyauchi) (Upchurch) (Wharton) (Zhu))))",
+        "(declare-fun serves (BoardMembers Committees) Bool)"
+      ],
+      "constraints": [
+        "(forall ((b BoardMembers) (c Committees)) (=> (and (serves b finance) (serves Guzman finance)) (serves Hawking incentives)))",
+        "(forall ((b BoardMembers) (c Committees)) (=> (and (serves b finance) (serves Lepp finance)) (and (serves Miyauchi incentives) (serves Upchurch incentives))))",
+        "(forall ((b BoardMembers) (c Committees)) (=> (serves Wharton finance) (not (serves Zhu finance))))",
+        "(forall ((b BoardMembers) (c Committees)) (=> (serves Upchurch finance) (not (serves Guzman finance))))",
+        "(forall ((b BoardMembers) (c Committees)) (=> (and (serves Zhu finance) (serves b finance)) (serves Hawking finance)))",
+        "(forall ((b BoardMembers)) (=> (serves b finance) (not (serves b incentives))))",
+        "(forall ((b BoardMembers)) (=> (serves b incentives) (not (serves b finance))))",
+        "(forall ((b BoardMembers)) (not (and (serves b finance) (serves b incentives))))",
+        "(forall ((b BoardMembers)) (= (ite (serves b finance) 1 0) 1))",
+        "(forall ((b BoardMembers)) (= (ite (serves b incentives) 1 0) 1))"
+      ],
+      "options": [
+        "(not (exists ((c Committees)) (and (serves Guzman incentives) (serves Hawking finance))))",
+        "(not (exists ((c Committees)) (and (serves Guzman incentives) (serves Lepp incentives))))",
+        "(not (exists ((c Committees)) (and (serves Guzman incentives) (serves Miyauchi finance))))",
+        "(not (exists ((c Committees)) (and (serves Guzman incentives) (serves Wharton incentives))))",
+        "(not (exists ((c Committees)) (and (serves Guzman incentives) (serves Zhu finance))))"
+      ],
+      "type": "sat",
+      "perplexity": 1.6445813179016113
+    }
+  }
+]
