@@ -179,4 +179,4 @@ if __name__ == "__main__":
         sys.exit(0)
                 
     logger.info("Finished Successfully")
-    send_notification("Yippiee!", "logic_inference.py finished successfully")
+    # send_notification("Yippiee!", "logic_inference.py finished successfully")
