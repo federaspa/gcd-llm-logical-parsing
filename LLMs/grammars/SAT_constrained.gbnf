@@ -3,80 +3,56 @@ root ::= "{" ws declarations ws constraints ws options ws "}"
 
 ws ::= [ \t\n\r]*
 
-declarations ::= "\"declarations\":" ws "[" ws decllist ws "]"
+declarations ::= "\"declarations\":" ws "[" ws decllist ws "]," ws 
 decllist ::= declaration (ws "," ws declaration)*
 
-constraints ::= "," ws "\"constraints\":" ws "[" ws constraintlist ws "]"
+constraints ::= "\"constraints\":" ws "[" ws constraintlist ws "]"
 constraintlist ::= constraint (ws "," ws constraint)*
 
 options ::= "," ws "\"options\":" ws "[" ws optionlist ws "]"
 optionlist ::= option (ws "," ws option)*
 
-#### Declarations section ####
-declaration ::= "\"" (enumsort | intsort | function) "\""
+# Declarations section
+declaration ::= enumsortdecl | intsortdecl | functiondecl
 
-# Enum sort declaration
-enumsort ::= name ws "=" ws "EnumSort([" ws enumvals ws "])"
-enumvals ::= name (ws "," ws name)*
+enumsortdecl ::= identifier "=" "EnumSort" "(" "[" enummembers "]" ")" "\n"
+enummembers ::= identifier ("," " " identifier)*
 
-# Int sort declaration
-intsort ::= name ws "=" ws "IntSort([" ws intvals ws "])"
-intvals ::= number (ws "," ws number)*
+intsortdecl ::= identifier "=" "IntSort" "(" "[" intmembers "]" ")" "\n"
+intmembers ::= number ("," " " number)*
 
-# Function declaration
-function ::= name ws "=" ws "Function(" funcargs ")"
-funcargs ::= "[" ws funcarglist ws "]" ws "->" ws "[" ws funcreturn ws "]"
-funcarglist ::= name (ws "," ws name)*
-funcreturn ::= type
+functiondecl ::= identifier "=" "Function" "(" functionargs ")" "\n"
+functionargs ::= "[" typelist "]" " -> " "[" type "]" | "[" typelist "]"
+typelist ::= type ("," " " type)*
+type ::= identifier | "int" | "bool"
 
-#### Constraints section ####
-constraint ::= "\"" formula "\""
+# Constraints section
+constraint ::= constraintexpr
+constraintexpr ::= forallexpr | existsexpr | countexpr | distinctexpr | basicexpr
 
-# Formula constructs
-formula ::= basic | quantified | unary | binary | predicate | count
+forallexpr ::= "ForAll" "(" "[" varbindings "]" "," constraintexpr ")"
+existsexpr ::= "Exists" "(" "[" varbindings "]" "," constraintexpr ")"
+varbindings ::= varbinding ("," " " varbinding)*
+varbinding ::= identifier ":" identifier
 
-# Basic formula elements
-basic ::= "(" formula ")" | value | name
+countexpr ::= "Count" "(" "[" varbindings "]" "," constraintexpr ")"
+distinctexpr ::= "Distinct" "(" "[" varbinding "]" "," constraintexpr ")"
 
-# Quantified expressions
-quantified ::= quantifier "[" quantparams "]" ws "," ws formula
-quantifier ::= "ForAll" | "Exists"
-quantparams ::= qparam (ws "," ws qparam)*
-qparam ::= name ":" name
+basicexpr ::= functioncall | comparison | logicalexpr
+functioncall ::= identifier "(" arglist ")"
+arglist ::= expr ("," expr)*
+comparison ::= expr comparisonop expr
+comparisonop ::= "==" | "!=" | "<=" | ">=" | "<" | ">"
+logicalexpr ::= "And" "(" exprlist ")" | "Or" "(" exprlist ")" | "Not" "(" expr ")"
+exprlist ::= expr ("," " " expr)*
+expr ::= identifier | number | functioncall | logicalexpr | comparison
 
-# Unary operations
-unary ::= "Not" "(" formula ")"
+# Options section
+option ::= validitycheck
+validitycheck ::= "is_valid" "(" constraintexpr ")" | "is_unsat" "(" constraintexpr ")" | "is_sat" "(" constraintexpr ")"
 
-# Binary operations
-binary ::= binop "(" formula ws "," ws formula ")"
-binop ::= "And" | "Or" | "Implies" | "Xor"
-
-# Predicate expressions
-predicate ::= name "(" predargs ")"
-predargs ::= predarg (ws "," ws predarg)*
-predarg ::= name | number | formula
-
-# Count expressions
-count ::= "Count([" countparams "]" ws "," ws formula ")"
-countparams ::= cparam (ws "," ws cparam)*
-cparam ::= name ":" name
-
-#### Options section ####
-option ::= "\"" verification_func "\""
-verification_func ::= is_valid | is_sat | is_unsat | is_accurate_list | is_exception
-
-# Verification functions
-is_valid ::= "is_valid(" formula ")"
-is_sat ::= "is_sat(" formula ")"
-is_unsat ::= "is_unsat(" formula ")"
-is_accurate_list ::= "is_accurate_list([" ws formulas ws "])"
-is_exception ::= "is_exception(" formula ")"
-
-# List of formulas for is_accurate_list
-formulas ::= formula (ws "," ws formula)*
-
-#### Basic elements ####
-name ::= [a-zA-Z][a-zA-Z0-9_]*
+# Basic elements
+identifier ::= [A-Za-z][A-Za-z0-9]*
 number ::= [0-9]+
-value ::= "true" | "false"
-type ::= "bool" | "int" | name
+text ::= [^\n]+
+comment ::= [^\n]+
