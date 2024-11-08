@@ -157,9 +157,9 @@ Declarations:
 - candidates = EnumSort([Q, R, S, T, U])
 - meetings = EnumSort([1, 2, 3])
 - speaks = Function([meetings, candidates] -> [int])
-- ForAll([m:meetings, c:candidates], And(1 <= speaks(m, c), speaks(m, c) <= 5))
 
 Constraints:
+- ForAll([m:meetings, c:candidates], And(1 <= speaks(m, c), speaks(m, c) <= 5))
 - ForAll([m:meetings], Distinct([c:candidates], speaks(m, c))) ::: no two candidates will speak in the same time slot as each other at any meeting
 - ForAll([c:candidates], Exists([m:meetings], Or(speaks(m, c) == 1, speaks(m, c) == 2))) ::: each candidate must speak either first or second at at least one of the meetings
 - ForAll([c:candidates], Implies(Exists([m:meetings], speaks(m, c) == 5), Exists([m:meetings], speaks(m, c) == 1))) ::: any candidate who speaks fifth at any of the meetings must speak first at at least one of the other meetings

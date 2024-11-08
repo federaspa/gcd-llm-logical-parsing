@@ -4,52 +4,62 @@ root ::= "{" ws declarations ws constraints ws options ws "}"
 ws ::= [ \t\n\r]*
 
 declarations ::= "\"declarations\":" ws "[" ws decllist ws "]," ws 
-decllist ::= declaration (ws "," ws declaration)*
+decllist ::= "\"" declaration "\"" (ws "," ws "\"" declaration "\"")*
 
-constraints ::= "\"constraints\":" ws "[" ws constraintlist ws "]"
-constraintlist ::= constraint (ws "," ws constraint)*
+constraints ::= "\"constraints\":" ws "[" ws constraintlist ws "],"
+constraintlist ::= "\"" constraint "\"" (ws "," ws "\"" constraint "\"")*
 
-options ::= "," ws "\"options\":" ws "[" ws optionlist ws "]"
-optionlist ::= option (ws "," ws option)*
+options ::= "\"options\":" ws "[" ws optionlist ws "]"
+optionlist ::= "\"" option "\"" (ws "," ws "\"" option "\"")*
 
 # Declarations section
 declaration ::= enumsortdecl | intsortdecl | functiondecl
 
-enumsortdecl ::= identifier "=" "EnumSort" "(" "[" enummembers "]" ")" "\n"
-enummembers ::= identifier ("," " " identifier)*
+enumsortdecl ::= identifier " = EnumSort([" enummembers "])"
+enummembers ::= identifier (", " identifier)*
 
-intsortdecl ::= identifier "=" "IntSort" "(" "[" intmembers "]" ")" "\n"
-intmembers ::= number ("," " " number)*
+intsortdecl ::= identifier " = IntSort([" intmembers "])"
+intmembers ::= number (", " number)*
 
-functiondecl ::= identifier "=" "Function" "(" functionargs ")" "\n"
-functionargs ::= "[" typelist "]" " -> " "[" type "]" | "[" typelist "]"
-typelist ::= type ("," " " type)*
+functiondecl ::= identifier " = Function(" functionargs ")"
+functionargs ::= "[" typelist "] -> [" type "]" | "[" typelist "]"
+typelist ::= type (", " type)*
 type ::= identifier | "int" | "bool"
 
 # Constraints section
-constraint ::= constraintexpr
-constraintexpr ::= forallexpr | existsexpr | countexpr | distinctexpr | basicexpr
+constraint ::= constraintexprBase constraintexprTail*
+constraintexprBase ::= forallexpr | existsexpr | countexpr | distinctexpr | basicexprBase
+constraintexprTail ::= comparisonop constraintexprBase
 
-forallexpr ::= "ForAll" "(" "[" varbindings "]" "," constraintexpr ")"
-existsexpr ::= "Exists" "(" "[" varbindings "]" "," constraintexpr ")"
-varbindings ::= varbinding ("," " " varbinding)*
+forallexpr ::= "ForAll([" varbindings "], " constraintexprBase ")"
+existsexpr ::= "Exists([" varbindings "], " constraintexprBase ")"
+countexpr ::= "Count([" varbindings "], " constraintexprBase ")"
+distinctexpr ::= "Distinct([" varbinding "], " constraintexprBase ")"
+
+varbindings ::= varbinding (", " varbinding)*
 varbinding ::= identifier ":" identifier
 
-countexpr ::= "Count" "(" "[" varbindings "]" "," constraintexpr ")"
-distinctexpr ::= "Distinct" "(" "[" varbinding "]" "," constraintexpr ")"
+basicexprBase ::= functioncall | atom
+basicexprTail ::= comparisonop basicexprBase
 
-basicexpr ::= functioncall | comparison | logicalexpr
 functioncall ::= identifier "(" arglist ")"
-arglist ::= expr ("," expr)*
-comparison ::= expr comparisonop expr
-comparisonop ::= "==" | "!=" | "<=" | ">=" | "<" | ">"
-logicalexpr ::= "And" "(" exprlist ")" | "Or" "(" exprlist ")" | "Not" "(" expr ")"
-exprlist ::= expr ("," " " expr)*
-expr ::= identifier | number | functioncall | logicalexpr | comparison
+arglist ::= exprBase (", " exprBase)*
+comparison ::= exprBase comparisonop exprBase
+comparisonop ::= " == " | " != " | " <= " | " >= " | " < " | " > "
+
+logicalexpr ::= logicalAnd | logicalOr | logicalNot
+logicalAnd ::= "And(" exprlist ")"
+logicalOr ::= "Or(" exprlist ")"
+logicalNot ::= "Not(" exprBase ")"
+exprlist ::= exprBase (", " exprBase)*
+
+exprBase ::= atom exprTail*
+exprTail ::= comparisonop exprBase
+atom ::= identifier | number | functioncall | logicalexpr
 
 # Options section
 option ::= validitycheck
-validitycheck ::= "is_valid" "(" constraintexpr ")" | "is_unsat" "(" constraintexpr ")" | "is_sat" "(" constraintexpr ")"
+validitycheck ::= ("is_valid" | "is_unsat" | "is_sat" | "is_exception" | "is_accurate_list") "(" constraintexprBase ")"
 
 # Basic elements
 identifier ::= [A-Za-z][A-Za-z0-9]*

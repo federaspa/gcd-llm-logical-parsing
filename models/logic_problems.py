@@ -17,15 +17,16 @@ import traceback
 class Config:
     sketcher_name: str
     dataset_name: str
-    data_path: str = './data'
-    split: str = 'dev'
-    models_path: str = '/data/users/fraspant/LLMs'
-    save_path: str = './outputs/logic_problems'
-    n_gpu_layers: int = 0
-    n_ctx: int = 0
+    data_path: str
+    split: str
+    models_path: str
+    save_path: str
+    n_gpu_layers: int 
+    n_ctx: int
+    n_threads: int
+    stop_time: str|None
+    timeout_seconds: int|None
     verbose: bool = False
-    stop_time: str = None
-    timeout_seconds: int = 180  # Default timeout of 180 seconds
 
 script_name = Path(__file__).stem
 logger, log_file_name = get_logger(script_name)
@@ -86,6 +87,7 @@ class LogicProgramGenerator(PromptGenerator):
         self.sketcher_api = OSModel(
             model_path=str(self.sketcher_path), 
             n_gpu_layers=config.n_gpu_layers,
+            n_threads = config.n_threads,
             n_ctx=config.n_ctx,
             verbose=config.verbose
         )
@@ -138,7 +140,7 @@ class LogicProgramGenerator(PromptGenerator):
         return json.loads(content), perplexity
     
     def _constrained_generator_base(self, sample: str) -> dict:
-        user = self.prompter.unconstrained(sample)
+        user = self.prompter.constrained(sample)
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.templates['constrained_grammar'],
@@ -218,6 +220,10 @@ class LogicProgramGenerator(PromptGenerator):
                     logic_problem, json_perplexity = self._json_wrapper(unconstrained)
                     
                     logic_problem['perplexity'] = (perplexity, json_perplexity)
+                    
+                    if i % 20 == 0:
+                        logger.debug(unconstrained)
+                        
                 else:
                     logic_problem = sample['logic_problem']
                     
@@ -232,23 +238,23 @@ class LogicProgramGenerator(PromptGenerator):
             except Exception as e:
                 logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
                 
-            # try:
-            #     if not 'logic_problem_gcd' in sample.keys():
-            #         pbar.set_description_str("Generating constrained problem %s" % sample['id'])
-            #         logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
+            try:
+                if not 'logic_problem_gcd' in sample.keys():
+                    pbar.set_description_str("Generating constrained problem %s" % sample['id'])
+                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
                     
-            #         logic_problem_gcd['perplexity'] = gcd_perplexity
-            #     else:
-            #         logic_problem_gcd = sample['logic_problem_gcd']
+                    logic_problem_gcd['perplexity'] = gcd_perplexity
+                else:
+                    logic_problem_gcd = sample['logic_problem_gcd']
                 
-            #     if i % 20 == 0:
-            #         logger.debug(logic_problem_gcd)
+                if i % 20 == 0:
+                    logger.debug(logic_problem_gcd)
                     
-            # except TimeoutError:
-            #     logger.warning(f"Timeout occurred during constrained generation for sample {sample['id']}")
+            except TimeoutError:
+                logger.warning(f"Timeout occurred during constrained generation for sample {sample['id']}")
                 
-            # except Exception as e:
-            #     logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
+            except Exception as e:
+                logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
                 
             output = {
                 'id': sample['id'], 
@@ -287,9 +293,10 @@ def parse_args() -> Config:
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--n-gpu-layers', type=int, default=0)
+    parser.add_argument('--n-threads', type=int, default=1)
     parser.add_argument('--n-ctx', type=int, default=0)
     parser.add_argument('--verbose', action='store_true')
-    parser.add_argument('--stop-time', type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
+    parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--timeout-seconds', type=int, default=None, help='Timeout in seconds for generation operations')
     
     args = parser.parse_args()
@@ -302,6 +309,9 @@ if __name__ == '__main__':
     logger.info(f"Sketcher: {config.sketcher_name}")
     logger.info(f"Split: {config.split}")
     logger.info(f"Save path: {config.save_path}")
+    logger.info(f"Threads: {config.n_threads}")
+    logger.info(f"GPU layers: {config.n_gpu_layers}")
+    logger.info(f"Context: {config.n_ctx}")
     if config.stop_time:
         logger.info(f"Stop time: {config.stop_time}")
     logger.info(f"Operation timeout: {config.timeout_seconds} seconds")

@@ -1,0 +1,44 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Inactive(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Young(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Student(x)))",
+        "∀x (Perform(x) ⊕ Inactive(x))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (Inactive(x) → Chaperone(x))",
+        "∀x (Young(x) → Student(x))",
+        "(Attend(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "Perform(bonnie)",
+      "perplexity": [
+        1.052986741065979,
+        1.2717703580856323
+      ]
+    }
+  }
+]

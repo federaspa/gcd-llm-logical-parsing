@@ -59,9 +59,10 @@ def calculate_perplexity(logprobs):
 class OSModel:
     def __init__(self,
                  model_path,
-                 n_gpu_layers=-1,
+                 n_gpu_layers=0,
                  n_batch=512,
                  n_ctx = 0,
+                 n_threads = 1,
                  verbose=False,
                  logits_all = True,
                  **kwargs):
@@ -77,7 +78,7 @@ class OSModel:
             model_path=model_path,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
-            n_threads=1 if n_gpu_layers==-1 else None,
+            n_threads=n_threads,
             n_ctx=n_ctx,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
             verbose=verbose,

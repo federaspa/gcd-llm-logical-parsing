@@ -118,7 +118,7 @@ class SAT_Prompter:
     
     def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```python', '').replace(r'```', '')
+        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'\`\`\`.*', '')
         
         return full_prompt
     
