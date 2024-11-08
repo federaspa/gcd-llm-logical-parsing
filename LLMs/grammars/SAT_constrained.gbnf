@@ -1,56 +1,82 @@
-#### Wrap declarations, constraints, options and type in a JSON ####
-root ::= "{" ws decls ws consts ws opts ws type ws "}"
+#### Root structure defining the JSON output format ####
+root ::= "{" ws declarations ws constraints ws options ws "}"
 
 ws ::= [ \t\n\r]*
 
-decls ::= "\"declarations\":" ws "[" ws decllist ws "],"
-decllist ::= "\"" DECL "\"" (ws "," ws "\"" DECL "\"")*
+declarations ::= "\"declarations\":" ws "[" ws decllist ws "]"
+decllist ::= declaration (ws "," ws declaration)*
 
-consts ::= "\"constraints\":" ws "[" ws constlist ws "],"
-constlist ::= "\"" CONSTRAINT "\"" (ws "," ws "\"" CONSTRAINT "\"")*
+constraints ::= "," ws "\"constraints\":" ws "[" ws constraintlist ws "]"
+constraintlist ::= constraint (ws "," ws constraint)*
 
-opts ::= "\"options\":" ws "[" ws optlist ws "],"
-optlist ::= "\"" OPTION "\"" (ws "," ws "\"" OPTION "\"")*
+options ::= "," ws "\"options\":" ws "[" ws optionlist ws "]"
+optionlist ::= option (ws "," ws option)*
 
-type ::= "\"type\":" ws "\"" ("sat" | "unsat") "\""
+#### Declarations section ####
+declaration ::= "\"" (enumsort | intsort | function) "\""
 
+# Enum sort declaration
+enumsort ::= name ws "=" ws "EnumSort([" ws enumvals ws "])"
+enumvals ::= name (ws "," ws name)*
 
-#### Generate SMTLIB2 Formulas ####
+# Int sort declaration
+intsort ::= name ws "=" ws "IntSort([" ws intvals ws "])"
+intvals ::= number (ws "," ws number)*
 
-# Declarations
-DECL ::= "(declare-datatypes" ws "(" TYPEDECL ")" ws "(" CONSTRUCTORS ")" ")" |
-         "(declare-fun" ws ID ws "(" PARAMS ")" ws TYPE ")" |
-         "(define-fun" ws ID ws "(" PARAMS ")" ws TYPE ws BODY ")"
+# Function declaration
+function ::= name ws "=" ws "Function(" funcargs ")"
+funcargs ::= "[" ws funcarglist ws "]" ws "->" ws "[" ws funcreturn ws "]"
+funcarglist ::= name (ws "," ws name)*
+funcreturn ::= type
 
-TYPEDECL ::= "(" ID ws NUMBER ")"
-CONSTRUCTORS ::= "(" CONSTRUCTOR (ws CONSTRUCTOR)* ")"
-CONSTRUCTOR ::= "(" ID ")"
-PARAMS ::= (TYPE ws)*
-TYPE ::= ID | "Bool" | "Int"
-BODY ::= TERM
+#### Constraints section ####
+constraint ::= "\"" formula "\""
 
-# Constraints
-CONSTRAINT ::= "(" QUANTIFIER ws "(" BOUNDVARS ")" ws FORMULA ")" |
-              "(" OPERATOR ws TERMS ")" |
-              "(" "=" ws TERM ws TERM ")" |
-              "(" RELATION ws TERM ws TERM ")"
+# Formula constructs
+formula ::= basic | quantified | unary | binary | predicate | count
 
-# Options (typically negations of possible answers)
-OPTION ::= "(" "not" ws "(" QUANTIFIER ws "(" BOUNDVARS ")" ws FORMULA ")" ")" |
-           "(" "=" ws TERM ws NUMBER ")"
+# Basic formula elements
+basic ::= "(" formula ")" | value | name
 
-# Common elements
-QUANTIFIER ::= "forall" | "exists"
-BOUNDVARS ::= "(" VAR ws TYPE ")" (ws "(" VAR ws TYPE ")")*
-FORMULA ::= "(" OPERATOR ws TERMS ")" |
-           "(" RELATION ws TERM ws TERM ")" |
-           "(" "=" ws TERM ws TERM ")"
-OPERATOR ::= "and" | "or" | "not" | "=>" | "distinct"
-RELATION ::= "<" | ">" | "<=" | ">="
-TERM ::= ID | NUMBER | "(" OPERATOR ws TERMS ")" | "(" ID ws TERMS ")"
-TERMS ::= TERM (ws TERM)*
+# Quantified expressions
+quantified ::= quantifier "[" quantparams "]" ws "," ws formula
+quantifier ::= "ForAll" | "Exists"
+quantparams ::= qparam (ws "," ws qparam)*
+qparam ::= name ":" name
 
-# Basic elements
-ID ::= [a-zA-Z_][a-zA-Z0-9_]*
-NUMBER ::= [0-9]+
-VAR ::= [a-zA-Z_][a-zA-Z0-9_]*
+# Unary operations
+unary ::= "Not" "(" formula ")"
+
+# Binary operations
+binary ::= binop "(" formula ws "," ws formula ")"
+binop ::= "And" | "Or" | "Implies" | "Xor"
+
+# Predicate expressions
+predicate ::= name "(" predargs ")"
+predargs ::= predarg (ws "," ws predarg)*
+predarg ::= name | number | formula
+
+# Count expressions
+count ::= "Count([" countparams "]" ws "," ws formula ")"
+countparams ::= cparam (ws "," ws cparam)*
+cparam ::= name ":" name
+
+#### Options section ####
+option ::= "\"" verification_func "\""
+verification_func ::= is_valid | is_sat | is_unsat | is_accurate_list | is_exception
+
+# Verification functions
+is_valid ::= "is_valid(" formula ")"
+is_sat ::= "is_sat(" formula ")"
+is_unsat ::= "is_unsat(" formula ")"
+is_accurate_list ::= "is_accurate_list([" ws formulas ws "])"
+is_exception ::= "is_exception(" formula ")"
+
+# List of formulas for is_accurate_list
+formulas ::= formula (ws "," ws formula)*
+
+#### Basic elements ####
+name ::= [a-zA-Z][a-zA-Z0-9_]*
+number ::= [0-9]+
+value ::= "true" | "false"
+type ::= "bool" | "int" | name
