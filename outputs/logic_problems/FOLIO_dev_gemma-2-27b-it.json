@@ -1,0 +1,2100 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "PerformOften(x)",
+        "AttendEvents(x)",
+        "InactiveDisinterested(x)",
+        "ChaperoneDance(x)",
+        "Student(x)",
+        "YoungChildTeenager(x)",
+        "WishAcademic(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (PerformOften(x) → AttendEvents(x))",
+        "∀x (PerformOften(x) ⊕ InactiveDisinterested(x))",
+        "∀x (ChaperoneDance(x) → ¬Student(x))",
+        "∀x (InactiveDisinterested(x) → ChaperoneDance(x))",
+        "∀x (YoungChildTeenager(x) ∧ WishAcademic(x) → Student(x))",
+        "(AttendEvents(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEvents(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "PerformOften(bonnie)",
+      "perplexity": [
+        1.0385903120040894,
+        1.012913703918457
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Young(x)",
+        "Wish(x)",
+        "Further(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Engaged(x)))",
+        "∀x (Perform(x) ⊕ (Inactive(x) ∧ Disinterested(x)))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (Inactive(x) ∧ Disinterested(x) → Chaperone(x))",
+        "∀x ((Young(x) ∧ Wish(x) ∧ Further(x)) → Student(x))",
+        "(Attend(bonnie) ∧ Engaged(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Engaged(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "Perform(bonnie)",
+      "perplexity": 1.0825861692428589
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "PerformOften(x)",
+        "AttendEngage(x)",
+        "InactiveDisinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Young(x)",
+        "WishAcademic(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (PerformOften(x) → AttendEngage(x))",
+        "∀x (PerformOften(x) ⊕ InactiveDisinterested(x))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (InactiveDisinterested(x) → Chaperone(x))",
+        "∀x (Young(x) ∧ WishAcademic(x) → Student(x))",
+        "(AttendEngage(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEngage(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "((Young(bonnie) ∧ WishAcademic(bonnie) ∧ Chaperone(bonnie)) ⊕ ¬(Young(bonnie) ∧ WishAcademic(bonnie))) → (Student(bonnie) ⊕ InactiveDisinterested(bonnie))",
+      "perplexity": [
+        1.0512475967407227,
+        1.008399248123169
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Young(x)",
+        "Wish(x)",
+        "School(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → (Attend(x) ∧ Engaged(x)))",
+        "∀x (Perform(x) ⊕ (Inactive(x) ∧ Disinterested(x)))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (Inactive(x) ∧ Disinterested(x) → Chaperone(x))",
+        "∀x ((Young(x) ∧ Wish(x)) → Student(x))",
+        "(Attend(bonnie) ∧ Engaged(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∧ Engaged(bonnie))"
+      ],
+      "fol_conc": "((Young(bonnie) ∧ Wish(bonnie) ∧ Chaperone(bonnie)) ⊕ ¬(Young(bonnie) ∧ Wish(bonnie))) → (Student(bonnie) ∨ (Inactive(bonnie) ∧ Disinterested(bonnie)))",
+      "perplexity": 1.0859637260437012
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "PerformOften(x)",
+        "AttendEngaged(x)",
+        "InactiveDisinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "YoungChildTeenager(x)",
+        "WishAcademic(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (PerformOften(x) → AttendEngaged(x))",
+        "∀x (PerformOften(x) ⊕ InactiveDisinterested(x))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (InactiveDisinterested(x) → Chaperone(x))",
+        "∀x ((YoungChildTeenager(x) ∧ WishAcademic(x)) → Student(x))",
+        "(AttendEngaged(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEngaged(bonnie) ∨ Student(bonnie))"
+      ],
+      "fol_conc": "(Chaperone(bonnie) ⊕ ¬Chaperone(bonnie) ∧ PerformOften(bonnie)) → (YoungChildTeenager(bonnie) ∧ WishAcademic(bonnie) ∧ InactiveDisinterested(bonnie))",
+      "perplexity": [
+        1.0311323404312134,
+        1.0120344161987305
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "Engaged(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "Young(x)",
+        "Wish(x)",
+        "Highschool(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "Perform(x) → (Attend(x) ∧ Engaged(x))",
+        "∀x (Perform(x) ⊕ Inactive(x))",
+        "Chaperone(x) → ¬Student(x)",
+        "Inactive(x) → Chaperone(x)",
+        "Young(x) ∧ Wish(x) → Student(x)",
+        "(Attend(bonnie) ∧ Engaged(bonnie)) ⊕ ¬(Attend(bonnie) ∨ Engaged(bonnie))"
+      ],
+      "fol_conc": "(Chaperone(bonnie) ∨ ¬Chaperone(bonnie) ∧ Perform(bonnie)) → (Young(bonnie) ∧ Wish(bonnie) ∧ Inactive(bonnie))",
+      "perplexity": 1.130918025970459
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James has lunch in the company.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Employee(x)",
+        "ScheduleMeeting(x, y)",
+        "Appear(x, z)",
+        "HaveLunch(x, z)",
+        "WorkRemotely(x)",
+        "Manager(x)",
+        "Customer(y)"
+      ],
+      "fol_consts": [
+        "james",
+        "company"
+      ],
+      "fol_rules": [
+        "∀x∀y (Employee(x) ∧ ScheduleMeeting(x, y) → Appear(x, company))",
+        "∀x (HaveLunch(x, company) → ∃y (Employee(x) ∧ ScheduleMeeting(x, y)))",
+        "∀x (Employee(x) → (HaveLunch(x, company) ⊕ HaveLunch(x, home)))",
+        "∀x (HaveLunch(x, home) → WorkRemotely(x))",
+        "∀x (¬(Appear(x, company)) → WorkRemotely(x))",
+        "¬∃x (Manager(x) ∧ WorkRemotely(x))",
+        "(Manager(james) ∧ Appear(james, company)) ⊕ ¬(Manager(james) ∨ Appear(james, company))"
+      ],
+      "fol_conc": "HaveLunch(james, company)",
+      "perplexity": [
+        1.0720618963241577,
+        1.0136727094650269
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Employee(x)",
+        "Schedule(x, y)",
+        "Appear(x, y)",
+        "Lunch(x, y)",
+        "Home(x)",
+        "Remote(x)",
+        "Manager(x)",
+        "Other(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "today"
+      ],
+      "fol_rules": [
+        "∀x (Employee(x) ∧ Schedule(x, y) → Appear(x, today))",
+        "∀x (Lunch(x, company) → Schedule(x, y))",
+        "∀x (Employee(x) → (Lunch(x, company) ∨ Lunch(x, home)))",
+        "∀x (Lunch(x, home) → Remote(x))",
+        "∀x (Other(x) → Remote(x))",
+        "¬(Manager(x) ∧ Remote(x))",
+        "(Manager(james) ∧ Appear(james, today)) ⊕ ¬(Manager(james) ∨ Appear(james, today))"
+      ],
+      "fol_conc": "Lunch(james, company)",
+      "perplexity": 1.149395227432251
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James does not have lunch in the company.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Employee(x)",
+        "ScheduleMeeting(x, y)",
+        "Appear(x, y)",
+        "Lunch(x, y)",
+        "Home(x)",
+        "WorkingRemotely(x)",
+        "Manager(x)",
+        "OtherCountry(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "company"
+      ],
+      "fol_rules": [
+        "∀x ∀y (Employee(x) ∧ ScheduleMeeting(x, y) → Appear(x, company))",
+        "∀x (Employee(x) ∧ Lunch(x, company) → ScheduleMeeting(x, x))",
+        "∀x (Employee(x) → (Lunch(x, company) ⊕ Lunch(x, Home(x))))",
+        "∀x (Lunch(x, Home(x)) → WorkingRemotely(x))",
+        "∀x (OtherCountry(x) → WorkingRemotely(x))",
+        "¬∃x (Manager(x) ∧ WorkingRemotely(x))",
+        "(Manager(james) ∧ Appear(james, company)) ⊕ ¬(Manager(james) ∨ Appear(james, company))"
+      ],
+      "fol_conc": "¬Lunch(james, company)",
+      "perplexity": [
+        1.055936336517334,
+        1.0088725090026855
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Employee(x)",
+        "Schedule(x, y)",
+        "Appear(x, y)",
+        "Lunch(x, y)",
+        "Home(x)",
+        "Remote(x)",
+        "Manager(x)",
+        "Other(x)"
+      ],
+      "fol_consts": [
+        "james",
+        "company",
+        "home"
+      ],
+      "fol_rules": [
+        "∀x (Employee(x) ∧ Schedule(x, company) → Appear(x, company))",
+        "∀x (Lunch(x, company) → Schedule(x, company))",
+        "∀x (Employee(x) → (Lunch(x, company) ∨ Lunch(x, home)))",
+        "∀x (Lunch(x, home) → Remote(x))",
+        "∀x (Other(x) → Remote(x))",
+        "¬(Manager(x) ∧ Remote(x))",
+        "(Manager(james) ∧ Appear(james, company)) ⊕ ¬(Manager(james) ∨ Appear(james, company))"
+      ],
+      "fol_conc": "¬Lunch(james, company)",
+      "perplexity": 1.1506866216659546
+    }
+  },
+  {
+    "id": 5,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Employee(x)",
+        "ScheduleMeeting(x)",
+        "Appear(x)",
+        "LunchCompany(x)",
+        "LunchHome(x)",
+        "RemoteWork(x)",
+        "Manager(x)",
+        "OtherCountry(x)"
+      ],
+      "fol_consts": [
+        "james"
+      ],
+      "fol_rules": [
+        "∀x (Employee(x) ∧ ScheduleMeeting(x) → Appear(x))",
+        "∀x (LunchCompany(x) → ScheduleMeeting(x))",
+        "∀x (Employee(x) → (LunchCompany(x) ⊕ LunchHome(x)))",
+        "∀x (LunchHome(x) → RemoteWork(x))",
+        "∀x (OtherCountry(x) → RemoteWork(x))",
+        "∀x (Manager(x) → ¬RemoteWork(x))",
+        "(Manager(james) ∧ Appear(james)) ⊕ ¬(Manager(james) ∨ Appear(james))"
+      ],
+      "fol_conc": "(Manager(james) ∨ OtherCountry(james)) → (LunchHome(james) ∧ RemoteWork(james)) ⊕ ¬(LunchHome(james) ∨ RemoteWork(james))",
+      "perplexity": [
+        1.0634243488311768,
+        1.0180314779281616
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Employee(x)",
+        "Manager(x)",
+        "Schedule(x, y)",
+        "Appear(x, y)",
+        "Lunch(x, y)",
+        "Home(x)",
+        "Remote(x)",
+        "Other(x)"
+      ],
+      "fol_consts": [
+        "james"
+      ],
+      "fol_rules": [
+        "∀x (Employee(x) ∧ Schedule(x, y) → Appear(x, y))",
+        "∀x (Lunch(x, y) → Schedule(x, y))",
+        "∀x (Employee(x) → (Lunch(x, y) ⊕ Lunch(x, z)))",
+        "∀x (Lunch(x, z) → Remote(x))",
+        "∀x (Other(x) → Remote(x))",
+        "¬(Manager(x) ∧ Remote(x))",
+        "(Manager(james) ∧ Appear(james, y)) ⊕ ¬(Manager(james) ∨ Appear(james, y))"
+      ],
+      "fol_conc": "((Manager(james) ∨ Other(james)) → ((Lunch(james, z) ∧ Remote(james)) ⊕ ¬(Lunch(james, z) ∨ Remote(james))))",
+      "perplexity": 1.1209967136383057
+    }
+  },
+  {
+    "id": 6,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "There is an animal.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "OccurIn(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "SymptomOf(x, y)",
+        "Feel(x, y)",
+        "Get(x, y)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxVirus",
+        "human",
+        "fever",
+        "headache",
+        "musclePain",
+        "tired",
+        "glu"
+      ],
+      "fol_rules": [
+        "InfectiousDisease(monkeypox)",
+        "CausedBy(monkeypox, monkeypoxVirus)",
+        "OccurIn(monkeypoxVirus, human)",
+        "Mammal(human)",
+        "Animal(human)",
+        "SymptomOf(fever, monkeypox)",
+        "SymptomOf(headache, monkeypox)",
+        "SymptomOf(musclePain, monkeypox)",
+        "SymptomOf(tired, monkeypox)",
+        "Feel(human, tired) ⊕ Get(human, glu)"
+      ],
+      "fol_conc": "∃x Animal(x)",
+      "perplexity": [
+        1.0568162202835083,
+        1.0209667682647705
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Occur(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "Feel(x, y)",
+        "Get(x, y)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus",
+        "fever",
+        "headache",
+        "musclepains",
+        "tired",
+        "glu"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox)",
+        "Caused(monkeypox, monkeypoxvirus)",
+        "Occur(monkeypoxvirus, x) → Animal(x)",
+        "Mammal(x) → Animal(x)",
+        "Symptom(monkeypox, fever)",
+        "Symptom(monkeypox, headache)",
+        "Symptom(monkeypox, musclepains)",
+        "Symptom(monkeypox, tired)",
+        "Feel(x, tired) → Get(x, glu)"
+      ],
+      "fol_conc": "∃x (Animal(x))",
+      "perplexity": 1.1661338806152344
+    }
+  },
+  {
+    "id": 7,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "No one gets flu.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Infectious(x)",
+        "CausedBy(x, y)",
+        "OccurIn(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "SymptomOf(x, y)",
+        "Feel(x, y)",
+        "Get(x, y)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxVirus",
+        "human",
+        "fever",
+        "headache",
+        "musclePains",
+        "tired",
+        "flu"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox)",
+        "CausedBy(monkeypox, monkeypoxVirus)",
+        "OccurIn(monkeypoxVirus, human)",
+        "Mammal(human)",
+        "Animal(human)",
+        "SymptomOf(fever, monkeypox)",
+        "SymptomOf(headache, monkeypox)",
+        "SymptomOf(musclePains, monkeypox)",
+        "SymptomOf(tired, monkeypox)",
+        "Feel(human, tired) ⊕ Get(human, flu)"
+      ],
+      "fol_conc": "¬∃x (Get(x, flu))",
+      "perplexity": [
+        1.0666688680648804,
+        1.0244015455245972
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Occur(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "Feel(x, y)",
+        "Get(x, y)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus",
+        "flu",
+        "fever",
+        "headache",
+        "musclepains",
+        "tired"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox)",
+        "Caused(monkeypox, monkeypoxvirus)",
+        "Occur(monkeypoxvirus, humans)",
+        "Mammal(humans)",
+        "Animal(mammals)",
+        "Symptom(monkeypox, fever)",
+        "Symptom(monkeypox, headache)",
+        "Symptom(monkeypox, musclepains)",
+        "Symptom(monkeypox, tired)",
+        "Feel(people, tired) → Get(people, flu)"
+      ],
+      "fol_conc": "¬Get(x, flu)",
+      "perplexity": 1.221615195274353
+    }
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "Symptons of Monkeypox include coughing.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "InfectiousDisease(x)",
+        "CausedBy(x, y)",
+        "OccurIn(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Human(x)",
+        "SymptomOf(x, y)",
+        "Feel(x, y)",
+        "Get(x, y)",
+        "Coughing(x)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus",
+        "glu"
+      ],
+      "fol_rules": [
+        "InfectiousDisease(monkeypox)",
+        "CausedBy(monkeypox, monkeypoxvirus)",
+        "OccurIn(monkeypoxvirus, humans)",
+        "∀x (Human(x) → Mammal(x))",
+        "∀x (Mammal(x) → Animal(x))",
+        "SymptomOf(fever, monkeypox)",
+        "SymptomOf(headache, monkeypox)",
+        "SymptomOf(muscle_pains, monkeypox)",
+        "SymptomOf(tired, monkeypox)",
+        "Feel(x, tired) ∧ Get(x, glu) → Feel(x, tired)"
+      ],
+      "fol_conc": "¬Coughing(monkeypox)",
+      "perplexity": [
+        1.1359516382217407,
+        1.0090988874435425
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Infectious(x)",
+        "Caused(x, y)",
+        "Occur(x, y)",
+        "Mammal(x)",
+        "Animal(x)",
+        "Symptom(x, y)",
+        "Feel(x, y)",
+        "Glu(x)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "monkeypoxvirus",
+        "fever",
+        "headache",
+        "musclepains",
+        "tired",
+        "coughing"
+      ],
+      "fol_rules": [
+        "Infectious(monkeypox)",
+        "Caused(monkeypox, monkeypoxvirus)",
+        "Occur(monkeypoxvirus, humans)",
+        "Mammal(humans)",
+        "Animal(mammals)",
+        "Symptom(monkeypox, fever)",
+        "Symptom(monkeypox, headache)",
+        "Symptom(monkeypox, musclepains)",
+        "Symptom(monkeypox, tired)",
+        "Feel(people, tired)"
+      ],
+      "fol_conc": "Symptom(monkeypox, coughing)",
+      "perplexity": 1.1842682361602783
+    }
+  },
+  {
+    "id": 9,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Tom is an Ocellated wild turkey.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merrians(x)",
+        "RioGrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∃x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merrians(x) ∨ RioGrande(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ∨ Merrians(tom) ∨ RioGrande(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "Ocellated(tom)",
+      "perplexity": [
+        1.0449272394180298,
+        1.0176621675491333
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wildturkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Riogrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "Eastern(x) ⊕ Osceola(x) ⊕ Goulds(x) ⊕ Merriams(x) ⊕ Riogrande(x) ⊕ Ocellated(x)"
+      ],
+      "fol_conc": "Ocellated(tom)",
+      "perplexity": 1.2320446968078613
+    }
+  },
+  {
+    "id": 10,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Tom is an Eastern wild turkey.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merreams(x)",
+        "RioGrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∃x (WildTurkey(x) ∧ Eastern(x))",
+        "∃x (WildTurkey(x) ∧ Osceola(x))",
+        "∃x (WildTurkey(x) ∧ Goulds(x))",
+        "∃x (WildTurkey(x) ∧ Merreams(x))",
+        "∃x (WildTurkey(x) ∧ RioGrande(x))",
+        "∃x (WildTurkey(x) ∧ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ∨ Merreams(tom) ∨ RioGrande(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "Eastern(tom)",
+      "perplexity": [
+        1.0662699937820435,
+        1.013550877571106
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wildturkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Riogrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∃x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Merriams(x) ∨ Riogrande(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ∨ Merriams(tom) ∨ Riogrande(tom))",
+        "Wildturkey(tom)"
+      ],
+      "fol_conc": "Eastern(tom)",
+      "perplexity": 1.1547225713729858
+    }
+  },
+  {
+    "id": 11,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Joey is a wild turkey.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "WildTurkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Meriamms(x)",
+        "RioGrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom"
+      ],
+      "fol_rules": [
+        "∃x (Eastern(x) ∨ Osceola(x) ∨ Goulds(x) ∨ Meriamms(x) ∨ RioGrande(x) ∨ Ocellated(x))",
+        "¬Eastern(tom)",
+        "¬Osceola(tom)",
+        "¬(Goulds(tom) ∨ Meriamms(tom) ∨ RioGrande(tom))",
+        "WildTurkey(tom)"
+      ],
+      "fol_conc": "Ocellated(tom)",
+      "perplexity": [
+        1.0896552801132202,
+        1.0225887298583984
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Wildturkey(x)",
+        "Eastern(x)",
+        "Osceola(x)",
+        "Goulds(x)",
+        "Merriams(x)",
+        "Riogrande(x)",
+        "Ocellated(x)"
+      ],
+      "fol_consts": [
+        "tom",
+        "joey"
+      ],
+      "fol_rules": [
+        "Eastern(x) ⊕ Osceola(x) ⊕ Goulds(x) ⊕ Merriams(x) ⊕ Riogrande(x) ⊕ Ocellated(x)"
+      ],
+      "fol_conc": "Wildturkey(joey)",
+      "perplexity": 1.2474199533462524
+    }
+  },
+  {
+    "id": 12,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "The Legend of Zelda is in the Top 10 list.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "CreatedBy(x, y)",
+        "JapaneseCompany(x)",
+        "Game(x)",
+        "Top10(x)",
+        "SellsCopies(x, y)"
+      ],
+      "fol_consts": [
+        "legendOfZelda",
+        "nintendo"
+      ],
+      "fol_rules": [
+        "CreatedBy(nintendo, legendOfZelda)",
+        "∀x (Top10(x) → JapaneseCompany(y))",
+        "∀x (SellsCopies(x, 1000000) → Top10(x))",
+        "SellsCopies(legendOfZelda, 1000000)"
+      ],
+      "fol_conc": "Top10(legendOfZelda)",
+      "perplexity": [
+        1.0574976205825806,
+        1.0182456970214844
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Created(x, y)",
+        "Japanese(x)",
+        "Top10(x)",
+        "Sells(x, y)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "nintendo",
+        "top10"
+      ],
+      "fol_rules": [
+        "Created(nintendo, zelda)",
+        "∀x (Top10(x) → Japanese(x))",
+        "∀x (Sells(x, 1000000) → Top10(x))",
+        "Sells(zelda, 1000000)"
+      ],
+      "fol_conc": "Top10(zelda)",
+      "perplexity": 1.1706992387771606
+    }
+  },
+  {
+    "id": 13,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "FIFA 22 is made by a Japanese video game company.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Created(x, y)",
+        "JapaneseCompany(x)",
+        "Game(x)",
+        "Top10(x)",
+        "SellMoreThanMillion(x)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "fifa22",
+        "nintendo"
+      ],
+      "fol_rules": [
+        "Created(nintendo, zelda)",
+        "∀x (Top10(x) → ∃y (JapaneseCompany(y) ∧ Created(y, x)))",
+        "∀x (SellMoreThanMillion(x) → Top10(x))",
+        "SellMoreThanMillion(zelda)"
+      ],
+      "fol_conc": "JapaneseCompany(y) ∧ Created(y, fifa22)",
+      "perplexity": [
+        1.1277339458465576,
+        1.0209829807281494
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Created(x, y)",
+        "Japanese(x)",
+        "Top10(y)",
+        "Sells(x, z)",
+        "More(z, w)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "fifa22",
+        "one",
+        "million",
+        "japan"
+      ],
+      "fol_rules": [
+        "Created(japan, zelda)",
+        "∀x (Top10(x) → Japanese(y))",
+        "∀x (Sells(x, z) ∧ More(z, one)) → Top10(x)",
+        "Sells(zelda, one)"
+      ],
+      "fol_conc": "Japanese(x)",
+      "perplexity": 1.3273805379867554
+    }
+  },
+  {
+    "id": 14,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "The Legend of Zelda is not in the Top 10 list.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "CreatedBy(x, y)",
+        "Japanese(x)",
+        "Game(x)",
+        "Top10(x)",
+        "SellsMoreThanMillion(x)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "nintendo"
+      ],
+      "fol_rules": [
+        "CreatedBy(nintendo, zelda)",
+        "∀x (Top10(x) → Japanese(y))",
+        "∀x (SellsMoreThanMillion(x) → Top10(x))",
+        "SellsMoreThanMillion(zelda)"
+      ],
+      "fol_conc": "¬Top10(zelda)",
+      "perplexity": [
+        1.0608659982681274,
+        1.0164498090744019
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Created(x, y)",
+        "Japanese(x)",
+        "Top10(x)",
+        "Sells(x, y)"
+      ],
+      "fol_consts": [
+        "zelda",
+        "nintendo",
+        "top10"
+      ],
+      "fol_rules": [
+        "Created(nintendo, zelda)",
+        "∀x (Top10(x) → Japanese(x))",
+        "∀x (Sells(x, 1000000) → Top10(x))",
+        "Sells(zelda, 1000000)"
+      ],
+      "fol_conc": "¬Top10(zelda)",
+      "perplexity": 1.1684452295303345
+    }
+  },
+  {
+    "id": 15,
+    "nl_problem": {
+      "context": [
+        "All squares have four sides.",
+        "All four-sided things are shapes. "
+      ],
+      "question": "All squares are shapes.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Square(x)",
+        "FourSided(x)",
+        "Shape(x)"
+      ],
+      "fol_consts": [],
+      "fol_rules": [
+        "∀x (Square(x) → FourSided(x))",
+        "∀x (FourSided(x) → Shape(x))"
+      ],
+      "fol_conc": "∀x (Square(x) → Shape(x))",
+      "perplexity": [
+        1.0477334260940552,
+        1.0162159204483032
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Square(x)",
+        "Foursided(x)",
+        "Shape(x)"
+      ],
+      "fol_consts": [
+        "x1"
+      ],
+      "fol_rules": [
+        "∀x (Square(x) → Foursided(x))",
+        "∀x (Foursided(x) → Shape(x))"
+      ],
+      "fol_conc": "∀x (Square(x) → Shape(x))",
+      "perplexity": 1.5295536518096924
+    }
+  },
+  {
+    "id": 16,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is a turtle.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Animal(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock)",
+      "perplexity": [
+        1.0378813743591309,
+        1.0187569856643677
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock)",
+      "perplexity": 1.1366173028945923
+    }
+  },
+  {
+    "id": 17,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is not a turtle.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Animal(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "¬Turtle(rock)",
+      "perplexity": [
+        1.0414422750473022,
+        1.019148588180542
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Cute(x)",
+        "Turtle(x)",
+        "Animal(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "¬Turtle(rock)",
+      "perplexity": 1.1260489225387573
+    }
+  },
+  {
+    "id": 18,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is a turtle or cute.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Animal(x)",
+        "Squirrel(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Cute(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock) ∨ Cute(rock)",
+      "perplexity": [
+        1.0449811220169067,
+        1.0207343101501465
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "Turtle(rock) ∨ Cute(rock)",
+      "perplexity": 1.1268501281738281
+    }
+  },
+  {
+    "id": 19,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "If Rock is not both a turtle and a squirrel, then Rock is either cute or skittish.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Animal(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "¬(Turtle(rock) ∧ Squirrel(rock)) → (Cute(rock) ⊕ Skittish(rock))",
+      "perplexity": [
+        1.035127878189087,
+        1.0431650876998901
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "¬(Turtle(rock) ∧ Squirrel(rock)) → (Cute(rock) ∨ Skittish(rock))",
+      "perplexity": 1.1128654479980469
+    }
+  },
+  {
+    "id": 20,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "If Rock is cute and still, then Rock is a turtle and skittish.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)",
+        "Animal(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x Turtle(x)",
+        "∀x (Animal(x) → (Rabbit(x) ⊕ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "(Cute(rock) ∧ Still(rock)) → (Turtle(rock) ∧ Skittish(rock))",
+      "perplexity": [
+        1.0583583116531372,
+        1.0112440586090088
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Rabbit(x)",
+        "Turtle(x)",
+        "Squirrel(x)",
+        "Cute(x)",
+        "Skittish(x)",
+        "Still(x)"
+      ],
+      "fol_consts": [
+        "rock"
+      ],
+      "fol_rules": [
+        "∀x (Rabbit(x) → Cute(x))",
+        "∃x (Turtle(x))",
+        "∀x (Animal(x) → (Rabbit(x) ∨ Squirrel(x)))",
+        "∀x (Skittish(x) → ¬Still(x))",
+        "∀x (Squirrel(x) → Skittish(x))",
+        "Still(rock)"
+      ],
+      "fol_conc": "((Cute(rock) ∧ Still(rock)) → (Turtle(rock) ∧ Skittish(rock)))",
+      "perplexity": 1.1191415786743164
+    }
+  },
+  {
+    "id": 21,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "Karen will share \"Stranger Things\" to Lisa.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "NetflixShow(x)",
+        "BingeWatch(x, y)",
+        "Download(x, y)",
+        "Share(x, y, z)"
+      ],
+      "fol_consts": [
+        "karen",
+        "lisa",
+        "stranger_things",
+        "black_mirror"
+      ],
+      "fol_rules": [
+        "Popular(stranger_things)",
+        "∀x (Popular(x) → BingeWatch(karen, x))",
+        "∀x (BingeWatch(karen, x) ↔ Download(karen, x))",
+        "¬Download(karen, black_mirror)",
+        "NetflixShow(black_mirror)",
+        "∀x (BingeWatch(karen, x) → Share(karen, x, lisa))"
+      ],
+      "fol_conc": "Share(karen, stranger_things, lisa)",
+      "perplexity": [
+        1.031286597251892,
+        1.0174052715301514
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Netflix(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y)"
+      ],
+      "fol_consts": [
+        "stranger",
+        "black",
+        "karen",
+        "lisa"
+      ],
+      "fol_rules": [
+        "Popular(stranger) ∧ Netflix(stranger)",
+        "∀x (Popular(x) ∧ Netflix(x) → Binge(karen, x))",
+        "∀x (Binge(karen, x) ↔ Download(karen, x))",
+        "¬Download(karen, black)",
+        "Netflix(black)",
+        "∀x (Binge(karen, x) → Share(karen, lisa))"
+      ],
+      "fol_conc": "Share(karen, lisa)",
+      "perplexity": 1.1860811710357666
+    }
+  },
+  {
+    "id": 22,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "\"Black Mirror\" is popular.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "NetflixShow(x)",
+        "BingeWatches(x, y)",
+        "Download(x, y)",
+        "Share(x, y, z)"
+      ],
+      "fol_consts": [
+        "stranger_things",
+        "karen",
+        "black_mirror",
+        "lisa"
+      ],
+      "fol_rules": [
+        "Popular(stranger_things)",
+        "∀x (Popular(x) → BingeWatches(karen, x))",
+        "∀x (BingeWatches(karen, x) ↔ Download(karen, x))",
+        "¬Download(karen, black_mirror)",
+        "NetflixShow(black_mirror)",
+        "∀x (BingeWatches(karen, x) → Share(karen, x, lisa))"
+      ],
+      "fol_conc": "Popular(black_mirror)",
+      "perplexity": [
+        1.0300999879837036,
+        1.0224175453186035
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Netflix(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y, z)"
+      ],
+      "fol_consts": [
+        "stranger",
+        "black",
+        "karen",
+        "lisa",
+        "netflix"
+      ],
+      "fol_rules": [
+        "Popular(stranger) ∧ Netflix(stranger)",
+        "∀x (Popular(x) ∧ Netflix(x) → Binge(karen, x))",
+        "∀x (Binge(karen, x) ↔ Download(karen, x))",
+        "¬Download(karen, black)",
+        "Netflix(black)",
+        "∀x (Binge(karen, x) → Share(karen, x, lisa))"
+      ],
+      "fol_conc": "Popular(black)",
+      "perplexity": 1.1884649991989136
+    }
+  },
+  {
+    "id": 23,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "Karen will share \"Black Mirror\" to Lisa.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Popular(x)",
+        "NetflixShow(x)",
+        "BingeWatch(x, y)",
+        "Download(x, y)",
+        "Share(x, y, z)"
+      ],
+      "fol_consts": [
+        "stranger_things",
+        "karen",
+        "black_mirror",
+        "lisa"
+      ],
+      "fol_rules": [
+        "Popular(stranger_things)",
+        "∀x (Popular(x) → BingeWatch(karen, x))",
+        "∀x ∀y (BingeWatch(x, y) ↔ Download(x, y))",
+        "¬Download(karen, black_mirror)",
+        "NetflixShow(black_mirror)",
+        "∀x (BingeWatch(x, y) → Share(x, y, lisa))"
+      ],
+      "fol_conc": "Share(karen, black_mirror, lisa)",
+      "perplexity": [
+        1.0421396493911743,
+        1.0172483921051025
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Popular(x)",
+        "Netflix(x)",
+        "Binge(x, y)",
+        "Download(x, y)",
+        "Share(x, y)"
+      ],
+      "fol_consts": [
+        "stranger",
+        "black",
+        "karen",
+        "lisa"
+      ],
+      "fol_rules": [
+        "Popular(stranger) ∧ Netflix(stranger)",
+        "∀x (Popular(x) ∧ Netflix(x) → Binge(karen, x))",
+        "∀x (Binge(karen, x) ↔ Download(karen, x))",
+        "¬Download(karen, black)",
+        "Netflix(black)",
+        "∀x (Binge(karen, x) → Share(karen, lisa))"
+      ],
+      "fol_conc": "Share(karen, lisa)",
+      "perplexity": 1.1850727796554565
+    }
+  },
+  {
+    "id": 24,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "MostPopulous(x)",
+        "LocatedIn(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "RanksHigh(x)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "summerOlympics2008",
+        "summerParalympics2008",
+        "summerOlympics",
+        "winterOlympics",
+        "summerParalympics",
+        "winterParalympics",
+        "NorthernChina"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "MostPopulous(beijing)",
+        "LocatedIn(beijing, NorthernChina)",
+        "Hosted(beijing, summerOlympics2008)",
+        "Hosted(beijing, summerParalympics2008)",
+        "Hosted(beijing, summerOlympics) ∧ Hosted(beijing, winterOlympics) ∧ Hosted(beijing, summerParalympics) ∧ Hosted(beijing, winterParalympics)",
+        "∃x (University(x) ∧ RanksHigh(x))"
+      ],
+      "fol_conc": "Hosted(beijing, summerOlympics2008) ∧ Hosted(beijing, winterOlympics)",
+      "perplexity": [
+        1.0660998821258545,
+        1.0144575834274292
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Mostpopulous(x)",
+        "Located(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "Best(x)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "summer",
+        "winter",
+        "olympics",
+        "paralympics",
+        "asiapacific",
+        "world"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Mostpopulous(beijing)",
+        "Located(beijing, china)",
+        "Hosted(beijing, summer)",
+        "Hosted(beijing, summer)",
+        "Hosted(beijing, summer)",
+        "Hosted(beijing, winter)",
+        "Hosted(beijing, summer)",
+        "Hosted(beijing, winter)",
+        "University(beijing)",
+        "Best(beijing)"
+      ],
+      "fol_conc": "Hosted(beijing, summer) ∧ Hosted(beijing, winter)",
+      "perplexity": 1.2235183715820312
+    }
+  },
+  {
+    "id": 25,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing is located in southern China.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "CapitalOf(x, y)",
+        "MostPopulous(x)",
+        "LocatedIn(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "RanksAmongBest(x)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "northernChina",
+        "southernChina",
+        "summerOlympics2008",
+        "summerParalympics2008",
+        "summerOlympics",
+        "winterOlympics",
+        "summerParalympics",
+        "winterParalympics"
+      ],
+      "fol_rules": [
+        "CapitalOf(beijing, china)",
+        "MostPopulous(beijing)",
+        "LocatedIn(beijing, northernChina)",
+        "Hosted(beijing, summerOlympics2008)",
+        "Hosted(beijing, summerParalympics2008)",
+        "Hosted(beijing, summerOlympics) ∧ Hosted(beijing, winterOlympics) ∧ Hosted(beijing, summerParalympics) ∧ Hosted(beijing, winterParalympics)",
+        "∃x (University(x) ∧ RanksAmongBest(x) ∧ LocatedIn(x, beijing))"
+      ],
+      "fol_conc": "LocatedIn(beijing, southernChina)",
+      "perplexity": [
+        1.0410969257354736,
+        1.0076831579208374
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Mostpopulous(x)",
+        "Located(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "Best(x)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "summerolympics",
+        "winterolympics",
+        "summerparalympics",
+        "winterparalympics"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Mostpopulous(beijing)",
+        "Located(beijing, china)",
+        "Hosted(beijing, summerolympics)",
+        "Hosted(beijing, winterolympics)",
+        "Hosted(beijing, summerparalympics)",
+        "Hosted(beijing, winterparalympics)",
+        "∃x (University(x) ∧ Located(x, beijing) ∧ Best(x))"
+      ],
+      "fol_conc": "Located(beijing, southchina)",
+      "perplexity": 1.216556191444397
+    }
+  },
+  {
+    "id": 26,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing is the second largest Chinese city by urban population.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "MostPopulous(x)",
+        "LocatedIn(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "RankAmong(x, y, z)",
+        "SecondLargestCity(x, y)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "northern_china",
+        "summer_olympics_2008",
+        "summer_paralympics_2008",
+        "summer_olympics",
+        "winter_olympics",
+        "summer_paralympics",
+        "winter_paralympics",
+        "asia_pacific"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "MostPopulous(beijing)",
+        "LocatedIn(beijing, northern_china)",
+        "Hosted(beijing, summer_olympics_2008)",
+        "Hosted(beijing, summer_paralympics_2008)",
+        "Hosted(beijing, summer_olympics) ∧ Hosted(beijing, winter_olympics) ∧ Hosted(beijing, summer_paralympics) ∧ Hosted(beijing, winter_paralympics)",
+        "∃x (University(x) ∧ RankAmong(x, asia_pacific, world))"
+      ],
+      "fol_conc": "SecondLargestCity(beijing, china)",
+      "perplexity": [
+        1.1254098415374756,
+        1.0084736347198486
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Capital(x, y)",
+        "Mostpopulous(x)",
+        "Located(x, y)",
+        "Hosted(x, y)",
+        "University(x)",
+        "Best(x)",
+        "Larger(x, y)"
+      ],
+      "fol_consts": [
+        "beijing",
+        "china",
+        "summerolympics",
+        "winterolympics",
+        "summerparalympics",
+        "winterparalympics"
+      ],
+      "fol_rules": [
+        "Capital(beijing, china)",
+        "Mostpopulous(beijing)",
+        "Located(beijing, china)",
+        "Hosted(beijing, summerolympics)",
+        "Hosted(beijing, winterolympics)",
+        "Hosted(beijing, summerparalympics)",
+        "Hosted(beijing, winterparalympics)",
+        "∃x (University(x) ∧ Located(x, beijing) ∧ Best(x))"
+      ],
+      "fol_conc": "Larger(shanghai, beijing)",
+      "perplexity": 1.2128921747207642
+    }
+  },
+  {
+    "id": 27,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "Marvin is an alien.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "FromMars(x)",
+        "Human(x)",
+        "FromEarth(x)"
+      ],
+      "fol_consts": [
+        "marvin"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (FromMars(x) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (FromEarth(x) → Human(x))",
+        "¬(FromEarth(marvin) ∧ FromMars(marvin))",
+        "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "Alien(marvin)",
+      "perplexity": [
+        1.0481892824172974,
+        1.0163867473602295
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "earth",
+        "mars"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "Alien(marvin)",
+      "perplexity": 1.0973135232925415
+    }
+  },
+  {
+    "id": 28,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "Marvin is neither a human nor from Mars.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "FromMars(x)",
+        "FromEarth(x)"
+      ],
+      "fol_consts": [
+        "marvin"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (FromMars(x) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (FromEarth(x) → Human(x))",
+        "¬(FromEarth(marvin) ∧ FromMars(marvin))",
+        "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "¬Human(marvin) ∧ ¬FromMars(marvin)",
+      "perplexity": [
+        1.0276732444763184,
+        1.0156790018081665
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "earth",
+        "mars"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "¬(Human(marvin) ∨ From(marvin, mars))",
+      "perplexity": 1.0957056283950806
+    }
+  },
+  {
+    "id": 29,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "If Marvin is not from Mars, then Marvin is a human.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "FromMars(x)",
+        "Human(x)",
+        "FromEarth(x)"
+      ],
+      "fol_consts": [
+        "marvin"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (FromMars(x) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (FromEarth(x) → Human(x))",
+        "¬(FromEarth(marvin) ∧ FromMars(marvin))",
+        "¬FromEarth(marvin) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "¬FromMars(marvin) → Human(marvin)",
+      "perplexity": [
+        1.0503255128860474,
+        1.022260308265686
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Alien(x)",
+        "Extraterrestrial(x)",
+        "Human(x)",
+        "From(x, y)"
+      ],
+      "fol_consts": [
+        "marvin",
+        "earth",
+        "mars"
+      ],
+      "fol_rules": [
+        "∀x (Alien(x) → Extraterrestrial(x))",
+        "∀x (From(x, mars) → Alien(x))",
+        "∀x (Extraterrestrial(x) → ¬Human(x))",
+        "∀x (From(x, earth) → Human(x))",
+        "¬(From(marvin, earth) ∧ From(marvin, mars))",
+        "¬From(marvin, earth) → Extraterrestrial(marvin)"
+      ],
+      "fol_conc": "¬From(marvin, mars) → Human(marvin)",
+      "perplexity": 1.097836971282959
+    }
+  }
+]
