@@ -13,7 +13,8 @@ class LSAT_Z3_Program:
             self.parse_logic_program()
             self.standard_code = self.to_standard_code()
         except Exception as e:
-            print(e)
+            # print(e)
+            self.formula_error = str(e)
             self.standard_code = None
             self.flag = False
             return
@@ -167,6 +168,11 @@ class LSAT_Z3_Program:
             output = check_output(["python", filename], stderr=subprocess.STDOUT, timeout=1.0)
         except subprocess.CalledProcessError as e:
             outputs = e.output.decode("utf-8").strip().splitlines()[-1]
+            
+            if 'SyntaxError' in outputs:
+                self.flag = False
+                self.formula_error = outputs
+            
             return None, outputs
         except subprocess.TimeoutExpired:
             return None, 'TimeoutError'

@@ -50,6 +50,10 @@ class LogicInferenceEngine:
             return 'N/A', 'parsing error', program.formula_error
         # execuate the program
         answer, error_message = program.execute_program()
+        
+        if program.flag == False:
+            return 'N/A', 'parsing error', program.formula_error
+        
         # not executable
         if answer is None:
             return 'N/A', 'execution error', error_message
@@ -107,7 +111,7 @@ class LogicInferenceEngine:
                     logic_problem_constrained = sample.get('logic_problem_gcd', {})
                     answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
 
-                    if status == 'parsing error':
+                    if status_constrained == 'parsing error':
                         error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({

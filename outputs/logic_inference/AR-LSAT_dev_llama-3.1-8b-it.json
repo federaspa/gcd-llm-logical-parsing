@@ -43,7 +43,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -208,7 +208,7 @@
       "answer": "D",
       "predicted_answer": "N/A",
       "status": "parsing error",
-      "error": ""
+      "error": "unsupported operand type(s) for +: 'NoneType' and 'int'"
     },
     "logic_problem_gcd": {
       "declarations": [
@@ -1159,52 +1159,6 @@
     }
   },
   {
-    "id": 15,
-    "nl_problem": {
-      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
-      "question": "If in the week's tour schedule the division that is toured on Tuesday is also toured on Friday, then for which one of the following days must a tour of the Production division be scheduled?",
-      "options": [
-        "A) Monday",
-        "B) Tuesday",
-        "C) Wednesday",
-        "D) Thursday",
-        "E) Friday"
-      ]
-    },
-    "answer": "A",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.0107471942901611,
-        1.0930824279785156
-      ],
-      "answer": "A",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
     "id": 16,
     "nl_problem": {
       "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
@@ -1351,237 +1305,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "z3.z3types.Z3Exception: Sort mismatch"
-    }
-  },
-  {
-    "id": 18,
-    "nl_problem": {
-      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
-      "question": "Which one of the following could be a complete and accurate list of the members of the crew?",
-      "options": [
-        "A) George, Helena, Inga, Kelly",
-        "B) George, Helena, Kelly, Leanda",
-        "C) Helena, Inga, Kelly, Olaf",
-        "D) Helena, Inga, Maricita, Olaf",
-        "E) George, Helena, Leanda, Maricita, Olaf"
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "valves = EnumSort([G, H, I, K, L, N, O, P])",
-        "opened = Function([valves] -> [int])",
-        "ForAll([v:valves], And(1 <= opened(v), opened(v) <= 8))"
-      ],
-      "constraints": [
-        "Distinct([v:valves], opened(v))",
-        "And(opened(K) < opened(H), opened(P) < opened(H))",
-        "And(opened(O) > opened(H), opened(O) < opened(L))",
-        "opened(L) > opened(G)",
-        "opened(N) < opened(H)",
-        "opened(I) > opened(K)"
-      ],
-      "options": [
-        "is_exception(is_sat(opened(H) == 5))",
-        "is_exception(is_sat(opened(I) == 5))",
-        "is_exception(is_sat(opened(K) == 5))",
-        "is_exception(is_sat(opened(N) == 5))",
-        "is_exception(is_sat(opened(O) == 5))"
-      ],
-      "perplexity": [
-        1.00946843624115,
-        1.1649278402328491
-      ],
-      "answer": "B",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "No Output"
-    }
-  },
-  {
-    "id": 19,
-    "nl_problem": {
-      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
-      "question": "If the installation takes three days, and if the same two crew members work on the first and third days, then which one of the following could be the pair of crew members who work on those two days?",
-      "options": [
-        "A) Helena and Inga",
-        "B) Inga and Kelly",
-        "C) Inga and Leanda",
-        "D) Kelly and Olaf",
-        "E) Leanda and Olaf"
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "crew_members = EnumSort([George, Helena, Inga, Kelly, Leanda, Maricita, Olaf])",
-        "tasks = EnumSort([framing, wallboarding, taping, sanding, priming])",
-        "days = EnumSort([1, 2, 3])",
-        "works = Function([crew_members, days] -> [tasks])",
-        "ForAll([d:days], Exists([t:tasks], works(_, d) == t))",
-        "ForAll([d:days], exists([t1,t2:tasks], (works(_, d) == t1) && (works(_, d) == t2)))",
-        "And(Not(And(works(_, d) == taping, works(_, d) == priming)) ForAll([d:days]))",
-        "ForAll([c:crew_members, d:days], Count([t:tasks], works(c, d) == t) <= 1)",
-        "ForAll([t:tasks], Count([d:days], works(c, d) == t) <= 1)"
-      ],
-      "constraints": [
-        "ForAll([d:days, d2:d], Implies(And(d != d2, (works(_, d) != None) && (works(_, d2) != None)), (works(_, d) != works(_, d2)))",
-        "ForAll([c1:candidates, c2:candidates], Implies(And(works(c1, 1) != None, works(c1, 3) != None, works(c2, 1) != None, works(c2, 3) != None, c1 != c2), (works(c1, 1) == works(c2, 1)) || (works(c1, 3) == works(c2, 3))))"
-      ],
-      "options": [
-        "And(works(Inga, 1) == works(Inga, 3), works(Helena, 1) == works(Helena, 3))",
-        "And(works(Inga, 1) == works(Kelly, 3), works(Inga, 3) == works(Kelly, 1))",
-        "And(works(Inga, 1) == works(Leanda, 3), works(Inga, 3) == works(Leanda, 1))",
-        "And(works(Kelly, 1) == works(Olaf, 3), works(Kelly, 3) == works(Olaf, 1))",
-        "And(works(Leanda, 1) == works(Olaf, 3), works(Leanda, 3) == works(Olaf, 1))"
-      ],
-      "perplexity": [
-        1.1350570917129517,
-        1.0671894550323486
-      ],
-      "answer": "D",
-      "predicted_answer": "N/A",
-      "status": "parsing error",
-      "error": ""
-    }
-  },
-  {
-    "id": 20,
-    "nl_problem": {
-      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
-      "question": "Each of the following could be a complete and accurate list of the members of the crew EXCEPT:",
-      "options": [
-        "A) Helena, Inga, Kelly, Maricita",
-        "B) Inga, Kelly, Leanda, Olaf",
-        "C) George, Helena, Inga, Leanda",
-        "D) Inga, Leanda, Maricita, Olaf",
-        "E) Kelly, Leanda, Maricita, Olaf"
-      ]
-    },
-    "answer": "A",
-    "logic_problem": {
-      "declarations": [
-        "candidates = EnumSort([Q, R, S, T, U])",
-        "meetings = EnumSort([1, 2, 3])",
-        "speaks = Function([meetings, candidates] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([m:meetings], Count([c:candidates], speaks(m, c)) == 2)",
-        "ForAll([m:meetings], And(speaks(m, Q), Not(speaks(m, R))))",
-        "ForAll([m:meetings], And(speaks(m, S), Not(speaks(m, T))))",
-        "ForAll([m:meetings], And(speaks(m, U), Not(speaks(m, R))))",
-        "ForAll([m:meetings], And(speaks(m, R), Or(speaks(m, T), speaks(m, S))))",
-        "And(speaks(1, Q), speaks(1, S), speaks(1, U))",
-        "And(speaks(2, R), speaks(2, T), speaks(2, S))",
-        "And(speaks(3, Q), speaks(3, R), speaks(3, U))"
-      ],
-      "options": [
-        "is_sat(ForAll([m:meetings], And(speaks(m, Q), speaks(m, S)))) ::: (A)",
-        "is_sat(ForAll([m:meetings], And(speaks(m, R), speaks(m, T)))) ::: (B)",
-        "is_sat(ForAll([m:meetings], And(speaks(m, Q), speaks(m, T)))) ::: (C)",
-        "is_sat(ForAll([m:meetings], And(speaks(m, R), speaks(m, S)))) ::: (D)",
-        "is_sat(ForAll([m:meetings], And(speaks(m, U), speaks(m, T)))) ::: (E)"
-      ],
-      "perplexity": [
-        1.0094753503799438,
-        1.2268187999725342
-      ],
-      "answer": "A",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "SyntaxError: invalid syntax"
-    }
-  },
-  {
-    "id": 21,
-    "nl_problem": {
-      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
-      "question": "If the installation takes three days, and if the sanding is done on the third day, then which one of the following could be a list of all the crew members who work on the second day?",
-      "options": [
-        "A) Inga",
-        "B) Kelly",
-        "C) Olaf",
-        "D) George and Helena",
-        "E) Leanda and Olaf"
-      ]
-    },
-    "answer": "E",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.005109429359436,
-        1.0833803415298462
-      ],
-      "answer": "E",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 22,
-    "nl_problem": {
-      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
-      "question": "Which one of the following could be a pair of members of the crew both of whom work on the same days as each other and each of whom perform two tasks?",
-      "options": [
-        "A) George and Maricita",
-        "B) Helena and Kelly",
-        "C) Inga and Leanda",
-        "D) Kelly and Leanda",
-        "E) Leanda and Olaf"
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.0185269117355347,
-        1.0856223106384277
-      ],
-      "answer": "D",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -1891,50 +1614,6 @@
     }
   },
   {
-    "id": 27,
-    "nl_problem": {
-      "context": "A closet contains exactly six hangers—1, 2, 3, 4, 5, and 6—hanging, in that order, from left to right. It also contains exactly six dresses—one gauze, one linen, one polyester, one rayon, one silk, and one wool—a different dress on each of the hangers, in an order satisfying the following conditions: The gauze dress is on a lower-numbered hanger than the polyester dress. The rayon dress is on hanger 1 or hanger 6. Either the wool dress or the silk dress is on hanger 3. The linen dress hangs immediately to the right of the silk dress.",
-      "question": "Which one of the following CANNOT be true?",
-      "options": [
-        "A) The linen dress hangs immediately next to the gauze dress.",
-        "B) The polyester dress hangs immediately to the right of the rayon dress.",
-        "C) The rayon dress hangs immediately to the left of the wool dress.",
-        "D) The silk dress is on a lower-numbered hanger than the gauze dress.",
-        "E) The wool dress is on a higher-numbered hanger than the rayon dress."
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "items = EnumSort([I, J, K, L, M])",
-        "colors = EnumSort([red, green, blue, yellow, purple])",
-        "color = Function([items] -> [colors])"
-      ],
-      "constraints": [
-        "ForAll([i:items], color(i) != red)",
-        "ForAll([c:colors], Implies(color(K) == c, Not(color(L) == c)))",
-        "color(I) == green",
-        "Count([i:items], color(i) == yellow) == 2",
-        "color(M) == blue"
-      ],
-      "options": [
-        "is_sat(ForAll([i:items], color(i) == red))",
-        "is_sat(ForAll([i:items], color(i) == green))",
-        "is_sat(ForAll([i:items], color(i) == yellow))",
-        "is_sat(ForAll([i:items], color(i) == blue))",
-        "is_sat(ForAll([i:items], color(i) == purple))"
-      ],
-      "perplexity": [
-        1.0128813982009888,
-        1.1142501831054688
-      ],
-      "answer": "B",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "No Output"
-    }
-  },
-  {
     "id": 28,
     "nl_problem": {
       "context": "A closet contains exactly six hangers—1, 2, 3, 4, 5, and 6—hanging, in that order, from left to right. It also contains exactly six dresses—one gauze, one linen, one polyester, one rayon, one silk, and one wool—a different dress on each of the hangers, in an order satisfying the following conditions: The gauze dress is on a lower-numbered hanger than the polyester dress. The rayon dress is on hanger 1 or hanger 6. Either the wool dress or the silk dress is on hanger 3. The linen dress hangs immediately to the right of the silk dress.",
@@ -2052,7 +1731,7 @@
       ],
       "answer": "D",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -2642,7 +2321,7 @@
       ],
       "answer": "C",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax. Perhaps you forgot a comma?"
     },
     "logic_problem_gcd": {
@@ -2888,52 +2567,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "TypeError: bad operand type for abs(): 'ArithRef'"
-    }
-  },
-  {
-    "id": 41,
-    "nl_problem": {
-      "context": "Eight people—Fiona, George, Harriet, Ingrid, Karl, Manuel, Olivia, and Peter—are sitting, evenly spaced, around a circular picnic table. Any two of them are said to be sitting directly across from one another if and only if there are exactly three other people sitting between them, counting in either direction around the table. The following conditions apply: Fiona sits directly across from George. Harriet sits immediately next to neither Fiona nor Karl. Ingrid sits immediately next to, and immediately clockwise from, Olivia.",
-      "question": "If Harriet and Olivia each sits immediately next to George, then which one of the following could be the two people each of whom sits immediately next to Peter?",
-      "options": [
-        "A) Fiona and Karl",
-        "B) Fiona and Olivia",
-        "C) Harriet and Ingrid",
-        "D) Harriet and Karl",
-        "E) Karl and Manuel"
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.0040720701217651,
-        1.0953757762908936
-      ],
-      "answer": "D",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -3266,7 +2899,7 @@
       ],
       "answer": "C",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax. Perhaps you forgot a comma?"
     },
     "logic_problem_gcd": {
@@ -3481,7 +3114,7 @@
       ],
       "answer": "A",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -3731,54 +3364,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "z3.z3types.Z3Exception: b'Sort mismatch at argument #1 for function (declare-fun or (Bool Bool) Bool) supplied sort is Int'"
-    }
-  },
-  {
-    "id": 53,
-    "nl_problem": {
-      "context": "Exactly six members of a skydiving team—Larue, Ohba, Pei, Trevino, Weiss, and Zacny—each dive exactly once, one at a time, from a plane, consistent with the following conditions: Trevino dives from the plane at some time before Weiss does. Larue dives from the plane either first or last. Neither Weiss nor Zacny dives from the plane last. Pei dives from the plane at some time after either Ohba or Larue but not both.",
-      "question": "Which one of the following must be true?",
-      "options": [
-        "A) At least two of the members dive from the plane after Larue.",
-        "B) At least two of the members dive from the plane after Ohba.",
-        "C) At least two of the members dive from the plane after Pei.",
-        "D) At least two of the members dive from the plane after Trevino.",
-        "E) At least two of the members dive from the plane after Weiss."
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Yolanda, m) == repairs(Zane, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Zane, m)))"
-      ],
-      "perplexity": [
-        1.0031788349151611,
-        1.0926254987716675
-      ],
-      "answer": "D",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -4113,7 +3698,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -4259,7 +3844,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -4444,331 +4029,6 @@
     }
   },
   {
-    "id": 63,
-    "nl_problem": {
-      "context": "A company's six vehicles—a hatchback, a limousine, a pickup, a roadster, a sedan, and a van—are serviced during a certain week—Monday through Saturday—one vehicle per day. The following conditions must apply: At least one of the vehicles is serviced later in the week than the hatchback. The roadster is serviced later in the week than the van and earlier in the week than the hatchback. Either the pickup and the van are serviced on consecutive days, or the pickup and the sedan are serviced on consecutive days, but not both. The sedan is serviced earlier in the week than the pickup or earlier in the week than the limousine, but not both.",
-      "question": "Which one of the following could be the list of the vehicles serviced on Tuesday, Wednesday, and Friday, listed in that order?",
-      "options": [
-        "A) the pickup, the hatchback, the limousine",
-        "B) the pickup, the roadster, the hatchback",
-        "C) the sedan, the limousine, the hatchback",
-        "D) the van, the limousine, the hatchback",
-        "E) the van, the roadster, the limousine"
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.003572940826416,
-        1.0840308666229248
-      ],
-      "answer": "B",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 64,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "If there are exactly two white balls, then which one of the following boxes could contain a green ball?",
-      "options": [
-        "A) box 1",
-        "B) box 3",
-        "C) box 4",
-        "D) box 5",
-        "E) box 6"
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet"
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.0096875429153442,
-        1.1135841608047485
-      ],
-      "answer": "B",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 65,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "If there are green balls in boxes 5 and 6, then which one of the following could be true?",
-      "options": [
-        "A) There are red balls in boxes 1 and 4.",
-        "B) There are red balls in boxes 2 and 4.",
-        "C) There is a white ball in box 1.",
-        "D) There is a white ball in box 2.",
-        "E) There is a white ball in box 3."
-      ]
-    },
-    "answer": "C",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet"
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.010575771331787,
-        1.0819872617721558
-      ],
-      "answer": "C",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 66,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "The ball in which one of the following boxes must be the same color as at least one of the other balls?",
-      "options": [
-        "A) box 2",
-        "B) box 3",
-        "C) box 4",
-        "D) box 5",
-        "E) box 6"
-      ]
-    },
-    "answer": "E",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.0123294591903687,
-        1.0975525379180908
-      ],
-      "answer": "E",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 67,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "Which one of the following must be true?",
-      "options": [
-        "A) There is a green ball in a box that is lower than box 4.",
-        "B) There is a green ball in a box that is higher than box 4.",
-        "C) There is a red ball in a box that is lower than box 4.",
-        "D) There is a red ball in a box that is higher than box 4.",
-        "E) There is a white ball in a box that is lower than box 4."
-      ]
-    },
-    "answer": "A",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet"
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.0132391452789307,
-        1.1618188619613647
-      ],
-      "answer": "A",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 68,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "If there are red balls in boxes 2 and 3, then which one of the following could be true?",
-      "options": [
-        "A) There is a red ball in box 1.",
-        "B) There is a white ball in box 1.",
-        "C) There is a green ball in box 4.",
-        "D) There is a red ball in box 5.",
-        "E) There is a white ball in box 6."
-      ]
-    },
-    "answer": "C",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.017305612564087,
-        1.1065807342529297
-      ],
-      "answer": "C",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 69,
-    "nl_problem": {
-      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
-      "question": "If boxes 2, 3, and 4 all contain balls that are the same color as each other, then which one of the following must be true?",
-      "options": [
-        "A) Exactly two of the boxes contain a green ball.",
-        "B) Exactly three of the boxes contain a green ball.",
-        "C) Exactly three of the boxes contain a red ball.",
-        "D) Exactly one of the boxes contains a white ball.",
-        "E) Exactly two of the boxes contain a white ball."
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
-      ],
-      "perplexity": [
-        1.0138732194900513,
-        1.1037629842758179
-      ],
-      "answer": "D",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
     "id": 70,
     "nl_problem": {
       "context": "A professor must determine the order in which five of her students—Fernando, Ginny, Hakim, Juanita, and Kevin—will perform in an upcoming piano recital. Each student performs one piece, and no two performances overlap. The following constraints apply: Ginny must perform earlier than Fernando. Kevin must perform earlier than Hakim and Juanita. Hakim must perform either immediately before or immediately after Fernando.",
@@ -4878,7 +4138,7 @@
       ],
       "answer": "A",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: expression cannot contain assignment, perhaps you meant \"==\"?"
     },
     "logic_problem_gcd": {
@@ -4981,53 +4241,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "z3.z3types.Z3Exception: Symbolic expressions cannot be cast to concrete Boolean values."
-    }
-  },
-  {
-    "id": 73,
-    "nl_problem": {
-      "context": "A professor must determine the order in which five of her students—Fernando, Ginny, Hakim, Juanita, and Kevin—will perform in an upcoming piano recital. Each student performs one piece, and no two performances overlap. The following constraints apply: Ginny must perform earlier than Fernando. Kevin must perform earlier than Hakim and Juanita. Hakim must perform either immediately before or immediately after Fernando.",
-      "question": "The order in which the students perform is fully determined if which one of the following is true?",
-      "options": [
-        "A) Fernando performs immediately before Hakim.",
-        "B) Ginny performs immediately before Fernando.",
-        "C) Hakim performs immediately before Juanita.",
-        "D) Juanita performs immediately before Hakim.",
-        "E) Kevin performs immediately before Fernando."
-      ]
-    },
-    "answer": "E",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet"
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.0084129571914673,
-        1.0894062519073486
-      ],
-      "answer": "E",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -5175,53 +4388,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "NameError: name 's' is not defined"
-    }
-  },
-  {
-    "id": 76,
-    "nl_problem": {
-      "context": "As part of an open house at a crafts studio, three teachers—Jiang, Kudrow, and Lanning—will give six consecutive presentations on six different subjects. Jiang will present on needlework and origami; Kudrow on pottery, stenciling, and textile making; and Lanning on woodworking. The order of their presentations will meet the following conditions: Kudrow cannot give two presentations in a row. The presentation on stenciling must be given earlier than the one on origami. The presentation on textile making must be given earlier than the one on woodworking.",
-      "question": "If textile making is presented fifth, which one of the following could be true?",
-      "options": [
-        "A) Needlework is presented sixth.",
-        "B) Pottery is presented fourth.",
-        "C) Stenciling is presented second.",
-        "D) Stenciling is presented third.",
-        "E) Woodworking is presented second."
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "interns = EnumSort([Farber, Gombarick, Hall, Jackson, Kanze, Lha])",
-        "stories = EnumSort([Romania, Spain, Tuscany])",
-        "writes = Function([interns, stories] -> [int])",
-        "ForAll([i:interns, s:stories], And(1 <= writes(i, s), writes(i, s) <= 5))"
-      ],
-      "constraints": [
-        "ForAll([i:interns], Count([s:stories], writes(i, s)) >= 1)",
-        "And(writes(Farber, Romania), Count([i:interns], And(i != Farber, writes(i, Romania))) == 4)",
-        "And(writes(Gombarick, Spain), writes(Gombarick, Tuscany))",
-        "ForAll([s:stories], Implies(writes(Farber, s), Not(writes(Gombarick, s))))",
-        "Count([s:stories], writes(Kanze, s)) > Count([s:stories], writes(Farber, s))",
-        "ForAll([s:stories], Implies(writes(Hall, s), Not(writes(Gombarick, s))))",
-        "Count([s:stories], writes(Hall, s)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([s:stories], writes(Farber, s) == writes(Gombarick, s)))",
-        "is_sat(ForAll([s:stories], writes(Gombarick, s) == writes(Hall, s)))",
-        "is_sat(ForAll([s:stories], writes(Hall, s) == writes(Kanze, s)))",
-        "is_sat(ForAll([s:stories], writes(Gombarick, s) == writes(Jackson, s)))",
-        "is_sat(ForAll([s:stories], writes(Kanze, s) == writes(Lha, s)))"
-      ],
-      "perplexity": [
-        1.0112801790237427,
-        1.0413988828659058
-      ],
-      "answer": "D",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "z3.z3types.Z3Exception: b'Sort mismatch at argument #1 for function (declare-fun and (Bool Bool) Bool) supplied sort is Int'"
     }
   },
   {
@@ -5375,53 +4541,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "NameError: name 'p' is not defined"
-    }
-  },
-  {
-    "id": 79,
-    "nl_problem": {
-      "context": "As part of an open house at a crafts studio, three teachers—Jiang, Kudrow, and Lanning—will give six consecutive presentations on six different subjects. Jiang will present on needlework and origami; Kudrow on pottery, stenciling, and textile making; and Lanning on woodworking. The order of their presentations will meet the following conditions: Kudrow cannot give two presentations in a row. The presentation on stenciling must be given earlier than the one on origami. The presentation on textile making must be given earlier than the one on woodworking.",
-      "question": "If needlework is presented sixth, which one of the following must be true?",
-      "options": [
-        "A) Origami is presented fourth.",
-        "B) Pottery is presented fifth.",
-        "C) Stenciling is presented third.",
-        "D) Textile making is presented first.",
-        "E) Woodworking is presented fourth."
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet "
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.011022925376892,
-        1.0928804874420166
-      ],
-      "answer": "B",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -5736,53 +4855,6 @@
     }
   },
   {
-    "id": 84,
-    "nl_problem": {
-      "context": "The organizer of a luncheon will select exactly five foods to be served from among exactly eight foods: two desserts—F and G; three main courses—N, O, and P; three side dishes—T, V, and W. Only F, N, and T are hot foods. The following requirements will be satisfied: At least one dessert, at least one main course, and at least one side dish must be selected. At least one hot food must be selected. If either P or W is selected, both must be selected. If G is selected, O must be selected. If N is selected, V cannot be selected.",
-      "question": "If F is not selected, which one of the following could be true?",
-      "options": [
-        "A) P is the only main course selected.",
-        "B) T is the only side dish selected.",
-        "C) Exactly two hot foods are selected.",
-        "D) Exactly three main courses are selected.",
-        "E) Exactly three side dishes are selected."
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "people = EnumSort([Vladimir, Wendy])",
-        "meals = EnumSort([breakfast, lunch, dinner, snack])",
-        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
-        "eats = Function([people, meals] -> [foods])"
-      ],
-      "constraints": [
-        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
-        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
-        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
-        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
-        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
-        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
-        "eats(Wendy, lunch) == omelet"
-      ],
-      "options": [
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
-        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
-      ],
-      "perplexity": [
-        1.0116039514541626,
-        1.2323558330535889
-      ],
-      "answer": "D",
-      "predicted_answer": "D",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
     "id": 85,
     "nl_problem": {
       "context": "The organizer of a luncheon will select exactly five foods to be served from among exactly eight foods: two desserts—F and G; three main courses—N, O, and P; three side dishes—T, V, and W. Only F, N, and T are hot foods. The following requirements will be satisfied: At least one dessert, at least one main course, and at least one side dish must be selected. At least one hot food must be selected. If either P or W is selected, both must be selected. If G is selected, O must be selected. If N is selected, V cannot be selected.",
@@ -5870,55 +4942,6 @@
     }
   },
   {
-    "id": 86,
-    "nl_problem": {
-      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
-      "question": "Which one of the following could be the order in which the programs are shown, from earliest to latest?",
-      "options": [
-        "A) Generations, Roamin', Waterloo, Terry, Sundown",
-        "B) Roamin', Sundown, Waterloo, Terry, Generations",
-        "C) Roamin', Terry, Waterloo, Generations, Sundown",
-        "D) Waterloo, Roamin', Sundown, Terry, Generations",
-        "E) Waterloo, Terry, Sundown, Roamin', Generations"
-      ]
-    },
-    "answer": "B",
-    "logic_problem": {
-      "declarations": [
-        "candidates = EnumSort([Q, R, S, T, U])",
-        "meetings = EnumSort([1, 2, 3])",
-        "speaks = Function([meetings, candidates] -> [int])",
-        "ForAll([m:meetings, c:candidates], And(speaks(m, c) >= 1, speaks(m, c) <= 5))"
-      ],
-      "constraints": [
-        "ForAll([m:meetings], And(Count([c:candidates], speaks(m, c) == 1) == 1, Count([c:candidates], speaks(m, c) == 2) == 0))",
-        "ForAll([m:meetings], And(Count([c:candidates], speaks(m, c) == 3) == 0, Count([c:candidates], speaks(m, c) == 4) == 0))",
-        "ForAll([m:meetings], And(Count([c:candidates], speaks(m, c) == 5) == 0))",
-        "ForAll([c:candidates], speaks(1, c) != speaks(2, c))",
-        "ForAll([c:candidates], speaks(1, c) != speaks(3, c))",
-        "ForAll([c:candidates], speaks(2, c) != speaks(3, c))"
-      ],
-      "options": [
-        "is_sat(And(Count([c:candidates], speaks(1, c) == 1) == 1, Count([c:candidates], speaks(1, c) == 2) == 0, Count([c:candidates], speaks(1, c) == 3) == 0, Count([c:candidates], speaks(1, c) == 4) == 0, Count([c:candidates], speaks(1, c) == 5) == 0))",
-        "is_sat(And(Count([c:candidates], speaks(2, c) == 1) == 1, Count([c:candidates], speaks(2, c) == 2) == 0, Count([c:candidates], speaks(2, c) == 3) == 0, Count([c:candidates], speaks(2, c) == 4) == 0, Count([c:candidates], speaks(2, c) == 5) == 0))",
-        "is_sat(And(Count([c:candidates], speaks(3, c) == 1) == 1, Count([c:candidates], speaks(3, c) == 2) == 0, Count([c:candidates], speaks(3, c) == 3) == 0, Count([c:candidates], speaks(3, c) == 4) == 0, Count([c:candidates], speaks(3, c) == 5) == 0))",
-        "is_sat(Exists([m:meetings], Exists([c:candidates], And(speaks(m, c) == 1, c == Q)))) ::: (A)",
-        "is_sat(Exists([m:meetings], Exists([c:candidates], And(speaks(m, c) == 1, c == R)))) ::: (B)",
-        "is_sat(Exists([m:meetings], Exists([c:candidates], And(speaks(m, c) == 1, c == S)))) ::: (C)",
-        "is_sat(Exists([m:meetings], Exists([c:candidates], And(speaks(m, c) == 1, c == T)))) ::: (D)",
-        "is_sat(Exists([m:meetings], Exists([c:candidates], And(speaks(m, c) == 1, c == U)))) ::: (E)"
-      ],
-      "perplexity": [
-        1.0087605714797974,
-        1.1075551509857178
-      ],
-      "answer": "B",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "SyntaxError: invalid syntax"
-    }
-  },
-  {
     "id": 87,
     "nl_problem": {
       "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
@@ -5956,7 +4979,7 @@
       ],
       "answer": "B",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '('"
     },
     "logic_problem_gcd": {
@@ -5988,96 +5011,6 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "TypeError: '<' not supported between instances of 'BoolRef' and 'BoolRef'"
-    }
-  },
-  {
-    "id": 88,
-    "nl_problem": {
-      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
-      "question": "If Roamin' is the second program, then each of the following could be true EXCEPT:",
-      "options": [
-        "A) Sundown is the third program.",
-        "B) Sundown is the fourth program.",
-        "C) Terry is the fifth program.",
-        "D) Waterloo is the third program.",
-        "E) Waterloo is the fifth program."
-      ]
-    },
-    "answer": "D",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))"
-      ],
-      "perplexity": [
-        1.0047383308410645,
-        1.0978140830993652
-      ],
-      "answer": "D",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
-    }
-  },
-  {
-    "id": 89,
-    "nl_problem": {
-      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
-      "question": "If Sundown is the third program, then which one of the following must be true?",
-      "options": [
-        "A) Generations is the first program.",
-        "B) Roamin' is the first program.",
-        "C) Roamin' is the second program.",
-        "D) Terry is the fifth program.",
-        "E) Waterloo is the fourth program."
-      ]
-    },
-    "answer": "E",
-    "logic_problem": {
-      "declarations": [
-        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
-        "machines = EnumSort([radios, televisions, VCRs])",
-        "repairs = Function([technicians, machines] -> [bool])"
-      ],
-      "constraints": [
-        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
-        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
-        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
-        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
-        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
-        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
-        "Count([m:machines], repairs(Urma, m)) == 2"
-      ],
-      "options": [
-        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
-        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
-        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))"
-      ],
-      "perplexity": [
-        1.004374623298645,
-        1.102288007736206
-      ],
-      "answer": "E",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
     }
   },
   {
@@ -6729,7 +5662,7 @@
       ],
       "answer": "B",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -6801,7 +5734,7 @@
       ],
       "answer": "B",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -6874,7 +5807,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -7102,7 +6035,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -7521,7 +6454,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -7592,7 +6525,7 @@
       ],
       "answer": "E",
       "predicted_answer": "N/A",
-      "status": "execution error",
+      "status": "parsing error",
       "error": "SyntaxError: invalid syntax"
     },
     "logic_problem_gcd": {
@@ -7624,6 +6557,52 @@
       "predicted_answer": "N/A",
       "status": "execution error",
       "error": "z3.z3types.Z3Exception: b'type error'"
+    }
+  },
+  {
+    "id": 15,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "If in the week's tour schedule the division that is toured on Tuesday is also toured on Friday, then for which one of the following days must a tour of the Production division be scheduled?",
+      "options": [
+        "A) Monday",
+        "B) Tuesday",
+        "C) Wednesday",
+        "D) Thursday",
+        "E) Friday"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0107471942901611,
+        1.0930824279785156
+      ],
+      "answer": "A",
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     }
   }
 ]

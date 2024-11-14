@@ -9221,5 +9221,2612 @@
       ],
       "perplexity": 1.0330537557601929
     }
+  },
+  {
+    "id": 146,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following could be the speeches given in each room, listed in the order in which they occur?",
+      "options": [
+        "A) Gold Room: Molina's, Long's Rose Room: Zimmerman's, Xiao's, Yoshida's",
+        "B) Gold Room: Molina's, Yoshida's, Long's Rose Room: Xiao's Zimmerman's",
+        "C) Gold Room: Xiao's, Molina's, Long's Rose Room: Zimmerman's, Yoshida's",
+        "D) Gold Room: Yoshida's, Long's, Molina's Rose Room: Zimmerman's, Xiao's",
+        "E) Gold Room: Zimmerman's, Molina's Rose Room: Xiao's, Yoshida's, Long's"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([Gold, Rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([r:rooms, t:times], Count([s:speakers], speech(s, r, t)) <= 1)",
+        "ForAll([r:rooms], Count([s:speakers, t:times], speech(s, r, t)) == 2)",
+        "ForAll([r:rooms], Count([s:speakers, t:times], speech(s, r, t) == 3) <= 1)",
+        "ForAll([t:times], Implies(speech(Molina, r1, t), speech(Long, r1, t2)))",
+        "ForAll([t:times], Implies(speech(Xiao, r1, t), speech(Zimmerman, r1, t2)))",
+        "ForAll([t:times], Implies(speech(Yoshida, r1, t), speech(Zimmerman, r1, t2)))",
+        "Implies(speech(Long, Gold, t), And(speech(Xiao, Rose, t), speech(Zimmerman, Rose, t)))"
+      ],
+      "options": [
+        "is_sat(And(speech(Molina, Gold, one), speech(Long, Gold, two), speech(Zimmerman, Rose, one), speech(Xiao, Rose, two), speech(Yoshida, Rose, three)))",
+        "is_sat(And(speech(Molina, Gold, one), speech(Yoshida, Gold, two), speech(Long, Gold, three), speech(Xiao, Rose, one), speech(Zimmerman, Rose, two)))",
+        "is_sat(And(speech(Xiao, Gold, one), speech(Molina, Gold, two), speech(Long, Gold, three), speech(Zimmerman, Rose, one), speech(Yoshida, Rose, two)))",
+        "is_sat(And(speech(Yoshida, Gold, one), speech(Long, Gold, two), speech(Molina, Gold, three), speech(Zimmerman, Rose, one), speech(Xiao, Rose, two)))",
+        "is_sat(And(speech(Zimmerman, Gold, one), speech(Molina, Gold, two), speech(Xiao, Rose, one), speech(Yoshida, Rose, two), speech(Long, Rose, three)))"
+      ],
+      "perplexity": [
+        1.0684679746627808,
+        1.0074983835220337
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms, t:times], speech(s, r, t)))",
+        "ForAll([r:rooms, t:times], Count([s:speakers], speech(s, r, t)))",
+        "ForAll([s:speakers], Implies(speech(s, r1, t1), Not(speech(s, r2, t2))))",
+        "ForAll([r:rooms], Count([s:speakers, t:times], speech(s, r, t)))",
+        "Implies(speech(molina, r, t1), And(speech(long, r, t2), t1 < t2))",
+        "ForAll([r:rooms], Implies(speech(xiao, r, t), speech(zimmerman, r, t1) <= t))",
+        "ForAll([r:rooms], Implies(speech(yoshida, r, t), speech(zimmerman, r, t1) <= t))",
+        "Implies(speech(long, gold, t), And(speech(xiao, rose, t1), speech(zimmerman, rose, t2)))"
+      ],
+      "options": [
+        "is_valid(And(speech(molina, gold, one), speech(long, gold, two), speech(zimmerman, rose, one), speech(xiao, rose, two), speech(yoshida, rose, three)))",
+        "is_valid(And(speech(molina, gold, one), speech(yoshida, gold, two), speech(long, gold, three), speech(zimmerman, rose, one), speech(xiao, rose, two)))",
+        "is_valid(And(speech(xiao, gold, one), speech(molina, gold, two), speech(long, gold, three), speech(zimmerman, rose, one), speech(yoshida, rose, two)))",
+        "is_valid(And(speech(yoshida, gold, one), speech(long, gold, two), speech(molina, gold, three), speech(zimmerman, rose, one), speech(xiao, rose, two)))",
+        "is_valid(And(speech(zimmerman, gold, one), speech(molina, gold, two), speech(xiao, rose, one), speech(yoshida, rose, two), speech(long, rose, three)))"
+      ],
+      "perplexity": 1.114524483680725
+    }
+  },
+  {
+    "id": 147,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following pairs of speeches CANNOT be given at the same time?",
+      "options": [
+        "A) Long's and Yoshida's",
+        "B) Long's and Zimmerman's",
+        "C) Molina's and Xiao's",
+        "D) Xiao's and Yoshida's",
+        "E) Yoshida's and Zimmerman's"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([GoldRoom, RoseRoom])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([r:rooms, t:times], Count([s:speakers], speech(s, r, t)) <= 1)",
+        "ForAll([t:times], Count([s:speakers], speech(s, GoldRoom, t)) <= 1)",
+        "ForAll([t:times], Count([s:speakers], speech(s, RoseRoom, t)) <= 1)",
+        "ForAll([t:times], Or(Exists([s:speakers], speech(s, GoldRoom, t)), Exists([s:speakers], speech(s, RoseRoom, t))))",
+        "Count([r:rooms, t:times], speech(speaker, r, t)) == 1",
+        "Implies(speech(Molina, r, t1), And(speech(Long, r, t2), t1 < t2))",
+        "Implies(speech(Long, GoldRoom, t), And(speech(Xiao, RoseRoom, t), speech(Zimmerman, RoseRoom, t)))",
+        "Implies(speech(Xiao, r, t), speech(Zimmerman, r, t) <= speech(Xiao, r, t))",
+        "Implies(speech(Yoshida, r, t), speech(Zimmerman, r, t) <= speech(Yoshida, r, t))"
+      ],
+      "options": [
+        "is_unsat(And(speech(Long, GoldRoom, one), speech(Yoshida, GoldRoom, one)))",
+        "is_unsat(And(speech(Long, GoldRoom, one), speech(Zimmerman, GoldRoom, one)))",
+        "is_unsat(And(speech(Molina, GoldRoom, one), speech(Xiao, GoldRoom, one)))",
+        "is_unsat(And(speech(Xiao, GoldRoom, one), speech(Yoshida, GoldRoom, one)))",
+        "is_unsat(And(speech(Yoshida, GoldRoom, one), speech(Zimmerman, GoldRoom, one)))"
+      ],
+      "perplexity": [
+        1.1015310287475586,
+        1.0091155767440796
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers] -> [rooms])",
+        "time = Function([speakers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([t:times], time(s))) == 1",
+        "ForAll([s:speakers], Count([r:rooms], speech(s))) == 1",
+        "ForAll([r:rooms], Count([s:speakers], speech(s))) == 2",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == one)))",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == two)))",
+        "time(molina) < time(long)",
+        "speech(molina) == speech(long)",
+        "Or(time(xiao) >= time(zimmerman), time(yoshida) >= time(zimmerman))",
+        "Implies(speech(long) == gold, And(speech(xiao) == rose, speech(zimmerman) == rose))"
+      ],
+      "options": [
+        "is_unsat(And(time(long) == t1, time(yoshida) == t1))",
+        "is_unsat(And(time(long) == t1, time(zimmerman) == t1))",
+        "is_unsat(And(time(molina) == t1, time(xiao) == t1))",
+        "is_unsat(And(time(xiao) == t1, time(yoshida) == t1))",
+        "is_unsat(And(time(yoshida) == t1, time(zimmerman) == t1))"
+      ],
+      "perplexity": 1.1858769655227661
+    }
+  },
+  {
+    "id": 148,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "If Xiao's speech is at 3 P.M., which one of the following CANNOT be true?",
+      "options": [
+        "A) Long's speech is in the same room as Yoshida's.",
+        "B) Molina's speech is in the same room as Xiao's.",
+        "C) Xiao's speech is in the same room as Yoshida's.",
+        "D) Xiao's speech is in the same room as Zimmerman's.",
+        "E) Yoshida's speech is in the same room as Zimmerman's."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([Gold_Room, Rose_Room])",
+        "times = EnumSort([1, 2, 3])",
+        "speech = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([r:rooms, t:times], Count([s:speakers], speech(s, r, t)) <= 1)",
+        "ForAll([s:speakers], Exists([r:rooms, t:times], speech(s, r, t)))",
+        "Count([r:rooms, t:times], Exists([s:speakers], speech(s, r, t))) == 4",
+        "Count([r:rooms, s:speakers], speech(s, r, 3)) == 1",
+        "Implies(speech(Molina, r, t), Implies(speech(Long, r, t1), t < t1))",
+        "Implies(speech(Long, Gold_Room, t), And(speech(Xiao, Rose_Room, t), speech(Zimmerman, Rose_Room, t)))",
+        "Implies(speech(Xiao, _, 3), Not(speech(Long, _, 3)))",
+        "Implies(speech(Xiao, _, 3), Not(speech(Molina, _, 3)))"
+      ],
+      "options": [
+        "is_unsat(And(speech(Long, _, _), speech(Yoshida, _, _), speech(Long, Yoshida)))",
+        "is_unsat(And(speech(Molina, _, _), speech(Xiao, _, _), speech(Molina, Xiao)))",
+        "is_unsat(And(speech(Xiao, _, _), speech(Yoshida, _, _), speech(Xiao, Yoshida)))",
+        "is_unsat(And(speech(Xiao, _, _), speech(Zimmerman, _, _), speech(Xiao, Zimmerman)))",
+        "is_unsat(And(speech(Yoshida, _, _), speech(Zimmerman, _, _), speech(Yoshida, Zimmerman)))"
+      ],
+      "perplexity": [
+        1.091838002204895,
+        1.0068567991256714
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers] -> [rooms])",
+        "time = Function([speakers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms], speech(s))) == 1",
+        "ForAll([s:speakers], Count([t:times], time(s))) == 1",
+        "ForAll([r:rooms], Count([s:speakers], speech(s))) == 2",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == one))) == 1",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == two))) == 1",
+        "ForAll([r:rooms], Implies(And(speech(s) == r, time(s) == three), r == gold))",
+        "time(molina) < time(long)",
+        "And(speech(molina) == speech(long))",
+        "ForAll([s:speakers], Implies(Or(s == xiao, s == yoshida), time(s) >= time(zimmerman)))",
+        "Implies(speech(long) == gold, And(speech(xiao) == rose, speech(zimmerman) == rose))"
+      ],
+      "options": [
+        "is_unsat(And(speech(long) == speech(yoshida)))",
+        "is_unsat(And(speech(molina) == speech(xiao)))",
+        "is_unsat(And(speech(xiao) == speech(yoshida)))",
+        "is_unsat(And(speech(xiao) == speech(zimmerman)))",
+        "is_unsat(And(speech(yoshida) == speech(zimmerman)))"
+      ],
+      "perplexity": 1.1878525018692017
+    }
+  },
+  {
+    "id": 149,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following could be a complete and accurate list of the speeches given in the Gold Room, in the order in which they occur?",
+      "options": [
+        "A) Long's, Molina's",
+        "B) Molina's, Yoshida's",
+        "C) Molina's, Yoshida's, Long's",
+        "D) Yoshida's, Zimmerman's, Xiao's",
+        "E) Zimmerman's, Molina's, Long's"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([GoldRoom, RoseRoom])",
+        "times = EnumSort([1, 2, 3])",
+        "speaks = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([r:rooms, t:times], Count([s:speakers], speaks(s, r, t)) <= 1)",
+        "ForAll([t:times], speaks(Molina, r, t) => speaks(Long, r, t')) where t' > t",
+        "ForAll([t:times], Not(speaks(Xiao, r, t) And speaks(Zimmerman, r, t')) where t <= t' )",
+        "Implies(speaks(Long, GoldRoom, t), (speaks(Xiao, RoseRoom, t') And speaks(Zimmerman, RoseRoom, t''))) where t' != t''"
+      ],
+      "options": [
+        "is_sat(And(speaks(Molina, GoldRoom, 1), speaks(Long, GoldRoom, 2)))",
+        "is_sat(And(speaks(Molina, GoldRoom, 1), speaks(Yoshida, GoldRoom, 2)))",
+        "is_sat(And(speaks(Molina, GoldRoom, 1), speaks(Yoshida, GoldRoom, 2), speaks(Long, GoldRoom, 3)))",
+        "is_sat(And(speaks(Yoshida, GoldRoom, 1), speaks(Zimmerman, GoldRoom, 2), speaks(Xiao, GoldRoom, 3)))",
+        "is_sat(And(speaks(Zimmerman, GoldRoom, 1), speaks(Molina, GoldRoom, 2), speaks(Long, GoldRoom, 3)))"
+      ],
+      "perplexity": [
+        1.0856966972351074,
+        1.0155049562454224
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms, t:times], speech(s, r, t)))",
+        "ForAll([r:rooms, t:times], Count([s:speakers], speech(s, r, t)))",
+        "And(speech(molina, r, t1), speech(long, r, t2), t1 < t2)",
+        "ForAll([r:rooms], Implies(speech(xiao, r, t), speech(zimmerman, r, t1) <= t))",
+        "ForAll([r:rooms], Implies(speech(yoshida, r, t), speech(zimmerman, r, t1) <= t))",
+        "Implies(speech(long, gold, t), And(speech(xiao, rose, t1), speech(zimmerman, rose, t2)))",
+        "Exists([r:rooms], speech(s, r, three))"
+      ],
+      "options": [
+        "is_valid(And(speech(long, gold, one), speech(molina, gold, two)))",
+        "is_valid(And(speech(molina, gold, one), speech(yoshida, gold, two)))",
+        "is_valid(And(speech(molina, gold, one), speech(yoshida, gold, two), speech(long, gold, three)))",
+        "is_valid(And(speech(yoshida, gold, one), speech(zimmerman, gold, two), speech(xiao, gold, three)))",
+        "is_valid(And(speech(zimmerman, gold, one), speech(molina, gold, two), speech(long, gold, three)))"
+      ],
+      "perplexity": 1.130277156829834
+    }
+  },
+  {
+    "id": 150,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "If Yoshida's speech is at 1 P.M., which one of the following could be true?",
+      "options": [
+        "A) Long's speech is at 1 P.M. in the Gold Room.",
+        "B) Long's speech is at 2 P.M. in the Rose Room.",
+        "C) Molina's speech is at 2 P.M. in the Gold Room.",
+        "D) Xiao's speech is at 3 P.M. in the Gold Room.",
+        "E) Xiao's speech is at 1 P.M. in the Rose Room."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([Gold, Rose])",
+        "times = EnumSort([one, two, three])",
+        "speaks = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Exists([r:rooms, t:times], speaks(s, r, t)))",
+        "ForAll([r:rooms, t:times], Count([s:speakers], speaks(s, r, t)) <= 1)",
+        "ForAll([r:rooms], Count([s:speakers, t:times], speaks(s, r, three)) <= 1)",
+        "Implies(speaks(Molina, r, t), speaks(Long, r, t2))",
+        "Implies(speaks(Xiao, r, t), speaks(Zimmerman, r, t2))",
+        "Implies(speaks(Yoshida, r, t), speaks(Zimmerman, r, t2))",
+        "Implies(speaks(Long, Gold, t), And(speaks(Xiao, Rose, t2), speaks(Zimmerman, Rose, t3)))",
+        "speaks(Yoshida, _, one)"
+      ],
+      "options": [
+        "is_sat(speaks(Long, Gold, one))",
+        "is_sat(speaks(Long, Rose, two))",
+        "is_sat(speaks(Molina, Gold, two))",
+        "is_sat(speaks(Xiao, Gold, three))",
+        "is_sat(speaks(Xiao, Rose, one))"
+      ],
+      "perplexity": [
+        1.0576298236846924,
+        1.0096458196640015
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers] -> [rooms])",
+        "time = Function([speakers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms], speech(s))) == 1",
+        "ForAll([s:speakers], Count([t:times], time(s))) == 1",
+        "ForAll([r:rooms], Count([s:speakers], speech(s))) == 2",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == one)))",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == two)))",
+        "ForAll([r:rooms], Count([s:speakers], And(speech(s) == r, time(s) == three)))",
+        "time(molina) < time(long)",
+        "And(speech(molina) == speech(long))",
+        "ForAll([s:speakers], Implies(Or(s == xiao, s == yoshida), time(s) >= time(zimmerman)))",
+        "Implies(speech(long) == gold, And(speech(xiao) == rose, speech(zimmerman) == rose))"
+      ],
+      "options": [
+        "is_valid(And(time(long) == one, speech(long) == gold))",
+        "is_valid(And(time(long) == two, speech(long) == rose))",
+        "is_valid(And(time(molina) == two, speech(molina) == gold))",
+        "is_valid(And(time(xiao) == three, speech(xiao) == gold))",
+        "is_valid(And(time(xiao) == one, speech(xiao) == rose))"
+      ],
+      "perplexity": 1.1911967992782593
+    }
+  },
+  {
+    "id": 151,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following, if substituted for the constraint that neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's, would have the same effect in determining the schedule of speeches with regard to rooms and times?",
+      "options": [
+        "A) Long's speech must be at 3 P.M.",
+        "B) Molina's speech cannot be earlier than Zimmerman's.",
+        "C) Either Xiao's speech or Yoshida's speech must be after Zimmerman's.",
+        "D) Either Xiao's speech or Yoshida's speech or both must be at 2 P.M.",
+        "E) Zimmerman's speech must be at 1 P.M."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([Gold, Rose])",
+        "times = EnumSort([one, two, three])",
+        "speech = Function([speakers] -> [rooms])",
+        "time = Function([speakers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([r:rooms, t:times], Count([s:speakers], And(speech(s) == r, time(s) == t)) <= 1)",
+        "ForAll([s:speakers], Or(time(s) == one, time(s) == two, time(s) == three))",
+        "And(time(Molina) < time(Long), speech(Molina) == speech(Long))",
+        "ForAll([s:speakers], Implies(Or(s == Xiao, s == Yoshida), time(s) >= time(Zimmerman)))"
+      ],
+      "options": [
+        "is_equivalent(ForAll([s:speakers], Implies(s == Long, time(s) == three)))",
+        "is_equivalent(time(Molina) >= time(Zimmerman))",
+        "is_equivalent(Exists([s:speakers], And(Or(s == Xiao, s == Yoshida), time(s) > time(Zimmerman))))",
+        "is_equivalent(Exists([s:speakers], And(Or(s == Xiao, s == Yoshida, s == Zimmerman), time(s) == two)))",
+        "is_equivalent(time(Zimmerman) == one)"
+      ],
+      "perplexity": [
+        1.0996685028076172,
+        1.0075002908706665
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "times = EnumSort([one, two, three])",
+        "speaks = Function([speakers, rooms, times] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms, t:times], speaks(s, r, t)))",
+        "ForAll([r:rooms, t:times], Count([s:speakers], speaks(s, r, t)))",
+        "And(speaks(molina, r, t1), speaks(long, r, t2), t1 < t2)",
+        "Implies(speaks(long, gold, t), And(speaks(xiao, rose, t), speaks(zimmerman, rose, t)))",
+        "ForAll([r:rooms], Or(speaks(s, r, three), speaks(s, r, one), speaks(s, r, two)))"
+      ],
+      "options": [
+        "is_sat(speaks(long, gold, three))",
+        "is_sat(speaks(molina, gold, one))",
+        "is_sat(Or(speaks(xiao, rose, two), speaks(yoshida, rose, two)))",
+        "is_sat(Or(speaks(xiao, rose, two), speaks(yoshida, rose, two)))",
+        "is_sat(speaks(zimmerman, gold, one))"
+      ],
+      "perplexity": 1.1805737018585205
+    }
+  },
+  {
+    "id": 152,
+    "nl_problem": {
+      "context": "During the seventeenth century, three families—the Trents, the Williamses, and the Yandells—owned the five buildings that constituted the center of their village—the forge, the granary, the inn, the mill, and the stable. Each family owned at least one of the buildings and each building was owned by exactly one of the families. The historical evidence establishes the following about the ownership of the buildings: The Williamses owned more of the buildings than the Yandells owned. Neither the inn nor the mill belonged to the owner of the forge. Either the Trents owned the stable or the Yandells owned the inn, or both.",
+      "question": "Which one of the following could be an accurate matching of each family to the building or buildings it owned?",
+      "options": [
+        "A) Trents: the granary, the stable Williamses: the inn, the mill Yandells: the forge",
+        "B) Trents: the granary, the mill Williamses: the inn, the stable Yandells: the forge",
+        "C) Trents: the forge, the mill Williamses: the granary, the stable Yandells: the inn",
+        "D) Trents: the forge, the granary Williamses: the mill Yandells: the inn, the stable",
+        "E) Trents: the stable Williamses: the inn, the mill Yandells: the forge, the granary"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "families = EnumSort([Trents, Williamses, Yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Exists([b:buildings], owns(f, b)))",
+        "ForAll([b:buildings], Exists([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(Williamses, b)) > Count([b:buildings], owns(Yandells, b))",
+        "Not(owns(f, inn))",
+        "Not(owns(f, mill))",
+        "Or(owns(Trents, stable), owns(Yandells, inn))"
+      ],
+      "options": [
+        "is_sat(And(owns(Trents, granary), owns(Trents, stable), owns(Williamses, inn), owns(Williamses, mill), owns(Yandells, forge)))",
+        "is_sat(And(owns(Trents, granary), owns(Trents, mill), owns(Williamses, inn), owns(Williamses, stable), owns(Yandells, forge)))",
+        "is_sat(And(owns(Trents, forge), owns(Trents, mill), owns(Williamses, granary), owns(Williamses, stable), owns(Yandells, inn)))",
+        "is_sat(And(owns(Trents, forge), owns(Trents, granary), owns(Williamses, mill), owns(Yandells, inn), owns(Yandells, stable)))",
+        "is_sat(And(owns(Trents, stable), owns(Williamses, inn), owns(Williamses, mill), owns(Yandells, forge), owns(Yandells, granary)))"
+      ],
+      "perplexity": [
+        1.020683765411377,
+        1.0065745115280151
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "families = EnumSort([trents, williamses, yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Count([b:buildings], owns(f, b))) >= 1",
+        "Count([b:buildings], owns(williamses, b)) > Count([b:buildings], owns(yandells, b))",
+        "Not(owns(f1, inn) == owns(f2, forge))",
+        "Not(owns(f1, mill) == owns(f2, forge))",
+        "Or(owns(trents, stable), owns(yandells, inn))",
+        "ForAll([b:buildings], Count([f:families], owns(f, b)))",
+        "ForAll([f:families], Distinct([b:buildings], owns(f, b)))"
+      ],
+      "options": [
+        "is_valid(owns(trents, granary))",
+        "is_valid(owns(trents, stable))",
+        "is_valid(owns(williamses, inn))",
+        "is_valid(owns(williamses, mill))",
+        "is_valid(owns(yandells, forge))"
+      ],
+      "perplexity": 1.2713444232940674
+    }
+  },
+  {
+    "id": 153,
+    "nl_problem": {
+      "context": "During the seventeenth century, three families—the Trents, the Williamses, and the Yandells—owned the five buildings that constituted the center of their village—the forge, the granary, the inn, the mill, and the stable. Each family owned at least one of the buildings and each building was owned by exactly one of the families. The historical evidence establishes the following about the ownership of the buildings: The Williamses owned more of the buildings than the Yandells owned. Neither the inn nor the mill belonged to the owner of the forge. Either the Trents owned the stable or the Yandells owned the inn, or both.",
+      "question": "Which one of the following is a pair of buildings that CANNOT both have been owned by the Trents?",
+      "options": [
+        "A) the forge, the granary",
+        "B) the granary, the mill",
+        "C) the granary, the stable",
+        "D) the inn, the mill",
+        "E) the inn, the stable"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "families = EnumSort([Trents, Williamses, Yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Exists([b:buildings], owns(f, b)))",
+        "ForAll([b:buildings], Exists([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(Williamses, b)) > Count([b:buildings], owns(Yandells, b))",
+        "Not(owns(f:families, inn)) Or Not(owns(f:families, mill))",
+        "Or(owns(Trents, stable), owns(Yandells, inn))"
+      ],
+      "options": [
+        "is_unsat(And(owns(Trents, forge), owns(Trents, granary)))",
+        "is_unsat(And(owns(Trents, granary), owns(Trents, mill)))",
+        "is_unsat(And(owns(Trents, granary), owns(Trents, stable)))",
+        "is_unsat(And(owns(Trents, inn), owns(Trents, mill)))",
+        "is_unsat(And(owns(Trents, inn), owns(Trents, stable)))"
+      ],
+      "perplexity": [
+        1.0329761505126953,
+        1.0102871656417847
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "families = EnumSort([trents, williamses, yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Count([b:buildings], owns(f, b))) >= 1",
+        "ForAll([b:buildings], Count([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(williamses, b)) > Count([b:buildings], owns(yandells, b))",
+        "Not(owns(f, forge) == owns(f, inn))",
+        "Not(owns(f, forge) == owns(f, mill))",
+        "Or(owns(trents, stable), owns(yandells, inn))"
+      ],
+      "options": [
+        "is_unsat(And(owns(trents, forge), owns(trents, granary)))",
+        "is_unsat(And(owns(trents, granary), owns(trents, mill)))",
+        "is_unsat(And(owns(trents, granary), owns(trents, stable)))",
+        "is_unsat(And(owns(trents, inn), owns(trents, mill)))",
+        "is_unsat(And(owns(trents, inn), owns(trents, stable)))"
+      ],
+      "perplexity": 1.16502845287323
+    }
+  },
+  {
+    "id": 154,
+    "nl_problem": {
+      "context": "During the seventeenth century, three families—the Trents, the Williamses, and the Yandells—owned the five buildings that constituted the center of their village—the forge, the granary, the inn, the mill, and the stable. Each family owned at least one of the buildings and each building was owned by exactly one of the families. The historical evidence establishes the following about the ownership of the buildings: The Williamses owned more of the buildings than the Yandells owned. Neither the inn nor the mill belonged to the owner of the forge. Either the Trents owned the stable or the Yandells owned the inn, or both.",
+      "question": "If the Yandells owned the mill, which one of the following must be true?",
+      "options": [
+        "A) The Trents owned the forge.",
+        "B) The Trents owned the inn.",
+        "C) The Williamses owned the forge.",
+        "D) The Williamses owned the granary.",
+        "E) The Williamses owned the inn."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "families = EnumSort([Trents, Williamses, Yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b:buildings], Exists([f:families], owns(f, b)))",
+        "ForAll([f:families], Exists([b:buildings], owns(f, b)))",
+        "Count([b:buildings], owns(Williamses, b)) > Count([b:buildings], owns(Yandells, b))",
+        "Not(owns(f1:families, forge) And owns(f1, inn))",
+        "Or(owns(Trents, stable), owns(Yandells, inn))",
+        "owns(Yandells, mill)"
+      ],
+      "options": [
+        "is_valid(owns(Trents, forge))",
+        "is_valid(owns(Trents, inn))",
+        "is_valid(owns(Williamses, forge))",
+        "is_valid(owns(Williamses, granary))",
+        "is_valid(owns(Williamses, inn))"
+      ],
+      "perplexity": [
+        1.0525829792022705,
+        1.012059211730957
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "families = EnumSort([trents, williamses, yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Count([b:buildings], owns(f, b))) >= 1",
+        "ForAll([b:buildings], Count([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(williamses, b)) > Count([b:buildings], owns(yandells, b))",
+        "Not(owns(f, inn))",
+        "Not(owns(f, mill))",
+        "Or(owns(trents, stable), owns(yandells, inn))"
+      ],
+      "options": [
+        "is_valid(owns(trents, forge))",
+        "is_valid(owns(trents, inn))",
+        "is_valid(owns(williamses, forge))",
+        "is_valid(owns(williamses, granary))",
+        "is_valid(owns(williamses, inn))"
+      ],
+      "perplexity": 1.213734745979309
+    }
+  },
+  {
+    "id": 155,
+    "nl_problem": {
+      "context": "During the seventeenth century, three families—the Trents, the Williamses, and the Yandells—owned the five buildings that constituted the center of their village—the forge, the granary, the inn, the mill, and the stable. Each family owned at least one of the buildings and each building was owned by exactly one of the families. The historical evidence establishes the following about the ownership of the buildings: The Williamses owned more of the buildings than the Yandells owned. Neither the inn nor the mill belonged to the owner of the forge. Either the Trents owned the stable or the Yandells owned the inn, or both.",
+      "question": "If one of the families owned both the granary and the inn, which one of the following could be true?",
+      "options": [
+        "A) The Trents owned the granary.",
+        "B) The Trents owned the mill.",
+        "C) The Williamses owned the forge.",
+        "D) The Williamses owned the stable.",
+        "E) The Yandells owned the inn."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "families = EnumSort([Trents, Williamses, Yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Exists([b:buildings], owns(f, b)))",
+        "ForAll([b:buildings], Exists([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(Williamses, b)) > Count([b:buildings], owns(Yandells, b))",
+        "Not(owns(f:families, inn)) Or Not(owns(f:families, mill))",
+        "owns(Trents, stable) Or owns(Yandells, inn)"
+      ],
+      "options": [
+        "is_sat(owns(Trents, granary))",
+        "is_sat(owns(Trents, mill))",
+        "is_sat(owns(Williamses, forge))",
+        "is_sat(owns(Williamses, stable))",
+        "is_sat(owns(Yandells, inn))"
+      ],
+      "perplexity": [
+        1.032249093055725,
+        1.009966492652893
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "families = EnumSort([trents, williamses, yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Count([b:buildings], owns(f, b))) >= 1",
+        "ForAll([b:buildings], Count([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(williamses, b)) > Count([b:buildings], owns(yandells, b))",
+        "Not(owns(f, inn))",
+        "Not(owns(f, mill))",
+        "Or(owns(trents, stable), owns(yandells, inn))"
+      ],
+      "options": [
+        "is_valid(owns(trents, granary))",
+        "is_valid(owns(trents, mill))",
+        "is_valid(owns(williamses, forge))",
+        "is_valid(owns(williamses, stable))",
+        "is_valid(owns(yandells, inn))"
+      ],
+      "perplexity": 1.2149657011032104
+    }
+  },
+  {
+    "id": 156,
+    "nl_problem": {
+      "context": "During the seventeenth century, three families—the Trents, the Williamses, and the Yandells—owned the five buildings that constituted the center of their village—the forge, the granary, the inn, the mill, and the stable. Each family owned at least one of the buildings and each building was owned by exactly one of the families. The historical evidence establishes the following about the ownership of the buildings: The Williamses owned more of the buildings than the Yandells owned. Neither the inn nor the mill belonged to the owner of the forge. Either the Trents owned the stable or the Yandells owned the inn, or both.",
+      "question": "If the Trents owned exactly one of the buildings, which one of the following is a complete and accurate list of the buildings any one of which could be the building that the Trents owned?",
+      "options": [
+        "A) the forge",
+        "B) the forge, the mill",
+        "C) the inn, the stable",
+        "D) the forge, the granary, the mill",
+        "E) the forge, the mill, the stable"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "families = EnumSort([Trents, Williamses, Yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b:buildings], Exists([f:families], owns(f, b)))",
+        "ForAll([f:families], Exists([b:buildings], owns(f, b)))",
+        "Count([b:buildings], owns(Williamses, b)) > Count([b:buildings], owns(Yandells, b))",
+        "Not(owns(f, inn))",
+        "Not(owns(f, mill))",
+        "Or(owns(Trents, stable), owns(Yandells, inn))"
+      ],
+      "options": [
+        "is_valid_list([owns(Trents, forge)])",
+        "is_valid_list([owns(Trents, forge), owns(Trents, mill)])",
+        "is_valid_list([owns(Trents, inn), owns(Trents, stable)])",
+        "is_valid_list([owns(Trents, forge), owns(Trents, granary), owns(Trents, mill)])",
+        "is_valid_list([owns(Trents, forge), owns(Trents, mill), owns(Trents, stable)])"
+      ],
+      "perplexity": [
+        1.0310235023498535,
+        1.0109195709228516
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "families = EnumSort([trents, williamses, yandells])",
+        "buildings = EnumSort([forge, granary, inn, mill, stable])",
+        "owns = Function([families, buildings] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([f:families], Count([b:buildings], owns(f, b))) >= 1",
+        "ForAll([b:buildings], Count([f:families], owns(f, b)))",
+        "Count([b:buildings], owns(williamses, b)) > Count([b:buildings], owns(yandells, b))",
+        "Not(owns(f, forge) == owns(f, inn))",
+        "Not(owns(f, forge) == owns(f, mill))",
+        "Or(owns(trents, stable), owns(yandells, inn))",
+        "Count([b:buildings], owns(trents, b)) == 1"
+      ],
+      "options": [
+        "is_valid(owns(trents, forge))",
+        "is_valid(And(owns(trents, forge), owns(trents, mill)))",
+        "is_valid(And(owns(trents, inn), owns(trents, stable)))",
+        "is_valid(And(owns(trents, forge), owns(trents, granary), owns(trents, mill)))",
+        "is_valid(And(owns(trents, forge), owns(trents, mill), owns(trents, stable)))"
+      ],
+      "perplexity": 1.1633431911468506
+    }
+  },
+  {
+    "id": 157,
+    "nl_problem": {
+      "context": "A florist is filling a customer's order for three bouquets—bouquet 1, bouquet 2, and bouquet 3. Each of the bouquets is to be composed of one or more of five kinds of flowers—lilies, peonies, roses, snapdragons, and tulips—subject to the following conditions: Bouquets 1 and 3 cannot have any kind of flower in common. Bouquets 2 and 3 must have exactly two kinds of flowers in common. Bouquet 3 must have snapdragons. If a bouquet has lilies, that bouquet must also have roses but cannot have snapdragons. If a bouquet has tulips, that bouquet must also have peonies.",
+      "question": "Which one of the following could be a complete and accurate list of the kinds of flowers in each of the bouquets?",
+      "options": [
+        "A) bouquet 1: lilies, roses bouquet 2: peonies, roses, tulips bouquet 3: peonies, snapdragons, tulips",
+        "B) bouquet 1: peonies, roses bouquet 2: peonies, snapdragons bouquet 3: peonies, snapdragons, tulips",
+        "C) bouquet 1: peonies, tulips bouquet 2: roses, snapdragons, tulips bouquet 3: roses, snapdragons",
+        "D) bouquet 1: roses bouquet 2: peonies, snapdragons bouquet 3: lilies, peonies, snapdragons",
+        "E) bouquet 1: snapdragons bouquet 2: lilies, roses bouquet 3: lilies, roses"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "bouquets = EnumSort([1, 2, 3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b:bouquets, f:flowers], Implies(includes(b, f), And(1 <= b, b <= 3)))",
+        "ForAll([f:flowers], Implies(includes(1, f), Not(includes(3, f))))",
+        "ForAll([f:flowers], Implies(Or(includes(2, f), includes(3, f)), Count([b:bouquets], And(b != 2, b != 3, includes(b, f))) <= 1))",
+        "ForAll([b:bouquets], Implies(includes(b, snapdragons), True))",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_valid(And(includes(1, lilies), includes(1, roses), includes(2, peonies), includes(2, roses), includes(2, tulips), includes(3, peonies), includes(3, snapdragons), includes(3, tulips)))",
+        "is_valid(And(includes(1, peonies), includes(1, roses), includes(2, peonies), includes(2, snapdragons), includes(3, peonies), includes(3, snapdragons), includes(3, tulips)))",
+        "is_valid(And(includes(1, peonies), includes(1, tulips), includes(2, roses), includes(2, snapdragons), includes(2, tulips), includes(3, roses), includes(3, snapdragons)))",
+        "is_valid(And(includes(1, roses), includes(2, peonies), includes(2, snapdragons), includes(3, lilies), includes(3, peonies), includes(3, snapdragons)))",
+        "is_valid(And(includes(1, snapdragons), includes(2, lilies), includes(2, roses), includes(3, lilies), includes(3, roses)))"
+      ],
+      "perplexity": [
+        1.0476367473602295,
+        1.0053422451019287
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(And(includes(b1, f), includes(b2, f)))))",
+        "ForAll([b1:bouquets, b2:bouquets], Implies(And(b1 != b2, b1 != bouquet3, b2 != bouquet3), And(includes(b1, f1), includes(b1, f2), includes(b2, f1), includes(b2, f2))))",
+        "ForAll([b:bouquets], Implies(includes(b, snapdragons), b == bouquet3))",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_valid(And(includes(bouquet1, lilies), includes(bouquet1, roses), includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, tulips), includes(bouquet3, peonies), includes(bouquet3, snapdragons), includes(bouquet3, tulips)))",
+        "is_valid(And(includes(bouquet1, peonies), includes(bouquet1, roses), includes(bouquet2, peonies), includes(bouquet2, snapdragons), includes(bouquet3, peonies), includes(bouquet3, snapdragons), includes(bouquet3, tulips)))",
+        "is_valid(And(includes(bouquet1, peonies), includes(bouquet1, tulips), includes(bouquet2, roses), includes(bouquet2, snapdragons), includes(bouquet2, tulips), includes(bouquet3, roses), includes(bouquet3, snapdragons)))",
+        "is_valid(And(includes(bouquet1, roses), includes(bouquet2, peonies), includes(bouquet2, snapdragons), includes(bouquet3, lilies), includes(bouquet3, peonies), includes(bouquet3, snapdragons)))",
+        "is_valid(And(includes(bouquet1, snapdragons), includes(bouquet2, lilies), includes(bouquet2, roses), includes(bouquet3, lilies), includes(bouquet3, roses)))"
+      ],
+      "perplexity": 1.0591630935668945
+    }
+  },
+  {
+    "id": 158,
+    "nl_problem": {
+      "context": "A florist is filling a customer's order for three bouquets—bouquet 1, bouquet 2, and bouquet 3. Each of the bouquets is to be composed of one or more of five kinds of flowers—lilies, peonies, roses, snapdragons, and tulips—subject to the following conditions: Bouquets 1 and 3 cannot have any kind of flower in common. Bouquets 2 and 3 must have exactly two kinds of flowers in common. Bouquet 3 must have snapdragons. If a bouquet has lilies, that bouquet must also have roses but cannot have snapdragons. If a bouquet has tulips, that bouquet must also have peonies.",
+      "question": "If lilies are in bouquet 1, which one of the following must",
+      "options": [
+        "A) Lilies are in bouquet 2.",
+        "B) Peonies are in bouquet 3.",
+        "C) Roses are in bouquet 2.",
+        "D) Tulips are in bouquet 2.",
+        "E) Tulips are in bouquet 3."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(Exists([f:flowers], And(includes(b1, f), includes(b2, f))))))",
+        "ForAll([b:bouquets], Implies(includes(bouquet3, snapdragons), True))",
+        "ForAll([b:bouquets, f:flowers], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets, f:flowers], Implies(includes(b, tulips), includes(b, peonies)))",
+        "ForAll([b1:bouquets, b2:bouquets], Exists([f1:flowers, f2:flowers], And(includes(b1, f1), includes(b1, f2), includes(b2, f1), includes(b2, f2))))",
+        "includes(bouquet1, lilies)"
+      ],
+      "options": [
+        "is_valid(includes(bouquet2, lilies))",
+        "is_valid(includes(bouquet3, peonies))",
+        "is_valid(includes(bouquet2, roses))",
+        "is_valid(includes(bouquet2, tulips))",
+        "is_valid(includes(bouquet3, tulips))"
+      ],
+      "perplexity": [
+        1.0554670095443726,
+        1.0108921527862549
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(And(includes(b1, f), includes(b2, f)))))",
+        "ForAll([b1:bouquets, b2:bouquets], Implies(And(b1 != b2, b1 != bouquet3, b2 != bouquet3), And(includes(b1, f1), includes(b1, f2), includes(b2, f1), includes(b2, f2))))",
+        "includes(bouquet3, snapdragons)",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_valid(includes(bouquet2, lilies))",
+        "is_valid(includes(bouquet3, peonies))",
+        "is_valid(includes(bouquet2, roses))",
+        "is_valid(includes(bouquet2, tulips))",
+        "is_valid(includes(bouquet3, tulips))"
+      ],
+      "perplexity": 1.1252247095108032
+    }
+  },
+  {
+    "id": 159,
+    "nl_problem": {
+      "context": "A florist is filling a customer's order for three bouquets—bouquet 1, bouquet 2, and bouquet 3. Each of the bouquets is to be composed of one or more of five kinds of flowers—lilies, peonies, roses, snapdragons, and tulips—subject to the following conditions: Bouquets 1 and 3 cannot have any kind of flower in common. Bouquets 2 and 3 must have exactly two kinds of flowers in common. Bouquet 3 must have snapdragons. If a bouquet has lilies, that bouquet must also have roses but cannot have snapdragons. If a bouquet has tulips, that bouquet must also have peonies.",
+      "question": "If tulips are in bouquet 1, which one of the following could be a complete and accurate list of the kinds of flowers in bouquet 2?",
+      "options": [
+        "A) peonies, tulips",
+        "B) peonies, snapdragons",
+        "C) peonies, snapdragons, tulips",
+        "D) peonies, roses, tulips",
+        "E) peonies, roses, snapdragons, tulips"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "bouquets = EnumSort([1, 2, 3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(ForAll([f:flowers], includes(b1, f) == includes(b2, f)))))",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))",
+        "Count([f:flowers], includes(2, f)) == 2",
+        "includes(3, snapdragons)"
+      ],
+      "options": [
+        "is_valid([includes(1, tulips), includes(2, peonies), includes(2, tulips)])",
+        "is_valid([includes(1, tulips), includes(2, peonies), includes(2, snapdragons)])",
+        "is_valid([includes(1, tulips), includes(2, peonies), includes(2, snapdragons), includes(2, tulips)])",
+        "is_valid([includes(1, tulips), includes(2, peonies), includes(2, roses), includes(2, tulips)])",
+        "is_valid([includes(1, tulips), includes(2, peonies), includes(2, roses), includes(2, snapdragons), includes(2, tulips)])"
+      ],
+      "perplexity": [
+        1.0608030557632446,
+        1.0113760232925415
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b:bouquets], Count([f:flowers], includes(b, f))) >= 1",
+        "ForAll([f:flowers], Implies(includes(bouquet1, f), Not(includes(bouquet3, f))))",
+        "Count([f:flowers], And(includes(bouquet2, f), includes(bouquet3, f))) == 2",
+        "includes(bouquet3, snapdragons)",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, tulips)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, snapdragons)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, snapdragons), includes(bouquet2, tulips)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, tulips)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, snapdragons), includes(bouquet2, tulips)))"
+      ],
+      "perplexity": 1.1184451580047607
+    }
+  },
+  {
+    "id": 160,
+    "nl_problem": {
+      "context": "A florist is filling a customer's order for three bouquets—bouquet 1, bouquet 2, and bouquet 3. Each of the bouquets is to be composed of one or more of five kinds of flowers—lilies, peonies, roses, snapdragons, and tulips—subject to the following conditions: Bouquets 1 and 3 cannot have any kind of flower in common. Bouquets 2 and 3 must have exactly two kinds of flowers in common. Bouquet 3 must have snapdragons. If a bouquet has lilies, that bouquet must also have roses but cannot have snapdragons. If a bouquet has tulips, that bouquet must also have peonies.",
+      "question": "Which one of the following CANNOT be a complete and accurate list of the kinds of flowers in bouquet 2?",
+      "options": [
+        "A) lilies, roses",
+        "B) peonies, tulips",
+        "C) peonies, roses, snapdragons",
+        "D) peonies, roses, tulips",
+        "E) peonies, roses, snapdragons, tulips"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "bouquets = EnumSort([1, 2, 3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "has = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(Exists([f:flowers], And(has(b1, f), has(b2, f))))))",
+        "ForAll([f:flowers], Implies(has(2, f), Or(has(3, f), has(1, f))))",
+        "has(3, snapdragons)",
+        "ForAll([b:bouquets], Implies(has(b, lilies), And(has(b, roses), Not(has(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(has(b, tulips), has(b, peonies)))"
+      ],
+      "options": [
+        "is_unsat(ForAll([f:flowers], has(2, f) == (f == lilies Or f == roses)))",
+        "is_unsat(ForAll([f:flowers], has(2, f) == (f == peonies Or f == tulips)))",
+        "is_unsat(ForAll([f:flowers], has(2, f) == (f == peonies Or f == roses Or f == snapdragons)))",
+        "is_unsat(ForAll([f:flowers], has(2, f) == (f == peonies Or f == roses Or f == tulips)))",
+        "is_unsat(ForAll([f:flowers], has(2, f) == (f == peonies Or f == roses Or f == snapdragons Or f == tulips)))"
+      ],
+      "perplexity": [
+        1.034868836402893,
+        1.0090433359146118
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(And(includes(b1, f), includes(b2, f)))))",
+        "ForAll([b1:bouquets, b2:bouquets], Implies(And(b1 != b2, b1 != bouquet3, b2 != bouquet3), And(includes(b1, f1), includes(b1, f2), includes(b2, f1), includes(b2, f2))))",
+        "includes(bouquet3, snapdragons)",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_valid(And(includes(bouquet2, lilies), includes(bouquet2, roses)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, tulips)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, snapdragons)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, tulips)))",
+        "is_valid(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, snapdragons), includes(bouquet2, tulips)))"
+      ],
+      "perplexity": 1.0915100574493408
+    }
+  },
+  {
+    "id": 161,
+    "nl_problem": {
+      "context": "A florist is filling a customer's order for three bouquets—bouquet 1, bouquet 2, and bouquet 3. Each of the bouquets is to be composed of one or more of five kinds of flowers—lilies, peonies, roses, snapdragons, and tulips—subject to the following conditions: Bouquets 1 and 3 cannot have any kind of flower in common. Bouquets 2 and 3 must have exactly two kinds of flowers in common. Bouquet 3 must have snapdragons. If a bouquet has lilies, that bouquet must also have roses but cannot have snapdragons. If a bouquet has tulips, that bouquet must also have peonies.",
+      "question": "Which one of the following CANNOT be true?",
+      "options": [
+        "A) Lilies and roses are the only kinds of flowers in bouquet 1.",
+        "B) Peonies and tulips are the only kinds of flowers in bouquet 1.",
+        "C) Lilies, peonies, and roses are the only kinds of flowers in bouquet 2.",
+        "D) Peonies, roses, and snapdragons are the only kinds of flowers in bouquet 2.",
+        "E) Peonies, snapdragons, and tulips are the only kinds of flowers in bouquet 3."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "bouquets = EnumSort([1, 2, 3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "contains = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(Exists([f:flowers], And(contains(b1, f), contains(b2, f))))))",
+        "ForAll([b1:bouquets, b2:bouquets], Implies(And(b1 != b2, b2 == 3), Count([f:flowers], And(contains(b1, f), contains(b2, f))) == 2))",
+        "contains(3, snapdragons)",
+        "ForAll([b:bouquets], Implies(contains(b, lilies), And(contains(b, roses), Not(contains(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(contains(b, tulips), contains(b, peonies)))"
+      ],
+      "options": [
+        "is_unsat(And(contains(1, lilies), contains(1, roses), Not(contains(1, AnyOtherFlower))))",
+        "is_unsat(And(contains(1, peonies), contains(1, tulips), Not(contains(1, AnyOtherFlower))))",
+        "is_unsat(And(contains(2, lilies), contains(2, peonies), contains(2, roses), Not(contains(2, AnyOtherFlower))))",
+        "is_unsat(And(contains(2, peonies), contains(2, roses), contains(2, snapdragons), Not(contains(2, AnyOtherFlower))))",
+        "is_unsat(And(contains(3, peonies), contains(3, snapdragons), contains(3, tulips), Not(contains(3, AnyOtherFlower))))"
+      ],
+      "perplexity": [
+        1.0778318643569946,
+        1.0089843273162842
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "bouquets = EnumSort([bouquet1, bouquet2, bouquet3])",
+        "flowers = EnumSort([lilies, peonies, roses, snapdragons, tulips])",
+        "includes = Function([bouquets, flowers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([b1:bouquets, b2:bouquets], Implies(b1 != b2, Not(And(includes(b1, f), includes(b2, f)))))",
+        "ForAll([b1:bouquets, b2:bouquets], Implies(And(b1 != b2, b1 != bouquet3, b2 != bouquet3), And(includes(b1, f1), includes(b1, f2), includes(b2, f1), includes(b2, f2))))",
+        "includes(bouquet3, snapdragons)",
+        "ForAll([b:bouquets], Implies(includes(b, lilies), And(includes(b, roses), Not(includes(b, snapdragons)))))",
+        "ForAll([b:bouquets], Implies(includes(b, tulips), includes(b, peonies)))"
+      ],
+      "options": [
+        "is_unsat(And(includes(bouquet1, lilies), includes(bouquet1, roses), Not(includes(bouquet1, peonies))))",
+        "is_unsat(And(includes(bouquet1, peonies), includes(bouquet1, tulips), Not(includes(bouquet1, lilies))))",
+        "is_unsat(And(includes(bouquet2, lilies), includes(bouquet2, peonies), includes(bouquet2, roses), Not(includes(bouquet2, snapdragons))))",
+        "is_unsat(And(includes(bouquet2, peonies), includes(bouquet2, roses), includes(bouquet2, snapdragons), Not(includes(bouquet2, lilies))))",
+        "is_unsat(And(includes(bouquet3, peonies), includes(bouquet3, snapdragons), includes(bouquet3, tulips), Not(includes(bouquet3, lilies))))"
+      ],
+      "perplexity": 1.0933488607406616
+    }
+  },
+  {
+    "id": 162,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "Which one of the following is an allowable distribution of bonuses to the seven employees?",
+      "options": [
+        "A) [Finance] Kimura: $1,000; Lopez: $5,000; Meng: $5,000; Peterson: $1,000 [Graphics] Vaughan: $3,000; Xavier: $3,000; Zane: $3,000",
+        "B) [Finance] Kimura: $1,000; Lopez: $5,000; Meng: $5,000; Peterson: $3,000 [Graphics] Vaughan: $3,000; Xavier: $5,000; Zane: $1,000",
+        "C) [Finance] Kimura: $1,000; Lopez: $5,000; Meng: $5,000; Peterson: $3,000 [Graphics] Vaughan: $3,000; Xavier: $5,000; Zane: $3,000",
+        "D) [Finance] Kimura: $3,000; Lopez: $5,000; Meng: $3,000; Peterson: $1,000 [Graphics] Vaughan: $3,000; Xavier: $5,000; Zane: $3,000",
+        "E) [Finance] Kimura: $3,000; Lopez: $5,000; Meng: $5,000; Peterson: $1,000 [Graphics] Vaughan: $1,000; Xavier: $5,000; Zane: $3,000"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "departments = EnumSort([Finance, Graphics])",
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], bonus(e) in bonuses)",
+        "ForAll([e:employees], e in [Vaughan, Xavier, Zane]  => bonus(e) != 1000)",
+        "ForAll([d:departments], ForAll([e1:employees, e2:employees], And(department(e1) == d, department(e2) == d, And(e1 != e2, bonus(e1) > bonus(e2) => (e1 in [Lopez, Meng, Xavier] and e2 not in [Lopez, Meng, Xavier])))))",
+        "And(department(Kimura) == Finance, department(Lopez) == Finance, department(Meng) == Finance, department(Peterson) == Finance, department(Vaughan) == Graphics, department(Xavier) == Graphics, department(Zane) == Graphics)"
+      ],
+      "options": [
+        "is_valid(And(bonus(Kimura) == 1000, bonus(Lopez) == 5000, bonus(Meng) == 5000, bonus(Peterson) == 1000, bonus(Vaughan) == 3000, bonus(Xavier) == 3000, bonus(Zane) == 3000))",
+        "is_valid(And(bonus(Kimura) == 1000, bonus(Lopez) == 5000, bonus(Meng) == 5000, bonus(Peterson) == 3000, bonus(Vaughan) == 3000, bonus(Xavier) == 5000, bonus(Zane) == 1000))",
+        "is_valid(And(bonus(Kimura) == 1000, bonus(Lopez) == 5000, bonus(Meng) == 5000, bonus(Peterson) == 3000, bonus(Vaughan) == 3000, bonus(Xavier) == 5000, bonus(Zane) == 3000))",
+        "is_valid(And(bonus(Kimura) == 3000, bonus(Lopez) == 5000, bonus(Meng) == 3000, bonus(Peterson) == 1000, bonus(Vaughan) == 3000, bonus(Xavier) == 5000, bonus(Zane) == 3000))",
+        "is_valid(And(bonus(Kimura) == 3000, bonus(Lopez) == 5000, bonus(Meng) == 5000, bonus(Peterson) == 1000, bonus(Vaughan) == 1000, bonus(Xavier) == 5000, bonus(Zane) == 3000))"
+      ],
+      "perplexity": [
+        1.0561063289642334,
+        1.0046395063400269
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "employees = EnumSort([kimura, lopez, meng, peterson, vaughan, xavier, zane])",
+        "departments = EnumSort([finance, graphics])",
+        "bonuses = EnumSort([thousand, threethousand, fivthousand])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], bonus(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))"
+      ],
+      "options": [
+        "is_valid(And(bonus(kimura) == thousand, bonus(lopez) == fivthousand, bonus(meng) == fivthousand, bonus(peterson) == thousand, bonus(vaughan) == threethousand, bonus(xavier) == threethousand, bonus(zane) == threethousand))",
+        "is_valid(And(bonus(kimura) == thousand, bonus(lopez) == fivthousand, bonus(meng) == fivthousand, bonus(peterson) == threethousand, bonus(vaughan) == threethousand, bonus(xavier) == fivthousand, bonus(zane) == thousand))",
+        "is_valid(And(bonus(kimura) == thousand, bonus(lopez) == fivthousand, bonus(meng) == fivthousand, bonus(peterson) == threethousand, bonus(vaughan) == threethousand, bonus(xavier) == fivthousand, bonus(zane) == threethousand))",
+        "is_valid(And(bonus(kimura) == threethousand, bonus(lopez) == fivthousand, bonus(meng) == threethousand, bonus(peterson) == thousand, bonus(vaughan) == threethousand, bonus(xavier) == fivthousand, bonus(zane) == threethousand))",
+        "is_valid(And(bonus(kimura) == threethousand, bonus(lopez) == fivthousand, bonus(meng) == fivthousand, bonus(peterson) == thousand, bonus(vaughan) == thousand, bonus(xavier) == fivthousand, bonus(zane) == threethousand))"
+      ],
+      "perplexity": 1.2233834266662598
+    }
+  },
+  {
+    "id": 163,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "If Lopez does not receive the same bonus as Meng, which one of the following could be true?",
+      "options": [
+        "A) Kimura receives a $3,000 bonus.",
+        "B) Lopez receives a $3,000 bonus.",
+        "C) Peterson receives a $3,000 bonus.",
+        "D) Kimura receives the same bonus as Vaughan.",
+        "E) Peterson receives a larger bonus than Kimura."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "departments = EnumSort([Finance, Graphics])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "department = Function([employees] -> [departments])",
+        "bonus = Function([employees] -> [bonuses])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], And(department(e) == Finance, Or(e == Kimura, e == Lopez, e == Meng, e == Peterson)))",
+        "ForAll([e:employees], And(department(e) == Graphics, Or(e == Vaughan, e == Xavier, e == Zane)))",
+        "ForAll([e:employees], And(department(e) == Graphics, Implies(bonus(e) != 1000)))",
+        "ForAll([d:departments], ForAll([e1:employees, e2:employees], And(department(e1) == d, department(e2) == d, And(e1 != e2, And(bonus(e1) > bonus(e2), Or(e1 == Lopez, e1 == Meng, e1 == Xavier, Not(e2 == Lopez, e2 == Meng, e2 == Xavier)))))))",
+        "And(Lopez != Meng, bonus(Lopez) != bonus(Meng))"
+      ],
+      "options": [
+        "is_valid(bonus(Kimura) == 3000)",
+        "is_valid(bonus(Lopez) == 3000)",
+        "is_valid(bonus(Peterson) == 3000)",
+        "is_valid(bonus(Kimura) == bonus(Vaughan))",
+        "is_valid(bonus(Peterson) > bonus(Kimura))"
+      ],
+      "perplexity": [
+        1.073623776435852,
+        1.00710129737854
+      ]
+    }
+  },
+  {
+    "id": 164,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "If only one of the employees receives a $1,000 bonus, which one of the following must be true?",
+      "options": [
+        "A) Meng receives a $5,000 bonus.",
+        "B) Peterson receives a $3,000 bonus.",
+        "C) Meng receives a $3,000 bonus.",
+        "D) The employee who receives a $1,000 bonus is Peterson.",
+        "E) The employee who receives a $1,000 bonus is Kimura."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "departments = EnumSort([Finance, Graphics])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], Implies(department(e) == Graphics, Not(bonus(e) == 1000)))",
+        "ForAll([d:departments, b:bonuses], Implies(Exists([e:employees], And(department(e) == d, bonus(e) == b)), ForAll([e2:employees], Implies(And(department(e2) == d, bonus(e2) == b), Or(e2 == Lopez, e2 == Meng, e2 == Xavier)))))",
+        "ForAll([e:employees], Or(bonus(e) == 1000, bonus(e) == 3000, bonus(e) == 5000))",
+        "Count([e:employees], bonus(e) == 1000) == 1",
+        "And(department(Lopez) == Finance, department(Meng) == Finance, department(Peterson) == Finance, department(Vaughan) == Graphics, department(Xavier) == Graphics, department(Zane) == Graphics)"
+      ],
+      "options": [
+        "is_sat(bonus(Meng) == 5000)",
+        "is_sat(bonus(Peterson) == 3000)",
+        "is_sat(bonus(Meng) == 3000)",
+        "is_sat(bonus(Peterson) == 1000)",
+        "is_sat(bonus(Kimura) == 1000)"
+      ],
+      "perplexity": [
+        1.0628833770751953,
+        1.007331132888794
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "employees = EnumSort([kimura, lopez, meng, peterson, vaughan, xavier, zane])",
+        "departments = EnumSort([finance, graphics])",
+        "bonuses = EnumSort([thousand, threethousand, fivthousand])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], bonus(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:graphics], bonus(e))",
+        "ForAll([e1:employees, e2:employees], Implies(And(department(e1) == department(e2), And(bonus(e1) == fivthousand, bonus(e2) == thousand)), And(e1 == lopez, e2 == meng)))",
+        "ForAll([e1:employees, e2:employees], Implies(And(department(e1) == department(e2), And(bonus(e1) == threethousand, bonus(e2) == thousand)), And(e1 == lopez, e2 == meng)))"
+      ],
+      "options": [
+        "is_valid(bonus(meng))",
+        "is_valid(bonus(peterson))",
+        "is_valid(bonus(meng))",
+        "is_valid(bonus(peterson))",
+        "is_valid(bonus(kimura))"
+      ],
+      "perplexity": 1.4325590133666992
+    }
+  },
+  {
+    "id": 165,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "Which one of the following must be true?",
+      "options": [
+        "A) At least one of the employees receives a $1,000 bonus.",
+        "B) At least three of the employees receives a $3,000 bonuses.",
+        "C) At most three of the employees receives a $3,000 bonuses.",
+        "D) At least two of the employees receives a $5,000 bonuses.",
+        "E) At most three of the employees receives a $5,000 bonuses."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "departments = EnumSort([Finance, Graphics])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "department = Function([employees] -> [departments])",
+        "bonus = Function([employees] -> [bonuses])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], Or(department(e) == Finance, department(e) == Graphics))",
+        "ForAll([e:employees, d:departments], Implies(department(e) == Graphics, bonus(e) != 1000))",
+        "ForAll([d:departments], ForAll([e1:employees, e2:employees], Implies(And(department(e1) == d, department(e2) == d, bonus(e1) > bonus(e2)), Or( Lopez == e1, Meng == e1, Xavier == e1))))",
+        "And( Lopez == HighlyEffective, Meng == HighlyEffective, Xavier == HighlyEffective)"
+      ],
+      "options": [
+        "is_sat(Exists([e:employees], bonus(e) == 1000))",
+        "is_sat(Exists([e1:employees, e2:employees, e3:employees], And(bonus(e1) == 3000, bonus(e2) == 3000, bonus(e3) == 3000)))",
+        "is_sat(ForAll([e1:employees, e2:employees, e3:employees], Not(And(bonus(e1) == 3000, bonus(e2) == 3000, bonus(e3) == 3000))))",
+        "is_sat(Exists([e1:employees, e2:employees], And(bonus(e1) == 5000, bonus(e2) == 5000)))",
+        "is_sat(ForAll([e1:employees, e2:employees, e3:employees, e4:employees], Not(And(bonus(e1) == 5000, bonus(e2) == 5000, bonus(e3) == 5000, bonus(e4) == 5000))))"
+      ],
+      "perplexity": [
+        1.0642262697219849,
+        1.0071834325790405
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "employees = EnumSort([kimura, lopez, meng, peterson, vaughan, xavier, zane])",
+        "departments = EnumSort([finance, graphics])",
+        "ratings = EnumSort([highly, not])",
+        "bonus = Function([employees] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], bonus(e))",
+        "ForAll([e:employees], Or(bonus(e) == 1000, bonus(e) == 3000, bonus(e) == 5000))",
+        "ForAll([e:employees], Implies(e == vaughan, e == xavier))",
+        "ForAll([e:employees], Implies(e == lopez, e == meng))",
+        "ForAll([e:employees], Implies(e == xavier, e == zane))",
+        "ForAll([e:employees], Implies(e == lopez, e == meng))",
+        "ForAll([e:employees], Implies(e == kimura, e == peterson))",
+        "ForAll([e:employees], Implies(e == vaughan, e == xavier))",
+        "ForAll([e:employees], Implies(e == zane, e == xavier))",
+        "ForAll([e:employees], Implies(e == lopez, e == meng))",
+        "ForAll([e:employees], Implies(e == kimura, e == peterson))",
+        "ForAll([e:employees], Implies(department(e) == graphics, bonus(e) != 1000))",
+        "ForAll([d:departments], Implies(department(e) == d, And(bonus(e1) > bonus(e2), department(e1) == d, department(e2) == d, rating(e1) == highly, rating(e2) != highly)))"
+      ],
+      "options": [
+        "is_valid(Exists([e:employees], bonus(e)))",
+        "is_valid(Exists([e1:employees, e2:employees, e3:employees], And(bonus(e1) == 3000, bonus(e2) == 3000, bonus(e3) == 3000)))",
+        "is_valid(ForAll([e1:employees, e2:employees, e3:employees], Implies(And(bonus(e1) == 3000, bonus(e2) == 3000, bonus(e3) == 3000), And(e1 != e2, e1 != e3, e2 != e3))))",
+        "is_valid(Exists([e1:employees, e2:employees], And(bonus(e1) == 5000, bonus(e2) == 5000)))",
+        "is_valid(ForAll([e1:employees, e2:employees, e3:employees], Implies(And(bonus(e1) == 5000, bonus(e2) == 5000, bonus(e3) == 5000), And(e1 != e2, e1 != e3, e2 != e3))))"
+      ],
+      "perplexity": 1.1781660318374634
+    }
+  },
+  {
+    "id": 166,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "If exactly two of the employees receive $5,000 bonuses, which one of the following must be true?",
+      "options": [
+        "A) Lopez receives a $3,000 bonus.",
+        "B) Meng receives a $3,000 bonus.",
+        "C) Meng is one of the employees who receives a $5,000 bonus.",
+        "D) Peterson receives a $1,000 bonus.",
+        "E) Peterson receives a $3,000 bonus."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "departments = EnumSort([Finance, Graphics])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], Exists([b:bonuses], bonus(e) == b))",
+        "ForAll([g:employees], department(g) == Graphics Implies bonus(g) != 1000)",
+        "ForAll([d:departments, b1:bonuses, b2:bonuses], Implies(And(b1 > b2, Exists([e1:employees], And(department(e1) == d, bonus(e1) == b1, rated_highly_effective(e1)))), Exists([e2:employees], And(department(e2) == d, bonus(e2) == b2, Not(rated_highly_effective(e2))))))",
+        "rated_highly_effective(Lopez)",
+        "rated_highly_effective(Meng)",
+        "rated_highly_effective(Xavier)"
+      ],
+      "options": [
+        "is_valid(bonus(Lopez) == 3000)",
+        "is_valid(bonus(Meng) == 3000)",
+        "is_valid(bonus(Meng) == 5000)",
+        "is_valid(bonus(Peterson) == 1000)",
+        "is_valid(bonus(Peterson) == 3000)"
+      ],
+      "perplexity": [
+        1.0715206861495972,
+        1.0072920322418213
+      ]
+    }
+  },
+  {
+    "id": 167,
+    "nl_problem": {
+      "context": "A corporation's Human Resources department must determine annual bonuses for seven employees—Kimura, Lopez, Meng, and Peterson, who work in the Finance department; and Vaughan, Xavier, and Zane, who work in the Graphics department. Each employee will receive either a $1,000 bonus, a $3,000 bonus, or a $5,000 bonus, in accordance with the following: No one in the Graphics department receives a $1,000 bonus. Any employee who was rated Highly Effective receives a larger bonus than anyone in his or her department who was not rated Highly Effective. Only Lopez, Meng, and Xavier were rated Highly Effective.",
+      "question": "Any of the following could be true of the seven employees EXCEPT:",
+      "options": [
+        "A) The same number receive $1,000 bonuses as receive $3,000 bonuses.",
+        "B) More receive $1,000 bonuses than receive $3,000 bonuses.",
+        "C) The same number receive $1,000 bonuses as receive $5,000 bonuses.",
+        "D) More receive $1,000 bonuses than receive $5,000 bonuses.",
+        "E) More receive $3,000 bonuses than receive $5,000 bonuses."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "employees = EnumSort([Kimura, Lopez, Meng, Peterson, Vaughan, Xavier, Zane])",
+        "departments = EnumSort([Finance, Graphics])",
+        "bonuses = EnumSort([1000, 3000, 5000])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], And(1000 <= bonus(e), bonus(e) <= 5000))",
+        "ForAll([e:employees], bonus(e) == 1000 Implies department(e) != Graphics)",
+        "ForAll([d:departments], Exists([e1:employees, e2:employees], And(e1 != e2, department(e1) == d, department(e2) == d, bonus(e1) > bonus(e2) Implies And(e1 == Lopez Or e1 == Meng Or e1 == Xavier, e2 != Lopez And e2 != Meng And e2 != Xavier))))"
+      ],
+      "options": [
+        "is_exception(is_sat(Count([e:employees], bonus(e) == 1000) == Count([e:employees], bonus(e) == 3000)))",
+        "is_exception(is_sat(Count([e:employees], bonus(e) == 1000) > Count([e:employees], bonus(e) == 3000)))",
+        "is_exception(is_sat(Count([e:employees], bonus(e) == 1000) == Count([e:employees], bonus(e) == 5000)))",
+        "is_exception(is_sat(Count([e:employees], bonus(e) == 1000) > Count([e:employees], bonus(e) == 5000)))",
+        "is_exception(is_sat(Count([e:employees], bonus(e) == 3000) > Count([e:employees], bonus(e) == 5000)))"
+      ],
+      "perplexity": [
+        1.0800116062164307,
+        1.0076371431350708
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "employees = EnumSort([kimura, lopez, meng, peterson, vaughan, xavier, zane])",
+        "departments = EnumSort([finance, graphics])",
+        "bonuses = EnumSort([thousand, threethousand, fivthousand])",
+        "bonus = Function([employees] -> [bonuses])",
+        "department = Function([employees] -> [departments])"
+      ],
+      "constraints": [
+        "ForAll([e:employees], bonus(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:employees], department(e))",
+        "ForAll([e:graphics], bonus(e))",
+        "ForAll([e1:employees, e2:employees], Implies(And(department(e1) == department(e2), And(bonus(e1) == fivthousand, bonus(e2) == thousand)), Or(e1 == lopez, e1 == meng, e1 == xavier)))"
+      ],
+      "options": [
+        "is_exception(is(And(count(e, bonus(e))), count(e, bonus(e))))",
+        "is_exception(is(count(e, bonus(e)), count(e, bonus(e))))",
+        "is_exception(is(And(count(e, bonus(e)), count(e, bonus(e)))))",
+        "is_exception(is(count(e, bonus(e)), count(e, bonus(e))))",
+        "is_exception(is(count(e, bonus(e)), count(e, bonus(e))))"
+      ],
+      "perplexity": 1.5198951959609985
+    }
+  },
+  {
+    "id": 168,
+    "nl_problem": {
+      "context": "A landscaper will plant exactly seven trees today—a hickory, a larch, a maple, an oak, a plum, a sycamore, and a walnut. Each tree must be planted on exactly one of three lots—1, 2, or 3—in conformity with the following requirements: The trees planted on one lot are the hickory, the oak, and exactly one other tree. The maple is not planted on the same lot as the walnut. Either the larch or the walnut, but not both, is planted on lot 1. Either the maple or the oak, but not both, is planted on lot 2. More trees are planted on lot 3 than on lot 1.",
+      "question": "Which one of the following could be the list of the trees that the landscaper plants on each of the lots today?",
+      "options": [
+        "A) lot 1: the larch, the maple lot 2: the hickory, the oak lot 3: the plum, the sycamore, the walnut",
+        "B) lot 1: the larch, the maple lot 2: the hickory, the oak, the walnut lot 3: the plum, the sycamore",
+        "C) lot 1: the maple lot 2: the hickory, the larch, the oak lot 3: the plum, the sycamore, the walnut",
+        "D) lot 1: the sycamore, the walnut lot 2: the larch, the maple lot 3: the hickory, the oak, the plum",
+        "E) lot 1: the walnut lot 2: the plum, the sycamore lot 3: the hickory, the maple, the oak"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([1, 2, 3])",
+        "planted = Function([trees, lots] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Exists([l:lots], planted(t, l)))",
+        "ForAll([l:lots], Count([t:trees], planted(t, l)) == 1)",
+        "And(planted(hickory, l1), planted(oak, l1), Count([t:trees], And(t != hickory, t != oak, planted(t, l1))) == 1)",
+        "ForAll([l:lots], Implies(planted(maple, l), Not(planted(walnut, l))))",
+        "Or(planted(larch, 1), planted(walnut, 1))",
+        "Not(And(planted(larch, 1), planted(walnut, 1)))",
+        "Or(planted(maple, 2), planted(oak, 2))",
+        "Not(And(planted(maple, 2), planted(oak, 2)))",
+        "Count([t:trees], planted(t, 3)) > Count([t:trees], planted(t, 1))"
+      ],
+      "options": [
+        "is_sat(And(planted(larch, 1), planted(maple, 2), planted(hickory, 3), planted(oak, 3), planted(plum, 3), planted(sycamore, 3), planted(walnut, 1)))",
+        "is_sat(And(planted(larch, 1), planted(maple, 2), planted(hickory, 2), planted(oak, 2), planted(walnut, 1), planted(plum, 3), planted(sycamore, 3)))",
+        "is_sat(And(planted(maple, 1), planted(hickory, 2), planted(larch, 2), planted(oak, 2), planted(plum, 3), planted(sycamore, 3), planted(walnut, 3)))",
+        "is_sat(And(planted(sycamore, 1), planted(walnut, 1), planted(larch, 2), planted(maple, 2), planted(hickory, 3), planted(oak, 3), planted(plum, 3)))",
+        "is_sat(And(planted(walnut, 1), planted(plum, 2), planted(sycamore, 2), planted(hickory, 3), planted(maple, 3), planted(oak, 3)))"
+      ],
+      "perplexity": [
+        1.047568917274475,
+        1.0082992315292358
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([lot1, lot2, lot3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Count([l:lots], planted(t))) == 1",
+        "ForAll([l:lots], Count([t:trees], planted(t))) == 3",
+        "Exists([t:trees], And(planted(t) == lot1, And(planted(hickory) == l, planted(oak) == l)))",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == lot1, planted(walnut) == lot1)",
+        "Not(And(planted(larch) == lot1, planted(walnut) == lot1))",
+        "Or(planted(maple) == lot2, planted(oak) == lot2)",
+        "Not(And(planted(maple) == lot2, planted(oak) == lot2))",
+        "Count([t:trees], planted(t)) == lot3 > Count([t:trees], planted(t))",
+        "planted(t) == lot1"
+      ],
+      "options": [
+        "is_valid(And(planted(larch) == lot1, planted(maple) == lot2, planted(hickory) == lot2, planted(oak) == lot2, planted(plum) == lot3, planted(sycamore) == lot3, planted(walnut) == lot3))",
+        "is_valid(And(planted(larch) == lot1, planted(maple) == lot2, planted(hickory) == lot2, planted(oak) == lot2, planted(plum) == lot3, planted(sycamore) == lot3, planted(walnut) == lot3))",
+        "is_valid(And(planted(maple) == lot1, planted(hickory) == lot2, planted(larch) == lot2, planted(oak) == lot2, planted(plum) == lot3, planted(sycamore) == lot3, planted(walnut) == lot3))",
+        "is_valid(And(planted(sycamore) == lot1, planted(walnut) == lot1, planted(larch) == lot2, planted(maple) == lot2, planted(hickory) == lot3, planted(oak) == lot3, planted(plum) == lot3))",
+        "is_valid(And(planted(walnut) == lot1, planted(plum) == lot2, planted(sycamore) == lot2, planted(hickory) == lot3, planted(maple) == lot3, planted(oak) == lot3))"
+      ],
+      "perplexity": 1.170589804649353
+    }
+  },
+  {
+    "id": 169,
+    "nl_problem": {
+      "context": "A landscaper will plant exactly seven trees today—a hickory, a larch, a maple, an oak, a plum, a sycamore, and a walnut. Each tree must be planted on exactly one of three lots—1, 2, or 3—in conformity with the following requirements: The trees planted on one lot are the hickory, the oak, and exactly one other tree. The maple is not planted on the same lot as the walnut. Either the larch or the walnut, but not both, is planted on lot 1. Either the maple or the oak, but not both, is planted on lot 2. More trees are planted on lot 3 than on lot 1.",
+      "question": "If the hickory is planted on lot 2, then which one of the following trees must be planted on lot 3?",
+      "options": [
+        "A) the larch",
+        "B) the maple",
+        "C) the plum",
+        "D) the sycamore",
+        "E) the walnut"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([1, 2, 3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Exists([l:lots], planted(t) == l))",
+        "ForAll([l:lots], Count([t:trees], planted(t) == l) == 3)",
+        "ForAll([l1:lots, l2:lots], Implies(planted(maple) == l1, planted(walnut) != l1))",
+        "Or(planted(larch) == 1, planted(walnut) == 1)",
+        "And(Not(And(planted(larch) == 1, planted(walnut) == 1)), Not(And(planted(larch) != 1, planted(walnut) != 1)))",
+        "Or(planted(maple) == 2, planted(oak) == 2)",
+        "And(Not(And(planted(maple) == 2, planted(oak) == 2)), Not(And(planted(maple) != 2, planted(oak) != 2)))",
+        "Count([t:trees], planted(t) == 3) > Count([t:trees], planted(t) == 1)",
+        "planted(hickory) == 2"
+      ],
+      "options": [
+        "is_valid(planted(larch) == 3)",
+        "is_valid(planted(maple) == 3)",
+        "is_valid(planted(plum) == 3)",
+        "is_valid(planted(sycamore) == 3)",
+        "is_valid(planted(walnut) == 3)"
+      ],
+      "perplexity": [
+        1.0448205471038818,
+        1.0104827880859375
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([lot1, lot2, lot3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([l:lots], Count([t:trees], planted(t))) == l == 3",
+        "And(planted(hickory) == lot1, planted(oak) == lot1, planted(t) == lot1)",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == lot1, planted(walnut) == lot1)",
+        "Or(planted(maple) == lot2, planted(oak) == lot2)",
+        "Count([t:trees], planted(t)) == lot3 > Count([t:trees], planted(t)) == lot1"
+      ],
+      "options": [
+        "is_valid(planted(larch))",
+        "is_valid(planted(maple))",
+        "is_valid(planted(plum))",
+        "is_valid(planted(sycamore))",
+        "is_valid(planted(walnut))"
+      ],
+      "perplexity": 1.4937204122543335
+    }
+  },
+  {
+    "id": 170,
+    "nl_problem": {
+      "context": "A landscaper will plant exactly seven trees today—a hickory, a larch, a maple, an oak, a plum, a sycamore, and a walnut. Each tree must be planted on exactly one of three lots—1, 2, or 3—in conformity with the following requirements: The trees planted on one lot are the hickory, the oak, and exactly one other tree. The maple is not planted on the same lot as the walnut. Either the larch or the walnut, but not both, is planted on lot 1. Either the maple or the oak, but not both, is planted on lot 2. More trees are planted on lot 3 than on lot 1.",
+      "question": "Which one of the following is a complete and accurate list of the trees any of which could be planted on lot 1?",
+      "options": [
+        "A) the hickory, the plum, the sycamore, the walnut",
+        "B) the hickory, the sycamore, the walnut",
+        "C) the larch, the plum, the sycamore, the walnut",
+        "D) the larch, the plum, the walnut",
+        "E) the plum, the sycamore, the walnut"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([1, 2, 3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Exists([l:lots], planted(t) == l))",
+        "ForAll([l:lots], Count([t:trees], planted(t) == l) == 1)",
+        "Count([t:trees], planted(t) == 1) == 3",
+        "planted(hickory) == planted(oak)",
+        "planted(maple) != planted(walnut)",
+        "Xor(planted(larch) == 1, planted(walnut) == 1)",
+        "Xor(planted(maple) == 2, planted(oak) == 2)",
+        "Count([t:trees], planted(t) == 3) > Count([t:trees], planted(t) == 1)"
+      ],
+      "options": [
+        "is_accurate_list([planted(hickory) == 1, planted(plum) == 1, planted(sycamore) == 1, planted(walnut) == 1])",
+        "is_accurate_list([planted(hickory) == 1, planted(sycamore) == 1, planted(walnut) == 1])",
+        "is_accurate_list([planted(larch) == 1, planted(plum) == 1, planted(sycamore) == 1, planted(walnut) == 1])",
+        "is_accurate_list([planted(larch) == 1, planted(plum) == 1, planted(walnut) == 1])",
+        "is_accurate_list([planted(plum) == 1, planted(sycamore) == 1, planted(walnut) == 1])"
+      ],
+      "perplexity": [
+        1.0601012706756592,
+        1.0093761682510376
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([lot1, lot2, lot3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([l:lots], Count([t:trees], planted(t))) == l == 3",
+        "ForAll([l:lots], Count([t:trees], planted(t))) == l == 3",
+        "And(planted(hickory) == planted(oak), planted(hickory) != planted(larch), planted(hickory) != planted(maple), planted(hickory) != planted(plum), planted(hickory) != planted(sycamore), planted(hickory) != planted(walnut))",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == lot1, planted(walnut) == lot1)",
+        "Not(And(planted(larch) == lot1, planted(walnut) == lot1))",
+        "Or(planted(maple) == lot2, planted(oak) == lot2)",
+        "Not(And(planted(maple) == lot2, planted(oak) == lot2))",
+        "Count([t:trees], planted(t)) == lot3 > Count([t:trees], planted(t)) == lot1"
+      ],
+      "options": [
+        "is_accurate_list(planted(hickory))",
+        "is_accurate_list(planted(plum))",
+        "is_accurate_list(planted(sycamore))",
+        "is_accurate_list(planted(walnut))"
+      ],
+      "perplexity": 1.3889470100402832
+    }
+  },
+  {
+    "id": 171,
+    "nl_problem": {
+      "context": "A landscaper will plant exactly seven trees today—a hickory, a larch, a maple, an oak, a plum, a sycamore, and a walnut. Each tree must be planted on exactly one of three lots—1, 2, or 3—in conformity with the following requirements: The trees planted on one lot are the hickory, the oak, and exactly one other tree. The maple is not planted on the same lot as the walnut. Either the larch or the walnut, but not both, is planted on lot 1. Either the maple or the oak, but not both, is planted on lot 2. More trees are planted on lot 3 than on lot 1.",
+      "question": "If the walnut is planted on lot 3, then which one of the following could be true?",
+      "options": [
+        "A) The sycamore is planted on lot 1.",
+        "B) The hickory is planted on lot 2.",
+        "C) The larch is planted on lot 2.",
+        "D) The plum is planted on lot 3.",
+        "E) The sycamore is planted on lot 3."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([1, 2, 3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Exists([l:lots], planted(t) == l))",
+        "And(planted(hickory) != planted(oak), planted(hickory) != planted(maple), planted(hickory) != planted(sycamore), planted(hickory) != planted(plum), planted(hickory) != planted(walnut), planted(oak) != planted(maple), planted(oak) != planted(sycamore), planted(oak) != planted(plum), planted(oak) != planted(walnut), Count([t:trees], planted(t) == planted(hickory)) == 3)",
+        "planted(maple) != planted(walnut)",
+        "Xor(planted(larch) == 1, planted(walnut) == 1)",
+        "Xor(planted(maple) == 2, planted(oak) == 2)",
+        "Count([t:trees], planted(t) == 3) > Count([t:trees], planted(t) == 1)",
+        "planted(walnut) == 3"
+      ],
+      "options": [
+        "is_sat(planted(sycamore) == 1)",
+        "is_sat(planted(hickory) == 2)",
+        "is_sat(planted(larch) == 2)",
+        "is_sat(planted(plum) == 3)",
+        "is_sat(planted(sycamore) == 3)"
+      ],
+      "perplexity": [
+        1.0409835577011108,
+        1.0070865154266357
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([lot1, lot2, lot3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Count([l:lots], planted(t))) == 1",
+        "ForAll([l:lots], Count([t:trees], planted(t))) == 3",
+        "And(planted(hickory) == planted(oak), planted(hickory) != planted(larch), planted(hickory) != planted(maple), planted(hickory) != planted(plum), planted(hickory) != planted(sycamore), planted(hickory) != planted(walnut))",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == lot1, planted(walnut) == lot1)",
+        "Not(And(planted(larch) == lot1, planted(walnut) == lot1))",
+        "Or(planted(maple) == lot2, planted(oak) == lot2)",
+        "Not(And(planted(maple) == lot2, planted(oak) == lot2))",
+        "Count([t:trees], planted(t))",
+        "planted(walnut) == lot3"
+      ],
+      "options": [
+        "is_sat(planted(sycamore))",
+        "is_sat(planted(hickory))",
+        "is_sat(planted(larch))",
+        "is_sat(planted(plum))",
+        "is_sat(planted(sycamore))"
+      ],
+      "perplexity": 1.3435746431350708
+    }
+  },
+  {
+    "id": 172,
+    "nl_problem": {
+      "context": "A landscaper will plant exactly seven trees today—a hickory, a larch, a maple, an oak, a plum, a sycamore, and a walnut. Each tree must be planted on exactly one of three lots—1, 2, or 3—in conformity with the following requirements: The trees planted on one lot are the hickory, the oak, and exactly one other tree. The maple is not planted on the same lot as the walnut. Either the larch or the walnut, but not both, is planted on lot 1. Either the maple or the oak, but not both, is planted on lot 2. More trees are planted on lot 3 than on lot 1.",
+      "question": "Where each of the trees is planted is completely determined if which one of the following trees is planted on lot 2?",
+      "options": [
+        "A) the walnut",
+        "B) the sycamore",
+        "C) the plum",
+        "D) the maple",
+        "E) the larch"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([1, 2, 3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([l:lots], Count([t:trees], planted(t) == l) == 3)",
+        "And(planted(hickory) == planted(oak), planted(hickory) != planted(larch), planted(hickory) != planted(maple), planted(hickory) != planted(plum), planted(hickory) != planted(sycamore), planted(hickory) != planted(walnut), planted(oak) != planted(larch), planted(oak) != planted(maple), planted(oak) != planted(plum), planted(oak) != planted(sycamore), planted(oak) != planted(walnut), Count([t:trees], And(planted(t) == planted(hickory), t != hickory, t != oak)) == 1)",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == 1, planted(walnut) == 1)",
+        "Or(planted(maple) == 2, planted(oak) == 2)",
+        "Count([t:trees], planted(t) == 3) > Count([t:trees], planted(t) == 1)"
+      ],
+      "options": [
+        "is_sat(ForAll([t:trees], planted(t) != 2))"
+      ],
+      "perplexity": [
+        1.071620225906372,
+        1.0077546834945679
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "trees = EnumSort([hickory, larch, maple, oak, plum, sycamore, walnut])",
+        "lots = EnumSort([lot1, lot2, lot3])",
+        "planted = Function([trees] -> [lots])"
+      ],
+      "constraints": [
+        "ForAll([t:trees], Count([l:lots], planted(t))) == 1",
+        "ForAll([l:lots], Count([t:trees], planted(t))) == 3",
+        "And(planted(hickory) == planted(oak), planted(hickory) != planted(larch), planted(hickory) != planted(maple), planted(hickory) != planted(plum), planted(hickory) != planted(sycamore), planted(hickory) != planted(walnut))",
+        "planted(maple) != planted(walnut)",
+        "Or(planted(larch) == lot1, planted(walnut) == lot1)",
+        "Not(And(planted(larch) == lot1, planted(walnut) == lot1))",
+        "Or(planted(maple) == lot2, planted(oak) == lot2)",
+        "Not(And(planted(maple) == lot2, planted(oak) == lot2))",
+        "Count([t:trees], planted(t))",
+        "lot3 > Count([t:trees], planted(t))",
+        "lot1"
+      ],
+      "options": [
+        "is_sat(planted(walnut))",
+        "is_sat(planted(sycamore))",
+        "is_sat(planted(plum))",
+        "is_sat(planted(maple))",
+        "is_sat(planted(larch))"
+      ],
+      "perplexity": 1.3323367834091187
+    }
+  },
+  {
+    "id": 173,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "Which one of the following is an acceptable schedule for the librarians, listed in order from Monday through Saturday?",
+      "options": [
+        "A) Flynn; Hill; Moore; Kitson; Zahn; Gomez and Leung",
+        "B) Flynn; Moore; Hill; Leung; Kitson; Gomez and Zahn",
+        "C) Hill; Kitson; Moore; Flynn; Gomez; Leung and Zahn",
+        "D) Hill; Leung; Flynn; Moore; Zahn; Gomez and Kitson",
+        "E) Leung; Flynn; Kitson; Moore; Hill; Gomez and Zahn"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "schedule = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Exists([d:days], schedule(l) == d))",
+        "ForAll([d:days, l1:librarians, l2:librarians], Implies(And(d != Saturday, schedule(l1) == d, schedule(l2) == d), l1 == l2))",
+        "ForAll([l1:librarians, l2:librarians], Implies(schedule(l1) < schedule(l2), And(l1 == Hill, l2 == Leung)))",
+        "ForAll([l1:librarians, l2:librarians], Implies(schedule(l1) < schedule(l2), And(l1 == Hill, l2 == Gomez)))",
+        "ForAll([l1:librarians, l2:librarians], Implies(schedule(l1) < schedule(l2), And(l1 == Flynn, l2 == Kitson)))",
+        "ForAll([l1:librarians, l2:librarians], Implies(schedule(l1) < schedule(l2), And(l1 == Kitson, l2 == Zahn)))",
+        "ForAll([l1:librarians, l2:librarians], Implies(And(schedule(l1) != Saturday, schedule(l1) < schedule(l2), l1 == Leung, l2 == Flynn), False))",
+        "ForAll([d:days], Count([l:librarians], schedule(l) == d) <= 2)"
+      ],
+      "options": [
+        "is_sat(And(schedule(Flynn) == Monday, schedule(Hill) == Tuesday, schedule(Moore) == Wednesday, schedule(Kitson) == Thursday, schedule(Zahn) == Friday, schedule(Gomez) == Saturday, schedule(Leung) == Saturday))",
+        "is_sat(And(schedule(Flynn) == Monday, schedule(Moore) == Tuesday, schedule(Hill) == Wednesday, schedule(Leung) == Thursday, schedule(Kitson) == Friday, schedule(Gomez) == Saturday, schedule(Zahn) == Saturday))",
+        "is_sat(And(schedule(Hill) == Monday, schedule(Kitson) == Tuesday, schedule(Moore) == Wednesday, schedule(Flynn) == Thursday, schedule(Gomez) == Friday, schedule(Leung) == Saturday, schedule(Zahn) == Saturday))",
+        "is_sat(And(schedule(Hill) == Monday, schedule(Leung) == Tuesday, schedule(Flynn) == Wednesday, schedule(Moore) == Thursday, schedule(Zahn) == Friday, schedule(Gomez) == Saturday, schedule(Kitson) == Saturday))",
+        "is_sat(And(schedule(Leung) == Monday, schedule(Flynn) == Tuesday, schedule(Kitson) == Wednesday, schedule(Moore) == Thursday, schedule(Hill) == Friday, schedule(Gomez) == Saturday, schedule(Zahn) == Saturday))"
+      ],
+      "perplexity": [
+        1.038757085800171,
+        1.0057446956634521
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "schedule = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], schedule(l))) == 1",
+        "ForAll([d:days], Implies(d != saturday, exists(l, schedule(l))))",
+        "ForAll([d:days], Implies(d == saturday, exists(l1, l2, schedule(l1))))",
+        "schedule(hill) < schedule(leung)",
+        "And(schedule(hill) < schedule(gomez), schedule(moore) < schedule(gomez))",
+        "And(schedule(flynn) < schedule(kitson), schedule(flynn) < schedule(moore))",
+        "schedule(kitson) < schedule(zahn)",
+        "Implies(schedule(leung) != saturday, schedule(leung) < schedule(flynn))"
+      ],
+      "options": [
+        "is_valid(schedule(flynn))",
+        "is_valid(schedule(moore))",
+        "is_valid(schedule(hill))",
+        "is_valid(schedule(kitson))",
+        "is_valid(schedule(zahn))",
+        "is_valid(schedule(leung))",
+        "is_valid(schedule(gomez))"
+      ],
+      "perplexity": 1.3439668416976929
+    }
+  },
+  {
+    "id": 174,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "Which one of the following CANNOT be on desk duty on Tuesday?",
+      "options": [
+        "A) Flynn",
+        "B) Hill",
+        "C) Kitson",
+        "D) Moore",
+        "E) Zahn"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "duty = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Exists([d:days], duty(l) == d))",
+        "ForAll([d:days], If(d != Saturday, Exists([l:librarians], duty(l) == d), Count([l:librarians], duty(l) == d) == 2))",
+        "duty(Hill) < duty(Leung)",
+        "And(duty(Hill) < duty(Gomez), duty(Moore) < duty(Gomez))",
+        "And(duty(Flynn) < duty(Kitson), duty(Flynn) < duty(Moore))",
+        "duty(Kitson) < duty(Zahn)",
+        "Implies(duty(Leung) != Saturday, duty(Leung) < duty(Flynn))"
+      ],
+      "options": [
+        "is_unsat(duty(Flynn) == Tuesday)",
+        "is_unsat(duty(Hill) == Tuesday)",
+        "is_unsat(duty(Kitson) == Tuesday)",
+        "is_unsat(duty(Moore) == Tuesday)",
+        "is_unsat(duty(Zahn) == Tuesday)"
+      ],
+      "perplexity": [
+        1.0317800045013428,
+        1.0108643770217896
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], on(l))) == 1",
+        "ForAll([d:days], Implies(d != saturday, exists(l, on(l))))",
+        "ForAll([d:days], Implies(d == saturday, exists(l1, l2, on(l1))))",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "And(on(flynn) < on(kitson), on(flynn) < on(moore))",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_unsat(on(flynn))",
+        "is_unsat(on(hill))",
+        "is_unsat(on(kitson))",
+        "is_unsat(on(moore))",
+        "is_unsat(on(zahn))"
+      ],
+      "perplexity": 1.365049958229065
+    }
+  },
+  {
+    "id": 175,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "If Kitson is on desk duty earlier in the week than Moore, which one of the following CANNOT be true?",
+      "options": [
+        "A) Flynn is on desk duty earlier in the week than Leung.",
+        "B) Gomez is on desk duty earlier in the week than Kitson.",
+        "C) Gomez is on desk duty earlier in the week than Zahn.",
+        "D) Hill is on desk duty earlier in the week than Kitson.",
+        "E) Zahn is on desk duty earlier in the week than Moore."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "on_duty = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Count([l:librarians], on_duty(l) == d) <= 2)",
+        "on_duty(Hill) < on_duty(Leung)",
+        "And(on_duty(Hill) < on_duty(Gomez), on_duty(Moore) < on_duty(Gomez))",
+        "And(on_duty(Flynn) < on_duty(Kitson), on_duty(Flynn) < on_duty(Moore))",
+        "on_duty(Kitson) < on_duty(Zahn)",
+        "Implies(on_duty(Leung) != Saturday, on_duty(Leung) < on_duty(Flynn))",
+        "on_duty(Kitson) < on_duty(Moore)"
+      ],
+      "options": [
+        "is_unsat(on_duty(Flynn) < on_duty(Leung))",
+        "is_unsat(on_duty(Gomez) < on_duty(Kitson))",
+        "is_unsat(on_duty(Gomez) < on_duty(Zahn))",
+        "is_unsat(on_duty(Hill) < on_duty(Kitson))",
+        "is_unsat(on_duty(Zahn) < on_duty(Moore))"
+      ],
+      "perplexity": [
+        1.020615816116333,
+        1.0100388526916504
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], on(l))) == 1",
+        "ForAll([d:days], Count([l:librarians], on(l))) == 1",
+        "Count([l:librarians], on(l))",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "And(on(flynn) < on(kitson), on(flynn) < on(moore))",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_unsat(on(flynn))",
+        "is_unsat(on(gomez))",
+        "is_unsat(on(gomez))",
+        "is_unsat(on(hill))",
+        "is_unsat(on(zahn))"
+      ],
+      "perplexity": 1.4040541648864746
+    }
+  },
+  {
+    "id": 176,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "If Zahn is on desk duty on Thursday, which one of the following must be true?",
+      "options": [
+        "A) Flynn is on desk duty earlier in the week than Leung.",
+        "B) Hill is on desk duty earlier in the week than Flynn.",
+        "C) Hill is on desk duty earlier in the week than Moore.",
+        "D) Hill is on desk duty earlier in the week than Zahn.",
+        "E) Kitson is on desk duty earlier in the week than Moore."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "duty = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([d:days, d!=Saturday], Exists([l:librarians], duty(l) == d))",
+        "Exists([l1:librarians, l2:librarians], And(duty(l1) == Saturday, duty(l2) == Saturday))",
+        "duty(Hill) < duty(Leung)",
+        "And(duty(Hill) < duty(Gomez), duty(Moore) < duty(Gomez))",
+        "And(duty(Flynn) < duty(Kitson), duty(Flynn) < duty(Moore))",
+        "duty(Kitson) < duty(Zahn)",
+        "Implies(duty(Leung) != Saturday, duty(Leung) < duty(Flynn))",
+        "duty(Zahn) == Thursday"
+      ],
+      "options": [
+        "is_valid(duty(Flynn) < duty(Leung))",
+        "is_valid(duty(Hill) < duty(Flynn))",
+        "is_valid(duty(Hill) < duty(Moore))",
+        "is_valid(duty(Hill) < duty(Zahn))",
+        "is_valid(duty(Kitson) < duty(Moore))"
+      ],
+      "perplexity": [
+        1.0516082048416138,
+        1.0115303993225098
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], on(l))) == 1",
+        "Count([l:librarians], on(l))",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "And(on(flynn) < on(kitson), on(flynn) < on(moore))",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_valid(on(flynn))",
+        "is_valid(on(hill))",
+        "is_valid(on(moore))",
+        "is_valid(on(zahn))",
+        "is_valid(on(kitson))"
+      ],
+      "perplexity": 1.3573517799377441
+    }
+  },
+  {
+    "id": 177,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "If Moore is on desk duty on Tuesday, which one of the following must be true?",
+      "options": [
+        "A) Hill is on desk duty on Thursday.",
+        "B) Kitson is on desk duty on Thursday.",
+        "C) Leung is on desk duty on Saturday.",
+        "D) Zahn is on desk duty on Friday.",
+        "E) Zahn is on desk duty on Saturday."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "schedule = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Count([l:librarians], schedule(l) == d) <= 2)",
+        "ForAll([l:librarians], Exists([d:days], schedule(l) == d))",
+        "schedule(Hill) < schedule(Leung)",
+        "And(schedule(Hill) < schedule(Gomez), schedule(Moore) < schedule(Gomez))",
+        "And(schedule(Flynn) < schedule(Kitson), schedule(Flynn) < schedule(Moore))",
+        "schedule(Kitson) < schedule(Zahn)",
+        "Implies(schedule(Leung) != Saturday, schedule(Leung) < schedule(Flynn))",
+        "schedule(Moore) == Tuesday"
+      ],
+      "options": [
+        "is_valid(schedule(Hill) == Thursday)",
+        "is_valid(schedule(Kitson) == Thursday)",
+        "is_valid(schedule(Leung) == Saturday)",
+        "is_valid(schedule(Zahn) == Friday)",
+        "is_valid(schedule(Zahn) == Saturday)"
+      ],
+      "perplexity": [
+        1.0432864427566528,
+        1.006943702697754
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], on(l))) == 1",
+        "Count([l:librarians], on(l))",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "And(on(flynn) < on(kitson), on(flynn) < on(moore))",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_valid(on(hill))",
+        "is_valid(on(kitson))",
+        "is_valid(on(leung))",
+        "is_valid(on(zahn))",
+        "is_valid(on(zahn))"
+      ],
+      "perplexity": 1.337976336479187
+    }
+  },
+  {
+    "id": 178,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "If Flynn is on desk duty earlier in the week than Hill, which one of the following must be true?",
+      "options": [
+        "A) Hill is on desk duty earlier in the week than Kitson.",
+        "B) Hill is on desk duty earlier in the week than Zahn.",
+        "C) Kitson is on desk duty earlier in the week than Moore.",
+        "D) Moore is on desk duty earlier in the week than Leung.",
+        "E) Moore is on desk duty earlier in the week than Zahn."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "duty = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Exists([d:days], duty(l) == d))",
+        "ForAll([d:days], (d != Saturday) => Exists([l:librarians], duty(l) == d))",
+        "ForAll([d:days], (d == Saturday) => Count([l:librarians], duty(l) == d) == 2)",
+        "duty(Hill) < duty(Leung)",
+        "And(duty(Hill) < duty(Gomez), duty(Moore) < duty(Gomez))",
+        "And(duty(Flynn) < duty(Kitson), duty(Flynn) < duty(Moore))",
+        "duty(Kitson) < duty(Zahn)",
+        "Implies(duty(Leung) != Saturday, duty(Leung) < duty(Flynn))",
+        "duty(Flynn) < duty(Hill)"
+      ],
+      "options": [
+        "is_valid(duty(Hill) < duty(Kitson))",
+        "is_valid(duty(Hill) < duty(Zahn))",
+        "is_valid(duty(Kitson) < duty(Moore))",
+        "is_valid(duty(Moore) < duty(Leung))",
+        "is_valid(duty(Moore) < duty(Zahn))"
+      ],
+      "perplexity": [
+        1.0393836498260498,
+        1.0073891878128052
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([l:librarians], Count([d:days], on(l))) == 1",
+        "ForAll([d:days], Count([l:librarians], on(l))) == 1",
+        "Count([l:librarians], on(l))",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "And(on(flynn) < on(kitson), on(flynn) < on(moore))",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_valid(on(hill))",
+        "is_valid(on(hill))",
+        "is_valid(on(kitson))",
+        "is_valid(on(moore))",
+        "is_valid(on(moore))"
+      ],
+      "perplexity": 1.4025059938430786
+    }
+  },
+  {
+    "id": 179,
+    "nl_problem": {
+      "context": "Seven librarians—Flynn, Gomez, Hill, Kitson, Leung, Moore, and Zahn—are being scheduled for desk duty for one week—Monday through Saturday. The librarians will be on duty exactly one day each. On each day except Saturday, there will be exactly one librarian on duty, with two on duty on Saturday, subject to the following constraints: Hill must be on desk duty earlier in the week than Leung. Both Hill and Moore must be on desk duty earlier in the week than Gomez. Flynn must be on desk duty earlier in the week than both Kitson and Moore. Kitson must be on desk duty earlier in the week than Zahn. Unless Leung is on desk duty on Saturday, Leung must be on desk duty earlier in the week than Flynn.",
+      "question": "Which one of the following, if substituted for the constraint that Flynn must be on desk duty earlier in the week than both Kitson and Moore, would have the same effect in determining the schedule for the librarians?",
+      "options": [
+        "A) Flynn cannot be on desk duty on Thursday.",
+        "B) Only Flynn or Hill can be on desk duty on Monday.",
+        "C) Only Hill and Leung can be on desk duty earlier than Flynn.",
+        "D) Flynn must be on desk duty earlier in the week than both Gomez and Kitson.",
+        "E) Flynn must be on desk duty earlier in the week than both Moore and Zahn."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "librarians = EnumSort([Flynn, Gomez, Hill, Kitson, Leung, Moore, Zahn])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday, Saturday])",
+        "duty = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Count([l:librarians], duty(l) == d) <= 2)",
+        "duty(Hill) < duty(Leung)",
+        "And(duty(Hill) < duty(Gomez), duty(Moore) < duty(Gomez))",
+        "duty(Kitson) < duty(Zahn)",
+        "Implies(duty(Leung) != Saturday, duty(Leung) < duty(Flynn))"
+      ],
+      "options": [
+        "is_equivalent(duty(Flynn) < duty(Kitson), duty(Flynn) < duty(Moore))",
+        "is_equivalent(Or(duty(Flynn) == Monday, duty(Hill) == Monday), duty(Flynn) < duty(Kitson) And duty(Flynn) < duty(Moore))",
+        "is_equivalent(And(duty(Hill) < duty(Flynn), duty(Leung) < duty(Flynn)), duty(Flynn) < duty(Kitson) And duty(Flynn) < duty(Moore))",
+        "is_equivalent(And(duty(Flynn) < duty(Gomez), duty(Flynn) < duty(Kitson)), duty(Flynn) < duty(Kitson) And duty(Flynn) < duty(Moore))",
+        "is_equivalent(And(duty(Flynn) < duty(Moore), duty(Flynn) < duty(Zahn)), duty(Flynn) < duty(Kitson) And duty(Flynn) < duty(Moore))"
+      ],
+      "perplexity": [
+        1.0647104978561401,
+        1.008917212486267
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "librarians = EnumSort([flynn, gomez, hill, kitson, leung, moore, zahn])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday])",
+        "on = Function([librarians] -> [days])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Count([l:librarians], on(l))) == d == saturday",
+        "on(hill) < on(leung)",
+        "And(on(hill) < on(gomez), on(moore) < on(gomez))",
+        "on(flynn) < on(kitson)",
+        "on(flynn) < on(moore)",
+        "on(kitson) < on(zahn)",
+        "Implies(on(leung) != saturday, on(leung) < on(flynn))"
+      ],
+      "options": [
+        "is_sat(on(flynn))",
+        "is_sat(on(flynn))",
+        "is_sat(on(flynn))",
+        "is_sat(on(flynn))",
+        "is_sat(on(flynn))"
+      ],
+      "perplexity": 1.3648697137832642
+    }
+  },
+  {
+    "id": 180,
+    "nl_problem": {
+      "context": "Each issue of a business newsletter has five slots, numbered 1 through 5. The policy of the newsletter requires that there are at least three features per issue, with each feature completely occupying one or more of the slots. Each feature can be one of four types—finance, industry, marketing, or technology. Any slot not containing a feature contains a graphic. The newsletters policy further requires that each issue be structured as follows: Any feature occupying more than one slot must occupy consecutively numbered slots. If an issue has any finance or technology feature, then a finance or technology feature must occupy slot 1. An issue can have at most one industry feature.",
+      "question": "Which one of the following is an allowable structure for an issue of the newsletter?",
+      "options": [
+        "A) slot 1: a finance feature; slot 2: an industry feature; slot 3: a second industry feature; slot 4: a graphic; slot 5: a graphic",
+        "B) slot 1: a graphic; slot 2: a technology feature; slot 3: a second technology feature; slot 4: a graphic; slot 5: a third technology feature",
+        "C) slots 1 and 2: a single industry feature; slots 3 and 4: a single marketing feature; slot 5: a finance feature",
+        "D) slot 1: a technology feature; slots 2 and 3: a single industry feature; slot 4: a finance feature; slot 5: a graphic",
+        "E) slot 1: a technology feature; slots 2 and 4: a single marketing feature; slot 3: an industry feature; slot 5: a graphic"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "slots = EnumSort([1, 2, 3, 4, 5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "content = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "Count([s:slots], content(s) != graphic) >= 3",
+        "ForAll([f:features], ForAll([s1:slots, s2:slots], Implies(And(content(s1) == f, content(s2) == f, s1 != s2), Abs(s1 - s2) == 1)))",
+        "Implies(Exists([s:slots], content(s) == finance) || Exists([s:slots], content(s) == technology), content(1) == finance || content(1) == technology)",
+        "Count([s:slots], content(s) == industry) <= 1"
+      ],
+      "options": [
+        "is_sat(And(content(1) == finance, content(2) == industry, content(3) == industry, content(4) == graphic, content(5) == graphic))",
+        "is_sat(And(content(1) == graphic, content(2) == technology, content(3) == technology, content(4) == graphic, content(5) == technology))",
+        "is_sat(And(content(1) == industry, content(2) == industry, content(3) == marketing, content(4) == marketing, content(5) == finance))",
+        "is_sat(And(content(1) == technology, content(2) == industry, content(3) == industry, content(4) == finance, content(5) == graphic))",
+        "is_sat(And(content(1) == technology, content(2) == marketing, content(3) == marketing, content(4) == industry, content(5) == graphic))"
+      ],
+      "perplexity": [
+        1.047053575515747,
+        1.00684654712677
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "slots = EnumSort([slot1, slot2, slot3, slot4, slot5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Or(occupied(s) == finance, occupied(s) == industry, occupied(s) == marketing, occupied(s) == technology))",
+        "ForAll([f:features], Count([s:slots], occupied(s))) >= 3",
+        "ForAll([s1:slots, s2:slots], Implies(And(occupied(s1) == occupied(s2), s1 != s2), And(s2 == s1, s2 == s1)))",
+        "ForAll([s:slots], Implies(Or(occupied(s) == finance, occupied(s) == technology), occupied(slot1) == finance))",
+        "Count([s:slots], occupied(s)) == industry <= 1"
+      ],
+      "options": [
+        "is_valid(And(occupied(slot1) == finance, occupied(slot2) == industry, occupied(slot3) == industry, occupied(slot4) == graphic, occupied(slot5) == graphic))",
+        "is_valid(And(occupied(slot1) == graphic, occupied(slot2) == technology, occupied(slot3) == technology, occupied(slot4) == graphic, occupied(slot5) == technology))",
+        "is_valid(And(occupied(slot1) == industry, occupied(slot2) == industry, occupied(slot3) == marketing, occupied(slot4) == marketing, occupied(slot5) == finance))",
+        "is_valid(And(occupied(slot1) == technology, occupied(slot2) == industry, occupied(slot3) == industry, occupied(slot4) == finance, occupied(slot5) == graphic))",
+        "is_valid(And(occupied(slot1) == technology, occupied(slot2) == marketing, occupied(slot3) == marketing, occupied(slot4) == industry, occupied(slot5) == graphic))"
+      ],
+      "perplexity": 1.2156882286071777
+    }
+  },
+  {
+    "id": 181,
+    "nl_problem": {
+      "context": "Each issue of a business newsletter has five slots, numbered 1 through 5. The policy of the newsletter requires that there are at least three features per issue, with each feature completely occupying one or more of the slots. Each feature can be one of four types—finance, industry, marketing, or technology. Any slot not containing a feature contains a graphic. The newsletters policy further requires that each issue be structured as follows: Any feature occupying more than one slot must occupy consecutively numbered slots. If an issue has any finance or technology feature, then a finance or technology feature must occupy slot 1. An issue can have at most one industry feature.",
+      "question": "If an issue of the newsletter has no technology feature and if there is a finance feature that occupies both slots 4 and 5, then which one of the following is required for that issue?",
+      "options": [
+        "A) A finance feature occupies slot 1.",
+        "B) A finance feature occupies slot 2 or slot 3 or both.",
+        "C) A marketing feature occupies slot 2.",
+        "D) An industry feature or a marketing feature occupies slot 2.",
+        "E) An industry feature or a marketing feature occupies slot 3."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "slots = EnumSort([1, 2, 3, 4, 5])",
+        "feature_types = EnumSort([finance, industry, marketing, technology])",
+        "features = Function([slots] -> [feature_types])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Or(features(s) != None, features(s) == graphic))",
+        "ForAll([t:feature_types], Count([s:slots], features(s) == t) <= 1)",
+        "ForAll([s:slots], Implies(And(features(s) != None, features(s) != graphic), Exists([i:slots], And(i <= s + 1, i >= s, features(i) == features(s)))))",
+        "Implies(Or(Exists([s:slots], features(s) == finance), Exists([s:slots], features(s) == technology)), Exists([s:slots], And(s == 1, Or(features(s) == finance, features(s) == technology))))",
+        "Count([s:slots], features(s) == industry) <= 1",
+        "features(4) == finance",
+        "features(5) == finance"
+      ],
+      "options": [
+        "is_valid(features(1) == finance)",
+        "is_valid(Or(features(2) == finance, features(3) == finance, And(features(2) == finance, features(3) == finance)))",
+        "is_valid(features(2) == marketing)",
+        "is_valid(Or(features(2) == industry, features(2) == marketing))",
+        "is_valid(Or(features(3) == industry, features(3) == marketing))"
+      ],
+      "perplexity": [
+        1.1209697723388672,
+        1.0081490278244019
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "slots = EnumSort([slot1, slot2, slot3, slot4, slot5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Or(occupied(s) == finance, occupied(s) == industry, occupied(s) == marketing, occupied(s) == technology))",
+        "ForAll([f:features], Count([s:slots], occupied(s))) >= 3",
+        "ForAll([f:features], Implies(And(occupied(s) == f, occupied(s1) == f), s1 == s2))",
+        "ForAll([f:features], Implies(And(occupied(s) == f, occupied(s1) == f), s1 == s2))",
+        "ForAll([i:issues], Implies(Or(occupied(slot1) == finance, occupied(slot1) == technology), Or(occupied(slot1) == finance, occupied(slot1) == technology)))",
+        "ForAll([i:issues], Count([s:slots], occupied(s)))",
+        "And(occupied(slot4) == finance, occupied(slot5) == finance)"
+      ],
+      "options": [
+        "is_valid(occupied(slot1))",
+        "is_valid(Or(occupied(slot2) == finance, occupied(slot3) == finance))",
+        "is_valid(occupied(slot2))",
+        "is_valid(Or(occupied(slot2) == industry, occupied(slot2) == marketing))",
+        "is_valid(Or(occupied(slot3) == industry, occupied(slot3) == marketing))"
+      ],
+      "perplexity": 1.4317270517349243
+    }
+  },
+  {
+    "id": 182,
+    "nl_problem": {
+      "context": "Each issue of a business newsletter has five slots, numbered 1 through 5. The policy of the newsletter requires that there are at least three features per issue, with each feature completely occupying one or more of the slots. Each feature can be one of four types—finance, industry, marketing, or technology. Any slot not containing a feature contains a graphic. The newsletters policy further requires that each issue be structured as follows: Any feature occupying more than one slot must occupy consecutively numbered slots. If an issue has any finance or technology feature, then a finance or technology feature must occupy slot 1. An issue can have at most one industry feature.",
+      "question": "Which one of the following is NOT allowed for an issue of the newsletter?",
+      "options": [
+        "A) There is exactly one industry feature, and it occupies slot 1.",
+        "B) There is exactly one finance feature, and it occupies slot 2.",
+        "C) There is exactly one technology feature, and it occupies slot 3.",
+        "D) Each feature except the feature occupying slot 1 is either a finance feature or a marketing feature.",
+        "E) Each feature except the feature occupying slot 5 is either an industry feature or a marketing feature."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "slots = EnumSort([1, 2, 3, 4, 5])",
+        "types = EnumSort([finance, industry, marketing, technology])",
+        "features = Function([slots] -> [types])"
+      ],
+      "constraints": [
+        "Count([s:slots], features(s) != null) >= 3",
+        "ForAll([i:slots], Implies(features(i) != null, Or(features(i + 1) == null, features(i + 1) == features(i))))",
+        "Or(ForAll([s:slots], features(s) != finance), ForAll([s:slots], features(s) != technology))",
+        "Count([s:slots], features(s) == industry) <= 1"
+      ],
+      "options": [
+        "is_sat(And(Count([s:slots], features(s) == industry) == 1, features(1) == industry))",
+        "is_sat(And(Count([s:slots], features(s) == finance) == 1, features(2) == finance))",
+        "is_sat(And(Count([s:slots], features(s) == technology) == 1, features(3) == technology))",
+        "is_sat(ForAll([s:slots], Implies(Not(s == 1), Or(features(s) == finance, features(s) == marketing))))",
+        "is_sat(ForAll([s:slots], Implies(Not(s == 5), Or(features(s) == industry, features(s) == marketing))))"
+      ],
+      "perplexity": [
+        1.0704033374786377,
+        1.0095775127410889
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "slots = EnumSort([slot1, slot2, slot3, slot4, slot5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Or(occupied(s) == finance, occupied(s) == industry, occupied(s) == marketing, occupied(s) == technology))",
+        "ForAll([f:features], Count([s:slots], occupied(s))) >= 3",
+        "ForAll([f:features], Implies(And(occupied(s) == f, occupied(s1) == f), s1 == s2))",
+        "ForAll([s:slots], Implies(And(occupied(s) == finance, occupied(s) == technology), s == slot1))",
+        "Count([s:slots], occupied(s)) == industry <= 1"
+      ],
+      "options": [
+        "is_valid(occupied(slot1))",
+        "is_valid(occupied(slot2))",
+        "is_valid(occupied(slot3))",
+        "is_valid(ForAll([s:slots], Implies(And(s != slot1, occupied(s) != industry), Or(occupied(s) == finance, occupied(s) == marketing))))",
+        "is_valid(ForAll([s:slots], Implies(And(s != slot5, occupied(s) != industry), Or(occupied(s) == finance, occupied(s) == marketing))))"
+      ],
+      "perplexity": 1.4223082065582275
+    }
+  },
+  {
+    "id": 183,
+    "nl_problem": {
+      "context": "Each issue of a business newsletter has five slots, numbered 1 through 5. The policy of the newsletter requires that there are at least three features per issue, with each feature completely occupying one or more of the slots. Each feature can be one of four types—finance, industry, marketing, or technology. Any slot not containing a feature contains a graphic. The newsletters policy further requires that each issue be structured as follows: Any feature occupying more than one slot must occupy consecutively numbered slots. If an issue has any finance or technology feature, then a finance or technology feature must occupy slot 1. An issue can have at most one industry feature.",
+      "question": "If, in a particular issue of the newsletter, slot 1 is occupied by the only industry feature in that issue, then which one of the following is required for that issue?",
+      "options": [
+        "A) There is an industry feature that occupies slots 1 and 2, and only those slots.",
+        "B) There is an industry feature that occupies slots 1, 2, and 3, and only those slots.",
+        "C) There is a marketing feature that occupies slot 2 or slot 3 or both.",
+        "D) There is a marketing feature that occupies one or more of slots 2, 3, and 4.",
+        "E) There is a marketing feature that occupies slot 3 or slot 5 or both."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "slots = EnumSort([1, 2, 3, 4, 5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], occupied(s) != none)",
+        "ForAll([f:features], Implies(Count([s:slots], occupied(s) == f) > 1, ForAll([i, j:slots], Implies(occupied(i) == f, And(occupied(j) == f, j == i + 1)))))",
+        "Implies(Or(Exists([s:slots], occupied(s) == finance), Exists([s:slots], occupied(s) == technology)), Or(occupied(1) == finance, occupied(1) == technology))",
+        "Count([s:slots], occupied(s) == industry) <= 1"
+      ],
+      "options": [
+        "is_sat(And(occupied(1) == industry, occupied(2) == industry))",
+        "is_sat(And(occupied(1) == industry, occupied(2) == industry, occupied(3) == industry))",
+        "is_sat(Or(occupied(2) == marketing, occupied(3) == marketing))",
+        "is_sat(Or(occupied(2) == marketing, occupied(3) == marketing, occupied(4) == marketing))",
+        "is_sat(Or(occupied(3) == marketing, occupied(5) == marketing))"
+      ],
+      "perplexity": [
+        1.1068311929702759,
+        1.0074411630630493
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "slots = EnumSort([slot1, slot2, slot3, slot4, slot5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Or(occupied(s) == finance, occupied(s) == industry, occupied(s) == marketing, occupied(s) == technology))",
+        "ForAll([f:features], Count([s:slots], occupied(s))) >= 3",
+        "ForAll([f:features], Implies(And(occupied(s) == f, occupied(s1) == f), s1 == s2))",
+        "ForAll([f:features], Implies(Or(f == finance, f == technology), occupied(slot1) == f))",
+        "Count([s:slots], occupied(s)) == industry <= 1"
+      ],
+      "options": [
+        "is_valid(And(occupied(slot1) == industry, occupied(slot2) == industry))",
+        "is_valid(And(occupied(slot1) == industry, occupied(slot2) == industry, occupied(slot3) == industry))",
+        "is_valid(Or(occupied(slot2) == marketing, occupied(slot3) == marketing))",
+        "is_valid(Or(occupied(slot2) == marketing, occupied(slot3) == marketing, occupied(slot4) == marketing))",
+        "is_valid(Or(occupied(slot3) == marketing, occupied(slot5) == marketing))"
+      ],
+      "perplexity": 1.314828634262085
+    }
+  },
+  {
+    "id": 184,
+    "nl_problem": {
+      "context": "Each issue of a business newsletter has five slots, numbered 1 through 5. The policy of the newsletter requires that there are at least three features per issue, with each feature completely occupying one or more of the slots. Each feature can be one of four types—finance, industry, marketing, or technology. Any slot not containing a feature contains a graphic. The newsletters policy further requires that each issue be structured as follows: Any feature occupying more than one slot must occupy consecutively numbered slots. If an issue has any finance or technology feature, then a finance or technology feature must occupy slot 1. An issue can have at most one industry feature.",
+      "question": "Any of the following is allowed for an issue of the newsletter EXCEPT:",
+      "options": [
+        "A) There is exactly one finance feature and no industry or marketing feature.",
+        "B) There is exactly one industry feature and no finance or marketing feature.",
+        "C) There is exactly one industry feature and no marketing or technology feature.",
+        "D) There is exactly one marketing feature and no finance or technology feature.",
+        "E) There is exactly one marketing feature and no industry or technology feature."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "slots = EnumSort([1, 2, 3, 4, 5])",
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "occupied = Function([slots] -> [features])"
+      ],
+      "constraints": [
+        "Count([s:slots], occupied(s) != none) >= 3",
+        "ForAll([s:slots], Implies(occupied(s) != none, ForAll([s2:slots], Implies(s2 > s, occupied(s2) == occupied(s) Or occupied(s2) == none))))",
+        "Or(occupied(1) == finance, occupied(1) == technology)",
+        "Count([s:slots], occupied(s) == industry) <= 1"
+      ],
+      "options": [
+        "is_valid(And(Count([s:slots], occupied(s) == finance) == 1, Count([s:slots], occupied(s) == industry) == 0, Count([s:slots], occupied(s) == marketing) == 0))",
+        "is_valid(And(Count([s:slots], occupied(s) == industry) == 1, Count([s:slots], occupied(s) == finance) == 0, Count([s:slots], occupied(s) == marketing) == 0))",
+        "is_valid(And(Count([s:slots], occupied(s) == industry) == 1, Count([s:slots], occupied(s) == marketing) == 0, Count([s:slots], occupied(s) == technology) == 0))",
+        "is_valid(And(Count([s:slots], occupied(s) == marketing) == 1, Count([s:slots], occupied(s) == finance) == 0, Count([s:slots], occupied(s) == technology) == 0))",
+        "is_valid(And(Count([s:slots], occupied(s) == marketing) == 1, Count([s:slots], occupied(s) == industry) == 0, Count([s:slots], occupied(s) == technology) == 0))"
+      ],
+      "perplexity": [
+        1.059963583946228,
+        1.0085405111312866
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "features = EnumSort([finance, industry, marketing, technology])",
+        "slots = EnumSort([slot1, slot2, slot3, slot4, slot5])",
+        "contains = Function([slots, features] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:slots], Count([f:features], contains(s, f))) <= 1",
+        "ForAll([f:features], Count([s:slots], contains(s, f))) >= 1",
+        "ForAll([f:features], Implies(And(f == finance, f == technology), contains(slot1, f)))",
+        "Count([f:features], f) <= 1"
+      ],
+      "options": [
+        "is_valid(And(contains(slot1, finance), Not(contains(slot1, industry)), Not(contains(slot1, marketing))))",
+        "is_valid(And(contains(slot1, industry), Not(contains(slot1, finance)), Not(contains(slot1, marketing))))",
+        "is_valid(And(contains(slot1, industry), Not(contains(slot1, marketing)), Not(contains(slot1, technology))))",
+        "is_valid(And(contains(slot1, marketing), Not(contains(slot1, finance)), Not(contains(slot1, technology))))",
+        "is_valid(And(contains(slot1, marketing), Not(contains(slot1, industry)), Not(contains(slot1, technology))))"
+      ],
+      "perplexity": 1.207550048828125
+    }
+  },
+  {
+    "id": 185,
+    "nl_problem": {
+      "context": "Six entertainers—Robinson, Shahpari, Tigay, Wu, Yeaton, and Zane—are being scheduled for the six performances on the opening day of a community festival. Each entertainer will perform at one of six times—in the morning at 9:00 A.M., 10:00 A.M., or 11:00 A.M., or in the afternoon at 2:00 P.M., 3:00 P.M., or 4:00 P.M.—with no two entertainers performing at the same scheduled time. The order in which the entertainers perform is subject to the following constraints: Robinson must perform at some time before Zane. Yeaton's performance must be the next performance after Wu's. Tigay must perform in the afternoon. Zane must perform in the morning.",
+      "question": "Which one of the following could be the order, from first to last, in which the entertainers are scheduled to perform?",
+      "options": [
+        "A) Robinson, Shahpari, Zane, Tigay, Wu, Yeaton",
+        "B) Robinson, Wu, Yeaton, Zane, Shahpari, Tigay",
+        "C) Robinson, Zane, Tigay, Shahpari, Wu, Yeaton",
+        "D) Shahpari, Robinson, Zane, Wu, Tigay, Yeaton",
+        "E) Wu, Yeaton, Zane, Shahpari, Tigay, Robinson"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "entertainers = EnumSort([Robinson, Shahpari, Tigay, Wu, Yeaton, Zane])",
+        "times = EnumSort([nine, ten, eleven, two, three, four])",
+        "scheduled = Function([entertainers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([e1:entertainers, e2:entertainers], Implies(e1 != e2, scheduled(e1) != scheduled(e2)))",
+        "scheduled(Robinson) < scheduled(Zane)",
+        "scheduled(Yeaton) == scheduled(Wu) + 1",
+        "scheduled(Tigay) >= three",
+        "scheduled(Zane) <= eleven"
+      ],
+      "options": [
+        "is_sat(And(scheduled(Robinson) == nine, scheduled(Shahpari) == ten, scheduled(Zane) == eleven, scheduled(Tigay) == two, scheduled(Wu) == three, scheduled(Yeaton) == four))",
+        "is_sat(And(scheduled(Robinson) == nine, scheduled(Wu) == ten, scheduled(Yeaton) == eleven, scheduled(Zane) == two, scheduled(Shahpari) == three, scheduled(Tigay) == four))",
+        "is_sat(And(scheduled(Robinson) == nine, scheduled(Zane) == ten, scheduled(Tigay) == eleven, scheduled(Shahpari) == two, scheduled(Wu) == three, scheduled(Yeaton) == four))",
+        "is_sat(And(scheduled(Shahpari) == nine, scheduled(Robinson) == ten, scheduled(Zane) == eleven, scheduled(Wu) == two, scheduled(Tigay) == three, scheduled(Yeaton) == four))",
+        "is_sat(And(scheduled(Wu) == nine, scheduled(Yeaton) == ten, scheduled(Zane) == eleven, scheduled(Shahpari) == two, scheduled(Tigay) == three, scheduled(Robinson) == four))"
+      ],
+      "perplexity": [
+        1.0290374755859375,
+        1.0056666135787964
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "entertainers = EnumSort([robinson, shahpari, tigay, wu, yeaton, zane])",
+        "times = EnumSort([nine, ten, eleven, two, three, four])",
+        "performs = Function([entertainers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([e:entertainers], Distinct([e:entertainers], performs(e)))",
+        "performs(robinson) < performs(zane)",
+        "performs(yeaton) == performs(wu) == 1",
+        "performs(tigay) > three",
+        "performs(zane) < eleven"
+      ],
+      "options": [
+        "is_valid(And(performs(robinson) == nine, performs(shahpari) == ten, performs(zane) == eleven, performs(tigay) == two, performs(wu) == three, performs(yeaton) == four))",
+        "is_valid(And(performs(robinson) == nine, performs(wu) == ten, performs(yeaton) == eleven, performs(zane) == two, performs(shahpari) == three, performs(tigay) == four))",
+        "is_valid(And(performs(robinson) == nine, performs(zane) == ten, performs(tigay) == eleven, performs(shahpari) == two, performs(wu) == three, performs(yeaton) == four))",
+        "is_valid(And(performs(shahpari) == nine, performs(robinson) == ten, performs(zane) == eleven, performs(wu) == two, performs(tigay) == three, performs(yeaton) == four))",
+        "is_valid(And(performs(wu) == nine, performs(yeaton) == ten, performs(zane) == eleven, performs(shahpari) == two, performs(tigay) == three, performs(robinson) == four))"
+      ],
+      "perplexity": 1.083825707435608
+    }
   }
 ]

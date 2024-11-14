@@ -52,8 +52,8 @@ def is_exception(x):
 
 ## Options
 
-if is_exception(is(dives(ohba), 3)): print('(A)')
-if is_exception(is(dives(weiss), 3)): print('(B)')
-if is_exception(is(dives(zacny), 3)): print('(C)')
-if is_exception(is(dives(pei), 4)): print('(D)')
-if is_exception(is(dives(weiss), 4)): print('(E)')
+if is_exception(dives(ohba), 3): print('(A)')
+if is_exception(dives(weiss), 3): print('(B)')
+if is_exception(dives(zacny), 3): print('(C)')
+if is_exception(dives(pei), 4): print('(D)')
+if is_exception(dives(weiss), 4): print('(E)')

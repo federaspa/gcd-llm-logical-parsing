@@ -1,25 +1,35 @@
 from z3 import *
 
 ## Declarations
-pieces_sort, (reciprocity, salammbo, trapezoid, vancouver, wisteria) = EnumSort('pieces', ['reciprocity', 'salammbo', 'trapezoid', 'vancouver', 'wisteria'])
-pieces = [reciprocity, salammbo, trapezoid, vancouver, wisteria]
-order = Function('order', pieces_sort, IntSort())
+technicians_sort, (Stacy, Urma, Wim, Xena, Yolanda, Zane) = EnumSort('technicians', ['Stacy', 'Urma', 'Wim', 'Xena', 'Yolanda', 'Zane'])
+machines_sort, (radios, televisions, VCRs) = EnumSort('machines', ['radios', 'televisions', 'VCRs'])
+technicians = [Stacy, Urma, Wim, Xena, Yolanda, Zane]
+machines = [radios, televisions, VCRs]
+repairs = Function('repairs', technicians_sort, machines_sort, BoolSort())
 
 ## Constraints
 
 pre_conditions = []
-p = Const('p', pieces_sort)
-pre_conditions.append(ForAll([p], And(1 <= order(p), order(p) <= 5)))
-pre_conditions.append(Distinct([order(p) for p in pieces]))
-pre_conditions.append(order(salammbo) < order(vancouver))
-pre_conditions.append(Or(And(order(trapezoid) < order(reciprocity), order(trapezoid) < order(salammbo)), And(order(trapezoid) > order(reciprocity), order(trapezoid) > order(salammbo))))
-pre_conditions.append(Or(And(order(wisteria) < order(reciprocity), order(wisteria) < order(trapezoid)), And(order(wisteria) > order(reciprocity), order(wisteria) > order(trapezoid))))
-p = Const('p', pieces_sort)
-pre_conditions.append(ForAll([p], And(1 <= order(p), order(p) <= 5)))
-pre_conditions.append(Distinct([order(p) for p in pieces]))
-pre_conditions.append(order(salammbo) < order(vancouver))
-pre_conditions.append(Or(And(order(trapezoid) < order(reciprocity), order(trapezoid) < order(salammbo)), And(order(trapezoid) > order(reciprocity), order(trapezoid) > order(salammbo))))
-pre_conditions.append(Or(And(order(wisteria) < order(reciprocity), order(wisteria) < order(trapezoid)), And(order(wisteria) > order(reciprocity), order(wisteria) > order(trapezoid))))
+t = Const('t', technicians_sort)
+pre_conditions.append(ForAll([t], Sum([repairs(t, m) for m in machines]) >= 1))
+pre_conditions.append(And(repairs(Xena, radios), Sum([And(t != Xena, repairs(t, radios)) for t in technicians]) == 3))
+pre_conditions.append(And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)))
+m = Const('m', machines_sort)
+pre_conditions.append(ForAll([m], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))))
+pre_conditions.append(Sum([repairs(Zane, m) for m in machines]) > Sum([repairs(Yolanda, m) for m in machines]))
+m = Const('m', machines_sort)
+pre_conditions.append(ForAll([m], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))))
+pre_conditions.append(Sum([repairs(Urma, m) for m in machines]) == 2)
+t = Const('t', technicians_sort)
+pre_conditions.append(ForAll([t], Sum([repairs(t, m) for m in machines]) >= 1))
+pre_conditions.append(And(repairs(Xena, radios), Sum([And(t != Xena, repairs(t, radios)) for t in technicians]) == 3))
+pre_conditions.append(And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)))
+m = Const('m', machines_sort)
+pre_conditions.append(ForAll([m], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))))
+pre_conditions.append(Sum([repairs(Zane, m) for m in machines]) > Sum([repairs(Yolanda, m) for m in machines]))
+m = Const('m', machines_sort)
+pre_conditions.append(ForAll([m], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))))
+pre_conditions.append(Sum([repairs(Urma, m) for m in machines]) == 2)
 
 def is_valid(option_constraints):
     solver = Solver()
@@ -48,8 +58,13 @@ def is_exception(x):
 
 ## Options
 
-if is_unsat(And(order(wisteria) == 1, order(trapezoid) == 3)): print('(A)')
-if is_unsat(And(order(wisteria) == 1, order(vancouver) == 3)): print('(B)')
-if is_unsat(And(order(wisteria) == 1, order(salammbo) == 4)): print('(C)')
-if is_unsat(And(order(wisteria) == 1, order(vancouver) == 4)): print('(D)')
-if is_unsat(And(order(wisteria) == 1, order(trapezoid) == 5)): print('(E)')
+m = Const('m', machines_sort)
+if is_sat(ForAll([m], repairs(Stacy, m) == repairs(Urma, m))): print('(A)')
+m = Const('m', machines_sort)
+if is_sat(ForAll([m], repairs(Urma, m) == repairs(Yolanda, m))): print('(B)')
+m = Const('m', machines_sort)
+if is_sat(ForAll([m], repairs(Urma, m) == repairs(Xena, m))): print('(C)')
+m = Const('m', machines_sort)
+if is_sat(ForAll([m], repairs(Wim, m) == repairs(Xena, m))): print('(D)')
+m = Const('m', machines_sort)
+if is_sat(ForAll([m], repairs(Xena, m) == repairs(Yolanda, m))): print('(E)')

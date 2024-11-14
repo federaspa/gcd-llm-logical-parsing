@@ -23,6 +23,7 @@ class Config:
     save_path: str
     n_gpu_layers: int 
     n_ctx: int
+    max_tokens: int
     n_threads: int
     stop_time: str|None
     timeout_seconds: int|None
@@ -119,7 +120,10 @@ class LogicProgramGenerator(PromptGenerator):
 
     def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
         user = self.prompter.unconstrained(sample=sample)
-        response = self.sketcher_api.invoke(prompt=user)
+        response = self.sketcher_api.invoke(
+            prompt=user,
+            max_tokens=config.max_tokens
+        )
         
         content = response['choices'][0]['text']
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
@@ -130,7 +134,8 @@ class LogicProgramGenerator(PromptGenerator):
         user = self.prompter.json_wrap(unconstrained)
         response = self.sketcher_api.invoke(
             prompt=user,
-            raw_grammar=self.templates['json_grammar']
+            raw_grammar=self.templates['json_grammar'],
+            max_tokens=config.max_tokens
         )
         
         content = response['choices'][0]['text']
@@ -143,6 +148,7 @@ class LogicProgramGenerator(PromptGenerator):
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.templates['constrained_grammar'],
+            max_tokens=config.max_tokens,
             temperature=0.5,
             top_p = 1,
             top_k=10,
@@ -165,29 +171,30 @@ class LogicProgramGenerator(PromptGenerator):
     def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
         outputs = []
         existing_ids = []
-        existing_samples = []
+        # existing_samples = []
         
         if save_file.exists():
             with open(save_file, 'r') as f:
-                existing_samples = json.load(f)
-                existing_ids = [s['id'] for s in existing_samples]
+                outputs = json.load(f)
+                existing_ids = [s['id'] for s in outputs]
                
-            complete_ids = set() 
-            for sample in raw_dataset:
-                if sample['id'] in existing_ids:
+            # complete_ids = set() 
+            # for sample in raw_dataset:
+            #     if sample['id'] in existing_ids:
                     
-                    sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
+            #         sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
                     
-                    unconstrained_skip = 'logic_problem' in sample.keys() and not config.force_unconstrained
-                    constrained_skip = 'logic_problem_gcd' in sample.keys() and not config.force_constrained
+            #         unconstrained_skip = 'logic_problem' in sample.keys() and not config.force_unconstrained
+            #         constrained_skip = 'logic_problem_gcd' in sample.keys() and not config.force_constrained
                     
-                    if  unconstrained_skip and constrained_skip:
-                        outputs.append(sample)
-                        complete_ids.add(sample['id'])
+            #         if  unconstrained_skip and constrained_skip:
+            #             outputs.append(sample)
+            #             complete_ids.add(sample['id'])
         
-                raw_dataset = [s for s in raw_dataset if s['id'] not in complete_ids]
+            raw_dataset = [s for s in raw_dataset if s['id'] not in existing_ids]
                     
-        return raw_dataset, outputs, existing_samples, existing_ids
+        # return raw_dataset, outputs, existing_samples, existing_ids
+        return raw_dataset, outputs, existing_ids
 
     def run(self):
         raw_dataset = self._load_raw_dataset()
@@ -196,8 +203,9 @@ class LogicProgramGenerator(PromptGenerator):
         
         save_file = save_path / f'{self.config.dataset_name}_{self.config.split}_{self.config.sketcher_name}.json'
         
-        raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
-
+        # raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
+        raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
+        
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
@@ -205,7 +213,7 @@ class LogicProgramGenerator(PromptGenerator):
                 break
         
             if sample['id'] in existing_ids:
-                sample = [s for s in existing_samples if s['id'] == sample['id']][0]               
+                sample = [s for s in outputs if s['id'] == sample['id']][0]               
                 nl_problem = sample['nl_problem']
             else:
                 nl_problem = sample
@@ -294,9 +302,10 @@ def parse_args() -> Config:
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
-    parser.add_argument('--n-gpu-layers', type=int, default=0)
+    parser.add_argument('--n-gpu-layers', type=int, default=-1)
     parser.add_argument('--n-threads', type=int, default=1)
-    parser.add_argument('--n-ctx', type=int, default=0)
+    parser.add_argument('--n-ctx', type=int, default=5120)
+    parser.add_argument('--max-tokens', type=int, default=1024)
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--timeout-seconds', type=int, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
@@ -319,7 +328,7 @@ if __name__ == '__main__':
     logger.info(f"Save path: {config.save_path}")
     logger.info(f"Threads: {config.n_threads}")
     logger.info(f"GPU layers: {config.n_gpu_layers}")
-    logger.info(f"Context: {config.n_ctx}")
+    logger.info(f"Max tokens: {config.max_tokens}")
     logger.info(f"Force unconstrained: {config.force_unconstrained}")
     logger.info(f"Force constrained: {config.force_constrained}")
     logger.info(f"Stop time: {config.stop_time}")
