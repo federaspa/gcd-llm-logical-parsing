@@ -22,18 +22,17 @@ intsortdecl ::= identifier " = IntSort([" intmembers "])"
 intmembers ::= number (", " number)*
 
 functiondecl ::= identifier " = Function(" functionargs ")"
-functionargs ::= "[" typelist "] -> [" type "]" | "[" typelist "]"
-typelist ::= type (", " type)*
-type ::= identifier | "int" | "bool"
+functionargs ::= "[" identifierlist "] -> [" (identifier | "int" | "bool") "]"
+identifierlist ::= identifier (", " identifier)*
 
 # Constraints section
-constraint ::= constraintexprBase constraintexprTail*
-constraintexprBase ::= forallexpr | existsexpr | countexpr | distinctexpr | basicexpr
-constraintexprTail ::= comparisonop constraintexprBase
+constraint ::= constraintBase constraintTail*
+constraintBase ::= forallexpr | existsexpr | countexpr | distinctexpr | constraintexpr
+constraintTail ::= comparisonop constraintBase
 
-countinsideexpr ::= basicexpr
-distinctinsideexpr ::= basicexpr | countexpr
-quantinsideexpr ::= countexpr | distinctexpr | basicexpr
+countinsideexpr ::= constraintexpr
+distinctinsideexpr ::= constraintexpr | countexpr
+quantinsideexpr ::= countexpr | distinctexpr | constraintexpr
 
 forallexpr ::= "ForAll([" varbindings "], " quantinsideexpr ")"
 existsexpr ::= "Exists([" varbindings "], " quantinsideexpr ")"
@@ -43,25 +42,26 @@ distinctexpr ::= "Distinct([" varbinding "], " distinctinsideexpr ")"
 varbindings ::= varbinding (", " varbinding)*
 varbinding ::= identifier ":" identifier
 
-basicexpr ::= functioncall | atom
+constraintexpr ::= functioncall | atom
 
 functioncall ::= identifier "(" arglist ")"
-arglist ::= exprBase (", " exprBase)*
+arglist ::= atom (", " atom)*
 comparisonop ::= " == " | " != " | " <= " | " >= " | " < " | " > "
 
-logicalexpr ::= logicalAnd | logicalOr | logicalNot
+logicalexpr ::= logicalAnd | logicalOr | logicalNot | logicalImplies
 logicalAnd ::= "And(" exprlist ")"
 logicalOr ::= "Or(" exprlist ")"
-logicalNot ::= "Not(" exprBase ")"
-exprlist ::= exprBase (", " exprBase)*
+logicalNot ::= "Not(" expr ")"
+logicalImplies ::= "Implies(" expr ", " expr ")"
+exprlist ::= expr (", " expr)*
 
-exprBase ::= atom exprTail*
-exprTail ::= comparisonop exprBase
+expr ::= comparisonexpr | atom
+comparisonexpr ::= atom comparisonop atom
 atom ::= identifier | number | functioncall | logicalexpr
 
 # Options section
 option ::= validitycheck
-validitycheck ::= ("is_valid" | "is_unsat" | "is_sat" | "is_exception" | "is_accurate_list") "(" constraintexprBase ")"
+validitycheck ::= ("is_valid" | "is_unsat" | "is_sat" | "is_exception" | "is_accurate_list") "(" constraintBase ")"
 
 # Basic elements
 identifier ::= [a-z][a-z0-9]*

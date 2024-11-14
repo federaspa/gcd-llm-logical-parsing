@@ -24,14 +24,15 @@ def send_notification(message, title):
 
     po.send(msg)
     
-def get_logger(script_name):
+def get_logger(script_name, debug:bool = False):
     
     
     current_datetime = datetime.now().strftime("%d%m%Y_%H%M%S")
 
     # Create a logger
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    level = logging.DEBUG if debug else logging.INFO
+    logger.setLevel(level)
 
     # Create file handler which logs even debug messages
     log_file_name = f"logs/{script_name}_{current_datetime}.log"

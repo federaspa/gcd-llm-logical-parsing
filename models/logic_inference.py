@@ -86,7 +86,7 @@ class LogicInferenceEngine:
                     
                     answer, status, error = self.safe_execute_program(logic_problem)
                     
-                    if not status == 'success':
+                    if status == 'parsing error':
                         error_count += 1
                         
                     sample['logic_problem'].update({
@@ -107,7 +107,7 @@ class LogicInferenceEngine:
                     logic_problem_constrained = sample.get('logic_problem_gcd', {})
                     answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
 
-                    if not status_constrained == 'success':
+                    if status == 'parsing error':
                         error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({

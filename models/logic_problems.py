@@ -26,10 +26,9 @@ class Config:
     n_threads: int
     stop_time: str|None
     timeout_seconds: int|None
-    verbose: bool = False
-
-script_name = Path(__file__).stem
-logger, log_file_name = get_logger(script_name)
+    force_unconstrained: bool = False
+    force_constrained:bool = False
+    debug: bool = False
 
 class PromptGenerator:
     def __init__(self, config: Config):
@@ -89,7 +88,7 @@ class LogicProgramGenerator(PromptGenerator):
             n_gpu_layers=config.n_gpu_layers,
             n_threads = config.n_threads,
             n_ctx=config.n_ctx,
-            verbose=config.verbose
+            verbose=config.debug
         )
         
         # Convert stop_time string to datetime object if provided
@@ -179,7 +178,10 @@ class LogicProgramGenerator(PromptGenerator):
                     
                     sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
                     
-                    if 'logic_problem' in sample.keys() and 'logic_problem_gcd' in sample.keys():
+                    unconstrained_skip = 'logic_problem' in sample.keys() and not config.force_unconstrained
+                    constrained_skip = 'logic_problem_gcd' in sample.keys() and not config.force_constrained
+                    
+                    if  unconstrained_skip and constrained_skip:
                         outputs.append(sample)
                         complete_ids.add(sample['id'])
         
@@ -212,7 +214,7 @@ class LogicProgramGenerator(PromptGenerator):
             logic_problem_gcd = None
                         
             try:
-                if not 'logic_problem' in sample.keys():
+                if not 'logic_problem' in sample.keys() or config.force_unconstrained:
                     pbar.set_description_str("Generating unconstrained problem %s" % sample['id'])
                     unconstrained, perplexity = self._unconstrained_generator(nl_problem)
                     
@@ -239,7 +241,7 @@ class LogicProgramGenerator(PromptGenerator):
                 logger.error(f"An error occurred for sample {sample['id']}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
                 
             try:
-                if not 'logic_problem_gcd' in sample.keys():
+                if not 'logic_problem_gcd' in sample.keys() or config.force_constrained:
                     pbar.set_description_str("Generating constrained problem %s" % sample['id'])
                     logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
                     
@@ -295,15 +297,21 @@ def parse_args() -> Config:
     parser.add_argument('--n-gpu-layers', type=int, default=0)
     parser.add_argument('--n-threads', type=int, default=1)
     parser.add_argument('--n-ctx', type=int, default=0)
-    parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--timeout-seconds', type=int, default=None, help='Timeout in seconds for generation operations')
+    parser.add_argument('--force-unconstrained', action='store_true')
+    parser.add_argument('--force-constrained', action='store_true')
+    parser.add_argument('--debug', action='store_true')
     
     args = parser.parse_args()
     return Config(**vars(args))
 
 if __name__ == '__main__':
     config = parse_args()
+    
+    script_name = Path(__file__).stem
+    logger, log_file_name = get_logger(script_name, config.debug)
+    
     
     logger.info(f"Dataset: {config.dataset_name}")
     logger.info(f"Sketcher: {config.sketcher_name}")
@@ -312,8 +320,9 @@ if __name__ == '__main__':
     logger.info(f"Threads: {config.n_threads}")
     logger.info(f"GPU layers: {config.n_gpu_layers}")
     logger.info(f"Context: {config.n_ctx}")
-    if config.stop_time:
-        logger.info(f"Stop time: {config.stop_time}")
+    logger.info(f"Force unconstrained: {config.force_unconstrained}")
+    logger.info(f"Force constrained: {config.force_constrained}")
+    logger.info(f"Stop time: {config.stop_time}")
     logger.info(f"Operation timeout: {config.timeout_seconds} seconds")
     
     try:

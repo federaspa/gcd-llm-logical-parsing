@@ -175,8 +175,8 @@ if __name__=="__main__":
   ]
 }
 
-    z3_program = LSAT_Z3_Program(completion7)
+    z3_program = LSAT_Z3_Program(completion3)
     ans, error_message = z3_program.execute_program()
-    # print(ans)
+    print(ans)  
     print(error_message)
     print(z3_program.standard_code)
