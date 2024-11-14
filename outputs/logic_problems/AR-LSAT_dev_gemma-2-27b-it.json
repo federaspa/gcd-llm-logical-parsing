@@ -11828,5 +11828,67 @@
       ],
       "perplexity": 1.083825707435608
     }
+  },
+  {
+    "id": 186,
+    "nl_problem": {
+      "context": "Six entertainers—Robinson, Shahpari, Tigay, Wu, Yeaton, and Zane—are being scheduled for the six performances on the opening day of a community festival. Each entertainer will perform at one of six times—in the morning at 9:00 A.M., 10:00 A.M., or 11:00 A.M., or in the afternoon at 2:00 P.M., 3:00 P.M., or 4:00 P.M.—with no two entertainers performing at the same scheduled time. The order in which the entertainers perform is subject to the following constraints: Robinson must perform at some time before Zane. Yeaton's performance must be the next performance after Wu's. Tigay must perform in the afternoon. Zane must perform in the morning.",
+      "question": "If Wu is scheduled to perform in the morning, then which one of the following could be true?",
+      "options": [
+        "A) Robinson is scheduled to perform at 10:00 A.M.",
+        "B) Shahpari is scheduled to perform at 3:00 P.M.",
+        "C) Tigay is scheduled to perform at 2:00 P.M.",
+        "D) Yeaton is scheduled to perform at 3:00 P.M.",
+        "E) Zane is scheduled to perform at 11:00 A.M."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "entertainers = EnumSort([Robinson, Shahpari, Tigay, Wu, Yeaton, Zane])",
+        "times = EnumSort([Nine, Ten, Eleven, Two, Three, Four])",
+        "scheduled = Function([entertainers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([e1:entertainers, e2:entertainers], Implies(e1 != e2, scheduled(e1) != scheduled(e2)))",
+        "scheduled(Robinson) < scheduled(Zane)",
+        "scheduled(Yeaton) == scheduled(Wu) + 1",
+        "scheduled(Tigay) > Eleven",
+        "scheduled(Zane) < Ten"
+      ],
+      "options": [
+        "is_sat(scheduled(Robinson) == Ten)",
+        "is_sat(scheduled(Shahpari) == Three)",
+        "is_sat(scheduled(Tigay) == Two)",
+        "is_sat(scheduled(Yeaton) == Three)",
+        "is_sat(scheduled(Zane) == Eleven)"
+      ],
+      "perplexity": [
+        1.0683361291885376,
+        1.0152515172958374
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "entertainers = EnumSort([robinson, shahpari, tigay, wu, yeaton, zane])",
+        "times = EnumSort([am9, am10, am11, pm2, pm3, pm4])",
+        "performs = Function([entertainers] -> [times])"
+      ],
+      "constraints": [
+        "ForAll([e:entertainers], Distinct([t:times], performs(e)))",
+        "performs(robinson) < performs(zane)",
+        "performs(yeaton) == performs(wu) == 1",
+        "performs(tigay) >= pm2",
+        "performs(zane) <= am11"
+      ],
+      "options": [
+        "is_valid(performs(robinson))",
+        "is_valid(performs(shahpari))",
+        "is_valid(performs(tigay))",
+        "is_valid(performs(yeaton))",
+        "is_valid(performs(zane))"
+      ],
+      "perplexity": 1.4307937622070312
+    }
   }
 ]

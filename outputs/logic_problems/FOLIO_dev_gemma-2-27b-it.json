@@ -7370,5 +7370,89 @@
       "fol_conc": "Below(205, 300)",
       "perplexity": 1.22151780128479
     }
+  },
+  {
+    "id": 107,
+    "nl_problem": {
+      "context": [
+        "It costs US $205 to take the GRE test.",
+        "ETS provides financial aid to those GRE applicants who prove economic hardship.",
+        "Economic hardship refers to difficulty caused by having too little money or too few resources.",
+        "Tom lives in a single-parent family.",
+        "His dad has been out of work for more than a year."
+      ],
+      "question": "There is no financial aid available for the GRE test.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "GRETest(x)",
+        "Costs(x, y)",
+        "ProvidesFinancialAid(x, y)",
+        "ProvesEconomicHardship(x)",
+        "EconomicHardship(x)",
+        "Difficulty(x, y)",
+        "TooLittleMoney(x)",
+        "TooFewResources(x)",
+        "LivesInSingleParentFamily(x)",
+        "OutOfWork(x)"
+      ],
+      "fol_consts": [
+        "gre",
+        "tom",
+        "dad",
+        "ets",
+        "usd205"
+      ],
+      "fol_rules": [
+        "Costs(gre, usd205)",
+        "∀x (ProvesEconomicHardship(x) → ProvidesFinancialAid(ets, x))",
+        "EconomicHardship(x) ↔ (Difficulty(x, y) ∧ (TooLittleMoney(x) ⊕ TooFewResources(x)))",
+        "LivesInSingleParentFamily(tom)",
+        "OutOfWork(dad)"
+      ],
+      "fol_conc": "¬∃x (ProvidesFinancialAid(ets, x))",
+      "perplexity": [
+        1.160794734954834,
+        1.0159263610839844
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Costs(x, y)",
+        "Provides(x, y)",
+        "Applicant(x)",
+        "Proves(x, y)",
+        "Economic(x)",
+        "Difficulty(x)",
+        "Cause(x, y)",
+        "Lives(x, y)",
+        "Out(x)",
+        "Family(x)",
+        "Single(x)",
+        "Dad(x, y)"
+      ],
+      "fol_consts": [
+        "tom",
+        "gre",
+        "ets",
+        "hardship",
+        "us",
+        "205"
+      ],
+      "fol_rules": [
+        "Costs(gre, us, 205)",
+        "∀x (Applicant(x) ∧ Proves(x, hardship) → Provides(ets, x))",
+        "Economic(hardship)",
+        "Difficulty(hardship)",
+        "Cause(hardship, x) → Economic(x)",
+        "Lives(tom, x) ∧ Single(x) ∧ Family(x)",
+        "Out(dad, tom) ∧ Dad(dad, tom)",
+        "Out(dad, tom) → More(1year)"
+      ],
+      "fol_conc": "¬Provides(ets, gre)",
+      "perplexity": 1.3307461738586426
+    }
   }
 ]
