@@ -9131,5 +9131,97 @@
       ],
       "perplexity": 1.0329139232635498
     }
+  },
+  {
+    "id": 146,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following could be the speeches given in each room, listed in the order in which they occur?",
+      "options": [
+        "A) Gold Room: Molina's, Long's Rose Room: Zimmerman's, Xiao's, Yoshida's",
+        "B) Gold Room: Molina's, Yoshida's, Long's Rose Room: Xiao's Zimmerman's",
+        "C) Gold Room: Xiao's, Molina's, Long's Rose Room: Zimmerman's, Yoshida's",
+        "D) Gold Room: Yoshida's, Long's, Molina's Rose Room: Zimmerman's, Xiao's",
+        "E) Gold Room: Zimmerman's, Molina's Rose Room: Xiao's, Yoshida's, Long's"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([GoldRoom, RoseRoom])",
+        "time = EnumSort([1PM, 2PM, 3PM])",
+        "speech = Function([speakers, rooms, time] -> bool)"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], ForAll([r:rooms], ForAll([t:time], Exactly(1, [x:speakers | speech(x, r, t)]))))",
+        "ForAll([r:rooms], ForAll([t:time], Exactly(1, [s:speakers | speech(s, r, t)])))",
+        "speech(Molina, r1, t1) implies speech(Long, r1, t2) and t1 < t2",
+        "Implies(speech(Xiao, r, t), speech(Zimmerman, r, t')) and Implies(speech(Yoshida, r, t), speech(Zimmerman, r, t'))",
+        "Implies(speech(Long, GoldRoom), And(speech(Xiao, RoseRoom, t), speech(Zimmerman, RoseRoom, t')))"
+      ],
+      "options": [
+        "is_valid(And(speech(Molina, GoldRoom, 1PM), speech(Long, GoldRoom, 2PM), speech(Zimmerman, RoseRoom, 1PM), speech(Xiao, RoseRoom, 2PM), speech(Yoshida, RoseRoom, 3PM)))",
+        "is_valid(And(speech(Molina, GoldRoom, 1PM), speech(Yoshida, GoldRoom, 2PM), speech(Long, GoldRoom, 3PM), speech(Xiao, RoseRoom, 1PM), speech(Zimmerman, RoseRoom, 2PM)))",
+        "is_valid(And(speech(Xiao, GoldRoom, 1PM), speech(Molina, GoldRoom, 2PM), speech(Long, GoldRoom, 3PM), speech(Zimmerman, RoseRoom, 1PM), speech(Yoshida, RoseRoom, 2PM)))",
+        "is_valid(And(speech(Yoshida, GoldRoom, 1PM), speech(Long, GoldRoom, 2PM), speech(Molina, GoldRoom, 3PM), speech(Zimmerman, RoseRoom, 1PM), speech(Xiao, RoseRoom, 2PM)))",
+        "is_valid(And(speech(Zimmerman, GoldRoom, 1PM), speech(Molina, GoldRoom, 2PM), speech(Xiao, RoseRoom, 1PM), speech(Yoshida, RoseRoom, 2PM), speech(Long, RoseRoom, 3PM)))"
+      ],
+      "perplexity": [
+        1.0649046897888184,
+        1.0079835653305054
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "time = EnumSort([one, two, three])",
+        "speech = Function([speakers, rooms, time] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], And(1 <= speech(s, gold, one), speech(s, gold, one) <= 3))",
+        "ForAll([s:speakers], And(1 <= speech(s, rose, one), speech(s, rose, one) <= 3))",
+        "ForAll([r:rooms], And(1 <= speech(s, r, one), speech(s, r, one) <= 3))",
+        "ForAll([s1:speakers, s2:speakers], And(s1 != s2, Implies(speech(s1, r, t) == true, Not(speech(s2, r, t) == true))))",
+        "speech(molina, r1, one) < speech(long, r1, one)",
+        "speech(molina, r1, one) == speech(long, r1, one)",
+        "And(speech(xiao, r, one) >= speech(zimmerman, r, one), speech(yoshida, r, one) >= speech(zimmerman, r, one))",
+        "Implies(speech(long, gold, one) == true, And(speech(xiao, rose, one) == true, speech(zimmerman, rose, one) == true))"
+      ],
+      "options": [
+        "is_valid(speech(molina, gold, one))",
+        "is_valid(speech(molina, gold, two))",
+        "is_valid(speech(molina, gold, three))",
+        "is_valid(speech(long, gold, one))",
+        "is_valid(speech(long, gold, two))",
+        "is_valid(speech(long, gold, three))",
+        "is_valid(speech(xiao, gold, one))",
+        "is_valid(speech(xiao, gold, two))",
+        "is_valid(speech(xiao, gold, three))",
+        "is_valid(speech(yoshida, gold, one))",
+        "is_valid(speech(yoshida, gold, two))",
+        "is_valid(speech(yoshida, gold, three))",
+        "is_valid(speech(zimmerman, gold, one))",
+        "is_valid(speech(zimmerman, gold, two))",
+        "is_valid(speech(zimmerman, gold, three))",
+        "is_valid(speech(molina, rose, one))",
+        "is_valid(speech(molina, rose, two))",
+        "is_valid(speech(molina, rose, three))",
+        "is_valid(speech(long, rose, one))",
+        "is_valid(speech(long, rose, two))",
+        "is_valid(speech(long, rose, three))",
+        "is_valid(speech(xiao, rose, one))",
+        "is_valid(speech(xiao, rose, two))",
+        "is_valid(speech(xiao, rose, three))",
+        "is_valid(speech(yoshida, rose, one))",
+        "is_valid(speech(yoshida, rose, two))",
+        "is_valid(speech(yoshida, rose, three))",
+        "is_valid(speech(zimmerman, rose, one))",
+        "is_valid(speech(zimmerman, rose, two))",
+        "is_valid(speech(zimmerman, rose, three))"
+      ],
+      "perplexity": 1.1028790473937988
+    }
   }
 ]
