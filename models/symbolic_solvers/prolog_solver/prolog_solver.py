@@ -1,92 +1,94 @@
-def convert_to_prolog(input_text):
-    lines = input_text.strip().split('\n')
-    prolog_rules = []
-    current_section = None
+import json
+from pyswip import Prolog
+import tempfile
+import os
+
+def create_prolog_program(data, temp_file):
+    """Creates a Prolog program file from the provided data structure."""
+    with open(temp_file, 'w') as f:
+        # Write all predicates as dynamic
+        for predicate in data['predicates']:
+            f.write(f':- dynamic {predicate}/1.\n')
+        
+        # Write all facts
+        for fact in data['facts']:
+            f.write(f'{fact}.\n')
+        
+        # Write all rules
+        for rule in data['rules']:
+            # Replace Python-style backslash with Prolog-style
+            # rule = rule.replace('\\+', 'not')
+            f.write(f'{rule}.\n')
+
+def run_prolog_query(program_data):
+    """
+    Runs the Prolog program with the given query and returns the result.
     
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-            
-        if line in ['Predicates:', 'Facts:', 'Rules:', 'Query:']:
-            current_section = line[:-1]
-            continue
-            
-        if current_section == 'Facts':
-            # Convert facts: Predicate(X, True) -> predicate(x).
-            pred, args = line.split('(', 1)
-            args = args[:-1].split(',')  # Remove trailing ) and split
-            if args[1].strip() == 'True':
-                fact = f"{pred.lower()}({args[0].lower()})."
-                prolog_rules.append(fact)
-                
-        elif current_section == 'Rules':
-            # Convert rules: A($x, True) >>> B($x, True) -> a(X) :- b(X).
-            if '>>>' in line:
-                antecedent, consequent = line.split('>>>')
-                ant_pred, ant_args = antecedent.strip().split('(', 1)
-                cons_pred, cons_args = consequent.strip().split('(', 1)
-                
-                # Extract variable name
-                var_name = ant_args.split(',')[0].strip()
-                rule = f"{ant_pred.lower()}({var_name.lower()}) :- {cons_pred.lower()}({var_name.lower()})."
-                prolog_rules.append(rule)
-                
-        elif current_section == 'Query':
-            # Convert query: Predicate(X, False) -> ?- \+predicate(x).
-            pred, args = line.split('(', 1)
-            args = args[:-1].split(',')
-            if args[1].strip() == 'False':
-                query = f"?- \\+{pred.lower()}({args[0].lower()})."
-            else:
-                query = f"?- {pred.lower()}({args[0].lower()})."
-            prolog_rules.append('\n' + query)
+    Args:
+        program_data (dict): Dictionary containing predicates, facts, rules, and query
+    
+    Returns:
+        bool: Result of the query
+    """
+    # Create a temporary file for the Prolog program
+    # Explicitly use forward slashes for the temp directory
+    # temp_dir = tempfile.gettempdir().replace('\\', '/')
+    # fd, temp_path = tempfile.mkstemp(suffix='.pl', dir=temp_dir)
+    # os.close(fd)
+    # temp_filename = temp_path.replace('\\', '/')
+    temp_filename = 'here'
+    
+    # try:
+    # Create the Prolog program file
+    create_prolog_program(program_data, temp_filename)
+    
+    # Initialize Prolog
+    prolog = Prolog()
+    
+    # Consult the program file using forward slashes
+    prolog.consult(temp_filename)
+    
+    # Run the query
+    query = program_data['query']
+    result = bool(list(prolog.query(query)))
+    
+    return result
+    
+    # finally:
+    #     # Clean up the temporary file
+    #     os.unlink(temp_filename)
 
-    return '\n'.join(prolog_rules)
+def main():
+    # Your Prolog program data
+    program_data = {
+        "predicates": ["dumpus", "impuses", "jompus", "numpus", "rompus", 
+                      "tumpuses", "vumpuses", "wumpus", "wumpuses", "yumpus", "shy"],
+        "facts": ["tumpuses(alex)"],
+        "rules": [
+            "jompus(X) :- fruity(X)",
+            "jompus(X) :- wumpus(X)",
+            "wumpus(X) :- \\+transparent(X)",
+            "wumpuses(X) :- tumpuses(X)",
+            "tumpuses(X) :- mean(X)",
+            "tumpuses(X) :- vumpuses(X)",
+            "vumpuses(X) :- cold(X)",
+            "vumpuses(X) :- yumpus(X)",
+            "yumpus(X) :- orange(X)",
+            "yumpus(X) :- numpus(X)",
+            "numpus(X) :- dull(X)",
+            "numpus(X) :- dumpus(X)",
+            "dumpus(X) :- \\+shy(X)",
+            "impuses(X) :- shy(X)",
+            "dumpus(X) :- rompus(X)",
+            "rompus(X) :- liquid(X)",
+            "rompus(X) :- zumpus(X)"
+        ],
+        "query": "\\+shy(alex)"
+    }
+    
+    # Run the query and get the result
+    result = run_prolog_query(program_data)
+    print(f"Query result: {result}")
 
-# Test with the given input
-input_text = """
-Predicates:
-Jompus($x, bool) ::: Does x belong to Jompus?
-Fruity($x, bool) ::: Is x fruity?
-Wumpus($x, bool) ::: Does x belong to Wumpus?
-Transparent($x, bool) ::: Is x transparent?
-Tumpuses($x, bool) ::: Does x belong to Tumpuses?
-Mean($x, bool) ::: Is x mean?
-Vumpuses($x, bool) ::: Does x belong to Vumpuses?
-Cold($x, bool) ::: Is x cold?
-Yumpus($x, bool) ::: Does x belong to Yumpus?
-Orange($x, bool) ::: Is x orange?
-Numpus($x, bool) ::: Does x belong to Numpus?
-Dull($x, bool) ::: Is x dull?
-Dumpus($x, bool) ::: Does x belong to Dumpus?
-Shy($x, bool) ::: Is x shy?
-Impuses($x, bool) ::: Does x belong to Impuses?
-Rompus($x, bool) ::: Does x belong to Rompus?
-Liquid($x, bool) ::: Is x liquid?
-Zumpus($x, bool) ::: Does x belong to Zumpus?
-Facts:
-Tumpuses(Alex, True)
-Rules:
-Jompus($x, True) >>> Fruity($x, True)
-Jompus($x, True) >>> Wumpus($x, True)
-Wumpus($x, True) >>> Transparent($x, False)
-Wumpuses($x, True) >>> Tumpuses($x, True)
-Tumpuses($x, True) >>> Mean($x, True)
-Tumpuses($x, True) >>> Vumpuses($x, True)
-Vumpuses($x, True) >>> Cold($x, True)
-Vumpuses($x, True) >>> Yumpus($x, True)
-Yumpus($x, True) >>> Orange($x, True)
-Yumpus($x, True) >>> Numpus($x, True)
-Numpus($x, True) >>> Dull($x, True)
-Numpus($x, True) >>> Dumpus($x, True)
-Dumpus($x, True) >>> Shy($x, False)
-Impuses($x, True) >>> Shy($x, True)
-Dumpus($x, True) >>> Rompus($x, True)
-Rompus($x, True) >>> Liquid($x, True)
-Rompus($x, True) >>> Zumpus($x, True)
-Query:
-Shy(Alex, False)
-"""
-
-print(convert_to_prolog(input_text))
+if __name__ == "__main__":
+    main()

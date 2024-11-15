@@ -159,9 +159,19 @@ class LP_Prompter:
         
         return full_prompt
     
+    def constrained(self, sample: Dict) -> str:
+        problem = sample['context']
+        question = sample['question'].strip()
+        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
+        
+        full_prompt = self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = full_prompt.replace('[[choices]]', choices_str)
+        
+        return full_prompt
+    
     def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```python', '').replace(r'```', '')
+        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```\w+', '')
         
         return full_prompt
     
