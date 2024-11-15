@@ -5896,5 +5896,153 @@
         1.0930824279785156
       ]
     }
+  },
+  {
+    "id": 18,
+    "nl_problem": {
+      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
+      "question": "Which one of the following could be a complete and accurate list of the members of the crew?",
+      "options": [
+        "A) George, Helena, Inga, Kelly",
+        "B) George, Helena, Kelly, Leanda",
+        "C) Helena, Inga, Kelly, Olaf",
+        "D) Helena, Inga, Maricita, Olaf",
+        "E) George, Helena, Leanda, Maricita, Olaf"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "workers = EnumSort([George, Helena, Inga, Kelly, Leanda, Maricita, Olaf])",
+        "tasks = EnumSort([framing, wallboarding, taping, sanding, priming])",
+        "days = EnumSort([1, 2, 3])",
+        "schedule = Function([days, workers] -> [tasks])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Exists([w:workers], schedule(d, w) != none))",
+        "ForAll([d:days], Not(schedule(d, w1) == priming, schedule(d, w2) == taping))",
+        "ForAll([d:days, w:workers], (schedule(d, w) != none) -> (schedule(d, w) == schedule(d, w)))",
+        "ForAll([d1:days, d2:days, w1:workers, w2:workers], Implies(schedule(d1, w1) == schedule(d1, w2), d1 == d2))"
+      ],
+      "options": [
+        "is_sat(ForAll([d:days], Exists([w:workers], And(schedule(d, w) == framing, schedule(d, w) == wallboarding, schedule(d, w) == taping, schedule(d, w) == sanding, schedule(d, w) == priming))))",
+        "is_sat(ForAll([d:days], Exists([w:workers], And(schedule(d, w) == framing, schedule(d, w) == wallboarding, schedule(d, w) == taping, schedule(d, w) == sanding, schedule(d, w) != priming))))",
+        "is_sat(ForAll([d:days], Exists([w:workers], And(schedule(d, w) == framing, schedule(d, w) != wallboarding, schedule(d, w) != taping, schedule(d, w) == sanding, schedule(d, w) == priming)))",
+        "is_sat(ForAll([d:days], Exists([w:workers], And(schedule(d, w) == framing, schedule(d, w) != wallboarding, schedule(d, w) != taping, schedule(d, w) == sanding, schedule(d, w) != priming)))",
+        "is_sat(ForAll([d:days], Exists([w:workers], And(schedule(d, w) == framing, schedule(d, w) != wallboarding, schedule(d, w) != taping, schedule(d, w) != sanding, schedule(d, w) == priming)))"
+      ],
+      "perplexity": [
+        1.1104334592819214,
+        1.0648356676101685
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "nl_problem": {
+      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
+      "question": "If the installation takes three days, and if the same two crew members work on the first and third days, then which one of the following could be the pair of crew members who work on those two days?",
+      "options": [
+        "A) Helena and Inga",
+        "B) Inga and Kelly",
+        "C) Inga and Leanda",
+        "D) Kelly and Olaf",
+        "E) Leanda and Olaf"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0198795795440674,
+        1.112273931503296
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "nl_problem": {
+      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
+      "question": "Each of the following could be a complete and accurate list of the members of the crew EXCEPT:",
+      "options": [
+        "A) Helena, Inga, Kelly, Maricita",
+        "B) Inga, Kelly, Leanda, Olaf",
+        "C) George, Helena, Inga, Leanda",
+        "D) Inga, Leanda, Maricita, Olaf",
+        "E) Kelly, Leanda, Maricita, Olaf"
+      ]
+    },
+    "answer": "A"
+  },
+  {
+    "id": 21,
+    "nl_problem": {
+      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
+      "question": "If the installation takes three days, and if the sanding is done on the third day, then which one of the following could be a list of all the crew members who work on the second day?",
+      "options": [
+        "A) Inga",
+        "B) Kelly",
+        "C) Olaf",
+        "D) George and Helena",
+        "E) Leanda and Olaf"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane]).",
+        "machines = EnumSort([radios, televisions, VCRs]).",
+        "repairs = Function([technicians, machines] -> [bool]).",
+        "valves = EnumSort([G, H, I, K, L, N, O, P]).",
+        "opened = Function([valves] -> [int])",
+        "ForAll([v:valves], And(1 <= opened(v), opened(v) <= 8))"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2",
+        "Distinct([v:valves], opened(v))",
+        "And(opened(K) < opened(H), opened(P) < opened(H))",
+        "And(opened(O) > opened(H), opened(O) < opened(L))",
+        "opened(L) > opened(G)",
+        "opened(N) < opened(H)",
+        "opened(I) > opened(K)"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m))) :- (A)",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m))) :- (B)",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m))) :- (C)",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) :- (D)",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) :- (E)",
+        "is_exception(is_sat(opened(H) == 5)) :- (A)",
+        "is_exception(is_sat(opened(I) == 5)) :- (B)",
+        "is_exception(is_sat(opened(K) == 5)) :- (C)"
+      ],
+      "perplexity": [
+        1.0295647382736206,
+        1.0883681774139404
+      ]
+    }
   }
 ]
