@@ -1,35 +1,39 @@
 from z3 import *
 
 ## Declarations
-technicians_sort, (Stacy, Urma, Wim, Xena, Yolanda, Zane) = EnumSort('technicians', ['Stacy', 'Urma', 'Wim', 'Xena', 'Yolanda', 'Zane'])
-machines_sort, (radios, televisions, VCRs) = EnumSort('machines', ['radios', 'televisions', 'VCRs'])
-technicians = [Stacy, Urma, Wim, Xena, Yolanda, Zane]
-machines = [radios, televisions, VCRs]
-repairs = Function('repairs', technicians_sort, machines_sort, BoolSort())
+dishes_sort, (dish1, dish2, dish3, dish4, dish5, dish6) = EnumSort('dishes', ['dish1', 'dish2', 'dish3', 'dish4', 'dish5', 'dish6'])
+shelves_sort, (bottom, middle, top) = EnumSort('shelves', ['bottom', 'middle', 'top'])
+dishes = [dish1, dish2, dish3, dish4, dish5, dish6]
+shelves = [bottom, middle, top]
+placed = Function('placed', dishes_sort, shelves_sort, BoolSort())
 
 ## Constraints
 
 pre_conditions = []
-t = Const('t', technicians_sort)
-pre_conditions.append(ForAll([t], Sum([repairs(t, m) for m in machines]) >= 1))
-pre_conditions.append(And(repairs(Xena, radios), Sum([And(t != Xena, repairs(t, radios)) for t in technicians]) == 3))
-pre_conditions.append(And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)))
-m = Const('m', machines_sort)
-pre_conditions.append(ForAll([m], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))))
-pre_conditions.append(Sum([repairs(Zane, m) for m in machines]) > Sum([repairs(Yolanda, m) for m in machines]))
-m = Const('m', machines_sort)
-pre_conditions.append(ForAll([m], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))))
-pre_conditions.append(Sum([repairs(Urma, m) for m in machines]) == 2)
-t = Const('t', technicians_sort)
-pre_conditions.append(ForAll([t], Sum([repairs(t, m) for m in machines]) >= 1))
-pre_conditions.append(And(repairs(Xena, radios), Sum([And(t != Xena, repairs(t, radios)) for t in technicians]) == 3))
-pre_conditions.append(And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs)))
-m = Const('m', machines_sort)
-pre_conditions.append(ForAll([m], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m)))))
-pre_conditions.append(Sum([repairs(Zane, m) for m in machines]) > Sum([repairs(Yolanda, m) for m in machines]))
-m = Const('m', machines_sort)
-pre_conditions.append(ForAll([m], Implies(repairs(Stacy, m), Not(repairs(Wim, m)))))
-pre_conditions.append(Sum([repairs(Urma, m) for m in machines]) == 2)
+s = Const('s', shelves_sort)
+pre_conditions.append(ForAll([s], Sum([placed(d, s) for d in dishes])))
+pre_conditions.append(Sum([placed(d, bottom) for d in dishes]) <= 3)
+pre_conditions.append(Sum([placed(d, middle) for d in dishes]) <= 3)
+pre_conditions.append(Sum([placed(d, top) for d in dishes]) <= 3)
+s = Const('s', shelves_sort)
+pre_conditions.append(Exists([s], placed(dish2, s)))
+s = Const('s', shelves_sort)
+pre_conditions.append(Exists([s], placed(dish6, s)))
+pre_conditions.append(And(placed(dish2, s1), placed(dish6, s2), s1 != s2, s1 != bottom, s2 != bottom))
+pre_conditions.append(And(placed(dish6, s1), placed(dish5, s2), s1 != s2, s1 != bottom, s2 != bottom))
+pre_conditions.append(Not(placed(dish1, s) == placed(dish4, s)))
+s = Const('s', shelves_sort)
+pre_conditions.append(ForAll([s], Sum([placed(d, s) for d in dishes])))
+pre_conditions.append(Sum([placed(d, bottom) for d in dishes]) <= 3)
+pre_conditions.append(Sum([placed(d, middle) for d in dishes]) <= 3)
+pre_conditions.append(Sum([placed(d, top) for d in dishes]) <= 3)
+s = Const('s', shelves_sort)
+pre_conditions.append(Exists([s], placed(dish2, s)))
+s = Const('s', shelves_sort)
+pre_conditions.append(Exists([s], placed(dish6, s)))
+pre_conditions.append(And(placed(dish2, s1), placed(dish6, s2), s1 != s2, s1 != bottom, s2 != bottom))
+pre_conditions.append(And(placed(dish6, s1), placed(dish5, s2), s1 != s2, s1 != bottom, s2 != bottom))
+pre_conditions.append(Not(placed(dish1, s) == placed(dish4, s)))
 
 def is_valid(option_constraints):
     solver = Solver()
@@ -58,13 +62,8 @@ def is_exception(x):
 
 ## Options
 
-m = Const('m', machines_sort)
-if is_sat(ForAll([m], repairs(Stacy, m) == repairs(Urma, m))): print('(A)')
-m = Const('m', machines_sort)
-if is_sat(ForAll([m], repairs(Urma, m) == repairs(Yolanda, m))): print('(B)')
-m = Const('m', machines_sort)
-if is_sat(ForAll([m], repairs(Urma, m) == repairs(Xena, m))): print('(C)')
-m = Const('m', machines_sort)
-if is_sat(ForAll([m], repairs(Wim, m) == repairs(Xena, m))): print('(D)')
-m = Const('m', machines_sort)
-if is_sat(ForAll([m], repairs(Xena, m) == repairs(Yolanda, m))): print('(E)')
+if is_valid(And(placed(dish1, bottom), placed(dish3, bottom), placed(dish6, middle), placed(dish2, top), placed(dish4, top), placed(dish5, top))): print('(A)')
+if is_valid(And(placed(dish1, bottom), placed(dish3, bottom), placed(dish6, middle), placed(dish2, top), placed(dish4, top), placed(dish5, top))): print('(B)')
+if is_valid(And(placed(dish2, bottom), placed(dish4, middle), placed(dish6, middle), placed(dish1, top), placed(dish3, top), placed(dish5, top))): print('(C)')
+if is_valid(And(placed(dish3, bottom), placed(dish5, bottom), placed(dish6, middle), placed(dish1, top), placed(dish2, top), placed(dish4, top))): print('(D)')
+if is_valid(And(placed(dish4, bottom), placed(dish6, bottom), placed(dish1, middle), placed(dish2, middle), placed(dish3, top), placed(dish5, top))): print('(E)')

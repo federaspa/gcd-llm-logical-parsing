@@ -152,20 +152,16 @@ class LP_Prompter:
     def unconstrained(self, sample: Dict) -> str:
         problem = sample['context']
         question = sample['question'].strip()
-        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
         full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
-        full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
     
     def constrained(self, sample: Dict) -> str:
         problem = sample['context']
         question = sample['question'].strip()
-        choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
         full_prompt = self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
-        full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
     

@@ -191,9 +191,13 @@ class LogicProgramGenerator(PromptGenerator):
             #             outputs.append(sample)
             #             complete_ids.add(sample['id'])
         
-            raw_dataset = [s for s in raw_dataset if s['id'] not in existing_ids]
+            # raw_dataset = [s for s in raw_dataset if s['id'] not in existing_ids]
                     
         # return raw_dataset, outputs, existing_samples, existing_ids
+        
+        # Remove duplicates, keeping the last occurrence
+        unique_outputs = {sample['id']: sample for sample in outputs}
+        outputs = list(unique_outputs.values())
         return raw_dataset, outputs, existing_ids
 
     def run(self):

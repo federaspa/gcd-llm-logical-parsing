@@ -13254,5 +13254,601 @@
       "fol_conc": "Sixwaytie(descampe, 1992dumaurierclassic)",
       "perplexity": 1.171610951423645
     }
+  },
+  {
+    "id": 196,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi is terricolous.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "Legs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (Legs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Legs(x))",
+        "(¬Jumps(kiki) ∧ ¬Legs(kiki)) → (Terricolous(kiki) ∨ Legs(kiki))"
+      ],
+      "fol_conc": "Terricolous(kiki)",
+      "perplexity": [
+        1.0593703985214233,
+        1.0162256956100464
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Animal(x)",
+        "Dog(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "ki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(ki) ∨ Haslegs(ki)) → (Terricolous(ki) ∨ Haslegs(ki))"
+      ],
+      "fol_conc": "Terricolous(ki)",
+      "perplexity": 1.1614294052124023
+    }
+  },
+  {
+    "id": 197,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi barks and is a dog.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "HasLegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) ∧ Animal(x) ∧ Barks(x))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (HasLegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → HasLegs(x))",
+        "(¬Jumps(kiki) ∧ ¬HasLegs(kiki)) → (Terricolous(kiki) ∨ HasLegs(kiki))"
+      ],
+      "fol_conc": "Barks(kiki) ∧ Dog(kiki)",
+      "perplexity": [
+        1.0379780530929565,
+        1.0087112188339233
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Animal(x)",
+        "Dog(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "ki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(ki) ∨ Haslegs(ki)) → (Terricolous(ki) ∨ Haslegs(ki))"
+      ],
+      "fol_conc": "Barks(ki) ∧ Dog(ki)",
+      "perplexity": 1.1511701345443726
+    }
+  },
+  {
+    "id": 198,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi neither barks nor is a dog.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Barks(x)",
+        "Likes(x, y)",
+        "Dog(x)",
+        "Animal(x)",
+        "Jumps(x)",
+        "HasLegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "kiKi"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Likes(jane, x))",
+        "∀x (Dog(x) ∧ Animal(x))",
+        "∀x (Jumps(x) → Likes(jane, x))",
+        "∀x (HasLegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → HasLegs(x))",
+        "¬(Jumps(kiKi) ∨ HasLegs(kiKi)) → (Terricolous(kiKi) ∨ HasLegs(kiKi))"
+      ],
+      "fol_conc": "¬(Barks(kiKi) ∨ Dog(kiKi))",
+      "perplexity": [
+        1.049464464187622,
+        1.017773151397705
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Barks(x)",
+        "Like(x, y)",
+        "Animal(x)",
+        "Dog(x)",
+        "Jumps(x)",
+        "Haslegs(x)",
+        "Terricolous(x)"
+      ],
+      "fol_consts": [
+        "jane",
+        "ki"
+      ],
+      "fol_rules": [
+        "∀x (Barks(x) → ¬Like(jane, x))",
+        "∀x (Dog(x) → (Animal(x) ∧ Barks(x)))",
+        "∀x (Jumps(x) → Like(jane, x))",
+        "∀x (Haslegs(x) → Jumps(x))",
+        "∀x (Terricolous(x) → Haslegs(x))",
+        "¬(Jumps(ki) ∨ Haslegs(ki)) → (Terricolous(ki) ∨ Haslegs(ki))"
+      ],
+      "fol_conc": "¬(Barks(ki) ∨ Dog(ki))",
+      "perplexity": 1.152695894241333
+    }
+  },
+  {
+    "id": 199,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "No one playing for Nautico is Brazilian.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "FootballPlayer(x)",
+        "BornIn(x, y)",
+        "KnownAs(x, y)",
+        "PlaysFor(x, y)",
+        "Brazilian(x)",
+        "Club(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "nineteen95",
+        "braga",
+        "nautico",
+        "fluminense"
+      ],
+      "fol_rules": [
+        "FootballPlayer(ailton)",
+        "BornIn(ailton, nineteen95)",
+        "KnownAs(ailton, \"Ailton\")",
+        "PlaysFor(ailton, nautico)",
+        "Brazilian(ailton)",
+        "Club(braga)",
+        "Club(nautico)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬∃x (PlaysFor(x, nautico) ∧ Brazilian(x))",
+      "perplexity": [
+        1.092050313949585,
+        1.0221855640411377
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Loaned(x, y)",
+        "Plays(x, y)",
+        "Brazilian(x)",
+        "Club(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, ailton)",
+        "Footballer(ailton)",
+        "Loaned(ailton, braga)",
+        "Plays(ailton, nautico)",
+        "Brazilian(ailton)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬(∃x (Plays(x, nautico) ∧ Brazilian(x)))",
+      "perplexity": 1.2645286321640015
+    }
+  },
+  {
+    "id": 200,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva foes not play for a football club.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "BornIn(x, y)",
+        "Name(x, y)",
+        "Player(x)",
+        "PlaysFor(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton_silva",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "BornIn(ailton_silva, 1995)",
+        "Name(ailton_silva, \"Ailton\")",
+        "Player(ailton_silva)",
+        "PlaysFor(ailton_silva, braga)",
+        "Brazilian(ailton_silva)",
+        "PlaysFor(ailton_silva, nautico)",
+        "Club(braga)",
+        "Club(nautico)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "¬∃x (PlaysFor(ailton_silva, x))",
+      "perplexity": [
+        1.0624823570251465,
+        1.0167018175125122
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Plays(x, y)",
+        "Loaned(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, ailton)",
+        "Footballer(ailton)",
+        "Plays(ailton, nautico)",
+        "Loaned(ailton, braga)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Club(fluminense)",
+        "Brazilian(ailton)"
+      ],
+      "fol_conc": "¬(∃x (Club(x) ∧ Plays(ailton, x)))",
+      "perplexity": 1.2442950010299683
+    }
+  },
+  {
+    "id": 201,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton was not loaned out to a football club.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "LoanedTo(x, y)",
+        "PlaysFor(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "nineteen95"
+      ],
+      "fol_rules": [
+        "Born(ailton, nineteen95)",
+        "KnownAs(ailton, ailton)",
+        "FootballPlayer(ailton)",
+        "LoanedTo(ailton, braga)",
+        "PlaysFor(ailton, nautico)",
+        "FootballClub(nautico)",
+        "FootballClub(braga)",
+        "FootballClub(fluminense)"
+      ],
+      "fol_conc": "¬∃y (LoanedTo(ailton, y))",
+      "perplexity": [
+        1.1018000841140747,
+        1.022084355354309
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Loaned(x, y)",
+        "Plays(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, ailton)",
+        "Footballer(ailton)",
+        "Loaned(ailton, braga)",
+        "Plays(ailton, nautico)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Club(fluminense)",
+        "Brazilian(ailton)"
+      ],
+      "fol_conc": "¬Loaned(ailton, braga)",
+      "perplexity": 1.2390069961547852
+    }
+  },
+  {
+    "id": 202,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva played for Fluminense.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Footballer(x)",
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "PlaysFor(x, y)",
+        "Club(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "nineteen95"
+      ],
+      "fol_rules": [
+        "Footballer(ailton)",
+        "Born(ailton, nineteen95)",
+        "KnownAs(ailton, \"Ailton\")",
+        "PlaysFor(ailton, nautico)",
+        "Club(braga)",
+        "Club(nautico)",
+        "Club(fluminense)"
+      ],
+      "fol_conc": "PlaysFor(ailton, fluminense)",
+      "perplexity": [
+        1.0931386947631836,
+        1.0253474712371826
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Plays(x, y)",
+        "Loaned(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, ailton)",
+        "Footballer(ailton)",
+        "Plays(ailton, nautico)",
+        "Loaned(ailton, braga)",
+        "Club(nautico)",
+        "Club(braga)",
+        "Club(fluminense)",
+        "Brazilian(ailton)"
+      ],
+      "fol_conc": "Plays(ailton, fluminense)",
+      "perplexity": 1.252554178237915
+    }
+  },
+  {
+    "id": 203,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva was loaned out to a football club.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Born(x, y)",
+        "KnownAs(x, y)",
+        "FootballPlayer(x)",
+        "PlaysFor(x, y)",
+        "LoanedOutTo(x, y)",
+        "FootballClub(x)"
+      ],
+      "fol_consts": [
+        "ailton_silva",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton_silva, 1995)",
+        "KnownAs(ailton_silva, ailton)",
+        "FootballPlayer(ailton_silva)",
+        "PlaysFor(ailton_silva, nautico)",
+        "FootballClub(braga)",
+        "FootballClub(nautico)",
+        "FootballClub(fluminense)",
+        "LoanedOutTo(ailton_silva, braga)"
+      ],
+      "fol_conc": "LoanedOutTo(ailton_silva, x)",
+      "perplexity": [
+        1.0702838897705078,
+        1.0173572301864624
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Born(x, y)",
+        "Known(x, y)",
+        "Footballer(x)",
+        "Loaned(x, y)",
+        "Plays(x, y)",
+        "Club(x)",
+        "Brazilian(x)"
+      ],
+      "fol_consts": [
+        "ailton",
+        "braga",
+        "nautico",
+        "fluminense",
+        "1995"
+      ],
+      "fol_rules": [
+        "Born(ailton, 1995)",
+        "Known(ailton, ailton)",
+        "Footballer(ailton)",
+        "Loaned(ailton, braga)",
+        "Plays(ailton, nautico)",
+        "Club(braga)",
+        "Club(nautico)",
+        "Club(fluminense)",
+        "Brazilian(ailton)"
+      ],
+      "fol_conc": "∃x (Loaned(ailton, x) ∧ Club(x))",
+      "perplexity": 1.2402011156082153
+    }
   }
 ]

@@ -6044,5 +6044,751 @@
         1.0883681774139404
       ]
     }
+  },
+  {
+    "id": 22,
+    "nl_problem": {
+      "context": "A crew of up to five workers is to install a partition in at most three days. The crew completes five tasks in this order: framing, wallboarding, taping, sanding, priming. The crew is selected from the following list, which specifies exactly the tasks each person can do: George: taping Helena: sanding, priming Inga: framing, priming Kelly: framing, sanding Leanda: wallboarding, taping Maricita: sanding Olaf: wallboarding, priming The following conditions must apply: At least one task is done each day. Taping and priming are done on different days. Each crew member does at least one task during the installation, but no more than one task a day. Each task is done by exactly one worker, completed the day it is started and before the next task begins.",
+      "question": "Which one of the following could be a pair of members of the crew both of whom work on the same days as each other and each of whom perform two tasks?",
+      "options": [
+        "A) George and Maricita",
+        "B) Helena and Kelly",
+        "C) Inga and Leanda",
+        "D) Kelly and Leanda",
+        "E) Leanda and Olaf"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machine_types = EnumSort([radios, televisions, VCRs])",
+        "repair = Function([technicians, machine_types] -> [boolean])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians, m:machine_types], repair(t, m) in [true, false])",
+        "ForAll([m:machine_types], Count([t:technicians], repair(t, m)) in [0, 1, 2, 3, 4, 5, 6])",
+        "ForAll([m:machine_types], Count([t:technicians, r:technicians], repair(t, m) == true and repair(r, m) == true) <= 1)",
+        "Xena and exactly three other technicians repair radios",
+        "Yolanda repairs both televisions and VCRs",
+        "Stacy does not repair any type of machine that Yolanda repairs",
+        "Zane repairs more types of machines than Yolanda repairs",
+        "Wim does not repair any type of machine that Stacy repairs",
+        "Urma repairs exactly two types of machines"
+      ],
+      "options": [
+        "is_valid(Exists([t1:technicians, t2:technicians], t1 != t2 and repair(t1, radios) == repair(t2, radios) and repair(t1, televisions) == repair(t2, televisions) and repair(t1, VCRs) == repair(t2, VCRs)))",
+        "is_valid(Exists([t1:technicians, t2:technicians], t1 != t2 and repair(t1, radios) == repair(t2, radios) and repair(t1, televisions) == repair(t2, televisions) and repair(t1, VCRs) == repair(t2, VCRs) and repair(t1, radios) == true and repair(t1, televisions) == true and repair(t1, VCRs) == true))",
+        "is_valid(Exists([t1:technicians, t2:technicians], t1 != t2 and repair(t1, radios) == repair(t2, radios) and repair(t1, televisions) == repair(t2, televisions) and repair(t1, VCRs) == repair(t2, VCRs) and repair(t1, radios) == true and repair(t1, televisions) == true and repair(t1, VCRs) == false))",
+        "is_valid(Exists([t1:technicians, t2:technicians], t1 != t2 and repair(t1, radios) == repair(t2, radios) and repair(t1, televisions) == repair(t2, televisions) and repair(t1, VCRs) == repair(t2, VCRs) and repair(t1, radios) == true and repair(t1, televisions) == false and repair(t1, VCRs) == true))",
+        "is_valid(Exists([t1:technicians, t2:technicians], t1 != t2 and repair(t1, radios) == repair(t2, radios) and repair(t1, televisions) == repair(t2, televisions) and repair(t1, VCRs) == repair(t2, VCRs) and repair(t1, radios) == true and repair(t1, televisions) == false and repair(t1, VCRs) == false))"
+      ],
+      "perplexity": [
+        1.0207359790802002,
+        1.117580771446228
+      ]
+    }
+  },
+  {
+    "id": 27,
+    "nl_problem": {
+      "context": "A closet contains exactly six hangers—1, 2, 3, 4, 5, and 6—hanging, in that order, from left to right. It also contains exactly six dresses—one gauze, one linen, one polyester, one rayon, one silk, and one wool—a different dress on each of the hangers, in an order satisfying the following conditions: The gauze dress is on a lower-numbered hanger than the polyester dress. The rayon dress is on hanger 1 or hanger 6. Either the wool dress or the silk dress is on hanger 3. The linen dress hangs immediately to the right of the silk dress.",
+      "question": "Which one of the following CANNOT be true?",
+      "options": [
+        "A) The linen dress hangs immediately next to the gauze dress.",
+        "B) The polyester dress hangs immediately to the right of the rayon dress.",
+        "C) The rayon dress hangs immediately to the left of the wool dress.",
+        "D) The silk dress is on a lower-numbered hanger than the gauze dress.",
+        "E) The wool dress is on a higher-numbered hanger than the rayon dress."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0087707042694092,
+        1.120980978012085
+      ]
+    }
+  },
+  {
+    "id": 41,
+    "nl_problem": {
+      "context": "Eight people—Fiona, George, Harriet, Ingrid, Karl, Manuel, Olivia, and Peter—are sitting, evenly spaced, around a circular picnic table. Any two of them are said to be sitting directly across from one another if and only if there are exactly three other people sitting between them, counting in either direction around the table. The following conditions apply: Fiona sits directly across from George. Harriet sits immediately next to neither Fiona nor Karl. Ingrid sits immediately next to, and immediately clockwise from, Olivia.",
+      "question": "If Harriet and Olivia each sits immediately next to George, then which one of the following could be the two people each of whom sits immediately next to Peter?",
+      "options": [
+        "A) Fiona and Karl",
+        "B) Fiona and Olivia",
+        "C) Harriet and Ingrid",
+        "D) Harriet and Karl",
+        "E) Karl and Manuel"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))"
+      ],
+      "perplexity": [
+        1.0125651359558105,
+        1.1116292476654053
+      ]
+    }
+  },
+  {
+    "id": 53,
+    "nl_problem": {
+      "context": "Exactly six members of a skydiving team—Larue, Ohba, Pei, Trevino, Weiss, and Zacny—each dive exactly once, one at a time, from a plane, consistent with the following conditions: Trevino dives from the plane at some time before Weiss does. Larue dives from the plane either first or last. Neither Weiss nor Zacny dives from the plane last. Pei dives from the plane at some time after either Ohba or Larue but not both.",
+      "question": "Which one of the following must be true?",
+      "options": [
+        "A) At least two of the members dive from the plane after Larue.",
+        "B) At least two of the members dive from the plane after Ohba.",
+        "C) At least two of the members dive from the plane after Pei.",
+        "D) At least two of the members dive from the plane after Trevino.",
+        "E) At least two of the members dive from the plane after Weiss."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])",
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet",
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))",
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))"
+      ],
+      "perplexity": [
+        1.015444278717041,
+        1.0482909679412842
+      ]
+    }
+  },
+  {
+    "id": 63,
+    "nl_problem": {
+      "context": "A company's six vehicles—a hatchback, a limousine, a pickup, a roadster, a sedan, and a van—are serviced during a certain week—Monday through Saturday—one vehicle per day. The following conditions must apply: At least one of the vehicles is serviced later in the week than the hatchback. The roadster is serviced later in the week than the van and earlier in the week than the hatchback. Either the pickup and the van are serviced on consecutive days, or the pickup and the sedan are serviced on consecutive days, but not both. The sedan is serviced earlier in the week than the pickup or earlier in the week than the limousine, but not both.",
+      "question": "Which one of the following could be the list of the vehicles serviced on Tuesday, Wednesday, and Friday, listed in that order?",
+      "options": [
+        "A) the pickup, the hatchback, the limousine",
+        "B) the pickup, the roadster, the hatchback",
+        "C) the sedan, the limousine, the hatchback",
+        "D) the van, the limousine, the hatchback",
+        "E) the van, the roadster, the limousine"
+      ]
+    },
+    "answer": "B"
+  },
+  {
+    "id": 64,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "If there are exactly two white balls, then which one of the following boxes could contain a green ball?",
+      "options": [
+        "A) box 1",
+        "B) box 3",
+        "C) box 4",
+        "D) box 5",
+        "E) box 6"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Zane, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Zane, m)))"
+      ],
+      "perplexity": [
+        1.0084624290466309,
+        1.1032968759536743
+      ]
+    }
+  },
+  {
+    "id": 65,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "If there are green balls in boxes 5 and 6, then which one of the following could be true?",
+      "options": [
+        "A) There are red balls in boxes 1 and 4.",
+        "B) There are red balls in boxes 2 and 4.",
+        "C) There is a white ball in box 1.",
+        "D) There is a white ball in box 2.",
+        "E) There is a white ball in box 3."
+      ]
+    },
+    "answer": "C"
+  },
+  {
+    "id": 66,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "The ball in which one of the following boxes must be the same color as at least one of the other balls?",
+      "options": [
+        "A) box 2",
+        "B) box 3",
+        "C) box 4",
+        "D) box 5",
+        "E) box 6"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repair = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2))",
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))",
+        "options"
+      ],
+      "options": [
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))",
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))",
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))",
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))",
+        "is_valid(Exists([t1:machines, t2:machines], (repair(t1, t2) && repair(t2, t1) && t1 != t2)))"
+      ],
+      "perplexity": [
+        1.005383849143982,
+        1.447096586227417
+      ]
+    }
+  },
+  {
+    "id": 67,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "Which one of the following must be true?",
+      "options": [
+        "A) There is a green ball in a box that is lower than box 4.",
+        "B) There is a green ball in a box that is higher than box 4.",
+        "C) There is a red ball in a box that is lower than box 4.",
+        "D) There is a red ball in a box that is higher than box 4.",
+        "E) There is a white ball in a box that is lower than box 4."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0180175304412842,
+        1.1081277132034302
+      ]
+    }
+  },
+  {
+    "id": 68,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "If there are red balls in boxes 2 and 3, then which one of the following could be true?",
+      "options": [
+        "A) There is a red ball in box 1.",
+        "B) There is a white ball in box 1.",
+        "C) There is a green ball in box 4.",
+        "D) There is a red ball in box 5.",
+        "E) There is a white ball in box 6."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])",
+        "valves = EnumSort([G, H, I, K, L, N, O, P])",
+        "opened = Function([valves] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2",
+        "ForAll([v:valves], And(1 <= opened(v), opened(v) <= 8))",
+        "Distinct([v:valves], opened(v))",
+        "And(opened(K) < opened(H), opened(P) < opened(H))",
+        "And(opened(O) > opened(H), opened(O) < opened(L))",
+        "opened(L) > opened(G)",
+        "opened(N) < opened(H)",
+        "opened(I) > opened(K)"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m))) ::: (A)",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m))) ::: (B)",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m))) ::: (C)",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m))) ::: (D)",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m))) ::: (E)"
+      ],
+      "perplexity": [
+        1.0249912738800049,
+        1.0736644268035889
+      ]
+    }
+  },
+  {
+    "id": 69,
+    "nl_problem": {
+      "context": "A street entertainer has six boxes stacked one on top of the other and numbered consecutively 1 through 6, from the lowest box up to the highest. Each box contains a single ball, and each ball is one of three colors—green, red, or white. Onlookers are to guess the color of each ball in each box, given that the following conditions hold: There are more red balls than white balls. There is a box containing a green ball that is lower in the stack than any box that contains a red ball. There is a white ball in a box that is immediately below a box that contains a green ball.",
+      "question": "If boxes 2, 3, and 4 all contain balls that are the same color as each other, then which one of the following must be true?",
+      "options": [
+        "A) Exactly two of the boxes contain a green ball.",
+        "B) Exactly three of the boxes contain a green ball.",
+        "C) Exactly three of the boxes contain a red ball.",
+        "D) Exactly one of the boxes contains a white ball.",
+        "E) Exactly two of the boxes contain a white ball."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.009564995765686,
+        1.1101070642471313
+      ]
+    }
+  },
+  {
+    "id": 73,
+    "nl_problem": {
+      "context": "A professor must determine the order in which five of her students—Fernando, Ginny, Hakim, Juanita, and Kevin—will perform in an upcoming piano recital. Each student performs one piece, and no two performances overlap. The following constraints apply: Ginny must perform earlier than Fernando. Kevin must perform earlier than Hakim and Juanita. Hakim must perform either immediately before or immediately after Fernando.",
+      "question": "The order in which the students perform is fully determined if which one of the following is true?",
+      "options": [
+        "A) Fernando performs immediately before Hakim.",
+        "B) Ginny performs immediately before Fernando.",
+        "C) Hakim performs immediately before Juanita.",
+        "D) Juanita performs immediately before Hakim.",
+        "E) Kevin performs immediately before Fernando."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "technicians = Function([people] -> [machines])"
+      ],
+      "constraints": [
+        "ForAll([p:people, m:machines], technicians(p) = radios Or technicians(p) = televisions Or technicians(p) = VCRs)",
+        "ForAll([p:people, m:machines], technicians(p) = radios And technicians(q) = radios -> p = q Or p = Xena) ::: Xena and exactly three other technicians repair radios",
+        "ForAll([p:people, m:machines], technicians(p) = televisions Or technicians(p) = VCRs And technicians(q) = televisions And technicians(q) = VCRs -> p = q Or p = Yolanda) ::: Yolanda repairs both televisions and VCRs",
+        "ForAll([p:people, m:machines], technicians(p) = radios And technicians(p) != radios -> technicians(p) != televisions) ::: Stacy does not repair any type of machine that Yolanda repairs",
+        "ForAll([p:people, m:machines], technicians(Zane) = televisions Or technicians(Zane) = VCRs Or technicians(Zane) = radios And technicians(Yolanda) = televisions And technicians(Yolanda) = VCRs) ::: Zane repairs more types of machines than Yolanda repairs",
+        "ForAll([p:people, m:machines], technicians(Wim) = radios And technicians(Wim) != radios -> technicians(Wim) != televisions) ::: Wim does not repair any type of machine that Stacy repairs",
+        "ForAll([p:people, m:machines], Count([t:machines], technicians(p) = t) = 2) ::: Urma repairs exactly two types of machines",
+        "technicians(Urma) = televisions And technicians(Urma) = radios ::: Urma repairs televisions and radios"
+      ],
+      "options": [
+        "is_valid(And(technicians(p) = televisions, technicians(p) = VCRs)) ::: (A) Stacy and Urma",
+        "is_valid(And(technicians(p) = televisions, technicians(p) = VCRs)) ::: (B) Urma and Yolanda",
+        "is_valid(And(technicians(p) = radios, technicians(p) = VCRs)) ::: (C) Urma and Xena",
+        "is_valid(And(technicians(p) = radios, technicians(p) = VCRs)) ::: (D) Wim and Xena"
+      ],
+      "perplexity": [
+        1.0151302814483643,
+        1.229026436805725
+      ]
+    }
+  },
+  {
+    "id": 76,
+    "nl_problem": {
+      "context": "As part of an open house at a crafts studio, three teachers—Jiang, Kudrow, and Lanning—will give six consecutive presentations on six different subjects. Jiang will present on needlework and origami; Kudrow on pottery, stenciling, and textile making; and Lanning on woodworking. The order of their presentations will meet the following conditions: Kudrow cannot give two presentations in a row. The presentation on stenciling must be given earlier than the one on origami. The presentation on textile making must be given earlier than the one on woodworking.",
+      "question": "If textile making is presented fifth, which one of the following could be true?",
+      "options": [
+        "A) Needlework is presented sixth.",
+        "B) Pottery is presented fourth.",
+        "C) Stenciling is presented second.",
+        "D) Stenciling is presented third.",
+        "E) Woodworking is presented second."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))"
+      ],
+      "perplexity": [
+        1.0181143283843994,
+        1.1136484146118164
+      ]
+    }
+  },
+  {
+    "id": 79,
+    "nl_problem": {
+      "context": "As part of an open house at a crafts studio, three teachers—Jiang, Kudrow, and Lanning—will give six consecutive presentations on six different subjects. Jiang will present on needlework and origami; Kudrow on pottery, stenciling, and textile making; and Lanning on woodworking. The order of their presentations will meet the following conditions: Kudrow cannot give two presentations in a row. The presentation on stenciling must be given earlier than the one on origami. The presentation on textile making must be given earlier than the one on woodworking.",
+      "question": "If needlework is presented sixth, which one of the following must be true?",
+      "options": [
+        "A) Origami is presented fourth.",
+        "B) Pottery is presented fifth.",
+        "C) Stenciling is presented third.",
+        "D) Textile making is presented first.",
+        "E) Woodworking is presented fourth."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet"
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0124306678771973,
+        1.200018048286438
+      ]
+    }
+  },
+  {
+    "id": 84,
+    "nl_problem": {
+      "context": "The organizer of a luncheon will select exactly five foods to be served from among exactly eight foods: two desserts—F and G; three main courses—N, O, and P; three side dishes—T, V, and W. Only F, N, and T are hot foods. The following requirements will be satisfied: At least one dessert, at least one main course, and at least one side dish must be selected. At least one hot food must be selected. If either P or W is selected, both must be selected. If G is selected, O must be selected. If N is selected, V cannot be selected.",
+      "question": "If F is not selected, which one of the following could be true?",
+      "options": [
+        "A) P is the only main course selected.",
+        "B) T is the only side dish selected.",
+        "C) Exactly two hot foods are selected.",
+        "D) Exactly three main courses are selected.",
+        "E) Exactly three side dishes are selected."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0201023817062378,
+        1.101320743560791
+      ]
+    }
+  },
+  {
+    "id": 86,
+    "nl_problem": {
+      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
+      "question": "Which one of the following could be the order in which the programs are shown, from earliest to latest?",
+      "options": [
+        "A) Generations, Roamin', Waterloo, Terry, Sundown",
+        "B) Roamin', Sundown, Waterloo, Terry, Generations",
+        "C) Roamin', Terry, Waterloo, Generations, Sundown",
+        "D) Waterloo, Roamin', Sundown, Terry, Generations",
+        "E) Waterloo, Terry, Sundown, Roamin', Generations"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0164272785186768,
+        1.262971043586731
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "programs = EnumSort([generations, roamin, sundown, terry, waterloo])",
+        "starts = Function([programs] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([p:programs], starts(p))",
+        "starts(generations)",
+        "starts(terry)",
+        "starts(roamin)",
+        "starts(sundown)",
+        "starts(waterloo)",
+        "starts(generations) != starts(roamin)",
+        "starts(roamin) != starts(sundown)",
+        "starts(roamin) != starts(terry)",
+        "starts(roamin) != starts(waterloo)",
+        "starts(sundown) != starts(terry)",
+        "starts(sundown) != starts(waterloo)",
+        "starts(terry) != starts(waterloo)",
+        "ForAll([p:programs], Implies(starts(waterloo), starts(waterloo) == starts(terry)))"
+      ],
+      "options": [
+        "is_valid(And(starts(roamin), starts(sundown), starts(waterloo), starts(terry), starts(generations)))",
+        "is_valid(And(starts(roamin), starts(sundown), starts(waterloo), starts(terry), starts(generations)))",
+        "is_valid(And(starts(roamin), starts(sundown), starts(waterloo), starts(terry), starts(generations)))",
+        "is_valid(And(starts(roamin), starts(sundown), starts(waterloo), starts(terry), starts(generations)))",
+        "is_valid(And(starts(roamin), starts(sundown), starts(waterloo), starts(terry), starts(generations)))"
+      ],
+      "perplexity": 1.1184056997299194
+    }
+  },
+  {
+    "id": 88,
+    "nl_problem": {
+      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
+      "question": "If Roamin' is the second program, then each of the following could be true EXCEPT:",
+      "options": [
+        "A) Sundown is the third program.",
+        "B) Sundown is the fourth program.",
+        "C) Terry is the fifth program.",
+        "D) Waterloo is the third program.",
+        "E) Waterloo is the fifth program."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Zane, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Zane, m)))"
+      ],
+      "perplexity": [
+        1.019581913948059,
+        1.1193642616271973
+      ]
+    }
+  },
+  {
+    "id": 89,
+    "nl_problem": {
+      "context": "A television programming director is scheduling a three-hour block of programs beginning at 1 P.M. The programs that are to fill this time block include an hour-long program called Generations and four half-hour programs: Roamin', Sundown, Terry, and Waterloo. The programs will be shown one after the other, each program shown exactly once. The schedule must meet the following constraints: Generations starts on the hour rather than the half hour. Terry starts on the half hour rather than the hour. Roamin' is shown earlier than Sundown. If Waterloo is shown earlier than Terry, it is shown immediately before Terry.",
+      "question": "If Sundown is the third program, then which one of the following must be true?",
+      "options": [
+        "A) Generations is the first program.",
+        "B) Roamin' is the first program.",
+        "C) Roamin' is the second program.",
+        "D) Terry is the fifth program.",
+        "E) Waterloo is the fourth program."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machine_types = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machine_types] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Or(repairs(t, radios), repairs(t, televisions), repairs(t, VCRs))) ::: Each technician repairs machines of at least one of the following three types—radios, televisions, and VCRs—and no other types",
+        "Xena and Count([t:technicians], repairs(t, radios)) == 3 ::: Xena and exactly three other technicians repair radios",
+        "Yolanda and repairs(Yolanda, televisions) and repairs(Yolanda, VCRs) ::: Yolanda repairs both televisions and VCRs",
+        "Not(ForAll([t:technicians], repairs(t, machine_type) -> repairs(Stacy, machine_type))) ::: Stacy does not repair any type of machine that Yolanda repairs",
+        "Not(ForAll([t:technicians], repairs(t, machine_type) -> repairs(Yolanda, machine_type))) ::: Zane repairs more types of machines than Yolanda repairs",
+        "Not(ForAll([t:technicians], repairs(t, machine_type) -> repairs(Stacy, machine_type))) ::: Wim does not repair any type of machine that Stacy repairs",
+        "Urma and Count([t:technicians], repairs(t, machine_type)) == 2 ::: Urma repairs exactly two types of machines"
+      ],
+      "options": [
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type))) ::: (A)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type) and t1 = Stacy and t2 = Urma)) ::: (B)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type) and t1 = Urma and t2 = Yolanda)) ::: (C)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type) and t1 = Urma and t2 = Xena)) ::: (D)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type) and t1 = Wim and t2 = Xena)) ::: (E)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repairs(t1, machine_type) = repairs(t2, machine_type) and t1 = Xena and t2 = Yolanda)) ::: (F)"
+      ],
+      "perplexity": [
+        1.0075095891952515,
+        1.1324489116668701
+      ]
+    }
   }
 ]
