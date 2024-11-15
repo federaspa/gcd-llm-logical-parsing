@@ -12771,5 +12771,488 @@
       "fol_conc": "Born(dani, boston)",
       "perplexity": 1.2483623027801514
     }
+  },
+  {
+    "id": 188,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "American(x)",
+        "BasketballPlayer(x)",
+        "Tall(x)",
+        "Wear(x, y)",
+        "LargeShoes(x)",
+        "LargeClothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (BasketballPlayer(x) ∧ ¬American(x))",
+        "∀x (BasketballPlayer(x) → Tall(x))",
+        "∀x (Tall(x) → LargeShoes(x))",
+        "∀x (LargeShoes(x) → LargeClothes(x))",
+        "¬LargeClothes(yuri)"
+      ],
+      "fol_conc": "American(yuri)",
+      "perplexity": [
+        1.042754888534546,
+        1.023371934890747
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketballplayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wears(x, y)",
+        "Large(y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketballplayer(x) ∧ ¬American(x))",
+        "∀x (Basketballplayer(x) → Tall(x))",
+        "∀x (Tall(x) → Wears(x, large))",
+        "∀x (Wears(x, large) → Wears(x, large))",
+        "¬Wears(yuri, large)"
+      ],
+      "fol_conc": "American(yuri)",
+      "perplexity": 1.2610143423080444
+    }
+  },
+  {
+    "id": 189,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is not an American basketball player.",
+      "options": []
+    },
+    "answer": "A",
+    "logic_problem": {
+      "fol_preds": [
+        "Player(x)",
+        "American(x)",
+        "Tall(x)",
+        "WearsLargeShoes(x)",
+        "WearsLargeClothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Player(x) ∧ ¬American(x))",
+        "∀x (Player(x) → Tall(x))",
+        "∀x (Tall(x) → WearsLargeShoes(x))",
+        "∀x (WearsLargeShoes(x) → WearsLargeClothes(x))",
+        "¬WearsLargeClothes(yuri)"
+      ],
+      "fol_conc": "¬(Player(yuri) ∧ American(yuri))",
+      "perplexity": [
+        1.0510406494140625,
+        1.024912714958191
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketballplayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wears(x, y)",
+        "Large(y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketballplayer(x) ∧ ¬American(x))",
+        "∀x (Basketballplayer(x) → Tall(x))",
+        "∀x (Tall(x) → Wears(x, large))",
+        "∀x (Wears(x, large) → Wears(x, large))",
+        "¬Wears(yuri, large)"
+      ],
+      "fol_conc": "¬(American(yuri) ∧ Basketballplayer(yuri))",
+      "perplexity": 1.2571940422058105
+    }
+  },
+  {
+    "id": 190,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American basketball player.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "American(x)",
+        "BasketballPlayer(x)",
+        "Tall(x)",
+        "WearLargeShoes(x)",
+        "WearLargeClothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (BasketballPlayer(x) ∧ ¬American(x))",
+        "∀x (BasketballPlayer(x) → Tall(x))",
+        "∀x (Tall(x) → WearLargeShoes(x))",
+        "∀x (WearLargeShoes(x) → WearLargeClothes(x))",
+        "¬WearLargeClothes(yuri)"
+      ],
+      "fol_conc": "American(yuri) ∧ BasketballPlayer(yuri)",
+      "perplexity": [
+        1.0453546047210693,
+        1.0257182121276855
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketballplayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wears(x, y)",
+        "Large(y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketballplayer(x) ∧ ¬American(x))",
+        "∀x (Basketballplayer(x) → Tall(x))",
+        "∀x (Tall(x) → Wears(x, large))",
+        "∀x (Wears(x, large) → Wears(x, large))",
+        "¬Wears(yuri, large)"
+      ],
+      "fol_conc": "American(yuri) ∧ Basketballplayer(yuri)",
+      "perplexity": 1.2511868476867676
+    }
+  },
+  {
+    "id": 191,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri does not wear large shoes, then Yuri is an American basketball player.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "BasketballPlayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "WearsLargeShoes(x)",
+        "WearsLargeClothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (BasketballPlayer(x) ∧ ¬American(x))",
+        "∀x (BasketballPlayer(x) → Tall(x))",
+        "∀x (Tall(x) → WearsLargeShoes(x))",
+        "∀x (WearsLargeShoes(x) → WearsLargeClothes(x))",
+        "¬WearsLargeClothes(yuri)"
+      ],
+      "fol_conc": "¬WearsLargeShoes(yuri) → (BasketballPlayer(yuri) ∧ American(yuri))",
+      "perplexity": [
+        1.0435134172439575,
+        1.0214195251464844
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketballplayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wears(x, y)",
+        "Large(y)",
+        "Largeclothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketballplayer(x) ∧ ¬American(x))",
+        "∀x (Basketballplayer(x) → Tall(x))",
+        "∀x (Tall(x) → Wears(x, large))",
+        "∀x (Wears(x, large) → Wears(x, largeclothes))",
+        "¬Wears(yuri, largeclothes)"
+      ],
+      "fol_conc": "¬Wears(yuri, large) → (American(yuri) ∧ Basketballplayer(yuri))",
+      "perplexity": 1.2977365255355835
+    }
+  },
+  {
+    "id": 192,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri is not an American basketball player, then Yuri is a basketball player.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "BasketballPlayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "WearsLargeShoes(x)",
+        "WearsLargeClothes(x)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (BasketballPlayer(x) ∧ ¬American(x))",
+        "∀x (BasketballPlayer(x) → Tall(x))",
+        "∀x (Tall(x) → WearsLargeShoes(x))",
+        "∀x (WearsLargeShoes(x) → WearsLargeClothes(x))",
+        "¬WearsLargeClothes(yuri)"
+      ],
+      "fol_conc": "(¬American(yuri) ∧ BasketballPlayer(yuri)) → BasketballPlayer(yuri)",
+      "perplexity": [
+        1.0532236099243164,
+        1.0158100128173828
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Basketballplayer(x)",
+        "American(x)",
+        "Tall(x)",
+        "Wears(x, y)",
+        "Large(y)"
+      ],
+      "fol_consts": [
+        "yuri"
+      ],
+      "fol_rules": [
+        "∃x (Basketballplayer(x) ∧ ¬American(x))",
+        "∀x (Basketballplayer(x) → Tall(x))",
+        "∀x (Tall(x) → Wears(x, large))",
+        "∀x (Wears(x, large) → Wears(x, large))",
+        "¬Wears(yuri, large)"
+      ],
+      "fol_conc": "¬American(yuri) ∧ Basketballplayer(yuri) → Basketballplayer(yuri)",
+      "perplexity": 1.249868392944336
+    }
+  },
+  {
+    "id": 193,
+    "nl_problem": {
+      "context": [
+        "Events are either happy or sad.",
+        "At least one event is happy. "
+      ],
+      "question": "All events are sad.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Happy(x)",
+        "Sad(x)"
+      ],
+      "fol_consts": [],
+      "fol_rules": [
+        "∀x (Happy(x) ⊕ Sad(x))",
+        "∃x Happy(x)"
+      ],
+      "fol_conc": "∀x Sad(x)",
+      "perplexity": [
+        1.0674777030944824,
+        1.0476117134094238
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Happy(x)",
+        "Sad(x)"
+      ],
+      "fol_consts": [
+        "event"
+      ],
+      "fol_rules": [
+        "∀x (Happy(x) ∨ Sad(x))",
+        "∃x (Happy(x))"
+      ],
+      "fol_conc": "∀x (Sad(x))",
+      "perplexity": 1.5542728900909424
+    }
+  },
+  {
+    "id": 194,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Steinhauer was not the winner of the 1992 du Maurier Classic.",
+      "options": []
+    },
+    "answer": "B",
+    "logic_problem": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "Leaderboard(x, y)",
+        "From(x, y)",
+        "SixWayTie(y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "belgium",
+        "duMaurierClassic1992"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, duMaurierClassic1992)",
+        "Participated(steinhauer, duMaurierClassic1992)",
+        "SixWayTie(duMaurierClassic1992)",
+        "From(descampe, belgium)",
+        "Leaderboard(descampe, duMaurierClassic1992)",
+        "∀x (Leaderboard(x, duMaurierClassic1992) → Participated(x, duMaurierClassic1992))"
+      ],
+      "fol_conc": "¬Winner(steinhauer, duMaurierClassic1992)",
+      "perplexity": [
+        1.0387096405029297,
+        1.0191911458969116
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "Leaderboard(x, y)",
+        "From(x, y)",
+        "Tie(x, y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "belgium",
+        "1992",
+        "dumaurierclassic"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, 1992dumaurierclassic)",
+        "Participated(steinhauer, 1992dumaurierclassic)",
+        "∃x ∃y (Tie(x, y) ∧ Leaderboard(x, 1992dumaurierclassic) ∧ Tie(y, 1992dumaurierclassic))",
+        "From(descampe, belgium)",
+        "Leaderboard(descampe, 1992dumaurierclassic)",
+        "∀x (Leaderboard(x, 1992dumaurierclassic) → Participated(x, 1992dumaurierclassic))"
+      ],
+      "fol_conc": "¬Winner(steinhauer, 1992dumaurierclassic)",
+      "perplexity": 1.1390763521194458
+    }
+  },
+  {
+    "id": 195,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Descampe is in the six-way tie in the leaderboard of the 1992 du Maurier Classic.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "OnLeaderboard(x, y)",
+        "From(x, y)",
+        "Tie(x, y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "belgium",
+        "duMaurierClassic1992"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, duMaurierClassic1992)",
+        "Participated(steinhauer, duMaurierClassic1992)",
+        "∃x ∃y (Tie(x, 6) ∧ OnLeaderboard(x, duMaurierClassic1992) ∧ From(x, belgium))",
+        "From(descampe, belgium)",
+        "OnLeaderboard(descampe, duMaurierClassic1992)",
+        "∀x (OnLeaderboard(x, duMaurierClassic1992) → Participated(x, duMaurierClassic1992))"
+      ],
+      "fol_conc": "Tie(descampe, 6)",
+      "perplexity": [
+        1.0454806089401245,
+        1.016278624534607
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Winner(x, y)",
+        "Participated(x, y)",
+        "Leaderboard(x, y)",
+        "From(x, y)",
+        "Sixwaytie(x, y)"
+      ],
+      "fol_consts": [
+        "steinhauer",
+        "descampe",
+        "belgium",
+        "1992",
+        "dumaurierclassic"
+      ],
+      "fol_rules": [
+        "Winner(steinhauer, 1992dumaurierclassic)",
+        "Participated(steinhauer, 1992dumaurierclassic)",
+        "∃x (Sixwaytie(x, 1992dumaurierclassic) ∧ ∃y (Leaderboard(y, 1992dumaurierclassic) ∧ From(y, belgium)))",
+        "From(descampe, belgium)",
+        "Leaderboard(descampe, 1992dumaurierclassic)",
+        "∀x (Leaderboard(x, 1992dumaurierclassic) → Participated(x, 1992dumaurierclassic))"
+      ],
+      "fol_conc": "Sixwaytie(descampe, 1992dumaurierclassic)",
+      "perplexity": 1.171610951423645
+    }
   }
 ]

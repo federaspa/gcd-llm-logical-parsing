@@ -6245,5 +6245,275 @@
         1.0228127241134644
       ]
     }
+  },
+  {
+    "id": 100,
+    "nl_problem": {
+      "context": "Each of exactly seven professors—Powell, Shihab, Taylor, Vaughan, Wood, Young, and Zabel—gives exactly one guest lecture in the literary theory course. The lectures are ordered from first through seventh, and their order must conform to the following: Powell lectures before Wood. Taylor lectures before Shihab. Vaughan lectures before Zabel. Shihab is no later than third. Young is not seventh. Powell lectures first if, but only if, Young lectures before Vaughan.",
+      "question": "Which one of the following CANNOT given the second guest lecture?",
+      "options": [
+        "A) Powell",
+        "B) Shihab",
+        "C) Taylor",
+        "D) Vaughan",
+        "E) Wood"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "professors = EnumSort([Powell, Shihab, Taylor, Vaughan, Wood, Young, Zabel])",
+        "lectures = EnumSort([1, 2, 3, 4, 5, 6, 7])",
+        "order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], order(p) != order(p))",
+        "Distinct([p:professors], order(p))",
+        "order(Powell) < order(Wood)",
+        "order(Taylor) < order(Shihab)",
+        "order(Vaughan) < order(Zabel)",
+        "order(Shihab) <= 3",
+        "order(Young) != 7",
+        "Implies(order(Powell) == 1, order(Young) < order(Vaughan))"
+      ],
+      "options": [
+        "is_unsat(order(Powell) == 2)",
+        "is_unsat(order(Shihab) == 2)",
+        "is_unsat(order(Taylor) == 2)",
+        "is_unsat(order(Vaughan) == 2)",
+        "is_unsat(order(Wood) == 2)"
+      ],
+      "perplexity": [
+        1.0365986824035645,
+        1.011246919631958
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "professors = EnumSort([powell, shihab, taylor, vaughan, wood, young, zabel])",
+        "lectures = EnumSort([first, second, third, fourth, fifth, sixth, seventh])",
+        "order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], order(p))",
+        "order(powell) < order(wood)",
+        "order(taylor) < order(shihab)",
+        "order(vaughan) < order(zabel)",
+        "order(shihab) <= order(third)",
+        "order(young) != order(seventh)",
+        "Implies(order(powell) == first, order(young) < order(vaughan))"
+      ],
+      "options": [
+        "is_unsat(order(powell))",
+        "is_unsat(order(shihab))",
+        "is_unsat(order(taylor))",
+        "is_unsat(order(vaughan))",
+        "is_unsat(order(wood))"
+      ],
+      "perplexity": 1.2638864517211914
+    }
+  },
+  {
+    "id": 101,
+    "nl_problem": {
+      "context": "Each of exactly seven professors—Powell, Shihab, Taylor, Vaughan, Wood, Young, and Zabel—gives exactly one guest lecture in the literary theory course. The lectures are ordered from first through seventh, and their order must conform to the following: Powell lectures before Wood. Taylor lectures before Shihab. Vaughan lectures before Zabel. Shihab is no later than third. Young is not seventh. Powell lectures first if, but only if, Young lectures before Vaughan.",
+      "question": "If Shihab lectures second and Zabel lectures fourth, then which one of the following could be true?",
+      "options": [
+        "A) Powell lectures sixth",
+        "B) Taylor lectures third",
+        "C) Vaughan lectures fifth",
+        "D) Wood lectures fifth",
+        "E) Young lectures third"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "professors = EnumSort([Powell, Shihab, Taylor, Vaughan, Wood, Young, Zabel])",
+        "lectures = EnumSort([1, 2, 3, 4, 5, 6, 7])",
+        "lecture_order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], Unique([l:lectures], lecture_order(p) == l))",
+        "And(lecture_order(Powell) < lecture_order(Wood))",
+        "And(lecture_order(Taylor) < lecture_order(Shihab))",
+        "And(lecture_order(Vaughan) < lecture_order(Zabel))",
+        "lecture_order(Shihab) <= 3",
+        "lecture_order(Young) != 7",
+        "Implies(lecture_order(Powell) == 1, lecture_order(Young) < lecture_order(Vaughan))",
+        "lecture_order(Shihab) == 2",
+        "lecture_order(Zabel) == 4"
+      ],
+      "options": [
+        "is_sat(lecture_order(Powell) == 6)",
+        "is_sat(lecture_order(Taylor) == 3)",
+        "is_sat(lecture_order(Vaughan) == 5)",
+        "is_sat(lecture_order(Wood) == 5)",
+        "is_sat(lecture_order(Young) == 3)"
+      ],
+      "perplexity": [
+        1.0705491304397583,
+        1.0097613334655762
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "professors = EnumSort([powell, shihab, taylor, vaughan, wood, young, zabel])",
+        "lectures = EnumSort([first, second, third, fourth, fifth, sixth, seventh])",
+        "order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], order(p))",
+        "Distinct([p:professors], order(p))",
+        "order(powell) < order(wood)",
+        "order(taylor) < order(shihab)",
+        "order(vaughan) < order(zabel)",
+        "order(shihab) <= 3",
+        "order(young) != 7",
+        "Implies(order(powell) == first, order(young) < order(vaughan))"
+      ],
+      "options": [
+        "is_valid(order(powell))",
+        "is_valid(order(taylor))",
+        "is_valid(order(vaughan))",
+        "is_valid(order(wood))",
+        "is_valid(order(young))"
+      ],
+      "perplexity": 1.2748106718063354
+    }
+  },
+  {
+    "id": 102,
+    "nl_problem": {
+      "context": "Each of exactly seven professors—Powell, Shihab, Taylor, Vaughan, Wood, Young, and Zabel—gives exactly one guest lecture in the literary theory course. The lectures are ordered from first through seventh, and their order must conform to the following: Powell lectures before Wood. Taylor lectures before Shihab. Vaughan lectures before Zabel. Shihab is no later than third. Young is not seventh. Powell lectures first if, but only if, Young lectures before Vaughan.",
+      "question": "Which one of the following CANNOT be the guest lecture that Vaughan gives?",
+      "options": [
+        "A) second",
+        "B) third",
+        "C) fourth",
+        "D) sixth",
+        "E) seventh"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "professors = EnumSort([Powell, Shihab, Taylor, Vaughan, Wood, Young, Zabel])",
+        "lectures = EnumSort([1, 2, 3, 4, 5, 6, 7])",
+        "lecture_order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], Distinct([l:lectures], lecture_order(p)))",
+        "ForAll([l:lectures], Count([p:professors], lecture_order(p) == l) == 1)",
+        "lecture_order(Powell) < lecture_order(Wood)",
+        "lecture_order(Taylor) < lecture_order(Shihab)",
+        "lecture_order(Vaughan) < lecture_order(Zabel)",
+        "lecture_order(Shihab) <= 3",
+        "lecture_order(Young) != 7",
+        "Implies(lecture_order(Powell) == 1, lecture_order(Young) < lecture_order(Vaughan))"
+      ],
+      "options": [
+        "is_unsat(lecture_order(Vaughan) == 2)",
+        "is_unsat(lecture_order(Vaughan) == 3)",
+        "is_unsat(lecture_order(Vaughan) == 4)",
+        "is_unsat(lecture_order(Vaughan) == 6)",
+        "is_unsat(lecture_order(Vaughan) == 7)"
+      ],
+      "perplexity": [
+        1.034892201423645,
+        1.0139232873916626
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "professors = EnumSort([powell, shihab, taylor, vaughan, wood, young, zabel])",
+        "lectures = EnumSort([first, second, third, fourth, fifth, sixth, seventh])",
+        "order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], Distinct([l:lectures], order(p)))",
+        "order(powell) < order(wood)",
+        "order(taylor) < order(shihab)",
+        "order(vaughan) < order(zabel)",
+        "order(shihab) <= 3",
+        "order(young) != 7",
+        "Implies(order(powell) == first, order(young) < order(vaughan))"
+      ],
+      "options": [
+        "is_unsat(order(vaughan))",
+        "is_unsat(order(vaughan))",
+        "is_unsat(order(vaughan))",
+        "is_unsat(order(vaughan))",
+        "is_unsat(order(vaughan))"
+      ],
+      "perplexity": 1.2929959297180176
+    }
+  },
+  {
+    "id": 103,
+    "nl_problem": {
+      "context": "Each of exactly seven professors—Powell, Shihab, Taylor, Vaughan, Wood, Young, and Zabel—gives exactly one guest lecture in the literary theory course. The lectures are ordered from first through seventh, and their order must conform to the following: Powell lectures before Wood. Taylor lectures before Shihab. Vaughan lectures before Zabel. Shihab is no later than third. Young is not seventh. Powell lectures first if, but only if, Young lectures before Vaughan.",
+      "question": "If Young lectures fourth and Taylor lectures first, then which one of the following must be true?",
+      "options": [
+        "A) Powell lectures no earlier than sixth",
+        "B) Shihab lectures second.",
+        "C) Vaughan lectures no later than third.",
+        "D) Wood lectures seventh.",
+        "E) Zabel lectures no earlier than sixth."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "professors = EnumSort([Powell, Shihab, Taylor, Vaughan, Wood, Young, Zabel])",
+        "lectures = EnumSort([1, 2, 3, 4, 5, 6, 7])",
+        "lecture_order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], 1 <= lecture_order(p) <= 7)",
+        "Distinct([p:professors], lecture_order(p))",
+        "lecture_order(Powell) < lecture_order(Wood)",
+        "lecture_order(Taylor) < lecture_order(Shihab)",
+        "lecture_order(Vaughan) < lecture_order(Zabel)",
+        "lecture_order(Shihab) <= 3",
+        "lecture_order(Young) != 7",
+        "Implies(lecture_order(Young) < lecture_order(Vaughan), lecture_order(Powell) == 1)"
+      ],
+      "options": [
+        "is_sat(lecture_order(Powell) >= 6)",
+        "is_sat(lecture_order(Shihab) == 2)",
+        "is_sat(lecture_order(Vaughan) <= 3)",
+        "is_sat(lecture_order(Wood) == 7)",
+        "is_sat(lecture_order(Zabel) >= 6)"
+      ],
+      "perplexity": [
+        1.0557821989059448,
+        1.0045002698898315
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "professors = EnumSort([powell, shihab, taylor, vaughan, wood, young, zabel])",
+        "lectures = EnumSort([first, second, third, fourth, fifth, sixth, seventh])",
+        "order = Function([professors] -> [lectures])"
+      ],
+      "constraints": [
+        "ForAll([p:professors], order(p))",
+        "order(powell) < order(wood)",
+        "order(taylor) < order(shihab)",
+        "order(vaughan) < order(zabel)",
+        "order(shihab) <= 3",
+        "order(young) != 7",
+        "Implies(order(powell) == first, order(young) < order(vaughan))"
+      ],
+      "options": [
+        "is_sat(order(powell))",
+        "is_sat(order(shihab))",
+        "is_sat(order(vaughan))",
+        "is_sat(order(wood))",
+        "is_sat(order(zabel))"
+      ],
+      "perplexity": 1.3448874950408936
+    }
   }
 ]
