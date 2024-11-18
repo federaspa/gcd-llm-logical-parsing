@@ -5989,7 +5989,35 @@
         "E) Kelly, Leanda, Maricita, Olaf"
       ]
     },
-    "answer": "A"
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machine_types = EnumSort([radios, televisions, VCRs])",
+        "repair = Function([technicians, machine_types] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Or(repair(t, radios), repair(t, televisions), repair(t, VCRs))) ::: Each technician repairs machines of at least one of the following three types—radios, televisions, and VCRs",
+        "ForAll([t:technicians], Not(repair(t, radios) and repair(t, televisions) and repair(t, VCRs))) ::: no other types",
+        "Count([t:technicians], repair(t, radios)) = 4 ::: Xena and exactly three other technicians repair radios",
+        "repair(Yolanda, televisions) and repair(Yolanda, VCRs) ::: Yolanda repairs both televisions and VCRs",
+        "Not(repair(Stacy, t)) ::: Stacy does not repair any type of machine that Yolanda repairs",
+        "Count([t:machine_types], repair(Zane, t)) > Count([t:machine_types], repair(Yolanda, t)) ::: Zane repairs more types of machines than Yolanda repairs",
+        "Not(repair(Wim, t)) ::: Wim does not repair any type of machine that Stacy repairs",
+        "Count([t:machine_types], repair(Urma, t)) = 2 ::: Urma repairs exactly two types of machines"
+      ],
+      "options": [
+        "is_valid(Exists([t1:technicians, t2:technicians], repair(t1, t) = repair(t2, t))) and (t1 = Stacy and t2 = Urma)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repair(t1, t) = repair(t2, t))) and (t1 = Urma and t2 = Yolanda)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repair(t1, t) = repair(t2, t))) and (t1 = Urma and t2 = Xena)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repair(t1, t) = repair(t2, t))) and (t1 = Wim and t2 = Xena)",
+        "is_valid(Exists([t1:technicians, t2:technicians], repair(t1, t) = repair(t2, t))) and (t1 = Xena and t2 = Yolanda)"
+      ],
+      "perplexity": [
+        1.0191426277160645,
+        1.1309725046157837
+      ]
+    }
   },
   {
     "id": 21,
@@ -6126,6 +6154,39 @@
         1.0087707042694092,
         1.120980978012085
       ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "hangers = EnumSort([h1, h2, h3, h4, h5, h6])",
+        "dresses = EnumSort([gauze, linen, polyester, rayon, silk, wool])",
+        "on = Function([hangers, dresses] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([h:hangers], on(h, gauze))",
+        "ForAll([h:hangers], on(h, linen))",
+        "ForAll([h:hangers], on(h, polyester))",
+        "ForAll([h:hangers], on(h, rayon))",
+        "ForAll([h:hangers], on(h, silk))",
+        "ForAll([h:hangers], on(h, wool))",
+        "And(on(h1, gauze), on(h1, polyester))",
+        "Or(on(h1, rayon), on(h6, rayon))",
+        "Or(on(h3, wool), on(h3, silk))",
+        "on(h4, silk) == on(h4, linen)",
+        "Count([h:hangers], on(h, rayon)) == 1",
+        "Count([h:hangers], on(h, wool)) == 1",
+        "Count([h:hangers], on(h, silk)) == 1",
+        "Count([h:hangers], on(h, linen)) == 1",
+        "Count([h:hangers], on(h, gauze)) == 1",
+        "Count([h:hangers], on(h, polyester)) == 1"
+      ],
+      "options": [
+        "is_unsat(on(h1, linen))",
+        "is_unsat(on(h2, polyester))",
+        "is_unsat(on(h3, rayon))",
+        "is_unsat(on(h4, silk))",
+        "is_unsat(on(h5, wool))"
+      ],
+      "perplexity": 1.1719268560409546
     }
   },
   {
@@ -6222,6 +6283,29 @@
         1.015444278717041,
         1.0482909679412842
       ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "members = EnumSort([larue, ohba, pei, trevino, weiss, zacny])",
+        "dive = Function([members] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:members], And(1 <= dive(m), dive(m) <= 6))",
+        "ForAll([m:members], dive(m))",
+        "And(dive(trevino) < dive(weiss), dive(weiss) < dive(zacny))",
+        "Or(dive(larue) == 1, dive(larue) == 6)",
+        "Not(And(dive(weiss) == 6, dive(zacny) == 6))",
+        "ForAll([m:members], Implies(dive(m) > dive(ohba), dive(m) > dive(larue)))",
+        "ForAll([m:members], Implies(dive(m) > dive(ohba), dive(m) > dive(pei)))"
+      ],
+      "options": [
+        "is_sat(Exists([m:members], And(dive(m) > dive(larue), dive(m) > dive(larue))))",
+        "is_sat(Exists([m:members], And(dive(m) > dive(ohba), dive(m) > dive(ohba))))",
+        "is_sat(Exists([m:members], And(dive(m) > dive(pei), dive(m) > dive(pei))))",
+        "is_sat(Exists([m:members], And(dive(m) > dive(trevino), dive(m) > dive(trevino))))",
+        "is_sat(Exists([m:members], And(dive(m) > dive(weiss), dive(m) > dive(weiss))))"
+      ],
+      "perplexity": 1.32160484790802
     }
   },
   {
@@ -6295,7 +6379,34 @@
         "E) There is a white ball in box 3."
       ]
     },
-    "answer": "C"
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])"
+      ],
+      "constraints": [
+        "ForAll([t:machines], ForAll([t2:machines], t != t2 => is_subset([t], [machine:machines | technicians(t) == machine])))",
+        "ForAll([t:machines], exists([t2:machines], t2 != t => technicians(Xena) == t2) & exists([t2:machines], t2 != t => technicians(Xena) == t2) => t == radios)",
+        "ForAll([t:machines], exists([t2:machines], t2 != t => technicians(Yolanda) == t2) & exists([t2:machines], t2 != t => technicians(Yolanda) == t2)) => t == radios)",
+        "ForAll([t:machines], exists([t2:machines], t2 != t => technicians(Zane) == t2) & exists([t:machines], exists([t2:machines], t2 != t => technicians(Zane) == t2)) => t == televisions | t == VCRs | t == radios)",
+        "ForAll([t:machines], exists([t2:machines], t2 != t => technicians(Wim) == t2) & exists([t:machines], exists([t2:machines], t2 != t => technicians(Wim) == t2)) => t == radios)",
+        "ForAll([t:machines], exists([t2:machines], t2 != t => technicians(Urma) == t2) & exists([t:machines], exists([t2:machines], t2 != t => technicians(Urma) == t2) & exists([t:machines], exists([t2:machines], t2 != t => technicians(Urma) == t2))) => t == radios | t == televisions | t == VCRs | t == radios)",
+        "technicians(Xena) == radios"
+      ],
+      "options": [
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))",
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))",
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))",
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))",
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))",
+        "is_valid(Exists([t:machines], technicians(Xena) == t) & exists([t2:machines], technicians(Urma) == t2) => technicians(Xena) = technicians(Urma))"
+      ],
+      "perplexity": [
+        1.0142091512680054,
+        1.2248106002807617
+      ]
+    }
   },
   {
     "id": 66,
@@ -6789,6 +6900,107 @@
         1.0075095891952515,
         1.1324489116668701
       ]
+    }
+  },
+  {
+    "id": 113,
+    "nl_problem": {
+      "context": "Millville has created three new development zones: Z1, Z2, and Z3. Within these zones, subzones can be designated for housing, industrial, or retail use, with no subzone designated for more than one use. By city regulation, a total of no more than three subzones can be designated for each of the three uses. The following restrictions are in place: Retail subzones are not allowed in Z1. No more than two subzones for housing are allowed in any particular zone. No more than one retail subzone is allowed in any zone in which a subzone is designated for housing. Industrial subzones are not allowed in any zone in which a subzone is designated for housing or three subzones are designated for retail use.",
+      "question": "If three subzones are designated for each use, then which one of the following is allowed?",
+      "options": [
+        "A) Exactly one subzone in Z3 is designated for industrial use and exactly one subzone in Z3 is designated for retail use.",
+        "B) Exactly two subzones in Z2 are designated for housing.",
+        "C) Three subzones in Z1 are designated for industrial use.",
+        "D) Three subzones in Z2 are designated for industrial use and exactly one subzone in Z2 is designated for retail use.",
+        "E) Three subzones in Z3 are designated for retail use."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "zones = EnumSort([Z1, Z2, Z3])",
+        "uses = EnumSort([housing, industrial, retail])",
+        "subzones = Function([zones, uses] -> [int])",
+        "ForAll([z:zones, u:uses], subzones(z, u) >= 0)",
+        "ForAll([z:zones, u:uses], subzones(z, u) <= 3)"
+      ],
+      "constraints": [
+        "subzones(Z1, retail) == 0",
+        "ForAll([z:zones], Count([u:uses], subzones(z, u) == 2, u == housing) <= 1)",
+        "ForAll([z:zones], Implies(And(Exists([u:uses], subzones(z, u) == 2, u == housing), Exists([u:uses], subzones(z, u) == 1, u == retail)), subzones(z, retail) == 0))",
+        "ForAll([z:zones], subzones(z, industrial) == 0 | Exists([u:uses], subzones(z, u) == 2, u == housing) | (subzones(z, retail) > 2))"
+      ],
+      "options": [
+        "is_allowed(And(subzones(Z3, industrial) == 1, subzones(Z3, retail) == 1))",
+        "is_allowed(And(subzones(Z2, housing) == 2))",
+        "is_allowed(And(subzones(Z1, industrial) == 3))",
+        "is_allowed(And(subzones(Z2, industrial) == 3, subzones(Z2, retail) == 1))",
+        "is_allowed(And(subzones(Z3, retail) == 3))"
+      ],
+      "perplexity": [
+        1.108060598373413,
+        1.0988667011260986
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "zones = EnumSort([z1, z2, z3])",
+        "uses = EnumSort([housing, industrial, retail])",
+        "subzones = Function([zones] -> [uses])"
+      ],
+      "constraints": [
+        "ForAll([z:zones], Count([u:uses], subzones(z))) <= 3",
+        "subzones(z1) != retail",
+        "ForAll([z:zones], Count([u:uses], subzones(z))) <= 2",
+        "ForAll([z:zones], Implies(And(subzones(z) == housing, subzones(z) == retail), subzones(z) == retail))",
+        "ForAll([z:zones], Implies(Or(subzones(z) == housing, subzones(z) == retail, subzones(z) == retail), subzones(z) != industrial))"
+      ],
+      "options": [
+        "is_valid(And(subzones(z3) == industrial, subzones(z3) == retail))",
+        "is_valid(subzones(z2))",
+        "is_valid(subzones(z1))",
+        "is_valid(And(subzones(z2) == industrial, subzones(z2) == retail))",
+        "is_valid(subzones(z3))"
+      ],
+      "perplexity": 1.4018361568450928
+    }
+  },
+  {
+    "id": 114,
+    "nl_problem": {
+      "context": "Millville has created three new development zones: Z1, Z2, and Z3. Within these zones, subzones can be designated for housing, industrial, or retail use, with no subzone designated for more than one use. By city regulation, a total of no more than three subzones can be designated for each of the three uses. The following restrictions are in place: Retail subzones are not allowed in Z1. No more than two subzones for housing are allowed in any particular zone. No more than one retail subzone is allowed in any zone in which a subzone is designated for housing. Industrial subzones are not allowed in any zone in which a subzone is designated for housing or three subzones are designated for retail use.",
+      "question": "If one subzone in each of the zones is designated for industrial use, then which one of the following is allowed?",
+      "options": [
+        "A) More subzones are designated for retail use in Z2 than in Z3.",
+        "B) A subzone in one of the zones is designated for housing.",
+        "C) Exactly two subzones are designated in Z1.",
+        "D) Exactly three subzones each are designated in Z2 and Z3.",
+        "E) Exactly four subzones are designated in Z3."
+      ]
+    },
+    "answer": "A",
+    "logic_problem_gcd": {
+      "declarations": [
+        "zones = EnumSort([z1, z2, z3])",
+        "subzones = EnumSort([housing, industrial, retail])",
+        "designated = Function([zones, subzones] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([z:zones], Count([s:subzones], designated(z, s))) <= 3",
+        "Not(designated(z1, retail))",
+        "ForAll([z:zones], Count([s:subzones], And(s == housing, designated(z, s)))) <= 2",
+        "ForAll([z:zones], Implies(And(s == housing, designated(z, s)), Not(designated(z, retail))))",
+        "ForAll([z:zones], Implies(And(s == industrial, designated(z, s)), Not(Or(And(s1 == housing, designated(z1, s1)), And(s2 == housing, designated(z2, s2)), And(s3 == housing, designated(z3, s3))))))",
+        "ForAll([z:zones], Count([s:subzones], designated(z, s))) == 1"
+      ],
+      "options": [
+        "is_valid(And(And(designated(z2, retail), designated(z3, retail)), designated(z2, retail) > designated(z3, retail)))",
+        "is_valid(Exists([z:zones], designated(z, housing)))",
+        "is_valid(And(designated(z1, housing), designated(z1, housing)))",
+        "is_valid(And(designated(z2, housing), designated(z3, housing)))",
+        "is_valid(And(designated(z2, housing), designated(z3, housing), designated(z2, housing), designated(z3, housing)))"
+      ],
+      "perplexity": 1.2346290349960327
     }
   }
 ]
