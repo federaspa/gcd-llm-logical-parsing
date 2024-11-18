@@ -4,15 +4,15 @@ predicatelist ::= predicatename ("," ws predicatename)*
 factlist ::= fact ("," ws fact)*
 rulelist ::= rule ("," ws rule)*
 
-predicatename ::= "\"" [a-z][a-z]+ "\""
+predicatename ::= "\":- dynamic " [a-z][a-z]+ "/1.\""
 variable ::= [A-Z]
 
-fact ::= "\"" predicatebase "(" object ")" "\""
-rule ::= "\"" predicatebase "(" variable ") :- " (neg? predicatebase "(" variable ")") "\""
-query ::= "\"" (neg? predicatebase "(" object ")") "\""
+fact ::= "\"" predicatebase "(" object ")" ".\""
+rule ::= "\"" predicatebase "(" variable ") :- " (neg? predicatebase "(" variable ")") ".\""
+query ::= "\"" (neg? predicatebase "(" object ")") ".\""
 
 predicatebase ::= [a-z][a-z]+
 object ::= [a-z][a-z]+
-neg ::= "\\+"
+neg ::= "\\" "\\" "+"
 
-ws ::= [ \t\n]*
+ws ::= [ ]

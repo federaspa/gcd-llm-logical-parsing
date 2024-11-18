@@ -177,27 +177,8 @@ class LogicProgramGenerator(PromptGenerator):
             with open(save_file, 'r') as f:
                 outputs = json.load(f)
                 existing_ids = [s['id'] for s in outputs]
-               
-            # complete_ids = set() 
-            # for sample in raw_dataset:
-            #     if sample['id'] in existing_ids:
-                    
-            #         sample = [s for s in existing_samples if s['id'] == sample['id']][0]  
-                    
-            #         unconstrained_skip = 'logic_problem' in sample.keys() and not config.force_unconstrained
-            #         constrained_skip = 'logic_problem_gcd' in sample.keys() and not config.force_constrained
-                    
-            #         if  unconstrained_skip and constrained_skip:
-            #             outputs.append(sample)
-            #             complete_ids.add(sample['id'])
-        
-            # raw_dataset = [s for s in raw_dataset if s['id'] not in existing_ids]
-                    
-        # return raw_dataset, outputs, existing_samples, existing_ids
-        
-        # Remove duplicates, keeping the last occurrence
-        unique_outputs = {sample['id']: sample for sample in outputs}
-        outputs = list(unique_outputs.values())
+                
+        outputs = {sample['id']: sample for sample in outputs}
         return raw_dataset, outputs, existing_ids
 
     def run(self):
@@ -210,6 +191,8 @@ class LogicProgramGenerator(PromptGenerator):
         # raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         
+        raw_dataset = [s for s in raw_dataset if s['id']>112]
+        
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
@@ -217,7 +200,7 @@ class LogicProgramGenerator(PromptGenerator):
                 break
         
             if sample['id'] in existing_ids:
-                sample = [s for s in outputs if s['id'] == sample['id']][0]               
+                sample = outputs[sample['id']]              
                 nl_problem = sample['nl_problem']
             else:
                 nl_problem = sample
@@ -286,11 +269,11 @@ class LogicProgramGenerator(PromptGenerator):
             if logic_problem_gcd:
                 output.update({'logic_problem_gcd': logic_problem_gcd})
             
-            outputs.append(output)
+            outputs[sample['id']] = output
             
             pbar.update()
             with open(save_file, 'w') as f:
-                json.dump(outputs, f, indent=2, ensure_ascii=False)
+                json.dump(list(outputs.values()), f, indent=2, ensure_ascii=False)
 
         if self._check_time_limit():
             logger.info("Script stopped due to reaching stop time")

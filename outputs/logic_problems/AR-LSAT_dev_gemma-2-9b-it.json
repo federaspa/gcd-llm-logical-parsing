@@ -13380,5 +13380,1444 @@
       ],
       "perplexity": 1.1455504894256592
     }
+  },
+  {
+    "id": 209,
+    "nl_problem": {
+      "context": "In one week—Monday through Friday—a library's bookmobile will visit five of the following six neighborhoods—Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, and Sunnyside. Exactly one neighborhood will be visited on each of the five days, and none of the neighborhoods will be visited on more than one day. The bookmobile's schedule must conform to the following conditions: Hidden Hills is visited, but not on Friday. If Oldtown is visited, then it is visited on the day immediately before Hidden Hills is visited. If Lakeville is visited, then it is visited on Wednesday. Nottingham and Sunnyside are both visited, but not on consecutive days.",
+      "question": "Which one of the following neighborhoods CANNOT be visited on Thursday?",
+      "options": [
+        "A) Hidden Hills",
+        "B) Nottingham",
+        "C) Oldtown",
+        "D) Park Plaza",
+        "E) Sunnyside"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "neighborhoods = EnumSort([Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, Sunnyside])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday])",
+        "visited = Function([days, neighborhoods] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d, n)))",
+        "Exists([d:days], visited(d, Hidden Hills))",
+        "Not(visited(Friday, Hidden Hills))",
+        "Implies(visited(d, Oldtown), And(d == Monday, visited(Tuesday, Hidden Hills)))",
+        "Implies(visited(Wednesday, Lakeville), True)",
+        "And(Exists([d:days], visited(d, Nottingham)), Exists([d:days], visited(d, Sunnyside)), Not(visited(d, Nottingham) == visited(d, Sunnyside)))"
+      ],
+      "options": [
+        "is_unsat(visited(Thursday, Hidden Hills))",
+        "is_unsat(visited(Thursday, Nottingham))",
+        "is_unsat(visited(Thursday, Oldtown))",
+        "is_unsat(visited(Thursday, Park Plaza))",
+        "is_unsat(visited(Thursday, Sunnyside))"
+      ],
+      "perplexity": [
+        1.0434988737106323,
+        1.0107580423355103
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "neighborhoods = EnumSort([hiddenhills, lakeville, nottingham, oldtown, parkplaza, sunnyside])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday])",
+        "visited = Function([days] -> [neighborhoods])",
+        "visited = Function([days] -> [neighborhoods])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d)))",
+        "Exists([d:days], visited(d))",
+        "visited(d) == hiddenhills",
+        "visited(d) != friday",
+        "Implies(visited(d) == oldtown, visited(d) == hiddenhills)",
+        "Implies(visited(d) == lakeville, d == wednesday)",
+        "And(visited(d) == nottingham, visited(d) == sunnyside)",
+        "visited(d) != visited(d)"
+      ],
+      "options": [
+        "is_unsat(visited(thursday))",
+        "is_unsat(visited(thursday))",
+        "is_unsat(visited(thursday))",
+        "is_unsat(visited(thursday))",
+        "is_unsat(visited(thursday))"
+      ],
+      "perplexity": 1.3262734413146973
+    }
+  },
+  {
+    "id": 210,
+    "nl_problem": {
+      "context": "In one week—Monday through Friday—a library's bookmobile will visit five of the following six neighborhoods—Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, and Sunnyside. Exactly one neighborhood will be visited on each of the five days, and none of the neighborhoods will be visited on more than one day. The bookmobile's schedule must conform to the following conditions: Hidden Hills is visited, but not on Friday. If Oldtown is visited, then it is visited on the day immediately before Hidden Hills is visited. If Lakeville is visited, then it is visited on Wednesday. Nottingham and Sunnyside are both visited, but not on consecutive days.",
+      "question": "If Hidden Hills is visited on Monday, which one of the following must be true?",
+      "options": [
+        "A) Lakeville is visited on Wednesday.",
+        "B) Nottingham is visited on Tuesday.",
+        "C) Park Plaza is visited on Thursday.",
+        "D) Sunnyside is visited on Tuesday.",
+        "E) Sunnyside is visited on Friday"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "neighborhoods = EnumSort([HiddenHills, Lakeville, Nottingham, Oldtown, ParkPlaza, Sunnyside])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday])",
+        "visited = Function([days, neighborhoods] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d, n)))",
+        "ForAll([n:neighborhoods], Count([d:days], visited(d, n)) <= 1)",
+        "visited( _, HiddenHills) == True",
+        "visited(_, Friday) != HiddenHills",
+        "Implies(visited(_, Oldtown), visited(Predecessor(day), HiddenHills))",
+        "Implies(visited(_, Lakeville), visited(Wednesday, Lakeville))",
+        "And(visited(_, Nottingham), visited(_, Sunnyside)), Not(visited(day, Nottingham) == visited(day, Sunnyside))"
+      ],
+      "options": [
+        "is_sat(visited(Wednesday, Lakeville))",
+        "is_sat(visited(Tuesday, Nottingham))",
+        "is_sat(visited(Thursday, ParkPlaza))",
+        "is_sat(visited(Tuesday, Sunnyside))",
+        "is_sat(visited(Friday, Sunnyside))"
+      ],
+      "perplexity": [
+        1.0772173404693604,
+        1.0118522644042969
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "neighborhoods = EnumSort([hiddenhills, lakeville, nottingham, oldtown, parkplaza, sunnyside])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday])",
+        "visited = Function([days] -> [neighborhoods])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d)))",
+        "Exists([d:days], visited(d))",
+        "visited(d) == hiddenhills",
+        "visited(d) != hiddenhills",
+        "visited(friday) != hiddenhills",
+        "Implies(visited(d) == oldtown, visited(d) == oldtown)",
+        "Implies(visited(d) == lakeville, d == wednesday)",
+        "And(visited(d) == nottingham, visited(d) == sunnyside)",
+        "visited(d) != visited(d)"
+      ],
+      "options": [
+        "is_sat(Implies(visited(monday) == hiddenhills, visited(wednesday) == lakeville))",
+        "is_sat(Implies(visited(monday) == hiddenhills, visited(tuesday) == nottingham))",
+        "is_sat(Implies(visited(monday) == hiddenhills, visited(thursday) == parkplaza))",
+        "is_sat(Implies(visited(monday) == hiddenhills, visited(tuesday) == sunnyside))",
+        "is_sat(Implies(visited(monday) == hiddenhills, visited(friday) == sunnyside))"
+      ],
+      "perplexity": 1.177422285079956
+    }
+  },
+  {
+    "id": 211,
+    "nl_problem": {
+      "context": "In one week—Monday through Friday—a library's bookmobile will visit five of the following six neighborhoods—Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, and Sunnyside. Exactly one neighborhood will be visited on each of the five days, and none of the neighborhoods will be visited on more than one day. The bookmobile's schedule must conform to the following conditions: Hidden Hills is visited, but not on Friday. If Oldtown is visited, then it is visited on the day immediately before Hidden Hills is visited. If Lakeville is visited, then it is visited on Wednesday. Nottingham and Sunnyside are both visited, but not on consecutive days.",
+      "question": "If Hidden Hills is visited on Wednesday, which one of the following must be true?",
+      "options": [
+        "A) Nottingham is visited on Monday.",
+        "B) Oldtown is visited on Tuesday.",
+        "C) Park Plaza is visited on Friday.",
+        "D) Sunnyside is visited on Monday.",
+        "E) Sunnyside is visited on Thursday"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "neighborhoods = EnumSort([HiddenHills, Lakeville, Nottingham, Oldtown, ParkPlaza, Sunnyside])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday])",
+        "visited = Function([days, neighborhoods] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d, n)))",
+        "Exists([d:days], visited(d, HiddenHills))",
+        "Not(visited(Friday, HiddenHills))",
+        "Implies(visited(d, Oldtown), visited(d-1, HiddenHills))",
+        "Implies(visited(d, Lakeville), d == Wednesday)",
+        "And(Exists([d:days], visited(d, Nottingham)), Exists([d:days], visited(d, Sunnyside)), Not(d1 == d2))"
+      ],
+      "options": [
+        "is_sat(visited(Monday, Nottingham))",
+        "is_sat(visited(Tuesday, Oldtown))",
+        "is_sat(visited(Friday, ParkPlaza))",
+        "is_sat(visited(Monday, Sunnyside))",
+        "is_sat(visited(Thursday, Sunnyside))"
+      ],
+      "perplexity": [
+        1.0535837411880493,
+        1.0107961893081665
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "neighborhoods = EnumSort([hiddenhills, lakeville, nottingham, oldtown, parkplaza, sunnyside])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday])",
+        "visited = Function([days] -> [neighborhoods])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d)))",
+        "Exists([d:days], visited(d))",
+        "visited(d) == hiddenhills",
+        "visited(d) != hiddenhills",
+        "visited(d) == oldtown",
+        "visited(d) == lakeville",
+        "visited(d) == nottingham",
+        "visited(d) == sunnyside",
+        "visited(d) == parkplaza",
+        "visited(wednesday) == hiddenhills",
+        "visited(d) != hiddenhills",
+        "visited(d) == oldtown",
+        "visited(d) == hiddenhills",
+        "visited(d) == lakeville",
+        "visited(d) == wednesday",
+        "visited(d) == nottingham",
+        "visited(d) == sunnyside",
+        "visited(d) == parkplaza"
+      ],
+      "options": [
+        "is_sat(visited(monday))",
+        "is_sat(visited(tuesday))",
+        "is_sat(visited(wednesday))",
+        "is_sat(visited(thursday))",
+        "is_sat(visited(friday))"
+      ],
+      "perplexity": 1.2809724807739258
+    }
+  },
+  {
+    "id": 212,
+    "nl_problem": {
+      "context": "In one week—Monday through Friday—a library's bookmobile will visit five of the following six neighborhoods—Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, and Sunnyside. Exactly one neighborhood will be visited on each of the five days, and none of the neighborhoods will be visited on more than one day. The bookmobile's schedule must conform to the following conditions: Hidden Hills is visited, but not on Friday. If Oldtown is visited, then it is visited on the day immediately before Hidden Hills is visited. If Lakeville is visited, then it is visited on Wednesday. Nottingham and Sunnyside are both visited, but not on consecutive days.",
+      "question": "If Nottingham is visited on Thursday, which one of the following must be true?",
+      "options": [
+        "A) Hidden Hills is visited on Wednesday.",
+        "B) Lakeville is visited on Wednesday.",
+        "C) Oldtown is visited on Monday.",
+        "D) Park Plaza is visited on Friday.",
+        "E) Sunnyside is visited on Tuesday."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "neighborhoods = EnumSort([Hidden Hills, Lakeville, Nottingham, Oldtown, Park Plaza, Sunnyside])",
+        "days = EnumSort([Monday, Tuesday, Wednesday, Thursday, Friday])",
+        "visited = Function([days, neighborhoods] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d, n)))",
+        "ForAll([n:neighborhoods], Count([d:days], visited(d, n)) <= 1)",
+        "visited(?, Hidden Hills)",
+        "visited(?, Hidden Hills) != visited(Friday, Hidden Hills)",
+        "Implies(visited(?, Oldtown), visited(?, Hidden Hills) == (previous(d)))",
+        "Implies(visited(?, Lakeville), visited(Wednesday, Lakeville))",
+        "And(visited(?, Nottingham), visited(?, Sunnyside), visited(?, Nottingham) != visited(?, Sunnyside))"
+      ],
+      "options": [
+        "is_sat(visited(Wednesday, Hidden Hills))",
+        "is_sat(visited(Wednesday, Lakeville))",
+        "is_sat(visited(Monday, Oldtown))",
+        "is_sat(visited(Friday, Park Plaza))",
+        "is_sat(visited(Tuesday, Sunnyside))"
+      ],
+      "perplexity": [
+        1.0767604112625122,
+        1.0164941549301147
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "neighborhoods = EnumSort([hiddenhills, lakeville, nottingham, oldtown, parkplaza, sunnyside])",
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday])",
+        "visited = Function([days] -> [neighborhoods])"
+      ],
+      "constraints": [
+        "ForAll([d:days], Distinct([n:neighborhoods], visited(d)))",
+        "Exists([d:days], visited(d))",
+        "visited(d) == hiddenhills",
+        "visited(d) != hiddenhills",
+        "visited(d) == oldtown",
+        "Implies(visited(d) == oldtown, visited(d) == hiddenhills)",
+        "visited(d) == lakeville",
+        "visited(d) == nottingham",
+        "visited(d) == sunnyside",
+        "visited(d) != nottingham",
+        "visited(d) != sunnyside"
+      ],
+      "options": [
+        "is_sat(visited(thursday))",
+        "is_sat(visited(wednesday))",
+        "is_sat(visited(monday))",
+        "is_sat(visited(friday))",
+        "is_sat(visited(tuesday))"
+      ],
+      "perplexity": 1.3306406736373901
+    }
+  },
+  {
+    "id": 213,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "Which one of the following is a permissible assignment of rangers to park areas?",
+      "options": [
+        "A) area 1: Jefferson, Koguchi; area 2: Larson, Olsen; area 3: Mendez, Pruitt",
+        "B) area 1: Koguchi, Larson; area 2: Olsen, Pruitt; area 3: Jefferson, Mendez",
+        "C) area 1: Koguchi, Pruitt; area 2: Jefferson; area 3: Larson, Mendez, Olsen",
+        "D) area 1: Jefferson, Koguchi, Larson; area 2: Mendez, Olsen; area 3: Pruitt",
+        "E) area 1: Jefferson, Koguchi, Larson; area 2: Olsen, Pruitt; area 3: Mendez"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == area3",
+        "Not(assigned(Olsen) == area1)",
+        "Not(assigned(Pruitt) == area1)",
+        "(assigned(Larson) == assigned(Koguchi)) \\/ (assigned(Larson) == assigned(Mendez)) \\/ (assigned(Larson) != assigned(Koguchi)) \\/ (assigned(Larson) != assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))",
+        "Otherwise(assigned(Olsen) == area2, assigned(Jefferson) != assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(And(assigned(Jefferson) == area1, assigned(Koguchi) == area1, assigned(Larson) == area1, assigned(Mendez) == area3, assigned(Olsen) == area2, assigned(Pruitt) == area2))",
+        "is_sat(And(assigned(Koguchi) == area1, assigned(Larson) == area1, assigned(Olsen) == area2, assigned(Pruitt) == area2, assigned(Jefferson) == area3, assigned(Mendez) == area3))",
+        "is_sat(And(assigned(Koguchi) == area1, assigned(Pruitt) == area1, assigned(Jefferson) == area2, assigned(Larson) == area3, assigned(Mendez) == area3, assigned(Olsen) == area2))",
+        "is_sat(And(assigned(Jefferson) == area1, assigned(Koguchi) == area1, assigned(Larson) == area1, assigned(Mendez) == area3, assigned(Olsen) == area2, assigned(Pruitt) == area3))",
+        "is_sat(And(assigned(Jefferson) == area1, assigned(Koguchi) == area1, assigned(Larson) == area1, assigned(Mendez) == area3, assigned(Olsen) == area2, assigned(Pruitt) == area2))"
+      ],
+      "perplexity": [
+        1.0365067720413208,
+        1.0206893682479858
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_valid(assigned(jefferson))",
+        "is_valid(assigned(koguchi))",
+        "is_valid(assigned(larson))",
+        "is_valid(assigned(mendez))",
+        "is_valid(assigned(olson))",
+        "is_valid(assigned(pruitt))"
+      ],
+      "perplexity": 1.2742881774902344
+    }
+  },
+  {
+    "id": 214,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "If Olsen is the sole ranger assigned to area 2, then which one of the following could be the complete assignment of rangers to area 3?",
+      "options": [
+        "A) Mendez",
+        "B) Larson, Mendez",
+        "C) Mendez, Pruitt",
+        "D) Jefferson, Koguchi, Mendez",
+        "E) Jefferson, Mendez, Pruitt"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == area3",
+        "And(assigned(Olsen) != area1, assigned(Pruitt) != area1)",
+        "Or(assigned(Larson) == assigned(Koguchi), assigned(Larson) == assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(Mendez) == area3)",
+        "is_sat(And(assigned(Larson) == area3, assigned(Mendez) == area3))",
+        "is_sat(And(assigned(Mendez) == area3, assigned(Pruitt) == area3))",
+        "is_sat(And(assigned(Jefferson) == area3, assigned(Koguchi) == area3, assigned(Mendez) == area3))",
+        "is_sat(And(assigned(Jefferson) == area3, assigned(Mendez) == area3, assigned(Pruitt) == area3))"
+      ],
+      "perplexity": [
+        1.0326437950134277,
+        1.0044118165969849
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olsen, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olsen) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olsen) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_valid(assigned(mendez))",
+        "is_valid(assigned(larson))",
+        "is_valid(assigned(mendez))",
+        "is_valid(assigned(jefferson))",
+        "is_valid(assigned(jefferson))"
+      ],
+      "perplexity": 1.4009298086166382
+    }
+  },
+  {
+    "id": 215,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "If exactly one ranger is assigned to area 1, then which one of the following must be true?",
+      "options": [
+        "A) Jefferson is assigned to area 1.",
+        "B) Koguchi is assigned to area 2.",
+        "C) Larson is assigned to area 3.",
+        "D) Olsen is assigned to area 3.",
+        "E) Pruitt is assigned to area 2."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([1, 2, 3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == 3",
+        "And(assigned(Olsen) != 1, assigned(Pruitt) != 1)",
+        "Or(And(assigned(Larson) == assigned(Koguchi), assigned(Larson) != assigned(Mendez)), And(assigned(Larson) != assigned(Koguchi), assigned(Larson) != assigned(Mendez)))",
+        "Implies(assigned(Olsen) == 2, assigned(Jefferson) == assigned(Koguchi))",
+        "Implies(assigned(Olsen) != 2, assigned(Jefferson) != assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(Jefferson) == 1)",
+        "is_sat(assigned(Koguchi) == 2)",
+        "is_sat(assigned(Larson) == 3)",
+        "is_sat(assigned(Olsen) == 3)",
+        "is_sat(assigned(Pruitt) == 2)"
+      ],
+      "perplexity": [
+        1.0232012271881104,
+        1.0045294761657715
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Implies(assigned(olson) != area2, assigned(jefferson) != assigned(koguchi))"
+      ],
+      "options": [
+        "is_sat(And(count(rangers, assigned(r)), assigned(r) == area1))",
+        "is_sat(And(count(rangers, assigned(r)), assigned(r) == area2))",
+        "is_sat(And(count(rangers, assigned(r)), assigned(r) == area3))"
+      ],
+      "perplexity": 1.3766053915023804
+    }
+  },
+  {
+    "id": 216,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "Which one of the following rangers CANNOT be assigned to area 3?",
+      "options": [
+        "A) Pruitt",
+        "B) Olsen",
+        "C) Larson",
+        "D) Koguchi",
+        "E) Jefferson"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == area3",
+        "And(assigned(Olsen) != area1, assigned(Pruitt) != area1)",
+        "Or(assigned(Larson) == assigned(Koguchi), assigned(Larson) == assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))"
+      ],
+      "options": [
+        "is_unsat(assigned(Pruitt) == area3)",
+        "is_unsat(assigned(Olsen) == area3)",
+        "is_unsat(assigned(Larson) == area3)",
+        "is_unsat(assigned(Koguchi) == area3)",
+        "is_unsat(assigned(Jefferson) == area3)"
+      ],
+      "perplexity": [
+        1.0216439962387085,
+        1.0111496448516846
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_unsat(assigned(pruitt))",
+        "is_unsat(assigned(olson))",
+        "is_unsat(assigned(larson))",
+        "is_unsat(assigned(koguchi))",
+        "is_unsat(assigned(jefferson))"
+      ],
+      "perplexity": 1.289185881614685
+    }
+  },
+  {
+    "id": 217,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "If Koguchi is assigned to area 2, then which one of the following could be true?",
+      "options": [
+        "A) Jefferson is assigned to area 2.",
+        "B) Jefferson is assigned to area 3.",
+        "C) Larson is assigned to area 1.",
+        "D) Olsen is assigned to area 2.",
+        "E) Pruitt is assigned to area 3"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], Count([r:rangers], assigned(r) == a) >= 1)",
+        "ForAll([a:areas], Count([r:rangers], assigned(r) == a) <= 3)",
+        "assigned(Mendez) == area3",
+        "And(assigned(Olsen) != area1, assigned(Pruitt) != area1)",
+        "(assigned(Larson) == assigned(Koguchi) ) or (assigned(Larson) == assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))",
+        "Otherwise(assigned(Olsen) == area2, assigned(Jefferson) != assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(Jefferson) == area2)",
+        "is_sat(assigned(Jefferson) == area3)",
+        "is_sat(assigned(Larson) == area1)",
+        "is_sat(assigned(Olsen) == area2)",
+        "is_sat(assigned(Pruitt) == area3)"
+      ],
+      "perplexity": [
+        1.0601295232772827,
+        1.0114141702651978
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(koguchi))",
+        "is_sat(assigned(jefferson))",
+        "is_sat(assigned(larson))",
+        "is_sat(assigned(olson))",
+        "is_sat(assigned(pruitt))"
+      ],
+      "perplexity": 1.3680028915405273
+    }
+  },
+  {
+    "id": 218,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "If Larson and Olsen are assigned to the same area, then which one of the following could be true?",
+      "options": [
+        "A) Jefferson is assigned to area 3.",
+        "B) Koguchi is assigned to area 2.",
+        "C) Larson is assigned to area 1.",
+        "D) Olsen is assigned to area 2.",
+        "E) Pruitt is assigned to area 3"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == area3",
+        "Not(assigned(Olsen) == area1)",
+        "Not(assigned(Pruitt) == area1)",
+        "Or(assigned(Larson) == assigned(Koguchi), assigned(Larson) == assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))",
+        "Implies(Not(assigned(Olsen) == area2), assigned(Jefferson) != assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(Jefferson) == area3)",
+        "is_sat(assigned(Koguchi) == area2)",
+        "is_sat(assigned(Larson) == area1)",
+        "is_sat(assigned(Olsen) == area2)",
+        "is_sat(assigned(Pruitt) == area3)"
+      ],
+      "perplexity": [
+        1.0453622341156006,
+        1.0148836374282837
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(larson))",
+        "is_sat(assigned(olson))",
+        "is_sat(assigned(larson))",
+        "is_sat(assigned(olson))",
+        "is_sat(assigned(pruitt))",
+        "is_sat(assigned(jefferson))",
+        "is_sat(assigned(koguchi))"
+      ],
+      "perplexity": 1.4472419023513794
+    }
+  },
+  {
+    "id": 219,
+    "nl_problem": {
+      "context": "Six park rangers—Jefferson, Koguchi, Larson, Mendez, Olsen, and Pruitt—are each to be assigned to monitor one of three areas—area 1, area 2, and area 3—in a national park. At least one ranger, but no more than three, is assigned to each area. The assignment must conform to the following conditions: Mendez is assigned to area 3. Neither Olsen nor Pruitt is assigned to area 1. Larson is assigned to the same area as either Koguchi or Mendez but not to the same area as both. If Olsen is assigned to area 2, then Jefferson is assigned to the same area as Koguchi; otherwise, Jefferson is assigned to a different area than Koguchi.",
+      "question": "If Jefferson is assigned to area 2, then which one of the following must be true?",
+      "options": [
+        "A) Koguchi is assigned to area 1.",
+        "B) Larson is assigned to area 1.",
+        "C) Olsen is assigned to area 2.",
+        "D) Pruitt is assigned to area 2.",
+        "E) Pruitt is assigned to area 3"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "rangers = EnumSort([Jefferson, Koguchi, Larson, Mendez, Olsen, Pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(Count([r:rangers], assigned(r) == a) >= 1, Count([r:rangers], assigned(r) == a) <= 3))",
+        "assigned(Mendez) == area3",
+        "And(assigned(Olsen) != area1, assigned(Pruitt) != area1)",
+        "Or(assigned(Larson) == assigned(Koguchi), assigned(Larson) == assigned(Mendez))",
+        "Implies(assigned(Olsen) == area2, assigned(Jefferson) == assigned(Koguchi))",
+        "Otherwise(assigned(Olsen) == area2, assigned(Jefferson) != assigned(Koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(Koguchi) == area1))",
+        "is_sat(assigned(Larson) == area1))",
+        "is_sat(assigned(Olsen) == area2))",
+        "is_sat(assigned(Pruitt) == area2))",
+        "is_sat(assigned(Pruitt) == area3))"
+      ],
+      "perplexity": [
+        1.040332317352295,
+        1.0118885040283203
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "rangers = EnumSort([jefferson, koguchi, larson, mendez, olson, pruitt])",
+        "areas = EnumSort([area1, area2, area3])",
+        "assigned = Function([rangers] -> [areas])"
+      ],
+      "constraints": [
+        "ForAll([a:areas], And(1 <= count(rangers, assigned(r)), count(rangers, assigned(r)) <= 3))",
+        "assigned(mendez) == area3",
+        "And(assigned(olson) != area1, assigned(pruitt) != area1)",
+        "Or(assigned(larson) == assigned(koguchi), assigned(larson) == assigned(mendez))",
+        "Implies(assigned(olson) == area2, assigned(jefferson) == assigned(koguchi))",
+        "Not(assigned(jefferson) == assigned(koguchi))"
+      ],
+      "options": [
+        "is_sat(assigned(jefferson))",
+        "is_sat(assigned(koguchi))",
+        "is_sat(assigned(olson))",
+        "is_sat(assigned(pruitt))",
+        "is_sat(assigned(pruitt))"
+      ],
+      "perplexity": 1.4566370248794556
+    }
+  },
+  {
+    "id": 220,
+    "nl_problem": {
+      "context": "An economics department is assigning six teaching assistants—Ramos, Smith, Taj, Vogel, Yi, and Zane—to three courses—Labor, Markets, and Pricing. Each assistant will be assigned to exactly one course, and each course will have at least one assistant assigned to it. The assignment of assistants to courses is subject to the following conditions: Markets must have exactly two assistants assigned to it. Smith and Taj must be assigned to the same course as each other. Vogel and Yi cannot be assigned to the same course as each other. Yi and Zane must both be assigned to Pricing if either one of them is.",
+      "question": "Which one of the following could be the complete assignment of assistants to Pricing?",
+      "options": [
+        "A) Ramos, Yi, and Zane",
+        "B) Smith, Taj, and Yi",
+        "C) Smith, Taj, Yi, and Zane",
+        "D) Taj, Yi, and Zane",
+        "E) Vogel, Yi, and Zane"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "assistants = EnumSort([Ramos, Smith, Taj, Vogel, Yi, Zane])",
+        "courses = EnumSort([Labor, Markets, Pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Exists([a:assistants], assigned(a) == c))",
+        "ForAll([a:assistants], assigned(a) == 1)",
+        "Count([a:assistants], assigned(a) == Markets) == 2",
+        "assigned(Smith) == assigned(Taj)",
+        "assigned(Vogel) != assigned(Yi)",
+        "And(assigned(Yi) == Pricing, assigned(Zane) == Pricing)"
+      ],
+      "options": [
+        "is_sat(assigned(Ramos) == Pricing && assigned(Yi) == Pricing && assigned(Zane) == Pricing)",
+        "is_sat(assigned(Smith) == Pricing && assigned(Taj) == Pricing && assigned(Yi) == Pricing)",
+        "is_sat(assigned(Smith) == Pricing && assigned(Taj) == Pricing && assigned(Yi) == Pricing && assigned(Zane) == Pricing)",
+        "is_sat(assigned(Taj) == Pricing && assigned(Yi) == Pricing && assigned(Zane) == Pricing)",
+        "is_sat(assigned(Vogel) == Pricing && assigned(Yi) == Pricing && assigned(Zane) == Pricing)"
+      ],
+      "perplexity": [
+        1.0333305597305298,
+        1.0040947198867798
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "assistants = EnumSort([ramos, smith, taj, vogel, yi, zane])",
+        "courses = EnumSort([labor, markets, pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a))) >= 1",
+        "ForAll([a:assistants], assigned(a))",
+        "Count([a:assistants], assigned(a))",
+        "assigned(smith) == assigned(taj)",
+        "assigned(vogel) != assigned(yi)",
+        "And(assigned(yi) == pricing, assigned(zane) == pricing)"
+      ],
+      "options": [
+        "is_valid(assigned(ramos))",
+        "is_valid(assigned(smith))",
+        "is_valid(assigned(taj))",
+        "is_valid(assigned(yi))",
+        "is_valid(assigned(zane))"
+      ],
+      "perplexity": 1.415947675704956
+    }
+  },
+  {
+    "id": 221,
+    "nl_problem": {
+      "context": "An economics department is assigning six teaching assistants—Ramos, Smith, Taj, Vogel, Yi, and Zane—to three courses—Labor, Markets, and Pricing. Each assistant will be assigned to exactly one course, and each course will have at least one assistant assigned to it. The assignment of assistants to courses is subject to the following conditions: Markets must have exactly two assistants assigned to it. Smith and Taj must be assigned to the same course as each other. Vogel and Yi cannot be assigned to the same course as each other. Yi and Zane must both be assigned to Pricing if either one of them is.",
+      "question": "Which one of the following CANNOT be the complete assignment of assistants to Labor?",
+      "options": [
+        "A) Ramos, Vogel",
+        "B) Ramos, Zane",
+        "C) Smith, Taj",
+        "D) Vogel, Zane",
+        "E) Yi, Zane"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "assistants = EnumSort([Ramos, Smith, Taj, Vogel, Yi, Zane])",
+        "courses = EnumSort([Labor, Markets, Pricing])",
+        "assigned = Function([assistants, courses] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a, c)) >= 1)",
+        "ForAll([a:assistants], Count([c:courses], assigned(a, c)) == 1)",
+        "Count([a:assistants], assigned(a, Markets)) == 2",
+        "assigned(Smith, c) == assigned(Taj, c)",
+        "Not(assigned(Vogel, c) == assigned(Yi, c))",
+        "Implies(assigned(Yi, Pricing), assigned(Zane, Pricing))"
+      ],
+      "options": [
+        "is_unsat(And(assigned(Ramos, Labor), assigned(Vogel, Labor)))",
+        "is_unsat(And(assigned(Ramos, Labor), assigned(Zane, Labor)))",
+        "is_unsat(And(assigned(Smith, Labor), assigned(Taj, Labor)))",
+        "is_unsat(And(assigned(Vogel, Labor), assigned(Zane, Labor)))",
+        "is_unsat(And(assigned(Yi, Labor), assigned(Zane, Labor)))"
+      ],
+      "perplexity": [
+        1.030305027961731,
+        1.009456992149353
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "assistants = EnumSort([ramos, smith, taj, vogel, yi, zane])",
+        "courses = EnumSort([labor, markets, pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a))) >= 1",
+        "ForAll([a:assistants], assigned(a))",
+        "Count([a:assistants], assigned(a))",
+        "assigned(smith) == assigned(taj)",
+        "assigned(vogel) != assigned(yi)",
+        "And(assigned(yi) == pricing, assigned(zane) == pricing)"
+      ],
+      "options": [
+        "is_unsat(assigned(ramos))",
+        "is_unsat(assigned(vogel))",
+        "is_unsat(assigned(yi))"
+      ],
+      "perplexity": 1.5298508405685425
+    }
+  },
+  {
+    "id": 222,
+    "nl_problem": {
+      "context": "An economics department is assigning six teaching assistants—Ramos, Smith, Taj, Vogel, Yi, and Zane—to three courses—Labor, Markets, and Pricing. Each assistant will be assigned to exactly one course, and each course will have at least one assistant assigned to it. The assignment of assistants to courses is subject to the following conditions: Markets must have exactly two assistants assigned to it. Smith and Taj must be assigned to the same course as each other. Vogel and Yi cannot be assigned to the same course as each other. Yi and Zane must both be assigned to Pricing if either one of them is.",
+      "question": "Which one of the following could be true?",
+      "options": [
+        "A) Ramos and Vogel are both assigned to Markets.",
+        "B) Ramos and Taj are both assigned to Markets.",
+        "C) Smith and Vogel are both assigned to Markets.",
+        "D) Smith and Zane are both assigned to Pricing.",
+        "E) Vogel and Zane are both assigned to Pricing."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "assistants = EnumSort([Ramos, Smith, Taj, Vogel, Yi, Zane])",
+        "courses = EnumSort([Labor, Markets, Pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a) == c) >= 1)",
+        "ForAll([a:assistants], assigned(a) != None)",
+        "Count([a:assistants], assigned(a) == Markets) == 2",
+        "assigned(Smith) == assigned(Taj)",
+        "assigned(Vogel) != assigned(Yi)",
+        "And(assigned(Yi) == Pricing, assigned(Zane) == Pricing)"
+      ],
+      "options": [
+        "is_sat(assigned(Ramos) == Markets) and assigned(Vogel) == Markets)",
+        "is_sat(assigned(Ramos) == Markets) and assigned(Taj) == Markets)",
+        "is_sat(assigned(Smith) == Markets) and assigned(Vogel) == Markets)",
+        "is_sat(assigned(Smith) == Pricing) and assigned(Zane) == Pricing)",
+        "is_sat(assigned(Vogel) == Pricing) and assigned(Zane) == Pricing)"
+      ],
+      "perplexity": [
+        1.0467369556427002,
+        1.0104624032974243
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "assistants = EnumSort([ramos, smith, taj, vogel, yi, zane])",
+        "courses = EnumSort([labor, markets, pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a))) >= 1",
+        "Count([a:assistants], assigned(a))",
+        "assigned(smith) == assigned(taj)",
+        "assigned(vogel) != assigned(yi)",
+        "And(assigned(yi) == pricing, assigned(zane) == pricing)"
+      ],
+      "options": [
+        "is_sat(assigned(ramos))",
+        "is_sat(assigned(ramos))",
+        "is_sat(assigned(ramos))",
+        "is_sat(assigned(ramos))",
+        "is_sat(assigned(ramos))"
+      ],
+      "perplexity": 1.4721537828445435
+    }
+  },
+  {
+    "id": 223,
+    "nl_problem": {
+      "context": "An economics department is assigning six teaching assistants—Ramos, Smith, Taj, Vogel, Yi, and Zane—to three courses—Labor, Markets, and Pricing. Each assistant will be assigned to exactly one course, and each course will have at least one assistant assigned to it. The assignment of assistants to courses is subject to the following conditions: Markets must have exactly two assistants assigned to it. Smith and Taj must be assigned to the same course as each other. Vogel and Yi cannot be assigned to the same course as each other. Yi and Zane must both be assigned to Pricing if either one of them is.",
+      "question": "If Vogel is assigned to the same course as Zane, which one of the following CANNOT be true?",
+      "options": [
+        "A) Ramos is assigned to Labor.",
+        "B) Smith is assigned to Labor.",
+        "C) Taj is assigned to Markets.",
+        "D) Ramos is assigned to Pricing.",
+        "E) Smith is assigned to Pricing."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "assistants = EnumSort([Ramos, Smith, Taj, Vogel, Yi, Zane])",
+        "courses = EnumSort([Labor, Markets, Pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a) == c) >= 1)",
+        "ForAll([a:assistants], assigned(a) == 1)",
+        "Count([a:assistants], assigned(a) == Markets) == 2",
+        "assigned(Smith) == assigned(Taj)",
+        "assigned(Vogel) != assigned(Yi)",
+        "And(assigned(Yi) == Pricing, assigned(Zane) == Pricing)"
+      ],
+      "options": [
+        "is_exception(assigned(Ramos) == Labor)",
+        "is_exception(assigned(Smith) == Labor)",
+        "is_exception(assigned(Taj) == Markets)",
+        "is_exception(assigned(Ramos) == Pricing)",
+        "is_exception(assigned(Smith) == Pricing)"
+      ],
+      "perplexity": [
+        1.0245987176895142,
+        1.0126216411590576
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "assistants = EnumSort([ramos, smith, taj, vogel, yi, zane])",
+        "courses = EnumSort([labor, markets, pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a))) >= 1",
+        "ForAll([a:assistants], assigned(a))",
+        "Count([a:assistants], assigned(a))",
+        "assigned(smith) == assigned(taj)",
+        "assigned(vogel) != assigned(yi)",
+        "And(assigned(yi) == pricing, assigned(zane) == pricing)"
+      ],
+      "options": [
+        "is_unsat(And(assigned(vogel) == pricing, assigned(ramos) == labor))",
+        "is_unsat(And(assigned(vogel) == pricing, assigned(smith) == labor))",
+        "is_unsat(And(assigned(vogel) == pricing, assigned(taj) == markets))",
+        "is_unsat(And(assigned(vogel) == pricing, assigned(ramos) == pricing))",
+        "is_unsat(And(assigned(vogel) == pricing, assigned(smith) == pricing))"
+      ],
+      "perplexity": 1.234287977218628
+    }
+  },
+  {
+    "id": 224,
+    "nl_problem": {
+      "context": "An economics department is assigning six teaching assistants—Ramos, Smith, Taj, Vogel, Yi, and Zane—to three courses—Labor, Markets, and Pricing. Each assistant will be assigned to exactly one course, and each course will have at least one assistant assigned to it. The assignment of assistants to courses is subject to the following conditions: Markets must have exactly two assistants assigned to it. Smith and Taj must be assigned to the same course as each other. Vogel and Yi cannot be assigned to the same course as each other. Yi and Zane must both be assigned to Pricing if either one of them is.",
+      "question": "If no other assistant is assigned to the same course as Ramos, which one of the following must be true?",
+      "options": [
+        "A) Taj is assigned to Labor.",
+        "B) Vogel is assigned to Labor.",
+        "C) Yi is assigned to Markets.",
+        "D) Zane is assigned to Markets.",
+        "E) Smith is assigned to Pricing"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "assistants = EnumSort([Ramos, Smith, Taj, Vogel, Yi, Zane])",
+        "courses = EnumSort([Labor, Markets, Pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Exists([a:assistants], assigned(a) == c))",
+        "ForAll([a:assistants], assigned(a) != None)",
+        "Count([a:assistants], assigned(a) == Markets) == 2",
+        "assigned(Smith) == assigned(Taj)",
+        "assigned(Vogel) != assigned(Yi)",
+        "And(assigned(Yi) == Pricing, assigned(Zane) == Pricing) :- assigned(Yi, Pricing)",
+        "assigned(Ramos) != assigned(a)"
+      ],
+      "options": [
+        "is_sat(assigned(Taj) == Labor)",
+        "is_sat(assigned(Vogel) == Labor)",
+        "is_sat(assigned(Yi) == Markets)",
+        "is_sat(assigned(Zane) == Markets)",
+        "is_sat(assigned(Smith) == Pricing)"
+      ],
+      "perplexity": [
+        1.05678391456604,
+        1.0120676755905151
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "assistants = EnumSort([ramos, smith, taj, vogel, yi, zane])",
+        "courses = EnumSort([labor, markets, pricing])",
+        "assigned = Function([assistants] -> [courses])"
+      ],
+      "constraints": [
+        "ForAll([c:courses], Count([a:assistants], assigned(a))) >= 1",
+        "ForAll([a:assistants], assigned(a))",
+        "Count([a:assistants], assigned(a))",
+        "assigned(smith) == assigned(taj)",
+        "assigned(vogel) != assigned(yi)",
+        "And(assigned(yi) == pricing, assigned(zane) == pricing)",
+        "Count([a:assistants], assigned(a))",
+        "assigned(ramos) != assigned(smith)",
+        "assigned(ramos) != assigned(taj)",
+        "assigned(ramos) != assigned(vogel)",
+        "assigned(ramos) != assigned(yi)",
+        "assigned(ramos) != assigned(zane)"
+      ],
+      "options": [
+        "is_sat(assigned(taj))",
+        "is_sat(assigned(vogel))",
+        "is_sat(assigned(yi))",
+        "is_sat(assigned(zane))",
+        "is_sat(assigned(smith))"
+      ],
+      "perplexity": 1.3994722366333008
+    }
+  },
+  {
+    "id": 225,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "One possible route of the virus from the first computer in the network infected to Q is",
+      "options": [
+        "A) from R to P to T to Q",
+        "B) from T to S to R to Q",
+        "C) from T to S to U to Q",
+        "D) from U to P to R to Q",
+        "E) from U to T to P to R to Q"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "infected_by = Function([computers] -> [computers])"
+      ],
+      "constraints": [
+        "Exists(c:computers, infected_by(c) == None)",
+        "ForAll([c:computers], Count([i:computers], infected_by(i) == c) <= 2)",
+        "Count([i:computers], infected_by(S) == i) == 1",
+        "Exists(c:computers, infected_by(R) == c and infected_by(c) == S)",
+        "Or(infected_by(R) == Q, infected_by(T) == Q)",
+        "Or(infected_by(T) == P, infected_by(U) == P)"
+      ],
+      "options": [
+        "is_valid(infected_by(infected_by(R)) == P and infected_by(P) == T and infected_by(T) == Q)",
+        "is_valid(infected_by(T) == S and infected_by(S) == R and infected_by(R) == Q)",
+        "is_valid(infected_by(T) == S and infected_by(S) == U and infected_by(U) == Q)",
+        "is_valid(infected_by(U) == P and infected_by(P) == R and infected_by(R) == Q)",
+        "is_valid(infected_by(U) == T and infected_by(T) == P and infected_by(P) == R and infected_by(R) == Q)"
+      ],
+      "perplexity": [
+        1.0655457973480225,
+        1.011012315750122
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2))) <= 2",
+        "transmitted(s, c) == 1",
+        "Exists([c:computers], And(transmitted(c, r), transmitted(c, s)))",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))"
+      ],
+      "options": [
+        "is_valid(transmitted(r, p))",
+        "is_valid(transmitted(t, s))",
+        "is_valid(transmitted(t, r))",
+        "is_valid(transmitted(t, q))"
+      ],
+      "perplexity": 1.2312257289886475
+    }
+  },
+  {
+    "id": 226,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "Which one of the following could be the computer that was infected from outside the network?",
+      "options": [
+        "A) P",
+        "B) Q",
+        "C) R",
+        "D) S",
+        "E) T"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "infected = Function([computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c:computers], infected(c) == False)",
+        "Exists([c:computers], infected(c))",
+        "ForAll([c:computers], infected(c) == True implies Count([d:computers], infected(d) and c != d) <= 2)",
+        "infected(S) == True implies Count([d:computers], infected(d) and S != d) == 1",
+        "infected(C) == True implies infected(R) == True",
+        "Or(infected(R) == True, infected(T) == True) implies infected(Q) == True",
+        "Or(infected(T) == True, infected(U) == True) implies infected(P) == True"
+      ],
+      "options": [
+        "is_valid(infected(P))",
+        "is_valid(infected(Q))",
+        "is_valid(infected(R))",
+        "is_valid(infected(S))",
+        "is_valid(infected(T))"
+      ],
+      "perplexity": [
+        1.0945427417755127,
+        1.0122830867767334
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "infected = Function([computers] -> [bool])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c:computers], infected(c))",
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), infected(c1)))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2)))",
+        "transmitted(s, c) == 1",
+        "transmitted(c, s) == 1",
+        "transmitted(c, r) == 1",
+        "transmitted(c, s) == 1",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))"
+      ],
+      "options": [
+        "is_valid(infected(p))",
+        "is_valid(infected(q))",
+        "is_valid(infected(r))",
+        "is_valid(infected(s))",
+        "is_valid(infected(t))"
+      ],
+      "perplexity": 1.2159863710403442
+    }
+  },
+  {
+    "id": 227,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "If T did not transmit the virus to any other computer on the network, which one of the following must be true?",
+      "options": [
+        "A) P transmitted the virus to S.",
+        "B) Q transmitted the virus to R.",
+        "C) U transmitted the virus to S.",
+        "D) P did not transmit the virus to any other computer on the network.",
+        "E) R did not transmit the virus to any other computer on the network."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c:computers], Count([r:computers], transmitted(c, r)) <= 2)",
+        "Count([c:computers], transmitted(S, c)) == 1",
+        "Exists([c:computers], And(transmitted(c, R), transmitted(c, S)))",
+        "Or(transmitted(R, Q), transmitted(T, Q))",
+        "Or(transmitted(T, P), transmitted(U, P))",
+        "transmitted(T, _) == false"
+      ],
+      "options": [
+        "is_sat(transmitted(P, S))",
+        "is_sat(transmitted(Q, R))",
+        "is_sat(transmitted(U, S))",
+        "is_sat(transmitted(P, _) == false)",
+        "is_sat(transmitted(R, _) == false)"
+      ],
+      "perplexity": [
+        1.0525124073028564,
+        1.0133776664733887
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2))) <= 2",
+        "transmitted(s, c) == 1",
+        "transmitted(c, s) == 1",
+        "transmitted(c, r) == 1",
+        "transmitted(c, s) == 1",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))",
+        "not(transmitted(t, c))"
+      ],
+      "options": [
+        "is_sat(transmitted(p, s))",
+        "is_sat(transmitted(q, r))",
+        "is_sat(transmitted(u, s))",
+        "is_sat(ForAll([c:computers], Count([c2:computers], transmitted(c, c2))))",
+        "is_sat(ForAll([c:computers], Count([c2:computers], transmitted(c, c2))))"
+      ],
+      "perplexity": 1.2197972536087036
+    }
+  },
+  {
+    "id": 228,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "Any of the following computers could have transmitted the virus to two other computers on the network EXCEPT:",
+      "options": [
+        "A) P",
+        "B) Q",
+        "C) R",
+        "D) T",
+        "E) U"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2)) <= 2)",
+        "transmitted(S, c2) == 1",
+        "Exists([c:computers], And(transmitted(c, R), transmitted(c, S)))",
+        "Or(transmitted(R, Q), transmitted(T, Q))",
+        "Or(transmitted(T, P), transmitted(U, P))"
+      ],
+      "options": [
+        "is_exception(Count([c:computers], transmitted(c, c2) == 2) == 1)",
+        "is_exception(Count([c:computers], transmitted(c, c2) == 2) == 1)",
+        "is_exception(Count([c:computers], transmitted(c, c2) == 2) == 1)",
+        "is_exception(Count([c:computers], transmitted(c, c2) == 2) == 1)",
+        "is_exception(Count([c:computers], transmitted(c, c2) == 2) == 1)"
+      ],
+      "perplexity": [
+        1.0450990200042725,
+        1.0127838850021362
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2))) <= 2",
+        "transmitted(s, c) == 1",
+        "Exists([c:computers], And(transmitted(c, r), transmitted(c, s)))",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))"
+      ],
+      "options": [
+        "is_exception(Count([c:computers], transmitted(c, c2)))",
+        "is_exception(Count([c:computers], transmitted(c, c2)))",
+        "is_exception(Count([c:computers], transmitted(c, c2)))",
+        "is_exception(Count([c:computers], transmitted(c, c2)))",
+        "is_exception(Count([c:computers], transmitted(c, c2)))"
+      ],
+      "perplexity": 1.2382546663284302
+    }
+  },
+  {
+    "id": 229,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "The spread of the virus among the computers is completely determined if which one of the following is true?",
+      "options": [
+        "A) R transmitted the virus to Q.",
+        "B) T transmitted the virus to Q.",
+        "C) T transmitted the virus to S.",
+        "D) U transmitted the virus to P.",
+        "E) U transmitted the virus to R"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "infected = Function([computers] -> [bool])"
+      ],
+      "constraints": [
+        "Exists([c:computers], infected(c))",
+        "ForAll([c:computers], infected(c) == True)  -> (ForAll([d:computers], infected(d) != True))",
+        "ForAll([c:computers], Count([d:computers], infected(d) && c != d) <= 2)",
+        "Count([d:computers], infected(d) && d != S) == 1",
+        "Exists([c:computers], infected(c) && infected(S) && c != S && c != R)",
+        "Or(infected(R) && infected(Q), infected(T) && infected(Q))",
+        "Or(infected(T) && infected(P), infected(U) && infected(P))"
+      ],
+      "options": [
+        "is_sat(infected(R) && infected(Q))",
+        "is_sat(infected(T) && infected(Q))",
+        "is_sat(infected(T) && infected(S))",
+        "is_sat(infected(U) && infected(P))",
+        "is_sat(infected(U) && infected(R))"
+      ],
+      "perplexity": [
+        1.1312549114227295,
+        1.0107570886611938
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2)))",
+        "Count([c:computers], transmitted(s, c)) == 1",
+        "Exists([c:computers], And(transmitted(c, r), transmitted(c, s)))",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))"
+      ],
+      "options": [
+        "is_sat(And(transmitted(r, q), transmitted(t, p)))",
+        "is_sat(And(transmitted(t, q), transmitted(t, p)))",
+        "is_sat(And(transmitted(t, s), transmitted(t, p)))",
+        "is_sat(And(transmitted(u, p), transmitted(u, r)))",
+        "is_sat(And(transmitted(u, r), transmitted(t, p)))"
+      ],
+      "perplexity": 1.1621547937393188
+    }
+  },
+  {
+    "id": 230,
+    "nl_problem": {
+      "context": "There are exactly six computers—P, Q, R, S, T, and U—on a small network. Exactly one of those computers was infected by a virus from outside the network, and that virus was then transmitted between computers on the network. Each computer received the virus exactly once. The following pieces of information concerning the spread of the virus have been established: No computer transmitted the virus to more than two other computers on the network. S transmitted the virus to exactly one other computer on the network. The computer that transmitted the virus to R also transmitted it to S. Either R or T transmitted the virus to Q. Either T or U transmitted the virus to P.",
+      "question": "If P is the only computer that transmitted the virus to two other computers on the network, which one of the following must be true?",
+      "options": [
+        "A) S transmitted the virus to T.",
+        "B) T transmitted the virus to P.",
+        "C) Q did not transmit the virus to any other computer on the network.",
+        "D) R did not transmit the virus to any other computer on the network.",
+        "E) U did not transmit the virus to any other computer on the network."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "computers = EnumSort([P, Q, R, S, T, U])",
+        "transmitted = Function([computers, computers] -> [bool])",
+        "infected = Function([computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c:computers], infected(c) == 0)",
+        "ForAll([c:computers], Count([d:computers], transmitted(c, d)) <= 2)",
+        "transmitted(S, c) == 1",
+        "transmitted(c, R) == transmitted(c, S)",
+        "Or(transmitted(R, Q), transmitted(T, Q))",
+        "Or(transmitted(T, P), transmitted(U, P))",
+        "Count([c:computers], Count([d:computers], transmitted(c, d)) == 2) == 1"
+      ],
+      "options": [
+        "is_sat(transmitted(S, T))",
+        "is_sat(transmitted(T, P))",
+        "is_sat(Not(transmitted(Q, c)))",
+        "is_sat(Not(transmitted(R, c)))",
+        "is_sat(Not(transmitted(U, c)))"
+      ],
+      "perplexity": [
+        1.0913195610046387,
+        1.0129270553588867
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "computers = EnumSort([p, q, r, s, t, u])",
+        "transmitted = Function([computers, computers] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([c1:computers, c2:computers], Implies(transmitted(c1, c2), c1 != c2))",
+        "ForAll([c:computers], Count([c2:computers], transmitted(c, c2))) <= 2",
+        "transmitted(s, c) == 1",
+        "transmitted(c, r) == 1",
+        "transmitted(c, s) == 1",
+        "Or(transmitted(r, q), transmitted(t, q))",
+        "Or(transmitted(t, p), transmitted(u, p))",
+        "Count([c:computers], transmitted(c, c2)) == 2"
+      ],
+      "options": [
+        "is_sat(transmitted(s, t))",
+        "is_sat(transmitted(t, p))",
+        "is_sat(Not(transmitted(q, c)))",
+        "is_sat(Not(transmitted(r, c)))",
+        "is_sat(Not(transmitted(u, c)))"
+      ],
+      "perplexity": 1.191780924797058
+    }
   }
 ]

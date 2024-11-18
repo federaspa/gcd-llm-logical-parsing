@@ -28,6 +28,13 @@ class CodeTranslator:
             ", ".join([f"'{x}'" for x in enum_sort_values])
         )
         return [CodeTranslator.StdCodeLine(line, CodeTranslator.LineType.DECL)]
+    
+    @staticmethod
+    def convert_boolean_literals(statement):
+        """Convert lowercase boolean literals to Python format"""
+        statement = re.sub(r'\btrue\b', 'True', statement)
+        statement = re.sub(r'\bfalse\b', 'False', statement)
+        return statement
 
     @staticmethod
     def translate_int_sort_declaration(int_sort_name, int_sort_values):

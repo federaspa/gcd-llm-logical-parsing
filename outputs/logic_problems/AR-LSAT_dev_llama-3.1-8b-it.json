@@ -6979,6 +6979,32 @@
       ]
     },
     "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "zones = EnumSort([Z1, Z2, Z3])",
+        "uses = EnumSort([housing, industrial, retail])",
+        "subzones = Function([zones] -> [uses])"
+      ],
+      "constraints": [
+        "ForAll([z:zones], Count([s:uses], subzones(z) == s) <= 3)",
+        "subzones(Z1) != retail",
+        "ForAll([z:zones], Count([s:uses], And(s == housing, subzones(z) == s)) <= 2)",
+        "ForAll([z:zones], Implies(Exists([s:uses], And(s == housing, subzones(z) == s)), Count([s:uses], subzones(z) == retail) <= 1))",
+        "ForAll([z:zones], subzones(z) != industrial | Exists([s:uses], And(s == housing, subzones(z) == s)) | Exists([s:uses], Count([s2:uses], subzones(s2) == retail) == 3))",
+        "ForAll([z:zones], Exists([s:uses], subzones(z) == industrial))"
+      ],
+      "options": [
+        "is_allowed(Count([z:zones], subzones(z) == retail) > Count([z:zones], subzones(z) == retail))",
+        "is_allowed(Exists([z:zones], Exists([s:uses], And(s == housing, subzones(z) == s))))",
+        "is_allowed(Count([z:zones], subzones(z)) == 2)",
+        "is_allowed(ForAll([z:zones], Count([s:uses], subzones(z) == s) == 3))",
+        "is_allowed(Count([z:zones], subzones(z)) == 4)"
+      ],
+      "perplexity": [
+        1.0788277387619019,
+        1.0881160497665405
+      ]
+    },
     "logic_problem_gcd": {
       "declarations": [
         "zones = EnumSort([z1, z2, z3])",
@@ -7001,6 +7027,2173 @@
         "is_valid(And(designated(z2, housing), designated(z3, housing), designated(z2, housing), designated(z3, housing)))"
       ],
       "perplexity": 1.2346290349960327
+    }
+  },
+  {
+    "id": 115,
+    "nl_problem": {
+      "context": "Millville has created three new development zones: Z1, Z2, and Z3. Within these zones, subzones can be designated for housing, industrial, or retail use, with no subzone designated for more than one use. By city regulation, a total of no more than three subzones can be designated for each of the three uses. The following restrictions are in place: Retail subzones are not allowed in Z1. No more than two subzones for housing are allowed in any particular zone. No more than one retail subzone is allowed in any zone in which a subzone is designated for housing. Industrial subzones are not allowed in any zone in which a subzone is designated for housing or three subzones are designated for retail use.",
+      "question": "If three subzones in all are designated for retail use and a subzone in Z2 is designated for housing, then which one of the following is allowed?",
+      "options": [
+        "A) Two subzones in Z1 are designated for housing.",
+        "B) More subzones are designated for industrial use in Z2 than in Z3.",
+        "C) More subzones are designated for retail use in Z2 than in Z3.",
+        "D) The same number of subzones are designated for retail use in Z2 and Z3.",
+        "E) A subzone in Z3 is designated for housing."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.013870120048523,
+        1.0910587310791016
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "zones = EnumSort([z1, z2, z3])",
+        "subzones = EnumSort([housing, industrial, retail])",
+        "designated = Function([zones, subzones] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([z:zones], And(0 <= designated(z, housing), designated(z, housing) <= 3))",
+        "ForAll([z:zones], And(0 <= designated(z, industrial), designated(z, industrial) <= 3))",
+        "ForAll([z:zones], And(0 <= designated(z, retail), designated(z, retail) <= 3))",
+        "designated(z1, retail) == 0",
+        "ForAll([z:zones], Implies(designated(z, housing) > 2, designated(z, housing) == 2))",
+        "ForAll([z:zones], Implies(designated(z, housing) > 0, designated(z, retail) == 1))",
+        "ForAll([z:zones], Implies(designated(z, housing) > 0, designated(z, industrial) == 0))",
+        "ForAll([z:zones], Implies(designated(z, retail) == 3, designated(z, industrial) == 0))"
+      ],
+      "options": [
+        "is_valid(designated(z1, housing))",
+        "is_valid(designated(z2, industrial))",
+        "is_valid(designated(z2, retail))",
+        "is_valid(designated(z2, retail))",
+        "is_valid(designated(z3, housing))"
+      ],
+      "perplexity": 1.237257480621338
+    }
+  },
+  {
+    "id": 116,
+    "nl_problem": {
+      "context": "A researcher is studying seven manuscripts—F, G, H, L, M, P, and S—to determine their relative ages. It is known that no two manuscripts were written at the same time. The researcher has also determined the following: H was written earlier than S but later than F. P was the next manuscript written after G. At least four of the manuscripts were written earlier than L. At least four of the manuscripts were written later than M. H was not written fifth.",
+      "question": "Which one of the following could be the order in which the manuscripts were written, from first to last?",
+      "options": [
+        "A) F, M, G, H, P, L, S",
+        "B) G, P, M, F, H, S, L",
+        "C) H, F, M, G, P, L, S",
+        "D) L, F, M, G, P, H, S",
+        "E) M, F, H, S, L, G, P"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0088448524475098,
+        1.1100332736968994
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "manuscripts = EnumSort([f, g, h, l, m, p, s])",
+        "written = Function([manuscripts] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))",
+        "ForAll([m:manuscripts], Distinct([m1:manuscripts], written(m1)))",
+        "And(written(h) < written(s), written(h) > written(f))",
+        "And(written(p) > written(g), written(p) > written(m))",
+        "Count([m:manuscripts], And(written(m) < written(l), written(m) > written(m))) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(m), written(m) < written(l))) >= 4",
+        "written(h) != 5"
+      ],
+      "options": [
+        "is_valid(And(written(f) < written(m), written(g) < written(p), written(h) < written(s), written(l) < written(p), written(m) < written(h), written(p) < written(s)))",
+        "is_valid(And(written(g) < written(p), written(m) < written(f), written(h) < written(s), written(l) < written(p), written(p) < written(s), written(s) < written(l)))",
+        "is_valid(And(written(h) < written(f), written(m) < written(g), written(p) < written(s), written(l) < written(p), written(p) < written(s), written(s) < written(l)))",
+        "is_valid(And(written(l) < written(f), written(m) < written(g), written(p) < written(s), written(h) < written(p), written(p) < written(s), written(s) < written(l)))",
+        "is_valid(And(written(m) < written(f), written(h) < written(s), written(g) < written(p), written(l) < written(p), written(p) < written(s), written(s) < written(l)))"
+      ],
+      "perplexity": 1.0892086029052734
+    }
+  },
+  {
+    "id": 117,
+    "nl_problem": {
+      "context": "A researcher is studying seven manuscripts—F, G, H, L, M, P, and S—to determine their relative ages. It is known that no two manuscripts were written at the same time. The researcher has also determined the following: H was written earlier than S but later than F. P was the next manuscript written after G. At least four of the manuscripts were written earlier than L. At least four of the manuscripts were written later than M. H was not written fifth.",
+      "question": "Which one of the following manuscripts CANNOT have been written third?",
+      "options": [
+        "A) S",
+        "B) P",
+        "C) M",
+        "D) H",
+        "E) G"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "manuscripts = EnumSort([F, G, H, L, M, P, S])",
+        "written = Function([manuscripts] -> [int])",
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))"
+      ],
+      "constraints": [
+        "ForAll([m1:manuscripts, m2:manuscripts], m1 != m2 -> written(m1) != written(m2))",
+        "And(written(H) > written(S), written(H) < written(F))",
+        "written(P) > written(G)",
+        "Count([m:manuscripts], And(written(m) < written(L), m != L)) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(M), m != M)) >= 4",
+        "written(H) != 5"
+      ],
+      "options": [
+        "is_unsat(Exists([m:manuscripts], And(written(m) == 3, written(m) == written(S))))",
+        "is_unsat(Exists([m:manuscripts], And(written(m) == 3, written(m) == written(P))))",
+        "is_unsat(Exists([m:manuscripts], And(written(m) == 3, written(m) == written(M))))",
+        "is_unsat(Exists([m:manuscripts], And(written(m) == 3, written(m) == written(H))))",
+        "is_unsat(Exists([m:manuscripts], And(written(m) == 3, written(m) == written(G))))"
+      ],
+      "perplexity": [
+        1.0409928560256958,
+        1.1058366298675537
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "manuscripts = EnumSort([f, g, h, l, m, p, s])",
+        "written = Function([manuscripts] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))",
+        "ForAll([m:manuscripts], Distinct([m1:manuscripts], written(m1)))",
+        "And(written(h) < written(s), written(h) > written(f))",
+        "written(p) > written(g)",
+        "Count([m:manuscripts], And(written(m) < written(l), written(m) > written(m))) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(m), written(m) < written(l))) >= 4",
+        "written(h) != 5"
+      ],
+      "options": [
+        "is_unsat(written(s))",
+        "is_unsat(written(p))",
+        "is_unsat(written(m))",
+        "is_unsat(written(h))",
+        "is_unsat(written(g))"
+      ],
+      "perplexity": 1.1774499416351318
+    }
+  },
+  {
+    "id": 118,
+    "nl_problem": {
+      "context": "A researcher is studying seven manuscripts—F, G, H, L, M, P, and S—to determine their relative ages. It is known that no two manuscripts were written at the same time. The researcher has also determined the following: H was written earlier than S but later than F. P was the next manuscript written after G. At least four of the manuscripts were written earlier than L. At least four of the manuscripts were written later than M. H was not written fifth.",
+      "question": "If H was the next manuscript written after M, which one of the following could be true?",
+      "options": [
+        "A) F was written second.",
+        "B) G was written third.",
+        "C) H was written fourth.",
+        "D) P was written third.",
+        "E) S was written fourth."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0043706893920898,
+        1.092166543006897
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "manuscripts = EnumSort([f, g, h, l, m, p, s])",
+        "written = Function([manuscripts] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))",
+        "ForAll([m:manuscripts], Distinct([m1:manuscripts], written(m1)))",
+        "And(written(h) > written(s), written(h) < written(f))",
+        "And(written(p) > written(g), written(p) > written(h))",
+        "Count([m:manuscripts], And(written(m) < written(l), written(m) > written(m))) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(m), written(m) < written(l))) >= 4",
+        "written(h) != 5"
+      ],
+      "options": [
+        "is_sat(And(written(f) == 2, written(g) == 3, written(h) == 4, written(p) == 3))",
+        "is_sat(And(written(f) == 2, written(g) == 3, written(h) == 4, written(s) == 4))",
+        "is_sat(And(written(f) == 2, written(g) == 3, written(h) == 4, written(p) == 3))",
+        "is_sat(And(written(f) == 2, written(g) == 3, written(h) == 4, written(s) == 4))",
+        "is_sat(And(written(f) == 2, written(g) == 3, written(h) == 4, written(s) == 4))"
+      ],
+      "perplexity": 1.0773704051971436
+    }
+  },
+  {
+    "id": 119,
+    "nl_problem": {
+      "context": "A researcher is studying seven manuscripts—F, G, H, L, M, P, and S—to determine their relative ages. It is known that no two manuscripts were written at the same time. The researcher has also determined the following: H was written earlier than S but later than F. P was the next manuscript written after G. At least four of the manuscripts were written earlier than L. At least four of the manuscripts were written later than M. H was not written fifth.",
+      "question": "Which one of the following manuscripts CANNOT have been written fourth?",
+      "options": [
+        "A) F",
+        "B) G",
+        "C) H",
+        "D) P",
+        "E) S"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.008886694908142,
+        1.0992053747177124
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "manuscripts = EnumSort([f, g, h, l, m, p, s])",
+        "written = Function([manuscripts] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))",
+        "ForAll([m:manuscripts], Distinct([m1:manuscripts], written(m1)))",
+        "And(written(h) < written(s), written(h) > written(f))",
+        "written(p) > written(g)",
+        "Count([m:manuscripts], And(written(m) < written(l), written(m) > written(m))) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(m), written(m) < written(l))) >= 4",
+        "written(h) != 5"
+      ],
+      "options": [
+        "is_unsat(written(f))",
+        "is_unsat(written(g))",
+        "is_unsat(written(h))",
+        "is_unsat(written(p))",
+        "is_unsat(written(s))"
+      ],
+      "perplexity": 1.1502653360366821
+    }
+  },
+  {
+    "id": 120,
+    "nl_problem": {
+      "context": "A researcher is studying seven manuscripts—F, G, H, L, M, P, and S—to determine their relative ages. It is known that no two manuscripts were written at the same time. The researcher has also determined the following: H was written earlier than S but later than F. P was the next manuscript written after G. At least four of the manuscripts were written earlier than L. At least four of the manuscripts were written later than M. H was not written fifth.",
+      "question": "If P was written earlier than H, then any of the following could be true EXCEPT:",
+      "options": [
+        "A) F was written first.",
+        "B) G was written third.",
+        "C) H was written sixth.",
+        "D) L was written seventh.",
+        "E) M was written second."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "manuscripts = EnumSort([F, G, H, L, M, P, S])",
+        "order = Function([manuscripts] -> [int])",
+        "ForAll([m:manuscripts], And(1 <= order(m), order(m) <= 7))"
+      ],
+      "constraints": [
+        "ForAll([m1:manuscripts, m2:manuscripts], m1 != m2 -> order(m1) != order(m2))",
+        "And(order(H) > order(S), order(H) < order(F))",
+        "order(P) > order(G)",
+        "Count([m:manuscripts], And(order(m) < order(L), m != L)) >= 4",
+        "Count([m:manuscripts], And(order(m) > order(M), m != M)) >= 4",
+        "Not(order(H) == 5)"
+      ],
+      "options": [
+        "is_exception(Implies(order(P) < order(H), is_true(order(F) == 1)))",
+        "is_exception(Implies(order(P) < order(H), is_true(order(G) == 3)))",
+        "is_exception(Implies(order(P) < order(H), is_true(order(H) == 6)))",
+        "is_exception(Implies(order(P) < order(H), is_true(order(L) == 7)))",
+        "is_exception(Implies(order(P) < order(H), is_true(order(M) == 2)))"
+      ],
+      "perplexity": [
+        1.061347246170044,
+        1.103360652923584
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "manuscripts = EnumSort([f, g, h, l, m, p, s])",
+        "written = Function([manuscripts] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([m:manuscripts], And(1 <= written(m), written(m) <= 7))",
+        "ForAll([m:manuscripts], Distinct([m1:manuscripts], written(m1)))",
+        "And(written(h) > written(s), written(h) < written(f))",
+        "And(written(p) > written(g), written(p) < written(h))",
+        "Count([m:manuscripts], And(written(m) < written(l), written(m) > written(m))) >= 4",
+        "Count([m:manuscripts], And(written(m) > written(m), written(m) < written(l))) >= 4",
+        "written(h) != 5"
+      ],
+      "options": [
+        "is_exception(issat(And(written(f) == 1, written(g) == 3, written(h) == 6, written(l) == 7, written(m) == 2)))",
+        "is_exception(isstat(And(written(f) == 1, written(g) == 3, written(h) == 6, written(l) == 7, written(m) == 2)))",
+        "is_exception(isstat(And(written(f) == 1, written(g) == 3, written(h) == 6, written(l) == 7, written(m) == 2)))",
+        "is_exception(isstat(And(written(f) == 1, written(g) == 3, written(h) == 6, written(l) == 7, written(m) == 2)))",
+        "is_exception(isstat(And(written(f) == 1, written(g) == 3, written(h) == 6, written(l) == 7, written(m) == 2)))"
+      ],
+      "perplexity": 1.1019854545593262
+    }
+  },
+  {
+    "id": 121,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "Which one of the following is an acceptable placement of dishes on the bottom, middle, and top shelves?",
+      "options": [
+        "A) bottom: dish 1 middle: dish 6 top: dishes 2, 3, 4, 5",
+        "B) bottom: dishes 1, 3 middle: dish 6 top: dishes 2, 4, 5",
+        "C) bottom: dish 2 middle: dishes 4, 6 top: dishes 1, 3, 5",
+        "D) bottom: dishes 3, 5 middle: dish 6 top: dishes 1, 2, 4",
+        "E) bottom: dishes 4, 6 middle: dishes 1, 3 top: dishes 2, 5"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet"
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0070451498031616,
+        1.2217859029769897
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "shelves = EnumSort([bottom, middle, top])",
+        "dishes = EnumSort([dish1, dish2, dish3, dish4, dish5, dish6])",
+        "stored = Function([dishes] -> [shelves])"
+      ],
+      "constraints": [
+        "ForAll([s:shelves], Count([d:dishes], stored(d))) <= 3",
+        "And(stored(dish2) > stored(dish6), stored(dish6) != bottom)",
+        "Or(stored(dish6) == stored(dish5))",
+        "stored(dish6) == stored(dish5) != stored(dish5) == stored(dish6)",
+        "stored(dish1) != stored(dish4)"
+      ],
+      "options": [
+        "is_sat(stored(dish1))",
+        "is_sat(stored(dish2))",
+        "is_sat(stored(dish3))",
+        "is_sat(stored(dish4))",
+        "is_sat(stored(dish5))",
+        "is_sat(stored(dish6))"
+      ],
+      "perplexity": 1.5756230354309082
+    }
+  },
+  {
+    "id": 122,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "If dish 6 is the only dish stored on the bottom shelf, which one of the following could be the list of dishes that are stored together on the middle shelf?",
+      "options": [
+        "A) dish 1, dish 3",
+        "B) dish 2, dish 4",
+        "C) dish 2, dish 3",
+        "D) dish 3, dish 5",
+        "E) dish 4, dish 5"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0099931955337524,
+        1.0915918350219727
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "dishes = EnumSort([dish1, dish2, dish3, dish4, dish5, dish6])",
+        "shelves = EnumSort([bottom, middle, top])",
+        "stored = Function([dishes] -> [shelves])"
+      ],
+      "constraints": [
+        "ForAll([s:shelves], Count([d:dishes], stored(d))) <= 3",
+        "And(stored(dish2) != bottom, stored(dish2) > stored(dish6))",
+        "Or(stored(dish6) == stored(dish5))",
+        "stored(dish1) != stored(dish4)"
+      ],
+      "options": [
+        "is_valid(And(stored(dish1) == middle, stored(dish3) == middle))",
+        "is_valid(And(stored(dish2) == middle, stored(dish4) == middle))",
+        "is_valid(And(stored(dish2) == middle, stored(dish3) == middle))",
+        "is_valid(And(stored(dish3) == middle, stored(dish5) == middle))",
+        "is_valid(And(stored(dish4) == middle, stored(dish5) == middle))"
+      ],
+      "perplexity": 1.2552491426467896
+    }
+  },
+  {
+    "id": 123,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "If dish 1, dish 2, and dish 3 are stored on the same shelf as each other, which one of the following could be true?",
+      "options": [
+        "A) Exactly one of the dishes is stored on the top shelf.",
+        "B) Exactly two of the dishes are stored on the top shelf.",
+        "C) Exactly two of the dishes are stored on the middle shelf.",
+        "D) Exactly three of the dishes are stored on the middle shelf.",
+        "E) Exactly three of the dishes are stored on the bottom shelf."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))"
+      ],
+      "perplexity": [
+        1.0052497386932373,
+        1.1043179035186768
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "dishes = EnumSort([dish1, dish2, dish3, dish4, dish5, dish6])",
+        "shelves = EnumSort([bottom, middle, top])",
+        "stored = Function([dishes] -> [shelves])"
+      ],
+      "constraints": [
+        "ForAll([s:shelves], Count([d:dishes], stored(d))) <= 3",
+        "And(stored(dish2) > stored(dish6), stored(dish6) != bottom)",
+        "Or(stored(dish6) == stored(dish5))",
+        "stored(dish1) != stored(dish4)"
+      ],
+      "options": [
+        "is_sat(And(And(stored(dish1) == stored(dish2), stored(dish2) == stored(dish3)), Or(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top), And(stored(dish1) == middle, stored(dish2) == middle, stored(dish3) == middle), And(stored(dish1) == bottom, stored(dish2) == bottom, stored(dish3) == bottom))))",
+        "is_sat(And(And(stored(dish1) == stored(dish2), stored(dish2) == stored(dish3)), Or(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top), And(stored(dish1) == middle, stored(dish2) == middle, stored(dish3) == middle), And(stored(dish1) == bottom, stored(dish2) == bottom, stored(dish3) == bottom), And(stored(dish1) == top, stored(dish2) == middle, stored(dish3) == bottom))))",
+        "is_sat(And(And(stored(dish1) == stored(dish2), stored(dish2) == stored(dish3)), Or(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top), And(stored(dish1) == middle, stored(dish2) == middle, stored(dish3) == middle), And(stored(dish1) == bottom, stored(dish2) == bottom, stored(dish3) == bottom), And(stored(dish1) == top, stored(dish2) == middle, stored(dish3) == middle))))",
+        "is_sat(And(And(stored(dish1) == stored(dish2), stored(dish2) == stored(dish3)), Or(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top), And(stored(dish1) == middle, stored(dish2) == middle, stored(dish3) == middle), And(stored(dish1) == bottom, stored(dish2) == bottom, stored(dish3) == bottom), And(stored(dish1) == top, stored(dish2) == bottom, stored(dish3) == middle))))",
+        "is_sat(And(And(stored(dish1) == stored(dish2), stored(dish2) == stored(dish3)), Or(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top), And(stored(dish1) == middle, stored(dish2) == middle, stored(dish3) == middle), And(stored(dish1) == bottom, stored(dish2) == bottom, stored(dish3) == bottom), And(stored(dish1) == bottom, stored(dish2) == middle, stored(dish3) == top))))"
+      ],
+      "perplexity": 1.119589924812317
+    }
+  },
+  {
+    "id": 124,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "If exactly one of the shelves has no dish stored on it, which one of the following must be true?",
+      "options": [
+        "A) Exactly three of the dishes are stored on the bottom shelf.",
+        "B) Exactly three of the dishes are stored on the middle shelf.",
+        "C) Dish 1 is stored on the same shelf as dish 5.",
+        "D) Dish 2 is stored on the same shelf as dish 3.",
+        "E) Dish 4 is stored on the same shelf as dish 5."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        ":- enum_sort(people, [vladimir, wendy]).",
+        ":- enum_sort(meals, [breakfast, lunch, dinner, snack]).",
+        ":- enum_sort(foods, [fish, hot_cakes, macaroni, omelet, poached_eggs]).",
+        ":- func(eats(people, meals), foods).",
+        ":- var(vladimir_meal).",
+        ":- var(wendy_meal).",
+        ":- constraint(no_vladimir_wendy_same_meal).",
+        ":- constraint(no_repeated_food).",
+        ":- constraint(breakfast_options).",
+        ":- constraint(lunch_options).",
+        ":- constraint(dinner_options).",
+        ":- constraint(snack_options).",
+        ":- constraint(wendy_eats_omelet)"
+      ],
+      "constraints": [
+        ":- constraint(no_vladimir_wendy_same_meal).",
+        ":- constraint(no_repeated_food).",
+        ":- constraint(breakfast_options).",
+        ":- constraint(lunch_options).",
+        ":- constraint(dinner_options).",
+        ":- constraint(snack_options).",
+        ":- constraint(wendy_eats_omelet).",
+        "no_vladimir_wendy_same_meal :- ForAll([m:meals], eats(vladimir, m) != eats(wendy, m)).",
+        "no_repeated_food :- ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1).",
+        "breakfast_options :- ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet)).",
+        "lunch_options :- ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet)).",
+        "dinner_options :- ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet)).",
+        "snack_options :- ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet)).",
+        "wendy_eats_omelet :- eats(wendy, lunch) == omelet"
+      ],
+      "options": [
+        ":- option(vladimir_eats_fish, eats(vladimir, _), fish).",
+        ":- option(vladimir_eats_hot_cakes, eats(vladimir, _), hot_cakes).",
+        ":- option(vladimir_eats_macaroni, eats(vladimir, _), macaroni).",
+        ":- option(vladimir_eats_omelet, eats(vladimir, _), omelet).",
+        ":- option(vladimir_eats_poached_eggs, eats(vladimir, _), poached_eggs)"
+      ],
+      "declarations2": [
+        ":- enum_sort(technicians, [stacy, urma, wim, xena, yolanda, zane]).",
+        ":- enum_sort(machines, [radios, televisions, vcrs]).",
+        ":- func(repairs(technicians, machines), bool).",
+        ":- var(xena_count).",
+        ":- var(yolanda_count).",
+        ":- var(zane_count).",
+        ":- constraint(xena_and_three_others).",
+        ":- constraint(yolanda_repair_both).",
+        ":- constraint(stacy_not_repair_yolanda).",
+        ":- constraint(zane_more_than_yolanda).",
+        ":- constraint(wim_not_repair_stacy).",
+        ":- constraint(urma_two_machines)"
+      ],
+      "constraints2": [
+        ":- constraint(xena_and_three_others).",
+        ":- constraint(yolanda_repair_both).",
+        ":- constraint(stacy_not_repair_yolanda).",
+        ":- constraint(zane_more_than_yolanda).",
+        ":- constraint(wim_not_repair_stacy).",
+        ":- constraint(urma_two_machines).",
+        "xena_and_three_others :- And(repairs(xena, radios), Count([t:technicians], And(t != xena, repairs(t, radios))) == 3).",
+        "yolanda_repair_both :- And(repairs(yolanda, televisions), repairs(yolanda, vcrs)).",
+        "stacy_not_repair_yolanda :- ForAll([m:machines], Implies(repairs(yolanda, m), Not(repairs(stacy, m)))).",
+        "zane_more_than_yolanda :- Count([m:machines], repairs(zane, m)) > Count([m:machines], repairs(yolanda, m)).",
+        "wim_not_repair_stacy :- ForAll([m:machines], Implies(repairs(stacy, m), Not(repairs(wim, m)))).",
+        "urma_two_machines :- Count([m:machines], repairs(urma, m)) == 2"
+      ],
+      "options2": [
+        ":- option(stacy_urma, repairs(stacy, _), repairs(urma, _)).",
+        ":- option(urma_yolanda, repairs(urma, _), repairs(yolanda, _)).",
+        ":- option(urma_xena, repairs(urma, _), repairs(xena, _)).",
+        ":- option(wim_xena, repairs(wim, _), repairs(xena, _)).",
+        ":- option(xena_yolanda, repairs(xena, _), repairs(yolanda, _))"
+      ],
+      "declarations3": [
+        ":- enum_sort(valves, [g, h, i, k, l, n, o, p]).",
+        ":- func(opened(valves), int).",
+        ":- var(count_h).",
+        ":- var(count_i).",
+        ":- var(count_k).",
+        ":- var(count_n).",
+        ":- var(count_o).",
+        ":- constraint(distinct_opened).",
+        ":- constraint(k_before_h).",
+        ":- constraint(o_before_l).",
+        ":- constraint(l_before_g).",
+        ":- constraint(n_before_h).",
+        ":- constraint(i_after_k)"
+      ],
+      "constraints3": [
+        ":- constraint(distinct_opened).",
+        ":- constraint(k_before_h).",
+        ":- constraint(o_before_l).",
+        ":- constraint(l_before_g).",
+        ":- constraint(n_before_h).",
+        ":- constraint(i_after_k).",
+        "distinct_opened :- Distinct([v:valves], opened(v)).",
+        "k_before_h :- And(opened(k) < opened(h), opened(p) < opened(h)).",
+        "o_before_l :- And(opened(o) < opened(l), opened(p) < opened(l)).",
+        "l_before_g :- And(opened(l) < opened(g), opened(p) < opened(g)).",
+        "n_before_h :- And(opened(n) < opened(h), opened(p) < opened(h)).",
+        "i_after_k :- And(opened(i) > opened(k), opened(p) > opened(k))"
+      ],
+      "options3": [
+        ":- option(count_h, opened(h), count).",
+        ":- option(count_i, opened(i), count).",
+        ":- option(count_k, opened(k), count).",
+        ":- option(count_n, opened(n), count).",
+        ":- option(count_o, opened(o), count)"
+      ],
+      "perplexity": [
+        1.0973217487335205,
+        1.033270239830017
+      ]
+    }
+  },
+  {
+    "id": 125,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "If dish 5 is the only dish stored on the bottom shelf and if exactly two of the dishes are stored on the middle shelf, then which one of the following is a pair of dishes that must be among the dishes stored on the top shelf?",
+      "options": [
+        "A) dish 1 and dish 2",
+        "B) dish 1 and dish 6",
+        "C) dish 2 and dish 3",
+        "D) dish 2 and dish 4",
+        "E) dish 3 and dish 4"
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.005557656288147,
+        1.0864408016204834
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "dishes = EnumSort([dish1, dish2, dish3, dish4, dish5, dish6])",
+        "shelves = EnumSort([bottom, middle, top])",
+        "stored = Function([dishes] -> [shelves])"
+      ],
+      "constraints": [
+        "ForAll([s:shelves], Count([d:dishes], stored(d))) <= 3",
+        "And(stored(dish2) != bottom, stored(dish2) > stored(dish6))",
+        "And(stored(dish6) == stored(dish5))",
+        "stored(dish1) != stored(dish4)"
+      ],
+      "options": [
+        "is_sat(And(stored(dish1) == top, stored(dish2) == top))",
+        "is_sat(And(stored(dish1) == top, stored(dish6) == top))",
+        "is_sat(And(stored(dish2) == top, stored(dish3) == top))",
+        "is_sat(And(stored(dish2) == top, stored(dish4) == top))",
+        "is_sat(And(stored(dish3) == top, stored(dish4) == top))"
+      ],
+      "perplexity": 1.3003439903259277
+    }
+  },
+  {
+    "id": 126,
+    "nl_problem": {
+      "context": "Exactly six petri dishes—labeled dish 1 through dish 6—are to be stored in an otherwise empty refrigerator. There are three available shelves—the bottom shelf, the middle shelf, and the top shelf. The placement of the dishes must be consistent with the following conditions: No more than three dishes are stored on any shelf. Dish 2 is stored at least one shelf above dish 6. Dish 6 is stored either one shelf above or one shelf below dish 5. Dish 1 is not stored on the same shelf as dish 4.",
+      "question": "If exactly one of the dishes is stored on the middle shelf, which one of the following could be the list of dishes stored on the top shelf?",
+      "options": [
+        "A) dish 1, dish 2",
+        "B) dish 1, dish 5",
+        "C) dish 2, dish 3",
+        "D) dish 3, dish 4",
+        "E) dish 3, dish 5"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0160777568817139,
+        1.121252179145813
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "dishes = EnumSort([dish1, dish2, dish3, dish4, dish5, dish6])",
+        "shelves = EnumSort([bottom, middle, top])",
+        "stored = Function([dishes] -> [shelves])"
+      ],
+      "constraints": [
+        "ForAll([s:shelves], Count([d:dishes], stored(d))) <= 3",
+        "And(stored(dish2) > stored(dish6), stored(dish6) != middle)",
+        "Or(stored(dish6) == stored(dish5))",
+        "stored(dish1) != stored(dish4)"
+      ],
+      "options": [
+        "is_valid(And(stored(dish1) == top, stored(dish2) == top, stored(dish3) == top))",
+        "is_valid(And(stored(dish1) == top, stored(dish5) == top, stored(dish3) == top))",
+        "is_valid(And(stored(dish2) == top, stored(dish3) == top, stored(dish3) == top))",
+        "is_valid(And(stored(dish3) == top, stored(dish4) == top, stored(dish3) == top))",
+        "is_valid(And(stored(dish3) == top, stored(dish5) == top, stored(dish3) == top))"
+      ],
+      "perplexity": 1.2196826934814453
+    }
+  },
+  {
+    "id": 127,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "Which one of the following could be the schedule of deliveries to the schools, from the first to the fourth?",
+      "options": [
+        "A) Juices: Hafford, Ferndale, Gladstone, Isley Snacks: Ferndale, Isley, Gladstone, Hafford",
+        "B) Juices: Hafford, Isley, Ferndale, Gladstone Snacks: Isley, Ferndale, Gladstone, Hafford",
+        "C) Juices: Isley, Ferndale, Gladstone, Hafford Snacks: Hafford, Ferndale, Gladstone, Isley",
+        "D) Juices: Isley, Gladstone, Ferndale, Hafford Snacks: Ferndale, Gladstone, Hafford, Isley",
+        "E) Juices: Isley, Hafford, Gladstone, Ferndale Snacks: Ferndale, Isley, Gladstone, Hafford"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0105090141296387,
+        1.095644235610962
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4, 1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], Distinct([t:trucks], delivered(s, t)))",
+        "ForAll([s:schools], Implies(delivered(s, snacks) < delivered(hafford, snacks), delivered(s, snacks) < delivered(ferndale, snacks)))",
+        "delivered(gladstone, juices) != 4",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(ferndale, snacks) < delivered(hafford, snacks)"
+      ],
+      "options": [
+        "is_valid(delivered(ferndale, juices))",
+        "is_valid(delivered(gladstone, juices))",
+        "is_valid(delivered(hafford, juices))",
+        "is_valid(delivered(isley, juices))",
+        "is_valid(delivered(ferndale, snacks))",
+        "is_valid(delivered(gladstone, snacks))",
+        "is_valid(delivered(hafford, snacks))",
+        "is_valid(delivered(isley, snacks))"
+      ],
+      "perplexity": 1.1507275104522705
+    }
+  },
+  {
+    "id": 128,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "If Hafford is the fourth school to which juices are delivered, which one of the following must be true?",
+      "options": [
+        "A) Ferndale is the second school to which juices are delivered.",
+        "B) Gladstone is the third school to which juices are delivered.",
+        "C) Ferndale is the second school to which snacks are delivered.",
+        "D) Hafford is the second school to which snacks are delivered.",
+        "E) Isley is the first school to which snacks are delivered."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "schools = EnumSort([Ferndale, Gladstone, Hafford, Isley])",
+        "trucks = EnumSort([juices_truck, snacks_truck])",
+        "deliveries = EnumSort([week_1, week_2, week_3])",
+        "delivered_juices = Function([schools, deliveries] -> [bool])",
+        "delivered_snacks = Function([schools, deliveries] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([s:schools, t:trucks], Count([d:deliveries], delivered_juices(s, d) | t == juices_truck | delivered_snacks(s, d) | t == snacks_truck) == 1)",
+        "ForAll([s:schools], Implies(delivered_snacks(Ferndale, d), delivered_snacks(Hafford, d)))",
+        "Not(delivered_juices(Gladstone, d))",
+        "delivered_snacks(Gladstone, d)",
+        "Implies(delivered_juices(s, d), delivered_snacks(s, d + 1))",
+        "delivered_juices(Hafford, d)"
+      ],
+      "options": [
+        "is_true(delivered_juices(Ferndale, d) & d = 2)",
+        "is_true(delivered_snacks(Gladstone, d))",
+        "is_true(delivered_snacks(Ferndale, d) & d = 2)",
+        "is_true(delivered_snacks(Hafford, d) & d = 2)",
+        "is_true(delivered_juices(Isley, d) & d = 1)"
+      ],
+      "perplexity": [
+        1.1515166759490967,
+        1.1049121618270874
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4, 1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], And(delivered(s, snacks) < delivered(hafford, snacks), delivered(s, juices) < delivered(hafford, juices)))",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(delivered(f, snacks), juices) == delivered(f, juices)",
+        "delivered(delivered(f, juices), snacks) == delivered(f, snacks)"
+      ],
+      "options": [
+        "is_valid(And(delivered(ferndale, juices) == 2, delivered(gladstone, snacks) == 3))",
+        "is_valid(And(delivered(ferndale, juices) == 2, delivered(hafford, snacks) == 2))",
+        "is_valid(And(delivered(ferndale, snacks) == 2, delivered(gladstone, snacks) == 3))",
+        "is_valid(And(delivered(hafford, snacks) == 2, delivered(gladstone, snacks) == 3))",
+        "is_valid(And(delivered(isley, snacks) == 1, delivered(gladstone, snacks) == 3))"
+      ],
+      "perplexity": 1.111478567123413
+    }
+  },
+  {
+    "id": 129,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "If Isley is the third school to which juices are delivered, which one of the following could be true?",
+      "options": [
+        "A) Juices are delivered to Gladstone at some time before they are delivered to Hafford.",
+        "B) Juices are delivered to Isley at some time before they are delivered to Hafford.",
+        "C) Snacks are delivered to Ferndale at some time before they are delivered to Isley.",
+        "D) Snacks are delivered to Gladstone at some time before they are delivered to Isley.",
+        "E) Snacks are delivered to Hafford at some time before they are delivered to Gladstone."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "days = EnumSort([monday, tuesday, wednesday, thursday, friday, saturday, sunday])",
+        "holidays = EnumSort([christmas, easter, halloween])",
+        "presents = Function([days, holidays] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([d:days, h:holidays], presents(d, h) > 0)",
+        "And(presents(saturday, christmas) > 0, presents(saturday, easter) > 0)",
+        "ForAll([d:days], presents(d, halloween) <= 10)",
+        "Count([d:days], presents(d, christmas) == 5)",
+        "ForAll([h:holidays], presents(friday, h) <= 5)"
+      ],
+      "options": [
+        "is_valid(Exists([d:days], Exists([h:holidays], presents(d, h) == 10)))",
+        "is_valid(Exists([h:holidays], ForAll([d:days], presents(d, h) >= 10)))",
+        "is_valid(ForAll([h:holidays], ForAll([d:days], presents(d, h) <= 5)))"
+      ],
+      "perplexity": [
+        1.0139585733413696,
+        1.0883729457855225
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4))",
+        "ForAll([s:schools], And(1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], And(delivered(s, snacks) < delivered(hafford, snacks), delivered(s, snacks) > delivered(ferndale, snacks)))",
+        "delivered(gladstone, juices) != 4",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(schools, juices, 1) == delivered(schools, snacks, 4)"
+      ],
+      "options": [
+        "is_valid(And(delivered(gladstone, juices) < delivered(hafford, juices), delivered(gladstone, juices) > delivered(ferndale, juices)))",
+        "is_valid(And(delivered(isley, juices) < delivered(hafford, juices), delivered(isley, juices) > delivered(ferndale, juices)))",
+        "is_valid(And(delivered(ferndale, snacks) < delivered(isley, snacks), delivered(ferndale, snacks) > delivered(gladstone, snacks)))",
+        "is_valid(And(delivered(gladstone, snacks) < delivered(isley, snacks), delivered(gladstone, snacks) > delivered(ferndale, snacks)))",
+        "is_valid(And(delivered(hafford, snacks) < delivered(gladstone, snacks), delivered(hafford, snacks) > delivered(ferndale, snacks)))"
+      ],
+      "perplexity": 1.0930185317993164
+    }
+  },
+  {
+    "id": 130,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "If Isley is the first school to which snacks are delivered, which one of the following could be true?",
+      "options": [
+        "A) Ferndale is the second school to which juices are delivered.",
+        "B) Hafford is the second school to which juices are delivered.",
+        "C) Hafford is the third school to which juices are delivered.",
+        "D) Isley is the first school to which juices are delivered.",
+        "E) Hafford is the second school to which snacks are delivered."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0104914903640747,
+        1.0839359760284424
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4, 1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], And(delivered(s, snacks) < delivered(hafford, snacks), delivered(ferndale, snacks) < delivered(hafford, snacks)))",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(ferndale, snacks) == delivered(isley, juices)",
+        "delivered(isley, snacks) == 1"
+      ],
+      "options": [
+        "is_valid(delivered(ferndale, juices))",
+        "is_valid(delivered(hafford, juices))",
+        "is_valid(delivered(hafford, juices))",
+        "is_valid(delivered(isley, juices))",
+        "is_valid(delivered(hafford, snacks))"
+      ],
+      "perplexity": 1.3320156335830688
+    }
+  },
+  {
+    "id": 131,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "Which one of the following could be true?",
+      "options": [
+        "A) Both juices and snacks are delivered to Gladstone at some time before they are delivered to Ferndale.",
+        "B) Both juices and snacks are delivered to Gladstone at some time before they are delivered to Isley.",
+        "C) Both juices and snacks are delivered to Hafford at some time before they are delivered to Isley.",
+        "D) Both juices and snacks are delivered to Isley at some time before they are delivered to Ferndale.",
+        "E) Both juices and snacks are delivered to Isley at some time before they are delivered to Hafford."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0165303945541382,
+        1.0867332220077515
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4))",
+        "ForAll([s:schools], And(1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], And(delivered(s, snacks) < delivered(hafford, snacks), delivered(s, snacks) > delivered(ferndale, snacks)))",
+        "delivered(gladstone, juices) != 4",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(s, juices) == 4",
+        "delivered(s, snacks) == 1"
+      ],
+      "options": [
+        "is_sat(And(delivered(gladstone, juices) < delivered(ferndale, juices), delivered(gladstone, snacks) < delivered(ferndale, snacks)))",
+        "is_sat(And(delivered(gladstone, juices) < delivered(ferndale, juices), delivered(gladstone, snacks) < delivered(isley, snacks)))",
+        "is_sat(And(delivered(hafford, juices) < delivered(isley, juices), delivered(hafford, snacks) < delivered(isley, snacks)))",
+        "is_sat(And(delivered(isley, juices) < delivered(ferndale, juices), delivered(isley, snacks) < delivered(ferndale, snacks)))",
+        "is_sat(And(delivered(isley, juices) < delivered(ferndale, juices), delivered(isley, snacks) < delivered(hafford, snacks)))"
+      ],
+      "perplexity": 1.0918563604354858
+    }
+  },
+  {
+    "id": 132,
+    "nl_problem": {
+      "context": "A company operates vending machines in four schools: Ferndale, Gladstone, Hafford, and Isley. The company delivers juices in one of its two trucks and snacks in the other truck. Each week, exactly one delivery of juices and exactly one delivery of snacks is made to each school, subject to the following conditions: Snacks must be delivered to Ferndale at some time before they are delivered to Hafford. Gladstone cannot be the fourth school to which juices are delivered. Gladstone must be the third school to which snacks are delivered. The first school to which juices are delivered must be the fourth one to which snacks are delivered.",
+      "question": "Which one of the following, if substituted for the condition that Gladstone cannot be the fourth school to which juices are delivered, would have the same effect in determining the delivery schedule?",
+      "options": [
+        "A) Ferndale must be either the second school or the fourth school to which juices are delivered.",
+        "B) Gladstone must be either the second school or the third school to which juices are delivered.",
+        "C) Hafford must be either the first school or the fourth school to which juices are delivered.",
+        "D) The first school to which juices are delivered must be either Ferndale or Isley.",
+        "E) The fourth school to which juices are delivered must be either Hafford or Isley."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Wim, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Zane, m)))"
+      ],
+      "perplexity": [
+        1.0071567296981812,
+        1.0893503427505493
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "schools = EnumSort([ferndale, gladstone, hafford, isley])",
+        "trucks = EnumSort([juices, snacks])",
+        "delivered = Function([schools, trucks] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([s:schools], And(1 <= delivered(s, juices), delivered(s, juices) <= 4, 1 <= delivered(s, snacks), delivered(s, snacks) <= 4))",
+        "ForAll([s:schools], And(delivered(s, snacks) < delivered(hafford, snacks), delivered(s, snacks) > delivered(ferndale, snacks)))",
+        "delivered(gladstone, snacks) == 3",
+        "delivered(delivered(f, juices))",
+        "delivered(delivered(s, snacks), juices) == 4"
+      ],
+      "options": [
+        "is_sat(ForAll([s:schools], Or(delivered(s, juices) == 2, delivered(s, juices) == 4)))",
+        "is_sat(ForAll([s:schools], Or(delivered(s, juices) == 2, delivered(s, snacks) == 3)))",
+        "is_sat(ForAll([s:schools], Or(delivered(s, juices) == 1, delivered(s, juices) == 4)))",
+        "is_sat(ForAll([s:schools], Or(delivered(s, juices) == 1, delivered(s, snacks) == 4)))",
+        "is_sat(ForAll([s:schools], Or(delivered(s, juices) == 4, delivered(s, snacks) == 4)))"
+      ],
+      "perplexity": 1.1686716079711914
+    }
+  },
+  {
+    "id": 133,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "Which one of the following could be the assignment of paralegals to cases?",
+      "options": [
+        "A) Raimes: Frank Sicoli: Gina, Hiro, Kevin Thompson: Laurie",
+        "B) Raimes: Kevin Sicoli: Gina Thompson: Frank, Hiro, Laurie",
+        "C) Raimes: Gina, Kevin Sicoli: Frank, Hiro Thompson: Laurie",
+        "D) Raimes: Kevin, Laurie Sicoli: Gina, Hiro Thompson: Frank",
+        "E) Raimes: Frank, Kevin, Laurie Sicoli: Hiro Thompson: Gina"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0064877271652222,
+        1.0953222513198853
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(assigned(frank) != raimes, assigned(kevin) != thompson))",
+        "Or(assigned(frank) == assigned(frank), assigned(gina) == assigned(gina))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_sat(assigned(frank))",
+        "is_sat(assigned(gina))",
+        "is_sat(assigned(hiro))",
+        "is_sat(assigned(kevin))",
+        "is_sat(assigned(laurie))"
+      ],
+      "perplexity": 1.3357017040252686
+    }
+  },
+  {
+    "id": 134,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "Which one of the following CANNOT be the complete assignment of paralegals to the Sicoli case?",
+      "options": [
+        "A) Frank, Hiro, Kevin",
+        "B) Frank, Hiro, Laurie",
+        "C) Gina, Hiro, Kevin",
+        "D) Gina, Hiro, Laurie",
+        "E) Hiro, Kevin, Laurie"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0076353549957275,
+        1.1162391901016235
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(Not(assigned(frank) == raimes), Not(assigned(kevin) == thompson)))",
+        "Or(assigned(frank) == assigned(gina), assigned(gina) == assigned(laurie), Not(assigned(frank) == assigned(gina)))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_unsat(assigned(hiro))",
+        "is_unsat(And(assigned(frank) == sicoli, assigned(kevin) == sicoli))",
+        "is_unsat(And(assigned(frank) == sicoli, assigned(laurie) == sicoli))",
+        "is_unsat(And(assigned(gina) == sicoli, assigned(kevin) == sicoli))",
+        "is_unsat(And(assigned(gina) == sicoli, assigned(laurie) == sicoli))"
+      ],
+      "perplexity": 1.243619441986084
+    }
+  },
+  {
+    "id": 135,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "If exactly two of the paralegals are assigned to the Thompson case, then which one of the following could be the complete assignment of paralegals to the Raimes case?",
+      "options": [
+        "A) Gina",
+        "B) Kevin",
+        "C) Laurie",
+        "D) Gina, Kevin",
+        "E) Kevin, Laurie"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))"
+      ],
+      "perplexity": [
+        1.0053446292877197,
+        1.095111608505249
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(assigned(frank) != raimes, assigned(kevin) != thompson))",
+        "Or(assigned(frank) == assigned(gina), assigned(gina) == assigned(laurie), assigned(frank) != assigned(gina))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_valid(assigned(frank))",
+        "is_valid(assigned(gina))",
+        "is_valid(assigned(laurie))",
+        "is_valid(And(assigned(frank) == raimes, assigned(gina) == raimes))",
+        "is_valid(And(assigned(kevin) == raimes, assigned(laurie) == raimes))"
+      ],
+      "perplexity": 1.287346601486206
+    }
+  },
+  {
+    "id": 136,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "If one of the cases has Gina and Laurie as the only paralegals assigned to it, then each of the following must be false EXCEPT:",
+      "options": [
+        "A) Frank is assigned to the Raimes case.",
+        "B) Frank is assigned to the Sicoli case.",
+        "C) Gina is assigned to the Raimes case.",
+        "D) Kevin is assigned to the Raimes case.",
+        "E) Laurie is assigned to the Thompson case."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0179964303970337,
+        1.0826997756958008
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(Not(assigned(frank) == raimes), Not(assigned(kevin) == thompson)))",
+        "Or(assigned(frank) == assigned(frank), assigned(gina) == assigned(gina))",
+        "Not(And(assigned(frank) == assigned(frank), assigned(gina) == assigned(gina)))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_unsat(assigned(frank))",
+        "is_unsat(assigned(frank))",
+        "is_unsat(assigned(gina))",
+        "is_unsat(assigned(kevin))",
+        "is_unsat(assigned(laurie))"
+      ],
+      "perplexity": 1.346341848373413
+    }
+  },
+  {
+    "id": 137,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "Which one of the following CANNOT be the complete assignment of paralegals to the Thompson case?",
+      "options": [
+        "A) Gina",
+        "B) Laurie",
+        "C) Gina, Kevin",
+        "D) Gina, Laurie",
+        "E) Kevin, Laurie"
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "paralegals = EnumSort([Frank, Gina, Hiro, Kevin, Laurie])",
+        "cases = EnumSort([Raimes, Sicoli, Thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Exists([p:paralegals], assigned(p) == c))",
+        "Or(And(assigned(Frank) == Raimes, assigned(Kevin) == Thompson), And(Not(assigned(Frank) == Raimes), Not(assigned(Kevin) == Thompson)))",
+        "Or(assigned(Frank) == Raimes, assigned(Gina) == Raimes)",
+        "Or(assigned(Kevin) == Thompson, assigned(Gina) == Thompson)",
+        "Not(And(assigned(Frank) == Raimes, assigned(Gina) == Raimes, assigned(Kevin) == Thompson, assigned(Gina) == Thompson))",
+        "assigned(Hiro) == Sicoli"
+      ],
+      "options": [
+        "is_unsat(And(assigned(Frank) != Thompson, assigned(Kevin) != Thompson, assigned(Gina) == Thompson))",
+        "is_unsat(And(assigned(Frank) != Thompson, assigned(Kevin) != Thompson, assigned(Laurie) == Thompson))",
+        "is_unsat(And(assigned(Frank) != Thompson, assigned(Kevin) != Thompson, assigned(Gina) == Thompson, assigned(Laurie) == Thompson))",
+        "is_unsat(And(assigned(Frank) != Thompson, assigned(Kevin) != Thompson, assigned(Gina) == Thompson, assigned(Laurie) != Thompson))",
+        "is_unsat(And(assigned(Frank) != Thompson, assigned(Kevin) != Thompson, assigned(Laurie) != Thompson, assigned(Laurie) == Thompson))"
+      ],
+      "perplexity": [
+        1.0388603210449219,
+        1.099621295928955
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(assigned(frank) != raimes, assigned(kevin) != thompson))",
+        "Or(assigned(frank) == assigned(gina), assigned(gina) == assigned(hiro), assigned(frank) != assigned(gina), assigned(gina) != assigned(hiro))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_unsat(assigned(kevin))",
+        "is_unsat(assigned(gina))",
+        "is_unsat(And(assigned(kevin) == gina, assigned(gina) == thompson))",
+        "is_unsat(And(assigned(kevin) == gina, assigned(gina) == laurie))",
+        "is_unsat(And(assigned(kevin) == laurie, assigned(gina) == laurie))"
+      ],
+      "perplexity": 1.2770373821258545
+    }
+  },
+  {
+    "id": 138,
+    "nl_problem": {
+      "context": "Each of five paralegals—Frank, Gina, Hiro, Kevin, and Laurie—is being assigned to exactly one of three cases—the Raimes, Sicoli, or Thompson case. At least one paralegal will be assigned to each case. The following conditions must apply: Either Frank is assigned to Raimes and Kevin is assigned to Thompson, or Frank is not assigned to Raimes and Kevin is not assigned to Thompson. Either Frank is the sole paralegal assigned to his case or Gina is the sole paralegal assigned to her case, but not both. Hiro is assigned to Sicoli.",
+      "question": "If Kevin is the sole paralegal assigned to one of the cases then which one of the following lists all of the paralegals any one of",
+      "options": [
+        "A) Frank, Kevin, Laurie",
+        "B) Frank, Kevin",
+        "C) Frank",
+        "D) Gina",
+        "E) Kevin"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet"
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0115482807159424,
+        1.0947860479354858
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "paralegals = EnumSort([frank, gina, hiro, kevin, laurie])",
+        "cases = EnumSort([raimes, sicoli, thompson])",
+        "assigned = Function([paralegals] -> [cases])"
+      ],
+      "constraints": [
+        "ForAll([c:cases], Count([p:paralegals], assigned(p))) >= 1",
+        "Or(And(assigned(frank) == raimes, assigned(kevin) == thompson), And(Not(assigned(frank) == raimes), Not(assigned(kevin) == thompson)))",
+        "Or(assigned(frank) == assigned(gina), assigned(gina) == assigned(laurie), Not(assigned(frank) == assigned(gina)))",
+        "assigned(hiro) == sicoli"
+      ],
+      "options": [
+        "is_valid(And(assigned(frank) == assigned(kevin), assigned(frank) == assigned(laurie)))",
+        "is_valid(And(assigned(frank) == assigned(kevin), assigned(gina) == assigned(kevin)))",
+        "is_valid(And(assigned(frank) == assigned(kevin), assigned(frank) == assigned(laurie)))",
+        "is_valid(And(assigned(frank) == assigned(kevin), assigned(frank) == assigned(gina)))",
+        "is_valid(And(assigned(frank) == assigned(kevin), assigned(frank) == assigned(laurie)))"
+      ],
+      "perplexity": 1.2441376447677612
+    }
+  },
+  {
+    "id": 139,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "The five pieces could appear in which one of the following sequences on the CD, in order from first to last?",
+      "options": [
+        "A) Reciprocity, Trapezoid, Wisteria, Salammbo, Vancouver",
+        "B) Salammbo, Reciprocity, Trapezoid, Vancouver, Wisteria",
+        "C) Trapezoid, Wisteria, Salammbo, Vancouver, Reciprocity",
+        "D) Vancouver, Wisteria, Salammbo, Reciprocity, Trapezoid",
+        "E) Wisteria, Salammbo, Vancouver, Trapezoid, Reciprocity"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0165637731552124,
+        1.0839630365371704
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "pieces = EnumSort([reciprocity, salammbo, trapezoid, vancouver, wisteria])",
+        "sequence = Function([pieces] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([p1:pieces, p2:pieces], And(sequence(p1) < sequence(p2), p1 != p2))",
+        "And(sequence(salammbo) < sequence(vancouver))",
+        "ForAll([p:pieces], Or(sequence(trapezoid) < sequence(reciprocity), sequence(trapezoid) > sequence(reciprocity)))",
+        "ForAll([p:pieces], Or(sequence(wisteria) < sequence(reciprocity), sequence(wisteria) > sequence(reciprocity)))"
+      ],
+      "options": [
+        "is_valid(sequence(reciprocity))",
+        "is_valid(sequence(salammbo))",
+        "is_valid(sequence(trapezoid))",
+        "is_valid(sequence(vancouver))",
+        "is_valid(sequence(wisteria))"
+      ],
+      "perplexity": 1.248531460762024
+    }
+  },
+  {
+    "id": 140,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "If Salammbo is the fourth piece on the CD, then which one of the following must be true?",
+      "options": [
+        "A) Reciprocity is earlier on the CD than Wisteria.",
+        "B) Salammbo is earlier on the CD than Trapezoid.",
+        "C) Trapezoid is earlier on the CD than Reciprocity.",
+        "D) Vancouver is earlier on the CD than Wisteria.",
+        "E) Wisteria is earlier on the CD than Trapezoid."
+      ]
+    },
+    "answer": "C",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([stacy, urma, wim, xena, yolanda, zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "for_all_t_techs(C, repairs(T, C))",
+        "and(repairs(xena, radios), Count([T:technicians], and(T != xena, repairs(T, radios))) == 3)",
+        "and(repairs(yolanda, televisions), repairs(yolanda, VCRs))",
+        "for_all_m_machines(C, Implies(repairs(yolanda, C), not(repairs(stacy, C))))",
+        "count_m_machines(C, repairs(zane, C)) > count_m_machines(C, repairs(yolanda, C))",
+        "for_all_m_machines(C, Implies(repairs(stacy, C), not(repairs(wim, C))))",
+        "count_m_machines(C, repairs(urma, C)) == 2"
+      ],
+      "options": [
+        "is_sat(for_all_m_machines(C, repairs(stacy, C) == repairs(urma, C)))",
+        "is_sat(for_all_m_machines(C, repairs(urma, C) == repairs(yolanda, C)))",
+        "is_sat(for_all_m_machines(C, repairs(urma, C) == repairs(xena, C)))",
+        "is_sat(for_all_m_machines(C, repairs(wim, C) == repairs(xena, C)))",
+        "is_sat(for_all_m_machines(C, repairs(xena, C) == repairs(yolanda, C)))"
+      ],
+      "perplexity": [
+        1.0974634885787964,
+        1.158499002456665
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "pieces = EnumSort([reciprocity, salammbo, trapezoid, vancouver, wisteria])",
+        "position = Function([pieces] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([p:pieces], And(1 <= position(p), position(p) <= 5))",
+        "ForAll([p:pieces], Distinct([p1:pieces], position(p1)))",
+        "position(salammbo) < position(vancouver)",
+        "position(trapezoid) < position(reciprocity) < position(salammbo) < position(vancouver) != position(trapezoid) < position(reciprocity) > position(salammbo) > position(vancouver)",
+        "position(wisteria) < position(reciprocity) < position(trapezoid) < position(reciprocity) < position(salammbo) < position(vancouver) != position(wisteria) > position(reciprocity) > position(trapezoid) > position(reciprocity) > position(salammbo) > position(vancouver)"
+      ],
+      "options": [
+        "is_sat(position(reciprocity))",
+        "is_sat(position(salammbo))",
+        "is_sat(position(trapezoid))",
+        "is_sat(position(vancouver))",
+        "is_sat(position(wisteria))"
+      ],
+      "perplexity": 1.3319286108016968
+    }
+  },
+  {
+    "id": 141,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "If Reciprocity is the first piece on the CD, then which one of the following could be true?",
+      "options": [
+        "A) Trapezoid is the second piece on the CD.",
+        "B) Vancouver is the third piece on the CD.",
+        "C) Wisteria is the third piece on the CD.",
+        "D) Salammbo is the fourth piece on the CD.",
+        "E) Trapezoid is the last piece on the CD."
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet "
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0168739557266235,
+        1.0860484838485718
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "pieces = EnumSort([reciprocity, salammbo, trapezoid, vancouver, wisteria])",
+        "sequence = Function([pieces] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([p:pieces], And(1 <= sequence(p), sequence(p) <= 5))",
+        "Distinct([p:pieces], sequence(p))",
+        "sequence(salammbo) < sequence(vancouver)",
+        "Or(sequence(trapezoid) < sequence(reciprocity), sequence(trapezoid) > sequence(reciprocity))",
+        "Or(sequence(wisteria) < sequence(reciprocity), sequence(wisteria) > sequence(reciprocity))",
+        "sequence(reciprocity) == 1"
+      ],
+      "options": [
+        "is_sat(sequence(trapezoid))",
+        "is_sat(sequence(vancouver))",
+        "is_sat(sequence(wisteria))",
+        "is_sat(sequence(salammbo))",
+        "is_sat(sequence(trapezoid))"
+      ],
+      "perplexity": 1.2629194259643555
+    }
+  },
+  {
+    "id": 142,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "If Trapezoid is the second piece on the CD, then which one of the following could be true?",
+      "options": [
+        "A) Salammbo is the first piece on the CD.",
+        "B) Reciprocity is the first piece on the CD.",
+        "C) Vancouver is the third piece on the CD.",
+        "D) Wisteria is the fourth piece on the CD.",
+        "E) Reciprocity is the last piece on the CD."
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "valves = EnumSort([G, H, I, K, L, N, O, P])",
+        "opened = Function([valves] -> [int])",
+        "pieces = EnumSort([Reciprocity, Salammbo, Trapezoid, Vancouver, Wisteria])",
+        "cd = Function([pieces] -> [int])",
+        "ForAll([v:valves], And(1 <= opened(v), opened(v) <= 8))",
+        "ForAll([p:pieces], And(1 <= cd(p), cd(p) <= 5))"
+      ],
+      "constraints": [
+        "Distinct([v:valves], opened(v))",
+        "And(opened(K) < opened(H), opened(P) < opened(H))",
+        "And(opened(O) > opened(H), opened(O) < opened(L))",
+        "opened(L) > opened(G)",
+        "opened(N) < opened(H)",
+        "opened(I) > opened(K)",
+        "And(cd(Salammbo) < cd(Vancouver))",
+        "Or(And(cd(Trapezoid) < cd(Reciprocity), cd(Trapezoid) < cd(Salammbo)), And(cd(Trapezoid) > cd(Reciprocity), cd(Trapezoid) > cd(Salammbo)))",
+        "Or(And(cd(Wisteria) < cd(Reciprocity), cd(Wisteria) < cd(Trapezoid)), And(cd(Wisteria) > cd(Reciprocity), cd(Wisteria) > cd(Trapezoid)))"
+      ],
+      "options": [
+        "is_exception(is_sat(cd(Trapezoid) == 2)) ::: (A)",
+        "is_exception(is_sat(And(cd(Salammbo) == 1, cd(Trapezoid) == 2))) ::: (B)",
+        "is_exception(is_sat(And(cd(Reciprocity) == 1, cd(Trapezoid) == 2))) ::: (C)",
+        "is_exception(is_sat(And(cd(Wisteria) == 4, cd(Trapezoid) == 2))) ::: (D)",
+        "is_exception(is_sat(And(cd(Reciprocity) == 5, cd(Trapezoid) == 2))) ::: (E)"
+      ],
+      "perplexity": [
+        1.0455243587493896,
+        1.1044037342071533
+      ]
+    }
+  },
+  {
+    "id": 143,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "The first and second pieces on the CD, listed in order, could be",
+      "options": [
+        "A) Reciprocity and Vancouver",
+        "B) Reciprocity and Wisteria",
+        "C) Salammbo and Trapezoid",
+        "D) Trapezoid and Wisteria",
+        "E) Wisteria and Salammbo"
+      ]
+    },
+    "answer": "E",
+    "logic_problem": {
+      "declarations": [
+        "candidates = EnumSort([Q, R, S, T, U])",
+        "meetings = EnumSort([1, 2, 3])",
+        "speaks = Function([meetings, candidates] -> [int])",
+        "ForAll([m:meetings, c:candidates], And(speaks(m, c) == 2))"
+      ],
+      "constraints": [
+        "ForAll([m:meetings, c:candidates], And(speaks(m, c) == 2))"
+      ],
+      "options": [
+        "is_exception(is_sat(ForAll([m:meetings, c:candidates], And(speaks(m, c) == 3)))) ::: (A)",
+        "is_exception(is_sat(ForAll([m:meetings, c:candidates], And(speaks(m, c) == 1)))) ::: (B)",
+        "is_exception(is_sat(ForAll([m:meetings, c:candidates], And(speaks(m, c) == 4)))) ::: (C)",
+        "is_exception(is_sat(ForAll([m:meetings, c:candidates], And(speaks(m, c) == 5)))) ::: (D)",
+        "is_exception(is_sat(ForAll([m:meetings, c:candidates], And(speaks(m, c) == 6)))) ::: (E)"
+      ],
+      "perplexity": [
+        1.0064070224761963,
+        1.217356562614441
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "pieces = EnumSort([reciprocity, salammbo, trapezoid, vancouver, wisteria])",
+        "sequence = Function([pieces] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([p1:pieces, p2:pieces], And(sequence(p1) < sequence(p2), sequence(p1) > sequence(p2)))",
+        "And(sequence(salammbo) < sequence(vancouver), sequence(trapezoid) < sequence(reciprocity))",
+        "Or(sequence(trapezoid) < sequence(reciprocity), sequence(trapezoid) > sequence(reciprocity))",
+        "Or(sequence(wisteria) < sequence(reciprocity), sequence(wisteria) > sequence(reciprocity))",
+        "Or(sequence(wisteria) < sequence(trapezoid), sequence(wisteria) > sequence(trapezoid))"
+      ],
+      "options": [
+        "is_sat(And(sequence(reciprocity) == 1, sequence(salammbo) == 2))",
+        "is_sat(And(sequence(reciprocity) == 1, sequence(wisteria) == 2))",
+        "is_sat(And(sequence(salammbo) == 1, sequence(trapezoid) == 2))",
+        "is_sat(And(sequence(trapezoid) == 1, sequence(wisteria) == 2))",
+        "is_sat(And(sequence(wisteria) == 1, sequence(salammbo) == 2))"
+      ],
+      "perplexity": 1.1575729846954346
+    }
+  },
+  {
+    "id": 144,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "If Vancouver is the second piece on the CD, then which one of the following could be true?",
+      "options": [
+        "A) Wisteria is the first piece on the CD.",
+        "B) Salammbo is the third piece on the CD.",
+        "C) Trapezoid is the third piece on the CD.",
+        "D) Reciprocity is the fourth piece on the CD.",
+        "E) Reciprocity is the last piece on the CD."
+      ]
+    },
+    "answer": "D",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.0043755769729614,
+        1.1003305912017822
+      ]
+    }
+  },
+  {
+    "id": 145,
+    "nl_problem": {
+      "context": "A record producer is planning the contents of a CD consisting of a sequence of exactly five instrumental pieces—Reciprocity, Salammbo, Trapezoid, Vancouver, and Wisteria. To create and sustain certain moods, the sequence of pieces will satisfy the following constraints: Salammbo must be earlier than Vancouver. Trapezoid must either be earlier than both Reciprocity and Salammbo or later than both Reciprocity and Salammbo. Wisteria must either be earlier than both Reciprocity and Trapezoid or later than both Reciprocity and Trapezoid.",
+      "question": "If Wisteria is the first piece on the CD, then which one of the following CANNOT be true?",
+      "options": [
+        "A) Trapezoid is the third piece on the CD.",
+        "B) Vancouver is the third piece on the CD.",
+        "C) Salammbo is the fourth piece on the CD.",
+        "D) Vancouver is the fourth piece on the CD",
+        "E) Trapezoid is the last piece on the CD."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "people = EnumSort([Vladimir, Wendy])",
+        "meals = EnumSort([breakfast, lunch, dinner, snack])",
+        "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+        "eats = Function([people, meals] -> [foods])"
+      ],
+      "constraints": [
+        "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+        "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+        "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+        "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+        "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+        "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+        "eats(Wendy, lunch) == omelet"
+      ],
+      "options": [
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+        "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+      ],
+      "perplexity": [
+        1.0096710920333862,
+        1.0873593091964722
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "pieces = EnumSort([reciprocity, salammbo, trapezoid, vancouver, wisteria])",
+        "sequence = Function([pieces] -> [int])"
+      ],
+      "constraints": [
+        "ForAll([p1:pieces, p2:pieces], And(sequence(p1) < sequence(p2), p1 != p2))",
+        "And(sequence(salammbo) < sequence(vancouver))",
+        "Or(sequence(trapezoid) < sequence(reciprocity), sequence(trapezoid) > sequence(reciprocity))",
+        "Or(sequence(trapezoid) < sequence(salammbo), sequence(trapezoid) > sequence(salammbo))",
+        "Or(sequence(wisteria) < sequence(reciprocity), sequence(wisteria) > sequence(reciprocity))",
+        "Or(sequence(wisteria) < sequence(trapezoid), sequence(wisteria) > sequence(trapezoid))",
+        "sequence(wisteria) == 1"
+      ],
+      "options": [
+        "is_unsat(sequence(trapezoid))",
+        "is_unsat(sequence(vancouver))",
+        "is_unsat(sequence(salammbo))",
+        "is_unsat(sequence(vancouver))",
+        "is_unsat(sequence(trapezoid))"
+      ],
+      "perplexity": 1.2401975393295288
+    }
+  },
+  {
+    "id": 146,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following could be the speeches given in each room, listed in the order in which they occur?",
+      "options": [
+        "A) Gold Room: Molina's, Long's Rose Room: Zimmerman's, Xiao's, Yoshida's",
+        "B) Gold Room: Molina's, Yoshida's, Long's Rose Room: Xiao's Zimmerman's",
+        "C) Gold Room: Xiao's, Molina's, Long's Rose Room: Zimmerman's, Yoshida's",
+        "D) Gold Room: Yoshida's, Long's, Molina's Rose Room: Zimmerman's, Xiao's",
+        "E) Gold Room: Zimmerman's, Molina's Rose Room: Xiao's, Yoshida's, Long's"
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_valid(Exists([t1:technicians, t2:technicians], And(And(t1 != t2, repairs(t1, radios) == repairs(t2, radios)), And(repairs(t1, televisions) == repairs(t2, televisions), repairs(t1, VCRs) == repairs(t2, VCRs)))))) ::: (A)",
+        "is_valid(Exists([t1:technicians, t2:technicians], And(And(t1 != t2, repairs(t1, radios) == repairs(t2, radios)), And(repairs(t1, televisions) == repairs(t2, televisions), Not(repairs(t1, VCRs) == repairs(t2, VCRs)))))) ::: (B)",
+        "is_valid(Exists([t1:technicians, t2:technicians], And(And(t1 != t2, Not(repairs(t1, radios) == repairs(t2, radios))), And(repairs(t1, televisions) == repairs(t2, televisions), repairs(t1, VCRs) == repairs(t2, VCRs)))))) ::: (C)",
+        "is_valid(Exists([t1:technicians, t2:technicians], And(And(t1 != t2, repairs(t1, radios) == repairs(t2, radios)), And(Not(repairs(t1, televisions) == repairs(t2, televisions)), repairs(t1, VCRs) == repairs(t2, VCRs)))))) ::: (D)",
+        "is_valid(Exists([t1:technicians, t2:technicians], And(And(t1 != t2, repairs(t1, radios) == repairs(t2, radios)), And(Not(repairs(t1, televisions) == repairs(t2, televisions)), Not(repairs(t1, VCRs) == repairs(t2, VCRs)))))) ::: (E)"
+      ],
+      "perplexity": [
+        1.0073648691177368,
+        1.0706355571746826
+      ]
+    }
+  },
+  {
+    "id": 147,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "Which one of the following pairs of speeches CANNOT be given at the same time?",
+      "options": [
+        "A) Long's and Yoshida's",
+        "B) Long's and Zimmerman's",
+        "C) Molina's and Xiao's",
+        "D) Xiao's and Yoshida's",
+        "E) Yoshida's and Zimmerman's"
+      ]
+    },
+    "answer": "B",
+    "logic_problem": {
+      "declarations": [
+        "speakers = EnumSort([Long, Molina, Xiao, Yoshida, Zimmerman])",
+        "rooms = EnumSort([Gold_Room, Rose_Room])",
+        "speeches = Function([speakers] -> [rooms])",
+        "time = EnumSort([1_PM, 2_PM, 3_PM])"
+      ],
+      "constraints": [
+        "ForAll([s:speeches], speeches(s) != Gold_Room /\\",
+        "speeches(s) != Rose_Room) ::: each speaker will give exactly one speech, in either the Gold Room or the Rose Room",
+        "ForAll([t:time], Count([s:speeches], And(speeches(s) == Gold_Room, Time(s) == t)) <= 1) ::: In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M.",
+        "ForAll([t:time], Count([s:speeches], And(speeches(s) == Rose_Room, Time(s) == t)) <= 1) ::: In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M.",
+        "And(speeches(Molina) < speeches(Long), speeches(Molina) == speeches(Long)) ::: Molina's speech must be earlier than Long's, and in the same room",
+        "ForAll([s:speeches], Implies(speeches(s) <= speeches(Zimmerman), speeches(s) != speeches(Xiao) /\\",
+        "speeches(s) != speeches(Yoshida))) ::: Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's",
+        "Implies(speeches(Long) == Gold_Room, And(speeches(Xiao) == Rose_Room, speeches(Zimmerman) == Rose_Room)) ::: If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room"
+      ],
+      "options": [
+        "is_unsat(And(speeches(Long) == time1, speeches(Yoshida) == time1)) ::: (A)",
+        "is_unsat(And(speeches(Long) == time1, speeches(Zimmerman) == time1)) ::: (B)",
+        "is_unsat(And(speeches(Molina) == time1, speeches(Xiao) == time1)) ::: (C)",
+        "is_unsat(And(speeches(Xiao) == time1, speeches(Yoshida) == time1)) ::: (D)",
+        "is_unsat(And(speeches(Yoshida) == time1, speeches(Zimmerman) == time1)) ::: (E)"
+      ],
+      "perplexity": [
+        1.0975959300994873,
+        1.1013250350952148
+      ]
+    }
+  },
+  {
+    "id": 148,
+    "nl_problem": {
+      "context": "At a business symposium there will be exactly five speakers: Long, Molina, Xiao, Yoshida, and Zimmerman. Each speaker will give exactly one speech, in either the Gold Room or the Rose Room. In each room, there will be exactly one speech at 1 P.M. and one speech at 2 P.M. In one of the rooms, yet to be determined, there will also be a speech at 3 P.M. The schedule of speeches is constrained by the following: Molina's speech must be earlier than Long's, and in the same room. Neither Xiao's speech nor Yoshida's speech can be earlier than Zimmerman's. If Long's speech is in the Gold Room, then Xiao's and Zimmerman's speeches must both be in the Rose Room.",
+      "question": "If Xiao's speech is at 3 P.M., which one of the following CANNOT be true?",
+      "options": [
+        "A) Long's speech is in the same room as Yoshida's.",
+        "B) Molina's speech is in the same room as Xiao's.",
+        "C) Xiao's speech is in the same room as Yoshida's.",
+        "D) Xiao's speech is in the same room as Zimmerman's.",
+        "E) Yoshida's speech is in the same room as Zimmerman's."
+      ]
+    },
+    "answer": "A",
+    "logic_problem": {
+      "declarations": [
+        "technicians = EnumSort([Stacy, Urma, Wim, Xena, Yolanda, Zane])",
+        "machines = EnumSort([radios, televisions, VCRs])",
+        "repairs = Function([technicians, machines] -> [bool])"
+      ],
+      "constraints": [
+        "ForAll([t:technicians], Count([m:machines], repairs(t, m)) >= 1)",
+        "And(repairs(Xena, radios), Count([t:technicians], And(t != Xena, repairs(t, radios))) == 3)",
+        "And(repairs(Yolanda, televisions), repairs(Yolanda, VCRs))",
+        "ForAll([m:machines], Implies(repairs(Yolanda, m), Not(repairs(Stacy, m))))",
+        "Count([m:machines], repairs(Zane, m)) > Count([m:machines], repairs(Yolanda, m))",
+        "ForAll([m:machines], Implies(repairs(Stacy, m), Not(repairs(Wim, m))))",
+        "Count([m:machines], repairs(Urma, m)) == 2"
+      ],
+      "options": [
+        "is_sat(ForAll([m:machines], repairs(Stacy, m) == repairs(Urma, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Yolanda, m)))",
+        "is_sat(ForAll([m:machines], repairs(Urma, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Wim, m) == repairs(Xena, m)))",
+        "is_sat(ForAll([m:machines], repairs(Xena, m) == repairs(Yolanda, m)))"
+      ],
+      "perplexity": [
+        1.003461241722107,
+        1.0782476663589478
+      ]
+    },
+    "logic_problem_gcd": {
+      "declarations": [
+        "speakers = EnumSort([long, molina, xiao, yoshida, zimmerman])",
+        "rooms = EnumSort([gold, rose])",
+        "speeches = Function([speakers] -> [rooms])",
+        "time = EnumSort([pm1, pm2, pm3])",
+        "scheduled = Function([speakers] -> [time])"
+      ],
+      "constraints": [
+        "ForAll([s:speakers], Count([r:rooms], speeches(s))) == 1",
+        "ForAll([r:rooms], Count([s:speakers], scheduled(s))) == 2",
+        "ForAll([s:speakers], scheduled(s))",
+        "And(scheduled(molina) < scheduled(long), speeches(molina) == speeches(long))",
+        "ForAll([s:speakers], scheduled(s))",
+        "Implies(scheduled(long) == pm1, And(scheduled(xiao) == pm2, scheduled(zimmerman) == pm3))",
+        "ForAll([s:speakers], scheduled(s))",
+        "Implies(scheduled(long) == pm1, And(scheduled(xiao) == rose, scheduled(zimmerman) == rose))"
+      ],
+      "options": [
+        "is_unsat(And(scheduled(long) == gold, scheduled(yoshida) == gold))",
+        "is_unsat(And(scheduled(molina) == gold, scheduled(xiao) == gold))",
+        "is_unsat(And(scheduled(xiao) == gold, scheduled(yoshida) == gold))",
+        "is_unsat(And(scheduled(xiao) == gold, scheduled(zimmerman) == gold))",
+        "is_unsat(And(scheduled(yoshida) == gold, scheduled(zimmerman) == gold))"
+      ],
+      "perplexity": 1.2695199251174927
     }
   }
 ]

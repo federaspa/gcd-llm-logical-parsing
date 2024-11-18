@@ -47,11 +47,11 @@ def compute_accuracy(samples):
         
 def compute_metrics(all_samples):
     
-    executable_samples = [sample for sample in all_samples if sample['status'] == 'success']
+    executable_samples = [sample for sample in all_samples if sample['status'] != 'parsing error']
         
     total_accuracy = compute_accuracy(all_samples)
     covered_accuracy = compute_accuracy(executable_samples)
-    coverage = len(executable_samples)/len(all_samples)
+    coverage = len(executable_samples)/len(all_samples) if len(all_samples) else 0
     
     return total_accuracy, covered_accuracy, coverage
     
@@ -104,14 +104,61 @@ def parse_answers(samples):
 
 def get_backup_answers(samples, backup):
     
-    non_executable_samples = [sample for sample in samples if sample['flag'] != 'success']
+    non_executable_samples = [sample for sample in samples if sample['status'] != 'success']
     
     for sample in non_executable_samples:
         sample['predicted_answer'] = backup[sample['id']]['predicted_answer']
         
     return samples
 
+def both_success_results(samples):
+    success_samples = []
+    
+    for s in samples:
+        unc = s.get('logic_problem', {})
+        con = s.get('logic_problem_gcd', {})
+        
+        unc_flag = unc.get('status', '')
+        con_flag = con.get('status', '')
+        
+        
+        if unc_flag == con_flag == 'success':
+            success_samples.append(s)
+            
+    unconstrained = [s.get('logic_problem', {}) for s in success_samples]
+    unconstrained = [s for s in unconstrained if s]
+    
+    constrained = [s.get('logic_problem_gcd', {}) for s in success_samples]
+    constrained = [s for s in constrained if s]
+    
+    unconstrained_metrics = compute_metrics(unconstrained)
+    constrained_metrics = compute_metrics(constrained)
+            
+    return unconstrained_metrics, constrained_metrics
+
+def constrained_success_only_results(samples):
+    con_success_samples = []
+    
+    for s in samples:
+        unc = s.get('logic_problem', {})
+        con = s.get('logic_problem_gcd', {})
+        
+        unc_flag = unc.get('status', '')
+        con_flag = con.get('status', '')
+        
+        if (unc_flag != con_flag) and (con_flag == 'success'):
+            con_success_samples.append(s)
+    
+    constrained = [s.get('logic_problem_gcd', {}) for s in con_success_samples]
+    constrained = [s for s in constrained if s]
+    
+    constrained_metrics = compute_metrics(constrained)
+            
+    return constrained_metrics
+
 def full_evaluation(result_file):
+    
+    results = {'ALL': {}, 'BOTH_SUCCESS': {}}
     
     with open(result_file, 'r') as f:
         raw_samples = json.load(f)
@@ -122,20 +169,30 @@ def full_evaluation(result_file):
     constrained = [s.get('logic_problem_gcd', {}) for s in raw_samples]
     constrained = [s for s in constrained if s]
         
-    total_accuracy, covered_accuracy, coverage = compute_metrics(unconstrained)
-    total_accuracy_constrained, covered_accuracy_constrained, coverage_constrained = compute_metrics(constrained)
+    results['ALL']['UNCONSTRAINED'] = compute_metrics(unconstrained)
+    results['ALL']['CONSTRAINED'] = compute_metrics(constrained)
 
-    print('Evaluating file', result_file)
-    print()
-    print('UNCONSTRAINED\n')
-    print(f'Total accuracy: {total_accuracy:.2}')
-    print(f'Covered accuracy: {covered_accuracy:.2}')
-    print(f'Coverage: {coverage:.2}')
-    print()
-    print('CONSTRAINED\n')
-    print(f'Total accuracy: {total_accuracy_constrained:.2}')
-    print(f'Covered accuracy: {covered_accuracy_constrained:.2}')
-    print(f'Coverage: {coverage_constrained:.2}')
+    results['BOTH_SUCCESS']['UNCONSTRAINED'], results['BOTH_SUCCESS']['CONSTRAINED'] = both_success_results(raw_samples)
+    results['CONSTRAINED_SUCCESS'] = constrained_success_only_results(raw_samples)
+
+    print('Evaluating file\n', result_file)
+
+    for cat in ['ALL', 'BOTH_SUCCESS']:
+        print(F'{cat}\n')
+        
+        for subcat in ['UNCONSTRAINED', 'CONSTRAINED']:
+            print(F'{subcat}\n')
+            
+            for name, value in zip(['Total accuracy', 'Covered accuracy', 'Coverage'], results[cat][subcat]):
+                print(f'{name}: {value:.2}')
+                print()
+                
+    print('CONSTRAINED_SUCCESS\n')
+    for name, value in zip(['Total accuracy', 'Covered accuracy', 'Coverage'], results['CONSTRAINED_SUCCESS']):
+        print(f'{name}: {value:.2}')
+        print()
+                
+    
 
 
 

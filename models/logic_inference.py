@@ -9,7 +9,6 @@ import sys
 
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
-from utils import get_logger, send_notification
 
 class LogicInferenceEngine:
     def __init__(self, args):
@@ -39,7 +38,7 @@ class LogicInferenceEngine:
             programs_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
         with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
-        logger.info(f"Loaded {len(dataset)} examples from {self.split} split.")
+        print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
 
     @timeout(seconds=60)
@@ -66,8 +65,11 @@ class LogicInferenceEngine:
             os.makedirs(self.save_path)
         
         outputs = []
-        error_count = 0
-        error_count_constrained = 0
+        parsing_error_count = 0
+        execution_error_count = 0
+        
+        parsing_error_count_constrained = 0
+        execution_error_count_constrained = 0
         
         if self.self_refine_round > 0:
             save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
@@ -91,7 +93,9 @@ class LogicInferenceEngine:
                     answer, status, error = self.safe_execute_program(logic_problem)
                     
                     if status == 'parsing error':
-                        error_count += 1
+                        parsing_error_count += 1
+                    elif status == 'execution error':
+                        execution_error_count += 1
                         
                     sample['logic_problem'].update({
                         'answer': sample['answer'],
@@ -101,7 +105,7 @@ class LogicInferenceEngine:
                     })
                     
                 except TimeoutError:
-                    error_count += 1
+                    execution_error_count += 1
                     pass
                 
             if 'logic_problem_gcd' in sample.keys():
@@ -112,7 +116,10 @@ class LogicInferenceEngine:
                     answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
 
                     if status_constrained == 'parsing error':
-                        error_count_constrained += 1
+                        parsing_error_count_constrained += 1
+                        
+                    elif status == 'execution error':
+                        execution_error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({
                         'answer': sample['answer'],
@@ -122,7 +129,7 @@ class LogicInferenceEngine:
                     })
                         
                 except TimeoutError:
-                    error_count_constrained += 1
+                    execution_error_count_constrained += 1
                     pass
                 
             outputs.append(sample)
@@ -130,15 +137,19 @@ class LogicInferenceEngine:
             with open(os.path.join(self.save_path, save_file), 'w') as f:
                 json.dump(outputs, f, indent=2, ensure_ascii=False)
         
-        logger.info(f"Error count unconstrained: {error_count}")
-        logger.info(f"Error count constrained: {error_count_constrained}")
+        print("\nUNCONSTRAINED")
+        print(f"Parsing: {parsing_error_count}")
+        print(f"Execution: {execution_error_count}")
+        print("\nCONSTRAINED")
+        print(f"Parsing: {parsing_error_count_constrained}")
+        print(f"Execution: {execution_error_count_constrained}")
             
         self.cleanup()
 
     def cleanup(self):
         complied_krb_dir = './models/compiled_krb'
         if os.path.exists(complied_krb_dir):
-            logger.info('removing compiled_krb')
+            print('removing compiled_krb')
             os.system(f'rm -rf {complied_krb_dir}')
 
 def parse_args():
@@ -159,13 +170,11 @@ if __name__ == "__main__":
     
     script_name = os.path.splitext(os.path.basename(__file__))[0]
 
-    logger, log_file_name = get_logger(script_name)
-    
-    logger.info(f"Dataset: {args.dataset_name}")
-    logger.info(f"Sketcher: {args.sketcher_name}")
-    logger.info(f"Self-refine-round: {args.self_refine_round}")
-    logger.info(f"Split: {args.split}")
-    logger.info(f"Save path: {args.save_path}")
+    print(f"Dataset: {args.dataset_name}")
+    print(f"Sketcher: {args.sketcher_name}")
+    print(f"Self-refine-round: {args.self_refine_round}")
+    print(f"Split: {args.split}")
+    print(f"Save path: {args.save_path}")
     
     engine = LogicInferenceEngine(args)
     
@@ -173,14 +182,12 @@ if __name__ == "__main__":
         engine.inference_on_dataset()
     
     except KeyboardInterrupt:
-        logger.error("KeyboardInterrupt")
         sys.exit(0)
                 
     except Exception as e:
 
         error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        logger.error(error_message)
         sys.exit(0)
                 
-    logger.info("Finished Successfully")
+    print("Finished Successfully")
     # send_notification("Yippiee!", "logic_inference.py finished successfully")
