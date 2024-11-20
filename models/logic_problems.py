@@ -27,6 +27,7 @@ class Config:
     n_threads: int
     stop_time: str|None
     timeout_seconds: int|None
+    two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained:bool = False
     debug: bool = False
@@ -61,9 +62,10 @@ class PromptGenerator:
 
     def _load_templates(self):
         templates = {
-            'json_user': f'./prompts/conversion/{self.config.dataset_name}/json.txt',
-            'constrained_user': f'./prompts/conversion/{self.config.dataset_name}/constrained.txt',
-            'unconstrained_user': f'./prompts/conversion/{self.config.dataset_name}/unconstrained.txt',
+            'json': f'./prompts/conversion/{self.config.dataset_name}/json.txt',
+            'constrained': f'./prompts/conversion/{self.config.dataset_name}/constrained.txt',
+            'unconstrained': f'./prompts/conversion/{self.config.dataset_name}/unconstrained.txt',
+            'predicates': f'./prompts/conversion/{self.config.dataset_name}/predicates.txt',
             'prompt_template': 'prompts/prompt_templates/gemma.txt' if 'gemma' in self.config.sketcher_name else 'prompts/prompt_templates/llama.txt',
             'json_grammar': './LLMs/grammars/json.gbnf',
             'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'}
@@ -72,7 +74,7 @@ class PromptGenerator:
         for key, path in templates.items():
             with open(path, 'r') as f:
                 content = f.read()
-                if key in ['json_user', 'unconstrained_user']:
+                if key in ['json', 'unconstrained', 'constrained', 'predicates']:
                     with open(templates['prompt_template'], 'r') as pt:
                         prompt_template = pt.read()
                         content = prompt_template.replace('[[user]]', content)
@@ -104,6 +106,7 @@ class LogicProgramGenerator(PromptGenerator):
         self._unconstrained_generator = timeout(seconds=config.timeout_seconds)(self._unconstrained_generator_base)
         self._json_wrapper = timeout(seconds=config.timeout_seconds)(self._json_wrapper_base)
         self._constrained_generator = timeout(seconds=config.timeout_seconds)(self._constrained_generator_base)
+        self.grammar = self.templates['constrained_grammar']
 
     def _check_time_limit(self):
         """Check if we've reached the stop time"""
@@ -117,6 +120,27 @@ class LogicProgramGenerator(PromptGenerator):
         with open(dataset_path) as f:
             raw_dataset = json.load(f)
         return raw_dataset
+    
+    
+    def _extract_constructs(self, sample: dict) -> List[str]:
+        """Extract constructs from natural language using LLM"""
+        
+        if self.config.two_steps:
+            
+            user = self.prompter.extract_constructs(sample)
+            response = self.sketcher_api.invoke(
+                prompt=user,
+                raw_grammar=self.templates['json_grammar'],
+                max_tokens=config.max_tokens
+            )
+            
+            content = response['choices'][0]['text']
+            constructs = json.loads(content)
+        
+        else:
+            constructs = {}
+        
+        self.grammar = self.prompter.get_grammar(constructs)
 
     def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
         user = self.prompter.unconstrained(sample=sample)
@@ -144,10 +168,14 @@ class LogicProgramGenerator(PromptGenerator):
         return json.loads(content), perplexity
     
     def _constrained_generator_base(self, sample: str) -> dict:
+        
+        
+        self._extract_constructs(sample)
+            
         user = self.prompter.constrained(sample)
         response = self.sketcher_api.invoke(
             prompt=user,
-            raw_grammar=self.templates['constrained_grammar'],
+            raw_grammar=self.grammar,
             max_tokens=config.max_tokens,
             temperature=0.5,
             top_p = 1,
@@ -191,7 +219,7 @@ class LogicProgramGenerator(PromptGenerator):
         # raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         
-        raw_dataset = [s for s in raw_dataset if s['id']>112]
+        # raw_dataset = [s for s in raw_dataset if s['id']>112]
         
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
@@ -287,6 +315,7 @@ def parse_args() -> Config:
     parser.add_argument('--dataset-name', type=str, required=True)
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--two-steps', action='store_true', help='Extract predicates in first step')
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--n-gpu-layers', type=int, default=-1)

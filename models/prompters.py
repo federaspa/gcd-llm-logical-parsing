@@ -2,58 +2,75 @@ from dataclasses import dataclass
 from typing import Dict, List, Callable, Any
 import json
 
+
 @dataclass
 class Config:
-    sketcher_path: str
-    refiner_path: str
+    sketcher_name: str
     dataset_name: str
     data_path: str
-    save_path: str
     split: str
-    starting_round: int
-    maximum_rounds: int
-    n_gpu_layers: int
-    verbose: bool
-    gcd: bool
-    static_preds: bool
-    static_consts: bool
+    models_path: str
+    save_path: str
+    n_gpu_layers: int 
+    n_ctx: int
+    max_tokens: int
+    n_threads: int
+    stop_time: str|None
+    timeout_seconds: int|None
+    two_steps: bool = False
+    force_unconstrained: bool = False
+    force_constrained:bool = False
+    debug: bool = False
 
 class FOL_Prompter:
     def __init__(self, config: Config, templates: Dict[str,str]):
         self.config = config
         self.templates = templates
 
-    def _get_predicates(self, logic_problem: str) -> str:
-        if self.config.static_preds:
-            return '[A-Z][a-z0-9]{2,15}'
-        else:
-            return ' | '.join(f'"{pred.split("(")[0]}"' for pred in logic_problem['fol_preds'])
+    def _get_predicates(self, constructs: Dict) -> str:
         
-    def _get_constants(self, logic_problem: str) -> str:
-        if len(logic_problem['fol_consts']) > 0 and not self.config.static_consts:
-            return' | '.join(f'"{con}"' for con in logic_problem['fol_consts'])
+        predicates = constructs.get('fol_preds', None)
+        
+        if predicates:
+            return ' | '.join(f'"{pred.split("(")[0]}"' for pred in predicates)
+        else:
+            return '[A-Z][a-z0-9]{2,15}'
+
+        
+    def _get_constants(self, constructs: Dict) -> str:
+        
+        constants = constructs.get('fol_consts', None)
+
+        if constants:
+            return' | '.join(f'"{con}"' for con in constants)            
         else:
             return'[a-z0-9]{2,15}'
         
-    def get_grammar(self, logic_problem: dict) -> str:
+    def get_grammar(self, constructs: dict) -> str:
         
-        predicates = self._get_predicates(logic_problem)
-        constants = self._get_constants(logic_problem)
+        predicates = self._get_predicates(constructs)
+        constants = self._get_constants(constructs)
                     
-        return self.templates['grammar_file'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
+                            
+        return self.templates['constrained_grammar'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
     
     def unconstrained(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
-        return self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+        return self.templates['unconstrained'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
     
     def constrained(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
-        return self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+        return self.templates['constrained'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
 
     def json_wrap(self, unconstrained: str) -> str:
-        return self.templates['json_user'].replace('[[unconstrained]]', unconstrained)
+        return self.templates['json'].replace('[[unconstrained]]', unconstrained)
+    
+    def extract_constructs(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.templates['predicates'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
     
     def parsing(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -101,7 +118,7 @@ class SAT_Prompter:
         question = sample['question'].strip()
         choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
-        full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['unconstrained'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
@@ -111,14 +128,14 @@ class SAT_Prompter:
         question = sample['question'].strip()
         choices_str = '\n'.join([f'({choice.strip()}' for choice in sample['options']]).strip()
         
-        full_prompt = self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['constrained'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         full_prompt = full_prompt.replace('[[choices]]', choices_str)
         
         return full_prompt
     
     def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'\`\`\`.*', '')
+        full_prompt = self.templates['json'].replace('[[unconstrained]]', unconstrained).replace(r'\`\`\`.*', '')
         
         return full_prompt
     
@@ -153,7 +170,7 @@ class LP_Prompter:
         problem = sample['context']
         question = sample['question'].strip()
         
-        full_prompt = self.templates['unconstrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['unconstrained'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         
         return full_prompt
     
@@ -161,13 +178,13 @@ class LP_Prompter:
         problem = sample['context']
         question = sample['question'].strip()
         
-        full_prompt = self.templates['constrained_user'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
+        full_prompt = self.templates['constrained'].replace('[[nl_problem]]', problem).replace('[[nl_question]]', question)
         
         return full_prompt
     
     def json_wrap(self, unconstrained: str) -> str:
         
-        full_prompt = self.templates['json_user'].replace('[[unconstrained]]', unconstrained).replace(r'```\w+', '')
+        full_prompt = self.templates['json'].replace('[[unconstrained]]', unconstrained).replace(r'```\w+', '')
         
         return full_prompt
     

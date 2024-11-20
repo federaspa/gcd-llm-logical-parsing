@@ -57,7 +57,13 @@ class FOL_Prover9_Program:
     def execute_program(self) -> Tuple[str|None, str]:
         try:
             goal = Expression.fromstring(self.prover9_conclusion)
-            assumptions = [Expression.fromstring(a) for a in self.prover9_premises]
+            
+            assumptions = []
+            
+            for a in self.prover9_premises:
+                exp = Expression.fromstring(a)
+                assumptions.append(exp)
+                
             timeout = 10
             #prover = Prover9()
             #result = prover.prove(goal, assumptions)
