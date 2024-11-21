@@ -1,0 +1,189 @@
+Wrap the provided predicates, constants, FOL rules and FOL conclusion in a valid JSON, with the following schema:
+"""
+\{
+"fol_preds": [list of required FOL Predicates],
+"fol_consts": [list of required FOL Constants],
+"fol_rules": [list of generated FOL Rules],
+"fol_conc": [generated FOL Conclusion]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Predicates:
+
+- P1(x): x is P1
+- P2(x): x is P2
+- P3(x): x is P3
+- P4(x): x is P4
+- P5(x): x is P5
+- P6(x): x is P6
+
+Constants:
+
+- c1: C1
+- c2: C2
+- c3: C3
+- c4: C4
+- c5: C5
+- c6: C6
+- c7: C7
+
+FOL Rules:
+
+- ¬P2(c2): C2 is not p2.
+- P3(c5): C5 is p3.
+- ¬P3(c2): C2 is not p3.
+- P3(c6): C6 is p3.
+- P5(c6): C6 is p5.
+- ¬P6(c4): C4 is not p6.
+- ¬P4(c1): C1 is not p4.
+- P2(c1): C1 is p2.
+- P5(c5): C5 is p5.
+- P5(c3): C3 is p5.
+- ¬P6(c5): C5 is not p6.
+- ¬P1(c2): C2 is not p1.
+- (∃x (¬P3(x) ∨ P4(x))) → ((P6(c1))): If there is someone who is either not p3 or p4, then C1 is p6.
+- (∀x (¬P4(x) ∨ P6(x))) → (∀x (¬P5(x))): Someone who is either not p4 or p6 is always not p5.
+- ((¬P5(c1) ∧ P4(c4))) → ((¬P6(c6))): If C1 is not p5 and C4 is p4, then C6 is not p6.
+- ((¬P5(c5))) → ((¬P2(c4) ∧ P1(c5))): If C5 is not p5, then C4 is not p2 and C5 is p1.
+- ((¬P2(c2))) → ((P6(c7))): If C2 is not p2, then C7 is p6.
+- (∀x (P4(x) ∨ ¬P3(x))) → (∀x (¬P2(x))): If someone is p4 or he is not p3, then he is not p2.
+- (∃x (P5(x) ∧ P4(x))) → ((¬P2(c6))): If there is someone who is both p5 and p4, then C6 is not p2.
+- (∀x (P3(x) ∧ P5(x))) ↔ (∀x (P6(x))): If someone is p3 and p5, then he is p6, and vice versa.
+- ((¬P4(c2) ∧ P5(c6))) → ((P2(c2))): C2 being not p4 and C6 being p5 imply that C2 is p2.
+- (∃x (¬P1(x) ∧ P6(x))) → ((P5(c7))): If there is at least one people who is both not p1 and p6, then C7 is p5.
+- ((¬P2(c6))) → ((P3(c5))): It can be concluded that C5 is p3 once knowing that C6 is not p2.
+- (∀x (P6(x))) ↔ (∀x (¬P5(x))): If someone is p6, then he is not p5, and vice versa.
+
+FOL Conclusion:
+
+- P2(c3): C3 is p2.
+
+Output
+
+{
+    "fol_preds": ["P1", "P2", "P3", "P4", "P5", "P6"],
+    "fol_consts": ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
+    "fol_rules": [
+        "¬P2(c2)",
+        "P3(c5)",
+        "¬P3(c2)",
+        "P3(c6)",
+        "P5(c6)",
+        "¬P6(c4)",
+        "¬P4(c1)",
+        "P2(c1)",
+        "P5(c5)",
+        "P5(c3)",
+        "¬P6(c5)",
+        "¬P1(c2)",
+        "(∃x (¬P3(x) ∨ P4(x))) → ((P6(c1)))",
+        "(∀x (¬P4(x) ∨ P6(x))) → (∀x (¬P5(x)))",
+        "((¬P5(c1) ∧ P4(c4))) → ((¬P6(c6)))",
+        "((¬P5(c5))) → ((¬P2(c4) ∧ P1(c5)))",
+        "((¬P2(c2))) → ((P6(collier)))",
+        "(∀x (P4(x) ∨ ¬P3(x))) → (∀x (¬P2(x)))",
+        "(∃x (P5(x) ∧ P4(x))) → ((¬P2(c6)))",
+        "(∀x (P3(x) ∧ P5(x))) ↔ (∀x (P6(x)))",
+        "((¬P4(c2) ∧ P5(c6))) → ((P2(c2)))",
+        "(∃x (¬P1(x) ∧ P6(x))) → ((P5(collier)))",
+        "((¬P2(c6))) → ((P3(c5)))",
+        "(∀x (P6(x))) ↔ (∀x (¬P5(x)))"
+        ],
+    "fol_conc": "P2(c3)"
+}
+
+###
+
+Here's another example:
+
+Predicates:
+
+- P1(x): x is P1
+- P2(x): x is P2
+- P3(x): x is P3
+- P4(x): x is P4
+- P5(x): x is P5
+- P6(x): x is p6
+
+Constants:
+
+- c1: C1
+- c2: C2
+- c3: C3
+- c4: C4
+- c5: C5
+- c6: C6
+- c7: C7
+
+FOL Rules:
+
+- ¬P3(c1): C1 is not p3.
+- ¬P3(c5): C5 is not p3.
+- ¬P1(c2): C2 is not p1.
+- P5(c6): C6 is p5.
+- ¬P2(c5): C5 is not p2.
+- P5(c4): C4 is p5.
+- ¬P4(c5): C5 is not p4.
+- P3(c4): C4 is p3.
+- P2(c6): C6 is p2.
+- ¬P4(c6): C6 is not p4.
+- P4(c3): C3 is p4.
+- P3(c3): C3 is p3.
+- (∃x (P5(x))) → ((¬P6(c3) ∧ P4(c7))): If there is at least one people who is p5, then C3 is not p6 and C7 is p4.
+- (∃x (¬P3(x) ∧ ¬P2(x))) → ((P6(c3))): If there is at least one people who is both not p3 and not p2, then C3 is p6.
+- (∀x (P3(x))) ↔ (∀x (P5(x))): Someone being p3 is equivalent to being p5.
+- ((P2(c5) ∧ P5(c5))) → ((P4(c1))): It can be concluded that C1 is p4 once knowing that C5 is p2 and C5 is p5.
+- (∀x (¬P3(x))) → (∀x (¬P4(x))): If someone is not p3, then he is not p4.
+- (∃x (¬P1(x))) → ((P6(c6))): If there is at least one people who is not p1, then C6 is p6.
+- ((P1(c1) ∧ P4(c1))) → ((¬P6(c7))): If C1 is p1 and C1 is p4, then C7 is not p6.
+- (∃x (P2(x) ∨ ¬P6(x))) → ((¬P5(c3))): If there is someone who is either p2 or not p6, then C3 is not p5.
+- (∀x (P1(x) ∧ ¬P6(x))) ↔ (∀x (¬P3(x) ∧ ¬P5(x))): Someone is p1 and not p6 if and only if he is not p3 and not p5.
+- (∀x (¬P4(x) ∧ P1(x))) → (∀x (P6(x))): Someone who is both not p4 and p1 is always p6.
+- (∃x (¬P4(x) ∨ ¬P6(x))) → ((¬P2(c6) ∧ ¬P5(c2))): If there is at least one people who is either not p4 or not p6, then C6 is not p2 and C2 is not p5.
+- ((P5(c6))) → ((P6(c7) ∧ P2(c5))): C6 being p5 implies that C7 is p6 and C5 is p2.
+
+FOL Conclusion:
+
+- ¬P3(c6): C6 is not p3.
+
+Output:
+
+{
+    "fol_preds": ["P1","P2","P3","P4","P5"],
+    "fol_consts": ["c1", "c2", "c3", "c4", "c5", "c6", "c7"],
+    "fol_rules": [
+        "¬P3(c1)",
+        "¬P3(c5)",
+        "¬P1(c2)",
+        "P5(c6)",
+        "¬P2(c5)",
+        "P5(c4)",
+        "¬P4(c5)",
+        "P3(c4)",
+        "P2(c6)",
+        "¬P4(c6)",
+        "P4(c3)",
+        "P3(c3)",
+        "(∃x (P5(x))) → ((¬P6(c3) ∧ P4(vera)))",
+        "(∃x (¬P3(x) ∧ ¬P2(x))) → ((P6(c3)))",
+        "(∀x (P3(x))) ↔ (∀x (P5(x)))",
+        "((P2(c5) ∧ P5(c5))) → ((P4(c1)))",
+        "(∀x (¬P3(x))) → (∀x (¬P4(x)))",
+        "(∃x (¬P1(x))) → ((P6(c6)))",
+        "((P1(c1) ∧ P4(c1))) → ((¬P6(vera)))",
+        "(∃x (P2(x) ∨ ¬P6(x))) → ((¬P5(c3)))",
+        "(∀x (P1(x) ∧ ¬P6(x))) ↔ (∀x (¬P3(x) ∧ ¬P5(x)))",
+        "(∀x (¬P4(x) ∧ P1(x))) → (∀x (P6(x)))",
+        "(∃x (¬P4(x) ∨ ¬P6(x))) → ((¬P2(c6) ∧ ¬P5(c2)))",
+        "((P5(c6))) → ((P6(vera) ∧ P2(c5)))"
+    ],
+    "fol_conc": "¬P3(c6)"
+}
+
+###
+
+Now let's convert this problem:
+
+[[unconstrained]]

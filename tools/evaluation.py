@@ -79,8 +79,8 @@ class LogicEvaluator:
                     lambda s: get_status(s, 'logic_problem') == get_status(s, 'logic_problem_gcd') == 'success'
                 )
                 
-                unconstrained = [s['logic_problem'] for s in success_samples]
-                constrained = [s['logic_problem_gcd'] for s in success_samples]
+                unconstrained = [s['logic_problem'] for s in success_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in success_samples if 'logic_problem_gcd' in s]
             
             elif category == 'EXCLUSIVE_SUCCESS':
                 unc_samples = filter_samples(
@@ -89,23 +89,23 @@ class LogicEvaluator:
                 con_samples = filter_samples(
                     lambda s: get_status(s, 'logic_problem_gcd') == 'success' != get_status(s, 'logic_problem')
                 )
-                unconstrained = [s['logic_problem'] for s in unc_samples]
-                constrained = [s['logic_problem_gcd'] for s in con_samples]
+                unconstrained = [s['logic_problem'] for s in unc_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in con_samples if 'logic_problem_gcd' in s]
             
             elif category == 'NEITHER_SUCCESS':
                 unsuccess_samples = filter_samples(
                     lambda s: (get_status(s, 'logic_problem') != 'success') and (get_status(s, 'logic_problem_gcd') != 'success')
                 )
             
-                unconstrained = [s['logic_problem'] for s in unsuccess_samples]
-                constrained = [s['logic_problem_gcd'] for s in unsuccess_samples]
+                unconstrained = [s['logic_problem'] for s in unsuccess_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in unsuccess_samples if 'logic_problem_gcd' in s]
             
         return LogicEvaluator.compute_metrics(unconstrained, with_string), LogicEvaluator.compute_metrics(constrained, with_string)
 
-def print_results(results, with_string=False):
+def print_results(results, categories, with_string=False):
     metric_names = ['Total accuracy', 'Covered accuracy', 'Parsing Coverage', 'Full Coverage']
     
-    for category in ['ALL', 'BOTH_SUCCESS', 'EXCLUSIVE_SUCCESS', 'NEITHER_SUCCESS']:
+    for category in categories:
         print(f'{"#"*20}\n{category}\n{"#"*20}\n')
         
         for subcategory in ['UNCONSTRAINED', 'CONSTRAINED']:
@@ -136,13 +136,21 @@ def main():
         samples = json.load(f)
     
     results = {}
-    for category in ['ALL', 'BOTH_SUCCESS', 'EXCLUSIVE_SUCCESS', 'NEITHER_SUCCESS']:
+    
+    categories = [
+        'ALL', 
+        # 'BOTH_SUCCESS', 
+        # 'EXCLUSIVE_SUCCESS', 
+        # 'NEITHER_SUCCESS'
+        ]
+    
+    for category in categories:
         results[category] = {}
         unc_metrics, con_metrics = LogicEvaluator.evaluate_sample_groups(samples, category, True)
         results[category]['UNCONSTRAINED'] = unc_metrics
         results[category]['CONSTRAINED'] = con_metrics
     
-    print_results(results, True)
+    print_results(results, categories, True)
 
 if __name__ == "__main__":
     main()

@@ -118,7 +118,7 @@ class LogicInferenceEngine:
                     if status_constrained == 'parsing error':
                         parsing_error_count_constrained += 1
                         
-                    elif status == 'execution error':
+                    elif status_constrained == 'execution error':
                         execution_error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({

@@ -6,6 +6,8 @@ import dotenv
 import os
 import logging
 import sys
+from dataclasses import dataclass
+from prompters import FOL_Prompter, SAT_Prompter, LP_Prompter
 from datetime import datetime
 import numpy as np
 
@@ -58,78 +60,98 @@ def calculate_perplexity(logprobs):
     return float(np.exp(-np.mean(logprobs['token_logprobs'])))
 
 class OSModel:
-    def __init__(self,
-                 model_path,
-                 n_gpu_layers=0,
-                 n_batch=512,
-                 n_ctx = 0,
-                 n_threads = 1,
-                 verbose=False,
-                 logits_all = True,
-                 **kwargs):
+    def __init__(self, config):
         """
-        model_path: The path to the model.
-        n_gpu_layers: The number of layers to put on the GPU. The rest will be on the CPU. If you don't know how many layers there are, you can use -1 to move all to GPU.
-        n_batch: Should be between 1 and n_ctx, consider the amount of RAM of your Apple Silicon Chip.
-        verbose: Whether to print verbose output.
+        Initialize model with config parameters.
+        Required config fields: model_path, n_gpu_layers, n_batch, n_ctx, n_threads
         """
-
-        # Make sure the model path is correct for your system!
         self.llm = Llama(
-            model_path=model_path,
-            n_gpu_layers=n_gpu_layers,
-            n_batch=n_batch,
-            n_threads=n_threads,
-            n_ctx=n_ctx,
-            f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            verbose=verbose,
-            logits_all = logits_all,
-            **kwargs
+            model_path=config.model_path,
+            n_gpu_layers=config.n_gpu_layers,
+            n_batch=getattr(config, 'n_batch', 512),
+            n_threads=config.n_threads,
+            n_ctx=config.n_ctx,
+            f16_kv=True,
+            verbose=config.verbose,
+            logits_all=getattr(config, 'logits_all', True),
+            **{k:v for k,v in vars(config).items() if k not in [
+                'model_path', 'n_gpu_layers', 'n_batch', 'n_threads', 
+                'n_ctx', 'verbose', 'logits_all'
+            ]}
         )
-        # if "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
-        #     warnings.warn('System role not supported, adapting format', UserWarning)
-        
-    def _format_messages(self, task_description:str|None, user:str):
-        
-        if not task_description:
-            return [
-                {"role": "user", "content": user}
-            ]
-        
-        elif "system role not supported" in self.llm.metadata['tokenizer.chat_template'].lower():
-            warnings.warn('System role not supported, adapting format', UserWarning)
-            return [
-                {"role": "user", "content": f"{task_description}\n\n{user}"}
-                ]
-        else:
-            return [
-                {"role": "system", "content": task_description},
-                {"role": "user", "content": user}
-            ]
 
-    def invoke(self,
-               prompt:str,
-               raw_grammar:bool=None,
-               logprobs = 1,
-               max_tokens = -1,
-               top_p:float=0.95,
-               top_k:float=50,
-               min_p:float=0.1,
-               **kwargs):
-
+    def invoke(self, prompt: str, raw_grammar: str = None, config = None):
+        """
+        Generate completion with config parameters.
+        Required config fields: logprobs, max_tokens, top_p, top_k, min_p
+        """
         grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
-
-        response = self.llm.create_completion(
+        
+        response =  self.llm.create_completion(
             prompt=prompt,
-            logprobs=logprobs,
-            max_tokens = max_tokens,
             grammar=grammar,
-            top_p=top_p,
-            top_k=top_k,
-            min_p=min_p,
-            **kwargs
+            logprobs=getattr(config, 'logprobs', 1),
+            **{k:v for k,v in vars(config).items() if k not in ['prompt', 'grammar']}
         )
         
-        # if response['choices'][0]["finish_reason"] != 'stop':
-        #     raise Exception(f'Failed to generate response: stopping reason = "{response["choices"][0]["finish_reason"]}"')
         return response
+    
+class PromptGenerator:
+    def __init__(self, config):
+        self.script_config = config
+        self.type = self._get_type()
+        self._load_templates()
+        self.prompter = self._get_prompter()
+
+    def _get_type(self) -> str:
+        types = {
+            'FOLIO': 'FOL',
+            'FOLIOv2': 'FOL',
+            'LogicNLI': 'FOL',
+            'LogicNLI_symbolic': 'FOL',
+            'ProntoQA': 'LP',
+            'ProofWriter': 'LP',
+            'AR-LSAT': 'SAT'
+        }
+        return types[self.script_config.dataset_name]
+    
+    def _get_prompter(self):
+        prompters = {
+            'FOL': FOL_Prompter,
+            'SAT': SAT_Prompter,
+            'LP': LP_Prompter
+        }
+        
+        prompter = prompters[self.type](self.script_config, self.templates)
+        return prompter
+    
+    def _get_prompt_template(self):
+        
+        if 'gemma' in self.script_config.sketcher_name:
+            return 'prompts/prompt_templates/gemma.txt'  
+        
+        elif 'tinyllama' in self.script_config.sketcher_name:
+            return 'prompts/prompt_templates/tinyllama.txt'  
+            
+        else:
+            return 'prompts/prompt_templates/llama.txt'
+
+    def _load_templates(self):
+        templates = {
+            'json': f'./prompts/conversion/{self.script_config.dataset_name}/json.txt',
+            'constrained': f'./prompts/conversion/{self.script_config.dataset_name}/constrained.txt',
+            'unconstrained': f'./prompts/conversion/{self.script_config.dataset_name}/unconstrained.txt',
+            'predicates': f'./prompts/conversion/{self.script_config.dataset_name}/predicates.txt',
+            'prompt_template': self._get_prompt_template(),
+            'json_grammar': './LLMs/grammars/json.gbnf',
+            'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'}
+
+        self.templates = {}
+        for key, path in templates.items():
+            with open(path, 'r') as f:
+                content = f.read()
+                if key in ['json', 'unconstrained', 'constrained', 'predicates']:
+                    with open(templates['prompt_template'], 'r') as pt:
+                        prompt_template = pt.read()
+                        content = prompt_template.replace('[[user]]', content)
+                self.templates[key] = content

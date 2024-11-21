@@ -3,27 +3,8 @@ from typing import Dict, List, Callable, Any
 import json
 
 
-@dataclass
-class Config:
-    sketcher_name: str
-    dataset_name: str
-    data_path: str
-    split: str
-    models_path: str
-    save_path: str
-    n_gpu_layers: int 
-    n_ctx: int
-    max_tokens: int
-    n_threads: int
-    stop_time: str|None
-    timeout_seconds: int|None
-    two_steps: bool = False
-    force_unconstrained: bool = False
-    force_constrained:bool = False
-    debug: bool = False
-
 class FOL_Prompter:
-    def __init__(self, config: Config, templates: Dict[str,str]):
+    def __init__(self, config, templates: Dict[str,str]):
         self.config = config
         self.templates = templates
 
@@ -33,8 +14,10 @@ class FOL_Prompter:
         
         if predicates:
             return ' | '.join(f'"{pred.split("(")[0]}"' for pred in predicates)
+        elif "symbolic" in self.config.dataset_name:
+            return '[A-Z][0-9]'
         else:
-            return '[A-Z][a-z0-9]{2,15}'
+            return '[A-Z][a-z0-9]+'
 
         
     def _get_constants(self, constructs: Dict) -> str:
@@ -42,16 +25,17 @@ class FOL_Prompter:
         constants = constructs.get('fol_consts', None)
 
         if constants:
-            return' | '.join(f'"{con}"' for con in constants)            
+            return ' | '.join(f'"{con}"' for con in constants)            
+        elif "symbolic" in self.config.dataset_name:
+            return '[a-z][0-9]'
         else:
-            return'[a-z0-9]{2,15}'
+            return '[a-z][a-z0-9]+'
         
     def get_grammar(self, constructs: dict) -> str:
         
         predicates = self._get_predicates(constructs)
         constants = self._get_constants(constructs)
-                    
-                            
+
         return self.templates['constrained_grammar'].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
     
     def unconstrained(self, sample: Dict) -> str:
@@ -109,7 +93,7 @@ class FOL_Prompter:
         
         
 class SAT_Prompter:
-    def __init__(self, config: Config, templates: Dict[str,str]):
+    def __init__(self, config, templates: Dict[str,str]):
         self.config = config
         self.templates = templates
         
@@ -162,7 +146,7 @@ class SAT_Prompter:
         
         
 class LP_Prompter:
-    def __init__(self, config: Config, templates: Dict[str,str]):
+    def __init__(self, config, templates: Dict[str,str]):
         self.config = config
         self.templates = templates
         
