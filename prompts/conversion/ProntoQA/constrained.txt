@@ -1,0 +1,36 @@
+The task is to convert a natrual language reasoning problem into a logic program. 
+First, identify the predicates required to build the logic program.
+Then, use the predicates to define the known facts and the rules of the logic program.
+Finally, use the predicates to define the query.
+Do not attempt to solve the program, limit yourself to converting.
+
+Here's an example of how to perform the conversion:
+
+NL problem:
+"""
+Each jompus is fruity. Every jompus is a wumpus. Every wumpus is not transparent. Wumpuses are tumpuses. Tumpuses are mean. Tumpuses are vumpuses. Every vumpus is cold. Each vumpus is a yumpus. Yumpuses are orange. Yumpuses are numpuses. Numpuses are dull. Each numpus is a dumpus. Every dumpus is not shy. Impuses are shy. Dumpuses are rompuses. Each rompus is liquid. Rompuses are zumpuses. Alex is a tumpus.
+"""
+
+NL question:
+"""
+Is the following statement true or false? Alex is not shy.
+"""
+
+------
+
+
+{"predicates": [":- dynamic dumpus/1", ":- dynamic impuses/1", ":- dynamic jompus/1", ":- dynamic numpus/1", ":- dynamic rompus/1", ":- dynamic tumpuses/1", ":- dynamic vumpuses/1", ":- dynamic wumpus/1", ":- dynamic wumpuses/1", ":- dynamic yumpus/1", ":- dynamic shy/1"], "facts": ["tumpuses(alex)"], "rules": [ "jompus(X) :- fruity(X)", "jompus(X) :- wumpus(X)", "wumpus(X) :- \\+transparent(X)", "wumpuses(X) :- tumpuses(X)", "tumpuses(X) :- mean(X)", "tumpuses(X) :- vumpuses(X)", "vumpuses(X) :- cold(X)", "vumpuses(X) :- yumpus(X)", "yumpus(X) :- orange(X)", "yumpus(X) :- numpus(X)", "numpus(X) :- dull(X)", "numpus(X) :- dumpus(X)", "dumpus(X) :- \\+shy(X)", "impuses(X) :- shy(X)", "dumpus(X) :- rompus(X)", "rompus(X) :- liquid(X)", "rompus(X) :- zumpus(X)"], "query": "\\+shy(alex)."}
+
+###
+
+Now let's convert this problem to a logic program:
+
+NL problem:
+"""
+[[nl_problem]]
+"""
+
+NL question:
+"""
+[[nl_question]]
+"""

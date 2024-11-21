@@ -1,0 +1,44 @@
+#### Wrap predicates, constants, rules and conclusion in a valid JSON ####
+root ::= "{" ws preds ws consts ws rules ws conc ws "}"
+
+ws ::= [ \t\n\r]*
+
+preds ::= "\"fol_preds\":" ws "[" ws predslist ws "], "
+predslist ::= "\"" ATOMIC "\"" (ws "," ws "\"" ATOMIC "\"")*
+
+consts ::= "\"fol_consts\":" ws "[" ws constlist ws "], "
+constlist ::= "\"" constant "\"" (ws "," ws "\"" constant "\"")*
+
+rules ::= "\"fol_rules\":" ws "[" ws rulelist ws "], "
+rulelist ::= "\"" FORMULA "\"" (ws "," ws "\"" FORMULA "\"")*
+
+conc ::= "\"fol_conc\":" ws "\"" FORMULA "\""
+
+
+#### Generate FOL Formulas ####
+FORMULA ::= BASIC TAIL{0,5}
+TAIL ::= BINOP BASIC
+
+# Basic formula without recursion
+BASIC ::= "¬"? ATOMIC | QUANTIFIED | "¬"? "(" FORMULA ")"
+
+# Quantified formulas
+QUANTIFIED ::= (quantifier variable " "){1,4} "(" FORMULA ")"
+quantifier ::= "∀" | "∃"
+variable ::= [a-z]
+
+# Binary operators
+BINOP ::= " ⊕ " | " ∨ " | " ∧ " | " → " | " ↔ "
+
+# Atomic formulas
+ATOMIC ::= predicate "(" terms ")"
+
+# Terms in predicates
+terms ::= term | term ", " terms
+
+# Individual terms
+term ::= constant | variable
+
+# Basic elements
+predicate ::= [[PREDICATES]]
+constant ::= [[CONSTANTS]]

@@ -1,9 +1,14 @@
-import json
 import os
-from tqdm import tqdm
-from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
+import json
 import argparse
-import random
+import traceback
+from typing import Tuple, List
+from tqdm import tqdm
+from timeout_decorator import timeout, TimeoutError
+import sys
+
+from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
+from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 
 class LogicInferenceEngine:
     def __init__(self, args):
@@ -14,116 +19,130 @@ class LogicInferenceEngine:
         self.sketcher_name = args.sketcher_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
-        self.prompt_mode = args.prompt_mode
         self.self_refine_round = args.self_refine_round
-
-        self.dataset = self.load_logic_programs()
-        self.ground_truth = self.load_ground_truth()
         
         program_executor_map = {'FOLIO': FOL_Prover9_Program, 
-                                'LogicNLI': FOL_Prover9_Program}
+                                'LogicNLI': FOL_Prover9_Program,
+                                'AR-LSAT': LSAT_Z3_Program
+                                }
+        
         self.program_executor = program_executor_map[self.dataset_name]
         
-    def load_ground_truth(self):
-        with open(os.path.join(self.data_path, self.dataset_name, f'{self.split}.json'), 'r') as f:
-            ground_truth_raw = json.load(f)
-            
-        ground_truth = {
-            point['id']: {
-                'context': point['context'],
-                'context_fol': point['context_fol'],
-                'question': point['question'],
-            }
-        for point in ground_truth_raw
-        }
-            
-        for point in ground_truth_raw:
-            if 'question_fol' in point:
-                key = point['id']
-                ground_truth[key].update({
-                'question_fol': point['question_fol']
-                })
+        self.dataset = self.load_logic_problems()
 
-        return ground_truth
-
-    def load_logic_programs(self):
+    def load_logic_problems(self) -> List[dict]:
         
         if self.self_refine_round > 0:
-            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
+            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
         else:
-            programs_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
+            programs_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
         with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
 
-    def safe_execute_program(self, id, logic_program):
-        program = self.program_executor(logic_program, self.dataset_name, self.prompt_mode)
+    @timeout(seconds=60)
+    def safe_execute_program(self, logic_program:dict) -> Tuple[str,str, str]:
+        program = self.program_executor(logic_program)
         # cannot parse the program
         if program.flag == False:
-            answer = 'N/A'
-            return answer, 'parsing error', program.formula_error, program.nl_error
+            return 'N/A', 'parsing error', program.formula_error
         # execuate the program
         answer, error_message = program.execute_program()
+        
+        if program.flag == False:
+            return 'N/A', 'parsing error', program.formula_error
+        
         # not executable
         if answer is None:
-            answer =  'N/A'
-            return answer, 'execution error', error_message, None
+            return 'N/A', 'execution error', error_message
         # successfully executed
-        answer = program.answer_mapping(answer)
-        return answer, 'success', None, None
+        return program.answer_mapping(answer), 'success', ''
 
     def inference_on_dataset(self):
-        outputs = []
-        error_count = 0
-        
-        if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
-        else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}_{self.prompt_mode}.json'
-            
-            
-        if os.path.exists(os.path.join(self.save_path, save_file)):
-            print(f"File {save_file} already exists. Skipping...")
-            return
-        
-        for example in tqdm(self.dataset):
-            # execute the logic program
-            
-            program = example['raw_logic_programs']
-            
-            answer, flag, error, nl_error = self.safe_execute_program(example['id'], program)
-            if not flag == 'success':
-                error_count += 1
-                # print(example['id'])
-
-            # create output
-            output = {'id': example['id'], 
-                    # 'context': example['context'],
-                    'question': example['question'], 
-                    'answer': example['answer'],
-                    'flag': flag,
-                    # 'error': error_message,
-                    'predicted_answer': answer}
-            if error:
-                if flag == 'parsing error':
-                    output.update({
-                        'wrong_formula': error,
-                        'correct_formula': nl_error
-                    })
-                elif flag == 'execution error':
-                    output.update({
-                        'error_message': error
-                    })
-            outputs.append(output)
-        
-        print(f"Error count: {error_count}")
         
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        with open(os.path.join(self.save_path, save_file), 'w') as f:
-            json.dump(outputs, f, indent=2, ensure_ascii=False)
+        outputs = []
+        parsing_error_count = 0
+        execution_error_count = 0
+        
+        parsing_error_count_constrained = 0
+        execution_error_count_constrained = 0
+        
+        if self.self_refine_round > 0:
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+        else:
+            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+            
+            
+        # if os.path.exists(os.path.join(self.save_path, save_file)):
+        #     print(f"File {save_file} already exists. Skipping...")
+        #     return
+        
+        for sample in tqdm(self.dataset):
+            # execute the logic program
+                           
+            if 'logic_problem' in sample.keys():
+                
+                try:
+                
+                    logic_problem = sample.get('logic_problem', {})
+                    
+                    answer, status, error = self.safe_execute_program(logic_problem)
+                    
+                    if status == 'parsing error':
+                        parsing_error_count += 1
+                    elif status == 'execution error':
+                        execution_error_count += 1
+                        
+                    sample['logic_problem'].update({
+                        'answer': sample['answer'],
+                        'predicted_answer': answer,
+                        'status': status,
+                        'error': error
+                    })
+                    
+                except TimeoutError:
+                    execution_error_count += 1
+                    pass
+                
+            if 'logic_problem_gcd' in sample.keys():
+                
+                try:
+                                
+                    logic_problem_constrained = sample.get('logic_problem_gcd', {})
+                    answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
+
+                    if status_constrained == 'parsing error':
+                        parsing_error_count_constrained += 1
+                        
+                    elif status_constrained == 'execution error':
+                        execution_error_count_constrained += 1
+                        
+                    sample['logic_problem_gcd'].update({
+                        'answer': sample['answer'],
+                        'predicted_answer': answer_constrained,
+                        'status': status_constrained,
+                        'error': error_constrained
+                    })
+                        
+                except TimeoutError:
+                    execution_error_count_constrained += 1
+                    pass
+                
+            outputs.append(sample)
+            
+            with open(os.path.join(self.save_path, save_file), 'w') as f:
+                json.dump(outputs, f, indent=2, ensure_ascii=False)
+        
+        print("\nUNCONSTRAINED")
+        print(f"Parsing: {parsing_error_count}")
+        print(f"Execution: {execution_error_count}")
+        print("\nCONSTRAINED")
+        print(f"Parsing: {parsing_error_count_constrained}")
+        print(f"Execution: {execution_error_count_constrained}")
             
         self.cleanup()
 
@@ -135,18 +154,40 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', type=str, default='./data')
-    parser.add_argument('--dataset_name', type=str)
+    parser.add_argument('--sketcher-name', type=str, required=True)
+    parser.add_argument('--dataset-name', type=str, required=True)
+    
+    parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--prompt_mode', type=str, choices=['dynamic', 'static', 'logiclm'], default='dynamic')
-    parser.add_argument('--self_refine_round', type=int, default=0)
-    parser.add_argument('--programs_path', type=str, default='./outputs/logic_programs')
-    parser.add_argument('--save_path', type=str, default='./outputs/logic_inference')
-    parser.add_argument('--sketcher_name', type=str, default='gpt-3.5-turbo')
+    parser.add_argument('--save-path', type=str, default='./outputs/logic_inference')
+    parser.add_argument('--programs-path', type=str, default='./outputs/logic_problems')
+    parser.add_argument('--self-refine-round', type=int, default=0)
     args = parser.parse_args()
     return args
 
 if __name__ == "__main__":
     args = parse_args()
+    
+    script_name = os.path.splitext(os.path.basename(__file__))[0]
+
+    print(f"Dataset: {args.dataset_name}")
+    print(f"Sketcher: {args.sketcher_name}")
+    print(f"Self-refine-round: {args.self_refine_round}")
+    print(f"Split: {args.split}")
+    print(f"Save path: {args.save_path}")
+    
     engine = LogicInferenceEngine(args)
-    engine.inference_on_dataset()
+    
+    try:
+        engine.inference_on_dataset()
+    
+    except KeyboardInterrupt:
+        sys.exit(0)
+                
+    except Exception as e:
+
+        error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        sys.exit(0)
+                
+    print("Finished Successfully")
+    # send_notification("Yippiee!", "logic_inference.py finished successfully")

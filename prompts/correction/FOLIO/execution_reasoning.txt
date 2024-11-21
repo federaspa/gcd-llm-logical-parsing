@@ -1,0 +1,48 @@
+The task is to think about a First-Order-Logic problem that throws an error.
+I will provide the original problem and the error returned by the Prover9 solver, and you must reason on why that error appeared, and propose steps to correct it. 
+
+Here are the rules for First-Order Logic:
+1. Logical operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication), ¬ (negation), ↔ (equivalence).
+2. Quantifiers: ∀ (universal), ∃ (existential).
+3. Forbidden symbols: "%", "≠".
+4. It is FORBIDDEN to nest predicates, e.g. "Rounded(Square(x))" is NOT ALLOWED.
+5. Formulas must ALWAYS be relations between predicates, and it is FORBIDDEN to use relationships between variables. For example, "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED.
+6. Parentheses MUST ALWAYS be balanced.
+
+------
+
+Here's an example of how to reason about the error:
+
+Original FOL problem:
+
+{"fol_preds": ["Contains", "Song", "Member", "BoyBand", "SouthKorean", "LeadSingle", "LeadSingleOf", "ExtendedPlay", "Wrote", "RecordedBy", "HasMusicVideo"],
+"fol_rules": ["Song(showyourlove) ∧ RecordedBy(showyourlove, btob4u) ∧ SouthKorean(btob4u) ∧ BoyBand(btob4u)","ExtendedPlay(inside) ∧ LeadSingle(showyourlove) ∧ LeadSingleOf(showyourlove, inside)", "Contains(showyourlove, hopefulmessage)", "Member(hyunsik, btob4u) ∧ Wrote(hyunsik, showyourlove)"], 
+"fol_conc": "HasMusicVideo(showyourlove)"}
+
+Error Message: "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1.\n\n\nFatal error:  The following symbols are used with multiple arities: LeadSingle/2, LeadSingle/1"
+
+In the second fol rule, the predicate LeadSingle appears before LeadSingleOf. Since a predicate cannot be a subset of another, this leads to a multiple arities error. To fix this, we can change LeadSingleOf to EPLeadSingle wherever it appears, so that it's not a subset of any other predicate.
+
+------
+
+Here's another example:
+
+Original FOL problem:
+
+{"fol_preds": ["University", "Student", "Professor", "Course", "Teaches", "Enrolled", "Department", "Major", "GraduateStudent", "Advisor"],
+"fol_rules": ["University(stanford) ∧ Department(computerscience, stanford)", "∀x (Student(x) → ∃y (Enrolled(x, y) ∧ Course(y)))", "∀x (Professor(x) → ∃y (Teaches(x, y) ∧ Course(y)))", "∀x (GraduateStudent(x) → Student(x) ∧ ∃y (Advisor(x, y) ∧ Professor(y)))", "Major(alice, computerscience) ∧ Student(alice)", "Professor(bob) ∧ Teaches(bob, machinelearning)"],
+"fol_conc": "∃x (Student(x) ∧ Enrolled(x, machinelearning))"}
+
+Error Message: "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Department/2, Department/1.\n\n\nFatal error: The following symbols are used with multiple arities: Department/2, Department/1"
+
+The error occurs because the predicate "Department" is used with different arities (number of arguments) in different parts of the FOL rules. In the first rule, it's used with two arguments (Department(computerscience, stanford)), but the error suggests it's also used somewhere with only one argument. To fix this, we need to ensure consistent use of the Department predicate. We can modify it to always take two arguments: the department name and the university it belongs to. We'll update the relevant rule and add the Department predicate to the fol_preds list with the correct arity.
+
+------
+
+Now let's do the same for the following problem:
+
+Original FOL problem:
+
+[[PROBLEM]]
+
+Error Message: "[[ERROR]]"

@@ -1,0 +1,70 @@
+Wrap the provided programs in a valid JSON, with the following schema:
+"""
+\{
+  "declarations": [list of declarations],
+  "constraints": [list of constraints],
+  "options": [list of options to check]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+"""
+Declarations:
+
+- people = EnumSort([Vladimir, Wendy])
+- meals = EnumSort([breakfast, lunch, dinner, snack])
+- foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])
+- eats = Function([people, meals] -> [foods])
+
+Constraints:
+
+- ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m)) ::: At no meal does Vladimir eat the same kind of food as Wendy
+- ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1) ::: Neither of them eats the same kind of food more than once during the day
+- ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet)) ::: For breakfast, each eats exactly one of the following: hot cakes, poached eggs, or omelet
+- ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet)) ::: For lunch, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet)) ::: For dinner, each eats exactly one of the following: fish, hot cakes, macaroni, or omelet
+- ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet)) ::: For a snack, each eats exactly one of the following: fish or omelet
+eats(Wendy, lunch) == omelet ::: Wendy eats an omelet for lunch
+
+Options:
+
+Question ::: Vladimir must eat which one of the following foods?
+- is_valid(Exists([m:meals], eats(Vladimir, m) == fish)) ::: (A)
+- is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes)) ::: (B)
+- is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni)) ::: (C)
+- is_valid(Exists([m:meals], eats(Vladimir, m) == omelet)) ::: (D)
+- is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs)) ::: (E)
+"""
+
+Output:
+
+{"declarations": [
+    "people = EnumSort([Vladimir, Wendy])",
+    "meals = EnumSort([breakfast, lunch, dinner, snack])",
+    "foods = EnumSort([fish, hot_cakes, macaroni, omelet, poached_eggs])",
+    "eats = Function([people, meals] -> [foods])"
+  ],
+  "constraints": [
+    "ForAll([m:meals], eats(Vladimir, m) != eats(Wendy, m))",
+    "ForAll([p:people, f:foods], Count([m:meals], eats(p, m) == f) <= 1)",
+    "ForAll([p:people], Or(eats(p, breakfast) == hot_cakes, eats(p, breakfast) == poached_eggs, eats(p, breakfast) == omelet))",
+    "ForAll([p:people], Or(eats(p, lunch) == fish, eats(p, lunch) == hot_cakes, eats(p, lunch) == macaroni, eats(p, lunch) == omelet))",
+    "ForAll([p:people], Or(eats(p, dinner) == fish, eats(p, dinner) == hot_cakes, eats(p, dinner) == macaroni, eats(p, dinner) == omelet))",
+    "ForAll([p:people], Or(eats(p, snack) == fish, eats(p, snack) == omelet))",
+    "eats(Wendy, lunch) == omelet "
+  ],
+  "options": [
+    "is_valid(Exists([m:meals], eats(Vladimir, m) == fish))",
+    "is_valid(Exists([m:meals], eats(Vladimir, m) == hot_cakes))",
+    "is_valid(Exists([m:meals], eats(Vladimir, m) == macaroni))",
+    "is_valid(Exists([m:meals], eats(Vladimir, m) == omelet))",
+    "is_valid(Exists([m:meals], eats(Vladimir, m) == poached_eggs))"
+  ]
+}
+
+###
+
+Now let's convert this problem:
+
+[[unconstrained]]

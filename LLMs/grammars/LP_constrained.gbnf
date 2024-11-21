@@ -1,0 +1,18 @@
+root ::= "{" ws "\"predicates\": [" predicatelist "]," ws "\"facts\": [" factlist "]," ws "\"rules\": [" rulelist "]," ws "\"query\": " query ws "}"
+
+predicatelist ::= predicatename ("," ws predicatename)*
+factlist ::= fact ("," ws fact)*
+rulelist ::= rule ("," ws rule)*
+
+predicatename ::= "\":- dynamic " [a-z][a-z]+ "/1.\""
+variable ::= [A-Z]
+
+fact ::= "\"" predicatebase "(" object ")" ".\""
+rule ::= "\"" predicatebase "(" variable ") :- " (neg? predicatebase "(" variable ")") ".\""
+query ::= "\"" (neg? predicatebase "(" object ")") ".\""
+
+predicatebase ::= [a-z][a-z]+
+object ::= [a-z][a-z]+
+neg ::= "\\" "\\" "+"
+
+ws ::= [ ]
