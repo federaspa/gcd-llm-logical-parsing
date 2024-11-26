@@ -7,7 +7,7 @@ import os
 import logging
 import sys
 from dataclasses import dataclass
-from prompters import FOL_Prompter, SAT_Prompter, LP_Prompter
+from utils.prompters import FOL_Prompter, SAT_Prompter, LP_Prompter
 from datetime import datetime
 import numpy as np
 
@@ -60,38 +60,32 @@ def calculate_perplexity(logprobs):
     return float(np.exp(-np.mean(logprobs['token_logprobs'])))
 
 class OSModel:
-    def __init__(self, config):
+    def __init__(self, llama_cpp_config:dict):
         """
         Initialize model with config parameters.
-        Required config fields: model_path, n_gpu_layers, n_batch, n_ctx, n_threads
         """
+        
+        # pp(llama_cpp_config)
+        # llama_cpp_config = {"model_path": llama_cpp_config['model_path'], 'n_ctx': 2048}
+        
         self.llm = Llama(
-            model_path=config.model_path,
-            n_gpu_layers=config.n_gpu_layers,
-            n_batch=getattr(config, 'n_batch', 512),
-            n_threads=config.n_threads,
-            n_ctx=config.n_ctx,
             f16_kv=True,
-            verbose=config.verbose,
-            logits_all=getattr(config, 'logits_all', True),
-            **{k:v for k,v in vars(config).items() if k not in [
-                'model_path', 'n_gpu_layers', 'n_batch', 'n_threads', 
-                'n_ctx', 'verbose', 'logits_all'
-            ]}
+            logits_all=True,
+            n_ctx = 10300,
+            **llama_cpp_config
         )
 
-    def invoke(self, prompt: str, raw_grammar: str = None, config = None):
+    def invoke(self, prompt: str, model_config: dict, raw_grammar: str = None):
         """
         Generate completion with config parameters.
-        Required config fields: logprobs, max_tokens, top_p, top_k, min_p
         """
         grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
         
         response =  self.llm.create_completion(
             prompt=prompt,
             grammar=grammar,
-            logprobs=getattr(config, 'logprobs', 1),
-            **{k:v for k,v in vars(config).items() if k not in ['prompt', 'grammar']}
+            logprobs=1,
+            **model_config
         )
         
         return response

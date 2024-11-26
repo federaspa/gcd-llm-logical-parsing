@@ -11,7 +11,7 @@ from tqdm import tqdm
 from utils.symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
 from scripts.utils.utils import OSModel, get_logger, send_notification, calculate_perplexity
-from prompters import FOL_Prompter, LP_Prompter
+from scripts.utils.prompters import FOL_Prompter, LP_Prompter
 
 import traceback
 

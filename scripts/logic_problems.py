@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 from pprint import pp
 
-from scripts.utils.utils import OSModel, PromptGenerator, send_notification, get_logger, calculate_perplexity
+from utils.utils import OSModel, PromptGenerator, send_notification, get_logger, calculate_perplexity
 
 import traceback
 
@@ -30,14 +30,14 @@ class ScriptConfig:
     debug: bool = False
 
 class LogicProgramGenerator(PromptGenerator):
-    def __init__(self, script_config: ScriptConfig, model_config: dict, gen_config: dict):
+    def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict):
         
         self.script_config = script_config
         
         super().__init__(self.script_config)
         
-        self.sketcher_api = OSModel(model_config)
-        self.gen_config = gen_config
+        self.sketcher_api = OSModel(llama_cpp_config)
+        self.model_config = model_config
         
         self.stop_time = None
         if self.script_config.stop_time:
@@ -74,7 +74,7 @@ class LogicProgramGenerator(PromptGenerator):
             response = self.sketcher_api.invoke(
                 prompt=user,
                 raw_grammar=self.templates['json_grammar'],
-                max_tokens=gen_config.max_tokens
+                model_config=self.model_config
             )
             
             content = response['choices'][0]['text']
@@ -89,7 +89,8 @@ class LogicProgramGenerator(PromptGenerator):
         user = self.prompter.unconstrained(sample=sample)
         response = self.sketcher_api.invoke(
             prompt=user,
-            config=self.gen_config
+            # model_config=self.model_config
+            model_config={}
         )
         
         content = response['choices'][0]['text']
@@ -101,7 +102,7 @@ class LogicProgramGenerator(PromptGenerator):
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.templates['json_grammar'],
-            config=self.gen_config
+            model_config=self.model_config
         )
         
         content = response['choices'][0]['text']
@@ -114,7 +115,7 @@ class LogicProgramGenerator(PromptGenerator):
         response = self.sketcher_api.invoke(
             prompt=user,
             raw_grammar=self.grammar,
-            config=self.gen_config
+            model_config=self.model_config
         )
         
         content = response['choices'][0]['text']
@@ -176,15 +177,15 @@ class LogicProgramGenerator(PromptGenerator):
                     
                     logic_problem['perplexity'] = (perplexity, json_perplexity)
                     
-                    if i % 20 == 0:
-                        logger.debug(unconstrained)
+                    # if i % 20 == 0:
+                    #     logger.debug(unconstrained)
                         
                 else:
                     logic_problem = sample['logic_problem']
                     
                     
-                if i % 20 == 0:
-                    logger.debug(logic_problem)
+                # if i % 20 == 0:
+                #     logger.debug(logic_problem)
                         
             
             except json.decoder.JSONDecodeError:
@@ -210,8 +211,8 @@ class LogicProgramGenerator(PromptGenerator):
                 else:
                     logic_problem_gcd = sample['logic_problem_gcd']
                 
-                if i % 20 == 0:
-                    logger.debug(logic_problem_gcd)
+                # if i % 20 == 0:
+                #     logger.debug(logic_problem_gcd)
                     
             except TimeoutError:
                 print()
@@ -276,17 +277,17 @@ def get_configs(script_config: ScriptConfig):
         model_config = yaml.safe_load(f)
         
     # Load general LlamaCpp generation configuration
-    gen_config_path = Path('configs') / 'llamacpp.yml'
-    with open(gen_config_path, 'r') as f:
-        gen_config = yaml.safe_load(f)
+    llamacpp_config_path = Path('configs') / 'llamacpp.yml'
+    with open(llamacpp_config_path, 'r') as f:
+        llama_cpp_config = yaml.safe_load(f)
     
     # Add model path to model config
-    model_config['model_path'] = str(Path(script_config.models_path) / f"{script_config.sketcher_name}.gguf")
+    llama_cpp_config['model_path'] = str(Path(script_config.models_path) / f"{script_config.sketcher_name}.gguf")
     
     # Verify model path exists
-    assert Path(model_config['model_path']).exists()
+    assert Path(llama_cpp_config['model_path']).exists()
     
-    return script_config, model_config, gen_config
+    return script_config, model_config, llama_cpp_config
 
 if __name__ == '__main__':
     args = parse_args()
@@ -294,22 +295,28 @@ if __name__ == '__main__':
     script_name = Path(__file__).stem
     logger, log_file_name = get_logger(script_name, args.debug)
     
-    script_config, model_config, gen_config = get_configs(args)
+    script_config, model_config, llama_cpp_config = get_configs(args)
     
-    for key, value in vars(script_config).items():
-        logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
+    # for key, value in vars(script_config).items():
+    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
     
-    for key, value in vars(model_config).items():
-        logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
+    # for key, value in model_config.items():
+    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
     
-    for key, value in vars(gen_config).items():
-        logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
+    # for key, value in llama_cpp_config.items():
+    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
+    
+    # pp(script_config)
+    # pp(model_config)
+    # pp(llama_cpp_config)
+    
+    # sys.exit(0)
     
     try:
         generator = LogicProgramGenerator(
             script_config=script_config,
             model_config=model_config,
-            gen_config=gen_config
+            llama_cpp_config=llama_cpp_config
         )
         generator.run()
         
