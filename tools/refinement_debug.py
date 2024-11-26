@@ -1,4 +1,4 @@
-from models.refinement import *
+from scripts.refinement import *
 
 class SelfRefinementEngine(SelfRefinementEngine):
     def single_round_self_refinement(self):

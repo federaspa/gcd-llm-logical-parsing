@@ -103,16 +103,20 @@ class LogicEvaluator:
         return LogicEvaluator.compute_metrics(unconstrained, with_string), LogicEvaluator.compute_metrics(constrained, with_string)
 
 def print_results(results, categories, with_string=False):
-    metric_names = ['Total accuracy', 'Covered accuracy', 'Parsing Coverage', 'Full Coverage']
+    metric_names = ['Total accuracy', 'Accuracy', 'Parsing Coverage', 'Coverage']
     
     for category in categories:
-        print(f'{"#"*20}\n{category}\n{"#"*20}\n')
+        # print(f'{"#"*20}\n{category}\n{"#"*20}\n')
         
         for subcategory in ['UNCONSTRAINED', 'CONSTRAINED']:
             print(f'{"-"*20}\n{subcategory}\n{"-"*20}\n')
             
             metrics = results[category][subcategory]
             for name, value in zip(metric_names, metrics):
+                
+                if name in ['Parsing Coverage', 'Total accuracy']:
+                    continue
+                
                 if with_string:
                     print(f'{name}: {value[0]:.2f} ({value[1]})\n')
                 else:
@@ -121,36 +125,60 @@ def print_results(results, categories, with_string=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset-name', type=str, required=True)
-    parser.add_argument('--sketcher-name', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
     args = parser.parse_args()
     
-    prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
-    filename = f'{prefix}{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
-    result_file = os.path.join(args.result_path, filename)
     
-    print('Evaluating file\n', result_file)
-    with open(result_file, 'r') as f:
-        samples = json.load(f)
-    
-    results = {}
-    
-    categories = [
-        'ALL', 
-        # 'BOTH_SUCCESS', 
-        # 'EXCLUSIVE_SUCCESS', 
-        # 'NEITHER_SUCCESS'
+    if args.sketcher_name:
+        sketcher_names = [args.sketcher_name]
+    else:
+        sketcher_names = [
+        'tinyllama-1.1b-it',
+        'llama-3.1-8b-it',
+        'gemma-2-2b-it',
+        'gemma-2-9b-it',
+        'gemma-2-27b-it'
         ]
     
-    for category in categories:
-        results[category] = {}
-        unc_metrics, con_metrics = LogicEvaluator.evaluate_sample_groups(samples, category, True)
-        results[category]['UNCONSTRAINED'] = unc_metrics
-        results[category]['CONSTRAINED'] = con_metrics
-    
-    print_results(results, categories, True)
+    for sketcher_name in sketcher_names:
+        
+        
+        args.sketcher_name = sketcher_name
+        
+        try:
+            prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
+            filename = f'{prefix}{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
+            result_file = os.path.join(args.result_path, filename)
+
+            # print('Evaluating file\n', result_file)
+            # print('Sketcher:', result_file)
+            print(f'{"#"*20}\n{sketcher_name}\n{"#"*20}\n')
+            
+            with open(result_file, 'r') as f:
+                samples = json.load(f)
+
+            results = {}
+
+            categories = [
+                'ALL', 
+                # 'BOTH_SUCCESS', 
+                # 'EXCLUSIVE_SUCCESS', 
+                # 'NEITHER_SUCCESS'
+                ]
+
+            for category in categories:
+                results[category] = {}
+                unc_metrics, con_metrics = LogicEvaluator.evaluate_sample_groups(samples, category, True)
+                results[category]['UNCONSTRAINED'] = unc_metrics
+                results[category]['CONSTRAINED'] = con_metrics
+
+            print_results(results, categories, True)
+            
+        except Exception:
+            continue
 
 if __name__ == "__main__":
     main()
