@@ -290,17 +290,22 @@ def parse_args() -> ScriptConfig:
 
 
 def get_configs(script_config: ScriptConfig):
-    sketcher_config_path = Path('configs') / f"{script_config.sketcher_name}.yml"
+    sketcher_config_path = Path('configs/models') / f"{script_config.sketcher_name}.yml"
     with open(sketcher_config_path, 'r') as f:
-        configs = yaml.safe_load(f)
+        gen_config = yaml.safe_load(f)
+        
+        
+    model_config_path = Path('configs') / f"llama_cpp.yml"
+    with open(model_config_path, 'r') as f:
+        model_config = yaml.safe_load(f)
         
     model_config = ModelConfig(
         model_path=str(Path(script_config.models_path) / f"{script_config.sketcher_name}.gguf"),
-        **{k:v for k,v in configs.items() if k in ModelConfig.__annotations__}
+        **{k:v for k,v in model_config.items() if k in ModelConfig.__annotations__}
     )
     assert Path(model_config.model_path).exists()
     
-    gen_config = GenerationConfig(**{k:v for k,v in configs.items() 
+    gen_config = GenerationConfig(**{k:v for k,v in gen_config.items() 
                                         if k in GenerationConfig.__annotations__})
     
 
