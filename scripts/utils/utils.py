@@ -59,6 +59,10 @@ def get_logger(script_name, debug:bool = False):
 
 def calculate_perplexity(logprobs):
     return float(np.exp(-np.mean(logprobs['token_logprobs'])))
+
+
+class InvalidJsonError(Exception):
+    pass
     
 class PromptGenerator:
     def __init__(self, config):
@@ -108,16 +112,18 @@ class PromptGenerator:
             'json': f'./prompts/conversion/{self.script_config.dataset_name}/json.txt',
             'constrained': f'./prompts/conversion/{self.script_config.dataset_name}/constrained.txt',
             'unconstrained': f'./prompts/conversion/{self.script_config.dataset_name}/unconstrained.txt',
-            'predicates': f'./prompts/conversion/{self.script_config.dataset_name}/predicates.txt',
+            'constructs': f'./prompts/conversion/{self.script_config.dataset_name}/constructs.txt',
             'prompt_template': self._get_prompt_template(),
             'json_grammar': f'./LLMs/grammars/{self.type}_json.gbnf',
-            'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'}
+            'construncts_grammar': f'./LLMs/grammars/{self.type}_constructs.gbnf',
+            'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'
+            }
 
         self.templates = {}
         for key, path in templates.items():
             with open(path, 'r') as f:
                 content = f.read()
-                if key in ['json', 'unconstrained', 'constrained', 'predicates']:
+                if key in ['json', 'unconstrained', 'constrained', 'constructs']:
                     with open(templates['prompt_template'], 'r') as pt:
                         prompt_template = pt.read()
                         content = prompt_template.replace('[[user]]', content)
@@ -147,7 +153,6 @@ class OSModel(PromptGenerator):
         self.unconstrained_generator = timeout(seconds=self.script_config.timeout)(self._unconstrained_generator_base)
         self.json_wrapper = timeout(seconds=self.script_config.timeout)(self._json_wrapper_base)
         self.constrained_generator = timeout(seconds=self.script_config.timeout)(self._constrained_generator_base)
-        self.grammar = self.templates['constrained_grammar']
 
     def invoke(self, prompt: str, model_config: dict = None, raw_grammar: str = None):
         """
@@ -165,10 +170,10 @@ class OSModel(PromptGenerator):
         
         return response
     
-    def _extract_constructs(self, sample: dict) -> List[str]:
+    def _get_grammar(self, sample: dict, twosteps: bool) -> List[str]:
         """Extract constructs from natural language using LLM"""
         
-        if self.script_config.two_steps:
+        if twosteps:
             
             user = self.prompter.extract_constructs(sample)
             response = self.invoke(
@@ -182,7 +187,9 @@ class OSModel(PromptGenerator):
         else:
             constructs = {}
         
-        self.grammar = self.prompter.get_grammar(constructs)
+        grammar = self.prompter.build_grammar(constructs)
+
+        return grammar
 
     def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
         user = self.prompter.unconstrained(sample=sample)
@@ -204,21 +211,31 @@ class OSModel(PromptGenerator):
         content = response['choices'][0]['text']
         perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         
-        return json.loads(content), perplexity
+        try:
+            content = json.loads(content)
+        except json.JSONDecodeError:
+            raise InvalidJsonError(content)
+        
+        return content, perplexity
     
-    def _constrained_generator_base(self, sample: str) -> dict:
-        self._extract_constructs(sample)
+    def _constrained_generator_base(self, sample: str, twosteps: bool) -> dict:
+        sample_grammar = self._get_grammar(sample, twosteps)
+        
+        # if twosteps:
+        #     print(sample_grammar)
+        
         user = self.prompter.constrained(sample)
         response = self.invoke(
             prompt=user,
-            raw_grammar=self.grammar
+            raw_grammar=sample_grammar
         )
         
         content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
         try:
             content = json.loads(content)
-        except:
-            raise Exception(content)
+        except json.JSONDecodeError:
+            raise InvalidJsonError(content)
         
-        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
         return content, perplexity

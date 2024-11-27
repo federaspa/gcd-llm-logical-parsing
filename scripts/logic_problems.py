@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 from pprint import pp
 
-from utils.utils import OSModel, PromptGenerator, send_notification, get_logger
+from utils.utils import OSModel, PromptGenerator, send_notification, get_logger, InvalidJsonError
 
 import traceback
 
@@ -27,6 +27,7 @@ class ScriptConfig:
     two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained: bool = False
+    force_twosteps: bool = False
     debug: bool = False
 
 class LogicProgramGenerator(PromptGenerator):
@@ -78,6 +79,40 @@ class LogicProgramGenerator(PromptGenerator):
         outputs = {sample['id']: sample for sample in outputs}
         return raw_dataset, outputs, existing_ids
 
+    def _generate_problem(self, nl_problem: dict, sample_id:int, problem_type:str, pbar: tqdm) -> Tuple[dict, str|None]:
+        """Generate unconstrained logic problem for a sample"""
+        
+        assert problem_type in ["unconstrained", "constrained", "twosteps"], 'Invalid problem type, must be in ["unconstrained", "constrained", "twosteps"]'
+        
+        pbar.set_description_str(f"Generating {problem_type} problem {sample_id}")
+        try:
+            if problem_type == 'unconstrained':
+                unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
+                pbar.set_description_str(f"Json wrapping problem {sample_id}")
+                logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
+                logic_problem['perplexity'] = (perplexity, json_perplexity)
+            
+            elif problem_type == 'constrained':
+                logic_problem, perplexity = self.sketcher.constrained_generator(nl_problem, twosteps = False)
+                logic_problem['perplexity'] = (perplexity)
+            
+            elif problem_type == 'twosteps':
+                logic_problem, perplexity = self.sketcher.constrained_generator(nl_problem, twosteps = True)
+                logic_problem['perplexity'] = (perplexity)
+                
+            return logic_problem, None
+            
+        except InvalidJsonError as e:
+            logger.error(f"{problem_type.capitalize()}: Json wrapping error for sample {sample_id}\n{str(e)}")
+            return None, "json_decode_error"
+        except TimeoutError:
+            logger.error(f"{problem_type.capitalize()}: Timeout error for sample {sample_id}")
+            return None, "timeout"
+        except Exception as e:
+            logger.error(f"{problem_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
+            logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            return None, str(e)
+
     def run(self):
         raw_dataset = self._load_raw_dataset()
         save_path = Path(self.script_config.save_path)
@@ -104,62 +139,92 @@ class LogicProgramGenerator(PromptGenerator):
                        
             logic_problem = None
             logic_problem_gcd = None
+            logic_problem_twosteps = None
                         
-            try:
-                if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:
-                    pbar.set_description_str(f"Generating unconstrained problem {sample['id']}")
-                    unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
+            # try:
+            if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:
+                # pbar.set_description_str(f"Generating unconstrained problem {sample['id']}")
+                # unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
+                
+                # pbar.set_description_str(f"Json wrapping problem {sample['id']}")
+                # logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
+                
+                # logic_problem['perplexity'] = (perplexity, json_perplexity)
+                
+                logic_problem, error = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
+                
+                # if i % 20 == 0:
+                #     logger.debug(unconstrained)
                     
-                    pbar.set_description_str(f"Json wrapping problem {sample['id']}")
-                    logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
-                    
-                    logic_problem['perplexity'] = (perplexity, json_perplexity)
-                    
-                    if i % 20 == 0:
-                        logger.debug(unconstrained)
-                        
-                else:
-                    logic_problem = sample['logic_problem']
-                    
-                    
-                if i % 20 == 0:
-                    logger.debug(logic_problem)
+            else:
+                logic_problem = sample['logic_problem']
+                
+                
+            if i % 20 == 0:
+                logger.debug(logic_problem)
                         
             
-            except json.decoder.JSONDecodeError:
-                print()
-                logger.error(f"Unconstrained: Json wrapping error for sample {sample['id']}")
-                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            # except json.decoder.JSONDecodeError:
+            #     print()
+            #     logger.error(f"Unconstrained: Json wrapping error for sample {sample['id']}")
+            #     logger.debug(f"Traceback:\n{traceback.format_exc()}")
             
-            except TimeoutError:
-                print()
-                logger.error(f"Unconstrained: Timeout error for sample {sample['id']}")
+            # except TimeoutError:
+            #     print()
+            #     logger.error(f"Unconstrained: Timeout error for sample {sample['id']}")
 
-            except Exception as e:
-                print()
-                logger.error(f"Unconstrained: An error occurred for sample {sample['id']}: {str(e)}")
-                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            # except Exception as e:
+            #     print()
+            #     logger.error(f"Unconstrained: An error occurred for sample {sample['id']}: {str(e)}")
+            #     logger.debug(f"Traceback:\n{traceback.format_exc()}")
                 
-            try:
-                if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
-                    pbar.set_description_str(f"Generating constrained problem {sample['id']}")
-                    logic_problem_gcd, gcd_perplexity= self.sketcher.constrained_generator(nl_problem)
+            # try:
+            if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
+                # pbar.set_description_str(f"Generating constrained problem {sample['id']}")
+                # logic_problem_gcd, gcd_perplexity= self.sketcher.constrained_generator(nl_problem, twosteps = False)
+                
+                # logic_problem_gcd['perplexity'] = gcd_perplexity
+                logic_problem_gcd, error = self._generate_problem(nl_problem, sample["id"], "constrained", pbar)
+                
+            else:
+                logic_problem_gcd = sample['logic_problem_gcd']
+            
+            if i % 20 == 0:
+                logger.debug(logic_problem_gcd)
                     
-                    logic_problem_gcd['perplexity'] = gcd_perplexity
-                else:
-                    logic_problem_gcd = sample['logic_problem_gcd']
+            # except TimeoutError:
+            #     print()
+            #     logger.error(f"Constrained: Timeout occurred during constrained generation for sample {sample['id']}")
                 
-                if i % 20 == 0:
-                    logger.debug(logic_problem_gcd)
+            # except Exception as e:
+            #     print()
+            #     logger.error(f"Constrained: An error occurred for sample {sample['id']}: {str(e)}")
+            #     logger.debug(f"Traceback:\n{traceback.format_exc()}")
+                
+                
+            if not 'logic_problem_twosteps' in sample.keys() or self.script_config.force_twosteps:
+                # pbar.set_description_str(f"Generating constrained problem {sample['id']}")
+                # logic_problem_gcd, gcd_perplexity= self.sketcher.constrained_generator(nl_problem, twosteps = False)
+                
+                # logic_problem_gcd['perplexity'] = gcd_perplexity
+                logic_problem_twosteps, error = self._generate_problem(nl_problem, sample["id"], "twosteps", pbar)
+                
+            else:
+                logic_problem_twosteps = sample['logic_problem_twosteps']
+            
+            if i % 20 == 0:
+                logger.debug(logic_problem_twosteps)
                     
-            except TimeoutError:
-                print()
-                logger.error(f"Constrained: Timeout occurred during constrained generation for sample {sample['id']}")
+            # except TimeoutError:
+            #     print()
+            #     logger.error(f"Constrained: Timeout occurred during two-steps generation for sample {sample['id']}")
                 
-            except Exception as e:
-                print()
-                logger.error(f"Constrained: An error occurred for sample {sample['id']}: {str(e)}")
-                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            # except Exception as e:
+            #     print()
+            #     logger.error(f"Constrained: An error occurred for sample {sample['id']}: {str(e)}")
+            #     logger.debug(f"Traceback:\n{traceback.format_exc()}")
+                
+                
                 
             output = {
                 'id': sample['id'], 
@@ -176,6 +241,9 @@ class LogicProgramGenerator(PromptGenerator):
             
             if logic_problem_gcd:
                 output.update({'logic_problem_gcd': logic_problem_gcd})
+                
+            if logic_problem_twosteps:
+                output.update({'logic_problem_twosteps': logic_problem_twosteps})
             
             outputs[sample['id']] = output
             
@@ -199,7 +267,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--timeout', type=int, default=None, help='Timeout in seconds for generation operations')
+    parser.add_argument('--timeout', type=float, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
     parser.add_argument('--force-constrained', action='store_true')
     parser.add_argument('--debug', action='store_true')

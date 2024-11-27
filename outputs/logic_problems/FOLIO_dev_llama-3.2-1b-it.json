@@ -120,6 +120,24 @@
       ],
       "fol_conc": "(Attend(rina, youth) ∧ Engaged(bonnie, perfect))",
       "perplexity": 2.6489806175231934
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Attend(x)",
+        "Attend(sam)"
+      ],
+      "fol_consts": [
+        "sam",
+        "attends"
+      ],
+      "fol_rules": [
+        "∀x (Attend(y) → Attend(z))",
+        "(Attend(mac, sam) ∨ Attend(rust, mac))",
+        "¬((Attend(mac, rina))) ⊕ ¬Attend(attendedschool)",
+        "(Attend(sam) ∧ ∃r ∃a ∀x (Attend(x) → Attend(y)))"
+      ],
+      "fol_conc": "(∀y ∃z ((Attend(z, y) ∨ Attend(rust, z))) ⊕ ¬((Attend(attendedschool, rina))))",
+      "perplexity": 12.51996898651123
     }
   },
   {
@@ -187,6 +205,21 @@
       ],
       "fol_conc": "Attend(bonnie) → (Student(bonnie) ∧ Engaged(bonnie, talentshow)) ∨ ∃x (School(x) ∧ Student(attends, x))",
       "perplexity": 3.1438798904418945
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Attends(x, y)",
+        "EngagedInEvents(y)"
+      ],
+      "fol_consts": [
+        "school",
+        "bonnie"
+      ],
+      "fol_rules": [
+        "(Attends(school, x)) → (Attends(bonnie, school))"
+      ],
+      "fol_conc": "(Attends(x) ∨ (EngagedInEvents(y)))",
+      "perplexity": 23.557186126708984
     }
   },
   {
@@ -242,6 +275,26 @@
       ],
       "fol_conc": "(Schedule(john, customery))",
       "perplexity": 4.818236351013184
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "SchedulesMeetingInCompanyToday(x)",
+        "SchedulesMeetingInCompanyToday(rina)"
+      ],
+      "fol_consts": [
+        "james",
+        "company"
+      ],
+      "fol_rules": [
+        "(∀x (SchedulesMeetingInCompanyToday(rixa)) → ∃y ((SchedulesMeetingInCompanyToday(xa) ∨ SchedulesMeetingInCompanyToday(y))))",
+        "¬((Manager(rina, jimaes) ∧ ¬(SchedulesMeetingInCompanyToday(jimae)))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)",
+        "(SchedulesMeetingInCompanyToday(rina, jimaes) ∧ ¬(SchedulesMeetingInCompanyToday(jimae))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)",
+        "¬((Manager(samjames) ∨ SchedulesMeetingInCompanyToday(rina, samdiessemania))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)",
+        "(SchedulesMeetingInCompanyToday(samjames) ∧ ¬(SchedulesMeetingInCompanyToday(rina, samdiessemania))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)",
+        "(SchedulesMeetingInCompanyToday(samjames) ∧ ¬(SchedulesMeetingInCompanyToday(rina, samdiessemania))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)"
+      ],
+      "fol_conc": "(SchedulesMeetingInCompanyToday(samjames) ∧ ¬(SchedulesMeetingInCompanyToday(rina, samdiessemania))) ⊕ (SchedulesMeetingInCompanyToday(rixa)) → SchedulesMeetingInCompanyToday(xa)",
+      "perplexity": 5.471071243286133
     }
   },
   {
@@ -411,6 +464,25 @@
       ],
       "fol_conc": "Human(rax)",
       "perplexity": 3.6396265029907227
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Infectious(x)",
+        "VirusOf(y, z)"
+      ],
+      "fol_consts": [
+        "monkeypox",
+        "viralagent",
+        "human"
+      ],
+      "fol_rules": [
+        "(∃x (Infectious(x))) ∧ (∀y ((VirusOf(z)) → ¬(¬Infectious(freezepmfox))))",
+        "(∃f (((Infectious(monkeypox) ∨ VirusOf(monkypoof, y))) ∧ (Infectious(y) ∧ Infectious(x))))",
+        "(¬(VirusOf(viralagent)) → ¬((Infectious(freezepmfoxy) ⊕ Infectious(monkeypoxx)) ∨ ((Infectious(monkypoof, y))) ∧ (Infectious(x))))",
+        "(¬(VirusOf(viralagent)) → ¬((Infectious(freezepmfoxy) ⊕ Infectious(monkeypoxx))))"
+      ],
+      "fol_conc": "∃f (((Infectious(monkyypoof, y))) ∧ (Infectious(y))) ∨ (((VirusOf(viralagent)) ∨ Infectious(freezepmfoxy) ⊕ Infectious(monkeypoxx)))",
+      "perplexity": 9.202717781066895
     }
   },
   {
@@ -526,6 +598,28 @@
       ],
       "fol_conc": "Symptons(monkey, cough)",
       "perplexity": 3.1186466217041016
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Infections(x)",
+        "Cause(y, z)",
+        "Cause(z)",
+        "Cause(a)"
+      ],
+      "fol_consts": [
+        "disease",
+        "animal",
+        "certainanimals",
+        "human",
+        "aeropneumovirus",
+        "hominidae"
+      ],
+      "fol_rules": [
+        "(∃x (Infections(x)) ∧ ∀y ((Cause(y, z) ∨ Cause(a))) → (∀z ((Cause(z)))))",
+        "(Infections(disease))"
+      ],
+      "fol_conc": "(∃x (Infections(x) ∧ ∀y ((Cause(y)))) ∨ (∃z (((Cause(z))))))",
+      "perplexity": 29.443326950073242
     }
   },
   {
@@ -655,6 +749,27 @@
       ],
       "fol_conc": "Easternwiltgrounturkey(rinax)",
       "perplexity": 2.4388949871063232
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "IsNot(Esterntalwildturky)",
+        "Isn't(Tom, Esterntalwildturky)",
+        "Isn't(Tom, Tom)"
+      ],
+      "fol_consts": [
+        "Tom",
+        "Esterntalwildturky",
+        "Tom",
+        "Esterntalwildturky"
+      ],
+      "fol_rules": [
+        "∀x (IsNot(x) → ¬(Isn't(Tom, x)))",
+        "(Isn't(Esterntalwildturky)) ⊕ Isn't(Tom)",
+        "(Isn't(w)) ∧ IsNot(h)",
+        "¬((WildTurkey(a)) ∨ WildTurkey(b) → (Isn't(Tom, b)))"
+      ],
+      "fol_conc": "(IsNot(Esterntalwildturky))",
+      "perplexity": 20.232912063598633
     }
   },
   {
@@ -765,6 +880,21 @@
       ],
       "fol_conc": "(Xzelda(zgamecompanyy) ∧ Zys(rgamecompanyy))",
       "perplexity": 4.255550384521484
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "IsIn(x, y)",
+        "IsIn(y, x)"
+      ],
+      "fol_consts": [
+        "",
+        ""
+      ],
+      "fol_rules": [
+        "(∃x (IsIn(x, y) ∧ IsIn(y, x)) → (∀y ((IsIn(x, z))) ∨ ∃z (((IsIn(z, a))))))"
+      ],
+      "fol_conc": "(∀a ((IsIn(a, b) ∨ ¬IsIn(b, s)) ⊕ (¬IsIn(s, x) → IsIn(n)) ∧ IsIn(x, y)))",
+      "perplexity": 38.75761032104492
     }
   },
   {
@@ -871,6 +1001,22 @@
       ],
       "fol_conc": "¬(Game(x1, z3))",
       "perplexity": 2.5066030025482178
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Made(x, y)",
+        "SellsMoreThanOneMillion(y)"
+      ],
+      "fol_consts": [
+        "japan",
+        "sama",
+        "zelda"
+      ],
+      "fol_rules": [
+        "(∀x (Made(sama, x)) ∧ ∃y ((Made(zeda, y))) → SellsMoreThanOneMillion(zaedas))"
+      ],
+      "fol_conc": "(SellsMoreThanOneMillion(japan) ∨ ¬(SellsMoreThanOneMillion(zelda)))",
+      "perplexity": 5.941134929656982
     }
   },
   {
@@ -914,6 +1060,22 @@
       ],
       "fol_conc": "Square(r)",
       "perplexity": 4.784289836883545
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "HasShape(x)",
+        "All(shape1)"
+      ],
+      "fol_consts": [
+        "square",
+        "four"
+      ],
+      "fol_rules": [
+        "(∃x (All(four)) → ∀y (∃z ∀w ((HasShape(y) ∧ HasShape(z))) ∨ ¬((HasShape(x)))))",
+        "(All(shape1) ⊕ All(shape2))"
+      ],
+      "fol_conc": "(∀x (All(four)) → ∀y (∃z ∀w ((HasShape(y, z))) ∧ HasShape(w))) ∨ ∃a ∀b (((HasShape(a) ∧ All(shape1))))",
+      "perplexity": 14.983112335205078
     }
   },
   {
@@ -970,6 +1132,23 @@
       ],
       "fol_conc": "(Rabbit(r)) ∨ (∃y (Still(y)))",
       "perplexity": 3.8100430965423584
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "isCute(x)",
+        "exists(turtles)"
+      ],
+      "fol_consts": [
+        ".true.",
+        ".false."
+      ],
+      "fol_rules": [
+        "(∀x (isCute(.true.) ∨ isCute(.false.)))",
+        "(¬((∃z ∃u ∃k ((exists(x) ∧ ¬exists(k, x))) → exists(u, k))))",
+        "exists(turtles)"
+      ],
+      "fol_conc": "∀x (isCute(.true.) ∨ isCute(.false., .false., turtles))",
+      "perplexity": 22.89679718017578
     }
   },
   {
@@ -1184,6 +1363,22 @@
       ],
       "fol_conc": "Rock(cute) ⊕ Rock(still)",
       "perplexity": 4.116447448730469
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "IsRabbit(x)",
+        "IsRabbit(y)"
+      ],
+      "fol_consts": [
+        "bunny",
+        "cat"
+      ],
+      "fol_rules": [
+        "∀x (¬(∃y ∃z ∀w ∃p ((IsRabbit(x) ∨ IsRabbit(w)) ∧ ¬IsRabbit(y))) → IsRabbit(p))",
+        "((Skittish(something, s)) → Skittish(isthingx, x))"
+      ],
+      "fol_conc": "∃y (IsRabbit(x1) ∨ IsRabbit(w2)) ∧ ¬IsRabbit(y)",
+      "perplexity": 19.831491470336914
     }
   },
   {
@@ -1246,6 +1441,22 @@
       ],
       "fol_conc": "Shared(karen, strangerthings)",
       "perplexity": 5.135397911071777
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "StrangerThings(x)",
+        "Popular(y)"
+      ],
+      "fol_consts": [
+        "karen",
+        "blackmirror"
+      ],
+      "fol_rules": [
+        "(∃x (Popular(s) ∧ StrangerThings(arn)) → ((∀y ∀n ∃z (∀w ∀v ∀u ∃n (StrangerThings(w, z))) ∨ ¬((Popular(y))))))",
+        "¬(StrangerThings(karen) ⊕ Popular(blackmirror))"
+      ],
+      "fol_conc": "(∀x ((∃y (∃z ∀w ∀u ∃n (Popular(u)) ∧ StrangerThings(z))) ∨ ¬((Popular(y)))))",
+      "perplexity": 14.94417953491211
     }
   },
   {

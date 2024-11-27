@@ -1,0 +1,73 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": []
+    },
+    "answer": "C",
+    "logic_problem": {
+      "fol_preds": [
+        "Attends(x) ∧ IsStudentOf(x, y)"
+      ],
+      "fol_consts": [
+        "bonnie",
+        "student"
+      ],
+      "fol_rules": [
+        "∀x (Attends(x) ⇒ IsStudentOf(x, student))"
+      ],
+      "fol_conc": "(bonnie) ∧ Attends(bonnie) ∨ (IsStudentOf(bonnie, student))",
+      "perplexity": [
+        2.5956592559814453,
+        1.979478120803833
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Performs(x)",
+        "Attends(y, z)",
+        "Inactive(z)",
+        "Disinterested(z, x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Performs(x, y))",
+        "∃y ((Inactive(x) ∧ Disinterested(x, y)))",
+        "(Inactive(x) ∨ Discritye(x, x)) → Inactive(x)",
+        "Inactivity(bonnie) → Nonentity(bonnie)"
+      ],
+      "fol_conc": "Bonnie(y)",
+      "perplexity": 2.248300313949585
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Performs(x)",
+        "Attends(y, z)",
+        "Inactive(z)",
+        "Disinterested(z, x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Performs(x, y))",
+        "∃y ((Inactive(x) ∧ Disinterested(x, y)))",
+        "(Inactive(x) ∨ Discritye(x, x)) → Inactive(x)",
+        "Inactivity(bonnie) → Nonentity(bonnie)"
+      ],
+      "fol_conc": "Bonnie(y)",
+      "perplexity": 2.248300313949585
+    }
+  }
+]
