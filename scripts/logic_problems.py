@@ -78,122 +78,116 @@ class LogicProgramGenerator(PromptGenerator):
         outputs = {sample['id']: sample for sample in outputs}
         return raw_dataset, outputs, existing_ids
 
-    def _generate_unconstrained_problem(self, sample: dict, pbar: tqdm) -> Tuple[dict, None]:
-        """Generate unconstrained logic problem for a sample"""
-        try:
-            if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:
-                pbar.set_description_str(f"Generating unconstrained problem {sample['id']}")
-                unconstrained, perplexity = self.sketcher.unconstrained_generator(sample)
-                
-                pbar.set_description_str(f"Json wrapping problem {sample['id']}")
-                logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
-                logic_problem['perplexity'] = (perplexity, json_perplexity)
-                
-                return logic_problem, None
-            return sample['logic_problem'], None
-            
-        except json.decoder.JSONDecodeError:
-            logger.error(f"Unconstrained: Json wrapping error for sample {sample['id']}")
-            logger.debug(f"Traceback:\n{traceback.format_exc()}")
-            return None, "json_decode_error"
-        except TimeoutError:
-            logger.error(f"Unconstrained: Timeout error for sample {sample['id']}")
-            return None, "timeout"
-        except Exception as e:
-            logger.error(f"Unconstrained: An error occurred for sample {sample['id']}: {str(e)}")
-            logger.debug(f"Traceback:\n{traceback.format_exc()}")
-            return None, str(e)
-
-    def _generate_constrained_problem(self, sample: dict, pbar: tqdm) -> Tuple[dict, None]:
-        """Generate constrained logic problem for a sample"""
-        try:
-            if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
-                pbar.set_description_str(f"Generating constrained problem {sample['id']}")
-                logic_problem_gcd, gcd_perplexity = self.sketcher.constrained_generator(sample)
-                logic_problem_gcd['perplexity'] = gcd_perplexity
-                return logic_problem_gcd, None
-            return sample['logic_problem_gcd'], None
-            
-        except TimeoutError:
-            logger.error(f"Constrained: Timeout occurred during constrained generation for sample {sample['id']}")
-            return None, "timeout"
-        except Exception as e:
-            logger.error(f"Constrained: An error occurred for sample {sample['id']}: {str(e)}")
-            logger.debug(f"Traceback:\n{traceback.format_exc()}")
-            return None, str(e)
-
-    def _create_output_sample(self, sample: dict, logic_problem: dict, logic_problem_gcd: dict) -> dict:
-        """Create output dictionary for a sample"""
-        output = {
-            'id': sample['id'],
-            'nl_problem': {
-                'context': sample['context'],
-                'question': sample['question'],
-                'options': sample.get('options', [])
-            },
-            'answer': sample['answer']
-        }
-        
-        if logic_problem:
-            output['logic_problem'] = logic_problem
-        if logic_problem_gcd:
-            output['logic_problem_gcd'] = logic_problem_gcd
-            
-        return output
-
-    def _save_outputs(self, outputs: dict, save_file: Path):
-        """Save outputs to file"""
-        with open(save_file, 'w') as f:
-            json.dump(list(outputs.values()), f, indent=2, ensure_ascii=False)
-
     def run(self):
-        """Main execution method"""
-        # Initialize
         raw_dataset = self._load_raw_dataset()
         save_path = Path(self.script_config.save_path)
         save_path.mkdir(parents=True, exist_ok=True)
         
         save_file = save_path / f'{self.script_config.dataset_name}_{self.script_config.split}_{self.script_config.sketcher_name}.json'
+        
+        # raw_dataset, outputs, existing_samples, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
+        
+        # raw_dataset = [s for s in raw_dataset if s['id']>112]
         
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.script_config.split} split.")
 
-        # Process each sample
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
             if self._check_time_limit():
                 break
-            
-            # Skip if already processed
+        
             if sample['id'] in existing_ids:
-                sample = outputs[sample['id']]
+                sample = outputs[sample['id']]              
                 nl_problem = sample['nl_problem']
             else:
                 nl_problem = sample
-            
-            # Generate problems
-            logic_problem, error = self._generate_unconstrained_problem(nl_problem, pbar)
-            logic_problem_gcd, error_gcd = self._generate_constrained_problem(nl_problem, pbar)
-            
-            # Log debug information periodically
-            if i % 20 == 0:
-                if logic_problem:
+                       
+            logic_problem = None
+            logic_problem_gcd = None
+                        
+            try:
+                if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:
+                    pbar.set_description_str(f"Generating unconstrained problem {sample['id']}")
+                    unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
+                    
+                    pbar.set_description_str(f"Json wrapping problem {sample['id']}")
+                    logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
+                    
+                    logic_problem['perplexity'] = (perplexity, json_perplexity)
+                    
+                    if i % 20 == 0:
+                        logger.debug(unconstrained)
+                        
+                else:
+                    logic_problem = sample['logic_problem']
+                    
+                    
+                if i % 20 == 0:
                     logger.debug(logic_problem)
-                if logic_problem_gcd:
-                    logger.debug(logic_problem_gcd)
+                        
             
-            # Create and save output
-            output = self._create_output_sample(sample, logic_problem, logic_problem_gcd)
+            except json.decoder.JSONDecodeError:
+                print()
+                logger.error(f"Unconstrained: Json wrapping error for sample {sample['id']}")
+                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            
+            except TimeoutError:
+                print()
+                logger.error(f"Unconstrained: Timeout error for sample {sample['id']}")
+
+            except Exception as e:
+                print()
+                logger.error(f"Unconstrained: An error occurred for sample {sample['id']}: {str(e)}")
+                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+                
+            try:
+                if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
+                    pbar.set_description_str(f"Generating constrained problem {sample['id']}")
+                    logic_problem_gcd, gcd_perplexity= self.sketcher.constrained_generator(nl_problem)
+                    
+                    logic_problem_gcd['perplexity'] = gcd_perplexity
+                else:
+                    logic_problem_gcd = sample['logic_problem_gcd']
+                
+                if i % 20 == 0:
+                    logger.debug(logic_problem_gcd)
+                    
+            except TimeoutError:
+                print()
+                logger.error(f"Constrained: Timeout occurred during constrained generation for sample {sample['id']}")
+                
+            except Exception as e:
+                print()
+                logger.error(f"Constrained: An error occurred for sample {sample['id']}: {str(e)}")
+                logger.debug(f"Traceback:\n{traceback.format_exc()}")
+                
+            output = {
+                'id': sample['id'], 
+                'nl_problem': {
+                    'context': nl_problem['context'],
+                    'question': nl_problem['question'],
+                    'options': nl_problem.get('options', [])
+                },
+                'answer': sample['answer']
+            }
+            
+            if logic_problem:
+                output.update({'logic_problem': logic_problem})
+            
+            if logic_problem_gcd:
+                output.update({'logic_problem_gcd': logic_problem_gcd})
+            
             outputs[sample['id']] = output
             
             pbar.update()
-            self._save_outputs(outputs, save_file)
+            with open(save_file, 'w') as f:
+                json.dump(list(outputs.values()), f, indent=2, ensure_ascii=False)
 
-        # Finish up
         if self._check_time_limit():
             logger.info("Script stopped due to reaching stop time")
         else:
             logger.info(f"Generated {len(outputs)} examples.")
-            
+
 def parse_args() -> ScriptConfig:
     import argparse
     parser = argparse.ArgumentParser()
