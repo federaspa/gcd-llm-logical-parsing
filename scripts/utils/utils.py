@@ -1,12 +1,13 @@
 from llama_cpp.llama import LlamaGrammar
 from llama_cpp import Llama
-import warnings
+import json
+from typing import List, Tuple
 from pushover import Pushover
 import dotenv
 import os
 import logging
 import sys
-from dataclasses import dataclass
+from timeout_decorator import timeout
 from utils.prompters import FOL_Prompter, SAT_Prompter, LP_Prompter
 from datetime import datetime
 import numpy as np
@@ -58,37 +59,6 @@ def get_logger(script_name, debug:bool = False):
 
 def calculate_perplexity(logprobs):
     return float(np.exp(-np.mean(logprobs['token_logprobs'])))
-
-class OSModel:
-    def __init__(self, llama_cpp_config:dict):
-        """
-        Initialize model with config parameters.
-        """
-        
-        # pp(llama_cpp_config)
-        # llama_cpp_config = {"model_path": llama_cpp_config['model_path'], 'n_ctx': 2048}
-        
-        self.llm = Llama(
-            f16_kv=True,
-            logits_all=True,
-            n_ctx = 10300,
-            **llama_cpp_config
-        )
-
-    def invoke(self, prompt: str, model_config: dict, raw_grammar: str = None):
-        """
-        Generate completion with config parameters.
-        """
-        grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
-        
-        response =  self.llm.create_completion(
-            prompt=prompt,
-            grammar=grammar,
-            logprobs=1,
-            **model_config
-        )
-        
-        return response
     
 class PromptGenerator:
     def __init__(self, config):
@@ -121,14 +91,17 @@ class PromptGenerator:
     
     def _get_prompt_template(self):
         
-        if 'gemma' in self.script_config.sketcher_name:
-            return 'prompts/prompt_templates/gemma.txt'  
+        prompt_templates = {
+            'gemma': 'prompts/prompt_templates/gemma.txt',
+            'llama': 'prompts/prompt_templates/llama.txt',
+            'mistral': 'prompts/prompt_templates/mistral.txt',
+            'ministral': 'prompts/prompt_templates/ministral.txt',
+            'tinyllama': 'prompts/prompt_templates/tinyllama.txt'
+        }
         
-        elif 'tinyllama' in self.script_config.sketcher_name:
-            return 'prompts/prompt_templates/tinyllama.txt'  
-            
-        else:
-            return 'prompts/prompt_templates/llama.txt'
+        sketcher_name_base = self.script_config.sketcher_name.split('-')[0]
+        
+        return prompt_templates[sketcher_name_base]
 
     def _load_templates(self):
         templates = {
@@ -137,7 +110,7 @@ class PromptGenerator:
             'unconstrained': f'./prompts/conversion/{self.script_config.dataset_name}/unconstrained.txt',
             'predicates': f'./prompts/conversion/{self.script_config.dataset_name}/predicates.txt',
             'prompt_template': self._get_prompt_template(),
-            'json_grammar': './LLMs/grammars/json.gbnf',
+            'json_grammar': f'./LLMs/grammars/{self.type}_json.gbnf',
             'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'}
 
         self.templates = {}
@@ -149,3 +122,103 @@ class PromptGenerator:
                         prompt_template = pt.read()
                         content = prompt_template.replace('[[user]]', content)
                 self.templates[key] = content
+                
+                
+class OSModel(PromptGenerator):   
+    def __init__(self, script_config, default_model_config:dict, llama_cpp_config:dict):
+        """
+        Initialize model with config parameters.
+        """
+        
+        self.script_config = script_config
+        
+        super().__init__(self.script_config)
+        
+        self.default_model_config = default_model_config
+        # pp(llama_cpp_config)
+        # llama_cpp_config = {"model_path": llama_cpp_config['model_path'], 'n_ctx': 2048}
+        
+        self.llm = Llama(
+            f16_kv=True,
+            logits_all=True,
+            **llama_cpp_config
+        )
+        
+        self.unconstrained_generator = timeout(seconds=self.script_config.timeout)(self._unconstrained_generator_base)
+        self.json_wrapper = timeout(seconds=self.script_config.timeout)(self._json_wrapper_base)
+        self.constrained_generator = timeout(seconds=self.script_config.timeout)(self._constrained_generator_base)
+        self.grammar = self.templates['constrained_grammar']
+
+    def invoke(self, prompt: str, model_config: dict = None, raw_grammar: str = None):
+        """
+        Generate completion with config parameters.
+        """
+        grammar = LlamaGrammar.from_string(raw_grammar, verbose=False) if raw_grammar else None
+        model_config = self.default_model_config if not model_config else model_config
+        
+        response =  self.llm.create_completion(
+            prompt=prompt,
+            grammar=grammar,
+            logprobs=1,
+            **model_config
+        )
+        
+        return response
+    
+    def _extract_constructs(self, sample: dict) -> List[str]:
+        """Extract constructs from natural language using LLM"""
+        
+        if self.script_config.two_steps:
+            
+            user = self.prompter.extract_constructs(sample)
+            response = self.invoke(
+                prompt=user,
+                raw_grammar=self.templates['json_grammar'],
+            )
+            
+            content = response['choices'][0]['text']
+            constructs = json.loads(content)
+        
+        else:
+            constructs = {}
+        
+        self.grammar = self.prompter.get_grammar(constructs)
+
+    def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
+        user = self.prompter.unconstrained(sample=sample)
+        response = self.invoke(
+            prompt=user
+        )
+        
+        content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        return content, perplexity
+
+    def _json_wrapper_base(self, unconstrained: str) -> dict:
+        user = self.prompter.json_wrap(unconstrained)
+        response = self.invoke(
+            prompt=user,
+            raw_grammar=self.templates['json_grammar']
+        )
+        
+        content = response['choices'][0]['text']
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        
+        return json.loads(content), perplexity
+    
+    def _constrained_generator_base(self, sample: str) -> dict:
+        self._extract_constructs(sample)
+        user = self.prompter.constrained(sample)
+        response = self.invoke(
+            prompt=user,
+            raw_grammar=self.grammar
+        )
+        
+        content = response['choices'][0]['text']
+        try:
+            content = json.loads(content)
+        except:
+            raise Exception(content)
+        
+        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
+        return content, perplexity

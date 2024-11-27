@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 from pprint import pp
 
-from utils.utils import OSModel, PromptGenerator, send_notification, get_logger, calculate_perplexity
+from utils.utils import OSModel, PromptGenerator, send_notification, get_logger
 
 import traceback
 
@@ -22,7 +22,7 @@ class ScriptConfig:
     split: str
     models_path: str
     save_path: str
-    timeout_seconds: int|None
+    timeout: int|None
     stop_time: str|None
     two_steps: bool = False
     force_unconstrained: bool = False
@@ -36,8 +36,11 @@ class LogicProgramGenerator(PromptGenerator):
         
         super().__init__(self.script_config)
         
-        self.sketcher_api = OSModel(llama_cpp_config)
-        self.model_config = model_config
+        self.sketcher = OSModel(
+            script_config=script_config,
+            default_model_config=model_config,
+            llama_cpp_config=llama_cpp_config
+            )
         
         self.stop_time = None
         if self.script_config.stop_time:
@@ -46,10 +49,7 @@ class LogicProgramGenerator(PromptGenerator):
             except ValueError as e:
                 raise ValueError(f"Invalid stop_time format. Use dd-mm-yy:hh-mm-ss. Error: {str(e)}")
         
-        self._unconstrained_generator = timeout(seconds=self.script_config.timeout_seconds)(self._unconstrained_generator_base)
-        self._json_wrapper = timeout(seconds=self.script_config.timeout_seconds)(self._json_wrapper_base)
-        self._constrained_generator = timeout(seconds=self.script_config.timeout_seconds)(self._constrained_generator_base)
-        self.grammar = self.templates['constrained_grammar']
+
         
     def _check_time_limit(self):
         """Check if we've reached the stop time"""
@@ -64,68 +64,6 @@ class LogicProgramGenerator(PromptGenerator):
             raw_dataset = json.load(f)
         return raw_dataset
     
-    
-    def _extract_constructs(self, sample: dict) -> List[str]:
-        """Extract constructs from natural language using LLM"""
-        
-        if self.script_config.two_steps:
-            
-            user = self.prompter.extract_constructs(sample)
-            response = self.sketcher_api.invoke(
-                prompt=user,
-                raw_grammar=self.templates['json_grammar'],
-                model_config=self.model_config
-            )
-            
-            content = response['choices'][0]['text']
-            constructs = json.loads(content)
-        
-        else:
-            constructs = {}
-        
-        self.grammar = self.prompter.get_grammar(constructs)
-
-    def _unconstrained_generator_base(self, sample: dict) -> Tuple[str, float]:
-        user = self.prompter.unconstrained(sample=sample)
-        response = self.sketcher_api.invoke(
-            prompt=user,
-            # model_config=self.model_config
-            model_config={}
-        )
-        
-        content = response['choices'][0]['text']
-        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
-        return content, perplexity
-
-    def _json_wrapper_base(self, unconstrained: str) -> dict:
-        user = self.prompter.json_wrap(unconstrained)
-        response = self.sketcher_api.invoke(
-            prompt=user,
-            raw_grammar=self.templates['json_grammar'],
-            model_config=self.model_config
-        )
-        
-        content = response['choices'][0]['text']
-        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
-        return json.loads(content), perplexity
-    
-    def _constrained_generator_base(self, sample: str) -> dict:
-        self._extract_constructs(sample)
-        user = self.prompter.constrained(sample)
-        response = self.sketcher_api.invoke(
-            prompt=user,
-            raw_grammar=self.grammar,
-            model_config=self.model_config
-        )
-        
-        content = response['choices'][0]['text']
-        try:
-            content = json.loads(content)
-        except:
-            raise Exception(content)
-        
-        perplexity = calculate_perplexity(response['choices'][0]['logprobs'])
-        return content, perplexity
     
     def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
         outputs = []
@@ -170,28 +108,28 @@ class LogicProgramGenerator(PromptGenerator):
             try:
                 if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:
                     pbar.set_description_str(f"Generating unconstrained problem {sample['id']}")
-                    unconstrained, perplexity = self._unconstrained_generator(nl_problem)
+                    unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
                     
                     pbar.set_description_str(f"Json wrapping problem {sample['id']}")
-                    logic_problem, json_perplexity = self._json_wrapper(unconstrained)
+                    logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
                     
                     logic_problem['perplexity'] = (perplexity, json_perplexity)
                     
-                    # if i % 20 == 0:
-                    #     logger.debug(unconstrained)
+                    if i % 20 == 0:
+                        logger.debug(unconstrained)
                         
                 else:
                     logic_problem = sample['logic_problem']
                     
                     
-                # if i % 20 == 0:
-                #     logger.debug(logic_problem)
+                if i % 20 == 0:
+                    logger.debug(logic_problem)
                         
             
             except json.decoder.JSONDecodeError:
                 print()
                 logger.error(f"Unconstrained: Json wrapping error for sample {sample['id']}")
-                logger.debug(unconstrained)
+                logger.debug(f"Traceback:\n{traceback.format_exc()}")
             
             except TimeoutError:
                 print()
@@ -205,14 +143,14 @@ class LogicProgramGenerator(PromptGenerator):
             try:
                 if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
                     pbar.set_description_str(f"Generating constrained problem {sample['id']}")
-                    logic_problem_gcd, gcd_perplexity= self._constrained_generator(nl_problem)
+                    logic_problem_gcd, gcd_perplexity= self.sketcher.constrained_generator(nl_problem)
                     
                     logic_problem_gcd['perplexity'] = gcd_perplexity
                 else:
                     logic_problem_gcd = sample['logic_problem_gcd']
                 
-                # if i % 20 == 0:
-                #     logger.debug(logic_problem_gcd)
+                if i % 20 == 0:
+                    logger.debug(logic_problem_gcd)
                     
             except TimeoutError:
                 print()
@@ -261,7 +199,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--timeout-seconds', type=int, default=None, help='Timeout in seconds for generation operations')
+    parser.add_argument('--timeout', type=int, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
     parser.add_argument('--force-constrained', action='store_true')
     parser.add_argument('--debug', action='store_true')
