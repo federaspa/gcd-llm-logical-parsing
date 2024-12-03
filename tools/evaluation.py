@@ -135,14 +135,9 @@ def main():
     if args.sketcher_name:
         sketcher_names = [args.sketcher_name]
     else:
-        sketcher_names = [
-        'tinyllama-1.1b-it',
-        'llama-3.1-8b-it',
-        'gemma-2-2b-it',
-        'gemma-2-9b-it',
-        'gemma-2-27b-it'
-        ]
-    
+        config_path = './configs/models'
+        sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
+        
     for sketcher_name in sketcher_names:
         
         

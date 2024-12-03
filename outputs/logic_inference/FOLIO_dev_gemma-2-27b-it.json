@@ -75,6 +75,31 @@
       "predicted_answer": "C",
       "status": "success",
       "error": ""
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "PerformTalentShow(x)",
+        "AttendEvents(x)",
+        "EngagedEvents(x)",
+        "InactiveDisinterested(x)",
+        "ChaperoneDance(x)",
+        "StudentSchool(x)",
+        "YoungChildTeenager(x)",
+        "WishAcademicCareer(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "PerformTalentShow(x) → (AttendEvents(x) ∧ EngagedEvents(x))",
+        "∀x (PerformTalentShow(x) ⊕ InactiveDisinterested(x))",
+        "ChaperoneDance(x) → ¬StudentSchool(x)",
+        "InactiveDisinterested(x) → ChaperoneDance(x)",
+        "YoungChildTeenager(x) ∧ WishAcademicCareer(x) → StudentSchool(x)",
+        "(AttendEvents(bonnie) ∧ EngagedEvents(bonnie) ∧ StudentSchool(bonnie)) ⊕ ¬(AttendEvents(bonnie) ∨ EngagedEvents(bonnie) ∨ StudentSchool(bonnie))"
+      ],
+      "fol_conc": "PerformTalentShow(bonnie)",
+      "perplexity": 1.0713146924972534
     }
   },
   {
@@ -153,6 +178,33 @@
       "predicted_answer": "A",
       "status": "success",
       "error": ""
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "Perform(x)",
+        "Attend(x)",
+        "EngagedWith(x)",
+        "Inactive(x)",
+        "Disinterested(x)",
+        "Chaperone(x)",
+        "Student(x)",
+        "YoungChild(x)",
+        "Teenager(x)",
+        "WishFurtherEducation(x)"
+      ],
+      "fol_consts": [
+        "bonnie"
+      ],
+      "fol_rules": [
+        "∀x (Perform(x) → Attend(x) ∧ EngagedWith(x))",
+        "∀x (Perform(x) ⊕ Inactive(x) ∧ Disinterested(x))",
+        "∀x (Chaperone(x) → ¬Student(x))",
+        "∀x (Inactive(x) ∧ Disinterested(x) → Chaperone(x))",
+        "∀x ((YoungChild(x) ∨ Teenager(x)) ∧ WishFurtherEducation(x) → Student(x))",
+        "(Attend(bonnie) ∧ EngagedWith(bonnie) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie) ∧ EngagedWith(bonnie))"
+      ],
+      "fol_conc": "((YoungChild(bonnie) ∨ Teenager(bonnie) ∧ WishFurtherEducation(bonnie)) → (Student(bonnie)))",
+      "perplexity": 1.1461610794067383
     }
   },
   {
@@ -2870,9 +2922,9 @@
         1.022425651550293
       ],
       "answer": "A",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Compose/2, Compose/1.\n\n\nFatal error:  The following symbols are used with multiple arities: Compose/2, Compose/1"
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     },
     "logic_problem_gcd": {
       "fol_preds": [
