@@ -73,26 +73,26 @@ class LogicInferenceEngine:
         parsing_error_count_constrained = 0
         execution_error_count_constrained = 0
         
+        parsing_error_count_twosteps = 0
+        execution_error_count_twosteps = 0
+        
         if self.self_refine_round > 0:
             save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
         else:
             save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
             
             
-        # if os.path.exists(os.path.join(self.save_path, save_file)):
-        #     print(f"File {save_file} already exists. Skipping...")
-        #     return
-        
         for sample in tqdm(self.dataset):
-            # execute the logic program
-                           
+            
+            answer = sample['nl_problem']['answer']
+            
             if 'logic_problem' in sample.keys():
                 
                 try:
                 
                     logic_problem = sample.get('logic_problem', {})
                     
-                    answer, status, error = self.safe_execute_program(logic_problem)
+                    answer_pred, status, error = self.safe_execute_program(logic_problem)
                     
                     if status == 'parsing error':
                         parsing_error_count += 1
@@ -100,8 +100,8 @@ class LogicInferenceEngine:
                         execution_error_count += 1
                         
                     sample['logic_problem'].update({
-                        'answer': sample['answer'],
-                        'predicted_answer': answer,
+                        'answer': answer,
+                        'predicted_answer': answer_pred,
                         'status': status,
                         'error': error
                     })
@@ -111,7 +111,6 @@ class LogicInferenceEngine:
                     pass
                 
             if 'logic_problem_gcd' in sample.keys():
-                
                 try:
                                 
                     logic_problem_constrained = sample.get('logic_problem_gcd', {})
@@ -124,7 +123,7 @@ class LogicInferenceEngine:
                         execution_error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({
-                        'answer': sample['answer'],
+                        'answer': answer,
                         'predicted_answer': answer_constrained,
                         'status': status_constrained,
                         'error': error_constrained
@@ -133,6 +132,31 @@ class LogicInferenceEngine:
                 except TimeoutError:
                     execution_error_count_constrained += 1
                     pass
+            if 'logic_problem_twosteps' in sample.keys():
+                
+                try:
+                                
+                    logic_problem_twosteps = sample.get('logic_problem_twosteps', {})
+                    answer_twosteps, status_twosteps, error_twosteps = self.safe_execute_program(logic_problem_twosteps)
+
+                    if status_twosteps == 'parsing error':
+                        parsing_error_count_twosteps += 1
+                        
+                    elif status_twosteps == 'execution error':
+                        execution_error_count_twosteps += 1
+                        
+                    sample['logic_problem_twosteps'].update({
+                        'answer': answer,
+                        'predicted_answer': answer_twosteps,
+                        'status': status_twosteps,
+                        'error': error_twosteps
+                    })
+                        
+                except TimeoutError:
+                    execution_error_count_twosteps += 1
+                    pass
+                
+            
                 
             outputs.append(sample)
             

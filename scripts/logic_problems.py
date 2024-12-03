@@ -122,8 +122,6 @@ class LogicProgramGenerator(PromptGenerator):
         
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         
-        # raw_dataset = [s for s in raw_dataset if s['id']>112]
-        
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.script_config.split} split.")
 
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
@@ -166,9 +164,9 @@ class LogicProgramGenerator(PromptGenerator):
                 'nl_problem': {
                     'context': nl_problem['context'],
                     'question': nl_problem['question'],
-                    'options': nl_problem.get('options', [])
-                },
-                'answer': sample['answer']
+                    'options': nl_problem.get('options', []),
+                    'answer': sample['answer']
+                }
             }
             
             if logic_problem:
