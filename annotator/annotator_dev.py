@@ -52,7 +52,8 @@ def prepare_samples(experiment_files: List[str], samples_per_file: int, output_p
             duplicated_samples = file_samples * 3
             samples.extend(duplicated_samples)
     
-    random.shuffle(samples)
+    for i, sample in enumerate(samples):
+        sample['annotator_id'] = i+1
     
     with open(output_path, 'w') as f:
         json.dump(samples, f, indent=2, ensure_ascii=False)
@@ -122,33 +123,49 @@ def main():
         st.session_state.current_sample_idx = 0
     if 'samples' not in st.session_state:
         st.session_state.samples = []
-    if 'start' not in st.session_state:
-        st.session_state.start = False
 
-        
-        # st.header("Configuration")
-        
-        # if not os.path.exists("prepared_samples.json"):
-        #     st.warning("No previous session available.")
-            
-        # else:
-        #     if st.button("Load Previous Session"):
-        #         st.session_state.samples = load_samples("prepared_samples.json")
-        #         # Find last annotated sample
-        #         if os.path.exists("annotations/annotations.jsonl"):
-        #             with open("annotations/annotations.jsonl", 'r') as f:
-        #                 annotations = [json.loads(line) for line in f]
-        #                 if annotations:
-        #                     last_sample_id = annotations[-1]['sample_id']
-        #                     for idx, sample in enumerate(st.session_state.samples):
-        #                         if sample['id'] == last_sample_id:
-        #                             st.session_state.current_sample_idx = idx + 1
-        #                             break
-
-    
-    
-    
     with st.sidebar:
+        st.header("Configuration")
+        
+        session_type = st.radio("Session Type", ["Resume Previous", "New Session"])
+        
+        if session_type == "Resume Previous":
+            
+            if not os.path.exists("prepared_samples.json"):
+                st.warning("No previous session available.")
+            
+            else:
+                if st.button("Load Previous Session"):
+                    st.session_state.samples = load_samples("prepared_samples.json")
+                    # Find last annotated sample
+                    if os.path.exists("annotations/annotations.jsonl"):
+                        with open("annotations/annotations.jsonl", 'r') as f:
+                            annotations = [json.loads(line) for line in f]
+                            if annotations:
+                                last_sample_id = annotations[-1]['sample_id']
+                                for idx, sample in enumerate(st.session_state.samples):
+                                    if sample['id'] == last_sample_id:
+                                        st.session_state.current_sample_idx = idx + 1
+                                        break
+
+            
+        else:
+            # Modified sample preparation interface
+            st.subheader("Prepare Samples")
+            samples_per_file = st.number_input("Samples per file", min_value=1, value=20)
+            if st.button("Prepare Samples"):
+                # Get all JSON files from data directory
+                data_dir = 'data'
+                experiment_files = [os.path.join(data_dir, f) for f in os.listdir(data_dir) 
+                                 if f.endswith('.json')]
+                
+                if not experiment_files:
+                    st.error("No JSON files found in the 'data' directory!")
+                else:
+                    count = prepare_samples(experiment_files, samples_per_file, "prepared_samples.json")
+                    st.session_state.samples = load_samples("prepared_samples.json")
+                    st.success(f"Prepared {count} samples from {len(experiment_files)} files")
+
         # Progress tracking
         if st.session_state.samples:
             total_samples = len(st.session_state.samples)
@@ -158,9 +175,8 @@ def main():
             st.write(f"Current: {st.session_state.current_sample_idx + 1}/{total_samples}")
 
     # Rest of the main function remains the same
-    if not st.session_state.start:
-        st.button("Press here to start")
-        st.session_state.start = True
+    if not st.session_state.samples:
+        st.info("Please prepare samples using the sidebar configuration.")
         return
 
     current_sample = st.session_state.samples[st.session_state.current_sample_idx]

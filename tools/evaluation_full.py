@@ -41,7 +41,7 @@ class LogicEvaluator:
         return gold_answers, predictions
 
     @staticmethod
-    def compute_metrics(samples, n, with_string=False):
+    def compute_metrics(samples, with_string=False):
         def compute_ratio(numerator, denominator, with_string):
             ratio = numerator/denominator if denominator else 0
             return (ratio, f'{numerator}/{denominator}') if with_string else ratio
@@ -53,42 +53,63 @@ class LogicEvaluator:
         correct_predictions = sum(g == p for g, p in zip(gold_answers, predictions))
         
         metrics = [
-            compute_ratio(correct_predictions, n, with_string),
+            compute_ratio(correct_predictions, len(samples), with_string),
             compute_ratio(sum(g == p for g, p in zip(*LogicEvaluator.parse_answers(executable_samples))), 
                          len(executable_samples), with_string),
-            compute_ratio(len(parsable_samples), n, with_string),
-            compute_ratio(len(executable_samples), n, with_string)
+            compute_ratio(len(parsable_samples), len(samples), with_string),
+            compute_ratio(len(executable_samples), len(samples), with_string)
         ]
         
         return metrics
-    
-    @staticmethod
-    def compute_baseline_metrics(samples, with_string=False):
-        def compute_ratio(numerator, denominator, with_string):
-            ratio = numerator/denominator if denominator else 0
-            return (ratio, f'{numerator}/{denominator}') if with_string else ratio
-        
-        gold_answers = [s['nl_problem']['answer'] for s in samples]
-
-        random_answers = np.random.choice(['A', 'B', 'C', 'N/A'], len(samples))
-        fixed_answers = ['A']*len(samples)
-        correct_random = sum(g == p for g, p in zip(gold_answers, random_answers))
-        correct_fixed = sum(g == p for g, p in zip(gold_answers, fixed_answers))
-        
-        return compute_ratio(correct_random, len(samples), with_string), compute_ratio(correct_fixed, len(samples), with_string)
 
     @staticmethod
-    def evaluate_sample_groups(samples, with_string=False):
+    def random_baseline(type, n):
+        if type == "total":
+            choices = ["A", "B", "C", "N/A"]
+        elif type == "covered":
+            choices = ["A", "B", "C"]
+            
+        return np.random.choice(choices, n)
+
+    @staticmethod
+    def evaluate_sample_groups(samples, category, with_string=False):
         def filter_samples(condition):
             return [s for s in samples if condition(s)]
-        
-        n = len(samples)
             
-        unconstrained = [s['logic_problem'] for s in samples if 'logic_problem' in s]
-        constrained = [s['logic_problem_gcd'] for s in samples if 'logic_problem_gcd' in s]
-        twosteps = [s['logic_problem_twosteps'] for s in samples if 'logic_problem_twosteps' in s]
+        if category == 'ALL':
+            unconstrained = [s['logic_problem'] for s in samples if 'logic_problem' in s]
+            constrained = [s['logic_problem_gcd'] for s in samples if 'logic_problem_gcd' in s]
+        else:
+            def get_status(s, key):
+                return s.get(key, {}).get('status', '')
+                
+            if category == 'BOTH_SUCCESS':
+                success_samples = filter_samples(
+                    lambda s: get_status(s, 'logic_problem') == get_status(s, 'logic_problem_gcd') == 'success'
+                )
+                
+                unconstrained = [s['logic_problem'] for s in success_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in success_samples if 'logic_problem_gcd' in s]
             
-        return LogicEvaluator.compute_metrics(unconstrained, n, with_string), LogicEvaluator.compute_metrics(constrained, n, with_string), LogicEvaluator.compute_metrics(twosteps, n, with_string)
+            elif category == 'EXCLUSIVE_SUCCESS':
+                unc_samples = filter_samples(
+                    lambda s: get_status(s, 'logic_problem') == 'success' != get_status(s, 'logic_problem_gcd')
+                )
+                con_samples = filter_samples(
+                    lambda s: get_status(s, 'logic_problem_gcd') == 'success' != get_status(s, 'logic_problem')
+                )
+                unconstrained = [s['logic_problem'] for s in unc_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in con_samples if 'logic_problem_gcd' in s]
+            
+            elif category == 'NEITHER_SUCCESS':
+                unsuccess_samples = filter_samples(
+                    lambda s: (get_status(s, 'logic_problem') != 'success') and (get_status(s, 'logic_problem_gcd') != 'success')
+                )
+            
+                unconstrained = [s['logic_problem'] for s in unsuccess_samples if 'logic_problem' in s]
+                constrained = [s['logic_problem_gcd'] for s in unsuccess_samples if 'logic_problem_gcd' in s]
+            
+        return LogicEvaluator.compute_metrics(unconstrained, with_string), LogicEvaluator.compute_metrics(constrained, with_string)
 
     @staticmethod
     def format_latex_table(results, table_name=""):
@@ -102,56 +123,36 @@ class LogicEvaluator:
         Returns:
             str: LaTeX formatted table
         """
-        # latex_lines = [
-        #     "\\begin{table}[t]",
-        #     "\\begin{tabular}{l|ccc|ccc|ccc|c|c}",
-        #     "\\hline",
-        #     " & \\multicolumn{3}{c|}{Unconstrained} & \\multicolumn{3}{c|}{Constrained} & \\multicolumn{3}{c|}{Two-steps} & Random & Fixed \\\\ \\hline",
-        #     "Model & Total & Covered & Full & Total & Covered & Full & Total & Covered & Full  & Total & Total \\\\",
-        #     " & Acc. & Acc. & Cov. & Acc. & Acc. & Cov. & Acc. & Acc. & Cov. & Acc. & Acc. \\\\",
-        #     "\\hline"
-        # ]
-        
         latex_lines = [
             "\\begin{table}[t]",
-            "\\begin{tabular}{l|ccc|ccc|ccc}",
+            "\\begin{tabular}{l|ccc|ccc}",
             "\\hline",
-            "Model & \\multicolumn{3}{c|}{Total} & \\multicolumn{3}{c|}{Covered} & \\multicolumn{3}{c}{Full}\\\\",
-            " & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c}{Cov.} \\\\ \\hline",
-            " & Unc & Con & 2-step &  Unc & Con & 2-step & Unc & Con & 2-step \\\\",
+            " & \\multicolumn{3}{c|}{Unconstrained} & \\multicolumn{3}{c}{Constrained} \\\\ \\hline",
+            "Model & Total & Covered & Full & Total & Covered & Full \\\\",
+            " & Acc. & Acc. & Cov. & Acc. & Acc. & Cov. \\\\",
             "\\hline"
         ]
         
-        # Sort results by key in alphabetical order
-        results = dict(sorted(results.items()))
-        
         # Process each model's results
         for model_name, model_results in results.items():
-            
+            if 'ALL' not in model_results:
+                continue
                 
-            unc_metrics = model_results['UNCONSTRAINED']
-            con_metrics = model_results['CONSTRAINED']
-            ts_metrics = model_results['TWOSTEPS']
-            rand_metrics = model_results['RANDOM']
-            fix_metrics = model_results['FIXED']
+            unc_metrics = model_results['ALL']['UNCONSTRAINED']
+            con_metrics = model_results['ALL']['CONSTRAINED']
             
             # Format each metric as a percentage with 2 decimal places
             metrics_line = [
                 model_name,
-                # f"{rand_metrics[0]:.2f}",  # Total Acc Random
-                # f"{fix_metrics[0]:.2f}",  # Covered Acc Fixed
                 f"{unc_metrics[0][0]:.2f}",  # Total Acc Unconstrained
-                f"{con_metrics[0][0]:.2f}",  # Total Acc Constrained
-                f"{ts_metrics[0][0]:.2f}",  # Total Acc Two-steps
                 f"{unc_metrics[1][0]:.2f}",  # Covered Acc Unconstrained
-                f"{con_metrics[1][0]:.2f}",  # Covered Acc Constrained
-                f"{ts_metrics[1][0]:.2f}",  # Covered Acc Two-steps
                 f"{unc_metrics[3][0]:.2f}",  # Full Cov Unconstrained
-                f"{con_metrics[3][0]:.2f}",   # Full Cov Constrained
-                f"{ts_metrics[3][0]:.2f}",   # Full Cov Two-steps
+                f"{con_metrics[0][0]:.2f}",  # Total Acc Constrained
+                f"{con_metrics[1][0]:.2f}",  # Covered Acc Constrained
+                f"{con_metrics[3][0]:.2f}"   # Full Cov Constrained
             ]
             latex_lines.append(" & ".join(metrics_line) + " \\\\" + " \\hline")
-            
+        
         # Add table footer
         latex_lines.extend([
             "\\end{tabular}"
@@ -218,23 +219,26 @@ def main():
                 samples = json.load(f)
 
             results = {}
-            
-            unc_metrics, con_metrics, ts_metrics = LogicEvaluator.evaluate_sample_groups(samples, True)
-            results['UNCONSTRAINED'] = unc_metrics
-            results['CONSTRAINED'] = con_metrics
-            results['TWOSTEPS'] = ts_metrics
-            results['RANDOM'], results['FIXED'] = LogicEvaluator.compute_baseline_metrics(samples, True)
+            categories = ['ALL']
 
+            for category in categories:
+                results[category] = {}
+                unc_metrics, con_metrics = LogicEvaluator.evaluate_sample_groups(samples, category, True)
+                results[category]['UNCONSTRAINED'] = unc_metrics
+                results[category]['CONSTRAINED'] = con_metrics
+            
             all_results[sketcher_name] = results
             
             if not args.latex:
-                print_results(results, True)
-        
+                print_results(results, categories, True)
+            
         except Exception as e:
             continue
-            
+        
+    all_results['random_baseline'] = LogicEvaluator.random_baseline()
+    
     if args.latex:
-        print_results(all_results, True, latex_output=True)
+        print_results(all_results, categories, True, latex_output=True)
 
 if __name__ == "__main__":
     main()

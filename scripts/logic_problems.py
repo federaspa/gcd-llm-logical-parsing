@@ -165,7 +165,7 @@ class LogicProgramGenerator(PromptGenerator):
                     'context': nl_problem['context'],
                     'question': nl_problem['question'],
                     'options': nl_problem.get('options', []),
-                    'answer': sample['answer']
+                    'answer': nl_problem['answer']
                 }
             }
             
@@ -203,6 +203,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--timeout', type=float, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
     parser.add_argument('--force-constrained', action='store_true')
+    parser.add_argument('--force-twosteps', action='store_true')
     parser.add_argument('--debug', action='store_true')
     
     args = parser.parse_args()

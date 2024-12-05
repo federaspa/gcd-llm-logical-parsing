@@ -8594,6 +8594,26 @@
       ],
       "fol_conc": "Spend(luke, siblings)",
       "perplexity": 1.3842713832855225
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "TwinsOrTriplets(x, y)",
+        "SpendALotOfTimeHangingOutWithAndPlaying(x, y)",
+        "SameAgeSiblings(x, y)",
+        "ComplainOftenAboutAnnoyingSiblings(x, y)"
+      ],
+      "fol_consts": [
+        "Luke"
+      ],
+      "fol_rules": [
+        "∀x (TwinsOrTriplets(x, y) → SpendALotOfTimeHangingOutWithAndPlaying(x, y))",
+        "∀x (SameAgeSiblings(x, y) → TwinsOrTriplets(x, y))",
+        "∀x (ComplainOftenAboutAnnoyingSiblings(x, y) ∧ SameAgeSiblings(x, y) → TwinsOrTriplets(x, y))",
+        "(¬LiveAtHomeRegularly(x) ∧ SpendALotOfTimeHangingOutWithAndPlaying(x, y)) → ¬LiveAtHomeRegularly(x)",
+        "SpendALotOfTimeHangingOutWithAndPlaying(Luke, y) → (¬LiveAtHomeRegularly(y))"
+      ],
+      "fol_conc": "SpendALotOfTimeHangingOutWithAndPlaying(Luke, y)",
+      "perplexity": 1.7460776567459106
     }
   },
   {
@@ -9141,6 +9161,43 @@
       ],
       "fol_conc": "Foodie(peter) ∨ Highincome(peter)",
       "perplexity": 1.4970868825912476
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "SpillFood(x)",
+        "TidypSpacesConsistently(x)",
+        "EnjoyCleaning(x)",
+        "EnjoyCleaning(y, x)",
+        "SpillFood(x)",
+        "TidypSpacesConsistently(x)",
+        "TidypSpacesConsistently(x)",
+        "SpillFood(x)"
+      ],
+      "fol_consts": [
+        "peter",
+        "foodie",
+        "foodie",
+        "foodie",
+        "peter",
+        "peter",
+        "foodie",
+        "peter",
+        "peter",
+        "peter",
+        "foodie",
+        "peter",
+        "peter",
+        "peter"
+      ],
+      "fol_rules": [
+        "(SpillFood(p)) → (TidypSpacesConsistently(p) ∧ EnjoyCleaning(p))",
+        "∀x (TidypSpacesConsistently(x) → SpillFood(x))",
+        "(SpillFood(p) ∧ TidypSpacesConsistently(p))",
+        "∀x (SpillFood(x) ∨ TidypSpacesConsistently(x) ∧ EnjoyCleaning(x))",
+        "∀x ((TidypSpacesConsistently(x) ∧ EnjoyCleaning(x)) → (SpillFood(x)))"
+      ],
+      "fol_conc": "SpillFood(peter) ⊕ TidypSpacesConsistently(peter)",
+      "perplexity": 6.618525981903076
     }
   },
   {
@@ -12876,6 +12933,29 @@
       ],
       "fol_conc": "Gotosleeplate(remy) ∨ Wakeupafternoon(remy)",
       "perplexity": 1.7403771877288818
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "OwnsLargeDesktopMonitor(x)",
+        "WorksRegularlyAndOftenAtHome(x)",
+        "HasFullyStockedImpressiveHomeOffice(x)",
+        "SpendsFreeTimeTidyingOrganizingSpacesInHome(x)",
+        "GoesToBedLateWakesUpEveryDayAfterNoon(x)",
+        "VisitsOfficeSupplyStoreRegularly(x)"
+      ],
+      "fol_consts": [
+        "remy"
+      ],
+      "fol_rules": [
+        "∀x (OwnsLargeDesktopMonitor(x) → WorksRegularlyAndOftenAtHome(x))",
+        "∀x (HasFullyStockedImpressiveHomeOffice(x) ∧ OwnsLargeDesktopMonitor(x))",
+        "∀x (WorksRegularlyAndOftenAtHome(x) ∧ SpendsFreeTimeTidyingOrganizingSpacesInHome(x))",
+        "∀x (GoesToBedLateWakesUpEveryDayAfterNoon(x) ∨ VisitsOfficeSupplyStoreRegularly(x))",
+        "¬(SpendsFreeTimeTidyingOrganizingSpacesInHome(x) ∧ GoesToBedLateWakesUpEveryDayAfterNoon(x))",
+        "(SpendsFreeTimeTidyingOrganizingSpacesInHome(x) ∧ GoesToBedLateWakesUpEveryDayAfterNoon(x)) → (¬SpendsFreeTimeTidyingOrganizingSpacesInHome(x) ∨ ¬GoesToBedLateWakesUpEveryDayAfterNoon(x))"
+      ],
+      "fol_conc": "¬SpendsFreeTimeTidyingOrganizingSpacesInHome(remy) ∧ GoesToBedLateWakesUpEveryDayAfterNoon(remy)",
+      "perplexity": 1.2725003957748413
     }
   },
   {
@@ -13100,6 +13180,34 @@
       ],
       "fol_conc": "Not(parttimejobofferedbyuniversity, james)",
       "perplexity": 2.137066602706909
+    },
+    "logic_problem_twosteps": {
+      "fol_preds": [
+        "student(x)",
+        "workingInTheLab(x)",
+        "fromComputerScienceDepartment(x)",
+        "hasPartTimeJobOfferedByUniversity(x)",
+        "instructedByProfessorDavid(x)"
+      ],
+      "fol_consts": [
+        "James",
+        "Jack",
+        "library",
+        "database course",
+        "database course",
+        "library",
+        "James",
+        "Jack"
+      ],
+      "fol_rules": [
+        "∀x (student(x) → workingInTheLab(x))",
+        "∀x (student(x) ∧ hasPartTimeJobOfferedByUniversity(x) → workingInTheLab(x))",
+        "∀x (student(x) ∧ fromComputerScienceDepartment(x) → instructedByProfessorDavid(x))",
+        "∀x (workingInTheLab(x) ∧ instructedByProfessorDavid(x) → student(x))",
+        "∀x (student(x) → workingInTheLab(x))"
+      ],
+      "fol_conc": "¬hasPartTimeJobOfferedByUniversity(James)",
+      "perplexity": 1.974544882774353
     }
   },
   {

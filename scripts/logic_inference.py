@@ -11,12 +11,12 @@ from utils.symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from utils.symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 
 class LogicInferenceEngine:
-    def __init__(self, args):
+    def __init__(self, args, sketcher_name):
         self.args = args
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher_name
+        self.sketcher_name = sketcher_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.self_refine_round = args.self_refine_round
@@ -180,7 +180,7 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-name', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str)
     parser.add_argument('--dataset-name', type=str, required=True)
     
     parser.add_argument('--data-path', type=str, default='./data')
@@ -195,25 +195,37 @@ if __name__ == "__main__":
     args = parse_args()
     
     script_name = os.path.splitext(os.path.basename(__file__))[0]
+    
+    if args.sketcher_name:
+        sketcher_names = [args.sketcher_name]
+    else:
+        config_path = './configs/models'
+        sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
 
     print(f"Dataset: {args.dataset_name}")
-    print(f"Sketcher: {args.sketcher_name}")
+    print(f"Sketchers: {sketcher_names}")
     print(f"Self-refine-round: {args.self_refine_round}")
     print(f"Split: {args.split}")
     print(f"Save path: {args.save_path}")
     
-    engine = LogicInferenceEngine(args)
     
-    try:
-        engine.inference_on_dataset()
-    
-    except KeyboardInterrupt:
-        sys.exit(0)
-                
-    except Exception as e:
+    for sketcher_name in sketcher_names:
+        print(f"Sketcher: {sketcher_name}")
+        try:
+            engine = LogicInferenceEngine(args, sketcher_name)
+            
+            try:
+                engine.inference_on_dataset()
+            
+            except KeyboardInterrupt:
+                sys.exit(0)
+                        
+            except Exception as e:
 
-        error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        sys.exit(0)
-                
-    print("Finished Successfully")
-    # send_notification("Yippiee!", "logic_inference.py finished successfully")
+                error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+                sys.exit(0)
+                        
+            print("Finished Successfully")
+        except FileNotFoundError as e:
+            print(f'No such file or directory: {e}')
+        # send_notification("Yippiee!", "logic_inference.py finished successfully")
