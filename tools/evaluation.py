@@ -102,19 +102,75 @@ class LogicEvaluator:
             
         return LogicEvaluator.compute_metrics(unconstrained, with_string), LogicEvaluator.compute_metrics(constrained, with_string)
 
-def print_results(results, categories, with_string=False):
+    @staticmethod
+    def format_latex_table(results, table_name=""):
+        """
+        Format results in a LaTeX table similar to the provided example.
+        
+        Args:
+            results (dict): Results dictionary containing metrics
+            table_name (str): Optional name for the table caption
+        
+        Returns:
+            str: LaTeX formatted table
+        """
+        latex_lines = [
+            "\\begin{table}[t]",
+            "\\begin{tabular}{l|ccc|ccc}",
+            "\\hline",
+            " & \\multicolumn{3}{c|}{Unconstrained} & \\multicolumn{3}{c}{Constrained} \\\\ \\hline",
+            "Model & Total & Covered & Full & Total & Covered & Full \\\\",
+            " & Acc. & Acc. & Cov. & Acc. & Acc. & Cov. \\\\",
+            "\\hline"
+        ]
+        
+        # Process each model's results
+        for model_name, model_results in results.items():
+            if 'ALL' not in model_results:
+                continue
+                
+            unc_metrics = model_results['ALL']['UNCONSTRAINED']
+            con_metrics = model_results['ALL']['CONSTRAINED']
+            
+            # Format each metric as a percentage with 2 decimal places
+            metrics_line = [
+                model_name,
+                f"{unc_metrics[0][0]:.2f}",  # Total Acc Unconstrained
+                f"{unc_metrics[1][0]:.2f}",  # Covered Acc Unconstrained
+                f"{unc_metrics[3][0]:.2f}",  # Full Cov Unconstrained
+                f"{con_metrics[0][0]:.2f}",  # Total Acc Constrained
+                f"{con_metrics[1][0]:.2f}",  # Covered Acc Constrained
+                f"{con_metrics[3][0]:.2f}"   # Full Cov Constrained
+            ]
+            latex_lines.append(" & ".join(metrics_line) + " \\\\" + " \\hline")
+        
+        # Add table footer
+        latex_lines.extend([
+            "\\end{tabular}"
+        ])
+        
+        # Add caption if provided
+        if table_name:
+            latex_lines.append(f"\\caption{{{table_name}}}")
+            
+        latex_lines.append("\\end{table}")
+        
+        return "\n".join(latex_lines)
+
+def print_results(results, categories, with_string=False, latex_output=False):
     metric_names = ['Total accuracy', 'Accuracy', 'Parsing Coverage', 'Coverage']
     
-    for category in categories:
-        # print(f'{"#"*20}\n{category}\n{"#"*20}\n')
+    if latex_output:
+        print(LogicEvaluator.format_latex_table(results))
+        return
         
+    for category in categories:
         for subcategory in ['UNCONSTRAINED', 'CONSTRAINED']:
             print(f'{"-"*20}\n{subcategory}\n{"-"*20}\n')
             
             metrics = results[category][subcategory]
             for name, value in zip(metric_names, metrics):
-                
-                if name in ['Parsing Coverage', 'Total accuracy']:
+                if name in ['Parsing Coverage']:
                     continue
                 
                 if with_string:
@@ -129,18 +185,17 @@ def main():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
+    parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
     args = parser.parse_args()
-    
     
     if args.sketcher_name:
         sketcher_names = [args.sketcher_name]
     else:
         config_path = './configs/models'
         sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
-        
+    
+    all_results = {}
     for sketcher_name in sketcher_names:
-        
-        
         args.sketcher_name = sketcher_name
         
         try:
@@ -148,32 +203,31 @@ def main():
             filename = f'{prefix}{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
             result_file = os.path.join(args.result_path, filename)
 
-            # print('Evaluating file\n', result_file)
-            # print('Sketcher:', result_file)
-            print(f'{"#"*20}\n{sketcher_name}\n{"#"*20}\n')
+            if not args.latex:
+                print(f'{"#"*20}\n{sketcher_name}\n{"#"*20}\n')
             
             with open(result_file, 'r') as f:
                 samples = json.load(f)
 
             results = {}
-
-            categories = [
-                'ALL', 
-                # 'BOTH_SUCCESS', 
-                # 'EXCLUSIVE_SUCCESS', 
-                # 'NEITHER_SUCCESS'
-                ]
+            categories = ['ALL']
 
             for category in categories:
                 results[category] = {}
                 unc_metrics, con_metrics = LogicEvaluator.evaluate_sample_groups(samples, category, True)
                 results[category]['UNCONSTRAINED'] = unc_metrics
                 results[category]['CONSTRAINED'] = con_metrics
-
-            print_results(results, categories, True)
             
-        except Exception:
+            all_results[sketcher_name] = results
+            
+            if not args.latex:
+                print_results(results, categories, True)
+            
+        except Exception as e:
             continue
+    
+    if args.latex:
+        print_results(all_results, categories, True, latex_output=True)
 
 if __name__ == "__main__":
     main()
