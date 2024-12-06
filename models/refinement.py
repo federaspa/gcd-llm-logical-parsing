@@ -10,8 +10,13 @@ from timeout_decorator import timeout, TimeoutError
 from tqdm import tqdm
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 import argparse
+<<<<<<< HEAD:models/refinement.py
 from utils import OSModel, get_logger, send_notification, calculate_perplexity
 from prompters import FOL_Prompter, LP_Prompter
+=======
+from scripts.utils.utils import OSModel, get_logger, send_notification, calculate_perplexity
+from scripts.utils.prompters import FOL_Prompter, LP_Prompter
+>>>>>>> 2bc58cbef31857f1b697f56f2da4554c232982ca:scripts/refinement.py
 
 import traceback
 

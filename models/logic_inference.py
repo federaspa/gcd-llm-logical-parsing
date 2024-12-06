@@ -11,12 +11,12 @@ from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 
 class LogicInferenceEngine:
-    def __init__(self, args):
+    def __init__(self, args, sketcher_name):
         self.args = args
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = args.sketcher_name
+        self.sketcher_name = sketcher_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.self_refine_round = args.self_refine_round
@@ -71,26 +71,26 @@ class LogicInferenceEngine:
         parsing_error_count_constrained = 0
         execution_error_count_constrained = 0
         
+        parsing_error_count_twosteps = 0
+        execution_error_count_twosteps = 0
+        
         if self.self_refine_round > 0:
             save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
         else:
             save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
             
             
-        # if os.path.exists(os.path.join(self.save_path, save_file)):
-        #     print(f"File {save_file} already exists. Skipping...")
-        #     return
-        
         for sample in tqdm(self.dataset):
-            # execute the logic program
-                           
+            
+            answer = sample['nl_problem']['answer']
+            
             if 'logic_problem' in sample.keys():
                 
                 try:
                 
                     logic_problem = sample.get('logic_problem', {})
                     
-                    answer, status, error = self.safe_execute_program(logic_problem)
+                    answer_pred, status, error = self.safe_execute_program(logic_problem)
                     
                     if status == 'parsing error':
                         parsing_error_count += 1
@@ -98,8 +98,8 @@ class LogicInferenceEngine:
                         execution_error_count += 1
                         
                     sample['logic_problem'].update({
-                        'answer': sample['answer'],
-                        'predicted_answer': answer,
+                        'answer': answer,
+                        'predicted_answer': answer_pred,
                         'status': status,
                         'error': error
                     })
@@ -109,7 +109,6 @@ class LogicInferenceEngine:
                     pass
                 
             if 'logic_problem_gcd' in sample.keys():
-                
                 try:
                                 
                     logic_problem_constrained = sample.get('logic_problem_gcd', {})
@@ -122,7 +121,7 @@ class LogicInferenceEngine:
                         execution_error_count_constrained += 1
                         
                     sample['logic_problem_gcd'].update({
-                        'answer': sample['answer'],
+                        'answer': answer,
                         'predicted_answer': answer_constrained,
                         'status': status_constrained,
                         'error': error_constrained
@@ -131,6 +130,31 @@ class LogicInferenceEngine:
                 except TimeoutError:
                     execution_error_count_constrained += 1
                     pass
+            if 'logic_problem_twosteps' in sample.keys():
+                
+                try:
+                                
+                    logic_problem_twosteps = sample.get('logic_problem_twosteps', {})
+                    answer_twosteps, status_twosteps, error_twosteps = self.safe_execute_program(logic_problem_twosteps)
+
+                    if status_twosteps == 'parsing error':
+                        parsing_error_count_twosteps += 1
+                        
+                    elif status_twosteps == 'execution error':
+                        execution_error_count_twosteps += 1
+                        
+                    sample['logic_problem_twosteps'].update({
+                        'answer': answer,
+                        'predicted_answer': answer_twosteps,
+                        'status': status_twosteps,
+                        'error': error_twosteps
+                    })
+                        
+                except TimeoutError:
+                    execution_error_count_twosteps += 1
+                    pass
+                
+            
                 
             outputs.append(sample)
             
@@ -154,7 +178,7 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-name', type=str, required=True)
+    parser.add_argument('--sketcher-name', type=str)
     parser.add_argument('--dataset-name', type=str, required=True)
     
     parser.add_argument('--data-path', type=str, default='./data')
@@ -169,25 +193,37 @@ if __name__ == "__main__":
     args = parse_args()
     
     script_name = os.path.splitext(os.path.basename(__file__))[0]
+    
+    if args.sketcher_name:
+        sketcher_names = [args.sketcher_name]
+    else:
+        config_path = './configs/models'
+        sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
 
     print(f"Dataset: {args.dataset_name}")
-    print(f"Sketcher: {args.sketcher_name}")
+    print(f"Sketchers: {sketcher_names}")
     print(f"Self-refine-round: {args.self_refine_round}")
     print(f"Split: {args.split}")
     print(f"Save path: {args.save_path}")
     
-    engine = LogicInferenceEngine(args)
     
-    try:
-        engine.inference_on_dataset()
-    
-    except KeyboardInterrupt:
-        sys.exit(0)
-                
-    except Exception as e:
+    for sketcher_name in sketcher_names:
+        print(f"Sketcher: {sketcher_name}")
+        try:
+            engine = LogicInferenceEngine(args, sketcher_name)
+            
+            try:
+                engine.inference_on_dataset()
+            
+            except KeyboardInterrupt:
+                sys.exit(0)
+                        
+            except Exception as e:
 
-        error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        sys.exit(0)
-                
-    print("Finished Successfully")
-    # send_notification("Yippiee!", "logic_inference.py finished successfully")
+                error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+                sys.exit(0)
+                        
+            print("Finished Successfully")
+        except FileNotFoundError as e:
+            print(f'No such file or directory: {e}')
+        # send_notification("Yippiee!", "logic_inference.py finished successfully")

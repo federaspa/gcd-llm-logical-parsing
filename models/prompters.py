@@ -17,7 +17,7 @@ class FOL_Prompter:
         elif "symbolic" in self.config.dataset_name:
             return '[A-Z][0-9]'
         else:
-            return '[A-Z][a-z0-9]+'
+            return '[A-Z][a-zA-Z0-9]+'
 
         
     def _get_constants(self, constructs: Dict) -> str:
@@ -29,9 +29,9 @@ class FOL_Prompter:
         elif "symbolic" in self.config.dataset_name:
             return '[a-z][0-9]'
         else:
-            return '[a-z][a-z0-9]+'
+            return '[a-z0-9]+'
         
-    def get_grammar(self, constructs: dict) -> str:
+    def build_grammar(self, constructs: dict) -> str:
         
         predicates = self._get_predicates(constructs)
         constants = self._get_constants(constructs)
@@ -54,7 +54,7 @@ class FOL_Prompter:
     def extract_constructs(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
-        return self.templates['predicates'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+        return self.templates['constructs'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
     
     def parsing(self, mode: str, logic_problem: dict, error: str, reasoning: str | None = None) -> tuple[str, str | None]:
         assert mode in ['reasoning', 'generation'], 'wrong or no prompting mode specified'
@@ -68,7 +68,7 @@ class FOL_Prompter:
         
         elif mode == 'generation' and self.config.gcd:
             full_prompt = self.templates['parsing_user'].replace('[[PREMISES]]', premises).replace('[[CONCLUSION]]', conclusion).replace('[[ERROR]]', error).replace('[[REASONING]]', reasoning or '')
-            grammar = self.get_grammar(logic_problem)
+            grammar = self.build_grammar(logic_problem)
             
         elif mode == 'generation' and not self.config.gcd:
             full_prompt = self.templates['parsing_user'].replace('[[PREMISES]]', premises)
