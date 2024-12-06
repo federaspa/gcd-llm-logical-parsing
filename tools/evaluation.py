@@ -112,13 +112,22 @@ class LogicEvaluator:
         #     "\\hline"
         # ]
         
+        # latex_lines = [
+        #     "\\begin{table}[t]",
+        #     "\\begin{tabular}{l|ccc|ccc|ccc}",
+        #     "\\hline",
+        #     "Model & \\multicolumn{3}{c|}{Total} & \\multicolumn{3}{c|}{Covered} & \\multicolumn{3}{c}{Full}\\\\",
+        #     " & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c}{Cov.} \\\\ \\hline",
+        #     " & Unc & Con & 2-step &  Unc & Con & 2-step & Unc & Con & 2-step \\\\",
+        #     "\\hline"
+        # ]
+        
         latex_lines = [
             "\\begin{table}[t]",
-            "\\begin{tabular}{l|ccc|ccc|ccc}",
+            "\\begin{tabular}{l|cc|cc|}",
             "\\hline",
-            "Model & \\multicolumn{3}{c|}{Total} & \\multicolumn{3}{c|}{Covered} & \\multicolumn{3}{c}{Full}\\\\",
-            " & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c|}{Acc.} & \\multicolumn{3}{c}{Cov.} \\\\ \\hline",
-            " & Unc & Con & 2-step &  Unc & Con & 2-step & Unc & Con & 2-step \\\\",
+            "Model & \\multicolumn{2}{c|}{Accuracy} & \\multicolumn{2}{c|}{Coverage}\\\\ \\hline ",
+            " & Unc & Con & Unc & Con \\\\",
             "\\hline"
         ]
         
@@ -142,13 +151,13 @@ class LogicEvaluator:
                 # f"{fix_metrics[0]:.2f}",  # Covered Acc Fixed
                 f"{unc_metrics[0][0]:.2f}",  # Total Acc Unconstrained
                 f"{con_metrics[0][0]:.2f}",  # Total Acc Constrained
-                f"{ts_metrics[0][0]:.2f}",  # Total Acc Two-steps
-                f"{unc_metrics[1][0]:.2f}",  # Covered Acc Unconstrained
-                f"{con_metrics[1][0]:.2f}",  # Covered Acc Constrained
-                f"{ts_metrics[1][0]:.2f}",  # Covered Acc Two-steps
+                # f"{ts_metrics[0][0]:.2f}",  # Total Acc Two-steps
+                # f"{unc_metrics[1][0]:.2f}",  # Covered Acc Unconstrained
+                # f"{con_metrics[1][0]:.2f}",  # Covered Acc Constrained
+                # f"{ts_metrics[1][0]:.2f}",  # Covered Acc Two-steps
                 f"{unc_metrics[3][0]:.2f}",  # Full Cov Unconstrained
                 f"{con_metrics[3][0]:.2f}",   # Full Cov Constrained
-                f"{ts_metrics[3][0]:.2f}",   # Full Cov Two-steps
+                # f"{ts_metrics[3][0]:.2f}",   # Full Cov Two-steps
             ]
             latex_lines.append(" & ".join(metrics_line) + " \\\\" + " \\hline")
             
