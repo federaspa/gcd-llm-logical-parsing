@@ -17,7 +17,7 @@ class FOL_Prompter:
         elif "symbolic" in self.config.dataset_name:
             return '[A-Z][0-9]'
         else:
-            return '[A-Z][a-z0-9]+'
+            return '[A-Z][a-zA-Z0-9]+'
 
         
     def _get_constants(self, constructs: Dict) -> str:
@@ -29,7 +29,7 @@ class FOL_Prompter:
         elif "symbolic" in self.config.dataset_name:
             return '[a-z][0-9]'
         else:
-            return '[a-z][a-z0-9]+'
+            return '[a-z0-9]+'
         
     def build_grammar(self, constructs: dict) -> str:
         
