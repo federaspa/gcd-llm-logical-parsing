@@ -35,29 +35,6 @@ def save_annotation(annotation: dict, output_file: str):
         json.dump(annotation, f)
         f.write('\n')
 
-def prepare_samples(experiment_files: List[str], samples_per_file: int, output_path: str):
-    """Prepare random samples from multiple experiment files, with each sample duplicated 3 times."""
-    samples = []
-    for file_path in experiment_files:
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-            data = [d for d in data 
-                    if 'logic_problem' in d.keys() 
-                    or 'logic_problem_gcd' in d.keys() 
-                    or 'logic_problem_twosteps' in d.keys()]
-            for item in data:
-                item['source_file'] = os.path.basename(file_path)
-            file_samples = random.sample(data, min(samples_per_file, len(data)))
-            # Create 3 copies of each sample
-            duplicated_samples = file_samples * 3
-            samples.extend(duplicated_samples)
-    
-    random.shuffle(samples)
-    
-    with open(output_path, 'w') as f:
-        json.dump(samples, f, indent=2, ensure_ascii=False)
-    return len(samples)
-
 def display_nl_problem(problem: dict):
     """Display the natural language problem."""
     st.header("Natural Language Problem")
@@ -124,30 +101,7 @@ def main():
         st.session_state.samples = []
     if 'start' not in st.session_state:
         st.session_state.start = False
-
         
-        # st.header("Configuration")
-        
-        # if not os.path.exists("prepared_samples.json"):
-        #     st.warning("No previous session available.")
-            
-        # else:
-        #     if st.button("Load Previous Session"):
-        #         st.session_state.samples = load_samples("prepared_samples.json")
-        #         # Find last annotated sample
-        #         if os.path.exists("annotations/annotations.jsonl"):
-        #             with open("annotations/annotations.jsonl", 'r') as f:
-        #                 annotations = [json.loads(line) for line in f]
-        #                 if annotations:
-        #                     last_sample_id = annotations[-1]['sample_id']
-        #                     for idx, sample in enumerate(st.session_state.samples):
-        #                         if sample['id'] == last_sample_id:
-        #                             st.session_state.current_sample_idx = idx + 1
-        #                             break
-
-    
-    
-    
     with st.sidebar:
         # Progress tracking
         if st.session_state.samples:
@@ -161,6 +115,17 @@ def main():
     if not st.session_state.start:
         st.button("Press here to start")
         st.session_state.start = True
+        st.session_state.samples = load_samples("prepared_samples.json")
+        # Find last annotated sample
+        if os.path.exists("annotations/annotations.jsonl"):
+            with open("annotations/annotations.jsonl", 'r') as f:
+                annotations = [json.loads(line) for line in f]
+                if annotations:
+                    last_sample_id = annotations[-1]['annotator_id']
+                    for idx, sample in enumerate(st.session_state.samples):
+                        if sample['id'] == last_sample_id:
+                            st.session_state.current_sample_idx = idx + 1
+                            break
         return
 
     current_sample = st.session_state.samples[st.session_state.current_sample_idx]
