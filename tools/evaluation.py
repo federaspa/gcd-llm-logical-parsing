@@ -124,9 +124,9 @@ class LogicEvaluator:
         
         latex_lines = [
             "\\begin{table}[t]",
-            "\\begin{tabular}{l|cc|cc|}",
+            "\\begin{tabular}{l|ccc|ccc}",
             "\\hline",
-            "Model & \\multicolumn{2}{c|}{Accuracy} & \\multicolumn{2}{c|}{Coverage}\\\\ \\hline ",
+            "Model & \\multicolumn{2}{c|}{Accuracy} & \\multicolumn{2}{c}{Coverage}\\\\ \\hline ",
             " & Unc & Con & Unc & Con \\\\",
             "\\hline"
         ]
