@@ -239,21 +239,6 @@ if __name__ == '__main__':
     
     script_config, model_config, llama_cpp_config = get_configs(args)
     
-    # for key, value in vars(script_config).items():
-    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
-    
-    # for key, value in model_config.items():
-    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
-    
-    # for key, value in llama_cpp_config.items():
-    #     logger.info(f"{key.replace('_', ' ').capitalize()}: {value}")
-    
-    # pp(script_config)
-    # pp(model_config)
-    # pp(llama_cpp_config)
-    
-    # sys.exit(0)
-    
     try:
         generator = LogicProgramGenerator(
             script_config=script_config,
