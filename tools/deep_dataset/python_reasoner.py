@@ -1,6 +1,8 @@
 from collections import defaultdict, deque
 from typing import Dict, List, Set, Tuple
 import re
+import json
+import numpy as np
 
 class TheoryAnalyzer:
     def __init__(self, facts: List[str], rules: List[str]):
@@ -32,11 +34,25 @@ class TheoryAnalyzer:
             if match:
                 entities.add(match.group(1))
         return entities
+
+    def get_fact_depth(self, fact: str) -> int:
+        """Get the depth (number of steps) required to derive a fact."""
+        if fact in self.initial_facts:
+            return 0
+        return self.derived_steps.get(fact, 0)
     
     def rule_applies(self, conditions: List[str], entity: str) -> bool:
         """Check if all conditions of a rule apply for a given entity."""
         substituted_conditions = [self.substitute_variable(cond, entity) for cond in conditions]
         return all(cond in self.all_facts for cond in substituted_conditions)
+
+    def calculate_derivation_depth(self, conditions: List[str]) -> int:
+        """Calculate the depth required for a new derivation based on its conditions."""
+        min_depth = np.inf
+        for condition in conditions:
+            depth = self.get_fact_depth(condition)
+            min_depth = min(min_depth, depth)
+        return min_depth + 1
     
     def analyze(self) -> Dict[str, int]:
         """Analyze the theory and find all derivable facts with their minimum steps."""
@@ -44,7 +60,7 @@ class TheoryAnalyzer:
         entities = self.get_entities()
         
         while queue:
-            current_fact, steps = queue.popleft()
+            current_fact, _ = queue.popleft()
             
             # Try applying each rule
             for rule in self.rules:
@@ -54,9 +70,10 @@ class TheoryAnalyzer:
                 if '?X' not in rule:
                     if all(cond in self.all_facts for cond in conditions):
                         if conclusion not in self.all_facts:
+                            depth = self.calculate_derivation_depth(conditions)
                             self.all_facts.add(conclusion)
-                            self.derived_steps[conclusion] = steps + 1
-                            queue.append((conclusion, steps + 1))
+                            self.derived_steps[conclusion] = depth
+                            queue.append((conclusion, depth))
                             # Track which facts helped derive this one
                             for cond in conditions:
                                 self.fact_graph[cond].append(conclusion)
@@ -67,12 +84,13 @@ class TheoryAnalyzer:
                         if self.rule_applies(conditions, entity):
                             new_fact = self.substitute_variable(conclusion, entity)
                             if new_fact not in self.all_facts:
-                                self.all_facts.add(new_fact)
-                                self.derived_steps[new_fact] = steps + 1
-                                queue.append((new_fact, steps + 1))
-                                # Track which facts helped derive this one
                                 substituted_conditions = [self.substitute_variable(cond, entity) 
                                                        for cond in conditions]
+                                depth = self.calculate_derivation_depth(substituted_conditions)
+                                self.all_facts.add(new_fact)
+                                self.derived_steps[new_fact] = depth
+                                queue.append((new_fact, depth))
+                                # Track which facts helped derive this one
                                 for cond in substituted_conditions:
                                     self.fact_graph[cond].append(new_fact)
         
@@ -117,3 +135,21 @@ def analyze_theory(theory_data: Dict) -> Dict[str, List[Tuple[str, int, List[Lis
             new_facts[fact] = (steps, paths)
             
     return new_facts
+
+# Example usage with your test case
+if __name__ == "__main__":
+
+    with open('out.json') as f:
+        theories = json.load(f)    
+        
+    test_theory = theories['Theory2']
+        
+    print("Analyzing test theory...")
+    new_facts = analyze_theory(test_theory)
+    for fact, (steps, paths) in new_facts.items():
+        print(f"\nNew fact: {fact}")
+        print(f"Steps required: {steps}")
+        print("Derivation paths:")
+        for path in paths:
+            path.reverse()
+            print(f"  {' -> '.join(path)}")

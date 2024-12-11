@@ -46,10 +46,10 @@ class LogicalTheoryGenerator:
     def generate_type1_theory(self, num_facts: int = None, num_rules: int = None) -> Dict:
         """Generate a Type 1 theory using only is() predicate in logical notation."""
         if num_facts is None:
-            num_facts = 40
+            num_facts = 100
             # num_facts = random.randint(1, 16)
         if num_rules is None:
-            num_rules = 20
+            num_rules = 80
             # num_rules = random.randint(1, 9)
             
         # Select random entities and attributes for this theory
@@ -104,10 +104,10 @@ class LogicalTheoryGenerator:
     def generate_type2_theory(self, num_facts: int = None, num_rules: int = None) -> Dict:
         """Generate a Type 2 theory using is() and other predicates in logical notation."""
         if num_facts is None:
-            num_facts = 40
+            num_facts = 100
             # num_facts = random.randint(1, 16)
         if num_rules is None:
-            num_rules = 20
+            num_rules = 80
             # num_rules = random.randint(20, 21)
             
         # Select random entities and attributes for this theory
