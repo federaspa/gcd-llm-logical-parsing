@@ -10,25 +10,51 @@ import json
 class LogicalTheoryGenerator:
     def __init__(self):
         # Type 1 configuration
-        self.type1_entities = ['Alan', 'Bob', 'Charlie', 'Dave', 'Eve', 'Frank', 'Greg', 'Henry', 'Ian', 'John']
-        self.type1_attributes = ['Blue', 'Rough', 'Young', 'Big', 'Round', 'Kind', 'Green', 'Nice', 'Smart', 
-                               'Tall', 'Strong', 'Fast', 'Quiet', 'Wise']
+        self.type1_entities = [
+            'Alan', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'George', 'Henry', 
+            'Ian', 'Jack', 'Kevin', 'Lisa', 'Mary', 'Nancy', 'Oscar', 'Paul', 
+            'Quinn', 'Robert', 'Sarah', 'Thomas', 'Uma', 'Victor', 'William', 
+            'Xavier', 'Yolanda', 'Zach'
+        ]
+        self.type1_attributes = [
+    'Able', 'Blue', 'Calm', 'Dark', 'Eager', 'Fast', 'Green', 'Happy', 
+    'Intelligent', 'Joyful', 'Kind', 'Loud', 'Mighty', 'Nice', 'Observant', 
+    'Patient', 'Quick', 'Rough', 'Smart', 'Tall', 'Unique', 'Valiant', 
+    'Wise', 'Xenial', 'Young', 'Zealous'
+]
         
         # Type 2 configuration
-        self.type2_predicates = ['likes', 'chases', 'eats', 'follows']
-        self.type2_entities = ['Cat', 'Dog', 'BaldEagle', 'Mouse', 'Rabbit', 'Bird', 'Fox', 'Wolf', 'Bear', 'Lion']
-        self.type2_attributes = ['Big', 'Furry', 'Fast', 'Strong', 'Wild', 'Fierce', 'Brave', 'Quiet', 'Smart', 'Wise']
+        self.type2_predicates = [
+    'admires', 'believes', 'chases', 'doubts', 'envies', 'follows', 
+    'guides', 'helps', 'ignores', 'joins', 'knows', 'leads', 'meets', 
+    'notices', 'obeys', 'protects', 'questions', 'respects', 'supports', 
+    'teaches', 'understands', 'visits', 'watches', 'xeroxes', 'yields', 'zeros'
+]
+        self.type2_entities = [
+    'Antelope', 'Bear', 'Cat', 'Dog', 'Eagle', 'Fox', 'Goat', 'Horse', 
+    'Ibex', 'Jaguar', 'Kangaroo', 'Lion', 'Mouse', 'Newt', 'Owl', 'Penguin', 
+    'Quail', 'Rabbit', 'Snake', 'Tiger', 'Unicorn', 'Vulture', 'Wolf', 
+    'Xerus', 'Yak', 'Zebra'
+]
+        self.type2_attributes = [
+    'Agile', 'Brave', 'Clever', 'Dangerous', 'Elusive', 'Fierce', 'Graceful', 
+    'Hungry', 'Instinctive', 'Jumpy', 'Keen', 'Large', 'Mighty', 'Nimble', 
+    'Observant', 'Powerful', 'Quick', 'Robust', 'Swift', 'Tenacious', 
+    'Untamed', 'Vigilant', 'Wild', 'Xerophilic', 'Young', 'Zealous'
+]
 
     def generate_type1_theory(self, num_facts: int = None, num_rules: int = None) -> Dict:
         """Generate a Type 1 theory using only is() predicate in logical notation."""
         if num_facts is None:
-            num_facts = random.randint(1, 16)
+            num_facts = 40
+            # num_facts = random.randint(1, 16)
         if num_rules is None:
-            num_rules = random.randint(1, 9)
+            num_rules = 20
+            # num_rules = random.randint(1, 9)
             
         # Select random entities and attributes for this theory
-        entities = random.sample(self.type1_entities, min(4, len(self.type1_entities)))
-        attributes = random.sample(self.type1_attributes, min(7, len(self.type1_attributes)))
+        entities = random.sample(self.type1_entities, min(8, len(self.type1_entities)))
+        attributes = random.sample(self.type1_attributes, min(14, len(self.type1_attributes)))
         
         # Generate facts in is(Entity,Attribute) format
         facts = []
@@ -45,7 +71,7 @@ class LogicalTheoryGenerator:
             else:
                 variable = "?X"
                 
-            num_conditions = random.randint(1, 2)
+            num_conditions = random.randint(1, 5)
             conditions = []
             used_attributes = set()
             
@@ -69,7 +95,7 @@ class LogicalTheoryGenerator:
             if len(conditions) == 1:
                 rule = f"{conditions[0]} → {conclusion}."
             else:
-                rule = f"{conditions[0]} ∧ {conditions[1]} → {conclusion}."
+                rule = " ∧ ".join(conditions) + f" → {conclusion}."
             
             rules.append(rule)
                 
@@ -78,13 +104,15 @@ class LogicalTheoryGenerator:
     def generate_type2_theory(self, num_facts: int = None, num_rules: int = None) -> Dict:
         """Generate a Type 2 theory using is() and other predicates in logical notation."""
         if num_facts is None:
-            num_facts = random.randint(1, 16)
+            num_facts = 40
+            # num_facts = random.randint(1, 16)
         if num_rules is None:
-            num_rules = random.randint(1, 9)
+            num_rules = 20
+            # num_rules = random.randint(20, 21)
             
         # Select random entities and attributes for this theory
-        entities = random.sample(self.type2_entities, min(4, len(self.type2_entities)))
-        attributes = random.sample(self.type2_attributes, min(5, len(self.type2_attributes)))
+        entities = random.sample(self.type2_entities, min(8, len(self.type2_entities)))
+        attributes = random.sample(self.type2_attributes, min(10, len(self.type2_attributes)))
         
         # Generate facts
         facts = []
@@ -107,7 +135,7 @@ class LogicalTheoryGenerator:
             else:
                 variable = "?X"
                 
-            num_conditions = random.randint(1, 2)
+            num_conditions = random.randint(1, 5)  # Max 5 conditions
             conditions = []
             used_predicates = set()
             
@@ -142,7 +170,7 @@ class LogicalTheoryGenerator:
             if len(conditions) == 1:
                 rule = f"{conditions[0]} → {conclusion}."
             else:
-                rule = f"{conditions[0]} ∧ {conditions[1]} → {conclusion}."
+                rule = " ∧ ".join(conditions) + f" → {conclusion}."
             
             rules.append(rule)
                 
@@ -151,27 +179,15 @@ class LogicalTheoryGenerator:
 # Example usage
 if __name__ == "__main__":
     generator = LogicalTheoryGenerator()
-    
-    # print(f'##### Round {i} #######')
-    # Generate and print a Type 1 theory
-    print("=== Type 1 Theory ===")
+
     theory1 = generator.generate_type1_theory()
+    theory2 = generator.generate_type2_theory()
+    
+    d = {
+        "Theory1": theory1,
+        "Theory2": theory2
+    }
     
     # print(theory1)
     with open('out.json', 'w') as f:
-        json.dump(theory1, f, ensure_ascii=False, indent=2)
-    # print("Facts:")
-    # for fact in theory1.facts:
-    #     print(fact)
-    # print("\nRules:")
-    # for rule in theory1.rules:
-    #     print(rule)
-        
-    # print("\n=== Type 2 Theory ===")
-    # theory2 = generator.generate_type2_theory()
-    # print("Facts:")
-    # for fact in theory2.facts:
-    #     print(fact)
-    # print("\nRules:")
-    # for rule in theory2.rules:
-    #     print(rule)
+        json.dump(d, f, ensure_ascii=False, indent=2)
