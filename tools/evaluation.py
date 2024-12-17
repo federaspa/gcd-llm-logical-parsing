@@ -137,7 +137,6 @@ class LogicEvaluator:
         # Process each model's results
         for model_name, model_results in results.items():
             
-                
             unc_metrics = model_results['UNCONSTRAINED']
             con_metrics = model_results['CONSTRAINED']
             ts_metrics = model_results['TWOSTEPS']
@@ -201,14 +200,14 @@ def main():
     parser.add_argument('--sketcher-name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
-    parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
+    parser.add_argument('--result-path', type=str, default='../outputs/logic_inference')
     parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
     args = parser.parse_args()
     
     if args.sketcher_name:
         sketcher_names = [args.sketcher_name]
     else:
-        config_path = './configs/models'
+        config_path = '../configs/models'
         sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
     
     all_results = {}
@@ -219,7 +218,7 @@ def main():
             prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
             filename = f'{prefix}{args.dataset_name}_{args.split}_{args.sketcher_name}.json'
             result_file = os.path.join(args.result_path, filename)
-
+            
             if not args.latex:
                 print(f'{"#"*20}\n{sketcher_name}\n{"#"*20}\n')
             
@@ -240,7 +239,9 @@ def main():
                 print_results(results, True)
         
         except Exception as e:
+            print(e)
             continue
+            
             
     if args.latex:
         print_results(all_results, True, latex_output=True)

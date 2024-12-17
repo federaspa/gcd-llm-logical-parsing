@@ -10,12 +10,17 @@ class FOLConverter:
 
     def convert_atom(self, atom: str) -> str:
         """Convert a single atomic formula to FOL notation."""
+        negated = atom.startswith('~')
+        atom = atom.replace('~', '')
         # Check for is() predicate
         is_match = self.is_pattern.match(atom)
         if is_match:
             subject, predicate = is_match.groups()
             # Convert ?X to x for variables
             subject = 'x' if subject == '?X' else subject.lower()
+            
+            if negated:
+                return f"¬{predicate}({subject})"
             return f"{predicate}({subject})"
         
         # Check for other predicates
@@ -27,8 +32,12 @@ class FOLConverter:
             arg2 = 'x' if arg2 == '?X' else arg2.lower()
             # Capitalize predicate
             predicate = predicate.capitalize()
+            if negated:
+                return f"¬{predicate}({arg1}, {arg2})"
             return f"{predicate}({arg1}, {arg2})"
-        
+                
+        if negated:
+            return f'¬{atom}'
         return atom
 
     def convert_formula(self, formula: str) -> str:
@@ -66,11 +75,13 @@ def test_converter():
     # Test cases
     test_cases = [
         ("is(Alan,Young)", "Young(alan)"),
+        ("~is(Alan,Young)", "¬Young(alan)"),
         ("is(?X,Big) → is(?X,Strong)", "∀x (Big(x) → Strong(x))"),
-        ("is(?X,Young) ∧ is(?X,Round) → is(?X,Kind)", "∀x (Young(x) ∧ Round(x) → Kind(x))"),
+        ("~is(?X,Young) ∧ is(?X,Round) → is(?X,Kind)", "∀x (¬Young(x) ∧ Round(x) → Kind(x))"),
         ("likes(Alan,Mouse)", "Likes(alan, mouse)"),
         ("likes(?X,Dog) → loves(?X,Dog)", "∀x (Likes(x, dog) → Loves(x, dog))"),
-        ("chases(Cat,Mouse) ∧ is(Mouse,Small)", "Chases(cat, mouse) ∧ Small(mouse)")
+        ("chases(Cat,Mouse) ∧ is(Mouse,Small)", "Chases(cat, mouse) ∧ Small(mouse)"),
+        ("~chases(Cat,Mouse) ∧ ~is(Mouse,Small)", "¬Chases(cat, mouse) ∧ ¬Small(mouse)")
     ]
     
     print("Testing FOL Converter:")

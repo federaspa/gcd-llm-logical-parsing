@@ -1,21 +1,41 @@
 {
-  "facts": [
-    "is(John,Tall)",
-    "is(Henry,Young)",
-    "is(Dave,Quiet)",
-    "is(John,Tall)",
-    "is(Dave,Strong)",
-    "is(John,Strong)",
-    "is(Bob,Big)"
-  ],
-  "rules": [
-    "is(?X,Young) ∧ is(?X,Quiet) → is(?X,Big).",
-    "is(?X,Big) → is(?X,Round).",
-    "is(?X,Tall) → is(?X,Smart).",
-    "is(?X,Strong) ∧ is(?X,Quiet) → is(?X,Round).",
-    "is(?X,Tall) → is(?X,Quiet).",
-    "is(?X,Young) ∧ is(?X,Tall) → is(?X,Big).",
-    "is(Dave,Big) → is(Dave,Young).",
-    "is(?X,Strong) → is(?X,Quiet)."
-  ]
+  "Theory1": {
+    "facts": [
+      "is(Alan,Able)",
+      "is(Bob,Fast)",
+      "is(Frank,Kind)",
+      "is(Charlie,Fast)",
+      "is(Henry,Blue)",
+      "is(George,Dark)",
+      "~is(George,Able)",
+      "is(Charlie,Nice)",
+      "~is(David,Happy)",
+      "is(Henry,Nice)",
+      "is(George,Green)",
+      "is(David,Happy)",
+      "is(Bob,Nice)",
+      "is(Henry,Blue)",
+      "is(Alan,Happy)",
+      "is(George,Happy)",
+      "~is(Henry,Eager)",
+      "is(Alan,Dark)"
+    ],
+    "rules": [
+      "is(David,Dark) ∧ is(David,Dark) ∧ is(David,Kind) ∧ is(David,Blue) ∧ is(David,Blue) → is(David,Able).",
+      "is(?X,Blue) ∧ is(?X,Nice) ∧ is(?X,Green) ∧ is(?X,Dark) ∧ is(?X,Happy) → is(?X,Blue).",
+      "is(?X,Fast) ∧ is(?X,Blue) ∧ is(?X,Green) → is(?X,Green).",
+      "is(?X,Eager) ∧ is(?X,Eager) ∧ is(?X,Nice) → is(?X,Eager).",
+      "is(?X,Fast) ∧ is(?X,Nice) ∧ is(?X,Fast) → is(?X,Blue).",
+      "is(?X,Eager) ∧ is(?X,Happy) ∧ is(?X,Fast) → is(?X,Fast).",
+      "is(Charlie,Blue) ∧ ~is(Charlie,Able) ∧ is(Charlie,Fast) ∧ is(Charlie,Able) ∧ ~is(Charlie,Fast) → ~is(Charlie,Kind).",
+      "is(?X,Happy) ∧ is(?X,Dark) ∧ is(?X,Eager) ∧ is(?X,Dark) ∧ is(?X,Blue) → is(?X,Eager).",
+      "is(?X,Blue) ∧ is(?X,Able) ∧ is(?X,Fast) ∧ is(?X,Happy) → is(?X,Dark).",
+      "is(?X,Fast) ∧ is(?X,Green) ∧ is(?X,Dark) ∧ is(?X,Able) → is(?X,Nice).",
+      "is(?X,Able) ∧ ~is(?X,Able) ∧ ~is(?X,Able) ∧ is(?X,Able) ∧ ~is(?X,Fast) → ~is(?X,Green).",
+      "is(?X,Nice) ∧ is(?X,Dark) ∧ is(?X,Able) ∧ is(?X,Green) → ~is(?X,Able).",
+      "is(?X,Nice) ∧ is(?X,Fast) ∧ is(?X,Kind) → is(?X,Fast).",
+      "is(?X,Nice) ∧ is(?X,Eager) ∧ is(?X,Fast) ∧ is(?X,Able) → is(?X,Dark).",
+      "is(?X,Green) ∧ is(?X,Blue) ∧ ~is(?X,Dark) → is(?X,Blue)."
+    ]
+  }
 }

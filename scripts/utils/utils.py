@@ -75,10 +75,11 @@ class PromptGenerator:
         types = {
             'FOLIO': 'FOL',
             'FOLIOv2': 'FOL',
+            'PARARULE': 'FOL',
             'LogicNLI': 'FOL',
             'LogicNLI_symbolic': 'FOL',
-            'ProntoQA': 'LP',
-            'ProofWriter': 'LP',
+            'ProntoQA': 'FOL',
+            'ProofWriter': 'FOL',
             'AR-LSAT': 'SAT'
         }
         return types[self.script_config.dataset_name]

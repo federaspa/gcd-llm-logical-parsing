@@ -138,7 +138,7 @@ class LogicProgramGenerator(PromptGenerator):
                        
             logic_problem = None
             logic_problem_gcd = None
-            logic_problem_twosteps = None
+            # logic_problem_twosteps = None
                         
             if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:                
                 logic_problem, error = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
@@ -154,12 +154,12 @@ class LogicProgramGenerator(PromptGenerator):
             if i % 20 == 0:
                 logger.debug(logic_problem_gcd)
                     
-            if not 'logic_problem_twosteps' in sample.keys() or self.script_config.force_twosteps:
-                logic_problem_twosteps, error = self._generate_problem(nl_problem, sample["id"], "twosteps", pbar)
-            else:
-                logic_problem_twosteps = sample['logic_problem_twosteps']
-            if i % 20 == 0:
-                logger.debug(logic_problem_twosteps)
+            # if not 'logic_problem_twosteps' in sample.keys() or self.script_config.force_twosteps:
+            #     logic_problem_twosteps, error = self._generate_problem(nl_problem, sample["id"], "twosteps", pbar)
+            # else:
+            #     logic_problem_twosteps = sample['logic_problem_twosteps']
+            # if i % 20 == 0:
+            #     logger.debug(logic_problem_twosteps)
                 
             output = {
                 'id': sample['id'], 
@@ -177,8 +177,8 @@ class LogicProgramGenerator(PromptGenerator):
             if logic_problem_gcd:
                 output.update({'logic_problem_gcd': logic_problem_gcd})
                 
-            if logic_problem_twosteps:
-                output.update({'logic_problem_twosteps': logic_problem_twosteps})
+            # if logic_problem_twosteps:
+            #     output.update({'logic_problem_twosteps': logic_problem_twosteps})
             
             outputs[sample['id']] = output
             
