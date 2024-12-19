@@ -8,7 +8,7 @@ from typing import Tuple
 
 # set the path to the prover9 executable
 # os.environ['PROVER9'] = '../Prover9/bin'
-os.environ['PROVER9'] = 'scripts/utils/symbolic_solvers/Prover9/bin'
+os.environ['PROVER9'] = 'scripts/symbolic_solvers/Prover9/bin'
 
 
 class FOL_Prover9_Program:

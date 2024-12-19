@@ -8,8 +8,8 @@ from timeout_decorator import timeout, TimeoutError
 import sys
 import re
 
-from utils.symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
-from utils.symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
+from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
+from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 
 class LogicInferenceEngine:
     def __init__(self, args, model_name):
