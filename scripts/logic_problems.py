@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 import traceback
 
-from utils.generator import PromptGenerator
+from utils.generator import Generator
 from utils.logger import get_logger
 
 @dataclass
@@ -21,8 +21,8 @@ class ScriptConfig:
     split: str
     models_path: str
     save_path: str
-    timeout: Optional[int]
     stop_time: Optional[str]
+    timeout: int = 60
     two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained: bool = False
@@ -32,7 +32,7 @@ class ScriptConfig:
 class LogicProgramRunner:
     def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict):
         self.config = script_config
-        self.generator = PromptGenerator(script_config)
+        self.generator = Generator(script_config)
         self.generator.setup_model(model_config, llama_cpp_config)
         
         self.stop_time = None
