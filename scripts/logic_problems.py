@@ -1,18 +1,16 @@
 import json
 import os
 import sys
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from pathlib import Path
 from tqdm import tqdm
-from timeout_decorator import timeout, TimeoutError
 from datetime import datetime
 import yaml
-from pprint import pp
-
-from utils.utils import OSModel, PromptGenerator, get_logger, InvalidJsonError
-
 import traceback
+
+from utils.generator import PromptGenerator
+from utils.logger import get_logger
 
 @dataclass
 class ScriptConfig:
@@ -22,37 +20,28 @@ class ScriptConfig:
     split: str
     models_path: str
     save_path: str
-    timeout: int|None
-    stop_time: str|None
+    timeout: Optional[int]
+    stop_time: Optional[str]
     two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained: bool = False
     force_json: bool = False
     debug: bool = False
 
-class LogicProgramGenerator(PromptGenerator):
+class LogicProgramRunner:
     def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict):
-        
-        self.script_config = script_config
-        
-        super().__init__(self.script_config)
-        
-        self.model_api = OSModel(
-            script_config=script_config,
-            default_model_config=model_config,
-            llama_cpp_config=llama_cpp_config
-            )
+        self.config = script_config
+        self.generator = PromptGenerator(script_config)
+        self.generator.setup_model(model_config, llama_cpp_config)
         
         self.stop_time = None
-        if self.script_config.stop_time:
+        if self.config.stop_time:
             try:
-                self.stop_time = datetime.strptime(self.script_config.stop_time, "%d-%m-%y:%H-%M-%S")
+                self.stop_time = datetime.strptime(self.config.stop_time, "%d-%m-%y:%H-%M-%S")
             except ValueError as e:
                 raise ValueError(f"Invalid stop_time format. Use dd-mm-yy:hh-mm-ss. Error: {str(e)}")
-        
 
-        
-    def _check_time_limit(self):
+    def _check_time_limit(self) -> bool:
         """Check if we've reached the stop time"""
         if self.stop_time and datetime.now() >= self.stop_time:
             logger.info(f"Stop time {self.stop_time} reached. Saving progress and exiting...")
@@ -60,51 +49,41 @@ class LogicProgramGenerator(PromptGenerator):
         return False
     
     def _load_raw_dataset(self) -> List[dict]:
-        dataset_path = Path(self.script_config.data_path) / self.script_config.dataset_name / f'{self.script_config.split}.json'
+        dataset_path = Path(self.config.data_path) / self.config.dataset_name / f'{self.config.split}.json'
         with open(dataset_path) as f:
-            raw_dataset = json.load(f)
-        return raw_dataset
+            return json.load(f)
     
-    
-    def _skip_existing(self, save_file:Path, raw_dataset:List[Dict]):
-        outputs = []
+    def _skip_existing(self, save_file: Path, raw_dataset: List[Dict]) -> Tuple[List[Dict], Dict, List]:
+        outputs = {}
         existing_ids = []
-        # existing_samples = []
         
         if save_file.exists():
             with open(save_file, 'r') as f:
-                outputs = json.load(f)
-                existing_ids = [s['id'] for s in outputs]
+                saved_data = json.load(f)
+                outputs = {sample['id']: sample for sample in saved_data}
+                existing_ids = list(outputs.keys())
                 
-        outputs = {sample['id']: sample for sample in outputs}
         return raw_dataset, outputs, existing_ids
 
-    def _generate_problem(self, nl_problem: dict, sample_id:int, problem_type:str, pbar: tqdm) -> Tuple[dict, str|None]:
-        """Generate unconstrained logic problem for a sample"""
-        
-        assert problem_type in ["unconstrained", "json", "constrained"], 'Invalid problem type, must be in ["unconstrained", "json", "constrained"]'
-        
+    def _generate_problem(self, nl_problem: dict, sample_id: int, problem_type: str, pbar: tqdm) -> Tuple[Optional[dict], Optional[str]]:
+        """Generate logic problem for a sample"""
         pbar.set_description_str(f"Generating {problem_type} problem {sample_id}")
+        
         try:
             if problem_type == 'unconstrained':
-                logic_problem_str, perplexity = self.model_api.unconstrained_generator(nl_problem)
-            
+                logic_problem_str, perplexity = self.generator.generate_unconstrained(nl_problem)
             elif problem_type == 'json':
-                logic_problem_str, perplexity = self.model_api.json_generator(nl_problem)
-
+                logic_problem_str, perplexity = self.generator.generate_json(nl_problem)
             elif problem_type == 'constrained':
-                logic_problem_str, perplexity = self.model_api.constrained_generator(nl_problem, twosteps = False)
+                logic_problem_str, perplexity = self.generator.generate_constrained(nl_problem, self.config.two_steps)
+            else:
+                raise ValueError(f"Invalid problem type: {problem_type}")
             
-            logic_problem = {
+            return {
                 'raw': logic_problem_str,
                 'perplexity': perplexity
-            }
-                            
-            return logic_problem, None
+            }, None
             
-        # except InvalidJsonError as e:
-        #     logger.error(f"{problem_type.capitalize()}: Json wrapping error for sample {sample_id}\n{str(e)}")
-        #     return None, "json_decode_error"
         except TimeoutError:
             logger.error(f"{problem_type.capitalize()}: Timeout error for sample {sample_id}")
             return None, "timeout"
@@ -114,55 +93,31 @@ class LogicProgramGenerator(PromptGenerator):
             return None, str(e)
 
     def run(self):
+        # Setup paths and load data
         raw_dataset = self._load_raw_dataset()
-        save_path = Path(self.script_config.save_path)
+        save_path = Path(self.config.save_path)
         save_path.mkdir(parents=True, exist_ok=True)
         
-        save_file = save_path / f'{self.script_config.dataset_name}_{self.script_config.split}_{self.script_config.model_name}.json'
+        save_file = save_path / f'{self.config.dataset_name}_{self.config.split}_{self.config.model_name}.json'
+        raw_dataset, outputs, existing_ids = self._skip_existing(save_file, raw_dataset)
         
-        raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
-        
-        # raw_dataset = [s for s in raw_dataset if s['id']>73]
-        
-        logger.info(f"Loaded {len(raw_dataset)} examples from {self.script_config.split} split.")
+        logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
+        # Process samples
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
             if self._check_time_limit():
                 break
-        
+            
+            # Get or create problem
             if sample['id'] in existing_ids:
-                sample = outputs[sample['id']]              
+                sample = outputs[sample['id']]
                 nl_problem = sample['nl_problem']
             else:
                 nl_problem = sample
-                       
-            logic_problem = None
-            logic_problem_gcd = None
-            logic_problem_json = None
-                        
-            if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:                
-                logic_problem, error = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
-            else:
-                logic_problem = sample['logic_problem']
-            if i % 20 == 0:
-                logger.debug(logic_problem)
-
-            if not 'logic_problem_json' in sample.keys() or self.script_config.force_json:
-                logic_problem_json, error = self._generate_problem(nl_problem, sample["id"], "json", pbar)
-            else:
-                logic_problem_json = sample['logic_problem_json']
-            if i % 20 == 0:
-                logger.debug(logic_problem_json)
-                
-            if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
-                logic_problem_gcd, error = self._generate_problem(nl_problem, sample["id"], "constrained", pbar)
-            else:
-                logic_problem_gcd = sample['logic_problem_gcd']
-            if i % 20 == 0:
-                logger.debug(logic_problem_gcd)
-                    
+            
+            # Generate different versions of the problem
             output = {
-                'id': sample['id'], 
+                'id': sample['id'],
                 'nl_problem': {
                     'context': nl_problem['context'],
                     'question': nl_problem['question'],
@@ -170,21 +125,41 @@ class LogicProgramGenerator(PromptGenerator):
                     'answer': nl_problem['answer']
                 }
             }
-            
-            if logic_problem:
-                output.update({'logic_problem': logic_problem})
-            
-            if logic_problem_json:
-                output.update({'logic_problem_json': logic_problem_json})
-            
-            if logic_problem_gcd:
-                output.update({'logic_problem_gcd': logic_problem_gcd})
-                
+
+            # Generate unconstrained version
+            if 'logic_problem' not in sample or self.config.force_unconstrained:
+                logic_problem, _ = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
+                if logic_problem:
+                    output['logic_problem'] = logic_problem
+            else:
+                output['logic_problem'] = sample['logic_problem']
+
+            # Generate JSON version
+            if 'logic_problem_json' not in sample or self.config.force_json:
+                logic_problem_json, _ = self._generate_problem(nl_problem, sample["id"], "json", pbar)
+                if logic_problem_json:
+                    output['logic_problem_json'] = logic_problem_json
+            else:
+                output['logic_problem_json'] = sample['logic_problem_json']
+
+            # Generate constrained version
+            if 'logic_problem_gcd' not in sample or self.config.force_constrained:
+                logic_problem_gcd, _ = self._generate_problem(nl_problem, sample["id"], "constrained", pbar)
+                if logic_problem_gcd:
+                    output['logic_problem_gcd'] = logic_problem_gcd
+            else:
+                output['logic_problem_gcd'] = sample['logic_problem_gcd']
+
+            # Save progress
             outputs[sample['id']] = output
-            
-            pbar.update()
             with open(save_file, 'w') as f:
                 json.dump(list(outputs.values()), f, indent=2, ensure_ascii=False)
+
+            # Debug logging
+            if i % 20 == 0:
+                for key in ['logic_problem', 'logic_problem_json', 'logic_problem_gcd']:
+                    if key in output:
+                        logger.debug(f"{key}: {output[key]}")
 
         if self._check_time_limit():
             logger.info("Script stopped due to reaching stop time")
@@ -208,11 +183,9 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--force-json', action='store_true')
     parser.add_argument('--debug', action='store_true')
     
-    args = parser.parse_args()
-    return ScriptConfig(**vars(args))
+    return ScriptConfig(**vars(parser.parse_args()))
 
-
-def get_configs(script_config: ScriptConfig):
+def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     # Load model-specific configuration
     sketcher_config_path = Path('configs/models') / f"{script_config.model_name}.yml"
     with open(sketcher_config_path, 'r') as f:
@@ -237,15 +210,10 @@ if __name__ == '__main__':
     script_name = Path(__file__).stem
     logger, log_file_name = get_logger(script_name, args.debug)
     
-    script_config, model_config, llama_cpp_config = get_configs(args)
-    
     try:
-        generator = LogicProgramGenerator(
-            script_config=script_config,
-            model_config=model_config,
-            llama_cpp_config=llama_cpp_config
-        )
-        generator.run()
+        script_config, model_config, llama_cpp_config = get_configs(args)
+        runner = LogicProgramRunner(script_config, model_config, llama_cpp_config)
+        runner.run()
         
     except KeyboardInterrupt:
         logger.error("KeyboardInterrupt")
