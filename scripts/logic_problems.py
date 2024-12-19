@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import re
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from pathlib import Path
@@ -91,14 +92,21 @@ class LogicProgramRunner:
             logger.error(f"{problem_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
             logger.debug(f"Traceback:\n{traceback.format_exc()}")
             return None, str(e)
+        
+    def _prepare_save_file(self):
+        save_path = Path(self.config.save_path)
+        save_path.mkdir(parents=True, exist_ok=True)
+        
+        model_name = re.sub(r'-\d+-of-\d+', '', self.config.model_name)
+
+        return save_path / f'{self.config.dataset_name}_{self.config.split}_{model_name}.json'
+        
 
     def run(self):
         # Setup paths and load data
         raw_dataset = self._load_raw_dataset()
-        save_path = Path(self.config.save_path)
-        save_path.mkdir(parents=True, exist_ok=True)
-        
-        save_file = save_path / f'{self.config.dataset_name}_{self.config.split}_{self.config.model_name}.json'
+
+        save_file = self._prepare_save_file()
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file, raw_dataset)
         
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
@@ -186,8 +194,11 @@ def parse_args() -> ScriptConfig:
     return ScriptConfig(**vars(parser.parse_args()))
 
 def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
+    
+    model_name = re.sub(r'-\d+-of-\d+', '', script_config.model_name)
+    
     # Load model-specific configuration
-    sketcher_config_path = Path('configs/models') / f"{script_config.model_name}.yml"
+    sketcher_config_path = Path('configs/models') / f"{model_name}.yml"
     with open(sketcher_config_path, 'r') as f:
         model_config = yaml.safe_load(f)
         
