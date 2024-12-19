@@ -16,7 +16,7 @@ import traceback
 
 @dataclass
 class ScriptConfig:
-    sketcher_name: str
+    model_name: str
     dataset_name: str
     data_path: str
     split: str
@@ -27,7 +27,7 @@ class ScriptConfig:
     two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained: bool = False
-    force_twosteps: bool = False
+    force_json: bool = False
     debug: bool = False
 
 class LogicProgramGenerator(PromptGenerator):
@@ -37,7 +37,7 @@ class LogicProgramGenerator(PromptGenerator):
         
         super().__init__(self.script_config)
         
-        self.sketcher = OSModel(
+        self.model_api = OSModel(
             script_config=script_config,
             default_model_config=model_config,
             llama_cpp_config=llama_cpp_config
@@ -82,29 +82,29 @@ class LogicProgramGenerator(PromptGenerator):
     def _generate_problem(self, nl_problem: dict, sample_id:int, problem_type:str, pbar: tqdm) -> Tuple[dict, str|None]:
         """Generate unconstrained logic problem for a sample"""
         
-        assert problem_type in ["unconstrained", "constrained", "twosteps"], 'Invalid problem type, must be in ["unconstrained", "constrained", "twosteps"]'
+        assert problem_type in ["unconstrained", "json", "constrained"], 'Invalid problem type, must be in ["unconstrained", "json", "constrained"]'
         
         pbar.set_description_str(f"Generating {problem_type} problem {sample_id}")
         try:
             if problem_type == 'unconstrained':
-                unconstrained, perplexity = self.sketcher.unconstrained_generator(nl_problem)
-                pbar.set_description_str(f"Json wrapping problem {sample_id}")
-                logic_problem, json_perplexity = self.sketcher.json_wrapper(unconstrained)
-                logic_problem['perplexity'] = (perplexity, json_perplexity)
+                logic_problem_str, perplexity = self.model_api.unconstrained_generator(nl_problem)
             
+            elif problem_type == 'json':
+                logic_problem_str, perplexity = self.model_api.json_generator(nl_problem)
+
             elif problem_type == 'constrained':
-                logic_problem, perplexity = self.sketcher.constrained_generator(nl_problem, twosteps = False)
-                logic_problem['perplexity'] = (perplexity)
+                logic_problem_str, perplexity = self.model_api.constrained_generator(nl_problem, twosteps = False)
             
-            elif problem_type == 'twosteps':
-                logic_problem, perplexity = self.sketcher.constrained_generator(nl_problem, twosteps = True)
-                logic_problem['perplexity'] = (perplexity)
-                
+            logic_problem = {
+                'raw': logic_problem_str,
+                'perplexity': perplexity
+            }
+                            
             return logic_problem, None
             
-        except InvalidJsonError as e:
-            logger.error(f"{problem_type.capitalize()}: Json wrapping error for sample {sample_id}\n{str(e)}")
-            return None, "json_decode_error"
+        # except InvalidJsonError as e:
+        #     logger.error(f"{problem_type.capitalize()}: Json wrapping error for sample {sample_id}\n{str(e)}")
+        #     return None, "json_decode_error"
         except TimeoutError:
             logger.error(f"{problem_type.capitalize()}: Timeout error for sample {sample_id}")
             return None, "timeout"
@@ -118,7 +118,7 @@ class LogicProgramGenerator(PromptGenerator):
         save_path = Path(self.script_config.save_path)
         save_path.mkdir(parents=True, exist_ok=True)
         
-        save_file = save_path / f'{self.script_config.dataset_name}_{self.script_config.split}_{self.script_config.sketcher_name}.json'
+        save_file = save_path / f'{self.script_config.dataset_name}_{self.script_config.split}_{self.script_config.model_name}.json'
         
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file=save_file, raw_dataset=raw_dataset)
         
@@ -138,7 +138,7 @@ class LogicProgramGenerator(PromptGenerator):
                        
             logic_problem = None
             logic_problem_gcd = None
-            # logic_problem_twosteps = None
+            logic_problem_json = None
                         
             if not 'logic_problem' in sample.keys() or self.script_config.force_unconstrained:                
                 logic_problem, error = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
@@ -147,6 +147,13 @@ class LogicProgramGenerator(PromptGenerator):
             if i % 20 == 0:
                 logger.debug(logic_problem)
 
+            if not 'logic_problem_json' in sample.keys() or self.script_config.force_json:
+                logic_problem_json, error = self._generate_problem(nl_problem, sample["id"], "json", pbar)
+            else:
+                logic_problem_json = sample['logic_problem_json']
+            if i % 20 == 0:
+                logger.debug(logic_problem_json)
+                
             if not 'logic_problem_gcd' in sample.keys() or self.script_config.force_constrained:
                 logic_problem_gcd, error = self._generate_problem(nl_problem, sample["id"], "constrained", pbar)
             else:
@@ -154,13 +161,6 @@ class LogicProgramGenerator(PromptGenerator):
             if i % 20 == 0:
                 logger.debug(logic_problem_gcd)
                     
-            # if not 'logic_problem_twosteps' in sample.keys() or self.script_config.force_twosteps:
-            #     logic_problem_twosteps, error = self._generate_problem(nl_problem, sample["id"], "twosteps", pbar)
-            # else:
-            #     logic_problem_twosteps = sample['logic_problem_twosteps']
-            # if i % 20 == 0:
-            #     logger.debug(logic_problem_twosteps)
-                
             output = {
                 'id': sample['id'], 
                 'nl_problem': {
@@ -174,12 +174,12 @@ class LogicProgramGenerator(PromptGenerator):
             if logic_problem:
                 output.update({'logic_problem': logic_problem})
             
+            if logic_problem_json:
+                output.update({'logic_problem_json': logic_problem_json})
+            
             if logic_problem_gcd:
                 output.update({'logic_problem_gcd': logic_problem_gcd})
                 
-            # if logic_problem_twosteps:
-            #     output.update({'logic_problem_twosteps': logic_problem_twosteps})
-            
             outputs[sample['id']] = output
             
             pbar.update()
@@ -194,8 +194,8 @@ class LogicProgramGenerator(PromptGenerator):
 def parse_args() -> ScriptConfig:
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-name', type=str, required=True)
-    parser.add_argument('--dataset-name', type=str, required=True)
+    parser.add_argument('--model-name', type=str, required=True)
+    parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--two-steps', action='store_true', help='Extract predicates in first step')
@@ -205,7 +205,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--timeout', type=float, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
     parser.add_argument('--force-constrained', action='store_true')
-    parser.add_argument('--force-twosteps', action='store_true')
+    parser.add_argument('--force-json', action='store_true')
     parser.add_argument('--debug', action='store_true')
     
     args = parser.parse_args()
@@ -214,7 +214,7 @@ def parse_args() -> ScriptConfig:
 
 def get_configs(script_config: ScriptConfig):
     # Load model-specific configuration
-    sketcher_config_path = Path('configs/models') / f"{script_config.sketcher_name}.yml"
+    sketcher_config_path = Path('configs/models') / f"{script_config.model_name}.yml"
     with open(sketcher_config_path, 'r') as f:
         model_config = yaml.safe_load(f)
         
@@ -224,7 +224,7 @@ def get_configs(script_config: ScriptConfig):
         llama_cpp_config = yaml.safe_load(f)
     
     # Add model path to model config
-    llama_cpp_config['model_path'] = str(Path(script_config.models_path) / f"{script_config.sketcher_name}.gguf")
+    llama_cpp_config['model_path'] = str(Path(script_config.models_path) / f"{script_config.model_name}.gguf")
     
     # Verify model path exists
     assert Path(llama_cpp_config['model_path']).exists()

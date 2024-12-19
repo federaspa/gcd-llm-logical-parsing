@@ -6,17 +6,18 @@ from typing import Tuple, List
 from tqdm import tqdm
 from timeout_decorator import timeout, TimeoutError
 import sys
+import re
 
 from utils.symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from utils.symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 
 class LogicInferenceEngine:
-    def __init__(self, args, sketcher_name):
+    def __init__(self, args, model_name):
         self.args = args
         self.data_path = args.data_path
         self.dataset_name = args.dataset_name
         self.split = args.split
-        self.sketcher_name = sketcher_name
+        self.model_name = model_name
         self.programs_path = args.programs_path
         self.save_path = args.save_path
         self.self_refine_round = args.self_refine_round
@@ -30,21 +31,48 @@ class LogicInferenceEngine:
         
         self.program_executor = program_executor_map[self.dataset_name]
         
-        self.dataset = self.load_logic_problems()
-
     def load_logic_problems(self) -> List[dict]:
         
         if self.self_refine_round > 0:
-            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+            programs_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}.json'
         else:
-            programs_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+            programs_file = f'{self.dataset_name}_{self.split}_{self.model_name}.json'
         with open(os.path.join(self.programs_path, programs_file)) as f:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.split} split.")
         return dataset
 
+
+
+    def load_json(self, input_string):
+        """
+        Preprocess a FOL (First Order Logic) JSON string to make it valid for parsing.
+        
+        Args:
+            input_string (str): The input JSON string containing FOL expressions
+            
+        Returns:
+            dict: The parsed JSON data as a Python dictionary
+        """
+        # Remove the ```json and ``` markers if present
+        cleaned_string = re.sub(r'```json\n|```\n|```', '', input_string)
+        
+        # Remove any leading/trailing whitespace
+        cleaned_string = cleaned_string.strip()
+        
+        # Parse the cleaned string as JSON
+        json_data = json.loads(cleaned_string)
+        return json_data
+
+
     @timeout(seconds=60)
-    def safe_execute_program(self, logic_program:dict) -> Tuple[str,str, str]:
+    def safe_execute_program(self, logic_problem:str) -> Tuple[str,str, str]:
+        
+        try:
+            logic_program = self.load_json(logic_problem['raw'])
+        except Exception as e:
+            return 'N/A', 'json error', str(e)
+        
         program = self.program_executor(logic_program)
         # cannot parse the program
         if program.flag == False:
@@ -66,110 +94,58 @@ class LogicInferenceEngine:
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
         
-        outputs = []
-        parsing_error_count = 0
-        execution_error_count = 0
-        
-        parsing_error_count_constrained = 0
-        execution_error_count_constrained = 0
-        
-        parsing_error_count_twosteps = 0
-        execution_error_count_twosteps = 0
+        outputs = self.load_logic_problems()
+
         
         if self.self_refine_round > 0:
-            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+            save_file = f'self-refine-{self.self_refine_round}_{self.dataset_name}_{self.split}_{self.model_name}.json'
         else:
-            save_file = f'{self.dataset_name}_{self.split}_{self.sketcher_name}.json'
+            save_file = f'{self.dataset_name}_{self.split}_{self.model_name}.json'
             
+        for key in ['logic_problem', 'logic_problem_json', 'logic_problem_gcd']:
             
-        for sample in tqdm(self.dataset):
+            print(f'\n{key.capitalize()}')
             
-            answer = sample['nl_problem']['answer']
-            
-            if 'logic_problem' in sample.keys():
+            parsing_error_count = 0
+            execution_error_count = 0
+
+            for sample in tqdm(outputs):
                 
-                try:
+                answer = sample['nl_problem']['answer']
                 
-                    logic_problem = sample.get('logic_problem', {})
+
+                if key in sample.keys():
                     
-                    answer_pred, status, error = self.safe_execute_program(logic_problem)
-                    
-                    if status == 'parsing error':
-                        parsing_error_count += 1
-                    elif status == 'execution error':
+                    try:
+                
+                        logic_problem = sample.get(key, {})
+                        answer_pred, status, error = self.safe_execute_program(logic_problem)
+                        
+                        if status == 'parsing error':
+                            parsing_error_count += 1
+                        elif status == 'execution error':
+                            execution_error_count += 1
+                            
+                        sample[key].update({
+                            'answer': answer,
+                            'predicted_answer': answer_pred,
+                            'status': status,
+                            'error': error
+                        })
+                        
+                    except TimeoutError:
                         execution_error_count += 1
-                        
-                    sample['logic_problem'].update({
-                        'answer': answer,
-                        'predicted_answer': answer_pred,
-                        'status': status,
-                        'error': error
-                    })
-                    
-                except TimeoutError:
-                    execution_error_count += 1
-                    pass
+                        pass
                 
-            if 'logic_problem_gcd' in sample.keys():
-                try:
-                                
-                    logic_problem_constrained = sample.get('logic_problem_gcd', {})
-                    answer_constrained, status_constrained, error_constrained = self.safe_execute_program(logic_problem_constrained)
-
-                    if status_constrained == 'parsing error':
-                        parsing_error_count_constrained += 1
-                        
-                    elif status_constrained == 'execution error':
-                        execution_error_count_constrained += 1
-                        
-                    sample['logic_problem_gcd'].update({
-                        'answer': answer,
-                        'predicted_answer': answer_constrained,
-                        'status': status_constrained,
-                        'error': error_constrained
-                    })
-                        
-                except TimeoutError:
-                    execution_error_count_constrained += 1
-                    pass
-            if 'logic_problem_twosteps' in sample.keys():
+            print(f"Parsing: {parsing_error_count}")
+            print(f"Execution: {execution_error_count}")
                 
-                try:
-                                
-                    logic_problem_twosteps = sample.get('logic_problem_twosteps', {})
-                    answer_twosteps, status_twosteps, error_twosteps = self.safe_execute_program(logic_problem_twosteps)
-
-                    if status_twosteps == 'parsing error':
-                        parsing_error_count_twosteps += 1
-                        
-                    elif status_twosteps == 'execution error':
-                        execution_error_count_twosteps += 1
-                        
-                    sample['logic_problem_twosteps'].update({
-                        'answer': answer,
-                        'predicted_answer': answer_twosteps,
-                        'status': status_twosteps,
-                        'error': error_twosteps
-                    })
-                        
-                except TimeoutError:
-                    execution_error_count_twosteps += 1
-                    pass
                 
-            
-                
-            outputs.append(sample)
-            
-            with open(os.path.join(self.save_path, save_file), 'w') as f:
-                json.dump(outputs, f, indent=2, ensure_ascii=False)
+        # outputs.append(sample)
         
-        print("\nUNCONSTRAINED")
-        print(f"Parsing: {parsing_error_count}")
-        print(f"Execution: {execution_error_count}")
-        print("\nCONSTRAINED")
-        print(f"Parsing: {parsing_error_count_constrained}")
-        print(f"Execution: {execution_error_count_constrained}")
-            
+        with open(os.path.join(self.save_path, save_file), 'w') as f:
+            json.dump(outputs, f, indent=2, ensure_ascii=False)
+        
         self.cleanup()
 
     def cleanup(self):
@@ -180,8 +156,8 @@ class LogicInferenceEngine:
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-name', type=str)
-    parser.add_argument('--dataset-name', type=str, required=True)
+    parser.add_argument('--model-name', type=str)
+    parser.add_argument('--dataset-name', type=str, default='FOLIO')
     
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
@@ -196,36 +172,29 @@ if __name__ == "__main__":
     
     script_name = os.path.splitext(os.path.basename(__file__))[0]
     
-    if args.sketcher_name:
-        sketcher_names = [args.sketcher_name]
+    if args.model_name:
+        models = [args.model_name]
     else:
         config_path = './configs/models'
-        sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
+        models = [os.path.splitext(f)[0] for f in os.listdir(config_path) if os.path.isfile(os.path.join(config_path, f))]
 
     print(f"Dataset: {args.dataset_name}")
-    print(f"Sketchers: {sketcher_names}")
+    print(f"Models: {models}")
     print(f"Self-refine-round: {args.self_refine_round}")
     print(f"Split: {args.split}")
     print(f"Save path: {args.save_path}")
     
     
-    for sketcher_name in sketcher_names:
-        print(f"Sketcher: {sketcher_name}")
+    for model in models:
+        print(f"Models: {model}")
+        engine = LogicInferenceEngine(args, model)
+            
         try:
-            engine = LogicInferenceEngine(args, sketcher_name)
+            engine.inference_on_dataset()
+        
+        except KeyboardInterrupt:
+            sys.exit(0)
             
-            try:
-                engine.inference_on_dataset()
-            
-            except KeyboardInterrupt:
-                sys.exit(0)
-                        
-            except Exception as e:
-
-                error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-                sys.exit(0)
-                        
-            print("Finished Successfully")
         except FileNotFoundError as e:
             print(f'No such file or directory: {e}')
         # send_notification("Yippiee!", "logic_inference.py finished successfully")

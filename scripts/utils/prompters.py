@@ -19,7 +19,6 @@ class FOL_Prompter:
         else:
             return '[A-Z][a-zA-Z0-9]+'
 
-        
     def _get_constants(self, constructs: Dict) -> str:
         
         constants = constructs.get('fol_consts', None)
@@ -48,8 +47,10 @@ class FOL_Prompter:
         question = sample['question'].strip()
         return self.templates['constrained'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
 
-    def json_wrap(self, unconstrained: str) -> str:
-        return self.templates['json'].replace('[[unconstrained]]', unconstrained)
+    def json(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.templates['json'].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
     
     def extract_constructs(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
