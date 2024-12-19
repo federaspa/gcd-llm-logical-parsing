@@ -16,17 +16,7 @@ dotenv.load_dotenv()
 API_KEY = os.getenv("API_KEY")
 USER_KEY = os.getenv("USER_KEY")
 
-def send_notification(message, title):
 
-    po = Pushover(token=API_KEY)
-    po.user(USER_KEY)
-
-    msg = po.msg(message=message)
-
-    msg.set("title", title)
-
-    po.send(msg)
-    
 def get_logger(script_name, debug:bool = False):
     
     

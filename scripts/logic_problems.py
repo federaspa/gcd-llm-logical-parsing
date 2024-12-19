@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 from pprint import pp
 
-from utils.utils import OSModel, PromptGenerator, send_notification, get_logger, InvalidJsonError
+from utils.utils import OSModel, PromptGenerator, get_logger, InvalidJsonError
 
 import traceback
 
@@ -254,9 +254,7 @@ if __name__ == '__main__':
         
     except Exception as e:
         error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        send_notification(error_message, f"{script_name} fatal error")
         logger.error(error_message)
         sys.exit(0)
         
     logger.info("Finished Successfully")
-    send_notification("Yippiee!", f"{script_name} finished successfully")
