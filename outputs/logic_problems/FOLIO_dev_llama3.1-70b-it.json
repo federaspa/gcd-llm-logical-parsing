@@ -1,0 +1,144 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n\n{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"Engaged(x, y)\",\n    \"Attend(x, y)\",\n    \"Chaperone(x, y)\",\n    \"Inactive(x)\",\n    \"Disinterested(x, y)\",\n    \"Student(x, y)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\",\n    \"school\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → ∃y (SchoolEvent(y) ∧ Attend(x, y) ∧ Engaged(x, y)))\",\n    \"∀x (Perform(x) ⊕ Inactive(x))\",\n    \"∀x (∃y (HighschoolDance(y) ∧ Chaperone(x, y)) → ¬Student(x, school))\",\n    \"∀x ((Inactive(x) ∧ Disinterested(x, community)) → ∃y (HighschoolDance(y) ∧ Chaperone(x, y)))\",\n    \"∀x (∃z ∀w (Young(w) ∨ Teenager(w), AcademicCareer(z), EducationalOpportunities(w)) ∧ Student(w, school))\",\n    \"(Attend(bonnie, event) ∧ Engaged(bonnie, event) ∧ Student(bonnie, school)) ⊕ ¬((Attend(bonnie, event) ∨ Engaged(bonnie, event)) ∨ (Student(bonnie, school)))\"\n  ],\n  \"fol_conc\": \"Perform(bonnie)\"\n}",
+      "perplexity": 1.311760425567627
+    },
+    "logic_problem_json": {
+      "raw": "{ \"fol_preds\": [ \"Talent(x)\", \"Inactive(x)\", \"Engaged(x, y)\", \"DanceChaperone(x)\", \"AttendSchoolEvent(x)\", \"WishToFurtherEducation(x)\", \"StudentWhoAttendsTheSchool(x)\" ],\n    \"fol_consts\": [\"bonnie\"],\n    \"fol_rules\": [\n     \"(Talent(x) ∧ Often(y)) → Engaged(x, y)\",\n     \"](x) (Often(x) ⊕ Inactive(x))\",\n     \"](x) (DanceChaperone(x) StudentWhoAttendsTheSchool(x)))\", \"(Inactive(x) DanceChaperone(x))\", \"(WishToFurtherEducation(x) ∧ YoungChildOrTeenager(x) → StudentWhoAttendsTheSchool(x)\", \"(AttendSchoolEvent(bonnie) ∧ Engaged(bonnie, school events) ∧ StudentWhoAttendsTheSchool(bonnie)) ⊕ ¬(AttendSchoolEvent(bonnie) ∨ Engaged(bonnie, school events) ∨ StudentWhoAttendsTheSchool(bonnie)))\" ],\n    \"fol_conc\": \"(Talent(x, bonnie))\"\n}",
+      "perplexity": 2.6877188682556152
+    },
+    "logic_problem_gcd": {
+      "raw": "{ \"fol_preds\": [\n  \"Perform(x)\",\n  \"Attend(x, y)\",\n  \"Engaged(x, y)\",\n  \"Inactive(x)\",\n  \"DisinterestedMember(x)\",\n  \"Chaperone(x, y)\",\n  \"Student(x, y)\",\n  \"YoungChildOrTeenager(x)\"\n], \n\"fol_consts\": [\n  \"bonnie\", \"school\"\n], \n\"fol_rules\": [\n  \"∀x (Perform(x) → ∃y ((Attend(x, y) ∧ Engaged(x, y)) ∧ School(y)))\",\n  \"(School(school) ∧ ∀x (Perform(x) ⊕ Inactive(x)))\",\n  \"∀x (∀z (Chaperone(x, z) ∧ Highschool(z) ∧ Attend(z, school)) → ¬Student(x, school))\", \"∃y ((Attend(bonnie, y) ∧ Engaged(bonnie, y)) ∧ School(y)) ⊕ ∀z (School(z) → ¬(Attend(bonnie, z) ∨ Engaged(bonnie, z)))\",\n  \"(YoungChildOrTeenager(x) ∧ Student(x, school)) → ∃y ((Attend(x, y) ∧ Attend(school, y)) ∧ Engage(x, y))\"\n], \n\"fol_conc\": \"Perform(bonnie)\" }",
+      "perplexity": 1.9654594659805298
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n\n{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"Engaged(x, y)\",\n    \"Attend(x, y)\",\n    \"Chaperone(x, y)\",\n    \"Inactive(x)\",\n    \"Disinterested(x)\",\n    \"Student(x)\",\n    \"WishFurtherAcademicCareerAndEducationalOpportunities(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → ∃y (Attend(x, y) ∧ Engaged(x, y)))\",\n    \"∀x (Perform(x) ⊕ Inactive(x))\",\n    \"∀x (∃y Chaperone(x, y) → ¬Student(x))\",\n    \"∀x ((Inactive(x) ∧ Disinterested(x)) → ∃y Chaperone(x, y))\",\n    \"∀x (WishFurtherAcademicCareerAndEducationalOpportunities(x) → Student(x))\",\n    \"(Attend(bonnie, x) ∧ Engaged(bonnie, x) ∧ Attend(bonnie, x) ∧ Student(bonnie)) ⊕ ¬(Attend(bonnie, y) ∨ Engaged(bonnie, y) ∨ Attend(bonnie, z) ∨ Student(bonnie))\"\n  ],\n  \"fol_conc\": \"(WishFurtherAcademicCareerAndEducationalOpportunities(bonnie) ∧ ∃x Chaperone(bonnie, x)) ⊕ ¬(WishFurtherAcademicCareerAndEducationalOpportunities(bonnie) ∨ Inactive(x)) → Student(bonnie) ∨ (Inactive(y) ∧ Disinterested(z))\"\n}",
+      "perplexity": 1.28011155128479
+    },
+    "logic_problem_json": {
+      "raw": "{ \"fol_preds\": [ \"P(x)\", \"E(x)\", \"A(x, y)\", \"I(x)\", \"D(x)\", \"W(x)\" ],\n\"fol_consts\": [\"bonnie\"],\n\"fol_rules\": [\n    \"∀x (P(x) → A(x, school events) ∧ E(x))\",\n    \"∀x (P(x) ⊕ I(x))\", \"∃y(D(y) ∧ D(bonnie))→ ¬(A(bonnie, y) ∧ W(bonnie))\" , \"I(x) → ∃y(D(y) ∧ A(x, y))\" ,\n    \"(W(x) ∧ (AgeChild(y) ∨ AgeTeenager(x)))  → (A(x,school) ∧ W(x))\", \"(E(bonnie)∧(A(bonnie, school events)) ⊕¬ (( E(bonnie)∨ ( A(bonnie, school events))))\",\n    \"((W(bonnie) ∧ (AgeChild(y) ∨ AgeTeenager(z))) ∧ D(y))⊕ ¬((( W(bonnie)  )∧(AgeChild(w)||AgeTeenager(v)))∨D(y))-> ((A(bonnie,school) ∧ W(bonnie) ⊕ I(x))\"\n], \"fol_conc\": \"( (W(bonnie)&& (Agechild(u)|| Ageteenager(t))&& D(s))⊕¬((W(bonnie)&&(AgeChild(r)|| AgeTeenager(q)))||D(p))-> A(y, school events) ∨I( bonnie)\" }",
+      "perplexity": 3.275489330291748
+    },
+    "logic_problem_gcd": {
+      "raw": "{ \"fol_preds\": [\n  \"Perform(x)\",\n  \"AttendEngage(x, y)\", \"Chaperone(x, y)\",\"InactiveDisinterestedMemberOfCommunity(x)\", \"StudentWhoAttendsSchool(x)\" , \"YoungChildTeenagerWishesFurtherEducationAndCareerOpportunities(x)\"\n], \n\"fol_consts\": [ \"bonnie\", \"school\" ], \n\"fol_rules\": [\n  \"(Perform(bonnie) ∧ Perform(school)) → (AttendEngage(bonnie, school))\",\n  \"(Perform(bonnie) ⊕ InactiveDisinterestedMemberOfCommunity(bonnie))\",\n  \"(Chaperone(x, y) → ¬StudentWhoAttendsSchool(y))\", \"InactiveDisinterestedMemberOfCommunity(bonnie) → Chaperone(bonnie, school)\" ,\"(YoungChildTeenagerWishesFurtherEducationAndCareerOpportunities(x) ∧ StudentWhoAttendsSchool(school))\" ,\"((AttendEngage(bonnie, school) ↔ (StudentWhoAttendsSchool(bonnie))))\"\n], \n \"fol_conc\": \"(YoungChildTeenagerWishesFurtherEducationAndCareerOpportunities(bonnie) → Chaperone(bonnie, school)) ↔ ((InactiveDisinterestedMemberOfCommunity(bonnie)))\" }",
+      "perplexity": 2.3835158348083496
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n\n{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"Attend(x)\",\n    \"Engaged(x)\",\n    \"Inactive(x)\",\n    \"Disinterested(x)\",\n    \"Chaperone(x, y)\",\n    \"Student(x)\",\n    \"YoungTeenagerWishesMoreEducation(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → Attend(x) ∧ Engaged(x))\",\n    \"∀x ((Inactive(x) ∧ Disinterested(x)) ⊕ Perform(x))\",\n    \"∀x ∃y (Chaperone(x, y) → ¬Student(y))\",    \n    \"∀x ((Inactive(x) ∧ Disinterested(x)) → Chaperone(bonnie, x))\",\n    \"∀x (YoungTeenagerWishesMoreEducation(x) → Student(x))\",\n    \"(Attend(bonnie) ∧ Engaged(bonnie) ∧ Student(bonnie)) ⊕ ¬((Attend(bonnie) ∨ Engaged(bonnie)) ∨ Student(bonnie))\"\n  ],\n  \"fol_conc\": \"(∃x Chaperone(bonnie, x) → (Chaperone(bonnie, bonnie))) ⊕ Perform(bonnie) ∧ YoungTeenagerWishesMoreEducation(bonnie) ∧ Inactive(x)\"\n}",
+      "perplexity": 1.4063990116119385
+    },
+    "logic_problem_json": {
+      "raw": "{ \"fol_preds\": [\n    \"Perform(x)\",\n    \"AttendEvent(x)\",\n    \"EngagedWithEvents(x)\",\n    \"InactiveMember(x)\",\n    \"Disinterested(x)\",\n    \"ChaperoneDance(x)\",\n    \"Student(x)\",\n    \"WishFurtherEducation(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → AttendEvent(x) ∧ EngagedWithEvents(x))\",\n    \"∀x ((Perform(x) ⊕ InactiveMember(x)) ∧ Disinterested(x))\", \"∀x (ChaperoneDance(x) → ¬Student(x))\",\"∀x ((InactiveMember(x) ∧ Disinterested(x)) → ChaperoneDance(x))\", \"∀x (WishFurtherEducation(x) ∧ YoungOrTeenager(x) → Student(x))\",\n    \"(AttendEvent(bonnie) ∧ EngagedWithEvents(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEvent(bonnie) ∨ EngagedWithEvents(bonnie) ∨ Student(bonnie))\"\n  ],\n\"fol_conc\": \"(ChaperoneDance(bonnie) ∨ (¬ChaperoneDance(bonnie) ∧ Perform(bonnie))) → WishFurtherEducation(bonnie) ∧ InactiveMember(bonnie)\" }",
+      "perplexity": 1.5038831233978271
+    },
+    "logic_problem_gcd": {
+      "raw": "{ \"fol_preds\": [\n  \"Perform(x)\",\n  \"AttendEvent(x)\", \"EngageWithSchoolEvents(x)\",\n  \"InactiveMemberOfCommunity(x)\" , \"DisinterestedInCommunity(x)\", \"ChaperoneDance(x)\",\"StudentWhoAttendsTheSchool(x)\"], \n\"fol_consts\": [\"bonnie\"], \n\"fol_rules\": [\n   \"∀x (Perform(x) → AttendEvent(x)) ∧ ∀x (Perform(x) → EngageWithSchoolEvents(x))\",\n  \"(AttendEvent(bonnie) ∧ EngageWithSchoolEvents(bonnie)) ⊕ ¬(AttendEvent(bonnie) ∨ EngageWithSchoolEvents(bonnie))\", \"∀x ((InactiveMemberOfCommunity(x) ∧ DisinterestedInCommunity(x)) → ChaperoneDance(x))\",\n  \"(StudentWhoAttendsTheSchool(bonnie) ∧ (EngageWithSchoolEvents(bonnie))) ⊕ ¬(AttendEvent(bonnie) ∨ StudentWhoAttendsTheSchool(bonnie))\"\n], \n\"fol_conc\": \"∀x ((ChaperoneDance(x) → (InactiveMemberOfCommunity(x) ∧ DisinterestedInCommunity(x)) → AttendAndFurtherStudies(x)))\"}",
+      "perplexity": 2.28637957572937
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James has lunch in the company.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n\n{\n  \"fol_preds\": [\n    \"Employee(x)\",\n    \"ScheduleMeeting(x, y)\",\n    \"AppearInCompanyToday(x)\",\n    \"HaveLunchInCompany(x)\",\n    \"HaveLunchAtHome(x)\",\n    \"WorkRemotelyFromHome(x)\",\n    \"Manager(x)\"\n  ],\n  \"fol_consts\": [\n    \"james\",\n    \"customer\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Employee(x) ∧ ∃y (Customer(y) ∧ ScheduleMeeting(x, y)) → AppearInCompanyToday(x))\",\n    \"∀x (HaveLunchInCompany(x) → ∃y (Customer(y) ∧ ScheduleMeeting(x, y)))\",\n    \"∀x (Employee(x) → HaveLunchInCompany(x) ⊕ HaveLunchAtHome(x))\",\n    \"∀x (Employee(x) ∧ HaveLunchAtHome(x) → WorkRemotelyFromHome(x))\",\n    \"∀x ((OtherCountry(x) ∧ Employee(x)) → WorkRemotelyFromHome(x))\",\n    \"¬∃x (Manager(x) ∧ WorkRemotelyFromHome(x))\",\n    \"(Manager(james) ∧ AppearInCompanyToday(james)) ⊕ ¬(Manager(james) ∨ AppearInCompanyToday(james))\"\n  ],\n  \"fol_conc\": \"HaveLunchInCompany(james)\"\n}",
+      "perplexity": 1.1216034889221191
+    },
+    "logic_problem_json": {
+      "raw": "{ \"fol_preds\": [\n  \"Employee(x)\",\n  \"ScheduleMeetingsWithCustomer(x, y)\", \"LunchAtCompany(x)\" , \"AppearInOfficeToday(x)\",\n   \"WorkFromHomeRemotely(x)\",\"Manager(x)\"] ,\n\"fol_consts\": [\"james\"],\n    \"fol_rules\":\n[\n     \"(∀x ∀y (Employee(y) ∧ ScheduleMeetingsWithCustomer(y,x)) → AppearInOfficeToday(y))\",\n     \"(∃y ∀ x ((Employee(x)))  →( LunchAtCompany(x) → ∃z (ScheduleMeetingsWithCustomer(x, z))))\", \"LunchAtHome(x) ⊕ LunchAtCompany(x)\",\n\"( ∀x   Employee(x) ∧ LunchAtHome(x)) → WorkFromHomeRemotely(x)\" , \"(∀ x ∀y  Employee(y) ∧ ¬InOfficeCountry(x,y )→WorkFromHomeRemotely(y))\", \"¬(Manager(james) ∧WorkFromHomeRemotely(james)))\",\n\"(Manager(james) ∧ AppearInOfficeToday(james)) ⊕ (¬ Manager(james) ∨ ¬AppearInOfficeToday(james))\"\n ],\n\"fol_conc\": \"(LunchAtCompany(james)\" }",
+      "perplexity": 3.2297146320343018
+    },
+    "logic_problem_gcd": {
+      "raw": "{ \"fol_preds\": [\n  \"Employee(x)\",\n  \"ScheduleMeeting(x, y)\", \"HasLunchInCompany(x)\", \"MeetCustomer(x)\", \"HasLunchAtHome(x)\",\n   \"WorkRemotelyFromHome(x)\", \"IsManager(x)\", \"AppearToday(x)\"\n], \n\"fol_consts\": [\"james\", \"company\"], \n\"fol_rules\": [\n  \"∀x (Employee(x) ∧ MeetCustomer(x) → AppearToday(x))\",\n    \"∀x ((HasLunchInCompany(x) ∧ Employee(x)) → ∃y (ScheduleMeeting(x, y)))\",\n     \"Forallx(employeexhaslunchinxemployeexorhaslunatchome)\", \"∀x (Employee(x) ∧ HasLunchAtHome(x) → WorkRemotelyFromHome(x))\", \"∀x ((IsManager(x)) → ¬WorkRemotelyFromHome(x))\",\n\"∃y (MeetCustomer(y) ∧ ScheduleMeeting(james, y))\",\n\"(IsManager(james) ∧ AppearToday(james)) ⊕ ¬(IsManager(james) ∨ AppearToday(james))\"\n], \n\"fol_conc\": \"HasLunchInCompany(james)\"\n}",
+      "perplexity": 2.249185562133789
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James does not have lunch in the company.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n\n{\n  \"fol_preds\": [\n    \"Employee(x)\",\n    \"ScheduleMeetingsWithCustomers(x, y)\",\n    \"AppearInCompanyToday(x)\",\n    \"HaveLunchAtHome(x)\",\n    \"WorkingRemotelyFromHome(x)\",\n    \"HasLunchInTheCompany(x)\",\n    \"Manager(x)\"\n  ],\n  \"fol_consts\": [\n    \"james\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Employee(x) ∧ ∃y (ScheduleMeetingsWithCustomers(x, y)) → AppearInCompanyToday(x))\",\n    \"∀x ((HasLunchInTheCompany(x)) → Employee(x) ∧ ∃y (ScheduleMeetingsWithCustomers(x, y)))\",\n    \" ∀x (Employee(x) → HasLunchAtHome(x) ⊕ HasLunchInTheCompany(x)) \",\n    \"∀x (HaveLunchAtHome(x) → WorkingRemotelyFromHome(x))\",\n    \"∀x ((WorkingRemotelyFromHome(x)) ∧ Employee(x) → ¬InSameCountryAsTheOfficeLocationIs)\",\n    \"(¬(Manager(james))) ⊕ (AppearInCompanyToday(james)  ⊕ Manager(james)) \",\n   \" ∀x (Manager(x) -> ¬ WorkingRemotelyFromHome(x))\"\n    \n ],\n\"fol_conc\": \n\"(¬ HasLunchInTheCompany(james))\n\"}",
+      "perplexity": 1.8095215559005737
+    },
+    "logic_problem_json": {
+      "raw": "{ \"fol_preds\": [\n    \"Employee(x)\",\n    \"ScheduleMeetingsWithCustomers(x)\",\n    \"AppearInCompanyToday(x)\",\n    \"HaveLunchAtHome(x)\",\n    \"WorkingFromHomeRemotely(x)\",\n    \"Manager(x)\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"(∀x (Employee(x) ∧ ScheduleMeetingsWithCustomers(x)) → AppearInCompanyToday(x))\",\n    \"∀x ((HaveLunchAtCompany(x))) → ScheduleMeetingsWithCustomers(x)\",\n    \"(∃ x Employee(x)) ∀x ( HaveLunchAtHome(x) ⊕  HaveLunchAtCompany(x))\",\"(Employee(james)) ∧ (( Manager(james) ∧ AppearInCompanyToday(james)) ⊕ ¬(Manager(james) ∨ AppearInCompanyToday(james)))\",\n    \"HaveLunchAtHome(x) → WorkingFromHomeRemotely(x)\",\n     \"(∃x ( Employee(x) )) ∀ x (OtherCountries(x)  → WorkingFromHomeRemotely(x))\" ,\n   \"¬WorkingFromHomeRemotely(x) ∧ Manager(x)\"\n  ],\n  \"fol_conc\": \"HaveLunchAtHome(james)\" }",
+      "perplexity": 2.2245874404907227
+    },
+    "logic_problem_gcd": {
+      "raw": "{ \"fol_preds\": [\n  \"Employee(x)\",\n  \"ScheduleMeetingsWithCustomers(x, y)\", \"HasLunchInCompany(x)\", \"WorksRemotelyFromHome(x)\",\n    \"IsManager(x)\",\"AppearToday(x)\"\n], \n\"fol_consts\": [ \"james\", \"home\",\"company\"], \n\"fol_rules\": [\n     \"Forallxforall(y) → ScheduleMeetingsWithCustomers(x, y) → AppearToday(x)\", \"Forallaxforall(y) → HasLunchInCompany(x)\",\n    \"HasLunchAtHome(x) ⊕ HasLunchInCompany(x)\" ,\"∀x (WorksRemotelyFromHome(x))\",\n     \"∃y (Employee(y) ∧ IsManager(james) ∧ AppearToday(james))\"\n], \n\"fol_conc\": \"(¬IsManager(james)) → ¬HasLunchAtHome(company)\" }",
+      "perplexity": 4.2317657470703125
+    }
+  }
+]

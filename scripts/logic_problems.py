@@ -66,9 +66,8 @@ class LogicProgramRunner:
                 
         return raw_dataset, outputs, existing_ids
 
-    def _generate_problem(self, nl_problem: dict, sample_id: int, problem_type: str, pbar: tqdm) -> Tuple[Optional[dict], Optional[str]]:
+    def _generate_problem(self, nl_problem: dict, sample_id: int, problem_type: str) -> Tuple[Optional[dict], Optional[str]]:
         """Generate logic problem for a sample"""
-        pbar.set_description_str(f"Generating {problem_type} problem {sample_id}")
         
         try:
             if problem_type == 'unconstrained':
@@ -112,7 +111,7 @@ class LogicProgramRunner:
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         # Process samples
-        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}')):
+        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}: [{elapsed}<{remaining}]')):
             if self._check_time_limit():
                 break
             
@@ -134,9 +133,11 @@ class LogicProgramRunner:
                 }
             }
 
+
             # Generate unconstrained version
             if 'logic_problem' not in sample or self.config.force_unconstrained:
-                logic_problem, _ = self._generate_problem(nl_problem, sample["id"], "unconstrained", pbar)
+                pbar.set_description_str(f"Generating unconstrained problem {sample['id']}/{len(raw_dataset)}")
+                logic_problem, _ = self._generate_problem(nl_problem, sample["id"], "unconstrained")
                 if logic_problem:
                     output['logic_problem'] = logic_problem
             else:
@@ -144,7 +145,8 @@ class LogicProgramRunner:
 
             # Generate JSON version
             if 'logic_problem_json' not in sample or self.config.force_json:
-                logic_problem_json, _ = self._generate_problem(nl_problem, sample["id"], "json", pbar)
+                pbar.set_description_str(f"Generating json problem {sample['id']}/{len(raw_dataset)}")
+                logic_problem_json, _ = self._generate_problem(nl_problem, sample["id"], "json")
                 if logic_problem_json:
                     output['logic_problem_json'] = logic_problem_json
             else:
@@ -152,7 +154,8 @@ class LogicProgramRunner:
 
             # Generate constrained version
             if 'logic_problem_gcd' not in sample or self.config.force_constrained:
-                logic_problem_gcd, _ = self._generate_problem(nl_problem, sample["id"], "constrained", pbar)
+                pbar.set_description_str(f"Generating constrained problem {sample['id']}/{len(raw_dataset)}")
+                logic_problem_gcd, _ = self._generate_problem(nl_problem, sample["id"], "constrained")
                 if logic_problem_gcd:
                     output['logic_problem_gcd'] = logic_problem_gcd
             else:
@@ -194,11 +197,10 @@ def parse_args() -> ScriptConfig:
     return ScriptConfig(**vars(parser.parse_args()))
 
 def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
-    
-    model_name = re.sub(r'-\d+-of-\d+', '', script_config.model_name)
+    full_model_name = re.sub(r'-\d+-of-\d+', '', script_config.model_name)
     
     # Load model-specific configuration
-    sketcher_config_path = Path('configs/models') / f"{model_name}.yml"
+    sketcher_config_path = Path('configs/models') / f"{full_model_name}.yml"
     with open(sketcher_config_path, 'r') as f:
         model_config = yaml.safe_load(f)
         
@@ -208,10 +210,25 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
         llama_cpp_config = yaml.safe_load(f)
     
     # Add model path to model config
-    llama_cpp_config['model_path'] = str(Path(script_config.models_path) / f"{script_config.model_name}.gguf")
+    base_model_name = full_model_name.split('-')[0]
+    model_dir = Path(script_config.models_path) / base_model_name
     
+    # Check for multi-part model files
+    model_pattern = f"{script_config.model_name}-*-of-*.gguf"
+    model_parts = list(model_dir.glob(model_pattern))
+    
+    if model_parts:
+        # Multi-part model - find first part
+        model_parts.sort()  # Ensure proper ordering
+        model_path = str(model_parts[0])
+    else:
+        # Single file model
+        model_path = str(model_dir / f"{script_config.model_name}.gguf")
+        
     # Verify model path exists
-    assert Path(llama_cpp_config['model_path']).exists()
+    assert Path(model_path).exists(), f'Model not found: {model_path}'
+    
+    llama_cpp_config['model_path'] = model_path
     
     return script_config, model_config, llama_cpp_config
 

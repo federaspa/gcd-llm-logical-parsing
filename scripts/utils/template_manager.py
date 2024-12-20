@@ -13,11 +13,12 @@ class TemplateManager:
     }
 
     PROMPT_TEMPLATES = {
-        'gemma': 'prompts/prompt_templates/gemma.txt',
-        'llama': 'prompts/prompt_templates/llama.txt',
+        'gemma2': 'prompts/prompt_templates/gemma.txt',
+        'llama3.1': 'prompts/prompt_templates/llama.txt',
+        'llama3.2': 'prompts/prompt_templates/llama.txt',
         'mistral': 'prompts/prompt_templates/mistral.txt',
         'ministral': 'prompts/prompt_templates/ministral.txt',
-        'qwen': 'prompts/prompt_templates/qwen.txt',
+        # 'qwen': 'prompts/prompt_templates/qwen.txt',
         'qwen2.5': 'prompts/prompt_templates/qwen.txt',
     }
 
