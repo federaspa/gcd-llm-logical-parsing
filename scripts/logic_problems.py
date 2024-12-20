@@ -21,8 +21,8 @@ class ScriptConfig:
     split: str
     models_path: str
     save_path: str
-    timeout: Optional[int]
     stop_time: Optional[str]
+    timeout: int = 60
     two_steps: bool = False
     force_unconstrained: bool = False
     force_constrained: bool = False
