@@ -3,6 +3,13 @@ First, identify the predicates and constants required to build the first order l
 Then, use them to build the rules and the conclusion. 
 Do not attempt to prove or disprove the conclusion, limit yourself to converting.
 
+For generating the FOL formulas, you must adhere to the following rules:
+1. Logical Operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication) ¬ (negation), ↔ (equivalence)
+2. Quantifiers: ∀ (universal), ∃ (existential)
+3. Forbidden symbols: "%", "≠", "="
+4. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"
+5. Expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+
 You reply strictly in JSON format, with the following schema:
 """
 \{
@@ -31,7 +38,26 @@ Rina is either a person who jokes about being addicted to caffeine or is unaware
 
 ------
 
-{"fol_preds": ["Dependent(x)", "Drinks(x)", "Jokes(x)", "Unaware(x)", "Student(x)"], "fol_consts": ["rina"], "fol_rules": ["∀x (Drinks(x) → Dependent(x))", "∀x (Drinks(x) ⊕ Jokes(x))", "∀x (Jokes(x) → ¬Unaware(x))", "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))", "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"], "fol_conc": "Jokes(rina) ⊕ Unaware(rina)"}
+{
+  "fol_preds": [
+    "Dependent(x)",
+    "Drinks(x)",
+    "Jokes(x)",
+    "Unaware(x)",
+    "Student(x)"
+  ],
+  "fol_consts": [
+    "rina"
+  ],
+  "fol_rules": [
+    "∀x (Drinks(x) → Dependent(x))",
+    "∀x (Drinks(x) ⊕ Jokes(x))",
+    "∀x (Jokes(x) → ¬Unaware(x))",
+    "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+    "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"
+  ],
+  "fol_conc": "Jokes(rina) ⊕ Unaware(rina)"
+}
 
 ###
 
@@ -54,7 +80,33 @@ The project Sam is doing is written in Rust.
 
 ------
 
-{"fol_preds": ["Project(x)", "Do(x, y)", "WrittenIn(x, y)", "Use(x, y)", "Play(x, y)", "Song(x)", "Be(x, y)"], "fol_consts": ["sam", "mac", "python", "rust", "perfect"], "fol_rules": ["∃x (Project(x) ∧ Do(sam, x))", "∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))", "∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))", "Use(sam, mac)", "Use(sam, mac) → ∃x (Song(x) ∧ Play(sam, x))", "∀x ((Song(x) ∧ ¬Be(x, perfect)) → ¬Play(sam, x))"], "fol_conc": "∃x (Project(x) ∧ Do(sam, x) ∧ WrittenIn(x, rust))"}
+{
+  "fol_preds": [
+    "Project(x)",
+    "Do(x, y)",
+    "WrittenIn(x, y)",
+    "Use(x, y)",
+    "Play(x, y)",
+    "Song(x)",
+    "Be(x, y)"
+  ],
+  "fol_consts": [
+    "sam",
+    "mac",
+    "python",
+    "rust",
+    "perfect"
+  ],
+  "fol_rules": [
+    "∃x (Project(x) ∧ Do(sam, x))",
+    "∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))",
+    "∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))",
+    "Use(sam, mac)",
+    "Use(sam, mac) → ∃x (Song(x) ∧ Play(sam, x))",
+    "∀x ((Song(x) ∧ ¬Be(x, perfect)) → ¬Play(sam, x))"
+  ],
+  "fol_conc": "∃x (Project(x) ∧ Do(sam, x) ∧ WrittenIn(x, rust))"
+}
 
 ###
 

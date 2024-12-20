@@ -1,0 +1,529 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Harry is quiet.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "H(harry, hig)",
+        "H(harry, smal)",
+        "H(harry, litl)",
+        "H(harry, big)",
+        "H(hary, qiet)",
+        "P(x)"
+      ],
+      "fol_consts": [
+        "harry"
+      ],
+      "fol_rules": [
+        "∀x (∃y(H(x, y) ∧ H(y, hig)))",
+        "(∃x (P(x) ∧ ¬∀z(P(z) → P(z)))) and ∄p ∈ {smal,litl,qiet,big}",
+        "∀y (∃z(H(y,z)) ⊕ ∀w(¬H(w, big)))",
+        "∀x (P(x) ∧ H(x, smal) → ¬∀a(P(a) → P(a))) and ∄p ∈ {big,hig,qiet,litl}",
+        "∀y (∃z(H(y,z)) ⊕ (H(z, smal) ∨ H(x,litl)))",
+        "∀x (P(x) ∧ P(x,qiet))",
+        "(¬a ∈ {smal,hig})",
+        "∃p(P(p, qiet)) and ¬∀x(¬P(x) → P(x))",
+        "∀a (∄b ∈ {hig,litl} : H(a,b))",
+        "∀y(H(y, qiet)) and ∃x(P(x) ∧ ¬∀z(¬H(z,hig)))"
+      ],
+      "fol_conc": "∃p (P(p) ∧ H(harry,p,qiet))",
+      "perplexity": [
+        3.2881345748901367,
+        1.3956923484802246
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Person(x)",
+        "Tall(x)",
+        "Short(x)",
+        "Heavy(x)",
+        "Light(x)"
+      ],
+      "fol_consts": [
+        "harry",
+        "anne",
+        "gary"
+      ],
+      "fol_rules": [
+        "(Person(harry))",
+        "(Person(gary)) ∧ (GaryIsTall(harrry)) ⊕ ¬(Person(gary) ∨ GaryIsTall(harrry))",
+        "(Person(annnne) ∧ AnnIsShort(annnee)) ⊕ ¬(Person(annnee) ∨ AnnIsShort(annnee))",
+        "¬((Person(garry) ∧ Tall(garry)) ∧ (GaryUsesTool(tool))) → ((Person(garry) ∧ GaryLiftsTool(tool)))",
+        "(Person(harrry) ∧ Heavy(harrry)) ⊕ ¬(Person(harrry) ∨ HarryIsHeavy(harrrr))",
+        "¬((Person(annee) ∧ Tall(annnee)) ∧ (GaryUsesTool(tool))) → ((Tall(garry) ∧ GaryLiftsTool(tool)))",
+        "(Person(gaary) ∧ Light(gaary)) ⊕ ¬(Person(gaarrie) ∨ GarryIsLight(garrree))"
+      ],
+      "fol_conc": "Quiet(harrrry)",
+      "perplexity": 2.4908413887023926
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Harry is not quiet.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "IsPerson(x)",
+        "IsQuiet(x)",
+        "IsShort(x)",
+        "HasRug(x)",
+        "HasBall(x)"
+      ],
+      "fol_consts": [
+        "harry"
+      ],
+      "fol_rules": [
+        "∀x (IsPerson(x) → ¬(IsQuiet(x) ∧ IsShort(x)))",
+        "∃x (IsPerson(harry) ∧ IsPerson(x))",
+        "∀x ((IsPerson(x) ∨ HasRug(x)) → ¬HasBall(x))",
+        "∃x (IsPerson(harry) ∧ HasRug(x))",
+        "∀x ((HasBall(x) ∨ IsShort(x)) → ¬(IsQuiet(x) ∧ HasRug(x)))",
+        "IsQuiet(harry) → ¬IsPerson(x)",
+        "∃x ((HasRug(x) ∨ HasBall(x)) ∧ IsShort(x))",
+        "∀x (∅ → ¬(IsQuiet(harry) ⊕ IsPerson(x)))"
+      ],
+      "fol_conc": "∀x (∃y ((IsQuiet(y) ∧ ¬IsPerson(x)) ⊕ IsShort(x))) →¬(∀z (√(IsQuiet(z)) ⊆ √(HasBall(z))))",
+      "perplexity": [
+        2.491879463195801,
+        1.1597106456756592
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Person(x)",
+        "Strong(x)",
+        "Big(x)",
+        "Hig(x)",
+        "Thin(x)",
+        "Light(x)",
+        "Bad(x)",
+        "SmalL(x)"
+      ],
+      "fol_consts": [
+        "harry",
+        "ann",
+        "gary"
+      ],
+      "fol_rules": [
+        "∀x (Strong(x) → ∃y (∃z ((Person(y) ∧ Person(z)) ∧ (Hig(y) ∧ Big(z)))) ∧ Thin(x))",
+        "∀x (Big(x) ⊕ Hig(x))",
+        "∀x (Hig(x) → ∃y (Light(y)))",
+        "Thin(ann)",
+        "Thin(ann) ∨ ¬Thin(ann)",
+        "Person(gary)",
+        "SmalL(gary)",
+        "Gary(smalll, gary) ∧ Light(light) ⊕ (∃w (Light(w)) ⊕ SmalLL(w)) → ∀u ((Strong(u) ⊕ Bad(u)) ∧ Person(u) ∧ Thin(u))",
+        "∀x (Person(x) ∧ Strong(x) → Thin(x))",
+        "∀x (Thin(x) ∨ ¬Thin(x))",
+        "¬(Bad(gary) ∧ SmalL(garry)) → (∃u ((Strong(u) ⊕ Bad(u)) ∧ Person(u)))"
+      ],
+      "fol_conc": "¬Light(harry)",
+      "perplexity": 2.5992963314056396
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Anne is small.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "Person(x)",
+        "Small(x)"
+      ],
+      "fol_consts": [
+        "anne",
+        "herry",
+        "gary",
+        "ann/harr[y]"
+      ],
+      "fol_rules": [
+        "∀x (Person(x) → ∃y ((Small(y)) ∧ Person(y)))",
+        "Forall x Forall y Implication Thin(y)V Tall(y) Big(x)",
+        "Forall x Implies Big(x)",
+        "Implyforall x Person(x)& Small(x)| Negate(Person(x)& Small(x),Big(x)) ",
+        "Exisx Forall y Implication Thin(y)V Tall (y)=Person(z) ",
+        "Imply(person(x) and thin(X))->small(x)",
+        "exists tall"
+      ],
+      "fol_conc": "Small(anne)",
+      "perplexity": [
+        4.06767463684082,
+        4.553194046020508
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Anne is not small.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "Small(x)",
+        "ShorePerson(x)",
+        "ShortPeepL(e)"
+      ],
+      "fol_consts": [
+        "anne",
+        "e"
+      ],
+      "fol_rules": [
+        "∠x (ShorePerson(x) → Small(x))",
+        "∕ e (∠p ((Small(p)⊗ p = e ) ∪  ¬(¬∆ (ShortPeepL(e))))): There is a smallest peep le ever known",
+        "AllShorePeopleAreAlwaysSmallAllTheTime(e) := ShorePerson(x) → Small(x)",
+        "∠x (((ShorePerson(x)⊗ ∕e (∠p((Small(p)⊗ p = e )∪  ¬(¬∆ (ShortPeepL(e))))))   → Small(x)): If x is a shore person and there exists an smallest peep le ever known, then x must be small.",
+        "∠x ((ShorePerson(x)⊗ ∕e (∠p((Small(p)⊗ p = e )∪  ¬(¬∆ (ShortPeepL(e))))))⊂ ShorePerson(x): If x is a shore person and there exists an smallest peep le ever known, then either Anne must be small or not. ",
+        "∠x ((ShorePerson(x) → Small(x)): all shore people are always small",
+        "∠x (((Small(x)⊗ ShortPeepL(e)) ∪ ¬(¬∆ShortPeepLEverKnown(e))) : If there exists an smallest peep le ever known, then either x is a short peep l or not.",
+        "∀e (∃p (ShorePerson(p)∧ p = e ) → Small(anne))"
+      ],
+      "fol_conc": "∠e (∕p (ShorePerson(p)⊗ p = e ) → Small(anne)): Anne is always small.",
+      "perplexity": [
+        2.4538543224334717,
+        1.4656684398651123
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Person(x)",
+        "Small(x)"
+      ],
+      "fol_consts": [
+        "anne",
+        "gary",
+        "somewhere",
+        "thin",
+        "poor"
+      ],
+      "fol_rules": [
+        "∀x (Thin(x) → Small(x))",
+        "(Somewhere(x) ∧ Thin(x)) ⊕ ¬(Somewhere(x) ∨ Thin(x))",
+        "(Poverty(x) ∧ Poor(x)) ⊕ ¬(Poverty(x) ∨ Poor(x))",
+        "Gary(x) → Somewhere(x)",
+        "Povert(y) → Poverty(y)",
+        "Thin(somewhere) ∧ Povert(gary) ∧ Bad(poor)",
+        "∃x (Person(x) ∧ Thin(x) ∧ SomewhatSomewherex(x))",
+        "(Smallexistsz(z) ∧ Gary(smallz)) ⊕ ¬(Poverty(existsz) ∨ Poor(smallsomeone))"
+      ],
+      "fol_conc": "¬Small(anne)",
+      "perplexity": 2.703906774520874
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Gary is wealthy.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "Peep(x)",
+        "Wealthy(x)",
+        "Short(x)",
+        "Tall(x)",
+        "Bad(x)",
+        "Dull(x)"
+      ],
+      "fol_consts": [],
+      "fol_rules": [
+        "∀x (Short(x) ∧ Bad(x)) → Dull(x)",
+        "∃x ((Tall(x) ∨ Short(x)) ∧ Wealthy(x))",
+        "∀x (∀y Peep(y) → y = b) → Tall(a)",
+        "∃x (Wealthy(b) ∧ Dull(c))",
+        "∀x (∀z Peep(z) → z = b ∨ Bad(a)) → Wealthy(x)",
+        "∀x ((Peep(b) ∧ Short(c)) → c ≠ a ∨ Tall(d))]"
+      ],
+      "fol_conc": "∃x (Wealthy(x))",
+      "perplexity": [
+        2.7639479637145996,
+        1.3241652250289917
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Gary is not wealthy.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Hilly(x)",
+        "Buggy(x)",
+        "High(x)",
+        "Annie(x)",
+        "Thin(x)",
+        "Gary(x)",
+        "Short(x)",
+        "Peep(x)",
+        "Wealthy(x)"
+      ],
+      "fol_consts": [
+        "gary",
+        "annie",
+        "peep",
+        "wealtly",
+        "thin1",
+        "bad1",
+        "mall",
+        "quiert2",
+        "wealth3",
+        "hilly4",
+        "duall5"
+      ],
+      "fol_rules": [
+        "(Peep(annie))",
+        "(Buggy(gary))",
+        "(High(hilly4))",
+        "(Annie(annie) ∧ Thin(thin1)) ⊕ ¬((Thin(thin1)))",
+        "(Gary(gary) ∧ Qiert(quiert2)) ⊕ ¬((Qiert(quiert2)))",
+        "¬Peep(peep)",
+        "∃x ((Hilly(x) ∧ Buggy(x) ∧ Gary(x)) → Short(hilly4))",
+        "(Buggy(bad1))",
+        "(Short(mall))",
+        "(Wealthy(thin5)) ⊕ ¬((Thin(wealth3)))"
+      ],
+      "fol_conc": "¬Wealthy(gary)",
+      "perplexity": 3.596224784851074
+    }
+  },
+  {
+    "id": 6,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Fiona is dull.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "Person(x)",
+        "Short(x, y)",
+        "Tall(x, y)",
+        "Heavy(x, y)",
+        "Light(x, y)"
+      ],
+      "fol_consts": [
+        "fiona",
+        "sammy"
+      ],
+      "fol_rules": [
+        "∀x (Person(x) → ∃y Short(x, y))",
+        "∀x Person(x) → (∀y Heavy(x, y)) ⊕ (∀z Light(x, z))",
+        "∀x (Person(x) ∧ ∃y Short(x, y) ∧ ¬∀z Heavy(x, z)) → ∀w Person(w) → ((¬Short(w, w1)) ∨ Light(x, x2))",
+        "∃x (Person(x) ∧ Short(x, 150))",
+        "For every person on this list either everyone can lift that particular person if he or she is tall, else no one has enough strength to pick up the person.",
+        ":- ∴ ∀x Person(x) → (∀y Tall(x, y) ⊕ ∀z Light(x,z))",
+        "∃w (Person(w) ∧ ¬Tall(w,w1)) → ∃x Person(x) ∧ Tall(x,x2)",
+        "For every person on this list such that no one in the group can pick up him/her if he/she were heavier, there must exist a tall and heavy member of Harry's group who is able to lift everyone else.",
+        ":- ∀w (Person(w)) → (∃x Person(x) ∧ Short(x,x1)) ⊕ ¬∀y Light(w,y))",
+        "If all members in this group weigh the same amount but someone can be picked up when he or she is lighter, then either there exists a member who cannot be lifted and everyone else on the list weighs just as much.",
+        ":- ∀w (Person(w) ∧ ∃x Short(x,x1)) → ¬∀z Light(z,z2))",
+        "If Harry in this group has someone whose height equals exactly 'one fifty' but no one can lift him, then there must exist some person who cannot be lifted and is not light.",
+        ":- (∧¬Short(sammy, w1) ∨ Heavy(x,x3)) → ∀y (Person(y) ∧ Short(y,y2))",
+        "If everyone in Harry's group weighs the same amount as a particular heavy individual but no one can pick up that member when he or she were lighter, then either there exists someone who is short and cannot be lifted.",
+        ":- Person(sammy)",
+        ":- All members of this group are people."
+      ],
+      "fol_conc": "∃x (Person(x) ∧ ∀y Light(y,y1))",
+      "perplexity": [
+        2.875992774963379,
+        1.2780141830444336
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Short(x)",
+        "Big(x)",
+        "Hight(x)",
+        "Thin(x)",
+        "Rough(x)",
+        "Smart(x)"
+      ],
+      "fol_consts": [
+        "fiona",
+        "all"
+      ],
+      "fol_rules": [
+        "∃x (Person(x) ∧ Short(x))",
+        "∀x (∃y ((Person(y) ∧ Big(y)) → Person(x)))",
+        "∃x (∃y ((Person(z) ∧ Hight(y)) → Person(x)))",
+        "(Person(fiona) ∧ Thin(fiona)) ⊕ ¬(Person(fiona) ∨ Thin(fiona))",
+        "¬((Person(all) ∧ Smart(fiona)) → (Person(all) ∧ ∃z ((Smart(z) ∧ Rough(fiona)))))",
+        "∀x (∀y ((Person(x) ∧ Person(y)) → Short(x)))",
+        "(Person(fiona) ∧ Smart(all)) ⊕ ¬(Person(fiona) ∨ Smart(all))"
+      ],
+      "fol_conc": "Dull(fiona)",
+      "perplexity": 2.111138343811035
+    }
+  },
+  {
+    "id": 7,
+    "nl_problem": {
+      "context": "Harry is strong. Harry is big. Harry is high. Anne is thin. Anne is little. Gary is smart. Gary is quiet. Gary is kind. Fiona is poor. Fiona is rough. Fiona is sad. Strong people are smart. If someone is thin and little then they are short. If someone is poor and rough then they are bad. If someone is smart and quiet then they are nice. All short people are small. All smart people are quiet. All nice people are wealthy. All bad people are dull.",
+      "question": "Fiona is not dull.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Dull(x)",
+        "Hilly(x)",
+        "Rough(x)",
+        "Sad(x)",
+        "Short(x)",
+        "Poop(x)"
+      ],
+      "fol_consts": [
+        "fiona",
+        "short",
+        "poop"
+      ],
+      "fol_rules": [
+        "∃x (Poop(x))",
+        "∀x (Poop(x) → ∃y (Hilly(y)))",
+        "∀x (Poop(x) → ∃z (Rough(z)))",
+        "∀x (∃y (Short(y)) ∧ Short(fiona)) → Dull(fiona)",
+        "(Dull(fiona)) ⊕ ¬(Sad(fiona))",
+        "¬(Bead(poop))",
+        "∀x ((Poop(x) ∨ Hilly(x) ∨ Rough(x) ∨ Sad(x)) → ∃y (Short(y)))",
+        "∀x (∃z (Rough(z)) ∧ Short(fiona)) → Dull(fiona)",
+        "(Dull(fiona)) ⊕ ¬(Hilly(poop))",
+        "¬(Bead(short))",
+        "∀x ((Poop(x) ∨ Hilly(x) ∨ Rough(x) ∨ Sad(x)) → ∃z (Rough(z)))"
+      ],
+      "fol_conc": "¬Dull(fiona)",
+      "perplexity": 1.956510305404663
+    }
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "context": "Charlie is huge. Charlie is strong. Charlie is big. Harry is small. Harry is little. Fiona is smart. Fiona is quiet. Fiona is wealthy. Dave is dull. Dave is rough. Dave is sad. Huge people are smart. If someone is small and little then they are short. If someone is dull and rough then they are poor. If someone is smart and quiet then they are nice. All short people are thin. All smart people are quiet. All nice people are kind. All poor people are bad.",
+      "question": "Charlie is quiet.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "P1(x)",
+        "H(x, y)",
+        "L(x)",
+        "S(x)",
+        "R(x)",
+        "Q(x)"
+      ],
+      "fol_consts": [
+        "charlie"
+      ],
+      "fol_rules": [],
+      "fol_conc": "",
+      "perplexity": [
+        1.9181487560272217,
+        1.9119805097579956
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "People(x)",
+        "Short(x)",
+        "Tall(x)",
+        "Peepole(x, y)",
+        "AreIn(y)"
+      ],
+      "fol_consts": [
+        "charlie",
+        "harry",
+        "mall",
+        "poor",
+        "kind",
+        "bad"
+      ],
+      "fol_rules": [
+        "∃x (People(x) ∧ Short(x))",
+        "∀y (∃z (People(z) ∧ AreIn(y, z))) ⊕ ∃w (People(w) ∧ ¬AreIn(w, y))",
+        "¬(Peepole(charlie, mall) ∧ Peepole(harry, mall)) → ((Peepole(charlie, mall) ∨ Peepole(charlie, harry)) ⊕ (¬Peepole(charlie, mall) ∧ ¬Peepole(charlie, harry)))",
+        "(∃z (People(z) ∧ Short(z))) ∧ (∀y ∃w ((People(w) ∧ AreIn(y, w)) → ((Peopel(x, y) ∨ People(harry, y)) ⊕ (¬Peopele(charlie, y) ∧ ¬People(harry, y)))))",
+        "∀x ∀z (((Short(z) ∨ Tall(z)) ∧ People(x) ∧ Short(x)) → ∃y (∀u ((AreIn(u, x) ∨ AreIn(y, z)) ⊕ (¬AreIn(u, x) ∧ ¬AreIn(y, z)))))",
+        "(People(charlie) ∧ Peepole(harry, mall) ∧ Tall(charlie))",
+        "∀x ∀z (((Short(z) ∨ Tall(z)) ∧ People(x) ∧ Short(x)) → ∃y (∀u ((Peopel(u, x) ⊕ ¬(AreIn(y, u))) ⊕ (¬People(u, y)))))",
+        "(People(harry) ∧ Peepole(charlie, mall) ∧ NotTall(hary))"
+      ],
+      "fol_conc": "Quiet(x)",
+      "perplexity": 2.330888032913208
+    }
+  },
+  {
+    "id": 9,
+    "nl_problem": {
+      "context": "Charlie is huge. Charlie is strong. Charlie is big. Harry is small. Harry is little. Fiona is smart. Fiona is quiet. Fiona is wealthy. Dave is dull. Dave is rough. Dave is sad. Huge people are smart. If someone is small and little then they are short. If someone is dull and rough then they are poor. If someone is smart and quiet then they are nice. All short people are thin. All smart people are quiet. All nice people are kind. All poor people are bad.",
+      "question": "Charlie is not quiet.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "fol_preds": [
+        "Strong(x)",
+        "Heavy(x)",
+        "Big(x)",
+        "Small(x)",
+        "Quiet(x)",
+        "Short(x)"
+      ],
+      "fol_consts": [
+        "charlie"
+      ],
+      "fol_rules": [],
+      "fol_conc": "",
+      "perplexity": [
+        1.354050636291504,
+        2.102010726928711
+      ]
+    },
+    "logic_problem_gcd": {
+      "fol_preds": [
+        "Person(x)",
+        "Short(x)",
+        "Peeplo(x, y)"
+      ],
+      "fol_consts": [
+        "charlie",
+        "harley",
+        "martin",
+        "sammy",
+        "davey"
+      ],
+      "fol_rules": [
+        "∃x (Person(x))",
+        "(Short(harly) ⊕ ¬(Short(charlie)))",
+        "(Short(harley) ∧ Peeplo(harley, sammy)) → Short(sammy)",
+        "¬(Peeplo(davy, martin) ∨ Martin(martin) ∨ Peeplo(samy, harly) ∨ (Person(charle) ∧ Person(matin)))",
+        "∀x ((Short(x) ⊕ ¬(Short(x))) ∧ (Martin(y) ⊕ (Sam(y) ⊕ Dav(y)))) → ∃z (∃y (Peeplo(z, y)))",
+        "(Charlie(x) ∧ Quiet(x)) ⊕ Peeplo(matin, harly) ∨ Peppol(samy, martin)"
+      ],
+      "fol_conc": "(Person(charle) ∧ ¬Quiet(charie))",
+      "perplexity": 3.4351887702941895
+    }
+  }
+]

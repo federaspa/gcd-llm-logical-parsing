@@ -1,0 +1,30 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": ",{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"AttendAndEngagedWithSchoolEvents(x)\",\n    \"InactiveDisinterestedCommunityMember(x)\",\n    \"ChaperoneHighSchoolDances(x)\",\n    \"StudentWhoAttendsTheSchool(x)\",\n    \"WishToFurtherAcademicCareersEducationalOpportunities(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → AttendAndEngagedWithSchoolEvents(x))\",\n    \"∀x (Perform(x) ⊕ InactiveDisinterestedCommunityMember(x))\",\n    \"∀x (ChaperoneHighSchoolDances(x) → ¬StudentWhoAttendsTheSchool(x))\",\n    \"∀x (InactiveDisinterestedCommunityMember(x) → ChaperoneHighSchoolDances(x))\",\n    \"∀x ((WishToFurtherAcademicCareersEducationalOpportunities(x) ∧ YoungChildOrTeenager(x)) → StudentWhoAttendsTheSchool(x))\",\n    \"(AttendAndEngagedWithSchoolEvents(bonnie) ∧ StudentWhoAttendsTheSchool(bonnie)) ⊕ ¬(AttendAndEngagedWithSchoolEvents(bonnie) ∨ StudentWhoAttendsTheSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"Perform(bonnie)\"\n}",
+      "perplexity": 1.147424578666687
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"AttendSchoolEvents(x)\",\n    \"EngagedWithSchool(x)\",\n    \"InactiveCommunityMember(x)\",\n    \"DisinterestedCommunityMember(x)\",\n    \"ChaperoneHighschoolDances(x)\",\n    \"StudentAttendsSchool(x)\",\n    \"WishToFurtherEducation(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → AttendSchoolEvents(x) ∧ EngagedWithSchool(x))\",\n    \"∀x (Perform(x) ⊕ InactiveCommunityMember(x) ∧ DisinterestedCommunityMember(x))\",\n    \"∀x (ChaperoneHighschoolDances(x) → ¬StudentAttendsSchool(x))\",\n    \"∀x ((InactiveCommunityMember(x) ∧ DisinterestedCommunityMember(x)) → ChaperoneHighschoolDances(x))\",\n    \"∀x ((WishToFurtherEducation(x)) → StudentAttendsSchool(x))\",\n    \"(AttendSchoolEvents(bonnie) ∧ EngagedWithSchool(bonnie) ∧ StudentAttendsSchool(bonnie)) ⊕ ¬(AttendSchoolEvents(bonnie) ∨ EngagedWithSchool(bonnie) ∨ StudentAttendsSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"Perform(bonnie)\"\n}",
+      "perplexity": 1.1819262504577637
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"AttendAndEngagedWithEvents(x)\",\n    \"InactiveDisinterestedCommunityMember(x)\",\n    \"ChaperoneHighSchoolDances(x)\",\n    \"StudentAttendsSchool(x)\",\n    \"WishFurtherAcademicCareer(x)\"\n  ], \n  \"fol_consts\": [\"bonnie\"], \n  \"fol_rules\": [\n    \"∀x (Perform(x) → AttendAndEngagedWithEvents(x))\", \"∀x ((¬AttendAndEngagedWithEvents(x) ∧ ¬InactiveDisinterestedCommunityMember(x))) ⊕ Perform(x)\", \"∀x (ChaperoneHighSchoolDances(x) → ¬StudentAttendsSchool(x))\", \"∀x (InactiveDisinterestedCommunityMember(x) → ChaperoneHighSchoolDances(x))\", \"∀x ((WishFurtherAcademicCareer(x) ∧ YoungChildOrTeenager(x)) → StudentAttendsSchool(x))\",\n    \"(AttendAndEngagedWithEvents(bonnie) ∧ StudentAttendsSchool(bonnie)) ⊕ (¬(AttendAndEngagedWithEvents(bonnie) ∨ StudentAttendsSchool(bonnie)))\"\n  ], \n  \"fol_conc\": \"Perform(bonnie)\"\n}",
+      "perplexity": 1.4238866567611694
+    }
+  }
+]
