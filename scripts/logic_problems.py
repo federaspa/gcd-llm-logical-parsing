@@ -111,7 +111,7 @@ class LogicProgramRunner:
         logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         # Process samples
-        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}: [{elapsed}<{remaining}]')):
+        for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}: [{elapsed}<{remaining}, ' '{rate_fmt}{postfix}]]')):
             if self._check_time_limit():
                 break
             
