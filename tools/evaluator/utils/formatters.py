@@ -46,8 +46,8 @@ class ResultFormatter:
         for model_name, model_results in sorted(results.items()):
             metrics = {
                 'unc': model_results['UNCONSTRAINED'],
-                'con': model_results['CONSTRAINED'],
-                'json': model_results['JSON']
+                'json': model_results['JSON'],
+                'con': model_results['CONSTRAINED']
             }
             
             # Get max values for highlighting

@@ -923,9 +923,9 @@
       "raw": "{\n  \"fol_preds\": [\n    \"Capital(x, y)\",\n    \"Population(y)\",\n    \"LocationIn(z, x)\",\n    \"HostedOlympicsGame(s, x, year)\",\n    \"HostedWinterOlympicsGame(s, x, year)\"\n  ], \n  \"fol_consts\": [\n    \"beijing\"\n  ], \n  \"fol_rules\": [\n    \"(Capital(beijing, china) ∧ Population(y)) → (BeijingPopulation(y))\",\n    \"LocationIn(north, beijing)\",\n    \"HostedOlympicsGame(s, beijing, 2008) ∨ HostedWinterOlympicsGame(s, beijing, 2008)\",\n    \"(Capital(beijing, china) ∧ HostedOlympicsGame(olympic, beijing, year)) → (BeijingHosted(year))\"\n  ], \n  \"fol_conc\": \"BeijingHosted(2008) ∧ BeijingHostedWinterOlympicsGame(s, beijing, 2008)\"\n}",
       "perplexity": 2.0642831325531006,
       "answer": "A",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
+      "predicted_answer": "N/A",
+      "status": "execution error",
+      "error": "'NoneType' object has no attribute 'rstrip'"
     }
   },
   {
@@ -6603,7 +6603,7 @@
       "answer": "A",
       "predicted_answer": "N/A",
       "status": "execution error",
-      "error": "'utf-8' codec can't decode byte 0xd1 in position 613: invalid continuation byte"
+      "error": "'utf-8' codec can't decode byte 0xd1 in position 607: invalid continuation byte"
     },
     "logic_problem_json": {
       "raw": "{\n  \"fol_preds\": [\n    \"SportingEvent(x)\",\n    \"LastOlympicGames(x)\",\n    \"Tokyo\",\n    \"WinMedals(y, z)\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x (SportingEvent(x) → LastOlympicGames(x))\",\n    \"LastOlympicGames(Tokyo)\",\n    \"∃y ∃z ((WinMedals(UnitedStates, y) ∧ LastOlympicGames(z)) → z = Tokyo)\",\n    \"Tokyo ⊕ UnitedStates\"\n  ],\n  \"fol_conc\": \"(∀x (SportingEvent(x) → WinMedals(UnitedStates, x))) ∧ ∀y ∃z ((WinMedals(y, z) ∧ y ≠ UnitedStates) → ¬z)\"\n}",

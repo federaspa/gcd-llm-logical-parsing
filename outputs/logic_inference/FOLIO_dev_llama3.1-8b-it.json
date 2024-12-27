@@ -311,7 +311,7 @@
       "answer": "C",
       "predicted_answer": "N/A",
       "status": "execution error",
-      "error": "'NoneType' object has no attribute 'rstrip'"
+      "error": "'utf-8' codec can't decode byte 0xe2 in position 695: invalid continuation byte"
     },
     "logic_problem_gcd": {
       "raw": "{\n  \"fol_preds\": [\n    \"InfectiousDisease(x)\",\n    \"CausedBy(x, y)\",\n    \"Virus(y)\",\n    \"Animal(x)\",\n    \"Mammal(x)\",\n    \"SymptomsOf(x, y)\",\n    \"FeelTiredWhenGet(x, y)\"\n  ], \n  \"fol_consts\": [\n    \"monkeypox\",\n    \"virus\",\n    \"humans\"\n  ], \n  \"fol_rules\": [\n    \"(InfectiousDisease(monkeypox) ∧ CausedBy(monkeypox, virus)) → ∃x (Virus(x) ∧ Animal(x))\", \"AfterCorrectionThisRuleShouldBeCausedBy(virus, monkeypox)\",\n     \"∀y (∃z (Animal(z)))\",\n    \"(Mammal(humans) ∨ ¬(Mammal(humans)))\",\n   \"(SymptomsOf(monkeypox, fever) ⊕ SymptomsOf(monkeypox, headache)) ∧ (SymptomsOf(monkeypox, musclepain) ⊕ SymptomsOf(monkeypox, feelingtired))\", \"AfterCorrectionThisRuleShouldBeSymptomsOf(monkeypox, y)\",\n    \"∀x (∃y ((FeelTiredWhenGet(x, glu) ∨ ¬(FeelTiredWhenGet(x, flu)))) → (FeelTiredWhenGet(humans, glu)))\"\n  ], \n  \"fol_conc\": \"¬PersonGetsFlu(person)\"\n}",
@@ -2294,9 +2294,9 @@
       "raw": "{\"fol_preds\": [\"Player(x)\", \"Striker(x)\", \"Star(x)\"], \n\"fol_consts\": [\"robertlewandowski\", \"bayernmunchen\"], \n\"fol_rules\": [\"Striker(robertlewandowski)\", \"∀x (Striker(x) → Player(x))\", \"Left(robertlewandowski, bayernmunchen)\", \"∀x ∀y ((Player(x) ∧ Left(x, y)) → ¬(Play(x, y)))\"], \n\"fol_conc\": \"Star(robertlewandowski)\"}",
       "perplexity": 1.7084071636199951,
       "answer": "C",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
+      "predicted_answer": "N/A",
+      "status": "execution error",
+      "error": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Play/2, Play/1.\n\n\nFatal error:  The following symbols are used with multiple arities: Play/2, Play/1"
     }
   },
   {
@@ -2411,9 +2411,9 @@
       "raw": "{\"fol_preds\": [\"City(x)\", \"InStateOfCities(y, z)\", \"HomeToState(z, x)\"], \n\"fol_consts\": [\"billings\", \"montana\", \"butte\", \"helenla\", \"missoula\", \"white\", \"pierre\"], \n\"fol_rules\": [\n    \"∃x (City(x) ∧ CityOfCities(montana, x))\",\n    \"InStateOfCities(montana, butte)\",\n    \"InStateOfCities(montana, helenla)\",\n    \"InStateOfCities(montana, missoula)\", \"People(z) → InStateOfCities(pierre, z)\"\n], \n\"fol_conc\": \"HomeToState(montana, missoula)\"}",
       "perplexity": 2.4060540199279785,
       "answer": "A",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: City/2, City/1.\n\n\nFatal error:  The following symbols are used with multiple arities: City/2, City/1"
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     }
   },
   {
@@ -2707,7 +2707,7 @@
       "answer": "A",
       "predicted_answer": "N/A",
       "status": "parsing error",
-      "error": "(ListOfResidentialCollegesIn(yale, [Pierson College]) ⊕ ¬(ListOfResidentialCollegesIn(yale, y) ∧ Pierson_College = y))"
+      "error": null
     },
     "logic_problem_json": {
       "raw": "{\"fol_preds\": [\"Private(x)\", \"IvyLeagueResearchUniversity(x)\", \"MovedToInYear(x, y)\", \"HasEndowment(x, y)\", \"OrganizedIntoCollegesAndSchools(x, y)\", \"IsResidentialCollegeAtYale(x)\", \"ListOfResidentialCollgeges(y)\"], \"fol_consts\": [\"yale_university\", \"new_haven\", 1716], \"fol_rules\": [ \"\\\\forall x (Private(x) ∧ IvyLeagueResearchUniversity(x) → PrivateIvyLeagueResearchUniversity(x))\", \"\\\\forall y \\\\exists z ((MovedToInYear(z, new_haven) ⊕ MovedToInYear(yale_university ,new_haven))) \", 42.3e9,\"\\\\forall x (HasEndowment(x,yale_university )→ HasEndowment(yale_university, 42.3e9))\",\"ListOfResidentialCollegesAtYale( Listofresidentialcollegges)\", \"ListOfResidentialCollegesAtYale(Listofresidentialcollegges) → IsResidentialCollegeAtYale(x,Listofresidentialcollegges )\"], \"fol_conc\": \"\\\\exists x (IsResidentialCollegeAtYale(pierson_college, ListOfResidentialCollegesAtYale( List of residential colleges)))\"}",
@@ -2953,9 +2953,9 @@
       "raw": "{\"fol_preds\": [\"Istanbul(x)\", \"BeginWith(x, y)\"], \n\"fol_consts\": [\"joe\", \"tom\", \"httpsrvl\", \"34\", \"35\"], \n\"fol_rules\": [\"∀x (Istanbul(x) → ∀y (Plate(y) ∧ BeginWith(y, x)) ⊕ ¬(Plate(y) ∨ Istanbul(y)))\", \"∃y (Plate(y) ∧ From(joe, y) ∧ Istanbul(y))\", \"¬BeginWith(tomlicenseplate, 34)\", \"TomLicensePlate(x) ∧ BeginWith(x, 35) → ¬BeginWith(x, 34)\" ], \n\"fol_conc\": \"(From(joe, joevehicleregistrationplatex) ∧ Istanbul(istanbulx)) → BeginWith(joevehicleregistrationplatex, 34)\" }",
       "perplexity": 2.923233985900879,
       "answer": "A",
-      "predicted_answer": "C",
-      "status": "success",
-      "error": ""
+      "predicted_answer": "N/A",
+      "status": "execution error",
+      "error": "'NoneType' object has no attribute 'rstrip'"
     }
   },
   {
@@ -3032,9 +3032,9 @@
       "raw": "{\"fol_preds\": [\"Work(x, y)\", \"NeedEarningMoneyToPayTuitionForCollege(x)\", \"OrderTakeoutFrequentlyInCollege(x)\", \"EnjoyDiningHallMealsAndRecipes(x)\", \"NotPickyEater(x)\", \"SpendTimeEatingAndCatchingUpWithFriendsInTheCampusDiningHalls(x)\"], \n\"fol_consts\": [\"mary\", \"campusstudentjob\"], \n\"fol_rules\": [\"∀x (∃y (Work(y, x) ∧ WorkInStudentJobsOnCampus(campusstudentjob)) → NeedEarningMoneyToPayTuitionForCollege(x))\",\n\"∀x (∃y (OrderTakeoutFrequentlyInCollege(x) → ∃z (Work(z, y) ∧ WorkInStudentJobsOnCampus(y))))\", \"∃x ((OrderTakeoutFrequentlyInCollege(x) ∨ EnjoyDiningHallMealsAndRecipes(x)))\", \"(EnjoyDiningHallMealsAndRecipes(mary)) → ¬NotPickyEater(mary)\", \"(EnjoyDiningHallMealsAndRecipes(mary)) → SpendTimeEatingAndCatchingUpWithFriendsInTheCampusDiningHalls(mary)\",\n\"(WorkInStudentJobsOnCampus(campusstudentjob) ∧ NeedEarningMoneyToPayTuitionForCollege(x)) → ¬NotPickyEater(x) ⊕ ¬NeedEarningMoneyToPayTuitionForCollege(x)\"\n], \n\"fol_conc\": \"∃y (Work(y, mary) ∧ WorkInStudentJobsOnCampus(campusstudentjob) ∧ NeedEarningMoneyToPayTuitionForCollege(mary))\"}",
       "perplexity": 1.552122712135315,
       "answer": "C",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Work/1, Work/2.\n\n\nFatal error:  The following symbols are used with multiple arities: Work/1, Work/2"
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     }
   },
   {
@@ -4145,9 +4145,9 @@
       "raw": "{\"fol_preds\": [\"Twin(x)\", \"Triplet(x)\", \"Siblings(x, y)\", \"SameAge(x, y)\", \"Annoying(x, y)\", \"Hangout(x, y)\", \"Play(x, y)\", \"Complain(x, y)\", \"RegularlyLiveAtHome(x)\" , \"StrongBond(x)\"], \n\"fol_consts\": [\"lucy\", \"isntthere\", \"luke\",\"home\"], \n\"fol_rules\":[\"∀x ∀y ((Twin(x) ⊕ Triplet(x)) → Hangout(x, y) ∧ Play(x, y))\",\n\"(∃z (Siblings(z, x))) → ∃w (∀v (SameAge(v, z) ∨ SameAge(v, w)) → Twin(x) ⊕ Triplet(x))\", \"(∀x ∀y (∃u (Annoying(u, y)))) → ∀x (∃a (∃b ((Siblings(a, x))) ∧ SameAge(b, a)))\",\n\"(¬RegularlyLiveAtHome(luke) ∨ ¬StrongBond(lukex))\",\"Hangout(x, y) ∧ Play(x, y) → ¬(RegularlyLiveAtHome(y))\" , \"((Twin(luke) ⊕ Triplet(luke)) ∧ StrongBond(luke)) ⊕ ((¬Twin(luke)) ⊕ (¬Triplet(luke)) ⊕ StrongBond(lukex))\"\n], \n\"fol_conc\": \"(∃x (∀y (Annoying(x, y)))) ⊕ ¬(Twin(luke) ⊕ Triplet(luke))\"}",
       "perplexity": 2.8133203983306885,
       "answer": "A",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "'NoneType' object has no attribute 'rstrip'"
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     }
   },
   {
@@ -7681,7 +7681,7 @@
       "answer": "C",
       "predicted_answer": "N/A",
       "status": "execution error",
-      "error": "'utf-8' codec can't decode byte 0xe2 in position 783: invalid continuation byte"
+      "error": "'utf-8' codec can't decode byte 0xe2 in position 778: invalid continuation byte"
     },
     "logic_problem_gcd": {
       "raw": "{\"fol_preds\": [\"Winner(x, y)\", \"ParticipatedIn(x, y)\", \"FromBelgium(x)\", \"OnLeaderboardOfClassic(x)\"], \n\"fol_consts\": [\"descampe\", \"steinhauer\", \"1992\", \"du\", \"maurier\", \"classic\"], \n\"fol_rules\": [\"Winner(1992, du, maurier, classic, steinhauer)\",\n\"(ParticipatedIn(descampe, 1992, du, maurier, classic))\",\n\"(∃x (OnLeaderboardOfClassic(x) ∧ FromBelgium(x)))\", \"FromBelgium(descampe)\", \"(ParticipatedIn(descampe, 1992, du, maurier, classic)) → OnLeaderboardOfClassic(descampe)\",\n\"∀x ((ParticipatedIn(x, 1992, du, maurier, classic) ∧ OnLeaderboardOfClassic(x)))\"], \n\"fol_conc\": \"(OnLeaderboardOfClassic(du, maurier, classic) ∧ ∃x (FromBelgium(x) ∧ ParticipatedIn(descampe, x)))\"}",

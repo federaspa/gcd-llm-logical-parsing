@@ -2707,15 +2707,15 @@
       "answer": "A",
       "predicted_answer": "N/A",
       "status": "parsing error",
-      "error": null
+      "error": "ListOfCollegesAt('Benjamin Franklin College', YaleUniversity) ∧ ListOfCollegesAt('Berkeley College', YaleUniversity) ∧ ListOfCollegesAt('Branford College', YaleUniversity) ∧ ListOfCollegesAt('Davenport College', YaleUniversity) ∧ ListOfCollegesAt('Ezra Stiles College', YaleUniversity) ∧ ListOfCollegesAt('Grace Hopper College', YaleUniversity) ∧ ListOfCollegesAt('Jonathan Edwards College', YaleUniversity) ∧ ListOfCollegesAt('Morse College', YaleUniversity) ∧ ListOfCollegesAt('Pauli Murray College', YaleUniversity) ∧ ListOfCollegesAt('Pierson College', YaleUniversity) ∧ ListOfCollegesAt('Saybrook College', YaleUniversity) ∧ ListOfCollegesAt('Silliman College', YaleUniversity) ∧ ListOfCollegesAt('Timothy Dwight College', YaleUniversity) ∧ ListOfCollegesAt('Trumbull College', YaleUniversity)"
     },
     "logic_problem_json": {
       "raw": "{\n  \"fol_preds\": [\n    \"PrivateUniversity(x)\",\n    \"IvyLeagueResearchUniversity(x)\",\n    \"MovedToCity(x, y)\",\n    \"EndowmentValuedAt(x, y)\",\n    \"OrganizedIntoCollegesAndSchools(x, y)\",\n    \"ResidentialCollege(z, x)\",\n    \"YaleUniversity(y)\",\n  \"ListOfCollegesIncludes(w, z)\"\n],\n\"fol_consts\": [\n   \"yale\",\n   \"newhaven\",\n   \"piersoncollege\"\n],\n\"fol_rules\":[\n    \"PrivateUniversity(y) ∧ IvyLeagueResearchUniversity(y)\",\n    \"MovedToCity(y, newhaven)\",\n    \"EndowmentValuedAt(y, $42.3billion)\",\n    \"OrganizedIntoCollegesAndSchools(y, [residential colleges, the Yale Graduate School of Arts and Sciences, 12 professional schools])\",\n    \"ListOfResidentialColleges([benjaminfranklincollege, berkeleycollege, branfordcollege, davenportcollege, ezrastilescollege, gracehoppercollege, jonathanedwardscollege, morse college, paulimurraycollege, piersoncollege, saybrookcollege, silliman college, timothydwightcollege, trumbullcollege])\"\n  ],\n \"fol_conc\": \"ResidentialCollege(piersoncollege, yale)\"\n}",
       "perplexity": 1.4293915033340454,
       "answer": "A",
       "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "'NoneType' object has no attribute 'rstrip'"
+      "status": "parsing error",
+      "error": null
     },
     "logic_problem_gcd": {
       "raw": "{\n  \"fol_preds\": [\n    \"University(x)\",\n    \"PrivateIvyLeagueResearchUni(x)\",\n    \"MovedTo(x, y, z)\",\n    \"EndowmentValuedAt(x, y)\",\n    \"OrganizedInto(x, y)\",\n    \"IsACollegeOrSchoolOf(y, x)\",\n    \"ListOfResidentialCollegesAtYale(y)\"\n  ],  \"fol_consts\": [\n     \"pierson\",\n     \"newhaven\",\n     \"1716\",\n     \"42300000000\",\n     \"benjaminfranklincollege\",\n     \"berkeleycollege\",\n     \"branfordcollege\",\n     \"davenportcollege\",\n     \"ezrastilescollege\",\n     \"gracehoppercollege\",\n     \"jonathannedwardscollege\",\n     \"morsecollge\",\n     \"paulimurraycollege\",\n     \"piersoncollege\",\n     \"saybrookcollege\",\n     \"sillimancollege\",\n     \"timothydwightcollege\",\n     \"trumbullcollege\"\n  ],  \"fol_rules\": [\n    \"University(yaleuniversity) ∧ PrivateIvyLeagueResearchUni(yaleuniversity)\",\n    \"MovedTo(yaleuniversity, newhaven, 1716)\",\n    \"EndowmentValuedAt(yaleuniversity, 42300000000)\",\n    \"(IsACollegeOrSchoolOf(residentialcolleges, yaleuniversity) ∧ IsACollegeOrSchoolOf(yalegraduateschoolofartsandsciences, yaleuniversity))\",\n    \"ListOfResidentialCollegesAtYale(yaleuniversity)\",\n    \"(IsACollegeOrSchoolOf(benjaminfranklincollege, yaleuniversity) ∧ IsACollegeOrSchoolOf(berkeleycollege, yaleuniversity))\",\n    \"IsACollegeOrSchoolOf(branfordcollege, yaleuniversity)\",\n    \"(IsACollegeOrSchoolOf(davenportcollege, yaleuniversity) ∧ IsACollegeOrSchoolOf(ezrastilescollege, yaleuniversity))\",\n    \"IsACollegeOrSchoolOf(gracehoppercollege, yaleuniversity)\",\n    \"(IsACollegeOrSchoolOf(jonathannedwardscollege, yaleuniversity) ∧ IsACollegeOrSchoolOf(morsecollge, yaleuniversity))\",\n    \"IsACollegeOrSchoolOf(paulimurraycollege, yaleuniversity)\",\n    \"(IsACollegeOrSchoolOf(piersoncollege, yaleuniversity) ∧ IsACollegeOrSchoolOf(saybrookcollege, yaleuniversity))\",\n    \"IsACollegeOrSchoolOf(sillimancollege, yaleuniversity)\",\n    \"(IsACollegeOrSchoolOf(timothydwightcollege, yaleuniversity) ∧ IsACollegeOrSchoolOf(trumbullcollege, yaleuniversity))\"\n  ],  \"fol_conc\": \"ListOfResidentialCollegesAtYale(pierson)\"\n}",
@@ -4223,9 +4223,9 @@
       "raw": "{\n  \"fol_preds\": [\n    \"Cost(x, y)\",\n    \"TakeTest(y, z)\",\n    \"ProvideAid(a, b)\",\n    \"Hardship(b)\",\n    \"EconomicDifficulty(c, d)\",\n    \"LivesInFamily(e, f)\",\n    \"SingleParentFamily(f)\",\n    \"Unemployed(g, h)\"\n  ],  \"fol_consts\": [\n    \"us205\",\n    \"gretest\",\n    \"ets\",\n    \"tom\",\n    \"dad\",\n    \"1year\"\n  ],  \"fol_rules\": [\n    \"Cost(us205, gretest)\",\n    \"ProvideAid(ets, b) → Hardship(b)\",\n    \"Hardship(b) ↔ EconomicDifficulty(c, d)\",\n    \"LivesInFamily(tom, singleparentfamily)\",\n    \"Unemployed(dad, tom) → UnemployedForMoreThanAYear(dad)\"\n  ],  \"fol_conc\": \"(∃z (TakeTest(gretest, z) ∧ Cost(x, gretest)) ∧ CostBelowUS300(x, gretest))\"\n}",
       "perplexity": 1.573842167854309,
       "answer": "A",
-      "predicted_answer": "N/A",
-      "status": "execution error",
-      "error": "(FATAL)\n%%ERROR: The following symbols are used with multiple arities: Unemployed/1, Unemployed/2.\n\n\nFatal error:  The following symbols are used with multiple arities: Unemployed/1, Unemployed/2"
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
     }
   },
   {
