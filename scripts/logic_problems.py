@@ -17,6 +17,7 @@ from utils.logger import get_logger
 class ScriptConfig:
     model_name: str
     dataset_name: str
+    prompt_type: str
     data_path: str
     split: str
     models_path: str
@@ -66,18 +67,13 @@ class LogicProgramRunner:
                 
         return raw_dataset, outputs, existing_ids
 
-    def _generate_problem(self, nl_problem: dict, sample_id: int, problem_type: str) -> Tuple[Optional[dict], Optional[str]]:
+    def _generate_problem(self, nl_problem: dict, sample_id: int, constraint_type: str) -> Tuple[Optional[dict], Optional[str]]:
         """Generate logic problem for a sample"""
         
+        assert constraint_type in ['unconstrained', 'json', 'constrained'], ValueError(f"Invalid problem type: {constraint_type}")
+        
         try:
-            if problem_type == 'unconstrained':
-                logic_problem_str, perplexity = self.generator.generate_unconstrained(nl_problem)
-            elif problem_type == 'json':
-                logic_problem_str, perplexity = self.generator.generate_json(nl_problem)
-            elif problem_type == 'constrained':
-                logic_problem_str, perplexity = self.generator.generate_constrained(nl_problem, self.config.two_steps)
-            else:
-                raise ValueError(f"Invalid problem type: {problem_type}")
+            logic_problem_str, perplexity = self.generator.generate_problem(nl_problem, constraint_type)
             
             return {
                 'raw': logic_problem_str,
@@ -85,10 +81,10 @@ class LogicProgramRunner:
             }, None
             
         except TimeoutError:
-            logger.error(f"{problem_type.capitalize()}: Timeout error for sample {sample_id}")
+            logger.error(f"{constraint_type.capitalize()}: Timeout error for sample {sample_id}")
             return None, "timeout"
         except Exception as e:
-            logger.error(f"{problem_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
+            logger.error(f"{constraint_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
             logger.debug(f"Traceback:\n{traceback.format_exc()}")
             return None, str(e)
         
@@ -181,6 +177,7 @@ def parse_args() -> ScriptConfig:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-name', type=str, required=True)
+    parser.add_argument('--prompt-type', type=str, required=True)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')

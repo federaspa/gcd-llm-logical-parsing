@@ -12,48 +12,51 @@ class TemplateManager:
         'AR-LSAT': 'SAT'
     }
 
-    PROMPT_TEMPLATES = {
+    MODEL_TEMPLATES = {
         'gemma2': 'prompts/prompt_templates/gemma.txt',
         'llama3.1': 'prompts/prompt_templates/llama.txt',
         'llama3.2': 'prompts/prompt_templates/llama.txt',
         'mistral': 'prompts/prompt_templates/mistral.txt',
         'ministral': 'prompts/prompt_templates/ministral.txt',
-        # 'qwen': 'prompts/prompt_templates/qwen.txt',
         'qwen2.5': 'prompts/prompt_templates/qwen.txt',
     }
 
     def __init__(self, config):
         self.config = config
         self.type = self._get_type()
-        self.templates = self._load_templates()
+        self.prompt_template, self.grammar_templates = self._load_templates()
 
     def _get_type(self) -> str:
         return self.DATASET_TYPES[self.config.dataset_name]
 
-    def _get_prompt_template(self) -> str:
+    def _get_model_template(self) -> str:
         model_base = self.config.model_name.split('-')[0]
-        return self.PROMPT_TEMPLATES[model_base]
+        
+        path = self.MODEL_TEMPLATES[model_base]
+        
+        with open(path, 'r') as f:
+            return f.read()
 
     def _load_templates(self) -> Dict[str, str]:
-        template_paths = {
-            'unconstrained': f'./prompts/conversion/{self.config.dataset_name}/unconstrained.txt',
-            'json': f'./prompts/conversion/{self.config.dataset_name}/json.txt',
-            'constrained': f'./prompts/conversion/{self.config.dataset_name}/constrained.txt',
-            'constructs': f'./prompts/conversion/{self.config.dataset_name}/constructs.txt',
-            'prompt_template': self._get_prompt_template(),
-            'json_grammar': f'./LLMs/grammars/json.gbnf',
-            'construncts_grammar': f'./LLMs/grammars/{self.type}_constructs.gbnf',
-            'constrained_grammar': f'./LLMs/grammars/{self.type}_constrained.gbnf'
-        }
+        
+        model_template = self._get_model_template()
+        
+        with open(f'./prompts/conversion/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
+            content = f.read()
+            prompt_template = model_template.replace('[[user]]', content)
 
-        templates = {}
-        for key, path in template_paths.items():
+        grammar_template_paths = {
+            'json': f'./LLMs/grammars/json.gbnf',
+            'constrained': f'./LLMs/grammars/{self.type}.gbnf'
+        }
+       
+        grammar_templates = {
+            'unconstrained': None
+        }
+        for key, path in grammar_template_paths.items():
             with open(path, 'r') as f:
                 content = f.read()
-                if key in ['json', 'unconstrained', 'constrained', 'constructs']:
-                    with open(template_paths['prompt_template'], 'r') as pt:
-                        prompt_template = pt.read()
-                        content = prompt_template.replace('[[user]]', content)
-                templates[key] = content
+                grammar_templates[key] = content       
+
         
-        return templates
+        return prompt_template, grammar_templates

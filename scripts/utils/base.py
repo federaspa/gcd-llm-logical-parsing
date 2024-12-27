@@ -1,28 +1,27 @@
 from abc import ABC, abstractmethod
+from utils.template_manager import TemplateManager
 from typing import Dict
 
 class BasePrompter(ABC):
-    def __init__(self, config: dict, templates: Dict[str, str]):
+    def __init__(self, config: dict):
         self.config = config
-        self.templates = templates
+        self.template_manager = TemplateManager(config)
 
     @abstractmethod
-    def build_grammar(self, constructs: dict) -> str:
+    def build_grammar(self) -> str:
         pass
 
-    def unconstrained(self, sample: Dict) -> str:
-        return self._format_prompt('unconstrained', sample)
+    # def unconstrained(self, sample: Dict) -> str:
+    #     return self._format_prompt('unconstrained', sample)
     
-    def constrained(self, sample: Dict) -> str:
-        return self._format_prompt('constrained', sample)
+    # def constrained(self, sample: Dict) -> str:
+    #     return self._format_prompt('constrained', sample)
     
-    def json(self, sample: Dict) -> str:
-        return self._format_prompt('json', sample)
+    # def json(self, sample: Dict) -> str:
+    #     return self._format_prompt('json', sample)
     
-    def extract_constructs(self, sample: Dict) -> str:
-        return self._format_prompt('constructs', sample)
 
-    def _format_prompt(self, template_key: str, sample: Dict) -> str:
+    def format_prompt(self, sample: Dict) -> str:
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
-        return self.templates[template_key].replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+        return self.template_manager.prompt_template.replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
