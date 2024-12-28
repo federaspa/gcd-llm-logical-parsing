@@ -24,7 +24,7 @@ class ScriptConfig:
     save_path: str
     stop_time: Optional[str]
     timeout: int = 60
-    two_steps: bool = False
+    starting_sample: int = 0
     force_unconstrained: bool = False
     force_constrained: bool = False
     force_json: bool = False
@@ -100,6 +100,8 @@ class LogicProgramRunner:
     def run(self):
         # Setup paths and load data
         raw_dataset = self._load_raw_dataset()
+        
+        raw_dataset = raw_dataset[self.config.starting_sample:]
 
         save_file = self._prepare_save_file()
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file, raw_dataset)
@@ -181,7 +183,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--two-steps', action='store_true', help='Extract predicates in first step')
+    parser.add_argument('--starting-sample', type=int)
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
