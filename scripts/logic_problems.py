@@ -72,12 +72,16 @@ class LogicProgramRunner:
         
         assert constraint_type in ['unconstrained', 'json', 'constrained'], ValueError(f"Invalid problem type: {constraint_type}")
         
+        start_time = datetime.now()
+        
         try:
             logic_problem_str, perplexity = self.generator.generate_problem(nl_problem, constraint_type)
+            duration = (datetime.now() - start_time).total_seconds()
             
             return {
                 'raw': logic_problem_str,
-                'perplexity': perplexity
+                'perplexity': perplexity,
+                'generation_time': duration
             }, None
             
         except TimeoutError:
