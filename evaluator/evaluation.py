@@ -7,8 +7,8 @@ from utils.formatters import ResultFormatter
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset-name', type=str, required=True)
     parser.add_argument('--sketcher-name', type=str)
+    parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
