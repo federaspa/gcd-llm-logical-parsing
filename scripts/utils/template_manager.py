@@ -13,12 +13,12 @@ class TemplateManager:
     }
 
     MODEL_TEMPLATES = {
-        'gemma2': 'LLMs/promptsprompt_templates/gemma.txt',
-        'llama3.1': 'LLMs/promptsprompt_templates/llama.txt',
-        'llama3.2': 'LLMs/promptsprompt_templates/llama.txt',
-        'mistral': 'LLMs/promptsprompt_templates/mistral.txt',
-        'ministral': 'LLMs/promptsprompt_templates/ministral.txt',
-        'qwen2.5': 'LLMs/promptsprompt_templates/qwen.txt',
+        'gemma2': 'resources/prompts/prompt_templates/gemma.txt',
+        'llama3.1': 'resources/prompts/prompt_templates/llama.txt',
+        'llama3.2': 'resources/prompts/prompt_templates/llama.txt',
+        'mistral': 'resources/prompts/prompt_templates/mistral.txt',
+        'ministral': 'resources/prompts/prompt_templates/ministral.txt',
+        'qwen2.5': 'resources/prompts/prompt_templates/qwen.txt',
     }
 
     def __init__(self, config):
@@ -41,13 +41,13 @@ class TemplateManager:
         
         model_template = self._get_model_template()
         
-        with open(f'./LLMs/promptsconversion/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
+        with open(f'./resources/prompts/conversion/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
             content = f.read()
             prompt_template = model_template.replace('[[user]]', content)
 
         grammar_template_paths = {
-            'json': f'./LLMs/grammars/json.gbnf',
-            'constrained': f'./LLMs/grammars/{self.type}.gbnf'
+            'json': f'./resources/grammars/json.gbnf',
+            'constrained': f'./resources/grammars/{self.type}.gbnf'
         }
        
         grammar_templates = {
