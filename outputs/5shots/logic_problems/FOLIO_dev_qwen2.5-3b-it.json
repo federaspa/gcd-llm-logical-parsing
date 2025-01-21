@@ -1,0 +1,36 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n  \"fol_preds\": [\n    \"SchoolTalentShowsOften(x)\",\n    \"AttendAndEngagedWithEvents(x, y)\",\n    \"InactiveDisinterestedCommunityMember(x)\",\n    \"ChaperoneHighSchoolDances(x)\",\n    \"StudentAttendsSchool(y)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (SchoolTalentShowsOften(x) → AttendAndEngagedWithEvents(x, school_events))\",\n    \"∀x ((PerformInSchoolTalentShowsOften(x) ⊕ InactiveDisinterestedCommunityMember(x)))\",\n    \"∀x (ChaperoneHighSchoolDances(x) → ¬StudentAttendsSchool(x))\",\n    \"∀x (InactiveDisinterestedCommunityMember(x) → ChaperoneHighSchoolDances(x))\",\n    \"∃y (∀z ((YoungChild(z) ∨ Teenager(z)) → StudentAttendsSchool(y)))\",\n    \"(AttendAndEngagedWithEvents(bonnie, school_events) ∧ StudentAttendsSchool(bonnie)) ⊕ ¬(AttendAndEngagedWithEvents(bonnie, school_events) ∨ StudentAttendsSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"PerformInSchoolTalentShowsOften(bonnie)\"\n}",
+      "perplexity": 1.324602484703064,
+      "generation_time": 64.103809,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Attend(x, schoolEvents)\",\n    \"EngagedWith(schoolEvents, x)\",\n    \"OftenPerformInSchoolTalentShows(x)\",\n    \"InactiveDisinterestedMemberOfCommunity(x)\",\n    \"ChaperoneHighschoolDances(x)\",\n    \"StudentAttendingTheSchool(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (OftenPerformInSchoolTalentShows(x) → Attend(x, schoolEvents) ∧ EngagedWith(schoolEvents, x))\",\n    \"∃x ((Attend(x, schoolEvents) ∨ InactiveDisinterestedMemberOfCommunity(x)))\",\n    \"∀x (ChaperoneHighschoolDances(x) → ¬StudentAttendingTheSchool(x))\",\n    \"∀x (((YoungChildTeenager(x) ∧ WishToFurtherAcademicCareersAndEducationalOpportunities(x)) → StudentAttendingTheSchool(x))\",\n    \"(Attend(bonnie, schoolEvents) ∨ InactiveDisinterestedMemberOfCommunity(bonnie)) ⊕ ¬(StudentAttendingTheSchool(bonnie) ∨ Attend(bonnie, schoolEvents))\",\n    \"¬(ChaperoneHighschoolDances(bonnie) ∧ StudentAttendingTheSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"OftenPerformInSchoolTalentShows(bonnie)\"\n}",
+      "perplexity": 1.401971697807312,
+      "generation_time": 60.791862,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"SchoolTalentShow(x, often)\",\n    \"EngagedWithEvents(x, school)\",\n    \"InactiveAndDisinterestedCommunityMember(x)\",\n    \"ChaperoneDance(highschool)\",\n    \"StudentAttendingSchool(events)\",\n    \"YoungChildTeenager(wishes, academic)\"\n  ], \n  \"fol_consts\": [\n    \"bonnie\"\n  ], \n  \"fol_rules\": [\n    \"(∃y (SchoolTalentShow(y, often) ∧ Do(x, y)) → EngagedWithEvents(x, school))\",\n    \"(∀x (SchoolTalentShow(x, often) ⊕ InactiveAndDisinterestedCommunityMember(x)))\", \"(ChaperoneDance(highschool) → ¬StudentAttendingSchool(events))\",\n    \"∀y (InactiveAndDisinterestedCommunityMember(y) → ChaperoneDance(highschool))\",\n    \"∀x ((YoungChildTeenager(wishes, academic) ∧ StudentAttendingSchool(events)) → AttendEvents(x, school))\", \"(∃x (AttendEvents(bonnie, events) ∧ EngagedWithEvents(bonnie, school))) ⊕ ¬(AttendEvents(bonnie, events) ∨ EngagedWithEvents(bonnie, school))\"\n  ], \n  \"fol_conc\": \"SchoolTalentShow(bonnie, often)\"\n}",
+      "perplexity": 1.7675951719284058,
+      "generation_time": 54.753947,
+      "error_message": null
+    }
+  }
+]

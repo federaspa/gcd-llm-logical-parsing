@@ -4395,5 +4395,1448 @@
       "raw": "{\n\"fol_preds\": [\"CSDept(x)\", \"LibraryWorker(x)\", \"PartTimeJobOfferedByUniversity(x, y)\", \"TakesDatabaseCourse(x)\", \"InstructedByDavid(x)\"], \n\"fol_consts\": [\"james\", \"jack\", \"university1\", \"professor1\"], \n\"fol_rules\": [\n    \"∀x (LibraryWorker(x) ∧ CSDept(x)) → ¬CSDept(x)\",\n    \"∀x (PartTimeJobOfferedByUniversity(x, university1) ↔ LibraryWorker(x))\",\n    \"∀x (TakesDatabaseCourse(x) ↔ CSDept(x))\", \"ButrewritingthisasaseparatepredicatetofollowrulesbetterfitsourformatsoletakeaconditionalapproachinsteaddirectlyrelatingittoCSdepartmentstatusforclarityandavoidanceoftautologiesorunnecessaryassertionslikepreviouslyconsideredforallxTakesDatabaseCoursexfollowingfrombeingintheComputerScienceDepartmentasindicatedbydefinitionofcourseworkcontentcorrelationbetweenmajorspecificclassesandstudentmajorclassificationnotusingdirectbiconditionalbutratherconditionalimplicationapproachtoavoidpossiblelogicalconfusionoroverspecificationwhilestillproperlyrelatingconceptsforallxCSDept(x) → TakesDatabaseCourse(x)\",\n    \"∀x (InstructedByDavid(x) ↔ TakesDatabaseCourse(x))\",\n    \"∀x (LibraryWorker(x, professor1) → InstructedByDavid(x))\"\n], \n\"fol_conc\": \"(TakesDatabaseCourse(james) ∨ PartTimeJobOfferedByUniversity(james, university1))\"\n}",
       "perplexity": 3.8272898197174072
     }
+  },
+  {
+    "id": 160,
+    "nl_problem": {
+      "context": [
+        "No students who work in the library are from the computer science department. ",
+        "All students who have part-time jobs offered by the university are students who work in the library. ",
+        "All students who take the database course are from the computer science department. ",
+        "All students instructed by professor David are taking the database course. ",
+        "All students working in the lab are instructed by professor David. ",
+        "James is a student working in the lab. ",
+        "Jack neither has a part-time job offered by the university nor works in the lab. "
+      ],
+      "question": "Jack takes the database course.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"Student(x)\",\n    \"WorksInLibrary(x)\",\n    \"FromCSDept(x)\",\n    \"HasPartTimeJob(x, y)\",\n    \"UniversityOffers(y)\",\n    \"TakesDatabaseCourse(x)\",\n    \"InstructedByProfessorDavid(x)\"\n  ],\n  \"fol_consts\": [\"James\", \"Jack\"],\n  \"fol_rules\": [\n    {\n      \"rule\": \"∀x (Student(x) ∧ WorksInLibrary(x)) → ¬FromCSDept(x)\"\n    },\n    {\n      \"rule\": \"∀x ∀y ((HasPartTimeJob(x, y) ∧ UniversityOffers(y))) → WorksInLibrary(x))\"\n    },\n    {\n      \"rule\": \"∀x (TakesDatabaseCourse(x) → FromCSDept(x))\"\n    },\n    {\n      \"rule\": \"∀x (Student(x) ∧ InstructedByProfessorDavid(x)) → TakesDatabaseCourse(x)\"\n    },\n    {\n      \"rule\": \"∀x ((WorksInLab(x))) → InstructedByProfessorDavid(x)\"\n    }\n  ],\n  \"fol_conc\": [\n    \"{ rule: 'TakesDatabaseCourse(Jack)' }\"\n  ]\n}\n```\nPlease note that the conversion has been made based on your premises. The conclusion provided in natural language does not logically follow from these rules, but it is presented as requested in first-order logic format.\n\nAlso note there was an inconsistency between how `WorksInLab` and part-time jobs were mentioned for James & Jack compared to other students which wasn't consistent with the rest of statements regarding database course enrollment. To avoid ambiguity, I assumed \"working in lab\" directly implied taking a database class as per given premises without additional logical inference steps required.\n\nHowever, if there is an intention that `Jack` might have taken up a different path not leading to the Database Course (due to negative conditions for part-time jobs and working at the library), this would mean Jack does NOT take the database course based on provided information. But as requested, we will present only the conclusion without contradiction or proof within FOL.\n\nIf more context is needed about James & Jack's situation in a formal logic setup that doesn't conflict with given premises, please provide additional clarification.\n```",
+      "perplexity": 2.843284845352173,
+      "generation_time": 56.025502,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"student\", \"worksInLibrary\", \"fromCSDept\", \"hasUniJob\", \"takesDBCourse\", \"instructedByDavid\", \"workingInLab\"],\n\"fol_consts\": [\"James\", \"Jack\"],\n\"fol_rules\": [\n    \"\\u03A9x (student(x) \\u2227 worksInLibrary(x)) -> ¬fromCSDept(x)\",\n    \"\\u03A9x hasUniJob(x) -> worksInLibrary(x)\",\n    \"\\u03A9x takesDBCourse(x) -> fromCSDept(x)\",\n    \"\\u03A9x instructedByDavid(x) -> takesDBCourse(x)\",\n    \"\\u03A9x workingInLab(x) -> instructedByDavid(x)\"\n],\n\"fol_conc\": \"¬takesDBCourse(Jack)\" ,\"\\n\\nNote: The conclusion provided in the problem statement needs to be negated as per your requirement. However, based on premises given and rules derived from them, Jack not taking database course seems contradictory.\\n\"\n     :[\"The natural language statements lead us to expect that if we follow all given conditions correctly, then Jack should indeed take the database course which contradicts provided conclusion.\"]\n}",
+      "perplexity": 2.705627918243408,
+      "generation_time": 34.413263,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Student(x)\", \"WorksInLibrary(x)\", \"FromComputerScienceDepartment(x)\",\n  \"PartTimeJobUniversityOffered(x, y)\", \"TakesDatabaseCourse(x)\", \"InstructedByProfessorDavid(x)\"], \n\"fol_consts\": [\"jack\", \"james\", \"university1\", \"professordavid\"], \n\"fol_rules\": [\n    \"∀x (Student(x) ∧ WorksInLibrary(x)) → ¬FromComputerScienceDepartment(x)\",\n    \"∀y ∀z ((PartTimeJobUniversityOffered(y, z) ∧ Student(z))) → WorksInLibrary(z)\", \"Sheep(s1) ∧ EatsGrass(g1) ⊕ Sheep(s2) ∧ EatsGrass(g2)\"\n    , \"(TakesDatabaseCourse(x)) → FromComputerScienceDepartment(x)\",\n    \"∀x ((Student(x) ∧ InstructedByProfessorDavid(x))) → TakesDatabaseCourse(x)\", \"ThatIsNotPossibleInNature(x, y)\" ,\"¬PartTimeJobUniversityOffered(university1, jack) ∧ ¬WorksInLibrary(jack)\"\n], \n\"fol_conc\": \"(TakesDatabaseCourse(jack))\"\n}",
+      "perplexity": 2.9485790729522705,
+      "generation_time": 32.325345,
+      "error_message": null
+    }
+  },
+  {
+    "id": 161,
+    "nl_problem": {
+      "context": [
+        "If George likes music, he wants to compose.",
+        "If George has access to a program, he can compose.",
+        "If George can compose and wants to compose, he will compose."
+      ],
+      "question": "If George likes music and has access to a program, he will compose.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"LikesMusic(george)\", \"WantsToCompose(george)\", \"HasAccessProgram(george)\", \"CanCompose(george)\", \"WillCompose(george)\"],\n\"fol_consts\": [\"george\"],\n\"fol_rules\": [\n    \"(∀ x ( LikesMusic(x) → WantsToCompose(x)))\",\n    \"(∃ program ( HasAccessProgram(program, george) → CanCompose(george)))\",\n    \"(CanCompose(george) ∧ WantsToCompose(george)) → WillCompose(george)\"\n],\n\"fol_conc\": \"((LikesMusic(george) ∧ ∃ program (HasAccessProgram(program, george)))) → WillCompose(george)\"\n}",
+      "perplexity": 1.4011285305023193,
+      "generation_time": 18.440269,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"LikesMusic(george)\", \"WantsToCompose(george)\", \"HasAccessProgram(george)\", \"CanCompose(george)\", \"WillCompose(george)\"],\n\"fol_consts\": [\"george\"],\n\"fol_rules\": [\n    \"∀x ( LikesMusic(x) → WantsToCompose(x))\",\n    \"∀y ( HasAccessProgram(y) → CanCompose(y))\",\n    \"∀z ( CanCompose(z) ∧ WantsToCompose(z) → WillCompose(z))\"\n],\n\"fol_conc\": \"∀w (LikesMusic(w) ∧ HasAccessProgram(w) → WillCompose(w))\"\n}",
+      "perplexity": 1.475136399269104,
+      "generation_time": 18.372935,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"LikesMusic(george)\", \"AccessProgram(george)\", \"WantsCompose(george)\", \"CanCompose(george)\", \"WillCompose(george)\"], \n\"fol_consts\": [\"george\"], \n\"fol_rules\": [\n    \"(LikesMusic(george)) → (WantsCompose(george))\", \"ThatGeorgeLikeMusicImpliesHeWantToComposeIfGeorgeLikesMusicThenHewantsComposesThatIsImplicationBetweenTwoPredicatesWithTheSameEntityGeorgedefinedInConstsSectionAndRuleExpressesFirstPremiseOfNLPremisesHereWeAreUsingPredicateWantscomposeDefinedInTheFolpredsWithArgumentgeorgeWhichRepresentsSpecificIndividualNamedGeorgeAccordingToProblemStatementLikemusicAlsoReferredAsAVariableWhoseValueIsDependentOnWhetherOrNotGeorgesLikesMusicInContextGivenByTheNLStatementsSimilarlyRulesForSecondAndThirdPremiseFollowSamePatternWithDifferentPredicatesDefinedInTheFolpredsSectionRepresentingVariousActionsOfGeorgesIfClauseInEachRuleExpressedUsingImplicationOperatorBetweenTwoPropositionsWithEntitiesMatchingThoseUsedInOtherPartsOfFormulaToMaintainConsistencyAcrossAllFormulasWhileAlsoEnsuringThatTheyAccuratelyReflectMeaningsExpressedNLStatementsHereIsOurFirstPremiseConvertedIntoFOLFormatWhereLikesMusicRepresentsWhetherOrNotGeorgesInterestedComposingAndWantsComposeExpressesHisDesireDoSoBasedOnInformationGivenInNLPremisesWithImplicationOperatorWeConnectTheseTwoPredicatesToFormRuleRepresentingRelationshipBetweenThemDefinedByProblemStatementSimilarlyOtherRulesWillFollowThisSameStructureUsingAppropriatePredicateDefinitionsFromFolpredsSectionAccordinglyForNextPremiseAndConclusionLikewiseWeshallConvertRemainingPartsNLIntoLogicalExpressionsFollowingSimilarProcedureUsedHereWithRespectTopredicateDefinitionquantifierusageandoverallstructureofFormulasToRepresentMeaningsofGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAndConcisenessWeHaveProvidedImageExplainStepByStepsOfConversionProcessHereWithExplanationOfHowPredicatesQuantifiersEntitiesUsedToFormLogicalExpressionsRepresentingGivenNLPremisesInMostAccurateWayPossibleWhileAlsoEnsuringThatTheyAreExpressedUsingAllowedSymbolsOperatorsDefinedRulesSectionForSakeClarityAnd",
+      "perplexity": 2.0488951206207275,
+      "generation_time": 136.15283,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 162,
+    "nl_problem": {
+      "context": [
+        "If George likes music, he wants to compose.",
+        "If George has access to a program, he can compose.",
+        "If George can compose and wants to compose, he will compose."
+      ],
+      "question": "If George will not compose, George can not compose.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Likes(George, music)\", \"WantsToCompose(George)\", \"HasAccessToProgram(George)\", \"CanCompoase(George)\", \"WillCompose(George)\"],\n\"fol_consts\": [\"George\", \"music\"],\n\"fol_rules\": [\n    \"∀x ( Likes(x, music) → WantsToCompose(x))\",\n    \"∀x ( HasAccessToProgram(x) → CanCompouse(x))\",\n    \"∀x (CanCompoase(x) ∧ WantsToCompose(x) → WillCompose(x))\"\n],\n\"fol_conc\": [\"¬WillCompose(George) → ¬CanCompouse(George)\"]\n}",
+      "perplexity": 1.4825481176376343,
+      "generation_time": 17.750222,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Likes(george, music)\", \"WantsToCompose(george)\", \"HasAccess(george, program)\", \"CanCompose(george)\", \"WillNotCompose(george)\"],\n\"fol_consts\": [\"music\", \"program\", \"george\"],\n\"fol_rules\": [\n    \"(∀ x ∀ y (Likes(x,y) → WantsToCompose(x)))\",\n    \"(∀ z (∀ w HasAccess(w,z) → CanCompose(z)))\",\n    \"(∀ u ((CanCompose(u) ∧ WantsToCompose(u)) → WillNotCompose(u)))\"\n],\n\"fol_conc\": [\"(¬ CanCompose(george) ↔ ¬ WillNotCompose(george))\"]\n}",
+      "perplexity": 1.8567492961883545,
+      "generation_time": 20.473907,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Likes(x, y)\", \"WantsToCompose(x)\", \"HasAccess(x, z)\", \"CanCompose(x)\", \"WillCompose(x)\"], \n\"fol_consts\": [\"george\", \"music\", \"program1\"], \n\"fol_rules\": [\n    \"∀x ∀y (Likes(george, music) → WantsToCompose(george))\",\n    \"∀x ∀z (HasAccess(george, program1) → CanCompose(george))\",\n    \"∀x ((CanCompose(x) ∧ WantsToCompose(x)) → WillCompose(x))\"\n], \n\"fol_conc\": \"¬WillCompose(george) → ¬CanCompose(george)\"\n}",
+      "perplexity": 1.49184250831604,
+      "generation_time": 19.837641,
+      "error_message": null
+    }
+  },
+  {
+    "id": 163,
+    "nl_problem": {
+      "context": [
+        "A hawk never lands. ",
+        "Some birds are hawks."
+      ],
+      "question": "All birds land",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Bird(x)\", \"Hawk(y)\", \"Lands(z)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀x (Hawk(x) → ¬ Lands(x))\",\n    \"∃y (Bird(y) ∧ Hawk(y))\"\n],\n\"fol_conc\": \"∀z Bird(z) → Lands(z)\"\n}",
+      "perplexity": 1.3564804792404175,
+      "generation_time": 9.19413,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Hawk(x)\", \"Birds(x)\", \"Land(x)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"¬∃x Hawk(x) ∧ Land(x)\",\n    \"∃y Bird(y) ∧ Hawk(y)\"\n],\n\"fol_conc\": [\"∀z Birds(z) → Land(z)\"]\n}",
+      "perplexity": 1.7931252717971802,
+      "generation_time": 9.817192,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Bird(x)\", \"Hawk(x)\", \"Lands(x)\"], \n\"fol_consts\": [ \"nil\" ], \n\"fol_rules\": [\n    \"∀x (Hawk(x) → ¬Lands(x))\", \"Thathawkneverlandedrule14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024nil14673589020138442024",
+      "perplexity": 1.2212285995483398,
+      "generation_time": 136.51358,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 164,
+    "nl_problem": {
+      "context": [
+        "On some Mondays at 8 pm, roses are given out on TV.",
+        "Every rose given out on TV is on the Bachelor.",
+        "Everything on the Bachelor portrays the lives of real people.",
+        "All shows portraying the lives of real people are reality TV shows.",
+        "Breaking Bad is not a reality TV show."
+      ],
+      "question": "Breaking Bad is on Monday at 8 pm.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Monday(time)\", \"GivenOutTV(rose, time)\", \"OnBachelor(x)\", \"PortraysRealPeople(x)\", \"RealityTVCShow(show)\"],\n\"fol_consts\": [\"BreakingBad\", \"rose1\", \"time1\"],\n\"fol_rules\": [\n    \"∃t ∀r (Monday(t) ∧ GivenOutTV(r,t)) → OnBachelor(r)\",\n    \"∀x OnBachelor(x) ↔ PortraysRealPeople(x)\",\n    \"∀s PortraysRealPeople(s) → RealityTVCShow(s)\",\n    \"¬RealityTVCShow(BreakingBad)\"\n],\n\"fol_conc\": \"Monday(time1) ∧ GivenOutTV(rose1, time1) ∧ BreakingBad = rose1\"\n}",
+      "perplexity": 1.4261471033096313,
+      "generation_time": 19.017594,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Monday(x)\", \"Time8pm(y)\", \"GivenOutTV(z, x, y)\", \"Rose(w)\", \"OnBachelor(u)\", \"PortraysRealPeople(v)\", \"RealityShow(t)\"],\n\"fol_consts\": [\"BreakingBad(a)\"],\n\"fol_rules\": [\n    \"∀x ∀y ∃z (Monday(x) ∧ Time8pm(y)) → GivenOutTV(z, x, y)\",\n    \"∀w ∀u (GivenOutTV(w, u) ∧ Rose(w)) → OnBachelor(u)\",\n    \"∀v PortraysRealPeople(v) → RealityShow(v)\"\n],\n\"fol_conc\": [\n    \"¬RealityShow(BreakingBad(a))\"\n]\n}",
+      "perplexity": 1.8036807775497437,
+      "generation_time": 20.61919,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Monday(time)\", \"GivenOutTV(rose, time)\", \"OnBachelor(show)\", \"PortraysRealLives(show)\", \"RealityShow(tvshow)\"], \n\"fol_consts\": [\"roses\", \"monday8pm\", \"breakingbad\"], \n\"fol_rules\": [\n    \"∀x ∃y (Monday(y) ∧ GivenOutTV(x, y))\",\n    \"∀z ∀w (GivenOutTV(z, w) → OnBachelor(show))\",\n    \"∀u (OnBachelor(u) → PortraysRealLives(u))\", \"SheepError1234567890ABCDHereToAvoidCollisionsWithCorrectCodePortrayingRealPeopleIsNotARelationshipBetweenTwoEntitiesSoItShouldBeFormulatedAsAPropertyOfShowUInsteadAndThePredicateNameShouldReflectThatChangeAlsoNoteThatBreakingBadBeingOnBachelorWouldContradictGivenInformationThusThisStatementNeedsRewordingOrClarificationInContextualTermsHoweverSinceWeAreOnlyRequiredToTranslateIntoFOLWithoutProofOrDisproofLetUsMaintainCorrectFormulationWithAttentionToPredicatesEntitiesRulesAndLogicalConnectivesWhileEnsuringComplianceWithTheGuidelinesProvidedForConvertingNLProblemToFOLLetsEnsureThatPortraysRealLivesIsProperlyAppliedAsAPropertyOfShowUInsteadOfBeingAnImplicationBetweenTwoSeparateShowsOrActivitiesInContextualTermsItShouldReflectOnBachelorRealityTVRelationshipWithoutDirectLogicalContradictionsGivenAvailableInformationSoLetUsFormulateThisRuleStrictlyBasedOnGuidelinesProvidedAndEnsurePredicatesEntitiesRulesAreCorrectForTranslationIntoFOLWhileAvoidingRedundantStatementsThatDoNotAccuratelyRepresentNLPremisesOrConclusionInFirstOrderLogicFormatMaintainingComplianceWithTheRulesOfConversionFromNaturalLanguageToLogicalExpressionsBreakingBadBeingABreakingBadShowDoesntDirectlyImplyItIsOnBachelorButGivenInformationSuggestsFocusShouldBeRealityTVShowsAndTheirPropertiesThusLetUsFormulateThisRuleStrictlyBasedOnProvidedGuidelinesWithoutIncorporatingRedundantStatementsThatContradictNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfOnBachelorRealityTVRelationshipWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSoHereIsAProperRefinementOfPortraysRealLivesRuleReflectiveOfRealityTVShowsPropertiesWithoutDirectLogicalContradictionsAndMaintainingAccurateRepresentationBasedOnProvidedNLPremisesOrConclusionInFirstOrderLogicFormatWhileEnsuringPredicatesEntitiesRulesAreCorrectForConversionIntoFOLComplyingWithTheGivenInstructionsSo",
+      "perplexity": 2.0406007766723633,
+      "generation_time": 136.84131,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 165,
+    "nl_problem": {
+      "context": [
+        "On some Mondays at 8 pm, roses are given out on TV.",
+        "Every rose given out on TV is on the Bachelor.",
+        "Everything on the Bachelor portrays the lives of real people.",
+        "All shows portraying the lives of real people are reality TV shows.",
+        "Breaking Bad is not a reality TV show."
+      ],
+      "question": "Breaking Bad is a TV show in which roses are given out on Monday at 8 pm.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"RosesGivenOutOnTV(Monday, Time)\", \"RoseIsBachelor(Rose)\", \"PortraysLivesOfRealPeople(Show)\", \"RealityTVShow(Show)\"],\n\"fol_consts\": [\"Monday\", \"8pm\", \"BreakingBad\", \"roses\"],\n\"fol_rules\": [\n    \"∃x ∃y RosesGivenOutOnTV(x, y)\",\n    \"∀z (RosesGivenOutOnTV(z, t1) → RoseIsBachelor(t2))\",\n    \"∀s (RoseIsBachelor(s) ∧ PortraysLivesOfRealPeople(s))\",\n    \"∀p (PortraysLivesOfRealPeople(p) → RealityTVShow(p))\",\n    \"¬RealityTVShow(BreakingBad)\"\n],\n\"fol_conc\": [\"BreakingBad = roses ∧ RosesGivenOutOnTV(Monday, 8pm)\"]\n}",
+      "perplexity": 1.4723955392837524,
+      "generation_time": 23.00961,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"RoseOnTV(r, m)\", \"Monday(m)\", \"Bachelor(b)\", \"PortraysRealLife(p)\", \"RealityShow(rs)\"],\n\"fol_consts\": [\"bb\", \"r123\"],\n\"fol_rules\": [\n    \"\\u00ac\\u0004 Monday(m), RoseOnTV(r, m)\\u007d \\u2192 Bachelor(b)\",\n    \"\\u00AC\\b PortraysRealLife(p) \\u00AF RealityShow(rs) \\u00A8\",\n    \"RealityShow(bb)\"\n],\n\"fol_conc\": [\"\\u00ac\\u003b Monday(m), RoseOnTV(r, m)\\nbb\\nRealityShow(bb)\\u007d\"]\n}",
+      "perplexity": 2.9468002319335938,
+      "generation_time": 22.324964,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"RosesGivenOutOnTV(day, time)\", \"Bachelor(rose)\", \"PortraysRealPeople(show)\", \"RealityShow(portray)\"], \n\"fol_consts\": [\"monday\", \"tuesday\", \"8pm\", \"roses\", \"bachelor\", \"breakingbad\"], \n\"fol_rules\": [\n    \"∀x (Monday(x) ∧ TimeString(x, 8pm)) → RosesGivenOutOnTV(monday, x)\", \"∀y (Roses(y) ∧ RosesGivenOutOnTV(day, y)) → Bachelor(roses)\", \"∀z (Bachelor(z) ↔ PortraysRealPeople(bachelor))\", \"∀w (PortraysRealPeople(w) → RealityShow(realpeople))\"\n], \n\"fol_conc\": \"¬RealityShow(breakingbad)\"\n}",
+      "perplexity": 2.245969533920288,
+      "generation_time": 22.829335,
+      "error_message": null
+    }
+  },
+  {
+    "id": 166,
+    "nl_problem": {
+      "context": [
+        "On some Mondays at 8 pm, roses are given out on TV.",
+        "Every rose given out on TV is on the Bachelor.",
+        "Everything on the Bachelor portrays the lives of real people.",
+        "All shows portraying the lives of real people are reality TV shows.",
+        "Breaking Bad is not a reality TV show."
+      ],
+      "question": "If roses are given out during Breaking Bad, then it is on Monday at 8 pm.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Monday\", \"GivenOut(x, y)\", \"OnBachelor(x)\", \"PortrayLivesRealPeople(x)\", \"RealityTVShow(x)\"],\n\"fol_consts\": [\"roses\", \"BreakingBad\", \"8pm\"],\n\"fol_rules\": [\n    \"∀x ∀y (Monday(x) ∧ GivenOut(roses, 8pm)) → OnBachelor(y)\",\n    \"∀z ((OnBachelor(z)) → PortrayLivesRealPeople(z))\",\n    \"∀w (((PortrayLivesRealPeople(w))) → RealityTVShow(w))\"\n],\n\"fol_conc\": [\"GivenOut(roses,BreakingBad) ∧ ¬RealityTVShow(BreakingBad) → Monday(x)\" ]\n}",
+      "perplexity": 1.6068110466003418,
+      "generation_time": 18.85118,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"RosesGivenOutTV(m, r)\", \"OnTheBachelor(r)\", \"PortraysRealLives(s)\", \"RealityTVPShow(p)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀m ∀r (Mondays(m) ∧ At8pm(m) → RosesGivenOutTV(m, r))\",\n    \"∀r (RosesGivenOutTV(_, r) → OnTheBachelor(r))\",\n    \"∀s (OnTheBachelor(s) → PortraysRealLives(s))\",\n    \"∀p (PortraysRealLives(p) → RealityTVPShow(p))\"\n],\n\"fol_conc\": [\"¬RealityTVPShow(BreakingBad)\", \"∃m ∃r RosesGivenOutTV(m, r) ∧ During(BreakingBad, m) → Mondays(m) ∧ At8pm(m)\"]\n}",
+      "perplexity": 1.58729887008667,
+      "generation_time": 25.440212,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"MondayNight(x)\", \"RosesGivenOutOnTV(y, x)\", \"RoseIsBachelor(z, y)\", \"PortraysRealPeople(a, z)\", \"RealityTVShow(b, a)\"], \n\"fol_consts\": [\"roses\", \"breakingbad\"], \n\"fol_rules\": [\n    \"∀x ∃y (MondayNight(x) ∧ TVTime(8pm, x)) → RosesGivenOutOnTV(y, x)\",\n    \"∀z ∀y (RosesGivenOutOnTV(y, z) → RoseIsBachelor(z, y))\",\n    \"∀a ∀z (RoseIsBachelor(a, z) → PortraysRealPeople(a, z))\",\n    \"∀b ∀a (PortraysRealPeople(b, a) → RealityTVShow(b, a))\"\n], \n\"fol_conc\": \"∃x ∃y ((MondayNight(x) ∧ TVTime(8pm, x)) → RosesGivenOutOnTV(y, breakingbad) ↔ RoseIsBachelor(breakingbad, y))\"\n}",
+      "perplexity": 1.8458281755447388,
+      "generation_time": 29.343994,
+      "error_message": null
+    }
+  },
+  {
+    "id": 167,
+    "nl_problem": {
+      "context": [
+        "Heinrich Scmidt was a Nazi German politician. ",
+        "Heeinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag."
+      ],
+      "question": "Heinrich Schmidt was either German or Russian.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Politician(x)\", \"MemberOfParliament(x, y)\", \"NaziGerman(x)\", \"Russian(x)\"],\n\"fol_consts\": [\"HeinrichScmidt\", \"PrussianStateParliament\", \"NaziReichstag\"],\n\"fol_rules\": [\n    \"Politician(HeinrichScmidt)\",\n    \"MemberOfParliament(HeinrichScmidt, PrussianStateParliament)\",\n    \"MemberOfParliament(HeinrichScmidt, NaziReichstag)\"\n],\n\"fol_conc\": [\"NaziGerman(HeinrichScmidt) ⊕ Russian(HeinrichScmidt)\"]\n}",
+      "perplexity": 1.177066445350647,
+      "generation_time": 16.837694,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"MemberOfParliament(x, y)\", \"Nazi(x)\", \"German(x)\", \"Russian(x)\"],\n\"fol_consts\": [\"HeinrichScmidt\", \"PrussianStateParliament\", \"NaziReichstag\"],\n\"fol_rules\": [\n    \"Politician(HeinrichScmidt)\",\n    \"MemberOfParliament(HeinrichScmidt, PrussianStateParliament)\",\n    \"MemberOfParliament(HeinrichSc Schmidt,NaziReichstag)\", \"Nazi(HeinrichSchmidt)\"\n],\n\"fol_conc\": \"\\u03A9\\u221D x (Politician(x) \\u2227 MemberOfParliament(x, PrussianState Parliament)\\n       \\u2227 Member OfParliament(x,NaziReichstag)  -> Nazi(x))\\n-> ((German(HeinrichScmidt) \\u03A8 Russian (H einrichScmidt)))\"\n}",
+      "perplexity": 2.105461359024048,
+      "generation_time": 29.104447,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"MemberOfParliament(x, y)\", \"NaziPartyMembership(x)\", \"GermanCitizen(y)\", \"RussianCitizen(z)\"], \n\"fol_consts\": [\"heinrichscmidt\", \"prussianstateparliament\", \"nazireichstag\"], \n\"fol_rules\": [\n    \"Politician(heinrichscmidt)\",\n    \"MemberOfParliament(heinrichscmidt, prussianstateparliament)\", \"MemberOfParliament(heinrichscmidt, nazireichstag)\",\n    \"NaziPartyMembership(heinrichscmidt)\"\n], \n\"fol_conc\": \"(GermanCitizen(heinrichscmidt) ⊕ RussianCitizen(heinrichscmidt))\"\n}",
+      "perplexity": 1.6499035358428955,
+      "generation_time": 21.543084,
+      "error_message": null
+    }
+  },
+  {
+    "id": 168,
+    "nl_problem": {
+      "context": [
+        "Heinrich Scmidt was a Nazi German politician. ",
+        "Heeinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag."
+      ],
+      "question": "Some Nazi German politician was part of both the Prussian State Parliament and the Nazi Reichstag.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Politician(x)\", \"Nazi_German(y)\", \"MemberOfParliament(z, p1)\", \"MemberOfReichstag(w, r2)\"],\n\"fol_consts\": [\"Heinrich_Scmidt(hs)\"],\n\"fol_rules\": [\n    \"Politician(hs) ∧ Nazi_German(hs)\",\n    \"MemberOfParliament(hs, Prussian_State_Parliament(psp))\",\n    \"MemberOfReichstag(hs, Nazi_Reichstag(nr))\"\n],\n\"fol_conc\": [\"∃x (Politician(x) ∧ Nazi_German(x) ∧ MemberOfParliament(x, p1) ∧ MemberOfReichstag(x, r2))\"]\n}",
+      "perplexity": 1.472205638885498,
+      "generation_time": 18.472444,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"Nazi_German(y)\", \"MemberOfParliament(z, w1)\", \"MemberOfReichstag(a, w2)\"],\n\"fol_consts\": [\"heinrich_schmidt\"],\n\"fol_rules\": [\n    \"Politician(heinrich_schmidt)\",\n    \"Nazi_German(heinrich_schmidt)\",\n    \"MemberOfParliament(heinrich_schmidt, prussian_state_parliament)\",\n    \"MemberOfReichstag(heinrich_schmidt, nazi_reichstag)\"\n],\n\"fol_conc\": \"\\u2203 x (Politician(x) \\u2227 Nazi_German(x) \\u2227 MemberOfParliament(x, prussian_state_parliament) \\u2227 MemberOfReichstag(x, nazi_reichstag))\"\n}",
+      "perplexity": 1.274822473526001,
+      "generation_time": 26.304292,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"NaziGerman(y)\", \"MemberOfParliament(z, w1)\", \"MemberOfReichstag(a, w2)\"], \n\"fol_consts\": [\"heinrichscmidt\", \"prussiastateparlament\", \"nazireichstag\"], \n\"fol_rules\": [\n    \"Politician(heinrichscmidt)\",\n    \"NaziGerman(heinrichscmidt)\", \"SheeinrichScmidtwasalsoamemberofthePrussianStateParliamentandtheNaziReichstagMemberOfParliament(heinrichscmidt, prussiastateparlament)\",\n    \"MemberOfParliament(heinrichscmidt, prussiastateparlament)\", \"SheeinrichScmidtwasalsoamemberofthePrussianStateParliamentandtheNaziReichstagMemberOfReichstag(heinrichscmidt, nazireichstag)\"\n], \n\"fol_conc\": \"∃x (Politician(x) ∧ NaziGerman(x) ∧ MemberOfParliament(x, prussiastateparlament) ∧ MemberOfReichstag(x, nazireichstag))\"\n}",
+      "perplexity": 1.709024429321289,
+      "generation_time": 33.582304,
+      "error_message": null
+    }
+  },
+  {
+    "id": 169,
+    "nl_problem": {
+      "context": [
+        "Heinrich Scmidt was a Nazi German politician. ",
+        "Heeinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag."
+      ],
+      "question": "No politicans are part of the Nazi Reichstag.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Politician(x)\", \"Nazi_German_Politician(x)\", \"Member_of_Prussian_State_Parliament(x)\", \"Member_of_Nazi_Reichstag(x)\"],\n\"fol_consts\": [\"Heinrich_Schmidt\"],\n\"fol_rules\": [\n    \"Politician(Heinrich_Schmidt)\",\n    \"Nazi_German_Politician(Heinrich_Schmidt)\",\n    \"Member_of_Prussian_State_Parliament(Heinrich_Schmidt) ∨ Member_of_Nazi_Reichstag(Heinrich_Schmidt)\"\n],\n\"fol_conc\": [\"∀x (Politician(x) → ¬Member_of_Nazi_Reichstag(x))\"]\n}",
+      "perplexity": 1.17792546749115,
+      "generation_time": 18.666745,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"MemberOfParliament(x, y)\", \"NaziReichstag(y)\"],\n\"fol_consts\": [\"HeinrichScmidt\", \"PrussianStateParliament(1)\", \"NaziReichstag(1)\"],\n\"fol_rules\": [\n    \"Politician(HeinrichScmidt)\",\n    \"MemberOfParliament(HeinrichScmidt, PrussianStateParliament(1))\",\n    \"MemberOfParliament(HeinrichScmidt, NaziReichstag(1))\"\n],\n\"fol_conc\": [\"∀x (Politician(x) → ¬NaziReichstag(x))\"]\n}",
+      "perplexity": 1.2798652648925781,
+      "generation_time": 19.469669,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Politician(x)\", \"NaziGerman(x)\", \"MemberOfParliament(x, y)\", \"Reichstag(n)\"], \n\"fol_consts\": [\"heinrich\", \"schmidt\", \"prussia\", \"nazireichstag\"], \n\"fol_rules\": [\n    \"Politician(schmidt) ∧ NaziGerman(schmidt)\",\n    \"MemberOfParliament(heinrich, prussianstateparliament) → MemberOfParliament(heinrich, nazireichstag)\"\n], \n\"fol_conc\": \"¬(∃x ∃y (Politician(x) ∧ Reichstag(y) ∧ MemberOfParliament(x, y)))\"\n}",
+      "perplexity": 1.832951307296753,
+      "generation_time": 19.4489,
+      "error_message": null
+    }
+  },
+  {
+    "id": 170,
+    "nl_problem": {
+      "context": [
+        "If something is a deadly disease, then its survival rate is low. ",
+        "All severe cancers are deadly diseases.",
+        "Bile duct cancer is a severe cancer. ",
+        "All Cholangiocarcinoma is bile duct cancer.",
+        "No one with mild flu has a low survival rate.",
+        "If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer."
+      ],
+      "question": "Colorectal cancer is a severe cancer",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"DeadlyDisease(x)\", \"SurvivalRateLow(x)\", \"SevereCancer(x)\", \"Bileductcancer(x)\", \"Cholangiocarcinoma(x)\", \"Mildflu(x)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀x (DeadlyDisease(x) → SurvivalRateLow(x))\",\n    \"∀x (SevereCancer(x) → DeadlyDisease(x))\",\n    \"Bileductcancer(bdc)\",\n    \"Cholangiocarcinoma(cc) ∧ Bileductcancer(cc)\",\n    \"¬∃y Mildflu(y) ∧ ¬SurvivalRateLow(y)\",\n    \"Colorectalcancer(crc) ∧ SurvivalRateLow(crc) → ¬(crc = cc)\"\n],\n\"fol_conc\": [\"SevereCancer(colorectal_cancer)\"]\n}",
+      "perplexity": 1.52753484249115,
+      "generation_time": 22.485884,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"DeadlyDisease(x)\", \"SurvivalRateLow(x)\", \"SevereCancer(x)\", \"BileDuctCancer(x)\", \"Cholangiocarcinoma(x)\", \"MildFlu(x)\", \"NotColorectalBileDuctAndSurvivalLow(x)\"],\n\"fol_consts\": [\"colorectal_cancer\", \"mild_flu\"],\n\"fol_rules\": [\n    \"\\forall x (DeadlyDisease(x) \\\\to SurvivalRateLow(x))\",\n    \"\\forall x (SevereCancer(x) \\\\to DeadlyDisease(x))\",\n    \"\\forall x (BileDuctCancer(x) \\\\to SevereCancer(x))\",\n    \"\\forall x (Cholangiocarcinoma(x) \\\\to BileDuctCancer(x))\",\n    \"\\forall x (MildFlu(x) \\\\to \\\\neg SurvivalRateLow(x))\"\n],\n\"fol_conc\": \"SevereCancer(colorectal_cancer)\"\n}",
+      "perplexity": 1.3258702754974365,
+      "generation_time": 29.030923,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"DeadlyDisease(x)\", \"LowSurvivalRate(x)\", \"SevereCancer(x)\", \"BileDuctCancer(x)\", \"Cholangiocarcinoma(x)\", \"MildFlu(x)\", \"ColorectalIsBDCColAndLSR(col, bdc)\"], \n\"fol_consts\": [\"colorectal\", \"bileductcancer\"], \n\"fol_rules\": [\n    \"∀x (DeadlyDisease(x) → LowSurvivalRate(x))\",\n    \"∀y (SevereCancer(y) → DeadlyDisease(y))\",\n    \"BileDuctCancer(bileductcancer)\",\n    \"Cholangiocarcinoma(colorectal) ∧ BileDuctCancer(colorectal)\", \"Sheep(bale)\", \"Shepherd(tom)\" , \"(∀x (ColorectalIsBDCColAndLSR(x, bileductcancer)) → ¬BileDuctCancer(x))\"\n], \n\"fol_conc\": \"SevereCancer(colorectal)\"\n}",
+      "perplexity": 2.006669044494629,
+      "generation_time": 30.310687,
+      "error_message": null
+    }
+  },
+  {
+    "id": 171,
+    "nl_problem": {
+      "context": [
+        "If something is a deadly disease, then its survival rate is low. ",
+        "All severe cancers are deadly diseases.",
+        "Bile duct cancer is a severe cancer. ",
+        "All Cholangiocarcinoma is bile duct cancer.",
+        "No one with mild flu has a low survival rate.",
+        "If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer."
+      ],
+      "question": "If colorectal cancer is a bile duct cancer or a Cholangiocarcinoma, then colorectal cancer is a bile duct cancer and a mild flu.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"DeadlyDisease\", \"SurvivalRateLow\", \"SevereCancer\", \"BileDuctCancer\", \"Cholangiocarcinoma\", \"MildFlu\"],\n\"fol_consts\": [\"ColorectalCancer\", \"BileDuctCancerType1\"], \n\"fol_rules\": [\n    \"\\u2203 x (DeadlyDisease(x) \\u2194 SurvivalRateLow(x))\",\n    \"\\u2203 y (SevereCancer(y) \\u2192 DeadlyDisease(y))\",  \n    \"BileDuctCancer(ColorectalCancer)\",\n    \"Cholangiocarcinoma(BileDuctCancerType1)\", \n    \"\\u2203 z (\\u00ac MildFlu(z) \\u2194 SurvivalRateLow(z))\"\n],\n\"fol_conc\": [\"\\u2203 c (BileDuctCancer(c) \\u2286 ColorectalCancer \\u2227 Cholangiocarcinoma(ColorectalCancer)) \\u2192 (\\u00ac MildFlu(ColorectalCancer) \\u2227 BileDuctCancer(ColorectalCancer))\"]\n}",
+      "perplexity": 1.423163652420044,
+      "generation_time": 34.313693,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"deadlyDisease(x)\", \"survivalRateLow(x)\", \"severeCancer(x)\", \"bileDuctCancer(x)\", \"cholangiocarcinoma(x)\", \"mildFluSurvivabilityHigh(y)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀x(deadlyDisease(x) → survivalRateLow(x))\",\n    \"∀y(severeCancer(y) → deadlyDisease(y))\",\n    \"severeCancer(bileductcancer)\",\n    \"cholangiocarcinoma(cholangiocarcino) ∧ bileDuctCancer(bileductcancer) ∧ cholangiocarcinoma(bileductcancer)\",\n    \"∀z(mildFluSurvivabilityHigh(z))\"\n],\n\"fol_conc\": [\"colorectalcancer → (bileDuctCancer(colorectalcancer) ∨ cholangiocarcinoma(colorectalcancer)) ∧ bileDuckCancer(colorectal cancer)\"]\n}",
+      "perplexity": 1.6696120500564575,
+      "generation_time": 30.462203,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"DeadlyDisease(x)\", \"SurvivalRateLow(x)\", \"SevereCancer(x)\", \"BileDuctCancer(x)\", \"Cholangiocarcinoma(x)\", \"MildFlu(y)\", \"ColorectalCancer(z)\"], \n\"fol_consts\": [\"colorectal\", \"flu\", \"cholangiocarcinoma\"], \n\"fol_rules\": [\n    \"∀x (DeadlyDisease(x) → SurvivalRateLow(x))\",\n    \"∀y (SevereCancer(y) ∧ DeadlyDisease(y))\",\n    \"BileDuctCancer(colorectal)\",\n    \"Cholangiocarcinoma(flu)\", \"Whencoliisbileandlowthennotbile(ocoli, flu)\"\n    ], \n\"fol_conc\": \"(ColorectalCancer(z) → (DeadlyDisease(z))) ∧ (MildFlu(cholangiocarcinoma))\"\n}",
+      "perplexity": 2.5170323848724365,
+      "generation_time": 28.282118,
+      "error_message": null
+    }
+  },
+  {
+    "id": 172,
+    "nl_problem": {
+      "context": [
+        "If something is a deadly disease, then its survival rate is low. ",
+        "All severe cancers are deadly diseases.",
+        "Bile duct cancer is a severe cancer. ",
+        "All Cholangiocarcinoma is bile duct cancer.",
+        "No one with mild flu has a low survival rate.",
+        "If colorectal cancer is a bile duct cancer and the survival rate is low, then colorectal cancer is not a bile duct cancer."
+      ],
+      "question": "If colorectal cancer is not a mild flu and a Cholangiocarcinoma, then colorectal cancer is a bile duct cancer or a Cholangiocarcinoma.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"DeadlyDisease(x)\",\n    \"SurvivalRateLow(x, y)\",\n    \"SevereCancer(x)\",\n    \"BileDuctCancer(x)\",\n    \"MildFlu(x)\",\n    \"ColorectalCancer(x)\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"{DeadlyDisease(x)} → {SurvivalRateLow(x, false)}\",\n    \"{SevereCancer(x)} → {DeadlyDisease(x)}\",\n    \"{BileDuctCancer(bdc_cancer)} ∧ {ColorectalCancer(crc)} → ¬{SurvivalRateLow(crc, true) ∨ BileDuctCancer(crc)}\"\n  ],\n  \"fol_conc\": [\n    \"{¬MildFlu(colorectal), Cholangiocarcinoma(colorectal)} → (BileDuctCancer(colorectal) ∨ {Cholangiocarcinoma(colorectal)})\",\n    \"(ColorectalCancer(crc)) ∧ ¬{DeadlyDisease(crc)}\"\n  ]\n}\n```\n\nLet me clarify and correct the above response to ensure it adheres strictly to your rules for converting natural language into first-order logic formulas:\n\n```json\n{\n  \"fol_preds\": [\n    \"deadly_disease(x)\",\n    \"survival_rate_low(x, y)\", \n    \"severe_cancer(x)\",\n    \"bile_duct_cancer(x)\",\n    \"mild_flu(x)\",\n    \"colorectal_cancer(x)\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"{deadly_disease(d)} → {survival_rate_low(d, false)}\",\n    \"{severe_cancer(s)} → {deadly_disease(s)}\"\n    \"{bile_duct_cancer(bdc)} ∧ {colorectal_cancer(crc)} → ¬{survival_rate_low(crc, true) ∨ bile_duct_cancer(crc)}\"\n  ],\n  \"fol_conc\": [\n   \"(¬mild_flu(x) ∧ colorectal_cancer(x)) → (bile_duct_cancer(x) ∨ cholangiocarcinoma(x))\"\n  ]\n}\n```\n\n**Note**: There are a few adjustments required to properly represent the predicates and constants, as well as ensure that all FOL rules strictly follow your outlined format. Additionally, some corrections were made in how logical expressions should be handled (such as avoiding disjunctions or conjunctions without proper predicates).\n\nThe above JSON represents an attempt at faithfully translating natural language premises into first-order logic formulas while adhering to the specified guidelines and constraints provided by you.\nPlease ensure that \"cholangiocarcinoma\" is appropriately defined within your problem statement, but for simplicity in this context it's assumed as a predicate related directly to colorectal_cancer(x) based on given information.",
+      "perplexity": 2.0360910892486572,
+      "generation_time": 75.137586,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"DeadlyDisease(X)\", \"SurvivalRateLow(X)\", \"SevereCancer(X)\", \"BileDuctCancer(X)\", \"MildFlu(X)\", \"ColorectalIsBDCCancer(X, Y)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀X (DeadlyDisease(X) → SurvivalRateLow(X))\",\n    \"∀X (SevereCancer(X) → DeadlyDisease(X))\",\n    \"BileDuctCancer(BDC)\",\n    \"Cholangiocarcinoma(CC, BDC)\",\n    \"¬∃Y MildFlu(Y) ∧ ¬SurvivalRateLow(Y)\",\n    \"ColorectalIsBDCCancer(CRC1, Y) ↔ SurvivalRateLow(CRC1)\"\n],\n\"fol_conc\": [\"∀X (¬MildFlu(X) ∧ Cholangiocarcinoma(X, BDC)) → (BileDuctCancer(X) ∨ Cholangiocarcinoma(X, BDC))\"]\n}",
+      "perplexity": 1.701623558998108,
+      "generation_time": 30.744778,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"DeadlyDisease(x)\", \"SurvivalRateLow(x)\", \"SevereCancer(x)\", \"BileDuctCancer(x)\", \"MildFlu(y)\", \"Cholangiocarcinoma(z)\"], \n\"fol_consts\": [\"colorectal\", \"bileductcancer\", \"mildflu\"], \n\"fol_rules\": [\n    \"∀x (DeadlyDisease(x) → SurvivalRateLow(x))\",\n    \"∀y (SevereCancer(y) → DeadlyDisease(y))\",\n    \"BileDuctCancer(bileductcancer)\",\n    \"∀z (Cholangiocarcinoma(z) → BileDuctCancer(z))\",\n    \"¬MildFlu(mildflu) ∨ ¬SurvivalRateLow(colorectal)\", \"ThatColorectalIsNotADeadlyDiseaseIfItsBDCAndLowsr(ocolorectalcancer, bileductcancer)\"\n], \n\"fol_conc\": \"((¬Cholangiocarcinoma(colorectal)) ∧ (¬MildFlu(colorectal))) → ((BileDuctCancer(bileductcancer) ∨ Cholangiocarcinoma(colorectal)))\"\n}",
+      "perplexity": 1.830622673034668,
+      "generation_time": 39.092228,
+      "error_message": null
+    }
+  },
+  {
+    "id": 173,
+    "nl_problem": {
+      "context": [
+        "All people who eat salads regularly are very conscious about their health and eating habits.",
+        "All people who grew up in health-conscious childhood homes eat salads regularly.",
+        "All people who fulfill their nutritional daily intakes grew up in health-conscious childhood homes.",
+        "If people have good relationships with their parents, then they fulfill their nutritional daily intakes.",
+        "If people have good relationships with their parents, then they do not eat salads regularly.",
+        "If people visit the gym at least once a day, then they always fulfill their daily nutritional intakes.",
+        "It is either both true that Taylor grew up in a health-conscious childhood home and she has a good relationship with her parents, or it is true that Taylor neither grew up in a health-conscious childhood home nor has a good relationship with her parents."
+      ],
+      "question": "Taylor eats salads regularly.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"EatSaladRegularly(x)\", \"HealthConsciousAboutHabitsAndDiet(x)\",\n              \"GrewUpInHCHome(x)\", \"FulfillNutritionalIntakesDaily(x)\",\n              \"HasGoodRelationshipWithParents(x, y)\", \n              \"VisitTheGymAtLeastOnceADay(x)\"],\n\"fol_consts\": [\"taylor\", \"parents(taylor)\"],\n\n\"fol_rules\": [\n    \"∀x (EatSaladRegularly(x) → HealthConsciousAboutHabitsAndDiet(x))\",\n    \"∀x (GrewUpInHCHome(x) → EatSaladRegularly(x))\",\n    \"∀x (FulfillNutritionalIntakesDaily(x) ↔ GrewUpInHCHome(x))\",\n    \"∀y (∃z HasGoodRelationshipWithParents(z, y) → FulfillNutritionalIntakesDaily(y))\",\n    \"∀y (∃z HasGoodRelationshipWithParents(z,y) ⊕ ¬EatSaladRegularly(y))\", \n    \"∀x (VisitTheGymAtLeastOnceADay(x) ↔ FulfillNutritionalIntakesDaily(x))\"\n],\n\"fol_conc\": [\n    \"(GrewUpInHCHome(taylor) ∧ HasGoodRelationshipWithParents(parents(taylor), taylor)) ⊕ ¬(EatSaladRegularly(taylor) ∨ GrewUpInHCHome(taylor)))\",\n    \"¬EatSaladRegularly(taylor)\"\n]\n}",
+      "perplexity": 1.6219979524612427,
+      "generation_time": 51.268234,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"eatSaladRegularly(x)\", \"healthConsciousAboutEatingHabitsAndHealth(x)\",\n\"grewUpInHealthyHome(x)\", \"fulfillDailyNutritionalIntakes(x)\", \"goodRelationshipWithParents(x)\",\n\"goToGymAtLeastOnceADay(x)\"],\n\"fol_consts\": [\"Taylor\"],\n\"fol_rules\": [\n    \"\\u00aceatSaladRegularly(x)\\u2194\\uAC8ChealthConsciousAboutEatingHabitsAndHealth(x)\", 1\n],\n\"gol_conclusion\": \"eatSaladRegularly(Taylor)\"\n}",
+      "perplexity": 2.624800205230713,
+      "generation_time": 26.300384,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"HealthConsciousHome(x)\", \"GoodRelationshipWithParents(t, x)\", \"EatSaladRegularly(x)\", \"FulfillNutritionalIntakesDaily(x)\", \"VisitGymOftenEnoughToMaintainHealthyDietaryHabits(x)\"], \n\"fol_consts\": [\"taylor\", \"people\"], \n\"fol_rules\": [\n    \"∀x (HealthConsciousHome(x) ∧ GoodRelationshipWithParents(t, x)) ⊕ ¬(HealthConsciousHome(x) ∨ GoodRelationshipWithParents(t, x))\",\n    \"∀y ((GoodRelationshipWithParents(y, taylor))) → ¬EatSaladRegularly(taylor)\",\n    \"VisitGymOftenEnoughToMaintainHealthyDietaryHabits(people) → FulfillNutritionalIntakesDaily(people)\", \"HealthConsciousHome(x) ∧ GoodRelationshipWithParents(t, x) → EatSaladRegularly(x)\", \"∀x (EatSaladRegularly(x)) ⊕ ¬GoodRelationshipWithParents(y, taylor)\",\n    \"FulfillNutritionalIntakesDaily(x) ↔ HealthConsciousChildhoodHomesGrewUpIn(x)\"\n], \n\"fol_conc\": \"EatSaladRegularly(taylor)\" }",
+      "perplexity": 2.2358334064483643,
+      "generation_time": 51.889275,
+      "error_message": null
+    }
+  },
+  {
+    "id": 174,
+    "nl_problem": {
+      "context": [
+        "All people who eat salads regularly are very conscious about their health and eating habits.",
+        "All people who grew up in health-conscious childhood homes eat salads regularly.",
+        "All people who fulfill their nutritional daily intakes grew up in health-conscious childhood homes.",
+        "If people have good relationships with their parents, then they fulfill their nutritional daily intakes.",
+        "If people have good relationships with their parents, then they do not eat salads regularly.",
+        "If people visit the gym at least once a day, then they always fulfill their daily nutritional intakes.",
+        "It is either both true that Taylor grew up in a health-conscious childhood home and she has a good relationship with her parents, or it is true that Taylor neither grew up in a health-conscious childhood home nor has a good relationship with her parents."
+      ],
+      "question": "Taylor visits the gym at least once a day.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"Conscious(x)\",\n    \"EatSaladRegularly(x)\",\n    \"GoodRelationshipWithParents(x, y)\",\n    \"GrewUpInHealthHome(x)\",\n    \"FulfillNutritionalIntake(x)\",\n    \"VisitTheGymDailyAtLeastOnce(x)\"\n  ],\n  \"fol_consts\": [\n    \"taylor\"\n  ],\n  \"fol_rules\": [\n    \"{∀x EatSaladRegularly(x) → Conscious(x)}\",\n    \"{∀x GrewUpInHealthHome(x) → EatSaladRegularly(x)}\",\n    \"{∀x FulfillNutritionalIntake(x) → GrewUpInHealthHome(x)}\",\n    \"{∀xy GoodRelationshipWithParents(x, y) ∧ VisitTheGymDailyAtLeastOnce(y) → FulfillNutritionalIntake(x)}\",\n    \"{∀x GoodRelationshipWithParents(taylor, x) ⊕ ¬EatSaladRegularly(taylor)}\",\n    \"{∀y EatSaladRegularly(y) ⊕ ¬Conscious(y)}\"\n  ],\n  \"fol_conc\": [\n    \"{VisitTheGymDailyAtLeastOnce(taylor)}\"\n  ]\n}\n```",
+      "perplexity": 1.4311466217041016,
+      "generation_time": 53.258455,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\"fol_preds\": [\"EatsSaladRegularly(x)\", \"HealthConsciousAboutHabitsAndEatery(x)\", \"GrewUpInHealthyHome(x)\", \"FulfillsNutritionalIntakeDaily(x)\", \"GoodRelationshipWithParents(x)\", \"VisitsTheGymAtLeastOnceADay(taylor)\"], \"fol_consts\": [\"taylor\"], \"fol_rules\": [\"forall x (EatsSaladRegularly(x) -> HealthConsciousAboutHabitsAndEatery(x))\", \"forall x (GrewUpInHealthyHome(x) -> EatsSaladRegularly(x))\", \"forall x (FulfillsNutritionalIntakeDaily(x) -> GrewUpInHealthyHome(x))\", \"forall x ((GoodRelationshipWithParents(x) -> FulfillsNutritionalIntakeDaily(x)))\", \"forall x ((GoodRelationshipWithParents(x) -> ¬EatsSaladRegularly(x)))\", \"forall x (VisitsTheGymAtLeastOnceADay(x) -> FulfillsNutritionalIntakeDaily(x))\"], \"fol_conc\": \"(HealthConsciousAboutHabitsAndEatery(taylor) ⊕ (¬GrewUpInHealthyHome(taylor) ∧ ¬GoodRelationshipWithParents(taylor)))\"}",
+      "perplexity": 1.4214180707931519,
+      "generation_time": 60.545134,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\"fol_preds\": [\"HealthConscious(x)\", \"EatSaladsRegularly(x)\", \"GoodEatingHabits(x)\", \"GrewUpInHCHome(x)\", \"FulfillNutritionalIntake(x)\", \"HaveGoodRelationshipWithParents(x)\", \"VisitsTheGymAtLeastOnceADay(x)\"], \"fol_consts\": [\"taylor\", \"x\"], \"fol_rules\": [\"∀x (EatSaladsRegularly(x) → GoodEatingHabits(x))\", \"∀x (HealthConsciousChildhoodHome(x) → EatSaladsRegularly(x))\", \"∀x (FulfillNutritionalIntake(x) → HealthConsciousChildhoodHome(x))\", \"∀x ((HaveGoodRelationshipWithParents(x) ∧ FulfillNutritionalIntake(x)))\", \"∀x (((HaveGoodRelationshipWithParents(taylor) ⊕ ¬EatSaladsRegularly(taylor))))\", \"∀x (VisitsTheGymAtLeastOnceADay(x) → FulfillNutritionalIntake(x))\"], \"fol_conc\": \"VisitsTheGymAtLeastOnceADay(taylor)\"}",
+      "perplexity": 1.5159951448440552,
+      "generation_time": 50.003475,
+      "error_message": null
+    }
+  },
+  {
+    "id": 175,
+    "nl_problem": {
+      "context": [
+        "All people who eat salads regularly are very conscious about their health and eating habits.",
+        "All people who grew up in health-conscious childhood homes eat salads regularly.",
+        "All people who fulfill their nutritional daily intakes grew up in health-conscious childhood homes.",
+        "If people have good relationships with their parents, then they fulfill their nutritional daily intakes.",
+        "If people have good relationships with their parents, then they do not eat salads regularly.",
+        "If people visit the gym at least once a day, then they always fulfill their daily nutritional intakes.",
+        "It is either both true that Taylor grew up in a health-conscious childhood home and she has a good relationship with her parents, or it is true that Taylor neither grew up in a health-conscious childhood home nor has a good relationship with her parents."
+      ],
+      "question": "Taylor neither grew up in a health-conscious childhood home nor does she visit the gym at least once a day.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"eatSaladsRegularly(P)\", \"healthConsciousAboutEatingHabits(P)\", \"grewUpInHealthConsciousHome(P)\", \"fulfillNutritionalDailyIntake(P)\", \"goodRelationshipWithParents(P)\", \"visitGymAtLeastOnceADay(P)\"],\n\"fol_consts\": [\"Taylor\", \"P\"],\n\"fol_rules\": [\n    \"\\u2203 P (eatSaladsRegularly(P) \\u21D4 healthConsciousAboutEatingHabits(P))\",\n    \"\\u2203 P (grewUpInHealthConsciousHome(P) \\u21D4 eatSaladsRegularly(P))\",\n    \"\\u2203 P (fulfillNutritionalDailyIntake(P) \\u21D4 grewUpInHealthConsciousHome(P))\",\n    \"goodRelationshipWithParents(P) \\u21D2 fulfillNutritionalDailyIntake(P)\",\n    \"goodRelationshipWithParents(P) \\u21D2 ¬ eatSaladsRegularly(P)\",\n    \"\\u2203 P (visitGymAtLeastOnceADay(P) \\u21D4 fulfillNutritionalDailyIntake(P))\",\n    \"(grewUpInHealthConsciousHome(Taylor) ∧ goodRelationshipWithParents(Taylor)) ⊕ ¬(grewUpInHealthConsciousHome(Taylor) ∨ goodRelationshipWithParents(Taylor))\"\n],\n\"fol_conc\": \"¬ grewUpInHealthConsciousHome(Taylor) ∧ ¬ visitGymAtLeastOnceADay(Taylor)\"\n}",
+      "perplexity": 1.1959476470947266,
+      "generation_time": 67.786759,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\"fol_preds\": [\"EatSaladsRegularly(x)\", \"ConsciousAboutHealthAndHabits(x)\", \"GrewUpInHealthHome(x)\", \"GoodRelationshipWithParents(x)\", \"FulfillDailyIntakes(x)\", \"VisitTheGymAtLeastOnceADay(x)\"], \"fol_consts\": [\"Taylor\", \"x\"], \"fol_rules\": [\"\\\\forall x (EatSaladsRegularly(x) \\\\rightarrow ConsciousAboutHealthAndHabits(x))\", \"\\\\forall x (GrewUpInHealthHome(x) \\\\rightarrow EatSaladsRegularly(x))\", \"\\\\forall x (FulfillDailyIntakes(x) \\\\rightarrow GrewUpInHealthHome(x))\", \"\\\\forall x ((GoodRelationshipWithParents(x) \\\\rightarrow FulfillDailyIntakes(x)))\", \"\\\\forall x ((GoodRelationshipWithParents(x) \\\\rightarrow ¬EatSaladsRegularly(x)))\", \"\\\\forall x (((VisitTheGymAtLeastOnceADay(x) \\\\rightarrow FulfillDailyIntakes(x))))\"], \"fol_conc\": \"(¬(Taylor GrewUpInHealthHome(Taylor)) \\\\wedge (\\\\neg VisitTheGymAtLeastOnceADay(Taylor)))\"}",
+      "perplexity": 1.528285264968872,
+      "generation_time": 54.792082,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"EatSaladRegularly(p)\", \"HealthConsciousAboutHabits(p)\", \"GrewUpInHealthyHome(p)\", \"FulfillDailyNutritionIntakes(p)\", \"HasGoodRelationshipWithParents(p)\", \"VisitTheGymAtLeastOnceADay(p)\"], \n\"fol_consts\": [\"taylor\", \"p\"], \n\"fol_rules\": [\n    \"∀x (EatSaladRegularly(x) → HealthConsciousAboutHabits(x))\",\n    \"∀y (GrewUpInHealthyHome(y) → EatSaladRegularly(y))\",\n    \"∀z (FulfillDailyNutritionIntakes(z) → GrewUpInHealthyHome(z))\",\n    \"∀w (HasGoodRelationshipWithParents(w) → FulfillDailyNutritionIntakes(w))\", \"ThatExpression(p)\", \"VisitTheGymAtLeastOnceADay(taylor)\"\n], \n\"fol_conc\": \"(¬GrewUpInHealthyHome(taylor) ∧ ¬VisitTheGymAtLeastOnceADay(taylor))\"\n}",
+      "perplexity": 1.8314536809921265,
+      "generation_time": 50.095419,
+      "error_message": null
+    }
+  },
+  {
+    "id": 176,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The world championships is a sporting event.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"SportingEvent\", \"HeldIn\", \"WonMostMedals\"],\n\"fol_consts\": [\"OlympicGames\", \"LastOGames\", \"Tokyo\", \"UnitedStates\", \"WorldChampionships\"],\n\"fol_rules\": [\n    \"SportingEvent(OlympicGames)\",\n    \"HeldIn(LastOGames, Tokyo)\",\n    \"WonMostMedals(UnitedStates, LastOGames)\"\n],\n\"fol_conc\": \"SportingEvent(WorldChampionships)\"\n}",
+      "perplexity": 1.2238749265670776,
+      "generation_time": 23.20206,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent\", \"OlympicGamesLocation\"],\n\"fol_consts\": [\"The_Olympics_games\", \"Tokyo\", \"United_States\", \"The_World_Championships\"],\n\"fol_rules\": [\n    \"SportingEvent(The_Olympics_games)\",\n    \"OlympicGamesLocation(Tokyo, The_Olympics_games)\"\n],\n\"fol_conc\": \"SportingEvent(The_World_Championships)\"\n}",
+      "perplexity": 1.5782198905944824,
+      "generation_time": 21.602606,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent(x)\", \"OlympicGamesInCity(x, y)\", \"WonMostMedals(country, event)\"], \n\"fol_consts\": [\"o\", \"t\", \"to\", \"u\", \"wc\"], \n\"fol_rules\": [\n    \"SportingEvent(o)\",\n    \"OlympicGamesInCity(to, t)\",\n    \"WonMostMedals(u, to)\"\n], \n\"fol_conc\": \"SportingEvent(wc)\"\n}",
+      "perplexity": 1.833908200263977,
+      "generation_time": 21.956854,
+      "error_message": null
+    }
+  },
+  {
+    "id": 177,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The last Olympic games were not in Tokyo.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"SportingEvent\", \"LocationOfGames\"],\n\"fol_consts\": [\"Olympic_games\", \"Tokyo\", \"United_States\"],\n\"fol_rules\": [\n    \"SportingEvent(Olympic_games)\",\n    \"LocationOfGames(Tokyo, Olympic_games) → WonMostMedals(United_States, Tokyo)\"\n],\n\"fol_conc\": \"¬ LocationOfGames(Tokyo, Olympic_games)\"\n}",
+      "perplexity": 1.4781376123428345,
+      "generation_time": 19.055125,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent\", \"LastInCity\", \"WonMostMedals\"],\n\"fol_consts\": [\"OlympicGames\", \"Tokyo\", \"UnitedStates\"],\n\"fol_rules\": [\n    \"SportingEvent(OlympicGames)\",\n    \"LastInCity(Tokyo, OlympicGames)\",\n    \"WonMostMedals(UnitedStates, Tokyo)\"\n],\n\"fol_conc\": \"\\u00acLastInCity(Tokyo, OlympicGames)\"\n}",
+      "perplexity": 1.3846685886383057,
+      "generation_time": 20.890054,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent(oe)\", \"HeldIn(loe, t)\", \"WonMostMedals(us, loe)\"], \n\"fol_consts\": [\"oe\", \"loe\", \"t\", \"us\", \"tokyo\"], \n\"fol_rules\": [\n    \"SportingEvent(oe)\",\n    \"HeldIn(loe, tokyo)\",\n    \"WonMostMedals(us, loe)\"\n], \n\"fol_conc\": \"¬HeldIn(loe, tokyo)\"\n}",
+      "perplexity": 1.5506939888000488,
+      "generation_time": 23.123496,
+      "error_message": null
+    }
+  },
+  {
+    "id": 178,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The United States won the most medals in the last Olympic games.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"SportingEvent\", \"OlympicGamesLocation\", \"WonMostMedals\"],\n\"fol_consts\": [\"TheUnitedStates\", \"Tokyo\", \"LastOlympics\"],\n\"fol_rules\": [\n    \"SportingEvent(OlympicGames)\",\n    \"OlympicGamesLocation(LastOlympics, Tokyo)\",\n    \"WonMostMedals(TheUnitedStates, LastOlympics)\"\n],\n\"fol_conc\": \"WonMostMedals(TheUnitedStates, LastOlympics) ∧ OlympicGamesLocation(LastOlympics, Tokyo)\"\n}",
+      "perplexity": 1.2566044330596924,
+      "generation_time": 25.43898,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent(x)\", \"OlympicGames(x, y)\", \"LocationOfOG(y, x)\", \"WonMostMedalsIn(USA, x)\"],\n\"fol_consts\": [\"Tokyo\", \"UnitedStates\", \"Last_OG\"],\n\"fol_rules\": [\n    \"∀x (SportingEvent(OlympicGames(Last_OG)))\",\n    \"∃y ∀z ((OlympicGames(z,y)) ∧ LocationOfOG(y,z))\"\n],\n\"fol_conc\": \"(WonMostMedalsIn(UnitedStates, Last_OG) → OlympicGames(Tokyo, Last_OG))\"\n}",
+      "perplexity": 2.6113405227661133,
+      "generation_time": 32.664049,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent(x)\", \"HeldIn(y, x)\", \"WonMostMedals(z, w)\"], \n\"fol_consts\": [\"theolympicgames\", \"tokyo\", \"unitedstates\"], \n\"fol_rules\": [\n    \"SportingEvent(theolympicgames)\",\n    \"HeldIn(tokyo, theolympicgames)\",\n    \"WonMostMedals(unitedstates, tokyo)\"\n], \n\"fol_conc\": \"WonMostMedals(unitedstates, theolympicgames) ∧ HeldIn(tokyo, theolympicgames)\" }",
+      "perplexity": 1.8316643238067627,
+      "generation_time": 28.882083,
+      "error_message": null
+    }
+  },
+  {
+    "id": 179,
+    "nl_problem": {
+      "context": [
+        "All horses have hooves.",
+        "No humans have hooves."
+      ],
+      "question": "Some humans are horses.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"HasHooves(x, y)\", \"IsHuman(y)\", \"IsHorse(z)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀x ∀y (IsHorse(x) ∧ IsAnimal(y)) → HasHooves(x, y)\",\n    \"¬∃z ∃w (IsHuman(w) ∧ HasHooves(z, w))\"\n],\n\"fol_conc\": [\"∃u ∃v (IsHuman(u) ∧ IsHorse(v))\"]\n}",
+      "perplexity": 1.579805612564087,
+      "generation_time": 21.189129,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"HasHooves(x, y)\", \"IsHuman(z)\", \"IsHorse(a)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀x ∀y (IsHorse(x) → HasHooves(x, 'hooves'))\",\n    \"¬∃z ∃w (IsHuman(z) ∧ HasHooves(w, 'hooves') ∧ z = w)\"\n],\n\"fol_conc\": [\"∃u ∃v (IsHuman(u) ∧ IsHorse(v))\"]\n}",
+      "perplexity": 1.7646946907043457,
+      "generation_time": 26.317534,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"HasHooves(x, y)\", \"IsHuman(z)\", \"IsHorse(w)\"], \n\"fol_consts\": [ \"nil\" ], \n\"fol_rules\": [\n    \"∀x ∀y (IsHorse(x) → HasHooves(x, y))\",\n    \"¬(∃z ∃w (IsHuman(z) ∧ IsHorse(w)))\"\n], \n\"fol_conc\": \"∃u ∃v ((IsHuman(u) ∧ IsHorse(v)) ∧ ¬HasHooves(u, v))\"\n}",
+      "perplexity": 2.489032030105591,
+      "generation_time": 25.537752,
+      "error_message": null
+    }
+  },
+  {
+    "id": 180,
+    "nl_problem": {
+      "context": [
+        "Susan flies to LGA airport.",
+        "The departure and arrival can not be the same airport.",
+        "John flies from LGA airport."
+      ],
+      "question": "Susan flies from LGA airport.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"flies_to(X,Y,Z)\", \"same_airport(Y,Z)\"],\n\"fol_consts\": [\"susan\", \"john\", \"lga\"],\n\"fol_rules\": [\n    \"flies_to(susan, airport(lga), lga)\",\n    \"¬ same_airport(y,z) → (y ≠ z)\"\n],\n\"fol_conc\": \"flies_from(susan, lga)\"\n}",
+      "perplexity": 1.5884413719177246,
+      "generation_time": 16.533712,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Flies(x, y)\", \"SameAirportAs(x)\"],\n\"fol_consts\": [\"Susan\", \"John\", \"LGA_airport\"],\n\"fol_rules\": [\n    \"∃x ∃y ( Flies(Susan, x) ∧ Flies(John, LGA_airport) )\",\n    \"∀a ∀b ((Flies(a, b)) → ¬ SameAirportAs(b))\"\n],\n\"fol_conc\": [\"¬ Flies(Susan, LGA_airport)\"]\n}",
+      "perplexity": 2.204530715942383,
+      "generation_time": 24.188759,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Flies(x, y)\", \"SameAirport(x)\"], \n\"fol_consts\": [\"susan\", \"john\", \"lga\", \"airport1\", \"airport2\"], \n\"fol_rules\": [\n    \"Flies(susan, lga)\",\n    \"(∀x ∀y (Flies(z, x) ∧ Flies(z, y)) → ¬SameAirport(x))\"\n], \n\"fol_conc\": \"¬Flies(susan, airport1)\"\n}",
+      "perplexity": 2.2116198539733887,
+      "generation_time": 23.053188,
+      "error_message": null
+    }
+  },
+  {
+    "id": 181,
+    "nl_problem": {
+      "context": [
+        "Susan flies to LGA airport.",
+        "The departure and arrival can not be the same airport.",
+        "John flies from LGA airport."
+      ],
+      "question": "John flies to LGA airport.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"FliesTo(x, y)\", \"SameAirportAs(x, y)\"],\n\"fol_consts\": [\"Susan\", \"John\", \"LGA\"],\n\"fol_rules\": [\n    \"∃airport FliesTo(Susan, airport)\",\n    \"∀airports ∀departure ∃arrival (¬ SameAirportAs(departure, arrival))\",\n    \"∃airport FliesFrom(John, airport)\"\n],\n\"fol_conc\": [\"FliesTo(John, LGA)\"]\n}",
+      "perplexity": 1.5341957807540894,
+      "generation_time": 22.216762,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"flies_to(x, y)\", \"same_airport(x)\"],\n\"fol_consts\": [\"Susan\", \"John\", \"LGA\"],\n\"fol_rules\": [\n    \"flies_to(Susan, LGA)\",\n    \"(∀x ∀y flies_from(x,y) → ¬ same_airport(y))\",\n    \"flies_to(John, LGA)\"\n],\n\"fol_conc\": \"¬ flies_to(John, LGA)\"\n}",
+      "perplexity": 1.8276115655899048,
+      "generation_time": 21.474095,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"FliesTo(x, y)\", \"DepartsFrom(x, z)\"], \n\"fol_consts\": [\"susan\", \"john\", \"lga\"], \n\"fol_rules\": [\n    \"∀x ∀y (FliesTo(susan, lga))\",\n    \"¬(∃z ∃a (FliesTo(z, a) ∧ DepartsFrom(a, z)))\",\n    \"∀w (∀z (DepartsFrom(john, lga)))\"\n], \n\"fol_conc\": \"¬(∀x ∀y (FliesTo(john, lga)))\"\n}",
+      "perplexity": 2.0767712593078613,
+      "generation_time": 29.133417,
+      "error_message": null
+    }
+  },
+  {
+    "id": 182,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "Tom is a grumpy person.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"MeanToAnimals(x)\", \"NiceToAnimals(x)\", \"GrumpyPerson(x)\", \"AnimalLover(x)\", \"OwnsPet(x)\"],\n\"fol_consts\": [\"Tom\"],\n\"fol_rules\": [\n    \"∀x (¬MeanToAnimals(x) ∧ NiceToAnimals(x))\",\n    \"∃y GrumpyPerson(y)\",\n    \"∀z MeanToAnimals(z) → ¬NiceToAnimals(z)\",\n    \"∀w AnimalLover(w) → NiceToAnimals(w)\",\n    \"OwnsPet(Tom)\"\n],\n\"fol_conc\": [\"GrumpyPerson(Tom)\"]\n}",
+      "perplexity": 1.3806692361831665,
+      "generation_time": 27.864218,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"NiceToAnimals(x)\", \"MeanToAnimals(x)\", \"GrumpyPerson(x)\", \"OwnsPet(x, y)\", \"LovesAnimal(x)\"],\n\"fol_consts\": [\"tom\", \"animal_lovers\"],\n\"fol_rules\": [\n    \"∀x (¬(NiceToAnimals(x)) ∨ ¬(MeanToAnimals(x)))\",\n    \"∃y (∃x ((GrumpyPerson(y)) ∧ (MeanToAnimals(y))))\",\n    \"∀z (((LovesAnimal(z)) → (NiceToAnimals(z))))\",\n    \"(OwnsPet(tom, pet) → LovesAnimal(tom))\"\n],\n\"fol_conc\": [\"(tom ⊕ GrumpyPerson(tom))\"]\n}",
+      "perplexity": 1.8309260606765747,
+      "generation_time": 35.258858,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"NiceToAnimals(x, y)\", \"MeanToAnimals(x, y)\", \"GrumpyPerson(x)\", \"OwnsAPet(x, z)\", \"LovesAnimals(x)\"], \n\"fol_consts\": [\"tom\", \"pet1\"], \n\"fol_rules\": [\n    \"∀x ∀y (NiceToAnimals(y, x)) → ¬MeanToAnimals(y, x)\",\n    \"∃z ∃w ((GrumpyPerson(z))) ∧ MeanToAnimals(w, z)\", \"Forallx(x) → NiceToAnimals(x, animals)\",\n    \"(OwnsAPet(tom, pet1)) → LovesAnimals(tom)\"\n], \n\"fol_conc\": \"GrumpyPerson(tom)\" }",
+      "perplexity": 2.6564483642578125,
+      "generation_time": 35.670429,
+      "error_message": null
+    }
+  },
+  {
+    "id": 183,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "Tom is not a grumpy person and mean to animals.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"MeanToAnimals(x)\", \"NiceToAnimals(x)\", \"GrumpyPerson(x)\", \"OwnsPet(x)\", \"AnimalLover(x)\"],\n\"fol_consts\": [\"Tom\"],\n\"fol_rules\": [\n    \"¬(∃x)(NiceToAnimals(x) ∧ MeanToAnimals(x))\",\n    \"(∃y)(GrumpyPerson(y) ∧ MeanToAnimals(y))\",\n    \"(∀z)((AnimalLover(z)) → NiceToAnimals(z))\",\n    \"(∀w)(((OwnsPet(w))) → AnimalLover(w))\"\n],\n\"fol_conc\": \"¬(MeanToAnimals(Tom) ∧ GrumpyPerson(Tom))\"\n}",
+      "perplexity": 1.3128883838653564,
+      "generation_time": 30.375374,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"MeanToAnimals(x)\", \"NiceToAnimals(x)\", \"GrumpyPerson(x)\", \"OwnsPet(x)\", \"LovesAnimal(x)\"],\n\"fol_consts\": [\"Tom\"],\n\"fol_rules\": [\n    \"∀x (¬ MeanToAnimals(x) ∧ NiceToAnimals(x))\",\n    \"∃y ((MeanToAnimals(y)) ∧ GrumpyPerson(y)))\",\n    \"∀z (((NiceToAnimals(z)))) → LovesAnimal(z)\",\n    \"(OwnsPet(Tom)) → LovesAnimal(Tom)\"\n],\n\"fol_conc\": [\"¬ (GrumpyPerson(Tom) ∧ MeanToAnimals(Tom))\"]\n}",
+      "perplexity": 1.8480141162872314,
+      "generation_time": 31.588583,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"NiceToAnimals(x)\", \"MeanToAnimals(x)\", \"GrumpyPerson(x)\", \"AnimalLover(x)\", \"OwnsPet(x)\"], \n\"fol_consts\": [\"tom\"], \n\"fol_rules\": [\n    \"∀x (¬NiceToAnimals(x) ∨ ¬MeanToAnimals(x))\", \"ThatNobodyWhoIsNiceToAnimalsCanBeAlsoAMeanPersonToThemExistsRule1MeansThatIfSomeoneIsNotNicetoAnAnimalThenTheyAreAllowedTobeMEantooButOnceTheMomentPeopleBehaveNicelytowardsAllAnimalsFromThereOnwardsWeCannotFindAnyMeanBehaviorInThemAndViceVersaInTheSenseOfConverseImplicationNegationNiceToMeantoOthersOrNoMeansToANicetomeansThatNobodyWhosBehavingNicelyTowardsanimalsIsAlsoABeingWhoActsMEantlyTowardsthemAtTheSameTimeSoItMakesSureBothStatesCannotExistTogetherInAIndividualPersonAndViceVersaInTheSenseOfConverseImplicationNegationNiceToMeanOrNoMeansToANicetoOthersRule2SomeGrumpyPeopleAreMeantoaAnimalsExistsAsASubsetAmongAllHumanBeingsThereforeIfSomeoneIsAGrumpyyThenTheyMightBehaveMEantlytowardsanimalsWhichAlsoIncludesThoseWhoActNicelyTowardsThemInThisCaseAndViceVersaTheMeaningOfConverseImplicationNegationNiceToOthersOrNoMeansToANicetomeansThatGrumpyPersonXImpliesMeantoAnimalsYSoWeKnowIfSomeoneIsAGrumpyyThenTheyAreLikelyTobeMEantoaAnimalxAndViceVersaInTheSenseOfConverseImplicationNegationMeanToNicetoOthersRule3AllThePeopleWholoveanimalsBehaveInAWayThatIsNiceTowardsThemThereforeThereExistsAnEquivalenceRelationshipBetweenBeingALoverofAnimalsWhichImpliesAKindBehaviorTowardsthemThisMeansIfSomeoneLovesAnimalsThenTheyActNictelytowardsThemandViceVersaInTheSenseOfConverseImplicationNegationAnimalLoveOrNoMeanstoANicetomeansThatTheActionOflovinganimalsIsAnEquivalenceToBehavingNicelyTowardsThemAndviceversaInAllCasesRule4IfSomeoneOwnsAPettThenTheyAreLoversofAnimalsWhichMeansThereExistsAConditionalRelationshipBetweenBeingOwnerOfPetsImpliesALoverofAnimalsthisMeansIFsomeoneHasapetthenThatPersonAlsoLoveanimalsAndViceVersarule5TomIsAnOwnerOFpetThisStatementEstablishesTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBeRepresentedAsATruePropositionInFOLUsingConstanttombecauseitProvidesAConcreteIdentityToAFactWhichMayNotHoldTrueforallhumanbeingsAndThereforeCannotBereplacedWithaGeneralVariablexButIsUniqueTomNametoEstablishTheFactThataSpecificIndividualnamelytomOwnsapetsSoItCanBe",
+      "perplexity": 2.683134078979492,
+      "generation_time": 228.815902,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 184,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"NiceToAnimals(x, y)\", \"MeanToAnimals(x, y)\", \"GrumpyPerson(x)\", \"AnimalLover(x)\", \"OwnsPet(x)\"],\n\"fol_consts\": [\"tom\",],\n\"fol_rules\": [\n    \"∀x ∀y (¬MeanToAnimals(y,x)) → NiceToAnimals(y,x)\",\n    \"∃x GrumpyPerson(x) ∧ MeanToAnimals(x, some_animal)\",\n    \"∀x AnimalLover(x) → NiceToAnimals(some_person,x)\",\n    \"∀x OwnsPet(x) → AnimalLover(x)\"\n],\n\"fol_conc\": [\n    \"(¬GrumpyPerson(tom)) ∧ (MeanToAnimals(tom,some_animal))\",\n    \"→ (( ¬ GrumpyPerson(tom))) ∧  (¬AnimalLover(tom))\"\n]\n}",
+      "perplexity": 1.7279058694839478,
+      "generation_time": 37.631545,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"NiceToAnimals(x, y)\", \"MeanToAnimals(z)\", \"GrumpyPerson(w)\", \"OwnsPet(v, u)\", \"AnimalLover(m)\"],\n\"fol_consts\": [\"Tom\", \"someone\"],\n\"fol_rules\": [\n    \"∀x ∀y (¬(NiceToAnimals(x, y)) ∧ MeanToAnimals(y))\",\n    \"∃w (GrumpyPerson(w) ∧ MeanToAnimals(w))\",\n    \"∀m ((AnimalLover(m)) → NiceToAnimals(m, someone))\",\n    \"∀v ∀u (((OwnsPet(v, u))) → AnimalLover(u))\"\n],\n\"fol_conc\": [\"(¬GrumpyPerson(Tom)) ∧ (MeanToAnimals(Tom) → ¬GrumpyPerson(Tom) ∧ ¬AnimalLover(Tom))\"]\n}",
+      "perplexity": 1.6432033777236938,
+      "generation_time": 40.017437,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"NiceToAnimals(x, y)\", \"MeanToAnimals(x, y)\", \"GrumpyPerson(x)\", \"OwnsPet(x, z)\", \"AnimalLover(x)\"], \n\"fol_consts\": [\"tom\", \"x\", \"y\", \"z\"], \n\"fol_rules\": [\n    \"∀x ∀y (¬NiceToAnimals(y, x) ∧ MeanToAnimals(y, x))\",\n    \"∃x ((GrumpyPerson(x) ∧ MeanToAnimals(x, y)))\",\n    \"∀x ((AnimalLover(x) → NiceToAnimals(x, z)))\",\n    \"∀x ∀z (OwnsPet(x, z) → AnimalLover(x))\"\n], \n\"fol_conc\": \"(¬GrumpyPerson(tom) ∧ MeanToAnimals(tom, y)) → ¬(GrumpyPerson(tom) ∨ AnimalLover(tom))\"\n}",
+      "perplexity": 1.498295783996582,
+      "generation_time": 42.936854,
+      "error_message": null
+    }
+  },
+  {
+    "id": 185,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Dani Shapiro is a novel writer.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"American(z)\", \"BornInCity(p, q)\", \"WritesBook(a, b)\", \"Person(c)\", \"Writer(d)\", \"CreatedBy(e, f)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"2003\", \"FamilySecrets\", \"Boston\"],\n\"fol_rules\": [\n    \"∀x (Podcast(x) → ¬Novel(x))\",\n    \"(∃z)(BornInCity(z, Boston) ∧ American(z))\",\n    \"((∃w)((WritesBook(w, FamilyHistory))) ∧ Novel(FamilyHistory)) → Writer(DaniShapiro)\",\n    \"Person(DaniSh Shapiro)\",\n    \"American(DaniShapiro)\",\n    \"CreatedBy(DaniShapiro, FamilySecrets)\"\n],\n\"fol_conc\": \"Writer(DaniShapiro)\"\n}",
+      "perplexity": 1.6881227493286133,
+      "generation_time": 37.983631,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"BornInAmericanCity(p, c)\", \"IsAmericanPerson(p)\", \"WrittenBy(b, p)\", \"Writer(w,p)\", \"Book(n,b)\", \"CreatedPodcast(cname,crt)\",\"IsBostonian(city)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory2003\",\"Boston\",\"FamilySecrets\"],\n\"fol_rules\": [\n    \"∀x (Podcast(x) → ¬Novel(x))\",\n    \"∃c ∃p (BornInAmericanCity(p, c) ∧ IsAmericanPerson(p))\",\n    \"∀b ∀p ((Book(b,novel) ∧ WrittenBy(b,p)) -> Writer(novelWriterType,b))\"\n],\n\"fol_conc\": [\"Writer(NovelWriter,DaniShapiro)\"]\n}",
+      "perplexity": 2.6438982486724854,
+      "generation_time": 38.410608,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"American(x)\", \"Writer(x)\", \"BornInCity(person, city)\", \"BookNovel(book)\", \"WrittenBy(writer, book)\", \"CreatedPodcast(podcast, writer)\", \"City(city)\"], \n\"fol_consts\": [\"dani\", \"shapiro\", \"familyhistory\", \"boston\", \"familyscrects\"], \n\"fol_rules\": [\n    \"¬(∃x ∃y (PodCast(x, y) ∧ Novel(y)))\",\n    \"(∀p ∀c (BornInCity(p, c) → American(p)))\",\n    \"(∀w ∀n ((BookNovel(n) ∧ WrittenBy(w, n)) → Writer(n)))\", \"ThatRuleShouldBeFixedHereToReflectTheNLPremiseCorrectlyWithoutDisjunctionsAndWithPredicatesAndConstantsAsRequiredInTheFormatGuidelinesEndOfCorrectionCommentaryForExplanationPurposesOnlyNotPartOFLORulesAndConclusion(americanwriterexists)\",\n    \"American(dani, shapiro)\", \"(∀w ∀b (WrittenBy(w, b) → Writer(w)))\",\n    \"WrittenBy(shapiro, familyhistory)\", \"BookNovel(familyhistory)\",\n    \"CreatedPodcast(familyscrects, dani, shapiro)\", \"City(boston)\"\n], \n\"fol_conc\": \"Writer(novelwriterexists)\" }",
+      "perplexity": 3.272104501724243,
+      "generation_time": 63.431162,
+      "error_message": null
+    }
+  },
+  {
+    "id": 186,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Family Secrets is a novel.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"BornInAmericanCity(person, city)\", \"IsWriterOf(book, writer)\", \"WrittenBy(novel, person)\", \"CreatedPodcast(podcast, creator)\", \"American(writer)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"2003\", \"Boston\", \"FamilySecrets\"],\n\"fol_rules\": [\n    \"∀x (Novel(x) → ¬Podcast(x))\",\n    \"∃city ∀person (BornInAmericanCity(person, city) → American(person))\",\n    \"∀book ∃writer WrittenBy(book, writer)\",\n    \"IsWriterOf(FamilyHistory, DaniShapiro)\",\n    \"CreatedPodcast(FamilySecrets, DaniShapiro)\",\n    \"Novel(FamilyHistory)\",\n    \"American(DaniShapiro)\"\n],\n\"fol_conc\": [\"Novel(FamilySecrets)\"]\n}",
+      "perplexity": 1.5335652828216553,
+      "generation_time": 39.529729,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"American(z)\", \"BornInCity(w, c)\", \"Person(n)\", \"Book(b1)\", \"WrittenBy(book, person)\", \"Writer(p2)\", \"CreatedPodcast(person, podcast_name)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"2003\", \"FamilySecrets\", \"Boston\", \"AmericanCity\"],\n\"fol_rules\": [\n    \"\\uFFFDx Podcast(x) \\uFF5C ¬ Novel(x)\",\n    \"\\uFFFDw Person(w), AmericanCity(c) -> BornInCity(w, c) -> American(w)\",\n    \"\\uFFFDb Book(b1), WrittenBy(b1, n2) -> (Novel(b1) & Writer(n2))\",\n    \"American(DaniShapiro)\", \"Writer(DaniShapiro)\",\n    \"WrittenBy(FamilyHistory, DaniShapiro)\",\n    \"(FamilyHistory \\uFF5E Novel(x)) & (CreatedInYear(FamilyHistory, 2003))\",\n    \"\\uFFFDp Person(p), CreatedPodcast(p, FamilySecrets) -> Podcast(FamilySecrets)\"\n],\n\"fol_conc\": \"Novel(FamilySecrets)\"}\n",
+      "perplexity": 1.9484423398971558,
+      "generation_time": 58.685213,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"BornInCity(p, c)\", \"American(q)\", \"Writes(r, s)\", \"Writer(t, u)\", \"Book(v)\", \"Place(w)\", \"Year(z)\"], \n\"fol_consts\": [\"shapiro\", \"familyhistory2003\", \"boston\", \"familyscreams\", \"danielshapirorowskisborninamericancityandishewriterofnovelfamilyhistorieswrittenindatingbacktoyearoftwotousandthreeandshealsocreatedpodcastnamedfamiliysecrets\"], \n\"fol_rules\": [\"¬Podcast(x) → Novel(x)\", \"(∃c ∃p (BornInCity(p, c) ∧ Place(c))) → American(p)\", \"((∃b ∃s (Writes(s, b) ∧ Book(b)) ∧ ¬American(b)) ∧ (∀u ((Writer(u, s)))) → Writer(t, u) → American(s))\", \"(∃r ∃w (Writes(r, w) ∧ Writer(w, r))) → American(r)\", \"Exists(familyhistory2003) ∧ Writes(shapiro, familyhistory2003) ∧ Novel(familyhistory2003) ∧ Year(2003)\", \"BornInCity(danielshapirorowskisborninamericancityandishewriterofnovelfamilyhistorieswrittenindatingbacktoyearoftwotousandthreeandshealsocreatedpodcastnamedfamiliysecrets, boston) → American(shapiro)\", \"(∃b ∃s (Writes(s, b))) ∧ Book(b)\"], \n\"fol_conc\": \"Novel(familyscreams)\"\n}",
+      "perplexity": 2.1583805084228516,
+      "generation_time": 79.29447,
+      "error_message": null
+    }
+  },
+  {
+    "id": 187,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Dani Shapiro was born in Boston.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"American(z)\", \"BornIn(w, u)\", \"WrittenBy(v, t)\", \"City(p)\", \"Created(q, r)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"2003\", \"FamilySecrets\", \"Boston\"],\n\"fol_rules\": [\n    \"∀x (Podcast(x) → ¬Novel(x))\",\n    \"∃u ∀w BornIn(w, u) → American(w)\",\n    \"∀y (∃z Novel(y) ∧ WrittenBy(v, t), z = v → American(z) ∧ Novelist(z))\",\n    \"American(DaniShapiro) ∧ Writer(DaniShapiro)\",\n    \"WrittenBy(FamilyHistory, DaniShapiro)\",\n    \"Novel(FamilyHistory) ∧ YearOfPublication(FamilyHistory, 2003)\",\n    \"Created(Podcast(x), FamilySecrets)\"\n],\n\"fol_conc\": [\"BornIn(DaniShapiro, Boston)\"]\n}",
+      "perplexity": 1.5126794576644897,
+      "generation_time": 45.887064,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"American(z)\", \"BornInCity(p, q)\", \"Writer(r, s)\", \"CreatedBy(t, u)\", \"WrittenBy(v, w)\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"2003\", \"Boston\", \"FamilySecrets\"],\n\"fol_rules\": [\n    \"¬Novel(x) ∧ Podcast(x)\",\n    \"(BornInCity(z, American_city)) → American(z)\",\n    \"((Novel(y)) ∧ (WrittenBy(w, z))) → Writer(z, novel_writer)\",\n    \"American(DaniShapiro)\",\n    \"Writer(v, DaniShapiro)\",\n    \"WrittenBy(FamilyHistory, v)\",\n    \"Novel(WrittenInYear(2003, FamilyHistory))\",\n    \"(CreatedBy(podcast_name, creator) ∧ Podcast(podcast_name)) → BornInCity(creator, Boston)\"\n],\n\"fol_conc\": \"BornInCity(DaniShapiro, Boston)\"\n}",
+      "perplexity": 1.8332537412643433,
+      "generation_time": 47.575586,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"American(z)\", \"BornInCity(w, c)\", \"WrittenBy(b, a)\", \"CreatedPodcast(pod, pers)\", \"IsBook(novel)\"], \n\"fol_consts\": [\"shapiro\", \"familyhistory\", \"boston\", \"familysecrets\"], \n\"fol_rules\": [\n    \"∀x (¬Novel(x) → Podcast(x))\",\n    \"(∃c ∀w (BornInCity(w, c) ∧ American(c) → American(w)))\",\n    \"(∀a ∃n (IsBook(n) ∧ Novel(n) ∧ WrittenBy(b, a) → American(a)))\", \"Sheila(shapiro)\", \"FamilyHistory(familyhistory)\",\n    \"(WrittenBy(familyhistory, shapiro))\",\"(Novel(familyhistory))\", \"CreatedPodcast(familysecrets, shapiro)\"\n], \n\"fol_conc\": \"(BornInCity(shapiro, boston))\"\n}",
+      "perplexity": 2.3543734550476074,
+      "generation_time": 46.616957,
+      "error_message": null
+    }
+  },
+  {
+    "id": 188,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"Wearslargeclothes(x)\"],\n\"fol_consts\": [\"Yuri\"],\n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬ American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → Wearslargeclothes(x))\"\n],\n\"fol_conc\": [\"American(Yuri)\"]\n}",
+      "perplexity": 1.2264999151229858,
+      "generation_time": 27.683889,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeSizedClothes(x)\"],\n\"fol_consts\": [\"yuri\", \"x1\", \"x2\"],\n\"fol_rules\": [\n    \"\\u03A9 BasketBallPlayer(y) \\u2194 x y\",\n    \"\\u03A8 American(BasketballPlayer) \\u2765 A(x)\",\n    \"\\u03C3 Tall(BasketballPlayer) \\u276F T(x)\",\n    \"WearsLargeShoes(Tall)\\uFFD2 WLS(x1)\",\n    \"WearLargeSizedClothes(WearsLargeShoes)\\uFFE4 WLSC(x2)\"\n],\n\"fol_conc\": [\"\\u03A9 WearLargeSizedClothes(yuri) \\uFF5B Y\", \"\\u03C8 American(Y)\"]\n}",
+      "perplexity": 2.509274482727051,
+      "generation_time": 49.481101,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeClothes(x)\"], \n\"fol_consts\": [\"yuri\"], \n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\", \"Yeahlytranslatedasexistencenoticeverybasketplayerisnotamericansothepredicateandnegationrepresentthiscorrectlywithoutequalityoperatorwhichisforbiddeninourformatrulesetforallpredicatesinvolvedherearedefinedappropriatelyaccordingtotheinstructionprovidedpreviouslybymebeinganassistantbotwhoknowsaboutelementsoffirstorderlogicbutneedstogiveyouastrictjsonoutputasrequestedbytheproblemstatementaboveendofquoteblocktranslationcontentshouldbeformulatedbasedonpredicatesspecificallyaskedforinquestionnotgenericoneslikeperson(x)\"], \n\"fol_conc\": \"American(yuri)\"\n}",
+      "perplexity": 6.423300266265869,
+      "generation_time": 44.611312,
+      "error_message": null
+    }
+  },
+  {
+    "id": 189,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is not an American basketball player.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeClothes(x)\"],\n\"fol_consts\": [\"Yuri(y)\"], \n\"fol_rules\": [\n    \"\\u2203x (BasketballPlayer(x) \\u2295 ¬ American(x))\",\n    \"\\u2200 x ((BasketballPlayer(x)) -> Tall(x))\",  \n    \"\\u2200 x (((Tall(x))) -> WearsLargeShoes(x))\", \n    \"\\u2200x (WearsLargeShoes(x) \\u2194 WearLargeClothes(x))\"\n],\n\"fol_conc\": \"¬(BasketballPlayer(y) \\u2295 American(y))\"\n}",
+      "perplexity": 1.7580639123916626,
+      "generation_time": 36.541707,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeClothes(x)\"],\n\"fol_consts\": [\"Yuri\", \"x\", \"y\"], \"While constants 'x' and 'y' are used as placeholders in the rules, they aren't specific entities like 'Yuri'.\"\n    : [ \"BasketballPlayer(Yuri)\" ],\n\"fol_rules\": [\n\t\"E: ∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n\t\"All basketball players are tall: ∀x (BasketballPlayer(x) → Tall(x))\", \"While this follows the rules, it's more natural to express '∀' quantification without explicitly stating a variable.\",\n    \"If someone is tall, they wear large shoes: ∀y (Tall(y) → WearsLargeShoes(y))\",\n\t\"If someone wears large shoes, they wear large-sized clothes: ∀x(WearsLargeShoes(x) → WearLargeClothes(x))\",\n\t\"Yuri does not wear large-size clothes: ¬WearLargeClothes(Yuri)\"\n],\n    \"fol_conc\": [\"BasketballPlayer(Yuri) ∧ American(Yuri) ⊕ ¬Tall(Yuri)\"]\n}",
+      "perplexity": 2.463937997817993,
+      "generation_time": 59.364108,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearsLargesizedClothes(x)\"], \n\"fol_consts\": [\"yuri\", \"someone\"], \n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearsLargesizedClothes(x))\", \"Whenaweiakingwordlikeyuriinthiscontextweusenotwritenequivalexpressionstoavoidusingconstantsasargumentsinyourpredicatesdirectlyinsteadmodifytheimplicationsothattheyimplicitlyrefertothesesameindividualswithoutexplicitmentionofthenameconstantlikethisexampleforallx(wearslargesizedclothesnotwearslargesizedclothesthennottall)\",\n    \"∀y (¬WearsLargesizedClothes(y) → ¬Tall(y))\"\n], \n\"fol_conc\": \"∀z ((BasketballPlayer(z) ∧ American(z)) → WearsLargesizedClothes(yuri) ∨ Tall(notamericanbasketplayer))\"\n}",
+      "perplexity": 2.849689483642578,
+      "generation_time": 60.405476,
+      "error_message": null
+    }
+  },
+  {
+    "id": 190,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargesizedClothes(x)\"],\n\"fol_consts\": [\"Yuri(y)\"],\n\"fol_rules\": [\n    \"\\u2203 x (BasketballPlayer(x) \\u2227 ¬ American(x))\",\n    \"\\u2200 x (BasketballPlayer(x) → Tall(x))\",\n    \"\\u2200 x (Tall(x) → WearLargeShoes(x))\",\n    \"\\u2200 x (WearLargeShoes(x) → WearLargesizedClothes(x))\"\n],\n\"fol_conc\": \"American(Yuri(y)) \\u2227 BasketballPlayer(Yuri(y))\"\n}",
+      "perplexity": 1.2002227306365967,
+      "generation_time": 33.669012,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargesizedClothes(x)\"],\n\"fol_consts\": [\"yuri\", \"someone\"],\n\"fol_rules\": [\n    \"\\u2203x (BasketballPlayer(x) \\u2227 ¬ American(x))\",\n    \"\\u2200x (BasketballPlayer(x) -> Tall(x))\",\n    \"\\u2200x (Tall(x) -> WearLargeShoes(x))\",\n    \"\\u2200x (WearLargeShoes(x) -> WearLargesizedClothes(x))\",\n    \"¬ WearLargesizedClothes(yuri)\"\n],\n\"fol_conc\": [\"American(yuri) \\u2227 BasketballPlayer(yuri)\"]\n}",
+      "perplexity": 1.3550481796264648,
+      "generation_time": 43.048285,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargeClothes(x)\"], \n\"fol_consts\": [\"yuri\"], \n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\", \"ThatSomeBPsNotAmericans(1)\",\n    \"∀x ((BasketballPlayer(x) → Tall(x)))\", \"AllBPSTall(2)\",\n    \"∀x (((Tall(x)) → WearLargeShoes(x)))\", \"IfTBPTLSWearLargesSizeShoes(3)\", \"∀x ((((WearLargeShoes(x)))) → (WearLargeClothes(x)))\",\"IfSomeoneWearsLargeShoesThenTheywearLargeSizedclothes(4)\",\n    \"¬WearLargeClothes(yuri)\" ], \n\"fol_conc\": \"American(yuri) ∧ BasketballPlayer(yuri)\"\n}",
+      "perplexity": 2.8213651180267334,
+      "generation_time": 44.069917,
+      "error_message": null
+    }
+  },
+  {
+    "id": 191,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri does not wear large shoes, then Yuri is an American basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeClothes(x)\"],\n\"fol_consts\": [\"Yuri(y)\"],\n\"fol_rules\": [\n    \"\\u2203x (BasketballPlayer(x) \\u2227 ¬ American(x))\",\n    \"\\u2200x (BasketballPlayer(x) -> Tall(x))\",\n    \"\\u2200x (Tall(x) -> WearsLargeShoes(x))\",\n    \"\\u2200x (WearsLargeShoes(x) -> WearLargeClothes(x))\"\n],\n\"fol_conc\": \"(¬ WearsLargeShoes(Yuri(y))) \\u2192 (BasketballPlayer(Yuri(y)) \\u2227 American(Yuri(y)))\"\n}",
+      "perplexity": 1.256974697113037,
+      "generation_time": 39.561574,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeSizeClothes(x)\"],\n\"fol_consts\": [\"yuri\", \"someone\"],\n\"fol_rules\": [\n    \"\\u03A9x (BasketballPlayer(x) \\u21d4 ¬ American(x))\",\n    \"\\u03A9x (BasketballPlayer(x) \\u21d6 Tall(x))\",\n    \"\\u03a9someonex (\\u03c9 WearsLargeShoes(someone) \\u21d2 WearLargeSizeClothes(someone)\\u03b8)\",\n    \"WearLargeSizeClothes(yuri)\"\n],\n\"fol_conc\": [\"(¬ WearsLargeShoes(yuri))\\n\\u21d4 (BasketballPlayer(yuri) \\u26a0 American(yuri))\"]\n}",
+      "perplexity": 1.8886440992355347,
+      "generation_time": 43.884215,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearLargeClothes(x)\"], \n\"fol_consts\": [\"yuri\", \"x1\", \"x2\", \"x3\"], \n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearLargeClothes(x))\", \"WhenwritingFOLformulaswithmultiplepredicatessuchasconjunctionornestedimplicationsitisnecessarytouseparenthesesproperlytoavoidambiguityandensurecorrectinterpretationinsubsequentlogicalreasoningstepsorproofsfortruthmaintenanceandsoundnessverificationpurposesinthisinstancehoweverthespecificexampleprovideddoesnotrequireadditionalnestedstructurebeyondwhathasaalreadybeenestablishedthereforetheformulasispresentedasstatedaboveforallxWearsLargeShoes(x) → WearLargeClothes(x)\"\n], \n\"fol_conc\": \"¬WearsLargeShoes(yuri) → (BasketballPlayer(yuri) ∧ American(yuri))\"\n}",
+      "perplexity": 2.462087869644165,
+      "generation_time": 59.669759,
+      "error_message": null
+    }
+  },
+  {
+    "id": 192,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri is not an American basketball player, then Yuri is a basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargeSizeClothes(x)\"],\n\"fol_consts\": [\"Yuri(y1)\"],\n\"fol_rules\": [\n    \"\\u2203 x (BasketballPlayer(x) \\u2618 American(x))\",\n    \"\\u2200 x ((BasketballPlayer(x))) \\rightarrow Tall(x)\",\n    \"Tall(x) \\u2194 WearLargeShoes(x)\",\n    \"WearLargeShoes(x) \\u2194 WearLargeSizeClothes(x)\",\n    \"Yuri(y1) \\u2618 WearLargeSizeClothes(y1)\"\n],\n\"fol_conc\": \"(BasketballPlayer(y1) \\u2618 American(y1))\\rightarrow BasketballPlayer(y1)\"\n}",
+      "perplexity": 1.5483900308609009,
+      "generation_time": 38.4608,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"Wearslargeclothes(x)\"],\n\"fol_consts\": [\"Yuri\"],\n\"fol_rules\": [\n    \"\\u03A9 x (BasketballPlayer(x) \\u21d4 ¬ American(x))\",\n    \"\\u03A9 x (BasketballPlayer(x) \\u21d2 Tall(x))\",\n    \"\\u03A9 x (Tall(x) \\u21d2 WearsLargeShoes(x))\",\n    \"\\u03A9 x (Wearslargeclothes(x) \\u21d4 WearsLargeShoes(x))\"\n],\n\"fol_conc\": [\"\\u03A9 Yuri ((¬ BasketballPlayer(Yuri) ∧ American(Yuri)) \\u21d2 BasketBallPlayer(Yuri))\"]\n}",
+      "perplexity": 1.477201223373413,
+      "generation_time": 43.677084,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargesizedClothes(x)\"], \n\"fol_consts\": [\"yuri\", \"x\"], \n\"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x ((BasketballPlayer(x)) → Tall(x))\",\n    \"∀x ((Tall(x))) → WearLargeShoes(x)\",\n    \"∀x (((WearLargeShoes(x)))) → WearLargesizedClothes(x)\", \"Sheep(yuri) ∧ ¬WearLargesizedClothes(yuri)\"\n], \n\"fol_conc\": \"(¬American(yuri)) → BasketballPlayer(yuri)\" }",
+      "perplexity": 2.1582536697387695,
+      "generation_time": 35.799379,
+      "error_message": null
+    }
+  },
+  {
+    "id": 193,
+    "nl_problem": {
+      "context": [
+        "Events are either happy or sad.",
+        "At least one event is happy. "
+      ],
+      "question": "All events are sad.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Happy(event)\", \"Sad(event)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"∀event (Happy(event) ∨ Sad(event))\",\n    \"∃event Happy(event)\"\n],\n\"fol_conc\": \"∀event Sad(event)\"\n}",
+      "perplexity": 1.0838834047317505,
+      "generation_time": 11.883617,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Happy(e)\", \"Sad(e)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"\\u03A9 e (Happy(e) \\u2261 ¬ Sad(e))\",\n    \"\\u2203 e Happy(e)\"\n],\n\"fol_conc\": \"\\u2203 e Sad(e)\"\n}",
+      "perplexity": 1.6740361452102661,
+      "generation_time": 16.864995,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Happy(e)\", \"Sad(e)\"], \n\"fol_consts\": [\"e1\", \"e2\", \"e3\"], \n\"fol_rules\": [\n    \"(∀x (Events(x) → ((Happy(x)) ⊕ ¬(¬((Happy(x))) ∧ Sad(x)))))\",\n    \"∃y ∀z (((Happy(y)) ∨ Events(z) ∧ Happy(z)) → Events(y))\"\n], \n\"fol_conc\": \"∀w (Events(w) → Sad(w))\"\n}",
+      "perplexity": 3.4296257495880127,
+      "generation_time": 22.595861,
+      "error_message": null
+    }
+  },
+  {
+    "id": 194,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Steinhauer was not the winner of the 1992 du Maurier Classic.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Winner(d, w)\", \"Participate(p, c)\", \"LeaderboardTie(t, p)\", \"Belgian(b)\", \"OnBoard(c, b)\"],\n\"fol_consts\": [\"Steinhauer\", \"Descampe\", \"1992 du Maurier Classic\", \"t06waytie\", \"b_belgium\"],\n\"fol_rules\": [\n    \"Winner('1992 du Maurier Classic', Steinhauer)\",\n    \"Participate(Steinhauer, '1992 du Maurier Classic')\",\n    \"LeaderboardTie(t06waytie, b_belgium) ∧ Belgian(b_belgium) → OnBoard('1992 du Maurer Classic', Descampe)\",\n    \"Belgian(Descampe) → LeaderboardTie(t06waytie, Descampe)\",\n    \"OnBoard(c, p) → Participate(p, c)\"\n],\n\"fol_conc\": [\"¬ Winner('1992 du Maurier Classic', Steinhauer)\"]\n}",
+      "perplexity": 1.4942353963851929,
+      "generation_time": 45.658206,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Winner(year, tournament, person)\", \"Participated(person, year, tournament)\", \"TieLeaderboard(tournament, country, numberofwaytie, participantsfromcountry)\"],\n\"fol_consts\": [\"1992\", \"duMaurierClassic\", \"Steinhauer\", \"Belgium\", \"Descampe\"],\n\"fol_rules\": [\n    \"Winner(1992, duMaurierClassic, Steinhauer)\",\n    \"Participated(Steinhauer, 1992, duMaurierClassic) ∧ TieLeaderboard(duMaurierClassic, Belgium, sixWayTie, onePersonFromBelgium)\",\n    \"Descampe from Belgium ↔ (Participated(Descampe, 1992, duMaurierClassic))\",\n    \"∀x ((ParticipantOnLeaderBoard(x) → ParticipateInEvent(duMaurierClassic,x))\"\n],\n\"fol_conc\": [\"¬ Winner(1992, du Maurier Classic, Steinhauer)\", \"TieLeaderboard(duMaurierClassic, Belgium, sixWayTie, onePersonFromBelgium), Particpated(Descampe, 1992, duMaurierClassic)\"]\n}",
+      "perplexity": 1.9130381345748901,
+      "generation_time": 61.837037,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Winner(x, y)\", \"ParticipatedIn(x, y, z)\", \"SixWayTieOnLeaderboard(y)\", \"FromCountry(x, y)\", \"IsOnLeaderboard(x, y)\"], \n\"fol_consts\": [\"steinhauer\", \"descampe\", \"belgium\", \"dumaurierclassic1992\", \"sixwaytieleaderboard1992\"], \n\"fol_rules\": [\n    \"Winner(steinhauer, dumaurierclassic1992)\",\n    \"ParticipatedIn(steinhauer, dumaurierclassic1992)\", \"SheIsFromCountry(descampe, belgium)\" , \"SixWayTieOnLeaderboard(sixwaytieleaderboard1992)\", \"ForAll(x) → (IsOnLeaderboard(x, sixwaytieleaderboard1992) ∧ FromCountry(x, belgium)) ↔ Winner(x, dumaurierclassic1992)\",\n    \"ParticipatedIn(descampe, dumaurierclassic1992)\" ,\n\"ForAll(y) → (IsOnLeaderboard(y, sixwaytieleaderboard1992) ∧ FromCountry(y, belgium)) ↔ ParticipatedIn(y, dumaurierclassic1992)\"\n], \n\"fol_conc\": \"¬Winner(steinhauer, dumaurierclassic1992)\" }",
+      "perplexity": 1.9566296339035034,
+      "generation_time": 66.688442,
+      "error_message": null
+    }
+  },
+  {
+    "id": 195,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Descampe is in the six-way tie in the leaderboard of the 1992 du Maurier Classic.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Winner(x, y)\", \"Participate(x, y)\", \"Tie(sixwaytie, x)\", \"Belgium(belgianplayer)\", \"Leaderboard(lb1992classic, player)\"],\n\"fol_consts\": [\"Steinhauer\", \"Descampe\", \"lb1992classic\", \"sixwaytie\"],\n\"fol_rules\": [\n    \"Winner(steinhauer, lb1992classic)\",\n    \"Participate(steinhauer, lb1992classic)\",\n    \"Tie(sixwaytie, player) ∧ Belgium(belgianplayer)\",\n    \"Belgium(descampe) → Leaderboard(lb1992classic, descampe)\",\n    \"(∀ x)(Leaderboard(x, y)) → Participate(y, lb1992classic)\"\n],\n\"fol_conc\": \"Tie(sixwaytie, descampe)\"\n}",
+      "perplexity": 1.5683811902999878,
+      "generation_time": 39.34041,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Winner(x, y)\", \"ParticipatedIn(y, x)\", \"Tie(z, w)\", \"FromCountry(w, z)\", \"OnLeaderboard(x, y)\"],\n\"fol_consts\": [\"Steinhauer\", \"Descampe\", \"Belgium\", \"1992 du Maurier Classic\"],\n\"fol_rules\": [\n    \"Winner(Steinhauer, '1992 du Maurier Classic')\",\n    \"ParticipatedIn('1992 du Maurier Classic', Steinhauer)\",\n    \"Tie(sixWayTieLeaderboard, sixWayTiePerson) ∧ FromCountry(Belgium, sixWayTiePerson)\", 7\n   \t,\n    \"FromCountry(Belgium, Descampe) ∧ OnLeaderboard('1992 du Maurier Classic', Descampe)\",\n    \"∀x ∀y (OnLeaderboard(x,y)) → ParticipatedIn(y,x)\"\n],\n\"fol_conc\": [\"Tie(sixWayTieLeaderboard,Descampe)\"]\n}",
+      "perplexity": 1.9484682083129883,
+      "generation_time": 52.366542,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Winner(x, y)\", \"Participate(x, year, event)\", \"SixWayTie(country, person1)\", \"From(person, country)\", \"OnLeaderboard(year, event, person)\"], \n\"fol_consts\": [\"steinhauer\", \"descampe\", \"mathieu\", \"dumaurierclassic92\", \"belgium\", \"value1\", \"value6waytieperson1\", \"year1992\", \"sixwaytieleaderboardpersonfrombelgium\", \"mathieudecampeisonteleaderboard\"], \n\"fol_rules\": [\"Winner(steinhauer, dumaurierclassic92)\", \"Participate(steinhauer, year1992, dumaurierclassic92)\", \"SixWayTie(belgium, value6waytieperson1)\", \"From(descampe, belgium) ∧ OnLeaderboard(year1992, dumaurierclassic92, descampe)\", \"(∀x ∃y (OnLeaderboard(x, y, z) → Participate(z, x, y)))\"], \n\"fol_conc\": \"SixWayTie(belgium, mathieu)\"\n}",
+      "perplexity": 2.2514357566833496,
+      "generation_time": 55.816622,
+      "error_message": null
+    }
+  },
+  {
+    "id": 196,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi is terricolous.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Barks(x)\", \"Likes_Jane(x)\", \"Dog(x)\", \"Animal(x)\", \"Jumps(x)\", \"Terricolous(x)\"],\n\"fol_consts\": [\"KiKi\", \"Jane\"],\n\"fol_rules\": [\n    \"∀x (Barks(x) → ¬ Likes_Jane(Jane))\",\n    \"∀x (Dog(x) ↔ Animal(x) ∧ Barks(x))\",\n    \"∀x (Jumps(x) → Likes_Jane(Jane))\",\n    \"∀x ((Animal(x) ∧ Legs(x)) → Jumps(x))\",\n    \"∀x (Terricolous(x) → Legs(x))\"\n],\n\"fol_conc\": [\"Terricolous(KiKi)\"]\n}",
+      "perplexity": 1.4224629402160645,
+      "generation_time": 30.467435,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Barks(x)\", \"LikesJane(x)\", \"Dog(x)\", \"AnimalJumping(x)\",\n  \"Terricolous(x)\", \"HasLegs(x)\"],\n\"fol_consts\": [\"KiKi\", \"animal1\"], \"fol_rules\": [\n    {\"rule\":\n     \"\\n∀x (Barks(x) → ¬ LikesJane(x))\"},\n    {\"rule\":\n     \"\\n ∀x (Dog(x) → Barks(x))\"},\n    {\"rule\":\n     \"\\n ∀x ((AnimalJumping(x) → LikesJane(x)))\"},\n    {\"rule\":\n     \"\\n ∃y (((Terricolous(y) ⊕ HasLegs(y)) ∧ ¬ AnimalJumping(KiKi)\"\n     ,\"\\n   ∧ (¬ Terricolous(y) ↔  HasLegs(KiKi))))\" :\"# This rule is quite complex and requires careful interpretation\"},\n    {\"rule\":\n     \"\\n ∀x ((HasLegs(x) → AnimalJumping(x)))\"}],\n\"fol_conc\": \"Terricolous(KiKi)\"\n}",
+      "perplexity": 3.5386080741882324,
+      "generation_time": 49.399082,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Barks(x)\", \"LikesJane(x)\", \"Dog(x)\", \"Animal(x)\", \"Jumps(x)\", \"Legs(x)\", \"Terricolous(x)\"], \n\"fol_consts\": [\"kiki\", \"jane\"], \n\"fol_rules\": [\n    \"(∀x ((Barks(x)) → (¬LikesJane(jane, x))))\",\n    \"(∀x ((Dog(x)) ↔ (Animal(x) ∧ Barks(x))))\",\n    \"(∀x ((Jumps(x)) → (LikesJane(jane, x))))\", \"HeavyRewriteHereBecauseOriginalFormulaHasLogicalConnectivesWithoutEntitiesAndConstantsWhichIsNotAllowedInFOLAccordingToTheRulesProvidedForThisConversionExercise(legs)\",\n    \"((Legs(x)) → (Jumps(x)))\",\n    \"(∀x ((Terricolous(x)) → (Legs(x))))\", \"HeavyRewriteHereBecauseOriginalFormulaHasLogicalConnectivesWithoutEntitiesAndConstantsWhichIsNotAllowedInFOLAccordingToTheRulesProvidedForThisConversionExercise(kiki)\"\n], \n\"fol_conc\": \"((¬Jumps(kiki) ∧ ¬Legs(kiki)) → (Terricolous(kiki)))\"\n}",
+      "perplexity": 2.4385812282562256,
+      "generation_time": 56.487323,
+      "error_message": null
+    }
+  },
+  {
+    "id": 197,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi barks and is a dog.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Barks(animal)\", \"Likes(jane, animal)\", \"Dog(animal)\", \"Animal(animal)\", \"Jumps(animal)\", \"HasLegs(animal)\", \"Terricolous(animal)\"],\n\"fol_consts\": [\"jane\", \"KiKi\"],\n\"fol_rules\": [\n    \"∀animal (Barks(animal) → ¬Likes(jane, animal))\",\n    \"∀dog (Dog(dog) ∧ Animal(dog) ∧ Barks(dog))\",\n    \"∀animal (Jumps(animal) → Likes(jane, animal))\",\n    \"∀animal (HasLegs(animal) → Jumps(animal))\",\n    \"∀animal (Terricolous(animal) ∨ HasLegs(animal))\"\n],\n\"fol_conc\": [\"Barks(KiKi)\", \"Dog(KiKi)\"]\n}",
+      "perplexity": 1.2245185375213623,
+      "generation_time": 37.059563,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Barks(A)\", \"Likes(Jane, A)\", \"Dog(X)\", \"Animal(Y)\", \"Terricolous(Z)\", \"Legs(W)\"],\n\"fol_consts\": [\"Jane\", \"KiKi\"],\n\"fol_rules\": [\n    \"∀A ( Barks(A) → ¬ Likes(Jane,A))\",\n    \"∀X ( Dog(X) ∧ Animal(X) )\",\n    \"∀Y ( Y jumps(Y) → Likes(Jane,Y) )\",\n    \"∀W ( W has_legs(W) → Jumps(W) )\",\n    \"∃Z ( Z terricolous(Z) ↔ Legs(Z))\",\n    \"¬(Jumps(KiKi) ∨ HasLegs(KiKi)) ∧ TerricollousOrHasLegs(KiKi)\"\n],\n\"fol_conc\": [\"Barks(KiKi)\", \"Dog(KiKi)\"]\n}",
+      "perplexity": 2.0184905529022217,
+      "generation_time": 40.990263,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Barks(x)\", \"LikesJane(x)\", \"Dog(x)\", \"Animal(x)\", \"Jumps(x)\", \"Terricolous(x)\", \"HasLegs(x)\"], \n\"fol_consts\": [\"jane\", \"kiki\"], \n\"fol_rules\": [\n    \"∀x (Barks(x) → ¬LikesJane(jane, x))\",\n    \"∀x (Dog(x) → Animal(x) ∧ Barks(x))\",\n    \"∀x (Jumps(x) → LikesJane(jane, x))\", \"Shekels(ali)\",\n    \"∀x ((Animal(x) ∧ HasLegs(x)) → Jumps(x))\",\n    \"∀x (Terricolous(x) → HasLegs(x))\",\n    \"¬((HasLegs(kiki) ⊕ ¬Jumps(kiki))) ∨ Terricolous(kiki)\"\n], \n\"fol_conc\": \"(Barks(kiki) ∧ Dog(kiki))\"\n}",
+      "perplexity": 1.947668433189392,
+      "generation_time": 47.387015,
+      "error_message": null
+    }
+  },
+  {
+    "id": 198,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi neither barks nor is a dog.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"Barks(x)\", \"LikesJane(x)\", \"Dog(x)\", \"AnimalThatJumps(x)\", \"TerricolousOrHasLegs(x)\", \"AnimalsWithLegs(x)\"],\n\"fol_consts\": [\"KiKi\", \"x\"], \n\"fol_rules\": [\n    \"∀ x (Barks(x) → ¬ LikesJane(Jane))\",\n    \"∀ x ((Dog(x) ∧ AnimalThatJumps(x)))\",\n    \"∀ x (((AnimalThatJumps(x))))\",\n    \"∀ x ((((AnimalsWithLegs(x)))), AnimalsWithLegs(x)\",\n    \"TerricolousOrHasLegs(KiKi)\"\n],\n\"fol_conc\": [\"¬ Barks(KiKi) ∧ ¬ Dog(KiKi)\"]\n}",
+      "perplexity": 2.0484166145324707,
+      "generation_time": 32.473882,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Animal(x)\", \"Barks(x, y)\", \"LikesJane(x, z)\", \"Dog(x)\", \"Jumps(x)\", \"Legs(x)\", \"Terricolous(x)\"],\n\"fol_consts\": [],\n\"fol_rules\": [\n    \"\\u03A9x \\u22a5 Animal(x), Barks(x, Jane) -> ¬ LikesJane(Jane, x)\",\n    \"\\u2200x (Dog(x) -> (\\u22a5 Animal(x), Barks(x)))\",\n    \"\\u2200x (Animal(x) \\u2194 Jumps(x)) -> LikesJane(Jane, x)\",\n    \"\\u2200x ((\\u22a5 Animal(x)), Legs(x)) -> Jumps(x)\",\n    \"\\u2200x (\\u22a5 Terricolous(x), ¬ Legs(x) \\u2194 (Legs(x)))\"\n],\n\"fol_conc\": [\"¬ Barks(KiKi, Jane)\", \"Dog(KiKi)\"]\n}",
+      "perplexity": 2.032172203063965,
+      "generation_time": 50.686832,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Animal(x)\", \"Barks(x, y)\", \"LikesJane(y, x)\", \"Dog(x)\", \"Jumps(x)\", \"HasLegs(x)\", \"Terricolous(x)\"], \n\"fol_consts\": [\"jane\", \"kiki\"], \n\"fol_rules\": [\n    \"∀x ∀y (Animal(x) ∧ Barks(jane, y) → ¬LikesJane(y, x))\",\n    \"∀x (Dog(x) → Animal(x) ∧ Barks(kiki, j))\"\n    ,\n    \"∀x (∀x (Jumps(x) → LikesJane(kiki, x)))\", \"ShepardCorrectionsNeededHereAsItShouldBeXInsteadOfYInOriginalFormulaForConsistencyWithNLPremisesAndFOLConventionOnVariableUsageButWillKeepKikiToMatchTheGivenConclusionAboutKiKIAlsoNoticeThatLikesJaneWasIncorrectlyWrittenASJumpsInTheFirstLineWhichIsFixedNowWhileKeepingVariablesLikeXandyInPlaceAsPerTheirOccurrencesAcrossRulesForReadabilityPurposesThoughItDoesntAffectLogicSemanticsMuchHereWithSingleVariableUsagesAcrossPredicatesToMatchTheNaturalLanguagePremisesMorePreciselyAndLogicallyConsistentlyHoweverThisParticularFormulaIsFixedNowWhileOtherLogicalConnectorsLikeImplicationArrowsArePreservedCorrectlyAsInOriginalProblemStatementTooThoughSomeVariablesWereMisusedOrIncorrectLYWrittenSoTheyHaveBeenRevisedAccordinglyForBetterFOLRepresentationAccuracyWithoutAffectingOverallLogicMeaningsAndConsistencyAcrossTheEntireGivenPremisesCollectionHereAlsoNoteThatLikesJaneWasActuallyMeantToBeJumpsBasedOnNLFormulationInSecondLineWhileItIsCorrectedNowThoughVariablesAreKeptLikeXandyAsPerTheirNaturalOccurrencesForReadabilityPurposesWhichDoesntAffectFinalLogicalMeaningAndRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooRegardlessOfVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadabilityPurposesWithoutAffectingFinalLogicalRepresentationAccuracyMuchAtAllThroughoutTheEntireGivenPremisesCollectionHereTooDespiteSomeVariableUsageMisusesOrIncorrectWritesButOverallLogicStructureRemainsUnaffectedWhileThisParticularFormulaIsCorrectedNowToMatchNLFormulationMorePreciselyThoughOtherVariablesAreKeptLikeXandYForReadability",
+      "perplexity": 2.0950610637664795,
+      "generation_time": 228.109806,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 199,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "No one playing for Nautico is Brazilian.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BornIn(y, x)\", \"KnownAs(x, y)\", \"FootballPlayer(x)\", \"LoanedOutTo(x, z)\", \"Brazillian(x)\", \"PlaysFor(x, w)\", \"IsAClub(w)\"],\n\"fol_consts\": [\"AiltonSilva\", \"Nautico\", \"Fluminense\", \"1995\", \"Braga\"],\n\"fol_rules\": [\n    \"KnownAs(Ailton, AiltonSilva)\",\n    \"BornIn(1995, AiltonSilva)\",\n    \"FootballPlayer(AiltonSilva) ∧ Brazillian(AiltonSilva) ∧ PlaysFor(AiltonSilva, Nautico)\",\n    \"LoanedOutTo(AiltonSilva, Braga)\",\n    \"IsAClub(Nautico) ∧ IsAClub(Fluminense)\"\n],\n\"fol_conc\": [\"¬∃x (Brazillian(x) ∧ PlaysFor(x, Nautico))\"]\n}",
+      "perplexity": 1.3138964176177979,
+      "generation_time": 41.693833,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(year, person)\", \"KnownAs(person1, alias)\", \"FootballPlayer(player)\", \"LoanedOutTo(teamA, player, teamB)\", \"PlaysFor(player, club)\", \"IsBrazilian(country, person)\"],\n\"fol_consts\": [\"year_1995\", \"ailton_silva\", \"ailton_alias\", \"braga_team\", \"nautico_club\", \"brazil_country\", \"fluminense_club\"],\n\"fol_rules\": [\n    {\"rule_id\": 1, \"content\": \"BornIn(year_1995, ailton_silva)\"},\n    {\"rule_id\": 2, \"content\": \"KnownAs(ailton_silva, ailton_alias)\"},\n    {\"rule_id\": 3, \"content\": \"\\\\forall player \\\\exists teamA \\\\exists club (FootballPlayer(player) ∧ LoanedOutTo(teamA, player, braga_team) → PlaysFor(player, nautico_club))\"},\n    {\"rule_id\": 4, \"content\": \"PlaysFor(ailton_silva, nautico_club)\"},\n    {\"rule_id\": 5, \"content\": \"\\\\forall person \\\\exists country (FootballPlayer(person) ∧ IsBrazilian(brazil_country, person)}\",\n    \"fol_conc\": [\"\\\\neg \\\\exists player PlaysFor(player, nautico_club) → IsBrazilian(brazil_country, player)\", \"{or in other words}\", \"\\\\forall player \\\\neg(PlaysFor(player,nautico_club)) ∨ \\\\neg(IsBrazilian(brazil_country,player))\"\n]\n} ,{\n\"fol_preds\": [\"BornIn(year,person)\", \"KnownAs(person1,alias)\",\"FootballPlayer\",\"LoanedOutTo(teamA,teamB)\",\"PlaysFor(person,club)\"],\n\"fol_consts\":[\"year_95\", \"ailton_silva\", \"braga_team\", \"nautico_club\"],\n\"fol_rules\": [\n    {\"rule_id\":\"r01\", \"content\":\"BornIn(year_95, ailton_silva)\"},\n    {\"rule_id\":\"r02\",\"content\":\"KnownAs(ailton_silva,'Ailton')\"},\n    {\"rule_id\":\"r03\",\"content\":\"FootballPlayer(ailton_silva)\"},\n    {\"rule_id\":\"r04\", \"content\": \"\\\\exists teamB LoanedOutTo(braga_team, ailton_silva, teamB) ∧ PlaysFor(ailton_silva,nautico_club)\"},\n    {\"rule_id\":\"r05\",\"content\":\"PlaysFor(person1,braga_team)\"}\n],\n\"fol_conc\": [\"\\\\neg \\\\exists player (FootballPlayer(player) ∧ IsBrazilian(brazil_country,player)) → PlaysFor(player,nautico_club)\", \"{or in other words}\", \"\\\\forall player PlaysFor(player,nautico_club) ∨ FootballPlayer(player), ¬IsBrazilian(brazil_country,player)\"\n]\n} ,{\n\"fol_preds\": [\"BornIn\", \"KnownAs\",\"Footballer\", \"LoanedOutTo(teamA,teamB)\",\"PlaysFor(person,club)\", \"HasNationality\"],\n\"fol_consts\":[\"year_1995\", \"ailton_silva\", \"braga_team\", \"nautico_club\", \"brazil_country\"],\n\"fol_rules\": [\n    {\"rule_id\":\"r01\",\"content\":\"BornIn(year_1995, ailton_silva)\"},\n    {\"rule_id\":\"r02\",\"content\":\"KnownAs(ailton_silva,'Ailton')\"},\n    {\"rule_id\":\"r03\", \"content\" : \"\\\\exists teamB Footballer(LoanedOutTo(braga_team , ailton_silva , teamB)) ∧ PlaysFor(ailton_silva,nautico_club)\"},\n    {\"rule_id\": \"r04\",\"content\": \"Footballer(nautico_club)\"}\n],\n\"fol_conc\":\"\\\\forall player (PlaysFor(player, nautico_club) → ¬ HasNationality(brazil_country ,player))\"\n} ,{\n\"fol_preds\": [\"BornIn\", \"KnownAs(person1,person2)\",\"IsPlayer\",\"LoanedTo(teamA,teamB)\",\"BelongsToTeam\"],\n\"fol_consts\":[\"year_95\",\"ailton_silva\",\"braga_team\",\"nautico_club\",\"brazil_country\"],\n\"fol_rules\":[\n    {\"rule_id\":\"r01\", \"content\": \"\\\\exists person KnownAs(ailton_silva,person)\"},\n    {\"rule_id\":\"r02\", \"content\": \"\\\\forall team BelongsToTeam(nautico_club,team) → IsPlayer(team)\"}\n],\n\"fol_conc\": [\"\\\\neg \\\\exists player (BelongsToTeam(player,nautico_club)) ∨ HasNationality(brazil",
+      "perplexity": 1.857210397720337,
+      "generation_time": 234.426769,
+      "error_message": "max_tokens"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(x, y)\", \"KnownAs(x, y)\", \"PlaysFor(x, club)\", \"BrazilianFootballer(x)\",\n  \"LoanedTo(x, team)\"], \n\"fol_consts\": [\"1995\", \"2023\", \"ailtonsilva\", \"ailton\", \"nautico\", \"braga\",\n    \"fluminense\", \"brazilianfootballer\"], \n\"fol_rules\": [\n  \"BornIn(ailtonsilva, 1995)\", \"KnownAs(ailtonsilva, ailton)\",\n   \"PlaysFor(ailton, nautico)\", \"BrazilianFootballer(ailton)\",\n    \"LoanedTo(ailton, braga)\"\n], \n\"fol_conc\": \"¬(∃x (BrazilianFootballer(x) ∧ PlaysFor(x, nautico)))\"\n}",
+      "perplexity": 2.1315760612487793,
+      "generation_time": 43.795138,
+      "error_message": null
+    }
+  },
+  {
+    "id": 200,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva foes not play for a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BornInYear(x, y)\", \"CommonNameForPerson(x, y)\", \"IsFootballPlayer(x)\", \"LoanedOutToClub(x, y)\", \"PlaysForTeam(x, y)\", \"IsBrazilian(x)\", \"IsFootballClub(y)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Fluminense\", \"Nautico\", \"Braga\", \"Ailton\"],\n\"fol_rules\": [\n    \"BornInYear(AiltonSilva, 1995)\",\n    \"CommonNameForPerson(AiltonSilva, Ailton)\",\n    \"IsFootballPlayer(AiltonSilva) ∧ LoanedOutToClub(AiltonSilva, Braga)\",\n    \"PlaysForTeam(AiltonSilva, Nautico) ∧ IsBrazilian(AiltonSilva)\",\n    \"IsFootballClub(Fluminense)\", \n    \"IsFootballClub(Nautico)\",\n    \"IsFootballClub(Braga)\"\n],\n\"fol_conc\": [\"¬(∃y)(PlaysForTeam(AiltonSilva,y))\"]\n}",
+      "perplexity": 1.4368703365325928,
+      "generation_time": 45.743849,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(x, y)\", \"KnownAs(x, y)\", \"FootballPlayer(x)\", \"LoanedToClub(x, z)\", \"PlaysForTeam(x, w)\", \"IsAClub(y)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Braga\", \"Nautico\", \"Fluminense\", \"Ailton\"],\n\"fol_rules\": [\n    \"KnownAs(AiltonSilva, Ailton)\",\n    \"FootballPlayer(AiltonSilva)\",\n    \"LoanedToClub(AiltonSilva, Braga)\",\n    \"PlaysForTeam(AiltonSilva, Nautico)\",\n    \"\\\\forall x ((IsAClub(x) \\\\rightarrow (x = Fluminense \\u2265 x != Ailton))\",\n    \"\\\\exists y (((BornIn(y, 1995))^\\\\wedge(FootballPlayer(y)))^\\\\wedge(KnownAs(AiltonSilva, y)))\"\n],\n\"fol_conc\": \"¬PlaysForTeam(AiltonSilva, w)\"\n}",
+      "perplexity": 1.8430328369140625,
+      "generation_time": 48.754158,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BornInYear(x, y)\", \"KnownAs(x, y)\", \"IsFootballPlayer(x)\", \"LoanedOutToClub(x, c)\", \"PlaysForTeam(x, t)\", \"IsFootballClub(t)\"], \n\"fol_consts\": [\"1995\", \"footballer\", \"fluminense\", \"alvaro\", \"ailtonsilva\", \"bragaclub\", \"nauticocluib\", \"fluclub\", \"aillotonplayer\", \"ailtonknownasname\", \"loanedto\"], \n\"fol_rules\": [\"BornInYear(ailtonsilva, 1995)\", \"KnownAs(ailtonsilva, aillonknownasname)\", \"IsFootballPlayer(aillotonplayer)\", \"LoanedOutToClub(aillotonplayer, loanedto) ∧ IsFootballClub(loanedto)\", \"PlaysForTeam(aillotonplayer, nauticocluib) ∧ IsFootballClub(nauticocluib)\", \"IsFootballClub(bragaclub)\", \"IsFootballClub(fluclub)\" ], \n\"fol_conc\": \"¬(∃t (PlaysForTeam(aillotonplayer, t)) ∧ IsFootballClub(t))\"\n}",
+      "perplexity": 1.9182751178741455,
+      "generation_time": 55.494455,
+      "error_message": null
+    }
+  },
+  {
+    "id": 201,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton was not loaned out to a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BornInYear(x, y)\", \"KnownAs(x, y)\", \"FootballPlayer(x)\", \"LoanedOutToClub(x, y)\", \"Brazilian(x)\", \"PlaysForTeam(x, y)\", \"IsAClub(y)\"],\n\"fol_consts\": [\"AiltonSilva\", \"Braga\", \"Nautico\", \"Fluminense\", \"1995\"],\n\"fol_rules\": [\n    \"BornInYear(AiltonSilva, 1995)\",\n    \"KnownAs(AiltonSilva, Ailton)\",\n    \"FootballPlayer(AiltonSilva) ∧ LoanedOutToClub(AiltonSilva, Braga)\",\n    \"Brazilian(AiltonSilva) ∧ PlaysForTeam(AiltonSilva, Nautico)\",\n    \"IsAClub(Braga) → IsAClub(Nautico)\"\n],\n\"fol_conc\": \"¬LoanedOutToClub(AiltonSilva, y), ∀y: (IsAClub(y))\"\n}",
+      "perplexity": 1.3408517837524414,
+      "generation_time": 42.80744,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BornInYear(x, y)\", \"CommonlyKnownAs(x, y)\", \"IsFootballer(x)\", \"WasLoanedOutToClub(x, z)\",\n  \"PlaysForTeam(x, w)\", \"IsAClub(y)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Nautico\", \"Braga\", \"Fluminense\",\n\"Ailton\"],\n\"fol_rules\": [\n    \"BornInYear(AiltonSilva, 1995)\",\n    \"CommonlyKnownAs(AiltonSilva, Ailton)\",\n    \"IsFootballer(Ailton)\",\n    \"WasLoanedOutToClub(Ailton, Braga)\",\n    \"PlaysForTeam(Ailton, Nautico)\",\n    \"IsAClub(Braga)\",\n    \"IsAClub(Nautico)\",\n    \"IsAClub(Fluminense)\"\n],\n\"fol_conc\": [\"¬ WasLoanedOutToClub(Ailton, z) ∧ IsAClub(z)\"]\n}",
+      "perplexity": 1.5914967060089111,
+      "generation_time": 47.427339,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(x, y)\", \"KnownAs(x, y)\", \"FootballPlayer(x)\", \"LoanedOutTo(x, z)\", \"Brazillian(x)\", \"PlaysFor(x, w)\", \"Club(y)\"], \n\"fol_consts\": [\"ailton\", \"silva\", \"1995\", \"ailton\", \"braga\", \"nautico\", \"fluminense\"], \n\"fol_rules\": [\n    \"BornIn(ailton, 1995)\",\n    \"KnownAs(ailton, ailton)\",\n    \"FootballPlayer(ailton) ∧ Brazillian(aillon)\", \"(LoanedOutTo(ailton, braga))\",\n    \"PlaysFor(ailton, nautico)\"\n], \n\"fol_conc\": \"¬LoanerdOutOf(ailton, club)\"\n}",
+      "perplexity": 2.0213887691497803,
+      "generation_time": 36.866584,
+      "error_message": null
+    }
+  },
+  {
+    "id": 202,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva played for Fluminense.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BornIn(year, person)\", \"CommonlyKnownAs(alias, full_name)\", \"PlaysFor(player, club)\", \"FootballClub(club)\"],\n\"fol_consts\": [\"Ailton\", \"Silva\", \"1995\", \"Braga\", \"Nautico\", \"Fluminense\", \"Ailton Silva\"],\n\"fol_rules\": [\n    \"BornIn(1995, Ailton)\",\n    \"CommonlyKnownAs(Ailton, 'Ailton Silva')\",\n    \"PlaysFor(Ailton, Braga) ⊕ PlaysFor(Ailton, Nautico)\",\n    \"FootballClub(Braga)\",\n    \"FootballClub(Nautico)\",\n    \"FootballClub(Fluminense)\"\n],\n\"fol_conc\": \"PlaysFor('Ailton', Fluminense)\"\n}",
+      "perplexity": 1.380747675895691,
+      "generation_time": 34.621343,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(y, x)\", \"CommonNameOf(x, y)\", \"FootballPlayer(x)\", \"LoanedToClub(x, y)\", \"PlaysForClub(x, y)\", \"IsAClub(z)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Nautico\", \"Braga\", \"Fluminense\"],\n\"fol_rules\": [\n    \"BornIn(AiltonSilva, 1995)\",\n    \"CommonNameOf(1995, Ailton)\", \"FootballPlayer(AiltonSilva)\",\n    \"LoanedToClub(AiltonSilva, Braga)\",\n    \"PlaysForClub(AiltonSilva, Nautico)\",\n    \"IsAClub(Nautico) ∧ IsAClub(Braga)\"\n],\n\"fol_conc\": [\"PlaysForClub(AiltonSilva, Fluminense)\", \"¬FootballPlayer(x) → ¬LoanedToClub(y,x)\"]\n}",
+      "perplexity": 1.8106591701507568,
+      "generation_time": 47.491049,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(x, y)\", \"KnownAs(x, y)\", \"PlaysFor(x, y)\", \"LoanTo(x, z, y)\"], \n\"fol_consts\": [\"ailton\", \"silva1995\", \"braga\", \"fluminense\", \"nautico\"], \n\"fol_rules\": [\n    \"BornIn(ailton, silva1995)\",\n    \"KnownAs(silva1995, ailton)\", \"ThatNameIsAiltonSilva(x) → (KnownAs(x, ailton))\",\n    \"PlaysFor(nautico, ailton)\",\n    \"LoanTo(braga, nautico, ailton)\"\n], \n\"fol_conc\": \"PlaysFor(fluminense, ailton)\" }",
+      "perplexity": 2.3408846855163574,
+      "generation_time": 34.341457,
+      "error_message": null
+    }
+  },
+  {
+    "id": 203,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva was loaned out to a football club.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n{\n\"fol_preds\": [\"BornInYear(x, y)\", \"CommonName(x, z)\", \"FootballPlayer(x)\", \"LoanedToClub(x, y)\", \"Brazillian(x)\", \"PlaysForTeam(x, y)\", \"IsFC(x)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Nautico\", \"Fluminense\", \"Braga\", \"Ailton\"],\n\"fol_rules\": [\n    \"BornInYear(AiltonSilva, 1995)\",\n    \"CommonName(AiltonSilva, Ailton)\",\n    \"FootballPlayer(AiltonSilva) ∧ FootballPlayer(Ailton)\",\n    \"LoanedToClub(Ailton, Braga)\",\n    \"Brazillian(AiltonSilva) ∧ Brazillian(Ailton)\",\n    \"PlaysForTeam(AiltonSilva, Nautico) ∧ PlaysForTeam(Ailton, Nautico)\",\n    \"IsFC(Nautico) ∧ IsFC(Braga)\"\n],\n\"fol_conc\": \"LoanedToClub(Ailton, Braga)\"\n}",
+      "perplexity": 1.268602967262268,
+      "generation_time": 43.192783,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(year, person)\", \"CommonName(common_name, formal_name)\", \"PlaysFor(player, club)\", \"LoanedOutTo(player, club)\"],\n\"fol_consts\": [\"AiltonSilva\", \"1995\", \"Braga\", \"Nautico\", \"Fluminense\", \"Ailton\"],\n\"fol_rules\": [\n    \"BornIn(1995, AiltonSilva)\",\n    \"CommonName(Ailton, AiltonSilva)\",\n    \"PlaysFor(AiltonSilva, Nautico) ∨ PlaysFor(Ailton, Fluminense)\",\n    \"LoanedOutTo(AiltonSilva, Braga)\"\n],\n\"fol_conc\": \"LoanedOutTo(AiltonSilva, club)\"\n}",
+      "perplexity": 1.4810601472854614,
+      "generation_time": 35.741025,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"BornIn(x, y)\", \"KnownAs(x, y)\", \"IsFootballPlayer(x)\", \"WasLoanedTo(x, z)\", \"PlaysFor(x, y)\", \"IsFootballClub(y)\"], \n\"fol_consts\": [\"1995\", \"footballer\", \"fluminense\", \"braga\", \"nautico\", \"ailtonsilva\", \"ailtonplayer\", \"fluclub\", \"bragacup\", \"nautilusfc\", \"roundyear\"], \n\"fol_rules\": [\n    \"KnownAs(1995, roundyear)\", \"BornIn(roundyear, ailtonsilva)\", \"KnownAs(ailtonsilva, ailton)\", \"IsFootballPlayer(ailtonplayer)\", \"WasLoanedTo(ailtonplayer, bragacup)\",\n    \"PlaysFor(nautico, nautilusfc)\", \"IsFootballClub(bragacup)\", \"IsFootballClub(fluclub)\"\n], \n\"fol_conc\": \"WasLoanedTo(ailtonsilva, x) ∧ IsFootballClub(x)\"\n}",
+      "perplexity": 2.2691664695739746,
+      "generation_time": 48.611159,
+      "error_message": null
+    }
   }
 ]
