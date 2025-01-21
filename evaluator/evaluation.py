@@ -8,10 +8,10 @@ from utils.formatters import ResultFormatter
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--sketcher-name', type=str)
+    parser.add_argument('--result-path', type=str, required=True)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
-    parser.add_argument('--result-path', type=str, default='./outputs/logic_inference')
     parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
     args = parser.parse_args()
     
@@ -34,6 +34,8 @@ def main():
 
             all_results[sketcher_name] = LogicEvaluator.evaluate_sample_groups(samples, True)
             
+        except FileNotFoundError:
+            continue
         except Exception as e:
             print(f"Error processing {sketcher_name}: {e}")
             continue
