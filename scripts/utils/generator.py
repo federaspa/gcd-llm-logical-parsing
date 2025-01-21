@@ -7,6 +7,11 @@ from timeout_decorator import timeout
 from abc import abstractmethod
 from typing import Tuple
 
+class MaxTokensException(Exception):
+    def __init__(self, message="Maximum token limit reached"):
+        self.message = message
+        super().__init__(self.message)
+
 class Generator:
     def __init__(self, config):
         self.config = config
@@ -45,23 +50,5 @@ class Generator:
             prompt=prompt,
             raw_grammar=raw_grammar
         )
-        return response['choices'][0]['text'], self.calculate_perplexity(response['choices'][0]['logprobs'])
-
-    # def _generate_unconstrained_base(self, sample: dict) -> Tuple[str, float]:
-    #     response = self.model.invoke(prompt=self.prompter.unconstrained(sample))
-    #     return response['choices'][0]['text'], self.calculate_perplexity(response['choices'][0]['logprobs'])
-
-    # def _generate_json_base(self, sample: dict) -> Tuple[str, float]:
-    #     response = self.model.invoke(
-    #         prompt=self.prompter.json(sample),
-    #         raw_grammar=self.template_manager.prompt_templates['json_grammar']
-    #     )
-    #     return response['choices'][0]['text'], self.calculate_perplexity(response['choices'][0]['logprobs'])
-
-    # def _generate_constrained_base(self, sample: dict, twosteps: bool) -> Tuple[str, float]:
-    #     sample_grammar = self._get_grammar(sample, twosteps)
-    #     response = self.model.invoke(
-    #         prompt=self.prompter.constrained(sample),
-    #         raw_grammar=sample_grammar
-    #     )
-    #     return response['choices'][0]['text'], self.calculate_perplexity(response['choices'][0]['logprobs'])
+            
+        return response

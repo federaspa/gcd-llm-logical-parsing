@@ -17,7 +17,7 @@ class LogicEvaluator:
             'CONSTRAINED': MetricsCalculator.compute_metrics(sample_groups['constrained'], n, with_string)
         }
         
-        baseline = MetricsCalculator.compute_baseline_metrics(samples, with_string)
-        metrics.update({'RANDOM': baseline[0], 'FIXED': baseline[1]})
+        # baseline = MetricsCalculator.compute_baseline_metrics(samples, with_string)
+        # metrics.update({'RANDOM': baseline[0], 'FIXED': baseline[1]})
         
         return metrics

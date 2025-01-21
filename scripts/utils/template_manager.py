@@ -13,12 +13,12 @@ class TemplateManager:
     }
 
     MODEL_TEMPLATES = {
-        'gemma2': 'prompts/prompt_templates/gemma.txt',
-        'llama3.1': 'prompts/prompt_templates/llama.txt',
-        'llama3.2': 'prompts/prompt_templates/llama.txt',
-        'mistral': 'prompts/prompt_templates/mistral.txt',
-        'ministral': 'prompts/prompt_templates/ministral.txt',
-        'qwen2.5': 'prompts/prompt_templates/qwen.txt',
+        'gemma2': 'LLMs/promptsprompt_templates/gemma.txt',
+        'llama3.1': 'LLMs/promptsprompt_templates/llama.txt',
+        'llama3.2': 'LLMs/promptsprompt_templates/llama.txt',
+        'mistral': 'LLMs/promptsprompt_templates/mistral.txt',
+        'ministral': 'LLMs/promptsprompt_templates/ministral.txt',
+        'qwen2.5': 'LLMs/promptsprompt_templates/qwen.txt',
     }
 
     def __init__(self, config):
@@ -41,7 +41,7 @@ class TemplateManager:
         
         model_template = self._get_model_template()
         
-        with open(f'./prompts/conversion/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
+        with open(f'./LLMs/promptsconversion/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
             content = f.read()
             prompt_template = model_template.replace('[[user]]', content)
 

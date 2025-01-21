@@ -15,8 +15,8 @@ class ResultFormatter:
             for category in ['UNCONSTRAINED', 'JSON', 'CONSTRAINED']:
                 metrics = model_results[category]
                 row_data.extend([
-                    metrics[0][0] if isinstance(metrics[0], tuple) else metrics[0],
-                    metrics[3][0] if isinstance(metrics[3], tuple) else metrics[3]
+                    metrics['accuracy'],
+                    metrics['coverage']
                 ])
             data[model_name] = row_data
         
@@ -51,8 +51,8 @@ class ResultFormatter:
             }
             
             # Get max values for highlighting
-            acc_values = [m[0][0] for m in metrics.values()]
-            cov_values = [m[3][0] for m in metrics.values()]
+            acc_values = [m['accuracy'] for m in metrics.values()]
+            cov_values = [m['coverage'] for m in metrics.values()]
             max_acc = max(acc_values)
             max_cov = max(cov_values)
             

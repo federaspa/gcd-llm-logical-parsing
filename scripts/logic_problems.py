@@ -10,7 +10,7 @@ from datetime import datetime
 import yaml
 import traceback
 
-from utils.generator import Generator
+from utils.generator import Generator, MaxTokensException
 from utils.logger import get_logger
 
 @dataclass
@@ -67,7 +67,7 @@ class LogicProgramRunner:
                 
         return raw_dataset, outputs, existing_ids
 
-    def _generate_problem(self, nl_problem: dict, sample_id: int, constraint_type: str) -> Tuple[Optional[dict], Optional[str]]:
+    def _generate_problem(self, nl_problem: dict, sample_id: int, constraint_type: str) -> Dict:
         """Generate logic problem for a sample"""
         
         assert constraint_type in ['unconstrained', 'json', 'constrained'], ValueError(f"Invalid problem type: {constraint_type}")
@@ -75,22 +75,34 @@ class LogicProgramRunner:
         start_time = datetime.now()
         
         try:
-            logic_problem_str, perplexity = self.generator.generate_problem(nl_problem, constraint_type)
-            duration = (datetime.now() - start_time).total_seconds()
+            response = self.generator.generate_problem(nl_problem, constraint_type)
+            logic_problem_str = response['choices'][0]['text']
+            perplexity = self.generator.calculate_perplexity(response['choices'][0]['logprobs'])
             
-            return {
-                'raw': logic_problem_str,
-                'perplexity': perplexity,
-                'generation_time': duration
-            }, None
+            duration = (datetime.now() - start_time).total_seconds()
+            error_message = None
+            
+            if response['choices'][0]['finish_reason'] == 'length':
+                logger.error(f"{constraint_type.capitalize()}: Max tokens error for sample {sample_id}")
+                error_message = "max_tokens"
             
         except TimeoutError:
             logger.error(f"{constraint_type.capitalize()}: Timeout error for sample {sample_id}")
-            return None, "timeout"
+            logic_problem_str, perplexity, duration = None, None, self.config.timeout
+            error_message = "timeout"
+
         except Exception as e:
             logger.error(f"{constraint_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
             logger.debug(f"Traceback:\n{traceback.format_exc()}")
-            return None, str(e)
+            logic_problem_str, perplexity, duration = None, None, None
+            error_message = str(e)
+        
+        return {
+            'raw': logic_problem_str,
+            'perplexity': perplexity,
+            'generation_time': duration,
+            'error_message': error_message
+        }
         
     def _prepare_save_file(self):
         save_path = Path(self.config.save_path)
@@ -139,27 +151,24 @@ class LogicProgramRunner:
             # Generate unconstrained version
             if 'logic_problem' not in sample or self.config.force_unconstrained:
                 pbar.set_description_str(f"Generating unconstrained problem {sample['id']}/{len(raw_dataset)}")
-                logic_problem, _ = self._generate_problem(nl_problem, sample["id"], "unconstrained")
-                if logic_problem:
-                    output['logic_problem'] = logic_problem
+                logic_problem = self._generate_problem(nl_problem, sample["id"], "unconstrained")
+                output['logic_problem'] = logic_problem
             else:
                 output['logic_problem'] = sample['logic_problem']
 
             # Generate JSON version
             if 'logic_problem_json' not in sample or self.config.force_json:
                 pbar.set_description_str(f"Generating json problem {sample['id']}/{len(raw_dataset)}")
-                logic_problem_json, _ = self._generate_problem(nl_problem, sample["id"], "json")
-                if logic_problem_json:
-                    output['logic_problem_json'] = logic_problem_json
+                logic_problem_json = self._generate_problem(nl_problem, sample["id"], "json")
+                output['logic_problem_json'] = logic_problem_json
             else:
                 output['logic_problem_json'] = sample['logic_problem_json']
 
             # Generate constrained version
             if 'logic_problem_gcd' not in sample or self.config.force_constrained:
                 pbar.set_description_str(f"Generating constrained problem {sample['id']}/{len(raw_dataset)}")
-                logic_problem_gcd, _ = self._generate_problem(nl_problem, sample["id"], "constrained")
-                if logic_problem_gcd:
-                    output['logic_problem_gcd'] = logic_problem_gcd
+                logic_problem_gcd = self._generate_problem(nl_problem, sample["id"], "constrained")
+                output['logic_problem_gcd'] = logic_problem_gcd
             else:
                 output['logic_problem_gcd'] = sample['logic_problem_gcd']
 

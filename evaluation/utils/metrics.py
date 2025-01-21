@@ -15,16 +15,16 @@ class MetricsCalculator:
         gold_answers, predictions = AnswerParser.parse_answers(samples)
         correct_predictions = sum(g == p for g, p in zip(gold_answers, predictions))
         
-        metrics = [
-            MetricsCalculator.compute_ratio(correct_predictions, n, with_string),
-            MetricsCalculator.compute_ratio(
-                sum(g == p for g, p in zip(*AnswerParser.parse_answers(executable_samples))), 
-                len(executable_samples), 
-                with_string
-            ),
-            MetricsCalculator.compute_ratio(len(parsable_samples), n, with_string),
-            MetricsCalculator.compute_ratio(len(executable_samples), n, with_string)
-        ]
+        metrics = {
+            'accuracy': MetricsCalculator.compute_ratio(correct_predictions, n, with_string),
+            # 'covered_accuracy': MetricsCalculator.compute_ratio(
+            #     sum(g == p for g, p in zip(*AnswerParser.parse_answers(executable_samples))), 
+            #     len(executable_samples), 
+            #     with_string
+            # ),
+            # 'parsing_coverage': MetricsCalculator.compute_ratio(len(parsable_samples), n, with_string),
+            'coverage': MetricsCalculator.compute_ratio(len(executable_samples), n, with_string)
+        }
         
         return metrics
 
