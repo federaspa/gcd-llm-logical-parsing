@@ -160,12 +160,12 @@ class LogicInferenceEngine:
 
 def parse_args() -> InferenceConfig:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--save-path', type=str, required=True)
+    parser.add_argument('--programs-path', type=str, required=True)
     parser.add_argument('--model-name', type=str)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--save-path', type=str, default='./outputs/logic_inference')
-    parser.add_argument('--programs-path', type=str, default='./outputs/logic_problems')
     parser.add_argument('--self-refine-round', type=int, default=0)
     
     args = parser.parse_args()

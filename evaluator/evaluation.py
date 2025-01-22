@@ -23,22 +23,30 @@ def main():
                          if os.path.isfile(os.path.join(config_path, f))]
     
     all_results = {}
+    shot_numbers = [0, 2, 5]  # Add more shot numbers as needed
     for sketcher_name in sketcher_names:
-        try:
-            prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
-            filename = f'{prefix}{args.dataset_name}_{args.split}_{sketcher_name}.json'
-            result_file = os.path.join(args.result_path, filename)
-            
-            with open(result_file, 'r') as f:
-                samples = json.load(f)
+        model_results = {}
+        for shot in shot_numbers:
+            try:
+                prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
+                filename = f'{prefix}{args.dataset_name}_{args.split}_{sketcher_name}.json'
+                result_file = os.path.join(args.result_path, f"{shot}shots", 'logic_inference', filename)
+                                
+                with open(result_file, 'r') as f:
+                    samples = json.load(f)
 
-            all_results[sketcher_name] = LogicEvaluator.evaluate_sample_groups(samples, True)
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups(samples, True)
             
-        except FileNotFoundError:
-            continue
-        except Exception as e:
-            print(f"Error processing {sketcher_name}: {e}")
-            continue
+            
+            except FileNotFoundError:
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups([], True)
+                
+            except Exception as e:
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups([], True)
+                print(f"Error processing {sketcher_name}: {e}")
+                
+            finally:
+                all_results[sketcher_name] = model_results
     
     # Print results   
     if args.latex:
@@ -46,6 +54,17 @@ def main():
         print(ResultFormatter.format_latex(all_results))
     else:
         df = ResultFormatter.create_dataframe(all_results)
+        
+        print(df)
+        
+        output_file = os.path.join('evaluator', 'evaluation_results.csv')
+        if os.path.exists(output_file):
+            overwrite = input(f"{output_file} already exists. Do you want to overwrite it? (y/n): ")
+            if overwrite.lower() != 'y':
+                print("File not overwritten.")
+                return
+        df.to_csv(output_file, index=False)
+        print(f"Results saved to {output_file}")
         print("\nResults:")
         print("="*80)
         print(df)

@@ -7,10 +7,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from tqdm import tqdm
 from datetime import datetime
+import time
 import yaml
 import traceback
 
-from utils.generator import Generator, MaxTokensException
+from utils.generator import Generator
 from utils.logger import get_logger
 
 @dataclass
@@ -22,6 +23,7 @@ class ScriptConfig:
     split: str
     models_path: str
     save_path: str
+    start_time: Optional[str]
     stop_time: Optional[str]
     timeout: int = 60
     starting_sample: int = 0
@@ -199,6 +201,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--starting-sample', type=int)
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
+    parser.add_argument('--start-time', default=None, type=str, help='Start time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--timeout', type=float, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
@@ -246,23 +249,44 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
 
 if __name__ == '__main__':
     args = parse_args()
-    
+
     script_name = Path(__file__).stem
     logger, log_file_name = get_logger(script_name, args.debug)
+    timeout = 300
     
-    try:
-        script_config, model_config, llama_cpp_config = get_configs(args)
-        runner = LogicProgramRunner(script_config, model_config, llama_cpp_config)
-        runner.run()
+    if args.start_time:
+        start_time = datetime.strptime(args.start_time, "%d-%m-%y:%H-%M-%S")
         
-    except KeyboardInterrupt:
-        logger.error("KeyboardInterrupt")
-        os.remove(f"./{log_file_name}")
-        sys.exit(0)
+        if datetime.now() < start_time:
+            
+            logger.info(f"Waiting to start script at {start_time}. Current time: {datetime.now()}, {(start_time - datetime.now()).total_seconds()} remaining")
         
-    except Exception as e:
-        error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-        logger.error(error_message)
-        sys.exit(0)
+        while datetime.now() < start_time:
+            time.sleep((start_time - datetime.now()).total_seconds())
+            
         
-    logger.info("Finished Successfully")
+    logger.info('Script started')
+    
+    while True:
+        try:
+            script_config, model_config, llama_cpp_config = get_configs(args)
+            runner = LogicProgramRunner(script_config, model_config, llama_cpp_config)
+            runner.run()
+            logger.info("Finished Successfully")
+            sys.exit()
+            
+        except ValueError as e:
+            if "Failed to load model from file:":
+                logger.warning(f'Failed to load model, retrying in {timeout} seconds')
+                time.sleep(timeout)
+            
+        except KeyboardInterrupt:
+            logger.error("KeyboardInterrupt")
+            os.remove(f"./{log_file_name}")
+            sys.exit(0)
+            
+        except Exception as e:
+            error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+            logger.error(error_message)
+            sys.exit(0)
+            
