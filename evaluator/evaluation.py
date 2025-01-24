@@ -13,6 +13,7 @@ def main():
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
+    parser.add_argument('--latex-split', action='store_true', help='Output results in two LaTeX tables')
     args = parser.parse_args()
     
     if args.sketcher_name:
@@ -27,6 +28,12 @@ def main():
     for sketcher_name in sketcher_names:
         model_results = {}
         for shot in shot_numbers:
+            
+            # model_results[shot] = {
+            #     'metrics': {},
+            #     'improvements': {}
+            # }
+            
             try:
                 prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
                 filename = f'{prefix}{args.dataset_name}_{args.split}_{sketcher_name}.json'
@@ -35,23 +42,25 @@ def main():
                 with open(result_file, 'r') as f:
                     samples = json.load(f)
 
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups(samples, True)
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups(samples)
             
             
             except FileNotFoundError:
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups([], True)
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups([])
                 
             except Exception as e:
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups([], True)
+                model_results[shot] = LogicEvaluator.evaluate_sample_groups([])
                 print(f"Error processing {sketcher_name}: {e}")
                 
-            finally:
-                all_results[sketcher_name] = model_results
-    
+        all_results[sketcher_name] = model_results
+        
     # Print results   
     if args.latex:
-        print("\nLaTeX Table:")
         print(ResultFormatter.format_latex(all_results))
+        
+    elif args.latex_split:
+        print(ResultFormatter.format_latex_split(all_results))
+        
     else:
         df = ResultFormatter.create_dataframe(all_results)
         

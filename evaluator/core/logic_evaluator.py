@@ -2,8 +2,23 @@ from utils.metrics import MetricsCalculator
 
 class LogicEvaluator:
     @staticmethod
-    def evaluate_sample_groups(samples, with_string=False):
-        n = len(samples)
+    def evaluate_sample_groups(samples):
+        n = 204
+        
+        if len(samples) != n:
+            return {
+            'UNCONSTRAINED': {
+            'accuracy': -1,
+            'coverage': -1
+        },
+            'JSON': {
+            'accuracy': -1,
+            'coverage': -1
+        },
+            'FOL': {
+            'accuracy': -1,
+            'coverage': -1
+        }}
         
         sample_groups = {
             'unconstrained': [s['logic_problem'] for s in samples if 'logic_problem' in s],
@@ -12,12 +27,9 @@ class LogicEvaluator:
         }
         
         metrics = {
-            'UNCONSTRAINED': MetricsCalculator.compute_metrics(sample_groups['unconstrained'], n, with_string),
-            'JSON': MetricsCalculator.compute_metrics(sample_groups['json'], n, with_string),
-            'FOL': MetricsCalculator.compute_metrics(sample_groups['fol'], n, with_string)
+            'UNCONSTRAINED': MetricsCalculator.compute_metrics(sample_groups['unconstrained'], n),
+            'JSON': MetricsCalculator.compute_metrics(sample_groups['json'], n),
+            'FOL': MetricsCalculator.compute_metrics(sample_groups['fol'], n)
         }
-        
-        baseline = MetricsCalculator.compute_baseline_metrics(samples, with_string)
-        metrics.update({'RANDOM': baseline[0], 'FIXED': baseline[1]})
         
         return metrics
