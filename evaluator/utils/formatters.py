@@ -34,7 +34,7 @@ class ResultFormatter:
         return df
 
     @staticmethod
-    def format_latex(results, table_name=""):
+    def format_latex(results):
         # Determine the number of shots dynamically
         shot_numbers = sorted(next(iter(results.values())).keys())
         
@@ -52,7 +52,6 @@ class ResultFormatter:
         
         # Process each model's results
         for model_name, model_results in sorted(results.items()):
-            current_root = model_name.split('-')[0]
             formatted_metrics = [model_name]
             for shot in shot_numbers:
                 metrics = model_results[shot]
@@ -95,7 +94,7 @@ class ResultFormatter:
         
         latex_lines.extend([
             "\\end{tabular}",
-            f"\\caption{{{table_name}}}" if table_name else "",
+            "\\caption{}",
             "\\label{{tab:combined}}",
             "\\end{table*}"
         ])
@@ -104,7 +103,7 @@ class ResultFormatter:
     
     
     @staticmethod 
-    def format_latex_split(results, table_name=""):
+    def format_latex_split(results):
         # Determine the number of shots dynamically
         shot_numbers = sorted(next(iter(results.values())).keys())
         
@@ -178,15 +177,15 @@ class ResultFormatter:
             
         accuracy_lines.extend([
             "\\end{tabular}",
-            f"\\caption{{{table_name}}}" if table_name else "",
-            "\\label{{tab:acc}}",
+            "\\caption{Accuracy}",
+            "\\label{tab:acc}",
             "\\end{table*}"
         ])
         
         coverage_lines.extend([
             "\\end{tabular}",
-            f"\\caption{{{table_name}}}" if table_name else "",
-            "\\label{{tab:cov}}",
+            "\\caption{Coverage}",
+            "\\label{tab:cov}",
             "\\end{table*}"
         ])
         
