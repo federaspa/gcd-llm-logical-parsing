@@ -1,0 +1,48 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformTalentShows(x)\",\n    \"AttendSchoolEventsEngaged(x)\",\n    \"InactiveDisinterestedCommunityMember(x)\",\n    \"ChaperoneDances(x)\",\n    \"StudentAtSchool(x)\",\n    \"WishFurtherEducation(x)\"\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (PerformTalentShows(x) → AttendSchoolEventsEngaged(x))\",\n    \"∀x (PerformTalentShows(x) ∨ InactiveDisinterestedCommunityMember(x))\",\n    \"∀x (ChaperoneDances(x) → ¬StudentAtSchool(x))\",\n    \"∀x (InactiveDisinterestedCommunityMember(x) → ChaperoneDances(x))\",\n    \"∀x ((WishFurtherEducation(x) ∧ YoungChildOrTeenager(x)) → StudentAtSchool(x))\",\n    \"(AttendSchoolEventsEngaged(bonnie) ∧ StudentAtSchool(bonnie)) ⊕ ¬(AttendSchoolEventsEngaged(bonnie) ∨ StudentAtSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"PerformTalentShows(bon\n}",
+      "perplexity": 1.162445068359375,
+      "generation_time": 37.654865,
+      "error_message": null,
+      "answer": "C",
+      "predicted_answer": "N/A",
+      "status": "json error",
+      "error": "Invalid control character at: line 21 column 38 (char 798)"
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Perform(x)\",\n    \"EngagedWithEvents(x)\",\n    \"InactiveAndDisinterested(x)\",\n    \"ChaperoneDances(x)\",\n    \"StudentOfSchool(x)\",\n    \"WishEducationalOpportunities(x)\"\n  ],\n  \"fol_consts\": [\"bonnie\"],\n  \"fol_rules\": [\n    \"∀x (Perform(x) → EngagedWithEvents(x))\",\n    \"∀x (Perform(x) ⊕ InactiveAndDisinterested(x))\",\n    \"∀x (ChaperoneDances(x) → ¬StudentOfSchool(x))\",\n    \"∀x (InactiveAndDisinterested(x) → ChaperoneDances(x))\",\n    \"∀x ((WishEducationalOpportunities(x) ∧ YoungOrTeenager(x)) → StudentOfSchool(x))\",\n    \"(EngagedWithEvents(bonnie) ∧ StudentOfSchool(bonnie)) ⊕ ¬(EngagedWithEvents(bonnie) ∨ StudentOfSchool(bonnie))\"\n  ],\n  \"fol_conc\": \"Perform(bonnie)\"\n}",
+      "perplexity": 1.1944832801818848,
+      "generation_time": 37.395374,
+      "error_message": null,
+      "answer": "C",
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformTalentShow(x)\",\n    \"AttendEngageSchoolEvents(x)\",\n    \"InactiveDisinterestedCommunityMember(x)\",\n    \"ChaperoneDances(x)\",\n    \"StudentAttendsSchool(x)\",\n    \"WishAcademicCareer(x)\"\n  ], \n  \"fol_consts\": [\"bonnie\"], \n  \"fol_rules\": [\n    \"∀x (PerformTalentShow(x) → AttendEngageSchoolEvents(x))\", \"∀x (PerformTalentShow(x) ⊕ InactiveDisinterestedCommunityMember(x))\",\n    \"∀x (ChaperoneDances(x) → ¬StudentAttendsSchool(x))\", \"∀x (InactiveDisinterestedCommunityMember(x) → ChaperoneDances(x))\",\n    \"∀x ((WishAcademicCareer(x) ∧ StudentAgeGroup(x)) → StudentAttendsSchool(x))\",\n    \"(AttendEngageSchoolEvents(bonnie) ∧ StudentAttendsSchool(bonnie)) ⊕ ¬(AttendEngageSchoolEvents(bonnie) ∨ StudentAttendsSchool(bonnie))\"\n  ], \n  \"fol_conc\": \"PerformTalentShow(bonnie)\"\n}",
+      "perplexity": 1.3625760078430176,
+      "generation_time": 39.182392,
+      "error_message": null,
+      "answer": "C",
+      "predicted_answer": "C",
+      "status": "success",
+      "error": ""
+    }
+  }
+]
