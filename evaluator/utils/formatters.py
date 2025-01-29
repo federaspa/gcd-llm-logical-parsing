@@ -5,31 +5,38 @@ class ResultFormatter:
     @staticmethod
     def create_dataframe(results):
         # Define columns
-        columns = ['Model', 'Shots', 'Category', 'Accuracy', 'Accuracy_improvement', 'Coverage', 'Coverage_improvement']
+        columns = ['Model', 'Size', 'Shots', 'Category', 'Accuracy', 'Accuracy_improvement', 'Coverage', 'Coverage_improvement']
         
         # Process data
         data = []
         for model_name, model_results in sorted(results.items()):
+            # Split model_name into Model and Size
+            model_parts = model_name.split('-')
+            model = model_parts[0]
+            size = model_parts[1].replace('b', '')  # Remove 'b' to sort numerically
+            
             for shot in sorted(model_results.keys()):
                 metrics = model_results[shot]
-                # improvement = model_results[shot]['improvement']
                 for category in ['UNCONSTRAINED', 'FOL']:
                     data.append([
-                        model_name,
+                        model,
+                        size,
                         f"{shot}-shots",
                         category,
-                        metrics[category]['accuracy'] * 100,
-                        (metrics['FOL']['accuracy'] - metrics['UNCONSTRAINED']['accuracy']) * 100,
-                        metrics[category]['coverage'] * 100,
-                        (metrics['FOL']['coverage'] - metrics['UNCONSTRAINED']['coverage']) * 100
+                        round(metrics[category]['accuracy'] * 100, 2),
+                        round((metrics['FOL']['accuracy'] - metrics['UNCONSTRAINED']['accuracy']) * 100, 2),
+                        round(metrics[category]['coverage'] * 100, 2),
+                        round((metrics['FOL']['coverage'] - metrics['UNCONSTRAINED']['coverage']) * 100, 2)
                     ])
         
         # Create DataFrame
         df = pd.DataFrame(data, columns=columns)
         
-        # Format all numbers to two decimal places with percentage sign
-        df['Accuracy'] = df['Accuracy'].map('{:.2f}'.format)
-        df['Coverage'] = df['Coverage'].map('{:.2f}'.format)
+        # Convert Size to numeric for sorting
+        df['Size'] = pd.to_numeric(df['Size'])
+        
+        # Sort by Model and Size
+        df = df.sort_values(by=['Model', 'Size'])
         
         return df
 

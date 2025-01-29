@@ -12,6 +12,7 @@ def main():
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
+    parser.add_argument('--save-df', action='store_true', help='Save results as dataframe')
     parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
     parser.add_argument('--latex-split', action='store_true', help='Output results in two LaTeX tables')
     args = parser.parse_args()
@@ -54,30 +55,31 @@ def main():
                 
         all_results[sketcher_name] = model_results
         
-    # Print results   
-    if args.latex:
-        print(ResultFormatter.format_latex(all_results))
         
-    elif args.latex_split:
-        print(ResultFormatter.format_latex_split(all_results))
-        
-    else:
+    if args.save_df:
         df = ResultFormatter.create_dataframe(all_results)
-        
-        print(df)
         
         output_file = os.path.join('evaluator', 'evaluation_results.csv')
         if os.path.exists(output_file):
             overwrite = input(f"{output_file} already exists. Do you want to overwrite it? (y/n): ")
             if overwrite.lower() != 'y':
                 print("File not overwritten.")
-                return
-        df.to_csv(output_file, index=False)
-        print(f"Results saved to {output_file}")
-        print("\nResults:")
-        print("="*80)
-        print(df)
-        print("="*80)
+                
+            else:
+                df.to_csv(output_file, index=False)
+                print(f"Results saved to {output_file}")
+                print("\nResults:")
+                print("="*80)
+                print(df)
+                print("="*80)
+
+    # Print results   
+    if args.latex:
+        print(ResultFormatter.format_latex(all_results))
+        
+    elif args.latex_split:
+        print(ResultFormatter.format_latex_split(all_results))
+
 
 if __name__ == "__main__":
     main()

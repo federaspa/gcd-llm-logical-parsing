@@ -5,7 +5,7 @@ class MetricsCalculator:
     @staticmethod
     def compute_ratio(numerator, denominator):
         
-        return round(numerator/denominator, 2) if denominator else 0
+        return numerator/denominator if denominator else 0
          
 
     @staticmethod
