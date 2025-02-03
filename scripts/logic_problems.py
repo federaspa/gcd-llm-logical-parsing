@@ -33,12 +33,14 @@ class ScriptConfig:
     debug: bool = False
 
 class LogicProgramRunner:
-    def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict):
+    def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict, logger):
         self.config = script_config
         self.generator = Generator(script_config)
         self.generator.setup_model(model_config, llama_cpp_config)
         
-        self.stop_time = None
+        self.logger = logger
+        
+        self.stop_time = None   
         if self.config.stop_time:
             try:
                 self.stop_time = datetime.strptime(self.config.stop_time, "%d-%m-%y:%H-%M-%S")
@@ -48,7 +50,7 @@ class LogicProgramRunner:
     def _check_time_limit(self) -> bool:
         """Check if we've reached the stop time"""
         if self.stop_time and datetime.now() >= self.stop_time:
-            logger.info(f"Stop time {self.stop_time} reached. Saving progress and exiting...")
+            self.logger.info(f"Stop time {self.stop_time} reached. Saving progress and exiting...")
             return True
         return False
     
@@ -85,17 +87,17 @@ class LogicProgramRunner:
             error_message = None
             
             if response['choices'][0]['finish_reason'] == 'length':
-                logger.error(f"{constraint_type.capitalize()}: Max tokens error for sample {sample_id}")
+                self.logger.error(f"{constraint_type.capitalize()}: Max tokens error for sample {sample_id}")
                 error_message = "max_tokens"
             
         except TimeoutError:
-            logger.error(f"{constraint_type.capitalize()}: Timeout error for sample {sample_id}")
+            self.logger.error(f"{constraint_type.capitalize()}: Timeout error for sample {sample_id}")
             logic_problem_str, perplexity, duration = None, None, self.config.timeout
             error_message = "timeout"
 
         except Exception as e:
-            logger.error(f"{constraint_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
-            logger.debug(f"Traceback:\n{traceback.format_exc()}")
+            self.logger.error(f"{constraint_type.capitalize()}: An error occurred for sample {sample_id}: {str(e)}")
+            self.logger.debug(f"Traceback:\n{traceback.format_exc()}")
             logic_problem_str, perplexity, duration = None, None, None
             error_message = str(e)
         
@@ -124,7 +126,7 @@ class LogicProgramRunner:
         save_file = self._prepare_save_file()
         raw_dataset, outputs, existing_ids = self._skip_existing(save_file, raw_dataset)
         
-        logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
+        self.logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         # Process samples
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}: [{elapsed}<{remaining}, ' '{rate_fmt}{postfix}]]')):
@@ -159,7 +161,9 @@ class LogicProgramRunner:
                 output['logic_problem'] = sample['logic_problem']
 
             # Generate JSON version
-            if 'logic_problem_json' not in sample or self.config.force_json:
+            if self.config.model_name.endswith('-r'):
+                output['logic_problem_json'] = None
+            elif 'logic_problem_json' not in sample or self.config.force_json:
                 pbar.set_description_str(f"Generating json problem {sample['id']}/{len(raw_dataset)}")
                 logic_problem_json = self._generate_problem(nl_problem, sample["id"], "json")
                 output['logic_problem_json'] = logic_problem_json
@@ -167,7 +171,9 @@ class LogicProgramRunner:
                 output['logic_problem_json'] = sample['logic_problem_json']
 
             # Generate constrained version
-            if 'logic_problem_gcd' not in sample or self.config.force_constrained:
+            if self.config.model_name.endswith('-r'):
+                output['logic_problem_gcd'] = None
+            elif 'logic_problem_gcd' not in sample or self.config.force_constrained:
                 pbar.set_description_str(f"Generating constrained problem {sample['id']}/{len(raw_dataset)}")
                 logic_problem_gcd = self._generate_problem(nl_problem, sample["id"], "constrained")
                 output['logic_problem_gcd'] = logic_problem_gcd
@@ -183,12 +189,12 @@ class LogicProgramRunner:
             if i % 20 == 0:
                 for key in ['logic_problem', 'logic_problem_json', 'logic_problem_gcd']:
                     if key in output:
-                        logger.debug(f"{key}: {output[key]}")
+                        self.logger.debug(f"{key}: {output[key]}")
 
         if self._check_time_limit():
-            logger.info("Script stopped due to reaching stop time")
+            self.logger.info("Script stopped due to reaching stop time")
         else:
-            logger.info(f"Generated {len(outputs)} examples.")
+            self.logger.info(f"Generated {len(outputs)} examples.")
 
 def parse_args() -> ScriptConfig:
     import argparse
@@ -252,7 +258,7 @@ if __name__ == '__main__':
 
     script_name = Path(__file__).stem
     logger, log_file_name = get_logger(script_name, args.debug)
-    timeout = 300
+    retry_timeout = 300
     
     if args.start_time:
         start_time = datetime.strptime(args.start_time, "%d-%m-%y:%H-%M-%S")
@@ -270,15 +276,15 @@ if __name__ == '__main__':
     while True:
         try:
             script_config, model_config, llama_cpp_config = get_configs(args)
-            runner = LogicProgramRunner(script_config, model_config, llama_cpp_config)
+            runner = LogicProgramRunner(script_config, model_config, llama_cpp_config, logger)
             runner.run()
             logger.info("Finished Successfully")
-            sys.exit()
+            break
             
         except ValueError as e:
             if "Failed to load model from file:":
-                logger.warning(f'Failed to load model, retrying in {timeout} seconds')
-                time.sleep(timeout)
+                logger.warning(f'Failed to load model, retrying in {retry_timeout} seconds')
+                time.sleep(retry_timeout)
             
         except KeyboardInterrupt:
             logger.error("KeyboardInterrupt")
