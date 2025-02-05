@@ -1,0 +1,26 @@
+#### Wrap data and question in a valid JSON ####
+root ::= "{" ws data ws quest ws "}"
+
+ws ::= | " " | "\n" [ \t]{0,5}
+
+data ::= "\"data\":" ws "[" ws datalist ws "], "
+datalist ::= "\"" ASSIGNMENT "\"" (ws "," ws "\"" ASSIGNMENT "\"")*
+
+quest ::= "\"question\":" ws "\"" EXPRESSION "\""
+
+
+#### Mathematical Expressions ####
+ASSIGNMENT ::= variable " = " EXPRESSION
+
+EXPRESSION ::= TERM TAIL{0,5}
+TAIL ::= OPERATOR TERM
+
+# Terms can be numbers, variables, or parenthesized expressions
+TERM ::= number | variable | "(" EXPRESSION ")"
+
+# Operators
+OPERATOR ::= " + " | " - " | " * " | " / "
+
+# Basic elements
+number ::= [0-9]+ ("." [0-9]+)?
+variable ::= [a-z_][a-z0-9_]*

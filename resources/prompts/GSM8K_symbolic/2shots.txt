@@ -1,0 +1,61 @@
+The task is to convert a natrual language reasoning problem into standart infix notation. 
+First, identify all the relevant variables and their values or expressions.
+Then, write each variable assignment in standard infix notation.
+Finally, formulate the equation to solve using these variables, also in standard infix notation.
+Do not attempt to solve the problem, limit yourself to converting
+
+
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"data": [list of relevant variable assignment],
+"question": [equation to solve]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Problem:
+"""
+Jamal saw a 380-foot whale with 8 57-inch remoras attached to it. What percentage of the whale's body length is the combined length of the remoras?
+"""
+
+------
+
+{
+    "data": [
+        "whale_length = 380 * 12",
+        "remora_length = 57",
+        "num_remoras = 8"
+    ],
+    "question": "((num_remoras * remora_length) / whale_length) * 100"
+}
+
+###
+
+Here's another example:
+
+Problem:
+"""
+The biggest waterslide at Water Wonderland is 400 yards long, and people slide down at 50 yards/minute. The second biggest waterslide is 200 yards long, but steeper, so people slide down at 100 yards/minute. How much longer does it take to ride the biggest slide compared to the second biggest slide?
+"""
+
+------
+
+{
+    "data": [
+        "slide1_length = 400",         # Length of biggest slide in yards
+        "slide1_speed = 50",           # Speed on biggest slide in yards/min
+        "slide2_length = 200",         # Length of second slide in yards
+        "slide2_speed = 100"           # Speed on second slide in yards/min
+    ],
+    "question": "(slide1_length / slide1_speed) - (slide2_length / slide2_speed)"
+}
+
+###
+
+Now let's convert this problem to standard infix notation.
+
+""""
+[[nl_problem]]
+"""

@@ -1,0 +1,148 @@
+The task is to convert a natrual language reasoning problem into first-order logic. 
+First, identify the predicates and constants required to build the first order logic formulas. 
+Then, use them to build the rules and the conclusion. 
+Do not attempt to prove or disprove the conclusion, limit yourself to converting.
+
+For generating the FOL formulas, you must adhere to the following rules:
+1. Logical Operators: ⊕ (either or), ∨ (disjunction), ∧ (conjunction), → (implication) ¬ (negation), ↔ (equivalence)
+2. Quantifiers: ∀ (universal), ∃ (existential)
+3. Forbidden symbols: "%", "≠", "="
+4. The literals in FOL SHOULD ALWAYS have predicate and entities, e.g., "Rounded(x, y)" or "City(guilin)"
+5. Expressions such as "y = a ∨ y = b" or "a ∧ b ∧ c" are NOT ALLOWED
+
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"fol_preds": [list of required FOL Predicates],
+"fol_consts": [list of required FOL Constants],
+"fol_rules": [list of generated FOL Rules],
+"fol_conc": [generated FOL Conclusion]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+NL premises:
+"""
+The cow is blue. The cow is round. The cow likes the lion. The cow visits the tiger. The lion is cold. The lion is nice. The lion likes the squirrel. The squirrel is round. The squirrel sees the lion. The squirrel visits the cow. The tiger likes the cow. The tiger likes the squirrel. If something is cold then it visits the tiger. If something visits the tiger then it is nice. If something sees the tiger and it is young then it is blue. If something is nice then it sees the tiger. If something likes the squirrel and it likes the cow then it visits the tiger. If something is nice and it sees the tiger then it is young. If the cow is cold and the cow visits the lion then the lion sees the squirrel.
+"""
+
+NL conclusion:
+"""
+The tiger is not young
+"""
+
+------
+
+{
+  "fol_preds": [
+    "Blue(x)", 
+    "Round(x)",
+    "Likes(x,y)",
+    "Visits(x,y)",
+    "Cold(x)",
+    "Nice(x)",
+    "Sees(x,y)",
+    "Young(x)"
+  ],
+  "fol_consts": [
+    "cow",
+    "lion",
+    "tiger",
+    "squirrel"
+  ],
+  "fol_rules": [
+    "Blue(cow)",
+    "Round(cow)",
+    "Likes(cow,lion)",
+    "Visits(cow,tiger)",
+    "Cold(lion)",
+    "Nice(lion)",
+    "Likes(lion,squirrel)",
+    "Round(squirrel)",
+    "Sees(squirrel,lion)",
+    "Visits(squirrel,cow)",
+    "Likes(tiger,cow)",
+    "Likes(tiger,squirrel)",
+    "∀x(Cold(x) → Visits(x,tiger))",
+    "∀x(Visits(x,tiger) → Nice(x))",
+    "∀x(Sees(x,tiger) ∧ Young(x) → Blue(x))",
+    "∀x(Nice(x) → Sees(x,tiger))",
+    "∀x(Likes(x,squirrel) ∧ Likes(x,cow) → Visits(x,tiger))",
+    "∀x(Nice(x) ∧ Sees(x,tiger) → Young(x))",
+    "Cold(cow) ∧ Visits(cow,lion) → Sees(lion,squirrel)"
+  ],
+  "fol_conc": "¬Young(tiger)"
+}
+
+###
+
+Here's another example:
+
+NL premises:
+"""
+Anne is green. Charlie is big. Charlie is quiet. Charlie is rough. Charlie is smart. Charlie is white. Fiona is big. Fiona is furry. Fiona is smart. Harry is big. Harry is furry. Harry is quiet. Green things are quiet. Rough, quiet things are smart. If something is green and quiet then it is rough. Big, rough things are furry. If something is white then it is big. Quiet things are rough. If Charlie is big then Charlie is quiet. All green, furry things are white. Quiet, smart things are big.
+"""
+
+NL conclusion:
+"""
+Anne is big.
+"""
+
+------
+
+{
+  "fol_preds": [
+    "Green(x)",
+    "Big(x)",
+    "Quiet(x)", 
+    "Rough(x)",
+    "Smart(x)",
+    "White(x)",
+    "Furry(x)"
+  ],
+  "fol_consts": [
+    "anne",
+    "charlie",
+    "fiona",
+    "harry"
+  ],
+  "fol_rules": [
+    "Green(anne)",
+    "Big(charlie)",
+    "Quiet(charlie)",
+    "Rough(charlie)",
+    "Smart(charlie)",
+    "White(charlie)",
+    "Big(fiona)",
+    "Furry(fiona)",
+    "Smart(fiona)",
+    "Big(harry)",
+    "Furry(harry)",
+    "Quiet(harry)",
+    "∀x(Green(x) → Quiet(x))",
+    "∀x(Rough(x) ∧ Quiet(x) → Smart(x))",
+    "∀x(Green(x) ∧ Quiet(x) → Rough(x))",
+    "∀x(Big(x) ∧ Rough(x) → Furry(x))",
+    "∀x(White(x) → Big(x))",
+    "∀x(Quiet(x) → Rough(x))",
+    "Big(charlie) → Quiet(charlie)",
+    "∀x(Green(x) ∧ Furry(x) → White(x))",
+    "∀x(Quiet(x) ∧ Smart(x) → Big(x))"
+  ],
+  "fol_conc": "Big(anne)"
+}
+
+###
+
+Now let's convert this problem to first-order logic:
+
+NL premises:
+"""
+[[nl_problem]]
+"""
+
+NL conclusion:
+"""
+[[nl_conclusion]]
+"""

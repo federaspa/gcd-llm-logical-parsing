@@ -1,0 +1,1123 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n\"fol_preds\": [\n  \"PerformsOften(x, y)\",\n  \"AttendsAndEngagedWithEvents(x, z)\",\n  \"InactiveDisinterestedMemberOfCommunity(x, w)\",\n  \"ChaperonesHighSchoolDances(x, v)\",\n  \"StudentWhoAttendsTheSchool(x, t)\"\n],\n\"fol_consts\": [\n  \"Bonnie\"\n],\n\"fol_rules\": [\n    \"∀x(PerformsOften(x, y) → ∃z (AttendsAndEngagedWithEvents(z, z)))\",\n    \"∀y(InactiveDisinterestedMemberOfCommunity(y, w) ⊕ PerformsOften(w, x))\",\n    \"∀w(CHaperonesHighSchoolDances(w, v) → ¬StudentWhoAttendsTheSchool(v, t))\",\n    \"∀u (InactiveDisinterestedMemberOfCommunity(u, w) → ChaperonesHighSchoolDances(w, v))\",\n    \"∃a(YoungChildOrTeenager(a), WishesToFurtherAcademicCareerAndEducationalOpportunities(a) → StudentWhoAttendsTheSchool(b, t))\"\n],\n\"fol_conc\": [\n  \"PerformsOften(Bonnie, y)\"\n]\n}",
+      "perplexity": 1.5652337074279785,
+      "generation_time": 33.822379,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"PerformsInShow(x)\", \"EngagedWithSchoolEvents(y, z)\", \"ChaperoneDance(w, v)\", \"AttendHighSchool(u\", \"IsStudent(t)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    {\"formula\": \"(∀x)(PerformsInShow(x) → (∃y)((EngagedWithSchoolEvents(y, z)) ∧ AttendsEvent(z)))\"},\n    {\"formula\": \"(∀z)((Not(ChaperoneDance(z,v)) ⊕ PerformsInShow(v)))\"},\n    {\"formula\": \"∀x((PerformsInShow(x) → (IsStudent(x) ∨ NotAttendSchool(u)))}\"},\n    {\"formula\": \"∃y((IsDisinterestedMemberOfCommunity(y, z)→ChaperoneDance(z,v)))\"},\n    {\"formula\": \"(∀w)((WishesToFurtherAcademicCareer(w,z) → IsStudent(w)))\"}\n  ],\n\"fol_conc\":\n{\n   \"BonniePerformsInShow\":\"(∃x)(PerformsInShow(x, Bonnie) ∧ (Not((EngagedWithSchoolEvents(z,x) ∨ AttendsEvent(x)) ∧ NotIsStudent(Bonnie))))\"\n}\n}",
+      "perplexity": 2.6217753887176514,
+      "generation_time": 38.354765,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformsOftenInTalentShows(x)\",\n    \"AttendsAndVeryEngagedWithSchoolEvents(x)\",\n    \"IsChaperoneHighSchoolDances(x)\",\n    \"NotStudentWhoAttendTheSchool(x)\"\n  ], \"fol_consts\": [\"x\", \"y\"], \"fol_rules\": [\n     \"(∀z (PerformsOftenInTalentShows(z) → ∃w ((AttendsAndVeryEngagedWithSchoolEvents(w)) ∨ IsChaperoneHighSchoolDances(w))))\",\n     \"(∀a ((IsActiveDisinterestedMemberOfCommunity(a) ⊕ PerformsOftenInTalentShows(a))) ∧ (PerformsOftenInTalentShows(a) → IsChaperoneHighSchoolDances(a)))\",\n     \"(∃b (AllowsToFurtherAcademicCareersEducationalOpportunities(b)) → ((IsStudentWhoAttendTheSchool(b)) ∨ NotStudentWhoAttendsTheSchool(b)))\"\n    ], \"fol_conc\": \"(PerformsOftenInTalentShows(bonnie))\" }",
+      "perplexity": 2.1256086826324463,
+      "generation_time": 33.161588,
+      "error_message": null
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie is either both a young child or teenager who wishes to further her academic career and educational opportunities and chaperones high school dances or neither is a young child nor teenager who wishes to further her academic career and educational opportunities, then Bonnie is either a student who attends the school or is an inactive and disinterested member of the community.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformsInTalentShowOften\",\n    \"AttendsSchoolEventsEngaged\",\n    \"IsInactiveDisinterestedCommunityMember\",\n    \"ChaperonesHighSchoolDances\",\n    \"NotStudentWhoAttendsschool\",\n    \"WishToFurtherAcademicCareerEducationalOpportunities\"\n  ],\n  \"fol_consts\": [\n    \"Bonnie\"\n  ],\n  \"fol_rules\": [\n    \"(∀x (PerformsInTalentShowOften(x) → AttendsSchoolEventsEngaged(x)))\",\n    \"(∃x ((IsInactiveDisinterestedCommunityMember(x)) ∨ PerformsInTalentShowOften(x)))\",\n    \"(∀x (ChaperonesHighSchoolDances(x) → NotStudentWhoAttendsschool(x)))\",\n    \"(∀x ((NotStudentWhoAttendsschool(x)) & IsInactiveDisinterestedCommunityMember(x) ∧ ChaperonesHighSchoolDances(x)))\",\n    \"(∃y (WishToFurtherAcademicCareerEducationalOpportunities(y) → AttendsAndIsEngagedWithSchoolEvents(y) & StudentWhoAttendsschool(y)))\",\n    \"((Bonnie: IsInactiveDisinterestedCommunityMember(Bonnie)) ∨ PerformsInTalentShowOften(Bonnie))\",\n    \"(∃x ((ChaperonesHighSchoolDances(x) → NotStudentWhoAttendsTheSchool(x))) & (IsInactiveAndDisInterestedCommunityMember(x)))\"\n  ],\n  \"fol_conc\": [\n    \"(∀z (((YoungChildOrTeenager(z) ∧ WishToFurtherAcademicCareerEducationalOpportunities(z)) ∨ NeitherAChildNorATeenager(wishesToFurterAcademicCareerAndEducationalOpportunities(z))) → ((AttendsTheSchool(z) & IsStudentWhoAttendsschool(z)) ∨ IsInactiveDisinterestedCommunityMember(z))))\n  ]\n}",
+      "perplexity": 1.6691454648971558,
+      "generation_time": 52.486455,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformsInTalentShowOften(X)\",\n    \"AttendsAndEngagedWithEvents(X)\",\n    \"IsChaperoneHighSchoolDance(X)\",\n    \"IsStudentWhoAttendsTheSchool(X)\",\n    \"IsYoungChildOrTeenager(WishesToFurtherAcademicCareer)(X)\"\n  ],\n  \"fol_consts\": [\n    \"Bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x ((PerformsInTalentShowOften(x) → (AttendsAndEngagedWithEvents(x))) ∧ (IsChaperoneHighSchoolDance(x)))\",\n    \"(∃x PerformsInTalentShowOften(x)) ⨝ ¬((∀y IsStudentWhoAttendsTheSchool(y) & (IsYoungChildOrTeenager(WishesToFurtherAcademicCareer)(y))) → AttendsAndEngagedWithEvents(y))\",\n    \"∀x ((PerformsInTalentShowOften(x)) ∧ (IsChaperoneHighSchoolDance(x)))\",\n    \"(∃x IsStudentWhoAttendsTheSchool(x) & PerformsInTalentShowOften(x)) ⨝ ¬(AttendsAndEngagedWithEvents(x))\"\n  ],\n  \"fol_conc\": [\n    \"((∀y ((IsYoungChildOrTeenager(WishesToFurtherAcademicCareer)(y)) → IsChaperoneHighSchoolDance(y))) ∧ (PerformsInTalentShowOften(Bonnie) & AttendsAndEngagedWithEvents(Bonnie)) ⨝ ¬(∃z (Bonnie = z & YoungChildOrTeenager(WishesToFurtherAcademicCareer)(y))) → IsStudentWhoAttendsTheSchool(Bonnie))\"\n  ]\n}\n",
+      "perplexity": 1.640761375427246,
+      "generation_time": 52.91947,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"PerformsInShow(x)\", \"EngagedWithEvents(x, y)\", \"ChaperonesDance(y)\", \"StudentAttendsSchool(z)\" ,\"CommunityMember(u)\",\"YoungChildOrTeenager(w)\", \"WishesToFurtherCareer(v)\",\"InactiveAndDisinterested(c)\"],  \"fol_consts\": [\"bonnie\"],  \"fol_rules\": [\n    \"(∀x (PerformsInShow(x)) → ∃y (EngagedWithEvents(y, x)))\",\n    \"(∀x ((¬(PerformsInShow(x))) ∧ ¬CommunityMember(u) ∨ CommunityMember(w)))\",\n    \"(∀z (ChaperonesDance(z) → StudentAttendsSchool(z)))\",\n    \"((∃y (EngagedWithEvents(y, z)) → ChaperonesDance(y)))\", \"(∀w ((YoungChildOrTeenager(v) → StudentAttendsSchool(z)) ∧ WishesToFurtherCareer(w)))\"\n],  \"fol_conc\": \"(∀x ((Bonnie(bonnie) → (∃y (ChaperonesDance(x, y) → (StudentAttendsSchool(y) ∨ InactiveAndDisinterested(c)))))))\" }",
+      "perplexity": 2.5432984828948975,
+      "generation_time": 36.451951,
+      "error_message": null
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often, then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformsInSchoolTalentShowOften\",\n    \"AttendsAndEngagedWithEvents\",\n    \"IsStudentWhoAttendsTheSchool\",\n    \"ChaperonesHighSchoolDances\",\n    \"YoungChildOrTeenagerWishesToFurtherAcademicCareerEducationalOpportunities\"\n  ],\n  \"fol_consts\": [\n    \"Bonnie\"\n  ],\n  \"fol_rules\": [\n    {\n      \"rule\": \"(∀x (PerformsInSchoolTalentShowOften(x) → AttendsAndEngagedWithEvents(x)))\",\n      \"comment\": \"If people perform in school talent shows often, then they attend and are very engaged with school events.\"\n    },\n    {\n      \"rule\": \"(∃y ((IsStudentWhoAttendsTheSchool(y) ∧ ¬PerformsInSchoolTalentShowOften(y)) → ChaperonesHighSchoolDances(y)))\",\n      \"comment\": \"People either perform in school talent shows often or are inactive and disinterested members of their community.\"\n    },\n    {\n      \"rule\": \"(∀x (ChaperonesHighSchoolDances(x) → ¬IsStudentWhoAttendsTheSchool(x)))\",\n      \"comment\": \"If people chaperone high school dances, then they are not students who attend the school.\"\n    }\n  ],\n  \"fol_conc\": [\n    {\n      \"conc\": \"(∀x (ChaperonesHighSchoolDances(Bonnie) ∨ ¬(ChaperonesHighSchoolDances(x)) → PerformsInSchoolTalentShowOften(Bonnie)))\",\n      \"comment\": \"If Bonnie either chaperones high school dances or, if she does not, she performs in school talent shows often.\"\n    },\n    {\n      \"conc\": \"(∀x (ChaperonesHighSchoolDances(x) ∨ PerformsInSchoolTalentShowOften(x)) → (YoungChildOrTeenagerWishesToFurtherAcademicCareerEducationalOpportunities(Bonnie) ∧ AttendsAndEngagedWithEvents(Bonnie)))\",\n      \"comment\": \"Then Bonnie is both a young child or teenager who wishes to further her academic career and educational opportunities and an inactive and disinterested member of the community.\"\n    }\n  ]\n}",
+      "perplexity": 1.2724370956420898,
+      "generation_time": 59.616481,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PerformsInTalentShowOften(x)\",\n    \"AttendsSchoolEvents(x, y)\",\n    \"VeryEngagedWithSchoolEvents(x, y)\",\n    \"IsStudentWhoAttendsTheSchool(x, z)\",\n    \"ChaperoneHighSchoolDances(x, w)\",\n    \"InactiveAndDisinterestedMemberOfCommunity(x, v)\"\n  ],\n  \"fol_consts\": [\n    \"Bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (PerformsInTalentShowOften(x) → ∃y (AttendsSchoolEvents(x,y)) ⋁ VeryEngagedWithSchoolEvents(x,y))\",\n    \"∀x (IsStudentWhoAttendsTheSchool(x, z))\",\n    \"∀x ((ChaperoneHighSchoolDances(x,w)) ↔ ¬(IsStudentWhoAttendsTheSchool(x,z)))\",\n    \"∀x (InactiveAndDisinterestedMemberOfCommunity(x,v)) → ∃w (ChaperoneHighSchoolDances(x,w))\"\n  ],\n  \"fol_conc\": [\n    \"¬∃y ((PerformsInTalentShowOften(bonnie)⊕ChaperoneHighSchoolDances(Bonnie,y)))→((IsStudentWhoAttendsTheSchool(Bonnie,z)) ∧ InactiveAndDisinterestedMemberOfCommunity(Bonnie,v))\"\n  ]\n}",
+      "perplexity": 1.5065197944641113,
+      "generation_time": 42.802176,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\n  \"PerformsInTalentShow(x)\",\n  \"AttendsEvents(x, y)\",\n  \"IsEngagedWithSchoolEvents(y, z)\",\n  \"ChaperoneDance(z, w)\",\n  \"NotStudent(w)\",\n  \"YoungChildOrTeenager(u)\",\n  \"WishesToFurtherAcademicCareer(v)\",\n  \"InactiveAndDisinterestedMemberOfCommunity(u)\"\n], \"fol_consts\": [\"x\", \"y\", \"z\", \"w\", \"u\"], \"fol_rules\": [\n  \"(∀t (PerformsInTalentShow(t) → ∃v ((AttendsEvents(t, v)) ∧ (IsEngagedWithSchoolEvents(v))) ⊕ InactiveAndDisinterestedMemberOfCommunity(u)))\",\n  \"(∀p ((ChaperoneDance(p) → NotStudent(q)) ∨ InactiveAndDisinterestedMemberOfCommunity(z)))\"\n], \"fol_conc\": \"(∃r (BonniePerformsInTalentShow(r) ⊕ BonnieChaperonesHighSchoolDances(w, r) → YoungChildOrTeenager(u) ∧ WishesToFurtherAcademicCareer(v)))\" }",
+      "perplexity": 2.092008113861084,
+      "generation_time": 34.874464,
+      "error_message": null
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James has lunch in the company.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Employee(x)\", \"SchedulesMeetingWithCustomer(x, y)\", \"HasLunchInCompany(y)\", \"WorksRemotelyFromHome(z)\", \"Manager(u)\"],\n  \"fol_consts\": [\"James\", \"Today\"],\n  \"fol_rules\": [\n    \"∀x (Employee(x) → ∃y SchedulesMeetingWithCustomer(x, y))\",\n    \"∀z HasLunchInCompany(z) → ∃w SchedulesMeetingWithCustomer(w)\",\n    \"∀u (WorksRemotelyFromHome(u) → ¬HasLunchInCompany(u))\",\n    \"∀v (Manager(v) → ¬WorksRemotelyFromHome(v))\"\n  ],\n  \"fol_conc\": [\"James ∧ HasLunchInCompany(James)\"]\n}\n```",
+      "perplexity": 1.5256117582321167,
+      "generation_time": 22.893772,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n  \"Employee(x)\",\n  \"ScheduleMeetingWithCustomer(x, y)\",\n  \"HasLunchInCompany(y)\",\n  \"AppearInCompanyToday(z)\",\n  \"WorkRemotelyFromHome(w)\"\n],\n\"fol_consts\": [\"James\"],\n\"fol_rules\": [\n    \"∀x (Employee(x) ∧ ScheduleMeetingWithCustomer(x,y)) → AppearInCompanyToday(x).\",\n    \"∀y(HasLunchInCompany(y)→ScheduleMeetingWithCustomer(z, y)).\",\n    \"∃z(HasLunchAtHome(z)⊕AppearInCompanyToday(z)),\"\n    ],\n\"fol_conc\": [\n  \"(Employee('James') ∧ HasLunchInCompany('James')) → AppearInCompanyToday('James').\"\n]\n}",
+      "perplexity": 2.0747852325439453,
+      "generation_time": 23.902019,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Employee(x)\",\n    \"SchedulesMeetingWithCustomer(x, y)\",\n    \"HasLunchInCompany(x)\",\n    \"WorksRemotelyFromHome(x)\"\n  ], \"fol_consts\": [\"x\", \"y\"], \"fol_rules\": [ \"∀z (Employee(z) ∧ SchedulesMeetingWithCustomer(z, z)) → HasLunchInCompany(z)\", \"∀w (HasLunchInCompany(w) ∧ Employee(w)) → ∃v (SchedulesMeetingWithCustomer(v, w))\", \"∀x (Employee(x) → ¬(HasLunchAtHome(x)))\", \"∀z ((WorksRemotelyFromHome(z) ∨ HasLunchInCompany(z)) ∧ ∀w ((OtherCountry(w) ∧ Employee(w)) → WorksRemotelyFromHome(z)))\", \"∃y (Manager(y) → ¬(WorksRemotelyFromHome(y)))\",\"∀z (((HasLunchAtHome(z) ∨ HasNoLunchInCompany(z)) ∧ Manager(z)) → HasLunchInCompany(z))\" ],  \"fol_conc\": \"(Employee(james) ∧ (Manager(james) ⊕ AppearInCompanyToday(james)))\"\n}",
+      "perplexity": 1.9761130809783936,
+      "generation_time": 38.096,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "James does not have lunch in the company.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Employee(x)\", \"ScheduleMeetingWithCustomer(x, y)\", \"HasLunchInCompany(x)\", \"WorksRemoteFromHome(x)\", \"Manager(x)\"],\n  \"fol_consts\": [\"James\", \"Today\"],\n  \"fol_rules\": [\n    \"∀x (Employee(x) ∧ ScheduleMeetingWithCustomer(x, y)) → HasLunchInCompany(x)\",\n    \"∀y (HasLunchInCompany(y)) → ScheduleMeetingWithCustomer(y, z)\",\n    \"∃x Employee(x) ∧ (HasLunchInCompany(x) ∨ ¬HasLunchInCompany(x))\",\n    \"∀x ((¬HasLunchInCompany(x)) → WorksRemoteFromHome(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬James HasLunchInCompany(Today)\"\n  ]\n}",
+      "perplexity": 1.4756858348846436,
+      "generation_time": 23.127531,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Employee(x)\",\n    \"SchedulesMeetingWithCustomer(x, y)\",\n    \"AppearsInCompanyToday(x)\",\n    \"HasLunchInCompany(x)\",\n    \"IsManager(x)\"\n  ],\n  \"fol_consts\": [\"James\"],\n  \"fol_rules\": [\n    \"∀x (Employee(x) → SchedulesMeetingWithCustomer(x, z))\",\n    \"∃y ∀z (HasLunchInCompany(y) → SchedulesMeetingWithCustomer(z, y))\",\n    \"∀x (Employee(x) → HasLunchAtHomeOrCompany(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬(HasLunchInCompany(\\\"James\\\"))\"\n  ]\n}\n",
+      "perplexity": 1.5386159420013428,
+      "generation_time": 23.381781,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Employee(x)\",\n    \"SchedulesMeetingWithCustomer(x, y)\",\n    \"HasLunchInCompany(x)\",\n    \"WorksRemotelyFromHome(x)\",\n    \"Manager(x)\",\n    \"AppearsToday(y)\"\n  ],  \"fol_consts\": [\"james\"], \"fol_rules\": [\n    \"∀x (Employee(x) ∧ SchedulesMeetingWithCustomer(x, y)) → AppearsInCompany(x)\", \"Not(haslunchincompany)\",\n    \"∀y (HasLunchInCompany(y)) ∧ SchedulesMeetingsWithCustomers(y)\",\n    \"∀z (WorksRemotelyFromHome(z) ↔ HasLunchAtHome(z))\",\n    \"∃x (Employee(x) ∧ IsInOtherCountry(x)) → WorksRemotelyFromHome(x)\",\n    \"∀w ((Manager(w)) → ¬(WorksRemotelyFromHome(w)))\"\n  ],  \"fol_conc\": \"¬HasLunchInCompany(james)\"\n}",
+      "perplexity": 2.077792167663574,
+      "generation_time": 30.56168,
+      "error_message": null
+    }
+  },
+  {
+    "id": 5,
+    "nl_problem": {
+      "context": [
+        "All employees who schedule a meeting with their customers will appear in the company today. ",
+        "Everyone who has lunch in the company schedules meetings with their customers. ",
+        "Employees will either have lunch in the company or have lunch at home.",
+        "If an employee has lunch at home, then he/she is working remotely from home.",
+        "All employees who are in other countries work remotely from home. ",
+        "No managers work remotely from home. ",
+        "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+      ],
+      "question": "If James is either a manager or in other countries,  then James either has lunch at home and works remotely from home, or neither has lunch at home nor works remotely from home.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Employee(x)\", \"SchedulesMeetingWithCustomer(x, y)\", \"HasLunchInCompany(x)\", \"WorksRemotelyFromHome(x)\", \"IsManager(x)\", \"AppearsInCompanyToday(x)\"],\n  \"fol_consts\": [\"James\", \"x1\", \"y1\"],\n  \"fol_rules\": [\n    \"(∀x)(Employee(x) → (SchedulesMeetingWithCustomer(x, y1) → AppearsInCompanyToday(x)))\",\n    \"(∀x)(HasLunchInCompany(x) → SchedulesMeetingWithCustomer(x, x1))\",\n    \"(∀x)((HasLunchAtHome(x) ∨ HasLunchInCompany(x)))\",\n    \"(∀x)(WorksRemotelyFromHome(x) → (IsManager(x) → ¬(AppearsInCompanyToday(x))) ⊕ HasLunchAtHome(x)⇒ WorksRemotelyFromHome(x))\",\n    \"HasLunchAtHome(x1) ∨ IsOtherCountry(x1)\",\n  ],\n  \"fol_conc\": [\n    \"(∀x)(IsManager(x) → (WorksRemotelyFromHome(x))) ⊕ HasLunchInCompany(x)\"\n  ]\n}\n```",
+      "perplexity": 1.6938809156417847,
+      "generation_time": 36.849154,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Employee\", \"SchedulesMeetingWithCustomer\", \"HasLunchInCompany\", \"WorksRemotelyFromHome\", \"IsManager\", \"AppearsToday\"],\n  \"fol_consts\": [\"James\"]\n}\n   ",
+      "perplexity": 1.9169213771820068,
+      "generation_time": 8.140907,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Employee(x)\", \"SchedulesMeetingWithCustomer(x, y)\", \"HasLunchInCompany(x)\", \"WorksRemotelyFromHome(x)\", \"IsManager(x)\", \"AppearsToday(x)\", \"OtherCountries(x)\",\"NeitherAManagerNorAppears(x)\"],  \"fol_consts\": [\"x\", \"y\"],  \"fol_rules\": [\n    \"∀x (Employee(x) → SchedulesMeetingWithCustomer(x, y))\",\n    \"∀x ((HasLunchInCompany(x)) → ∃y (SchedulesMeetingWithCustomer(x, y)))\",\n    \"∀x (WorksRemotelyFromHome(x) ↔ HasLunchAtHome(x))\", \"If(haslunchathome, thenremote)\", \"Theyworkremotelyfromhomeinothercountries(theyareinothercountries)\",\n    \"NoManagersWorkRemoteHome(manager)\"\n],  \"fol_conc\": \"∀x ((IsManager(x) ∨ OtherCountries(x)) → (HasLunchAtHome(x) ∧ WorksRemotelyFromHome(x)) ∨ NeitherAManagerNorAppearsToday(x))\"\n}",
+      "perplexity": 2.210894823074341,
+      "generation_time": 36.287467,
+      "error_message": null
+    }
+  },
+  {
+    "id": 6,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "There is an animal.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"InfectiousDisease(X)\",\n    \"CausedBy(Y, X)\", // Y is the cause of X\n    \"OccursIn(Z, W)\",   // Z can occur in W (e.g., virus occurs in certain animals)\n    \"Human(W)\"        // Predicate for humans\n  ],\n  \"fol_consts\": [\n    \"Monkeypox\",\n    \"monkeypox_virus\"\n  ],\n  \"fol_rules\": [\n    \"∃X. InfectiousDisease(X) ∧ CausedBy(monkeypox, X)\",\n    \"∀Y. OccursIn(Y, monkeypox_virus) → (Human(Y))\",\n    \"∀Z.W(Human(Z) ∨ Z = monkeypox_virus)\"\n  ],\n  \"fol_conc\": [\n    \"∃W.Animal(W)\"\n  ]\n}\n```",
+      "perplexity": 1.7932226657867432,
+      "generation_time": 26.203043,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"IsInfectiousDisease\", \"CausedBy\", \"OccursInAnimal\", \"Human\", \"Mammal\", \"SymptomOf\", \"FeelsTired\"],\n\"fol_consts\": [\"Monkeypox\", \"monkeypoxVirus\", \"human\", \"mammals\", \"animal\"],\n\"fol_rules\": [\n    \"∀x (IsInfectiousDisease(x) → CausedBy(Monkeypox, x))\",\n    \"CausedBy(monkeypoxVirus, Monkeypox)\",\n    \"OccursInAnimal(human) ∨ OccursInAnimal(mammals) → IsHuman(x) ⊕ OccursInAnimal(x)\"\n],\n\"fol_conc\": [\"∃x (IsAnimal(x))\"]\n}",
+      "perplexity": 1.6739003658294678,
+      "generation_time": 26.064692,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"InfectiousDisease(x)\", \"CausedBy(y, z)\", \"OccursIn(a, b)\", \"IsAnimal(c)\", \"FeelsTired(d, e)\"],  \"fol_consts\": [ \"monkeypox\", \"virus\", \"humans\", \"animal\", \"mammals\"],  \"fol_rules\": [\n    \"∀x (InfectiousDisease(x) → ∃y (CausedBy(y, x)))\",\n    \"OccursIn(virus, animal)\",\n    \"IsAnimal(humans)\"\n   ],  \"fol_conc\": \"∃z (IsAnimal(z))\"\n}",
+      "perplexity": 1.7977641820907593,
+      "generation_time": 21.146907,
+      "error_message": null
+    }
+  },
+  {
+    "id": 7,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "No one gets flu.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"IsDisease(X, Y)\",\n    \"CausedBy(VirusX, DiseaseY)\",\n    \"OccursIn(AnimalZ, VirusW)\",\n    \"Symptom(DiseaseT, SymptomU)\"\n  ],\n  \"fol_consts\": [\"Monkeypox\", \"monkeypox_virus\", \"human\", \"mammal\", \"animal\"],\n  \"fol_rules\": [\n    \"∃X. IsDisease(X, Monkeypox)\",\n    \"CausedBy(monkeypox_virus, Monkeypox)\",\n    \"OccursIn(human, monkeypox_virus)\"\n  ],\n  \"fol_conc\": [\"∀x. ¬IsInfected(x, flu)\"]\n}\n```",
+      "perplexity": 1.5488165616989136,
+      "generation_time": 21.295947,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CausedBy\",\n    \"OccursIn\",\n    \"IsA\",\n    \"SymptomsOf\",\n    \"FeelsTired\"\n  ],\n  \"fol_consts\": [\"monkeypox\", \"virus\", \"humans\", \"animals\", \"mammals\"],\n  \"fol_rules\": [\n    \"(∀x)(CausedBy(monkeypox, x) → OccursIn(x, humans))\",\n    \"(∀x)((OccursIn(virus, x) ∧ IsA(mammal, x)))→ (OccursIn(x, animals))\"\n  ],\n  \"fol_conc\": [\n    \"¬∃y(SymptomsOf(monkeypox, y)\",\n    \"¬FeelsTired(y)\"\n  ]\n}\n",
+      "perplexity": 1.7213664054870605,
+      "generation_time": 26.324793,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"InfectiousDisease(x, y)\",\n    \"CausedBy(virus, disease)\",\n    \"OccursIn(animal, virus)\",\n    \"IsMammal(individual)\",\n    \"HasSymptom(patient, symptom)\",\n    \"FeelsTired(person)\"\n  ],  \"fol_consts\": [\n    \"monkeypox\",\n    \"monkeypoxvirus\",\n    \"human\"\n  ],  \"fol_rules\": [\n    \"InfectiousDisease(monkeypox, monkeypoxvirus)\",\n    \"CausedBy(monkeypoxvirus, monkeypox)\",\n    \"OccursIn(human, monkeypoxvirus)\",\n    \"IsMammal(human)\"\n  ],  \"fol_conc\": \"∀x (¬HasSymptom(x, tired))\"\n}",
+      "perplexity": 1.7324987649917603,
+      "generation_time": 26.348064,
+      "error_message": null
+    }
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "context": [
+        "Monkeypox is an infectious disease caused by the monkeypox virus.",
+        "Monkeypox virus can occur in certain animals, including humans.",
+        "Humans are mammals.",
+        "Mammals are animals.",
+        "Symptons of Monkeypox include fever, headache, muscle pains, feeling tired, and so on.",
+        "People feel tired when they get a glu."
+      ],
+      "question": "Symptons of Monkeypox include coughing.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"IsInfectiousDisease(X, Y)\",\n    \"CausedBy(Y, X)\",\n    \"OccursIn(Z, W)\",\n    \"HasSymptom(W, Z)\",\n    \"FeelingTired\",\n    \"Mammal(X)\"\n  ],\n  \"fol_consts\": [\"Monkeypox\", \"monkeypoxVirus\", \"Human\"],\n  \"fol_rules\": [\n    \"∃X (IsInfectiousDisease(Monkeypox, X) ∧ CausedBy(X, monkeypoxVirus))\",\n    \"OccursIn(Human, Human)\",\n    \"Mammal(Human)\"\n  ],\n  \"fol_conc\": [\n    \"∀Y (HasSymptom(Y, Monkeypox) → FeelingTired(Monkeypox))\"\n  ]\n}",
+      "perplexity": 1.5869418382644653,
+      "generation_time": 23.962463,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"IsInfectiousDisease(x, y)\",\n    \"CausedBy(y, z)\",\n    \"OccursIn(z, w)\",\n    \"Rounded(w, v)\",\n    \"SymptomOf(v, u)\"\n  ],\n  \"fol_consts\": [\n    \"Monkeypox\",\n    \"monkeypoxVirus\",\n    \"Human\",\n    \"Mammal\",\n    \"Animal\"\n  ],\n  \"fol_rules\": [\n    \"∀x (IsInfectiousDisease(Monkeypox, x)) ⊕ ∃y CausedBy(y, monkeypoxVirus)\",\n    \"OccursIn(Human, Monkeypox) → OccursIn(Mammal, Human)→ IsAnimal(x)\"\n  ],\n  \"fol_conc\": [\n     \"∀x (SymptomOf(Monkeypox, x))\"\n  ]\n}",
+      "perplexity": 1.7254204750061035,
+      "generation_time": 30.314823,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\n  \"InfectiousDisease(x)\",\n  \"CausedBy(y, x)\",\n  \"OccursIn(z, w)\",\n  \"Animal(t)\",\n  \"Mammal(u)\",\n  \"Human(v)\",\n  \"Symptom(w, u)\",\n  \"FeelingTired(a, b)\"\n], \"fol_consts\": [\"monkeypox\", \"virus\", \"human\", \"mammals\"], \"fol_rules\": [\n  \"InfectiousDisease(monkeypox) ∧ CausedBy(virus, monkeypox)\",\n  \"OccursIn(mammal, human) ∧ OccursIn(human, virus)\",\n  \"Animal(mammls)\",\n  \"Mammal(mammls)\"\n], \"fol_conc\": \"∃x (Symptom(x, coughing))\"\n}",
+      "perplexity": 1.7213865518569946,
+      "generation_time": 26.782854,
+      "error_message": null
+    }
+  },
+  {
+    "id": 9,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Tom is an Ocellated wild turkey.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"IsWildTurkey\", \"IsEasternWT\", \"IsOsceolaWT\", \"IsGouldsWT\", \"IsMerriamsWT\", \"IsRioGrandeWT\", \"IsOcellatedWT\"],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x (IsWildTurkey(x) → (IsEasternWT(x) ∨ IsOsceolaWT(x) ∨ IsGouldsWT(x) ∨ IsMerriamsWT(x) ∨ IsRioGrandeWT(x) ∧ IsOcellatedWT(x)))\",\n    \"¬IsEasternWT(Tom)\",\n    \"¬IsOsceolaWT(Tom)\",\n    \"¬(IsGouldsWT(Tom) ∨ IsMerriamsWT(Tom) ∨ IsRioGrandeWT(Tom))\"\n  ],\n  \"fol_conc\": [\"∀x (IsWildTurkey(x) → IsOcellatedWT(x))\"]\n}\n```",
+      "perplexity": 1.1330901384353638,
+      "generation_time": 29.257031,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"WildTurkey\", \"EasternWT\", \"OsceolaWT\", \"GouldsWT\", \"MerriamsWT\", \"RioGrandeWT\", \"OcellatedWT\"],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x (WildTurkey(x) → EasternWT(x))\",\n    \"∀x (WildTurkey(x) → OsceolaWT(x))\",\n    \"∀x (WildTurkey(x) → GouldsWT(x))\",\n    \"∀x (WildTurkey(x) → MerriamsWT(x))\",\n    \"∀x (WildTurkey(x) → RioGrandeWT(x))\",\n    \"∃y (OcellatedWT(y)\",\n  \"fol_conc\" ]\n}\n  \t\t",
+      "perplexity": 1.6728092432022095,
+      "generation_time": 25.860947,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"WildTurkey(x)\",\n    \"EasternWildTurkey(y)\",\n    \"OsceolaWildTurkey(z)\",\n    \"GouldstWildTurkey(w)\",\n    \"MerriamsWildTurkey(v)\",\n    \"RioGrandeWildTurkey(u)\",\n    \"OcellatedWildTurkey(t)\"\n  ], \"fol_consts\": [\n    \"tom\"\n  ], \"fol_rules\": [\n    \"∀x (EasternWildTurkey(x) → WildTurkey(x))\",\n    \"∀y (OsceolaWildTurkey(y) → WildTurkey(y))\",\n    \"∀w (GouldstWildTurkey(w) → WildTurkey(w))\",\n    \"∀v (MerriamsWildTurkey(v) → WildTurkey(v))\",\n    \"∀u (RioGrandeWildTurkey(u) → WildTurkey(u))\"\n  ], \"fol_conc\": \"¬EasternWildTurkey(tom) ∧ ¬OsceolaWildTurkey(tom) ∧ ¬GouldstWildTurkey(tom) ∧ ¬MerriamsWildTurkey(tom) ∧ ¬RioGrandeWildTurkey(tom) ∨ OcellatedWildTurkey(tom)\"\n}",
+      "perplexity": 1.2394874095916748,
+      "generation_time": 38.31717,
+      "error_message": null
+    }
+  },
+  {
+    "id": 10,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Tom is an Eastern wild turkey.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"WildTurkey(x)\",\n    \"TypeOfWildTurkey(x, y)\"\n  ],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x (WildTurkey(x) → ∃y TypeOfWildTurkey(x,y))\",\n    \"¬(EasternWildTurkey(Tom))\",\n    \"¬(OsceolaWildTurkey(Tom))\",\n    \"¬GouldsWildTurkey(Tom)\",\n    \"¬MerriamsWildTurkey(Tom)\",\n    \"¬RioGrandeWildTurkey(Tom)\"\n  ],\n  \"fol_conc\": [\n    \"EasternWildTurkey(Tom)\"\n  ]\n}\n```",
+      "perplexity": 1.2838774919509888,
+      "generation_time": 19.202716,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"WildTurkey\", \"EasternWT\", \"OsceolaWT\", \"GouldsWT\", \"MerriamsWT\", \"RioGrandewT\"],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x (WildTurkey(x) → ∃y ∈ {EasternWT, OsceolaWT, GouldsWT, MerriamsWT, RioGradetW} y = x)\",\n    \"¬ WildTurkey(Tom, EasternWT)\"\n    ],\n  \"fol_conc\": [\"Tom(EasternWT)\"]\n}\n",
+      "perplexity": 1.7168623208999634,
+      "generation_time": 19.158461,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"WildTurkey(x)\",\n    \"EasternWildTurkey(y)\",\n    \"OsceolaWildTurkey(z)\",\n    \"GouldsWildTurkey(a)\",\n    \"MerriamsWildTurkey(b)\",\n    \"RioGrandesWildTurkey(c)\"\n  ], \"fol_consts\": [ \"tom\" ], \"fol_rules\": [\n     \"And(andnotwildturkeytype1, andnotwildturkeytype2, andnotwildturkeytype3, andnotwildturkeytype4)\",\n    \"And(orwildturkeytype5, orwildturketype6)\",\"IsWildTurkey(tom)\"\n  ], \"fol_conc\": \"EasternWildTurkeyTom(tom)\" }",
+      "perplexity": 2.185214042663574,
+      "generation_time": 25.6115,
+      "error_message": null
+    }
+  },
+  {
+    "id": 11,
+    "nl_problem": {
+      "context": [
+        "There are six types of wild turkeys: Eastern wild turkey, Osceola wild turkey, Gould’s wild turkey, Merriam’s wild",
+        "turkey, Rio Grande wild turkey, and Ocellated wild turkey.",
+        "Tom is not an Eastern wild turkey.",
+        "Tom is not an Osceola wild turkey.",
+        "Tom is also not a Gould's wild turkey, or a Merriam's wild turkey, or a Rio Grande wild turkey.",
+        "Tom is a wild turkey."
+      ],
+      "question": "Joey is a wild turkey.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n\"fol_preds\": [\n  \"WildTurkey(x)\",\n  \"EasternWTurkey(x)\",\n  \"OsceolaWTurkey(x)\",\n  \"GouldsWTurkey(x)\",\n  \"MerriamsWTurkey(x)\",\n  \"RioGrandeWTurkey(x)\",\n  \"OcellatedWTurkey(x)\"\n],\n\"fol_consts\": [\n  \"Tom\",\n  \"Joey\"\n],\n\"fol_rules\": [\n  \"∀x (WildTurkey(x) ∧ EasternWTurkey(x)) → ¬EasternWTurkey(Tom)\",\n  \"∀x (WildTurkey(x) ∧ OsceolaWTurkey(x)) → ¬OsceolaWTurkey(Tom)\",\n  \"∃y ((GouldsWTurkey(y) ∨ MerriamsWTurkey(y) ∨ RioGrandeWTurkey(y))) → WildTurkey(Tom)\"\n],\n\"fol_conc\": [\n  \"WildTurkey(Joey)\"\n]\n}\n```",
+      "perplexity": 1.2809414863586426,
+      "generation_time": 27.705869,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n  \"IsWildTurkey\",\n  \"NotATypeOf\"\n],\n\"fol_consts\": [\n  \"Tom\", \"Joey\", \"EasternWildTurkey\", \"OsceolaWildTurkey\", \"GouldsWildTurkey\", \"MerriamsWildTurkey\", \"RioGrandewildturkey\", \"Ocellatedwildturkey\",\n  \"WildTurkey\"\n],\n\"fol_rules\": [\n    \"NotATypeOf(Tom, EasternWildTurkey)\",\n    \"NotATypeOf(Tom, OsceolaWildTurkey)\",\n    \"NotATypeOf(Tom, GouldsWildTurkey)\",\n    \"NotATypeOf(Tom, MerriamsWildTurkey)\",\n    \"NotATypeOf(Tom, RioGrandewildturkey)\"\n],\n\"fol_conc\": [\n  \"IsWildTurkey(Joey) ∧ (∀x (NotATypeOf(x, EasternWildTurkey)) → IsWildTurkey(x))\"\n]\n}",
+      "perplexity": 1.3678807020187378,
+      "generation_time": 33.125895,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"WildTurkey(type, x)\", \"Eastern(x)\", \"Osceola(x)\", \"Goulds(x)\", \"Merriams(x)\", \"RioGrande(x)\",\"Ocellated(x)\"],  \"fol_consts\": [\"x\", \"y\"], \"fol_rules\":\n  [\n    \"(∀z (WildTurkey(z, x)))\",\n    \"(¬Eastern(x))\",\n    \"(¬Osceola(x))\",\n    \"(¬Goulds(x) ∨ ¬Merriams(x) ∨ ¬RioGrande(x))\"\n  ], \"fol_conc\": \"(∃x (WildTurkey(joey, x)))\"\n}",
+      "perplexity": 1.8342303037643433,
+      "generation_time": 22.066872,
+      "error_message": null
+    }
+  },
+  {
+    "id": 12,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "The Legend of Zelda is in the Top 10 list.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CompanyCreatedGame\",\n    \"IsTop10List\",\n    \"SoldMoreThanOneMillion\"\n  ],\n  \"fol_consts\": [\n    \"TheLegendOfZelda\",\n    \"JapaneseGameCompanies\",\n    \"BG\"\n  ],\n  \"fol_rules\": [\n    \"(∀x)(CompanyCreatedGame(x, JapaneseGameCompanies) → IsTop10List(x))\",\n    \"(∃y)((SoldMoreThanOneMillion(y) ∧ CompanyCreatedGame(TheLegendOfZelda, y)) → IsTop10List(TheLegendOfZelda))\"\n  ],\n  \"fol_conc\": [\n    \"IsTop10List(TheLegendOfZelda)\"\n  ]\n}\n```",
+      "perplexity": 1.346538782119751,
+      "generation_time": 21.767775,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Created\",\n    \"GameCompanyMade\",\n    \"SellMoreThanMillionCopies\",\n    \"InTopTenList\"\n  ],\n  \"fol_consts\": [\"TheLegendOfZelda\", \"Japanese\"],\n  \"fol_rules\": [],\n  \"fol_conc\": []\n}\n     ",
+      "perplexity": 2.85546612739563,
+      "generation_time": 10.117143,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CreatedBy(company, game)\",\n    \"InTop10List(game)\",\n    \"SellsMoreThanOneMillionCopies(game)\"\n  ], \"fol_consts\": [\n    \"thelegendofzelda\",\n    \"japanesegamecompanies\"\n  ], \"fol_rules\": [\n    \"∀x (CreatedBy(japanesegamecompany, x) → InTop10List(x))\",\n    \"(SellsMoreThanOneMillionCopies(thelegendofzelda) → InTop10List(thelegendofzelda))\"\n  ], \"fol_conc\": \"InTop10List(thelegendofzelda)\"\n}",
+      "perplexity": 1.5080815553665161,
+      "generation_time": 20.169428,
+      "error_message": null
+    }
+  },
+  {
+    "id": 13,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "FIFA 22 is made by a Japanese video game company.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Created\", \"MadeByJapaneseCompany\"],\n  \"fol_consts\": [\"TheLegendOfZelda\", \"FIFA22\", \"Top10List\"],\n  \"fol_rules\": [\n    \"∀x (Created(x, TheLegendOfZelda) → MadeByJapaneseCompany(TheLegendOfZelda))\",\n    \"∃y ∀z ((MadeByJapaneseGameCompany(y, z), Top10(z)))\",\n    \"∃w (Rounded(w, y) ⊕ Rounded(w, z))\"\n  ],\n  \"fol_conc\": [\"Created(FIFA22, FIFA22) → MadeByJapaneseCompany(FIFA22)\"]\n}",
+      "perplexity": 1.7525768280029297,
+      "generation_time": 18.524501,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Created_By\", \"Is_In_Top10_List\", \"Sells_MoreThanOneMillionCopies\"],\n  \"fol_consts\": [\"The_Legend_of_Zelda\", \"FIFA_22\", \"JapaneseGameCompany\"],\n  \"fol_rules\": [\n    {\n     \"And(All(games In Top10List, CreatedBy(games, JapaneseGameCompanies))),\"\n     :\"CreatedBy(TheLegendOfZelda, JapaneseGameCompany)\"\n     },\n     {\n     \"And(SellsMoreThanOneMillionCopies(TheLegendOfZelda)), \"\n     : \"IsInTop10List(TheLegendOfZelda)\"\n     }\n  ],\n  \"fol_conc\": [\n    \"CreatedBy(FIFA_22, JapaneseGameCompanies)\"\n  ]\n}\n",
+      "perplexity": 2.3167948722839355,
+      "generation_time": 24.537621,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\n  \"CompanyMade(game, company)\",\n  \"Top10ListIncludes(game)\",\n  \"GameSellsMoreThanOneMillionCopies(game)\"\n], \"fol_consts\": [\"game\", \"company\"], \"fol_rules\": [ \"∀x (CompanyMade(x, game)) → Top10ListIncludes(x)\", \"∃y (GameSellsMoreThanOneMillionCopies(y) ∧ CompanyMade(y, company))\" ], \"fol_conc\": \"∃z (Top10ListIncludes(z) ∨ GameSellsMoreThanOneMillionCopies(z))\"\n}",
+      "perplexity": 1.94037663936615,
+      "generation_time": 19.108921,
+      "error_message": null
+    }
+  },
+  {
+    "id": 14,
+    "nl_problem": {
+      "context": [
+        "A Japanese game company created the game the Legend of Zelda.",
+        "All games in the Top 10 list are made by Japanese game companies.",
+        "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+        "The Legend of Zelda sold more than one million copies."
+      ],
+      "question": "The Legend of Zelda is not in the Top 10 list.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CreatedGame(company, game)\",\n    \"MadeByCompany(game, company)\",\n    \"InTop10List(game)\"\n  ],\n  \"fol_consts\": [\"TheLegendOfZelda\", \"Japanese\"],\n  \"fol_rules\": [\n    \"∀x (MadeByCompany(x, Japanese) → ∃y CreatedGame(y, x))\",\n    \"(BG) ∀z ((SellsMoreThanOneMillionCopies(z) → InTop10List(z)))\"\n  ],\n  \"fol_conc\": [\"¬InTop10List(TheLegendOfZelda)\"]\n}\n```",
+      "perplexity": 1.4882621765136719,
+      "generation_time": 17.54438,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CreatedByGameCompany\",\n    \"InTop10List\"\n  ],\n  \"fol_consts\": [\n    \"TheLegendOfZelda\",\n    \"JapaneseGameCompanies\"\n  ],\n  \"fol_rules\": [\n    \"∀x (InTop10List(x) → ∃y CreatedByGameCompany(y, x))\",\n    \"CreatedByGameCompany(JapaneseGameCompanies, TheLegendOfZelda)\",\n    \"[BG] ∀x (SellsMoreThanOneMillionCopies(x) → InTop10List(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬InTop10List(TheLegendOfZelda)\"\n  ]\n}",
+      "perplexity": 1.2685195207595825,
+      "generation_time": 21.854797,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"GameCreatedByCompany(company, game)\", \"ListContain(game, list)\", \"SellMoreThanOneMillionCopies(game)\",\n    \"Top10listContains(game)\",\"GameMadeByJapaneseCompany(game)\"], \"fol_consts\":\n  [\"thelegendofzelda\", \"japanesegamecompany\", \"top10\"], \"fol_rules\": [\n     \"∃x (GameCreatedByCompany(japanesegamecompany, x)) ∧ Game(x)\",\n     \"∀y (ListContain(y, top10) → GameMadeByJapaneseCompany(y))\",\n    \"BG(ifx, yx) ∨ SellMoreThanOneMillionCopies(z) → Top10listContains(z)\",\n  \"SellMoreThanOneMillionCopies(thelegendofzelda)\"], \"fol_conc\": \"¬Top10listContains(thelegendofzelda)\"\n}",
+      "perplexity": 2.3456919193267822,
+      "generation_time": 26.910442,
+      "error_message": null
+    }
+  },
+  {
+    "id": 15,
+    "nl_problem": {
+      "context": [
+        "All squares have four sides.",
+        "All four-sided things are shapes. "
+      ],
+      "question": "All squares are shapes.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"HasFourSides(x)\", \"IsShape(y)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    {\n      \"rule1\": \"∀x(HasFourSides(x) → IsShape(x))\"\n    },\n    {\n      \"rule2\": \"∃y(HasFourSides(y)\"\n    }\n  ],\n  \"fol_conc\": [\"∀z(IsSquare(z) → IsShape(z))\"]\n}\n```",
+      "perplexity": 1.4861558675765991,
+      "generation_time": 14.273346,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Square(x)\", \"FourSided(y)\", \"Shape(z)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x(Square(x)) → ∃y(FourSided(y))\",\n    \"∀z(FourSided(z)) → Shape(z)\"\n  ],\n  \"fol_conc\": [\"∀w(Square(w) → Shape(w))\"]\n}\n",
+      "perplexity": 1.365442156791687,
+      "generation_time": 15.710515,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"HasSides(n, k)\", \"IsShape(x)\"],  \"fol_consts\": [\"four\", \"square\"],  \"fol_rules\": [\n    \"∀x (HasSides(square, four))\",\n    \"∀n ∃k (HasSides(n, k) → IsShape(n))\"\n  ],  \"fol_conc\": \"∀y (IsShape(y) → HasSides(x, y))\" }",
+      "perplexity": 2.8836581707000732,
+      "generation_time": 15.057774,
+      "error_message": null
+    }
+  },
+  {
+    "id": 16,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is a turtle.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(X)\",\n    \"Exist(Turtle)\",\n    \"IsAnimal(Y, Z)\",\n    \"Skittish(W)\",\n    \"Still(U)\"\n  ],\n  \"fol_consts\": [\n    \"Rabbit\",\n    \"Turtle\",\n    \"Squirrel\"\n  ],\n  \"fol_rules\": [\n    \"∀X (Rabbit(X) → Cute(X))\",\n    \"∃Y Turtle(Y)\",\n    \"∀Z ((Animal(Z, Rabbit) ∨ Animal(Z, Squirrel)))\",\n    \"∀W (Skittish(W) → ¬Still(U))\",\n    \"∀U (Squirrel(U) → Skittish(U))\"\n  ],\n  \"fol_conc\": [\n    \"Rock ≠ Turtle\"\n  ]\n}\n\"",
+      "perplexity": 1.3796547651290894,
+      "generation_time": 22.44266,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(X)\",\n    \"ExistTurtle\",\n    \"Animal(Y)\",\n    \"Skittish(Z)\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"(∀X) Cute(Rabbit(X))\",\n    \"(∃Y) Turtle(Y)\",\n    \"(∀Z)(Rabbit(Z) ∨ Squirrel(Z))\",\n    \"(∀W)((Skittish(W) → ¬Still(W)))\"\n  ],\n  \"fol_conc\": [\n    \"Rock ∈ Animal(Rock)\"\n  ]\n}\n",
+      "perplexity": 1.6451374292373657,
+      "generation_time": 17.273681,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(x)\",\n    \"Turtle(x)\",\n    \"Animal(x)\",\n    \"Skittish(x)\",\n    \"Still(y)\"\n  ], \"fol_consts\": [\"rock\"], \"fol_rules\": [ \"∀x (Rabbit(x) → Cute(x))\", \"∃y (Turtle(y))\",\n    \"(∀z ((Squirrel(z) ∨ Rabbit(z))) ∧ Animal(z))\",\n    \"(∀w (Skittish(w) → ¬Still(w)))\", \"∀x (Squirrel(x) → Skittish(x))\"], \"fol_conc\": \"Turtle(rock)\"\n}",
+      "perplexity": 1.7687565088272095,
+      "generation_time": 20.270109,
+      "error_message": null
+    }
+  },
+  {
+    "id": 17,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is not a turtle.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(X)\",\n    \"Exists(Turtle(Y))\",\n    \"Animal(Z)\",\n    \"Skittish(W)\"\n  ],\n  \"fol_consts\": [\"Rock\"],\n  \"fol_rules\": [\n    \"\\u03A1 \\forall X (Rabbit(X) -> Cute(X))\",\n    \"\\u03C4 \\exists Y Turtle(Y)\",\n    \"\\u2798 Z (\\u03B1 Rabbit(Z) \\vee \\u03BB Squirrel(Z))\",\n    \"R \\rightarrow W Skittish(W) \\u03A6 Still(R)\",\n    \"\\u03F5 \\forall X (Squirrel(X) -> Skittish(X))\"\n  ],\n  \"fol_conc\": [\n    \"\\u279B Rock \\neg Turtle(\\u014D)\"\n  ]\n}\n```",
+      "perplexity": 2.273273468017578,
+      "generation_time": 24.801613,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(X)\",\n    \"Exists(Turtle, Y)\",\n    \"IsAnimal(Z)\",\n    \"Rabbit(W)\",\n    \"Squirrel(V)\",\n    \"Skittish(U)\",\n    \"Still(P)\"\n  ],\n  \"fol_consts\": [\n    \"Rock\"\n  ],\n  \"fol_rules\": [\n    \"∀X (Rabbit(X) → Cute(X))\",\n    \"∃Turtle(Y).\",\n    \"∀Z ((IsAnimal(Z) ∧ ¬Rabbit(Z)) → Squirrel(Z))\",\n    \"(Skittish(W) → ¬Still(V))\",\n    \"∀V (Squirrel(V) → Skittish(V))\"\n  ],\n  \"fol_conc\": [\n    \"¬Exists(Turtle, Rock)\"\n  ]\n}\n",
+      "perplexity": 1.4590204954147339,
+      "generation_time": 28.404175,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(x)\", \"Turtle(y)\", \"Animal(z)\", \"Skittish(w)\", \"Still(v)\"],  \"fol_consts\": [\"rock\", \"rabbit\"],  \"fol_rules\": [\n    \"(∀x (Rabbit(x) → Cute(x)))\",\n    \"(∃y (Turtle(y)))\",\n    \"(∀z ((Animal(z)) ∨ (Squirrel(z))))\",\n    \"(∀w (Skittish(w) → ¬Still(v)))\",\n    \"(∀s (Squirrel(s) → Skittish(s)))\",\n    \"((Rock(rock) ∧ Still(still)))\"],  \"fol_conc\": \"¬Turtle(rock)\"\n}",
+      "perplexity": 1.790797233581543,
+      "generation_time": 23.03726,
+      "error_message": null
+    }
+  },
+  {
+    "id": 18,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "Rock is a turtle or cute.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(X)\", \"Turtle(Y)\", \"Animal(Z)\", \"Skittish(W)\"],  // Predicates required\n  \"fol_consts\": [],  // Constants are not explicitly given in the problem, so we don't need any constants here.\n  \"fol_rules\": [\n    \"∀X (Cute(X) ∧ Animal(X))\",  // All rabbits are cute -> ∀R (Cute(R) ∨ Rabbit(R))\n    \"∃Y Turtle(Y)\",  // Some turtles exist\n    \"∀Z ((Animal(Z) → Z = Rabbit(Z) ∨ Squirrel(Z)))\",  // An animal is either a rabbit or a squirrel.\n    \"(Skittish(W) → ¬Still(W))\"  // If something is skittish, then it is not still\n    \"∀W (Squirrel(W) → Skittish(W))\",  // All squirrels are skittish\n    \"Still(Rock)\"  // Rock is still.\n  ],\n  \"fol_conc\": [\"Turtle(X) ∨ Cute(X)\"]   // Rock is a turtle or cute -> Turtle(rock)\n}\n```",
+      "perplexity": 1.7057467699050903,
+      "generation_time": 35.178272,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(X)\", \"Turtle(X)\", \"Animal(X)\", \"Skittish(Y)\", \"Still(Z)\"],\n  \"fol_consts\": [\"Rock\", \"Rabbit\", \"Squirrel\"],\n  \"fol_rules\": [\n    \"∀X (Rabbit(X) → Cute(X))\",\n    \"∃Y Turtle(Y)\",\n    \"(Animal(X) ∧ ( Rabbit(X) ∨ Squirrel(X)))\",\n    \"(Skittish(Z) → ¬Still(Z))\",\n    \"∀Z (Squirrel(Z) → Skittish(Z))\"\n  ],\n  \"fol_conc\": [\"Cute(Rock) ∨ Turtle(Rock)\"]\n}\n",
+      "perplexity": 1.3556362390518188,
+      "generation_time": 22.874522,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(x)\", \"Turtle(y)\", \"Rabbit(z)\", \"Squirrel(w)\", \"Skittish(u)\",\n    \"Animal(v)\"\n  ], \"fol_consts\": [\"rock\"], \"fol_rules\": [\n     \"(∀x (Rabbit(x) → Cute(x)))\" , \"(∃y (Turtle(y)))\",\n     \"(∀v ((Animal(v) ∧ ¬(Skittish(v))) → Rabbit(v) ∨ Squirrel(v)))\", \"(∀u (Skittish(u) → ¬Still(u)))\"\n    ], \"fol_conc\": \"((Cute(x)) ∨ Turtle(y))\" }",
+      "perplexity": 2.473701238632202,
+      "generation_time": 22.509722,
+      "error_message": null
+    }
+  },
+  {
+    "id": 19,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "If Rock is not both a turtle and a squirrel, then Rock is either cute or skittish.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(X)\", \"Exists(Turtle, X)\", \"Animal(X)\", \"Skittish(Y)\", \"Still(Z)\"],\n\n  \"fol_consts\": [],\n\n  \"fol_rules\": [\n    \"∀X (Rabbit(X) → Cute(X))\",\n    \"∃Turtle (Turtle)\",\n    \"∀Z (( Rabbit(Z) ∨ Squirrel(Z)) → Animal(Z))\",\n    \"∀Y, Z ((Skittish(Y) → ¬Still(Z)))\",\n    \"∀X (Squirrel(X)→ Skittish(X))\"\n  ],\n\n  \"fol_conc\": [\n    \"(¬(Rock(Turtle ∧ Squirrel(Rock))) → (Cute(Rock) ∨ Skittish(Rock)))\n  ]\n}\n}",
+      "perplexity": 1.6046714782714844,
+      "generation_time": 24.160199,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n    \"Cute(X)\",\n    \"Turtle(X)\",\n    \"Animal(X)\",\n    \"Rabbit(X)\",\n    \"Squirrel(X)\",\n    \"Skittish(X)\"\n],\n\"fol_consts\": [\"Rock\"],\n\"fol_rules\": [\n    \"∀x(Rabbit(x) → Cute(x))\",\n    \"∃x(Turtle(x))\",\n    \"∀x(Animal(x) ← Rabbit(x) ∨ Squirrel(x))\",\n    \"∀y(Skittish(y) ↔ ¬Still(y))\",\n    \"∀z(Rabbit(z) → Skittish(z))\"\n],\n\"fol_conc\": [\n    \"(¬Turtle(Rock) ∧ ¬Squirrel(Rock)) → (Cute(Rock) ∨ Skittish(Rock))\"\n]\n}\n",
+      "perplexity": 1.290809154510498,
+      "generation_time": 27.904703,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(x)\",\n    \"Turtle(y)\",\n    \"Animal(z)\",\n    \"Skittish(w)\",\n    \"Still(u)\"\n  ], \"fol_consts\": [\"rock\", \"turtle1\"], \"fol_rules\": [\n     \"∀x (Rabbit(x) → Cute(x))\",\n     \"∃y (Turtle(y))\",\n     \"(∀z ((Animal(z)) ∨ Rabbit(z)))\",\n     \"(∀w (Skittish(w) → ¬Still(u)))\",\n     \"∀v (Squirrel(v) → Skittish(v))\"\n  ], \"fol_conc\": \"(¬(Turtle(rock) ∧ Squirrel(rock))) → (Cute(rock) ∨ Skittish(rock))\"\n}",
+      "perplexity": 1.6903076171875,
+      "generation_time": 27.292942,
+      "error_message": null
+    }
+  },
+  {
+    "id": 20,
+    "nl_problem": {
+      "context": [
+        "All rabbits are cute. ",
+        "Some turtles exist. ",
+        "An animal is either a rabbit or a squirrel.",
+        "If something is skittish, then it is not still.",
+        "All squirrels are skittish.",
+        "Rock is still."
+      ],
+      "question": "If Rock is cute and still, then Rock is a turtle and skittish.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(X)\", \"Turtle(Y)\", \"Animal(Z)\", \"Skittish(W)\",\n               \"Still(U)\", \"EitherRabbitOrSquirrel(V)\"],\n\n  \"fol_consts\": [],\n\n  \"fol_rules\": [\n    ∀x (∃y Cute(x)) → All rabbits are cute,\n    ∃y Turtle(y) → Some turtles exist,\n    ∀z ((Animal(z)) ⊕ EitherRabbitOrSquirrel(z)),\n    ∀w ∄u(Still(u) → ¬Skittish(w)),\n    ∀x (∃y Squirrel(x) → Skittish(x))\n  ],\n\n  \"fol_conc\": [\"Rock\", \"Cute(Rock)\", \"Still(Rock)\" ⊕ (\"Turtle(Rock) ∧ Skittish(Rock))\"]\n}\n```",
+      "perplexity": 1.8560959100723267,
+      "generation_time": 25.549423,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Cute(X)\",\n    \"Exists(Turtle)\",\n    \"AnimalType(Y, Z)\",\n    \"Skittish(W)\",\n    \"Still(V)\"\n  ],\n  \"fol_consts\": [\"Rock\", \"Turtle\"],\n  \"fol_rules\": [\n    \"∀X(Animal(X) → Cute(X))\",\n    \"∃Y(Turtle(Y))\",\n    \"∀Z(Anything(Z, Rabbit(Z))) ∨ (Anything(Z, Squirrel(Z)))\",\n    \"(Skittish(W) ↔ ¬Still(V))\",\n    \"∀X(Squirrel(X) → Skittish(X))\"\n  ],\n  \"fol_conc\": [\n    \"Rock is Cute and Rock is Still ⇒ Rock is Turtle and Skittish.\"\n  ]\n}\n",
+      "perplexity": 1.6096988916397095,
+      "generation_time": 26.83337,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Cute(x)\", \"Exists(y, turtle)\", \"IsAnimal(x, rabbit)\", \"IsAnimal(x, squirrel)\", \"Skittish(x)\",\n    \"NotStill(x)\", \"Rocky(x)\"],  \"fol_consts\": [\"rabbit\", \"turtle\", \"skittish\", \"still\"],  \"fol_rules\":\n[\n  \"∀x (Rabbit(x) → Cute(x))\",\n  \"∃y (Turtle(y))\",\n  \"∀x ((Animal(x, rabbit) ∨ Animal(x, squirrel)))\",\n  \"∀x (Skittish(x) → ¬Still(x))\",\n  \"∀x (Squirrel(x) → Skittish(x))\"\n],  \"fol_conc\": \"∃y (Rock(y) ∧ Cute(rock) ∧ Still(rock) → Turtle(rock) ∧ Skittish(rock))\"\n}",
+      "perplexity": 1.8159010410308838,
+      "generation_time": 29.431,
+      "error_message": null
+    }
+  },
+  {
+    "id": 21,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "Karen will share \"Stranger Things\" to Lisa.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"PopularShow(x)\", \"BingeWatch(Person, Show)\", \"DownloadShow(Person, Show)\", \"ShareWithLisa(Person, Show)\"],\n  \"fol_consts\": [\"StrangerThings\", \"Karen\", \"BlackMirror\", \"NetflixShow\"]\n}",
+      "perplexity": 1.6673805713653564,
+      "generation_time": 8.980444,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PopularShow(X)\",\n    \"BingeWatch(K, Y)\",\n    \"Download(K, X)\",\n    \"ShareToLisa(K, Y)\"\n  ],\n  \"fol_consts\": [\"StrangerThings\", \"BlackMirror\"],\n  \"fol_rules\": [\n    \"∀X (PopularShow(X) → BingeWatch(K, X))\",\n    \"∃Y1 ∃Y2 ((BingeWatch(K, Y1) & Download(K, Y1)) ↔ BingeWatch(K, Y2))\"\n  ],\n  \"fol_conc\": [\"ShareToLisa(K, StrangerThings)\"]\n}\n",
+      "perplexity": 1.4854058027267456,
+      "generation_time": 20.470058,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Popular(show)\", \"BingeWatches(karen, show)\", \"Downloads(karen, show)\", \"SharesWithLisa(karen)\",\"NetflixShow(show)\"],  \"fol_consts\":[\n    \"strangerthings\", \"blackmirror\"\n     ],  \"fol_rules\":[\n     \"(Popular(strangerthings)) → (BingeWatches(karen, strangerthings))\",\n     \"(BingeWatches(karen, show) ↔ Downloads(karen, show))\",\n     \"(Downloads(show)) ∧ ¬Downloads(karen, blackmirror)\",\n     \"(NetflixShow(blackmirror))\",\"(Popular(strangerthings)) → (BingeWatches(karen, strangerthings))\"\n    ],  \"fol_conc\": \"(SharesWithLisa(karen) → BingeWatches(karen, strangerthings))\"\n}",
+      "perplexity": 2.429457426071167,
+      "generation_time": 28.377635,
+      "error_message": null
+    }
+  },
+  {
+    "id": 22,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "\"Black Mirror\" is popular.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"IsPopular(Show, x)\", \"BingeWatches(Karen, Show)\", \"Downloads(Karen, Show)\", \"SharesWithLisa(Karen, Show)\"],\n  \"fol_consts\": [\"StrangerThings\", \"BlackMirror\", \"Karen\", \"NetflixShow(x)\", \"guilin\"],\n  \"fol_rules\": [\n    \"IsPopular(StrangerThings)\",\n    \"∀x (IsPopular(NetflixShow(x)) → BingeWatches(Karen, NetflixShow(x)))\",\n    \"(BingeWatches(Karen, Show) ↔ Downloads(Karen, Show))\",\n    \"¬Downloads(Karen, BlackMirror)\",\n    \"IsPopular(BlackMirror)\"\n  ],\n  \"fol_conc\": [\"∀x (NetflixShow(x) → IsPopular(StrangerThings))\"]\n}\n```",
+      "perplexity": 1.4084162712097168,
+      "generation_time": 24.590366,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"IsPopular(Show)\", \"BingeWatches(Karen, Show)\", \"Downloads(Karen, Show)\", \"SharesWithLisa(Karen, Show)\"],\n  \"fol_consts\": [\"StrangerThings\", \"BlackMirror\", \"Karen\", \"Lisa\", \"NetflixShow\"],\n  \"fol_rules\": [\n    {\"rule_type\":\"if_then\",\"predicate1\":\"IsPopular(Show)\", \"entity1\":\"Show\", \"conclusion_predicates\":[{\"predicate\":\"BingeWatches(Karen, Show)\",\"entity1\":\"Karen\"}],\"quantifier\":\"∀\"},\n    {\"rule_type\":\"iff_then_if_only_notif_only\",\"predicate1\":[\"Downloads(Karen, Show)\"], \"entity2s\":[], \"conclusion_predicates\":[{\"predicate\":\"BingeWatches(Karen, NetflixShow)\",\"entity1\":\"NetflixShow\"}],\"quantifier\":\"∀\"},\n    {\"rule_type\":\"negation\",\"predicate\":\"Downloads(Karen, Show)\", \"entity1\":\"BlackMirror\", \"negative_entity2s\":[],\"conclusion_predicates\":[{\"predicate\":\"DoesNotDownload(Karen, BlackMirror)\",\"entity3\":\"Karen\"}],\"quantifier\":\"∀\"},\n    {\"rule_type\":\"is_a_subclass_of_iff_then_if_only_notif_only\",\"predicate1\":\"NetflixShow\", \"sub_class\":[], \"conclusion_predicates\":[{\"predicate\":\"SharesWithLisa(Karen, Show)\",\"entity2\":\"Karen\"}],\"quantifier\":\"∀\"},\n    {\"rule_type\":\"is_a_subclass_of_iff_then_if_only_notif_only\",\"predicate1\":\"NetflixShow\", \"sub_class\":[], \"conclusion_predicates\":[{\"predicate\":\"IsPopular(BlackMirror)\",\"entity2\":\"BlackMirror\"}],\"quantifier\":\"∀\"}\n  ],\n  \"fol_conc\": [\"IsPopular(BlackMirror)\"]\n}",
+      "perplexity": 1.7149763107299805,
+      "generation_time": 60.213279,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PopularShow(x)\",\n    \"BingeWatches(y, x)\",\n    \"Downloads(z, y)\",\n    \"Shares(w, v)\"\n  ], \"fol_consts\": [\"strangerthings\", \"blackmirror\"], \"fol_rules\": [ \"∀x (PopularShow(strangerthings) → ∃y (NetflixShow(x) ∧ BingeWatches(y, x)))\",\n     \"∀z (BingeWatches(z, y) ↔ Downloads(z))\", \"DoNotDownload(blackmirror)\", \"∀w (NetflixShow(w) → PopularShow(w))\", \"Shares(lisa)\"], \"fol_conc\": \"PopularShow(strangerthings)\"\n}",
+      "perplexity": 2.372253656387329,
+      "generation_time": 23.484957,
+      "error_message": null
+    }
+  },
+  {
+    "id": 23,
+    "nl_problem": {
+      "context": [
+        "\"Stranger Things\" is a popular Netflix show.",
+        "If a Netflix show is popular, Karen will binge-watch it.",
+        "If and only if Karen binge-watches a Netflix show, she will download it.",
+        "Karen does not download \"Black Mirror\".",
+        "\"Black Mirror\" is a Netflix show.",
+        "If Karen binge-watches a Netflix show, she will share it to Lisa."
+      ],
+      "question": "Karen will share \"Black Mirror\" to Lisa.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"PopularShow(NetflixShow)\", \"BingeWatch(Karen, NetflixShow)\", \"Download(Karen, NetflixShow)\", \"ShareToLisa(Karen, NetflixShow)\"],\n  \"fol_consts\": [\"StrangerThings\", \"BlackMirror\", \"Karen\", \"Lisa\", \"guilin\"],\n  \"fol_rules\": [\n    \"PopularShow(NetflixShow) → BingeWatch(Karen, NetflixShow)\",\n    \"(BingeWatch(Karen, NetflixShow)) ↔ Download(Karen, NetflixShow)\"\n  ],\n  \"fol_conc\": [\"ShareToLisa(Karen, BlackMirror)\"]\n}\n```",
+      "perplexity": 1.3087307214736938,
+      "generation_time": 18.883988,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"PopularShow(show)\",\n    \"BingeWatch(person, show)\",\n    \"Download(person, show)\",\n    \"ShareToLisa(person, show)\"\n  ],\n  \"fol_consts\": [\"StrangerThings\", \"BlackMirror\"],\n  \"fol_rules\": [\n    \"∀x(PopularShow(x) → BingeWatch(Karen, x))\",\n    \"(BingeWatch(Karen, y) ↔ Download(Karen, y))\",\n    \"¬Download(Karen, BlackMirror)\"\n  ],\n  \"fol_conc\": [\"ShareToLisa(Karen, BlackMirror)\"]\n}\n",
+      "perplexity": 1.3396286964416504,
+      "generation_time": 19.348475,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"PopularNetflixShow(x)\", \"BingeWatch(y, x)\", \"DownloadNetflixShow(z, y)\",\n    \"ShareWithLisa(w, z)\",\"NotDownload(t, u)\"],  \"fol_consts\": [ \"strangerthings\", \"blackmirror\",\n     \"karen\", \"lisa\"],  \"fol_rules\":\n[ \"∀x (PopularNetflixShow(x) → ∃y (BingeWatch(y, x)))\",\n    \"∀z ∀w ((NotDownload(t, u)) ↔ ¬(DownloadNetflixShow(z, w)))\",\"∀v ∀u (ShareWithLisa(v, u) ↔ BingeWatch(u, v))\"],  \"fol_conc\": \"(BingeWatch(karen, blackmirror) → ShareWithLisa(lisa, blackmirror))\"\n}",
+      "perplexity": 2.6986050605773926,
+      "generation_time": 27.18923,
+      "error_message": null
+    }
+  },
+  {
+    "id": 24,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf(X, Y)\",\n    \"MostPopulousNationalCapitalCity(Z)\"\n  ],\n  \"fol_consts\": [\"Beijing\", \"People's Republic of China\"],\n  \"fol_rules\": [\n    {\n      \"rule_name\": \"BeijingCap\",\n      \"formula\": \"∀X CapitalOf(Beijing,X) ∧ X = People's Republic of China\"\n    },\n    {\n      \"rule_name\": \"MostPopulousCapital\",\n      \"formula\": \"∃Z MostPopulousNationalCapitalCity(Z)\"\n    }\n  ],\n  \"fol_conc\": [\n    {\n      \"conc_name\": \"BeijingHostedBothOlympics\",\n      \"formula\": \"∀Y (X is an olympic games) ∧ X = 2008 Summer Olympics → BeijingHosted(Y, Beijing)\",\n      \"universal_quantifier\": true\n    }\n  ]\n}\n```",
+      "perplexity": 1.8951183557510376,
+      "generation_time": 26.201552,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf\",\n    \"MostPopulousNationalCapitalCity\",\n    \"LocatedInNorthernChina\",\n    \"HostedSummerOlympics\",\n    \"HostedWinter Olympics\",\n    \"HasUniversity\"\n  ],\n  \"fol_consts\": [\n    \"Beijing\", \"People'sRepublicofChina\", \"2008\"\n  ],\n  \"fol_rules\": [\n    \"CapitalOf(Beijing, People'sRepublicofChina)\",\n    \"MostPopulousNationalCapitalCity(Beijing)\"\n  ],\n  \"fol_conc\": []\n}",
+      "perplexity": 1.4776697158813477,
+      "generation_time": 18.928621,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf(beijing, country)\",\n    \"MostPopulousNationalCapitol(capital)\",\n    \"LocatedIn(nationality, region)\",\n    \"HostedSummerOlympics(event, city)\",\n    \"HostedWinterOlympics(event, city)\"\n  ],  \"fol_consts\": [ \"guilin\", \"beijing\", \"2008\", \"summer\", \"winter\", \"university\", \"asia\", \"pacific\", \"world\"],  \"fol_rules\": [\n     \"CapitalOf(beijing, people)\",\n     \"MostPopulousNationalCapitol(capital) ∧ CapitalOf(guilin, country)\",\n    \"LocatedIn(northern, beijing)\",\n  \"HostedSummerOlympics(event1, guilin)\",\n  \"∃x (University(x))\",\n   \"∀y (University(y)) → LocatedIn(world, y)\"\n],  \"fol_conc\": \"∃z ((Event(z) ∧ Summer(z) ∨ Winter(z)))\"\n}",
+      "perplexity": 2.886293411254883,
+      "generation_time": 33.214323,
+      "error_message": null
+    }
+  },
+  {
+    "id": 25,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing is located in southern China.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"CapitalOf\", \"MostPopulousCity\", \"LocatedIn\", \"HostedGames\"],\n  \"fol_consts\": [\"Beijing\", \"People's Republic of China\", \"Northern China\", \"Southern China\", \"2008 Summer Olympics\", \"2008 Paralympics Games\"],\n  \"fol_rules\": [\n    \"CapitalOf(Beijing, People's Republic of China)\",\n    \"MostPopulousCity(Beijing, 'world')\",\n    \"LocatedIn(Beijing, Northern China)\"\n  ],\n  \"fol_conc\": [\"¬ LocatedIn(Beijing, Southern China)\"]\n}\n```",
+      "perplexity": 1.3243408203125,
+      "generation_time": 18.688411,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"CapitalOf\", \"MostPopulousNationalCapitalCity\", \"LocatedIn\", \"HostedGames\", \"RanksBestUniversity\"],\n  \"fol_consts\": [\"Beijing\", \"People'sRepublicOfChina\", \"NorthernChina\", \"SouthernChina\", \"2008SummerOlympicsAndParalympics\", \"AsiaPacificWorld\"]\n}",
+      "perplexity": 1.464815378189087,
+      "generation_time": 12.049086,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf(beijing, country)\",\n    \"MostPopulousNationalCapital(city, country)\",\n    \"LocatedIn(northern, city)\",\n    \"HostedGames(game, year)\"\n  ], \"fol_consts\": [\"beijing\", \"people\", \"china\"], \"fol_rules\": [\n    \"∀x (CapitalOf(x, china) → LocatedIn(x, northern))\",\n    \"MostPopulousNationalCapital(beijing, china)\",\n    \"LocatedIn(beijing, southern)\"\n  ], \"fol_conc\": \"¬LocatedIn(beijing, northern)\"\n}",
+      "perplexity": 1.693321704864502,
+      "generation_time": 20.341871,
+      "error_message": null
+    }
+  },
+  {
+    "id": 26,
+    "nl_problem": {
+      "context": [
+        "Beijing is the capital of the People's Republic of China. ",
+        "Beijing is the world's most populous national capital city.",
+        "Beijing is located in Northern China.",
+        "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+        "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+        "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+      ],
+      "question": "Beijing is the second largest Chinese city by urban population.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf\",\n    \"MostPopulousCityInCategory(C, City)\",\n    \"LocatedInRegion(Location, Region)\",\n    \"HostedGames(GameType1, Year1), HostedGames(GameType2, Year2)\"\n  ],\n  \"fol_consts\": [\"Beijing\", \"People's Republic of China\", \"NorthernChina\"],\n  \"fol_rules\": [\n    \"CapitalOf(Beijing, People's Republic of China)\",\n    \"MostPopulousCityInCategory(City, 'national capital city')\",\n    \"LocatedInRegion(Beijing, NorthernChina)\"\n  ],\n  \"fol_conc\": [\n    \"∃x (UrbanPopulation(x) ∧ City(x)) → MostPopulousCityInCategory('second largest', x)\",\n    \"HostedGames(GameType1, Year1), HostedGames(GameType2, Year2)\"]\n}",
+      "perplexity": 1.7709934711456299,
+      "generation_time": 26.315437,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf(China, X)\",\n    \"MostPopulousCity(X)\",\n    \"LocatedIn(Northern China, X)\",\n    \"HostedGames(Y, Z, X) -> (SummerOlympics(Z) ∨ SummerParalympics(Z))\",\n    \"RankingUniversity(U, AsiaPacificWorld, X)\"\n  ],\n  \"fol_consts\": [\n    \"Beijing\", \"China\"\n  ],\n  \"fol_rules\": [\n    \"CapitalOf(China, Beijing)\",\n    \"MostPopulousCity(Beijing)\",\n    \"LocatedIn(Northern China, Beijing)\",\n    \"HostedGames(SummerOlympics2008, SummerParalympics2008, Beijing)\"\n  ],\n  \"fol_conc\": [\n    \"∃X (SecondLargestChineseCity(X) ∧ MostPopulousCity(Beijing))\"\n  ]\n}",
+      "perplexity": 1.5136381387710571,
+      "generation_time": 34.987563,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"CapitalOf(beijing, country)\",\n    \"MostPopulousNationalCapital(city)\",\n    \"LocatedIn(northernchina, city)\",\n    \"HostedOlympics(gameyear, olympictype, city)\"\n  ], \"fol_consts\": [ \"beijing\", \"northernchina\" ], \"fol_rules\": [\n    \"∀x (MostPopulousNationalCapital(x) → CapitalOf(beijing, x))\",\n    \"∃y ∀z ((HostedOlympics(y, olympictype1, beijing) ∧ HostedOlympics(z, olympictype2, beijing)))\"\n  ], \"fol_conc\": \"MostPopulousNationalCapital(northernchina)\"\n}",
+      "perplexity": 2.199469804763794,
+      "generation_time": 23.441599,
+      "error_message": null
+    }
+  },
+  {
+    "id": 27,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "Marvin is an alien.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Alien(x)\", \"Extraterrestrial(y)\", \"FromEarth(z)\", \"FromMars(w)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x(Alien(x) → Extraterrestrial(x))\",\n    \"∃y(FromMars(y) → Alien(y))\",\n    \"∀z(Extraterrestrial(z) ∧ ¬Human(z))\",\n    \"∀w(FromEarth(w) → Human(w))\"\n  ],\n  \"fol_conc\": [\"Marvin is an alien.\"]\n}\n```",
+      "perplexity": 1.385787844657898,
+      "generation_time": 18.224954,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Alien(x)\", \"Extraterrestrial(x)\", \"FromMars(x)\", \"Human(x)\", \"FromEarth(x)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x (Alien(x) → Extraterrestrial(x))\",\n    \"∃y ((FromMars(y)) → Alien(y))\",\n    \"∀z (~Extraterrestrial(z) ∧ Human(z))\",\n    \"∀w FromEarth(w) → Human(w)\",\n    \"~FromEarth(Marvin) ∧ ~FromMars(Marvin)\",\n    \"(~FromEarth(Marvin) → Extraterrestrial(Marvin))\"\n  ],\n  \"fol_conc\": [\"Alien(Marvin)\"]\n}\n",
+      "perplexity": 1.3162355422973633,
+      "generation_time": 25.402618,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Alien(x)\",\n    \"Extraterrestrial(x)\",\n    \"FromEarth(x)\",\n    \"FromMars(x)\",\n    \"Human(x)\"\n  ], \"fol_consts\": [ \"x\", \"y\" , \"marvin\"], \"fol_rules\":[\n     \"(∀x (Alien(x) → Extraterrestrial(x)))\",\n     \"(∀x ((FromMars(x)) → Alien(x)))\",\n     \"(∀x (Extraterrestrial(x) ∧ Human(x) → ¬Human(x)))\",\n     \"(∀x (FromEarth(x) → Human(x)))\",\n     \"(∃y (Alien(marvin) → Extraterrestrial(marvin)))\",\n    \"(∀x ((Not(aliensfromearthandmars)) ∧ Alien(y) ∨ FromMars(y)))\"\n  ], \"fol_conc\": \"Marvinisalientest(x)\"}",
+      "perplexity": 2.467427968978882,
+      "generation_time": 29.845693,
+      "error_message": null
+    }
+  },
+  {
+    "id": 28,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "Marvin is neither a human nor from Mars.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Alien(x)\",\n    \"Extraterrestrial(x)\",\n    \"FromMars(x)\",\n    \"Human(x)\",\n    \"Earthling(x)\"\n  ],\n  \"fol_consts\": [\"Marvin\"],\n  \"fol_rules\": [\n    \"∀x (Alien(x) → Extraterrestrial(x))\",\n    \"∃y ((FromMars(y)) → Alien(y))\",\n    \"∀z (Extraterrestrial(z) ∧ ¬Human(z))\",\n    \"∀w (Earthling(w) → Human(w))\",\n    \"(¬(Marvin ∈ Earthland) ∨ ¬(Marvin ∈ Mars))\"\n  ],\n  \"fol_conc\": [\n    \"(∃x ((Human(x) ∨ FromMars(x))) → Extraterrestrial(Marvin)\"\n  ]\n}",
+      "perplexity": 1.5840152502059937,
+      "generation_time": 24.430625,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Alien(x)\",\n    \"FromEarth(x)\",\n    \"FromMars(x)\"\n  ],\n  \"fol_consts\": [\"Marvin\"],\n  \"fol_rules\": [\n    \"∀x (Alien(x) → Extraterrestrial(x))\",\n    \"∀x ((FromMars(x)) → Alien(x))\",\n    \"∃y(Extraterrestrial(y) ∧ Human(y)) ⊕ ¬Human(y)\",\n    \"∀x (FromEarth(x) → Human(x))\"\n  ],\n  \"fol_conc\": [\n    \"(¬Human(Marvin) ∨ FromMars(Marvin)) → ¬(Extraterrestrial(Marvin) ∧ Alien(Marvin))\",\n    \"Marvin is neither a human nor from Mars.\"\n  ]\n}\n",
+      "perplexity": 1.5751863718032837,
+      "generation_time": 26.70808,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Alien(x)\", \"Extraterrestrial(x)\", \"FromMars(x)\", \"Human(x)\", \"FromEarth(x)\",\"Neither(x, y)\"],  \"fol_consts\": [\"marvin\"], \"fol_rules\": [ \"If(alien1) ∧ FromMartian(aliens1) → Extraterrestrian(marsians)\",\n     \"∀x (Extraterrestrial(x) ⊕ Human(x))\", \"(FromEarth(x) ∨ Human(x))\",\n   \"(¬FromEarth(earthlings) ∧ FromMars(marsians))\", \"(IfNotFromEarth(x) → Extraterrestrian(marvin))\"\n], \"fol_conc\": \"∀x (NeitherHuman(x, marsians))\"\n}",
+      "perplexity": 3.364485263824463,
+      "generation_time": 24.139525,
+      "error_message": null
+    }
+  },
+  {
+    "id": 29,
+    "nl_problem": {
+      "context": [
+        "All aliens are extraterrestrial.",
+        "If someone is from Mars, then they are aliens.",
+        "No extraterrestrial is human.",
+        "Everyone from Earth is a human.",
+        "Marvin cannot be from Earth and from Mars.",
+        "If Marvin is not from Earth, then Marvin is an extraterrestrial."
+      ],
+      "question": "If Marvin is not from Mars, then Marvin is a human.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Alien(x)\", \"Extraterrestrial(x)\", \"FromMars(x)\", \"Human(x)\", \"NotEarth(x)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x ( Alien(x) → Extraterrestrial(x))\",\n    \"( ∃y FromMars(y) ) → ∀z ((FromMars(z)) → (Alien(z)))\",\n    \"∀x (Extraterrestrial(x) → ¬Human(x))\",\n    \"∀x (NotEarth(x) → Human(x))\"\n  ],\n  \"fol_conc\": \"(¬ FromMars(Marvin) )→( ∃z (( NotEarth(Marvin) ) & Alien(z))) \"\n}\n```",
+      "perplexity": 1.8349592685699463,
+      "generation_time": 20.876415,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Alien(x)\",\n    \"FromMars(x)\",\n    \"Human(x)\",\n    \"Extraterrestrial(x)\",\n    \"NotFromEarth(x)\"\n  ],\n  \"fol_consts\": [\"Marvin\"],\n  \"fol_rules\": [\n    \"∀x (Alien(x) → Extraterrestrial(x))\",\n    \"∃x ((FromMars(x) ∧ Human(x))) → False\"\n  ],\n  \"fol_conc\": \"[Extraterrestrial(Marvin)] → Human(Marvin)\"\n}\n",
+      "perplexity": 1.5190484523773193,
+      "generation_time": 17.900689,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Alien(x)\", \"Extraterrestrial(x)\", \"FromMars(x)\", \"Human(x)\", \"FromEarth(x)\",\"NotFromEarth(x)\",\"IsMarvin(y)\"],  \"fol_consts\": [ \"marvin\"],  \"fol_rules\": [\n    \"(∀x (Alien(x)) → ∃y (Extraterrestrial(y)))\",\n    \"(∀x ((FromMars(x)) → Alien(x)))\",\n    \"(∀x (Extraterrestrial(x) ∧ Human(x)))\",\n    \"∃y ((FromEarth(y)) → Human(y))\", \"(∀x ((NotFromEarth(x)) ∨ FromEarth(x)))\",\"(IsMarvin(marvin))\"\n   ], \"fol_conc\": \"(∀x (¬(FromMars(x) ∧ IsMarvin(x)) → Alien(x) ∧ ¬Human(x)))\"\n}",
+      "perplexity": 2.449669599533081,
+      "generation_time": 27.207847,
+      "error_message": null
+    }
+  },
+  {
+    "id": 30,
+    "nl_problem": {
+      "context": [
+        "A person is either a Grand Slam champion or an Oscar-nominated actor.",
+        "All people who are Grand Slam champions are professional tennis players.",
+        "All Oscar-nominated actors are celebrities.",
+        "All professional tennis players are athletes.",
+        "If a person is a celebrity then they are well paid.",
+        "If a person is an athlete then they are famous.",
+        "All well-paid people live in tax havens.",
+        "If Djokovic is famous and is an athlete, then Djokovic lives in well paid."
+      ],
+      "question": "Djokovic is a Grand Slam champion.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"GrandSlamChampion(P)\",\n    \"OscarNominatedActor(P)\",\n    \"ProfessionalTennisPlayer(P)\",\n    \"Celebrity(P)\",\n    \"Athlete(P)\",\n    \"WellPaidPerson(P)\",\n    \"LivesInTaxHaven(P)\"\n  ],\n  \"fol_consts\": [\n    \"Djokovic\"\n  ],\n  \"fol_rules\": [\n    ∀P: (GrandSlamChampion(P) ∨ OscarNominatedActor(P)),\n    ∀P: GrandSlamChampion(P) → ProfessionalTennisPlayer(P),\n    ∀P: OscarNominatedActor(P) → Celebrity(P),\n    ∀P: ProfessionalTennisPlayer(P) → Athlete(P),\n    ∀P: Celebrity(P) → WellPaidPerson(P),\n    ∀P: Athlete(P) → Famous(P),\n    ∀P: (WellPaidPerson(P)) → LivesInTaxHaven(P)\n  ],\n  \"fol_conc\": [\n    GrandSlamChampion(Djokovic)\n  ]\n}\n```",
+      "perplexity": 1.1909717321395874,
+      "generation_time": 28.45503,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\"Is_Grand_Slam_Champion\", \"Oscar_Nominated_Actor\", \"Professional_Tennis_Player\", \"Celebrity\", \"Athlete\", \"Well_Paid\", \"Famous\"],\n\"fol_consts\": [\"Djokovic\"]\n,\n\"fol_rules\":\n[\n    \"∀x (Is_Grand_Slam_Champion(x) ∨ Oscar_Nominated_Actor(x))\",\n    \"∀y ((Is_Grand_Slam_Champion(y)) → Professional_Tennis_Player(y))\",\n    \"∀z ((Oscar_Nominated_Actor(z)) → Celebrity(z))\",\n    \"∀w (Professional_Tennis_Player(w) → Athlete(w))\",\n    \"∀p ((Celebrity(p)) → Well_Paid(p))\",\n    \"∀q ((Athlete(q)) → Famous(q))\",\n    \"∀r ((Well_Paid(r)) → Tax_Haven_Lives_In(r))\"\n],\n\"fol_conc\": [\"Famous(Djokovic) ∧ Athlete(Djokovic) → Well_Paid(Djokovic)\"]\n}\n",
+      "perplexity": 1.3407260179519653,
+      "generation_time": 34.112734,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Person(x)\",\n    \"GrandSlamChampion(x)\",\n    \"OscarNominatedActor(x)\",\n    \"ProfessionalTennisPlayer(x)\",\n    \"Celebrity(x)\",\n    \"Athlete(x)\",\n    \"WellPaid(x)\",\n    \"Famous(x)\"\n  ],  \"fol_consts\": [\n    \"djokovic\"\n  ],  \"fol_rules\": [\n    \"(∀x (Person(x) → GrandSlamChampion(x) ∨ OscarNominatedActor(x)))\",\n    \"(∀x ((GrandSlamChampion(x)) → ProfessionalTennisPlayer(x)))\",\n    \"(∀x ((OscarNominatedActor(x)) → Celebrity(x)))\",\n    \"(∀x (ProfessionalTennisPlayer(x)) → Athlete(x))\",\n    \"(∀x (Celebrity(x) → WellPaid(x)))\",\n    \"(∀x (Athlete(x) → Famous(x)))\",\n    \"(∀x ((WellPaid(x)) → LivesInTaxHavens(x)))\"\n  ], \"fol_conc\": \"GrandSlamChampion(djokovic)\"\n}",
+      "perplexity": 1.3701837062835693,
+      "generation_time": 34.809887,
+      "error_message": null
+    }
+  },
+  {
+    "id": 31,
+    "nl_problem": {
+      "context": [
+        "A person is either a Grand Slam champion or an Oscar-nominated actor.",
+        "All people who are Grand Slam champions are professional tennis players.",
+        "All Oscar-nominated actors are celebrities.",
+        "All professional tennis players are athletes.",
+        "If a person is a celebrity then they are well paid.",
+        "If a person is an athlete then they are famous.",
+        "All well-paid people live in tax havens.",
+        "If Djokovic is famous and is an athlete, then Djokovic lives in well paid."
+      ],
+      "question": "Djokovic lives in a tax haven.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"GrandSlamChampion\",\n    \"OscarNomineeActor\",\n    \"ProfessionalTennisPlayer\",\n    \"Celebrity\",\n    \"Athlete\",\n    \"WellPaid\",\n    \"LivesInTaxHaven\"\n  ],\n  \"fol_consts\": [\"Djokovic\"],\n  \"fol_rules\": [\n    \"∀x (GrandSlamChampion(x) ∨ OscarNomineeActor(x))\",\n    \"∀x ((GrandSlamChampion(x)) → ProfessionalTennisPlayer(x))\",\n    \"∀x ((OscarNomineeActor(x)) → Celebrity(x))\",\n    \"∀x (ProfessionalTennisPlayer(x) → Athlete(x))\",\n    \"∀x ((Celebrity(x)) → WellPaid(x))\",\n    \"∀x ((Athlete(x)) → Famous(x))\"\n  ],\n  \"fol_conc\": [\n    \"(Famous(Djokovic) ∧ Athlete(Djokovic)) → LivesInTaxHaven(Djokovic)\"\n  ]\n}\n```",
+      "perplexity": 1.1508629322052002,
+      "generation_time": 29.976769,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"GrandSlamChampion(P)\",\n    \"OscarNominatedActor(A)\",\n    \"ProfessionalTennisPlayer(T)\",\n    \"Celebrity(C)\",\n    \"Athlete(S)\",\n    \"WellPaid(W)\",\n    \"Famous(F)\"\n  ],\n  \"fol_consts\": [\"Djokovic\"],\n  \"fol_rules\": [\n    \"∀x (GrandSlamChampion(x) ∨ OscarNominatedActor(x))\",\n    \"∀x ((GrandSlamChampion(x) → ProfessionalTennisPlayer(x)))\",\n    \"∀y ((OscarNominatedActor(y) → Celebrity(y)))\",\n    \"∀z ((ProfessionalTennisPlayer(z) → Athlete(z)))\",\n    \"∀w ((Celebrity(w) → WellPaid(w)))\",\n    \"∀v ((Athlete(v) → Famous(v)))\",\n    \"∀u (WellPaid(u) → ∃x TaxHaven(x))\"\n  ],\n  \"fol_conc\": [\n    \"(Famous(Djokovic) ∧ Athlete(Djokovic)) → WellPaid(Djokovic)\"\n  ]\n}",
+      "perplexity": 1.2110382318496704,
+      "generation_time": 36.682681,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"GrandSlamChampion(x)\", \"OscarNominatedActor(x)\",\n    \"ProfessionalTennisPlayer(y)\", \"Celebrity(z)\", \"Athlete(u)\",\n    \"WellPaid(v)\", \"Famous(w)\", \"TaxHaven(t)\",\"LivesIn(s, t)\"],  \"fol_consts\": [\"x\", \"y\",\n\"z\", \"u\", \"v\", \"w\", \"t\", \"djokovic\"], \"fol_rules\":\n[ \"∀x (GrandSlamChampion(x) ∨ OscarNominatedActor(x)) ⊕ ∃y (ProfessionalTennisPlayer(y))\",\n  \"∀x ((GrandSlamChampion(x)) → ProfessionalTennisPlayer(y))\", \"∀z ((OscarNominatedActor(z))) → Celebrity(w)\",\n\"∀u (Athlete(u) → Famous(v))\",\"∀v (WellPaid(v) → TaxHaven(t))\",\n  \"(Famous(djokovic) ∧ Athlete(djokovic)) → LivesIn(djokovic, t)\"], \"fol_conc\": \"LivesIn(djokovic, t)\"\n}",
+      "perplexity": 1.769818902015686,
+      "generation_time": 36.686789,
+      "error_message": null
+    }
+  },
+  {
+    "id": 32,
+    "nl_problem": {
+      "context": [
+        "A person is either a Grand Slam champion or an Oscar-nominated actor.",
+        "All people who are Grand Slam champions are professional tennis players.",
+        "All Oscar-nominated actors are celebrities.",
+        "All professional tennis players are athletes.",
+        "If a person is a celebrity then they are well paid.",
+        "If a person is an athlete then they are famous.",
+        "All well-paid people live in tax havens.",
+        "If Djokovic is famous and is an athlete, then Djokovic lives in well paid."
+      ],
+      "question": "Djokovic does not live in a tax haven.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Person(x)\",\n    \"GrandSlamChampion(x)\",\n    \"OscarNominatedActor(x)\",\n    \"ProfessionalTennisPlayer(x)\",\n    \"Celebrity(x)\",\n    \"Athlete(x)\",\n    \"WellPaid(x)\",\n    \"Famous(x)\"\n  ],\n  \"fol_consts\": [\n    \"Djokovic\"\n  ],\n  \"fol_rules\": [\n    \"∀x (Person(x) → GrandSlamChampion(x) ∨ OscarNominatedActor(x))\",\n    \"∀x ((GrandSlamChampion(x) → ProfessionalTennisPlayer(x)))\",\n    \"∀x ((OscarNominatedActor(x) → Celebrity(x)))\",\n    \"∀x ((ProfessionalTennisPlayer(x) → Athlete(x)))\",\n    \"∀x (Celebrity(x) → WellPaid(x))\",\n    \"∀x (Athlete(x) → Famous(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬WellPaid(Djokovic)\"\n  ]\n}\n\"",
+      "perplexity": 1.125380277633667,
+      "generation_time": 29.995262,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"GrandSlamChampion(X)\",\n    \"OscarNominatedActor(X)\",\n    \"ProfessionalTennisPlayer(X)\",\n    \"Celebrity(X)\",\n    \"Athlete(X)\",\n    \"WellPaidPerson(X)\",\n    \"Famous(X)\",\n    \"TaxHavenResident(X)\"\n  ],\n  \"fol_consts\": [\n    \"Djokovic\"\n  ],\n  \"fol_rules\": [\n    \"∀x (GrandSlamChampion(x) ∨ OscarNominatedActor(x))\",\n    \"∀x ((GrandSlamChampion(x)) → ProfessionalTennisPlayer(x))\",\n    \"∀x ((OscarNominatedActor(x)) → Celebrity(x))\",\n    \"∀x ((ProfessionalTennisPlayer(x))) → Athlete(x)\",\n    \"∀x ((Celebrity(x)) → WellPaidPerson(x))\",\n    \"∀x ((Athlete(x)) → Famous(x))\",\n    \"∀x ((WellPaidPerson(x))) → TaxHavenResident(x)\"\n  ],\n  \"fol_conc\": [\n    \"¬TaxHavenResident(Djokovic) ∧ (Famous(Djokovic) ∨ Athlete(Djokovic))\"\n  ]\n}",
+      "perplexity": 1.1869678497314453,
+      "generation_time": 40.541815,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"GrandSlamChampion(x)\", \"OscarNominatedActor(x)\",\n  \"ProfessionalTennisPlayer(x)\", \"Celebrity(x)\", \"Athlete(x)\", \"WellPaidPerson(x)\", \"LivesInTaxHaven(y)\"], \"fol_consts\": [ \"x\", \"y\" ], \"fol_rules\":\n[\n    \"∀x (GrandSlamChampion(x) ∨ OscarNominatedActor(x))\",\n    \"∀x ((GrandSlamChampion(x) → ProfessionalTennisPlayer(x)))\",\n    \"∀x ((OscarNominatedActor(x) → Celebrity(x)))\",\n    \"∀x ((ProfessionalTennisPlayer(x) → Athlete(x)))\",\n    \"∀x (Celebrity(x) → WellPaidPerson(x))\",\n    \"∀x (Athlete(x) → Famous(x))\"\n], \"fol_conc\": \"(¬LivesInTaxHaven(grandjokovic))\" }",
+      "perplexity": 1.6091469526290894,
+      "generation_time": 30.889043,
+      "error_message": null
+    }
+  }
+]
