@@ -3,13 +3,8 @@ from typing import Dict
 class TemplateManager:
     DATASET_TYPES = {
         'FOLIO': 'FOL',
-        'FOLIOv2': 'FOL',
-        'PARARULE': 'FOL',
-        'LogicNLI': 'FOL',
-        'LogicNLI_symbolic': 'FOL',
-        'ProntoQA': 'FOL',
         'ProofWriter': 'FOL',
-        'AR-LSAT': 'SAT'
+        'GSM8K_symbolic': 'SIN'
     }
 
     MODEL_TEMPLATES = {
@@ -41,7 +36,7 @@ class TemplateManager:
         
         model_template = self._get_model_template()
         
-        with open(f'./resources/prompts/{self.config.dataset_name}/{self.config.prompt_type}.txt') as f:
+        with open(f'./resources/prompts/{self.config.dataset_name}/{self.config.shots_number}.txt') as f:
             content = f.read()
             prompt_template = model_template.replace('[[user]]', content)
 

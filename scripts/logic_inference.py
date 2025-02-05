@@ -12,6 +12,7 @@ import re
 
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
+from symbolic_solvers.math_solver.math_solver import SymPy_Program
 
 @dataclass
 class InferenceConfig:
@@ -29,7 +30,9 @@ class LogicProgram:
         'FOLIO': FOL_Prover9_Program,
         'FOLIOv2': FOL_Prover9_Program,
         'LogicNLI': FOL_Prover9_Program,
-        'AR-LSAT': LSAT_Z3_Program
+        'AR-LSAT': LSAT_Z3_Program,
+        'GSM8K_symbolic': SymPy_Program,
+        'GSM8K': SymPy_Program
     }
 
     def __init__(self, dataset_name: str):
@@ -44,6 +47,23 @@ class LogicProgram:
         cleaned_string = re.sub(r'```json\n|```\n|```', '', input_string)
         # Remove whitespace and parse
         return json.loads(cleaned_string.strip())
+    
+    @staticmethod
+    def parse_reasoning(input_string: str) -> Dict:
+        """Parse and clean reasoning result"""
+        # Remove markdown markers if present
+        
+        
+
+        answer_boxes = re.findall(r'\\boxed\{[A-Z]\}', input_string)
+            
+        if len(answer_boxes) != 1:
+            return 'N/A', 'parsing error', f'Expected 1 answer box, got {len(answer_boxes)}'
+        
+        answer = re.search(r'[A-Z]', answer_boxes[0]).group(0)
+        
+        # Remove whitespace and parse
+        return answer, 'success', ''
 
     @timeout(seconds=60)
     def execute(self, logic_problem: Dict) -> Tuple[str, str, str]:
@@ -86,16 +106,6 @@ class LogicInferenceEngine:
         print(f"Loaded {len(dataset)} examples from {self.config.split} split.")
         return dataset
 
-    # @timeout(seconds=60)
-    # def safe_execute_program(self, logic_problem: Dict) -> Tuple[str, str, str]:
-    #     """Safely execute a logic program with error handling"""
-    #     try:
-    #         parsed_problem = self.parse_json(logic_problem['raw'])
-    #     except Exception as e:
-    #         return 'N/A', 'json error', str(e)
-        
-    #     return self.program_executor.execute(parsed_problem)
-
     def process_samples(self, samples: List[Dict], problem_key: str) -> Tuple[int, int]:
         """Process a batch of samples for a specific problem type"""
         parsing_errors = 0
@@ -107,8 +117,12 @@ class LogicInferenceEngine:
 
             try:
                 logic_problem = sample[problem_key]['raw']
-                answer_pred, status, error = self.program_executor.execute(logic_problem)
-                # answer_pred, status, error = self.safe_execute_program(logic_problem)
+                
+                if self.config.model_name.endswith('r'):
+                    answer_pred, status, error = self.program_executor.parse_reasoning(logic_problem)
+                
+                else:
+                    answer_pred, status, error = self.program_executor.execute(logic_problem)
                 
                 if status == 'parsing error':
                     parsing_errors += 1

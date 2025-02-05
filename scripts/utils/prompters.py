@@ -1,7 +1,25 @@
-from utils.base import BasePrompter
+from typing import Dict
+from abc import ABC, abstractmethod
+from utils.template_manager import TemplateManager
 from typing import Dict
 
-class FOL_Prompter(BasePrompter):
+# class BasePrompter(ABC):
+
+
+#     @abstractmethod
+#     def build_grammar(self) -> str:
+#         pass
+
+#     def format_prompt(self, sample: Dict) -> str:
+#         problem = '\n'.join(sample['context'])
+#         question = sample['question'].strip()
+#         return self.template_manager.prompt_template.replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+
+class FOL_Prompter():
+    
+    def __init__(self, config: dict):
+        self.config = config
+        self.template_manager = TemplateManager(config)
     
     def _get_predicates(self) -> str:
         if "symbolic" in self.config.dataset_name:
@@ -24,3 +42,24 @@ class FOL_Prompter(BasePrompter):
             return None
                 
         return self.template_manager.grammar_templates[template_key].replace('[[PREDICATES]]', predicates).replace('[[CONSTANTS]]', constants)
+    
+    def format_prompt(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.template_manager.prompt_template.replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+    
+class SIN_Prompter():
+    def __init__(self, config: dict):
+        self.config = config
+        self.template_manager = TemplateManager(config)
+    
+    def build_grammar(self, template_key) -> str:
+        
+        if not self.template_manager.grammar_templates[template_key]:
+            return None
+                
+        return self.template_manager.grammar_templates[template_key]
+    
+    def format_prompt(self, sample: Dict) -> str:
+        question = sample['question'].strip()
+        return self.template_manager.prompt_template.replace('[[nl_problem]]', question)

@@ -18,25 +18,28 @@ from utils.logger import get_logger
 class ScriptConfig:
     model_name: str
     dataset_name: str
-    prompt_type: str
+    shots_number: str
     data_path: str
     split: str
     models_path: str
     save_path: str
+    timeout: int
+    starting_sample: int
+    verbose: bool
+    n_gpu_layers: int
     start_time: Optional[str]
     stop_time: Optional[str]
-    timeout: int = 60
-    starting_sample: int = 0
-    force_unconstrained: bool = False
-    force_constrained: bool = False
-    force_json: bool = False
-    debug: bool = False
+    force_unconstrained: Optional[bool]
+    force_constrained: Optional[bool]
+    force_json: Optional[bool]
 
 class LogicProgramRunner:
     def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict, logger):
         self.config = script_config
         self.generator = Generator(script_config)
         self.generator.setup_model(model_config, llama_cpp_config)
+        self.save_file = self._prepare_save_file()
+        
         
         self.logger = logger
         
@@ -54,22 +57,37 @@ class LogicProgramRunner:
             return True
         return False
     
-    def _load_raw_dataset(self) -> List[dict]:
+    def _prepare_save_file(self):
+        save_path = Path(os.path.join(self.config.save_path, self.config.shots_number, 'logic_problems'))
+        save_path.mkdir(parents=True, exist_ok=True)
+        
+        model_name = re.sub(r'-\d+-of-\d+', '', self.config.model_name)
+
+        return save_path / f'{self.config.dataset_name}_{self.config.split}_{model_name}.json'
+    
+    def _load_dataset(self) -> List[dict]:
         dataset_path = Path(self.config.data_path) / self.config.dataset_name / f'{self.config.split}.json'
         with open(dataset_path) as f:
-            return json.load(f)
-    
-    def _skip_existing(self, save_file: Path, raw_dataset: List[Dict]) -> Tuple[List[Dict], Dict, List]:
+            raw_dataset = json.load(f)
+            
+        cut_dataset = raw_dataset[self.config.starting_sample:]
+        
+        with open(os.path.join(self.config.data_path, self.config.dataset_name, 'sampled_ids.json')) as f:
+            sampled_ids = json.load(f)
+            
+        sampled_dataset = [s for s in cut_dataset if s['id'] in sampled_ids]
+
         outputs = {}
         existing_ids = []
         
-        if save_file.exists():
-            with open(save_file, 'r') as f:
+        if self.save_file.exists():
+            with open(self.save_file, 'r') as f:
                 saved_data = json.load(f)
-                outputs = {sample['id']: sample for sample in saved_data}
-                existing_ids = list(outputs.keys())
                 
-        return raw_dataset, outputs, existing_ids
+            outputs = {sample['id']: sample for sample in saved_data}
+            existing_ids = list(outputs.keys())
+                
+        return sampled_dataset, outputs, existing_ids
 
     def _generate_problem(self, nl_problem: dict, sample_id: int, constraint_type: str) -> Dict:
         """Generate logic problem for a sample"""
@@ -108,24 +126,12 @@ class LogicProgramRunner:
             'error_message': error_message
         }
         
-    def _prepare_save_file(self):
-        save_path = Path(self.config.save_path)
-        save_path.mkdir(parents=True, exist_ok=True)
-        
-        model_name = re.sub(r'-\d+-of-\d+', '', self.config.model_name)
 
-        return save_path / f'{self.config.dataset_name}_{self.config.split}_{model_name}.json'
         
 
     def run(self):
-        # Setup paths and load data
-        raw_dataset = self._load_raw_dataset()
         
-        raw_dataset = raw_dataset[self.config.starting_sample:]
-
-        save_file = self._prepare_save_file()
-        raw_dataset, outputs, existing_ids = self._skip_existing(save_file, raw_dataset)
-        
+        raw_dataset, outputs, existing_ids = self._load_dataset()
         self.logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
 
         # Process samples
@@ -154,35 +160,33 @@ class LogicProgramRunner:
 
             # Generate unconstrained version
             if 'logic_problem' not in sample or self.config.force_unconstrained:
-                pbar.set_description_str(f"Generating unconstrained problem {sample['id']}/{len(raw_dataset)}")
+                pbar.set_description_str(f"Generating unconstrained problem {sample['id']} ({i}/{len(raw_dataset)})")
                 logic_problem = self._generate_problem(nl_problem, sample["id"], "unconstrained")
                 output['logic_problem'] = logic_problem
             else:
                 output['logic_problem'] = sample['logic_problem']
 
             # Generate JSON version
-            if self.config.model_name.endswith('-r'):
-                output['logic_problem_json'] = None
-            elif 'logic_problem_json' not in sample or self.config.force_json:
-                pbar.set_description_str(f"Generating json problem {sample['id']}/{len(raw_dataset)}")
-                logic_problem_json = self._generate_problem(nl_problem, sample["id"], "json")
-                output['logic_problem_json'] = logic_problem_json
-            else:
-                output['logic_problem_json'] = sample['logic_problem_json']
+            if self.config.model_name.endswith('-it'):
+                if 'logic_problem_json' not in sample or self.config.force_json:
+                    pbar.set_description_str(f"Generating json problem {sample['id']} ({i}/{len(raw_dataset)})")
+                    logic_problem_json = self._generate_problem(nl_problem, sample["id"], "json")
+                    output['logic_problem_json'] = logic_problem_json
+                else:
+                    output['logic_problem_json'] = sample['logic_problem_json']
 
             # Generate constrained version
-            if self.config.model_name.endswith('-r'):
-                output['logic_problem_gcd'] = None
-            elif 'logic_problem_gcd' not in sample or self.config.force_constrained:
-                pbar.set_description_str(f"Generating constrained problem {sample['id']}/{len(raw_dataset)}")
-                logic_problem_gcd = self._generate_problem(nl_problem, sample["id"], "constrained")
-                output['logic_problem_gcd'] = logic_problem_gcd
-            else:
-                output['logic_problem_gcd'] = sample['logic_problem_gcd']
+            if self.config.model_name.endswith('-it'):
+                if 'logic_problem_gcd' not in sample or self.config.force_constrained:
+                    pbar.set_description_str(f"Generating constrained problem {sample['id']} ({i}/{len(raw_dataset)})")
+                    logic_problem_gcd = self._generate_problem(nl_problem, sample["id"], "constrained")
+                    output['logic_problem_gcd'] = logic_problem_gcd
+                else:
+                    output['logic_problem_gcd'] = sample['logic_problem_gcd']
 
             # Save progress
             outputs[sample['id']] = output
-            with open(save_file, 'w') as f:
+            with open(self.save_file, 'w') as f:
                 json.dump(list(outputs.values()), f, indent=2, ensure_ascii=False)
 
             # Debug logging
@@ -200,20 +204,21 @@ def parse_args() -> ScriptConfig:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-name', type=str, required=True)
-    parser.add_argument('--prompt-type', type=str, required=True)
+    parser.add_argument('--shots-number', type=str, default='2shots', choices=['0shots', '2shots', '5shots', 'baseline'])
+    parser.add_argument('--n-gpu-layers', type=int, default=-1)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--data-path', type=str, default='./data')
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--starting-sample', type=int)
+    parser.add_argument('--starting-sample', type=int, default=0)
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
-    parser.add_argument('--save-path', type=str, default='./outputs/logic_problems')
+    parser.add_argument('--save-path', type=str, default='./outputs')
+    parser.add_argument('--timeout', type=int, default=60, help='Timeout in seconds for generation operations')
     parser.add_argument('--start-time', default=None, type=str, help='Start time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--timeout', type=float, default=None, help='Timeout in seconds for generation operations')
     parser.add_argument('--force-unconstrained', action='store_true')
     parser.add_argument('--force-constrained', action='store_true')
     parser.add_argument('--force-json', action='store_true')
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--verbose', action='store_true')
     
     return ScriptConfig(**vars(parser.parse_args()))
 
@@ -250,6 +255,9 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     assert Path(model_path).exists(), f'Model not found: {model_path}'
     
     llama_cpp_config['model_path'] = model_path
+    llama_cpp_config['verbose'] = script_config.verbose
+    llama_cpp_config['n_gpu_layers'] = script_config.n_gpu_layers
+    llama_cpp_config['n_threads'] = 1 if script_config.n_gpu_layers == -1 else 12
     
     return script_config, model_config, llama_cpp_config
 
@@ -257,7 +265,7 @@ if __name__ == '__main__':
     args = parse_args()
 
     script_name = Path(__file__).stem
-    logger, log_file_name = get_logger(script_name, args.debug)
+    logger, log_file_name = get_logger(script_name, args.verbose)
     retry_timeout = 300
     
     if args.start_time:

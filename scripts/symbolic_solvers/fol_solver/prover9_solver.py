@@ -88,8 +88,9 @@ class FOL_Prover9_Program:
         except Exception as e:
             # print(e)
             return None, str(e)
-        
-    def answer_mapping(self, answer:str) -> str:
+    
+    @staticmethod
+    def answer_mapping(answer:str) -> str:
         if answer == 'True':
             return 'A'
         elif answer == 'False':
@@ -101,7 +102,26 @@ class FOL_Prover9_Program:
         
 if __name__ == "__main__":
     
-    logic_program = """First-Order-Logic Rules:\n∀x (Animal(x) ∧ LovedByTourists(x) → Favorite(max, x)) ::: If animals are loved by tourists, then they are Max's favorite animals.\n∀x (Animal(x) ∧ FromAustralia(x) → LovedByTourists(x)) ::: All animals from Australia are loved by tourists.\n∀x (Quokka(x) → Animal(x) ∧ FromAustralia(x)) ::: All quokka are animals from Australia.\n∀x (Favorite(max, x) → (Fluffy(x) ∧ LoveToSleep(x))) ::: All of Max's favorite animals are very fluffy and love to sleep.\n∀x (Koala(x) ∧ Fluffy(x) → ¬Quokka(x)) ::: If a koala is very fluffy, then the koala is not a quokka.\n\nFirst-Order-Logic Question:\nLoveToSleep(koala) ::: Koalas love to sleep."""
+    logic_program = {
+  "fol_preds": [
+    "Dependent(x)",
+    "Drinks(x)",
+    "Jokes(x)",
+    "Unaware(x)",
+    "Student(x)"
+  ],
+  "fol_consts": [
+    "rina"
+  ],
+  "fol_rules": [
+    "∀x (Drinks(x) → Dependent(x))",
+    "∀x (Drinks(x) ⊕ Jokes(x))",
+    "∀x (Jokes(x) → ¬Unaware(x))",
+    "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+    "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"
+  ],
+  "fol_conc": "Jokes(rina) ⊕ Unaware(rina)"
+    }
     
     prover9_program = FOL_Prover9_Program(logic_program)
     
