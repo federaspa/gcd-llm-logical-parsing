@@ -2,12 +2,17 @@
 import argparse
 import json
 import os
-from core.logic_evaluator import LogicEvaluator
+from utils.metrics import MetricsCalculator
 from utils.formatters import ResultFormatter
+
+num_samples = {
+    'FOLIO': 204,
+    'GSM8K_symbolic': 1000
+}
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--sketcher-name', type=str)
+    parser.add_argument('--model-name', type=str)
     parser.add_argument('--result-path', type=str, required=True)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
     parser.add_argument('--split', type=str, default='dev')
@@ -17,43 +22,38 @@ def main():
     parser.add_argument('--latex-split', action='store_true', help='Output results in two LaTeX tables')
     args = parser.parse_args()
     
-    if args.sketcher_name:
-        sketcher_names = [args.sketcher_name]
+    if args.model_name:
+        model_names = [args.model_name]
     else:
         config_path = './configs/models'
-        sketcher_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) 
+        model_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) 
                          if os.path.isfile(os.path.join(config_path, f))]
     
     all_results = {}
-    shot_numbers = [0, 2, 5]  # Add more shot numbers as needed
-    for sketcher_name in sketcher_names:
+    shot_numbers = [0, 2, 5]
+    for model_name in model_names:
         model_results = {}
         for shot in shot_numbers:
-            
-            # model_results[shot] = {
-            #     'metrics': {},
-            #     'improvements': {}
-            # }
-            
             try:
                 prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
-                filename = f'{prefix}{args.dataset_name}_{args.split}_{sketcher_name}.json'
+                filename = f'{prefix}{args.dataset_name}_{args.split}_{model_name}.json'
                 result_file = os.path.join(args.result_path, f"{shot}shots", 'logic_inference', filename)
+                
                                 
                 with open(result_file, 'r') as f:
                     samples = json.load(f)
-
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups(samples)
+                    
+                model_results[shot] = MetricsCalculator.evaluate_sample_groups(samples, num_samples[args.dataset_name])
             
             
             except FileNotFoundError:
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups([])
+                model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
                 
             except Exception as e:
-                model_results[shot] = LogicEvaluator.evaluate_sample_groups([])
-                print(f"Error processing {sketcher_name}: {e}")
+                model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
+                print(f"Error processing {model_name}: {e}")
                 
-        all_results[sketcher_name] = model_results
+        all_results[model_name] = model_results
         
         
     if args.save_df:

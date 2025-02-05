@@ -15,7 +15,12 @@ class ResultFormatter:
             model = model_parts[0]
             size = model_parts[1].replace('b', '')  # Remove 'b' to sort numerically
             
-            for shot in sorted(model_results.keys()):
+            try:
+                sorted_shots = sorted(model_results.keys())
+            except:
+                sorted_shots = model_results.keys()
+            
+            for shot in sorted_shots:
                 metrics = model_results[shot]
                 for category in ['UNCONSTRAINED', 'FOL']:
                     data.append([
@@ -43,7 +48,10 @@ class ResultFormatter:
     @staticmethod
     def format_latex(results):
         # Determine the number of shots dynamically
-        shot_numbers = sorted(next(iter(results.values())).keys())
+        try:
+            shot_numbers = sorted(next(iter(results.values())).keys())
+        except:
+            shot_numbers = next(iter(results.values())).keys()
         
         # Create LaTeX table header
         latex_lines = [
@@ -58,7 +66,13 @@ class ResultFormatter:
         ]
         
         # Process each model's results
-        for model_name, model_results in sorted(results.items()):
+        try:
+            sorted_results = sorted(results.items())
+        except:
+            sorted_results = results
+            
+            
+        for model_name, model_results in sorted_results:
             formatted_metrics = [model_name]
             for shot in shot_numbers:
                 metrics = model_results[shot]
@@ -82,7 +96,7 @@ class ResultFormatter:
                 
                 # Format FOL accuracy with improvement
                 fol_acc = f"\\textbf{{{acc_values[1]:.2f}}}" if acc_values[1] == max_acc else f"{acc_values[1]:.2f}"
-                fol_acc += f" ({improvement_accuracy:.2f})"
+                # fol_acc += f" ({improvement_accuracy:.2f})"
                 formatted_values.append(fol_acc)
                 
                 # Format unconstrained coverage (no improvement shown)
@@ -92,7 +106,7 @@ class ResultFormatter:
                 
                 # Format FOL coverage with improvement
                 fol_cov = f"\\textbf{{{cov_values[1]:.2f}}}" if cov_values[1] == max_cov else f"{cov_values[1]:.2f}"
-                fol_cov += f" ({improvement_coverage:.2f})"
+                # fol_cov += f" ({improvement_coverage:.2f})"
                 formatted_values.append(fol_cov)
                 
                 formatted_metrics.extend(formatted_values)
@@ -112,8 +126,11 @@ class ResultFormatter:
     @staticmethod 
     def format_latex_split(results):
         # Determine the number of shots dynamically
-        shot_numbers = sorted(next(iter(results.values())).keys())
-        
+        try:
+            shot_numbers = sorted(next(iter(results.values())).keys())
+        except:
+            shot_numbers = next(iter(results.values())).keys()
+                    
         # Create LaTeX table header
         accuracy_lines = [
             "\\begin{table*}[t]",
@@ -137,7 +154,12 @@ class ResultFormatter:
         ]
         
         # Process each model's results
-        for model_name, model_results in sorted(results.items()):
+        try:
+            sorted_results = sorted(results.items())
+        except:
+            sorted_results = results
+            
+        for model_name, model_results in sorted_results:
             formatted_accuracy = [model_name]
             formatted_coverage = [model_name]
             for shot in shot_numbers:
@@ -163,7 +185,7 @@ class ResultFormatter:
                 
                 # Format FOL accuracy with improvement
                 fol_acc = f"\\textbf{{{acc_values[1]:.2f}}}" if acc_values[1] == max_acc else f"{acc_values[1]:.2f}"
-                fol_acc += f" ({improvement_accuracy:.2f})"
+                # fol_acc += f" ({improvement_accuracy:.2f})"
                 formatted_acc.append(fol_acc)
                 
                 # Format unconstrained coverage (no improvement shown)
@@ -173,7 +195,7 @@ class ResultFormatter:
                 
                 # Format FOL coverage with improvement
                 fol_cov = f"\\textbf{{{cov_values[1]:.2f}}}" if cov_values[1] == max_cov else f"{cov_values[1]:.2f}"
-                fol_cov += f" ({improvement_coverage:.2f})"
+                # fol_cov += f" ({improvement_coverage:.2f})"
                 formatted_cov.append(fol_cov)
                 
                 formatted_accuracy.extend(formatted_acc)

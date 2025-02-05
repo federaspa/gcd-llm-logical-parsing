@@ -30,7 +30,8 @@ class AnswerParser:
         
         for sample in samples:
             gold_answer = sample['answer']
-            prediction = AnswerParser.get_choice(sample['predicted_answer'].strip())
+            # prediction = AnswerParser.get_choice(sample['predicted_answer'].strip())
+            prediction = sample['predicted_answer']
             gold_answers.append(gold_answer)
             predictions.append(prediction)
             
