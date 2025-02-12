@@ -1,0 +1,125 @@
+The task is to convert a natrual language reasoning problem into standart infix notation. 
+First, identify all the relevant variables and their values or expressions.
+Then, write each variable assignment in standard infix notation.
+Finally, formulate the equation to solve using these variables, also in standard infix notation.
+Do not attempt to solve the problem, limit yourself to converting
+
+
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"data": [list of relevant variable assignment],
+"question": [equation to solve]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Problem:
+"""
+Jamal saw a 380-foot whale with 8 57-inch remoras attached to it. What percentage of the whale's body length is the combined length of the remoras?
+"""
+
+------
+
+{
+    "data": [
+        "whale_length = 380 * 12",
+        "remora_length = 57",
+        "num_remoras = 8"
+    ],
+    "question": "((num_remoras * remora_length) / whale_length) * 100"
+}
+
+###
+
+Here's another example:
+
+Problem:
+"""
+The biggest waterslide at Water Wonderland is 400 yards long, and people slide down at 50 yards/minute. The second biggest waterslide is 200 yards long, but steeper, so people slide down at 100 yards/minute. How much longer does it take to ride the biggest slide compared to the second biggest slide?
+"""
+
+------
+
+{
+    "data": [
+        "slide1_length = 400", 
+        "slide1_speed = 50",   
+        "slide2_length = 200", 
+        "slide2_speed = 100"   
+    ],
+    "question": "(slide1_length / slide1_speed) - (slide2_length / slide2_speed)"
+}
+
+###
+
+Here's another example:
+
+Problem:
+"""
+It takes Quinn 28 minutes to finish a chess puzzle and 10 minutes to finish a brain teaser. Over the holiday she solved 8 chess puzzles and 14 brain teasers. How much time did she spend playing these games?
+"""
+
+------
+
+{
+   "data": [
+       "chess_time = 28",
+       "teaser_time = 10",
+       "num_chess = 8",
+       "num_teasers = 14"
+   ],
+   "question": "(chess_time * num_chess) + (teaser_time * num_teasers)"
+}
+
+###
+
+Here's another example:
+
+Problem:
+"""
+Noah hid 8 dozen eggs in the yard for the Easter egg hunt. Thiago finds 3 eggs. Carlos finds eight times as many as Thiago. Keisha finds 3 less than Carlos, and Uma finds 1/7 as many as Keisha. How many eggs are still hidden in the yard?
+"""
+
+------
+
+{
+   "data": [
+       "total_eggs = 8 * 12",          
+       "thiago_eggs = 3",              
+       "carlos_eggs = thiago_eggs * 8",
+       "keisha_eggs = carlos_eggs - 3",
+       "uma_eggs = keisha_eggs / 7"    
+   ],
+   "question": "total_eggs - (thiago_eggs + carlos_eggs + keisha_eggs + uma_eggs)"
+}
+
+###
+
+Here's another example:
+
+Problem:
+"""
+A class of 177 students has various hobbies. 26 like to hike, 31 like to play football, and the rest like to either play video games or bake. How many like to play video games if the number that like to bake is twice the number that prefer playing football?
+"""
+
+------
+
+{
+   "data": [
+       "total_students = 177",
+       "hiking_students = 26",
+       "football_students = 31",
+       "baking_students = football_students * 2"
+   ],
+   "question": "total_students - (hiking_students + football_students + baking_students)"
+}
+
+###
+
+Now let's convert this problem to standard infix notation.
+
+""""
+[[nl_problem]]
+"""

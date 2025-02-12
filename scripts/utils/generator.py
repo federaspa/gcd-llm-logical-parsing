@@ -20,8 +20,6 @@ class Generator:
         self.model = None  # Initialize in setup_model
         
         self.generate_problem = timeout(seconds=config.timeout)(self._generate_base)
-        # self.generate_json = timeout(seconds=config.timeout)(self._generate_json_base)
-        # self.generate_constrained = timeout(seconds=config.timeout)(self._generate_constrained_base)
         
         
     def _get_prompter(self):

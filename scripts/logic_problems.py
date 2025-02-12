@@ -167,7 +167,7 @@ class LogicProgramRunner:
                 output['logic_problem'] = sample['logic_problem']
 
             # Generate JSON version
-            if self.config.model_name.endswith('-it'):
+            if self.config.shots_number != 'baseline':
                 if 'logic_problem_json' not in sample or self.config.force_json:
                     pbar.set_description_str(f"Generating json problem {sample['id']} ({i}/{len(raw_dataset)})")
                     logic_problem_json = self._generate_problem(nl_problem, sample["id"], "json")
@@ -176,7 +176,7 @@ class LogicProgramRunner:
                     output['logic_problem_json'] = sample['logic_problem_json']
 
             # Generate constrained version
-            if self.config.model_name.endswith('-it'):
+            if self.config.shots_number != 'baseline':
                 if 'logic_problem_gcd' not in sample or self.config.force_constrained:
                     pbar.set_description_str(f"Generating constrained problem {sample['id']} ({i}/{len(raw_dataset)})")
                     logic_problem_gcd = self._generate_problem(nl_problem, sample["id"], "constrained")
@@ -212,7 +212,7 @@ def parse_args() -> ScriptConfig:
     parser.add_argument('--starting-sample', type=int, default=0)
     parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
     parser.add_argument('--save-path', type=str, default='./outputs')
-    parser.add_argument('--timeout', type=int, default=60, help='Timeout in seconds for generation operations')
+    parser.add_argument('--timeout', type=int, default=300, help='Timeout in seconds for generation operations')
     parser.add_argument('--start-time', default=None, type=str, help='Start time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
     parser.add_argument('--force-unconstrained', action='store_true')
