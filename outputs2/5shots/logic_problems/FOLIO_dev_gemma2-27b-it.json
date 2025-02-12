@@ -1,0 +1,36 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": [
+        "If people perform in school talent shows often, then they attend and are very engaged with school events.",
+        "People either perform in school talent shows often or are inactive and disinterested members of their community.",
+        "If people chaperone high school dances, then they are not students who attend the school.",
+        "All people who are inactive and disinterested members of their community chaperone high school dances.",
+        "All young children and teenagers who wish to further their academic careers and educational opportunities are students who attend the school.",
+        "Bonnie either both attends and is very engaged with school events and is a student who attends the school, or she neither attends and is very engaged with school events nor is a student who attends the school. "
+      ],
+      "question": "Bonnie performs in school talent shows often.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n\n```json\n{\n  \"fol_preds\": [\n    \"PerformTalent(x)\",\n    \"AttendEvents(x)\",\n    \"Engaged(x)\",\n    \"InactiveDisinterested(x)\",\n    \"ChaperoneDance(x)\",\n    \"Student(x)\",\n    \"YoungChildTeenager(x)\",\n    \"WishAcademicCareer(x)\"\n\n  ],\n  \"fol_consts\": [\n    \"bonnie\"\n  ],\n  \"fol_rules\": [\n    \"∀x (PerformTalent(x) → AttendEvents(x) ∧ Engaged(x))\",\n    \"∀x (PerformTalent(x) ⊕ InactiveDisinterested(x))\",\n    \"∀x (ChaperoneDance(x) → ¬Student(x))\",\n    \"∀x (InactiveDisinterested(x) → ChaperoneDance(x))\",\n    \"∀x ((YoungChildTeenager(x) ∧ WishAcademicCareer(x)) → Student(x))\",\n    \"(AttendEvents(bonnie) ∧ Engaged(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEvents(bonnie) ∨ Engaged(bonnie) ∨ Student(bonnie))\"\n\n  ],\n  \"fol_conc\": \"PerformTalent(bonnie)\"\n}\n\n\n```",
+      "perplexity": 1.1069384813308716,
+      "generation_time": 123.496539,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\"fol_preds\": [\"PerformTalentShow(x)\", \"AttendEvents(x)\", \"EngagedEvents(x)\",\n\"InactiveDisinterested(x)\", \"ChaperoneDance(x)\",\"StudentSchool(x)\"], \"\"\n  : [\"bonnie\"], \"\"\n  : [ \"∀x (PerformTalentShow(x) → AttendEvents(x)∧ EngagedEvents(x))\",\n    \"∀x (PerformTalentShow(x) ⊕ InactiveDisinterested(x))\",\n   \"∀x (ChaperoneDance(x)→ ¬StudentSchool(x))\",\n    \"∀x (InactiveDisinterested(x) → ChaperoneDance(x))\",\n    \"∀x ((YoungChild(x)∨Teenager(x))∧ WishAcademicCareer(x) → StudentSchool(x))\", \",(AttendEvents(bonnie)∧ EngagedEvents(bonnie)∧StudentSchool(bonnie)) ⊕ ¬ (AttendEvents(bonnie) ∧ EngagedEvents(bonnie)) ∧ ¬ StudentSchool(bonnie))\"], \"fol_conc\":\n  \"PerformTalentShow(bonnie)\" }",
+      "perplexity": 1.8018220663070679,
+      "generation_time": 82.566688,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\"fol_preds\": [\"Perform(x)\", \"AttendEvents(x)\", \"Engaged(x)\", \"Inactive(x)\", \"Disinterested(x)\", \"Chaperone(x)\", \"Student(x)\", \"YoungChildTeenager(x)\", \"WishFurtherAcademicCareer(x)\"], \"fol_consts\": [\"bonnie\"], \"fol_rules\": [\"∀x (Perform(x) → AttendEvents(x) ∧ Engaged(x))\", \"∀x (Perform(x) ⊕ Inactive(x) ∧ Disinterested(x))\", \"∀x (Chaperone(x) → ¬Student(x))\", \"∀x (Inactive(x) ∧ Disinterested(x) → Chaperone(x))\", \"∀x ((YoungChildTeenager(x) ∧ WishFurtherAcademicCareer(x)) → Student(x))\", \"(AttendEvents(bonnie) ∧ Engaged(bonnie) ∧ Student(bonnie)) ⊕ ¬(AttendEvents(bonnie) ∨ Engaged(bonnie) ∨ Student(bonnie))\"], \"fol_conc\": \"Perform(bonnie)\"}",
+      "perplexity": 1.1028639078140259,
+      "generation_time": 76.269144,
+      "error_message": null
+    }
+  }
+]
