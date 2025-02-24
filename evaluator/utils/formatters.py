@@ -5,35 +5,38 @@ class ResultFormatter:
     @staticmethod
     def create_dataframe(results):
         # Define columns
-        columns = ['Model', 'Size', 'Shots', 'Category', 'Accuracy', 'Accuracy_improvement', 'Coverage', 'Coverage_improvement']
+        columns = ['Dataset', 'Model', 'Size', 'Shots', 'Category', 'Accuracy', 'Accuracy_improvement', 'Coverage', 'Coverage_improvement']
         
         # Process data
         data = []
-        for model_name, model_results in sorted(results.items()):
-            # Split model_name into Model and Size
-            model_parts = model_name.split('-')
-            model = model_parts[0]
-            size = model_parts[1].replace('b', '')  # Remove 'b' to sort numerically
-            
-            try:
-                sorted_shots = sorted(model_results.keys())
-            except:
-                sorted_shots = model_results.keys()
-            
-            for shot in sorted_shots:
-                metrics = model_results[shot]
-                for category in ['UNCONSTRAINED', 'FOL']:
-                    data.append([
-                        model,
-                        size,
-                        f"{shot}-shots",
-                        category,
-                        round(metrics[category]['accuracy'] * 100, 2),
-                        round((metrics['FOL']['accuracy'] - metrics['UNCONSTRAINED']['accuracy']) * 100, 2),
-                        round(metrics[category]['coverage'] * 100, 2),
-                        round((metrics['FOL']['coverage'] - metrics['UNCONSTRAINED']['coverage']) * 100, 2)
-                    ])
-        
+        for dataset, dataset_results in results.items():
+            print(dataset)
+            for model_name, model_results in sorted(dataset_results.items()):
+                # Split model_name into Model and Size
+                model_parts = model_name.split('-')
+                model = model_parts[0]
+                size = model_parts[-2].replace('b', '')  # Remove 'b' to sort numerically
+                
+                try:
+                    sorted_shots = sorted(model_results.keys())
+                except:
+                    sorted_shots = model_results.keys()
+                
+                for shot in sorted_shots:
+                    metrics = model_results[shot]
+                    for category in ['UNCONSTRAINED', 'FOL']:
+                        data.append([
+                            dataset,
+                            model,
+                            size,
+                            f"{shot}-shots",
+                            category,
+                            round(metrics[category]['accuracy'] * 100, 2),
+                            round((metrics['FOL']['accuracy'] - metrics['UNCONSTRAINED']['accuracy']) * 100, 2),
+                            round(metrics[category]['coverage'] * 100, 2),
+                            round((metrics['FOL']['coverage'] - metrics['UNCONSTRAINED']['coverage']) * 100, 2)
+                        ])
+                        
         # Create DataFrame
         df = pd.DataFrame(data, columns=columns)
         
@@ -41,12 +44,14 @@ class ResultFormatter:
         df['Size'] = pd.to_numeric(df['Size'])
         
         # Sort by Model and Size
-        df = df.sort_values(by=['Model', 'Size'])
+        df = df.sort_values(by=['Dataset', 'Model', 'Size'])
         
         return df
 
     @staticmethod
     def format_latex(results):
+        raise NotImplementedError('Must add support for having a new first layer of results, dataset')
+
         # Determine the number of shots dynamically
         try:
             shot_numbers = sorted(next(iter(results.values())).keys())
@@ -57,11 +62,11 @@ class ResultFormatter:
         latex_lines = [
             "\\begin{table*}[t]",
             "\\centering",
-            "\\begin{tabular}{|l|" + "V".join(["cc|cc" for _ in shot_numbers]) + "V}",
+            "\\begin{tabular}{|l" + "V".join(["cc|cc" for _ in shot_numbers]) + "|}",
             "\\hline",
             "& " + " & ".join([f"\\multicolumn{{4}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
-            "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}} & \\multicolumn{2}{cV}{\\textbf{Coverage}}" for _ in shot_numbers]) + " \\\\ \\hline",
-            "& " + " & ".join(["\\textit{Unc.} & \\textit{FOL} & \\textit{Unc.} & \\textit{FOL}" for _ in shot_numbers]) + " \\\\",
+            "& " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}} & \\multicolumn{2}{cV}{\\textbf{Coverage}}" for _ in shot_numbers]) + " \\\\ \\hline",
+            "\\textbf{Models} & " + " & ".join(["\\textit{Unc.} & \\textit{Const.} & \\textit{Unc.} & \\textit{Const.}" for _ in shot_numbers]) + " \\\\",
             "\\hline"
         ]
         
@@ -125,6 +130,9 @@ class ResultFormatter:
     
     @staticmethod 
     def format_latex_split(results):
+        
+        raise NotImplementedError('Must add support for having a new first layer of results, dataset')
+        
         # Determine the number of shots dynamically
         try:
             shot_numbers = sorted(next(iter(results.values())).keys())
@@ -135,21 +143,22 @@ class ResultFormatter:
         accuracy_lines = [
             "\\begin{table*}[t]",
             "\\centering",
-            "\\begin{tabular}{|l|" + "V".join(["cc" for _ in shot_numbers]) + "V}",
+            "\\begin{tabular}{|l" + "V".join(["cc" for _ in shot_numbers]) + "|}",
             "\\hline",
-            "\\textbf{Model} & " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
+            "& " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
             # "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}}" for _ in shot_numbers]) + " \\\\ \\hline",
-            "& " + " & ".join(["\\textit{Unc.} & \\textit{FOL}" for _ in shot_numbers]) + " \\\\",
+            "\\textbf{Model} & " + " & ".join(["\\textit{Unc.} & \\textit{Const.}" for _ in shot_numbers]) + " \\\\",
             "\\hline"
         ]
         coverage_lines = [
             "\\begin{table*}[t]",
             "\\centering",
-            "\\begin{tabular}{|l|" + "V".join(["cc" for _ in shot_numbers]) + "V}",
+            "\\begin{tabular}{|l" + "V".join(["cc" for _ in shot_numbers]) + "|}",
             "\\hline",
-            "\\textbf{Model} & " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
+            "& " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
+            "& " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
             # "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}}" for _ in shot_numbers]) + " \\\\ \\hline",
-            "& " + " & ".join(["\\textit{Unc.} & \\textit{FOL}" for _ in shot_numbers]) + " \\\\",
+            "\\textbf{Model} & " + " & ".join(["\\textit{Unc.} & \\textit{Const.}" for _ in shot_numbers]) + " \\\\",
             "\\hline"
         ]
         

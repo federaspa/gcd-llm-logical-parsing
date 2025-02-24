@@ -12,9 +12,9 @@ num_samples = {
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model-name', type=str)
     parser.add_argument('--result-path', type=str, required=True)
-    parser.add_argument('--dataset-name', type=str, default='FOLIO')
+    parser.add_argument('--model-name', type=str)
+    parser.add_argument('--dataset-name', type=str)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--save-df', action='store_true', help='Save results as dataframe')
@@ -28,34 +28,40 @@ def main():
         config_path = './configs/models'
         model_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) 
                          if os.path.isfile(os.path.join(config_path, f))]
+        
+    if args.dataset_name:
+        dataset_names = [args.dataset_name]
+    else:
+        dataset_names = ['FOLIO', 'GSM8K_symbolic']
     
-    all_results = {}
+    all_results = {dataset:{} for dataset in dataset_names}
     shot_numbers = [0, 2, 5]
-    for model_name in model_names:
-        model_results = {}
-        for shot in shot_numbers:
-            try:
-                prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
-                filename = f'{prefix}{args.dataset_name}_{args.split}_{model_name}.json'
-                result_file = os.path.join(args.result_path, f"{shot}shots", 'logic_inference', filename)
-                
-                                
-                with open(result_file, 'r') as f:
-                    samples = json.load(f)
+    for dataset_name in dataset_names:
+        for model_name in model_names:
+            model_results = {}
+            for shot in shot_numbers:
+                try:
+                    prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
+                    filename = f'{prefix}{dataset_name}_{args.split}_{model_name}.json'
+                    result_file = os.path.join(args.result_path, f"{shot}shots", 'logic_inference', filename)
                     
-                model_results[shot] = MetricsCalculator.evaluate_sample_groups(samples, num_samples[args.dataset_name])
-            
-            
-            except FileNotFoundError:
-                model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
+                                    
+                    with open(result_file, 'r') as f:
+                        samples = json.load(f)
+                        
+                    model_results[shot] = MetricsCalculator.evaluate_sample_groups(samples, num_samples[dataset_name])
                 
-            except Exception as e:
-                model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
-                print(f"Error processing {model_name}: {e}")
                 
-        all_results[model_name] = model_results
-        
-        
+                except FileNotFoundError:
+                    model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
+                    # print(f"File not found: {filename}")
+                    
+                except Exception as e:
+                    model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
+                    print(f"Error processing {model_name}: {e}")
+                    
+            all_results[dataset_name][model_name] = model_results
+            
     if args.save_df:
         df = ResultFormatter.create_dataframe(all_results)
         
