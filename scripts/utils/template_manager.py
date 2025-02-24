@@ -3,7 +3,7 @@ from typing import Dict
 class TemplateManager:
     DATASET_TYPES = {
         'FOLIO': 'FOL',
-        'ProofWriter': 'FOL',
+        'ProofWriter': 'LD',
         'GSM8K_symbolic': 'SIN'
     }
 

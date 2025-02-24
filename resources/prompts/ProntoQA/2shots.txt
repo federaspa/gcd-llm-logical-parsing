@@ -26,6 +26,7 @@ Alex is not shy.
 
 ------
 
+
 {
   "predicates": [
     "Jompus($x, bool)",
@@ -78,45 +79,56 @@ Here's another example:
 
 NL premises:
 """
-Dave is big. Dave is red. Erin is smart. Fiona is kind. Fiona is smart. Gary is rough. Gary is white. All young people are white. If someone is kind and white then they are big. If someone is kind then they are young. If Fiona is young and Fiona is rough then Fiona is red. If someone is big then they are rough. All rough, white people are red. If someone is kind and not big then they are red.
+Anne is green. Charlie is big. Charlie is quiet. Charlie is rough. Charlie is smart. Charlie is white. Fiona is big. Fiona is furry. Fiona is smart. Harry is big. Harry is furry. Harry is quiet. Green things are quiet. Rough, quiet things are smart. If something is green and quiet then it is rough. Big, rough things are furry. If something is white then it is big. Quiet things are rough. If Charlie is big then Charlie is quiet. All green, furry things are white. Quiet, smart things are big.
 """
 
 NL conclusion:
 """
-Erin is smart.
+Anne is big.
 """
 
 ------
 
 {
-  "predicates": [
-    "Big($x, bool)",
-    "Red($x, bool)",
-    "Smart($x, bool)",
-    "Kind($x, bool)",
-    "Rough($x, bool)",
-    "White($x, bool)",
-    "Young($x, bool)"
+  "fol_preds": [
+    "Green(x)",
+    "Big(x)",
+    "Quiet(x)", 
+    "Rough(x)",
+    "Smart(x)",
+    "White(x)",
+    "Furry(x)"
   ],
-  "facts": [
-    "Big(Dave, True)",
-    "Red(Dave, True)",
-    "Smart(Erin, True)",
-    "Kind(Fiona, True)",
-    "Smart(Fiona, True)",
-    "Rough(Gary, True)",
-    "White(Gary, True)"
+  "fol_consts": [
+    "anne",
+    "charlie",
+    "fiona",
+    "harry"
   ],
-  "rules": [
-    "Young($x, True) >>> White($x, True)",
-    "Kind($x, True) && White($x, True) >>> Big($x, True)",
-    "Kind($x, True) >>> Young($x, True)",
-    "Young(Fiona, True) && Rough(Fiona, True) >>> Red(Fiona, True)",
-    "Big($x, True) >>> Rough($x, True)",
-    "Rough($x, True) && White($x, True) >>> Red($x, True)",
-    "Kind($x, True) && Big($x, False) >>> Red($x, True)"
+  "fol_rules": [
+    "Green(anne)",
+    "Big(charlie)",
+    "Quiet(charlie)",
+    "Rough(charlie)",
+    "Smart(charlie)",
+    "White(charlie)",
+    "Big(fiona)",
+    "Furry(fiona)",
+    "Smart(fiona)",
+    "Big(harry)",
+    "Furry(harry)",
+    "Quiet(harry)",
+    "∀x(Green(x) → Quiet(x))",
+    "∀x(Rough(x) ∧ Quiet(x) → Smart(x))",
+    "∀x(Green(x) ∧ Quiet(x) → Rough(x))",
+    "∀x(Big(x) ∧ Rough(x) → Furry(x))",
+    "∀x(White(x) → Big(x))",
+    "∀x(Quiet(x) → Rough(x))",
+    "Big(charlie) → Quiet(charlie)",
+    "∀x(Green(x) ∧ Furry(x) → White(x))",
+    "∀x(Quiet(x) ∧ Smart(x) → Big(x))"
   ],
-  "query": "Smart(Erin, True)"
+  "fol_conc": "Big(anne)"
 }
 
 ###

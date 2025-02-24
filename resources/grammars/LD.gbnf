@@ -1,0 +1,42 @@
+# Root structure for JSON-wrapped logic problem
+root ::= "{" ws predicates ws facts ws rules ws query ws "}"
+
+# Whitespace handling
+ws ::= [ \t\n]*
+
+# JSON structure for predicates
+predicates ::= "\"predicates\":" ws "[" ws predicatelist ws "],"
+predicatelist ::= predicate (ws "," ws predicate)*
+predicate ::= "\"" predicatedecl "\""
+predicatedecl ::= predicatename "($" paramlist ", bool)"
+
+# Parameter list for predicates
+paramlist ::= "x" | ("x" ", $" [y-z])
+
+# JSON structure for facts
+facts ::= "\"facts\":" ws "[" ws factlist ws "],"
+factlist ::= fact (ws "," ws fact)*
+fact ::= "\"" predicatestmt "\""
+
+# JSON structure for rules
+rules ::= "\"rules\":" ws "[" ws rulelist ws "],"
+rulelist ::= rule (ws "," ws rule)*
+rule ::= "\"" premise ">>>" conclusion "\""
+
+# Premise part (can have multiple conditions joined by &&)
+premise ::= predicatestmt (ws "&&" ws predicatestmt)*
+
+# Conclusion part (usually a single predicate statement)
+conclusion ::= predicatestmt
+
+# JSON structure for query
+query ::= "\"query\":" ws "\"" querystmt "\""
+querystmt ::= predicatestmt
+
+# Predicate statement structure
+predicatestmt ::= predicatename "(" entityname ", " booleanvalue ")"
+
+# Basic elements
+predicatename ::= [A-Z][a-zA-Z]*
+entityname ::= [A-Z][a-zA-Z]* | "$x" | "$y" | "$z"
+booleanvalue ::= "True" | "False"

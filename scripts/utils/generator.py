@@ -1,5 +1,5 @@
 from utils.template_manager import TemplateManager
-from utils.prompters import FOL_Prompter, SIN_Prompter
+from utils.prompters import FOL_Prompter, SIN_Prompter, LD_Prompter
 from utils.model import LLMModel
 import json
 import numpy as np
@@ -25,7 +25,8 @@ class Generator:
     def _get_prompter(self):
         prompters = {
             'FOL': FOL_Prompter,
-            'SIN': SIN_Prompter
+            'SIN': SIN_Prompter,
+            'LD': LD_Prompter
         }
         return prompters[self.template_manager.type](self.config)
 

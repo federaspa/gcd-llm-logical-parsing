@@ -13,6 +13,7 @@ import traceback
 
 from utils.generator import Generator
 from utils.logger import get_logger
+from utils.notifier import PushoverNotifier
 
 @dataclass
 class ScriptConfig:
@@ -261,11 +262,21 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     
     return script_config, model_config, llama_cpp_config
 
+def extract_model_size(model_name):
+    # Extract the size part (e.g., "8b" from "modelname2.0-8b-it")
+    try:
+        # Find the part that ends with 'b' and convert to number
+        size_str = next(part for part in model_name.split('-') if part.endswith('b'))
+        return int(size_str[:-1])  # Remove 'b' and convert to int
+    except (StopIteration, ValueError):
+        return 0  # Return 0 if pattern not found or conversion fails
+
 if __name__ == '__main__':
     args = parse_args()
 
     script_name = Path(__file__).stem
     logger, log_file_name = get_logger(script_name, args.verbose)
+    notifier = PushoverNotifier()
     retry_timeout = 300
     
     if args.start_time:
@@ -273,34 +284,69 @@ if __name__ == '__main__':
         
         if datetime.now() < start_time:
             
-            logger.info(f"Waiting to start script at {start_time}. Current time: {datetime.now()}, {(start_time - datetime.now()).total_seconds()} remaining")
+            logger.info(f"Waiting to start script at {start_time}. Current time: {datetime.now()}, {round((start_time - datetime.now()).total_seconds()/3600)} hours ({round((start_time - datetime.now()).total_seconds()/60)} minutes) remaining")
         
         while datetime.now() < start_time:
             time.sleep((start_time - datetime.now()).total_seconds())
             
+            
+    if re.search(r'-\d+b', args.model_name, re.I):
+        remaining_models = [args.model_name]
         
-    logger.info('Script started')
+    else:
+        remaining_models = [os.path.splitext(m)[0] for m in os.listdir('configs/models') if args.model_name in m]
+        
+    remaining_models = sorted(remaining_models, key=extract_model_size, reverse=True)
+        
+    last_attempt_times = {model: 0 for model in remaining_models} 
+        
+    logger.info(f'Script started with models: {remaining_models}')
     
-    while True:
-        try:
-            script_config, model_config, llama_cpp_config = get_configs(args)
-            runner = LogicProgramRunner(script_config, model_config, llama_cpp_config, logger)
-            runner.run()
-            logger.info("Finished Successfully")
-            break
+    while remaining_models:
+        current_time = time.time()
+        
+        for model_name in remaining_models:
+            if current_time - last_attempt_times[model_name] < retry_timeout:
+                continue
             
-        except ValueError as e:
-            if "Failed to load model from file:":
-                logger.warning(f'Failed to load model, retrying in {retry_timeout} seconds')
-                time.sleep(retry_timeout)
-            
-        except KeyboardInterrupt:
-            logger.error("KeyboardInterrupt")
-            os.remove(f"./{log_file_name}")
-            sys.exit(0)
-            
-        except Exception as e:
-            error_message = f"A fatal error occurred: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
-            logger.error(error_message)
-            sys.exit(0)
-            
+            try:
+                logger.info(f"Running model: {model_name}")
+
+                last_attempt_times[model_name] = current_time
+                
+                args.model_name = model_name
+                script_config, model_config, llama_cpp_config = get_configs(args)
+                runner = LogicProgramRunner(script_config, model_config, llama_cpp_config, logger)
+                runner.run()
+                logger.info(f"Finished Successfully: {model_name}")
+                notifier.send(f"Finished Successfully: {model_name}", 'Info')
+                
+                remaining_models.remove(model_name)
+                
+            except ValueError as e:
+                if "Failed to load model from file:" in str(e) or "Failed to create llama_context" in str(e):
+                    logger.warning(f'Failed to load model {model_name}, retrying in {retry_timeout/60} minutes')
+                    # time.sleep(retry_timeout)
+                    continue
+                else:
+                    logger.error(f"ValueError for {model_name}: {str(e)}")
+                    notifier.send(f"ValueError for {model_name}: {str(e)}", 'Error')
+                    sys.exit(1) 
+                
+            except KeyboardInterrupt:
+                logger.error("KeyboardInterrupt")
+                os.remove(f"./{log_file_name}")
+                sys.exit(0)
+                
+            except Exception as e:
+                error_message = f"A fatal error occurred with {model_name}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+                logger.error(error_message)
+                notifier.send(error_message, 'Error')
+
+                sys.exit(1)
+                
+        if remaining_models:
+            time.sleep(1)
+
+logger.info("All models completed successfully")
+notifier.send("All models completed successfully", 'Info')
