@@ -13,6 +13,7 @@ import re
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
 from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 from symbolic_solvers.math_solver.math_solver import SymPy_Program
+from symbolic_solvers.pyke_solver.pyke_solver import Pyke_Program
 
 @dataclass
 class InferenceConfig:
@@ -32,7 +33,8 @@ class LogicProgram:
         'LogicNLI': FOL_Prover9_Program,
         'AR-LSAT': LSAT_Z3_Program,
         'GSM8K_symbolic': SymPy_Program,
-        'GSM8K': SymPy_Program
+        'GSM8K': SymPy_Program,
+        'ProofWriter': Pyke_Program,
     }
 
     def __init__(self, dataset_name: str):
