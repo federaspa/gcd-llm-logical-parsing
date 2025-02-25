@@ -1,14 +1,15 @@
-The task is to convert a natrual language reasoning problem into first-order logic. 
-First, identify the predicates and constants required to build the first order logic formulas. 
-Then, use them to build the rules and the conclusion. 
+The task is to convert a natural language reasoning problem into logical form.
+First, identify the predicates required to build the logical formulas.
+Then, convert all the facts and rules from the problem.
+Finally, convert the question into a query.
 Do not attempt to prove or disprove the conclusion, limit yourself to converting.
 You reply strictly in JSON format, with the following schema:
 """
 \{
-"fol_preds": [list of required FOL Predicates],
-"fol_consts": [list of required FOL Constants],
-"fol_rules": [list of generated FOL Rules],
-"fol_conc": [generated FOL Conclusion]
+"predicates": [list of required predicates],
+"facts": [list of facts extracted from the problem],
+"rules": [list of rules extracted from the problem],
+"query": [query converted from the question]
 \}
 """
 

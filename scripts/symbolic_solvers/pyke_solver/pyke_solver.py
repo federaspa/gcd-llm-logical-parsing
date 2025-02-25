@@ -6,7 +6,7 @@ import re
 class Pyke_Program:
     def __init__(self, logic_program:str, dataset_name = 'ProntoQA') -> None:
         self.logic_program = logic_program
-        self.flag = self.parse_logic_program()
+        self.flag, self.formula_error = self.parse_logic_program(), ""
         self.dataset_name = dataset_name
         
         # create the folder to save the Pyke program
@@ -29,7 +29,7 @@ class Pyke_Program:
     def parse_logic_program(self):
         try:
             # Parse the JSON string
-            program_data = json.loads(self.logic_program)
+            program_data = self.logic_program
             
             # Extract the components
             self.Predicates = program_data.get('predicates', [])
@@ -41,11 +41,7 @@ class Pyke_Program:
             self.Query = [query] if query else []
             
             return self.validate_program()
-        except json.JSONDecodeError as e:
-            print(f"JSON parsing error: {e}")
-            return False
         except Exception as e:
-            print(f"Error in parsing JSON program: {e}")
             return False
 
     # check if the program is valid; if not, try to fix it
@@ -144,7 +140,7 @@ class Pyke_Program:
 
     def execute_program(self):
         # delete the compiled_krb dir
-        complied_krb_dir = './models/compiled_krb'
+        complied_krb_dir = './scripts/compiled_krb'
         if os.path.exists(complied_krb_dir):
             print('removing compiled_krb')
             os.system(f'rm -rf {complied_krb_dir}/*')
