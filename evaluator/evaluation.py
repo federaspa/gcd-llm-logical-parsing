@@ -7,7 +7,8 @@ from utils.formatters import ResultFormatter
 
 num_samples = {
     'FOLIO': 204,
-    'GSM8K_symbolic': 1000
+    'GSM8K_symbolic': 1000,
+    'ProofWriter': 340
 }
 
 def main():
@@ -34,10 +35,10 @@ def main():
     else:
         dataset_names = ['FOLIO', 'GSM8K_symbolic']
     
-    all_results = {dataset:{} for dataset in dataset_names}
+    all_results = {model:{} for model in model_names}
     shot_numbers = [0, 2, 5]
-    for dataset_name in dataset_names:
-        for model_name in model_names:
+    for model_name in model_names:
+        for dataset_name in dataset_names:
             model_results = {}
             for shot in shot_numbers:
                 try:
@@ -60,7 +61,7 @@ def main():
                     model_results[shot] = MetricsCalculator.evaluate_sample_groups([])
                     print(f"Error processing {model_name}: {e}")
                     
-            all_results[dataset_name][model_name] = model_results
+            all_results[model_name][dataset_name] = model_results
             
     if args.save_df:
         df = ResultFormatter.create_dataframe(all_results)
@@ -78,6 +79,8 @@ def main():
                 print("="*80)
                 print(df)
                 print("="*80)
+        else:
+            df.to_csv(output_file, index=False)
 
     # Print results   
     if args.latex:
