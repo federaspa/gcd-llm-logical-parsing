@@ -236,7 +236,7 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     llama_cpp_config['model_path'] = model_path
     llama_cpp_config['verbose'] = script_config.verbose
     llama_cpp_config['n_gpu_layers'] = script_config.n_gpu_layers
-    llama_cpp_config['n_threads'] = 1 if script_config.n_gpu_layers == -1 else 12
+    llama_cpp_config['n_threads'] = 1 if script_config.n_gpu_layers == -1 else 20
     
     return script_config, model_config, llama_cpp_config
 
