@@ -18,11 +18,11 @@ from symbolic_solvers.pyke_solver.pyke_solver import Pyke_Program
 @dataclass
 class InferenceConfig:
     model_name: Optional[str]
+    shots_number: str
     dataset_name: str
     data_path: str
     split: str
     save_path: str
-    programs_path: str
     self_refine_round: int = 0
 
 class LogicProgram:
@@ -176,11 +176,12 @@ class LogicInferenceEngine:
 
 def parse_args() -> InferenceConfig:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--save-path', type=str, required=True)
-    parser.add_argument('--programs-path', type=str, required=True)
+    parser.add_argument('--shots-number', type=str, default='2shots', choices=['0shots', '2shots', '5shots', 'baseline'])
+    # parser.add_argument('--programs-path', type=str, required=True)
+    parser.add_argument('--save-path', type=str, default='/data/users/fraspant/GCLLM/outputs')
     parser.add_argument('--model-name', type=str)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
-    parser.add_argument('--data-path', type=str, default='./data')
+    parser.add_argument('--data-path', type=str, default='/data/users/fraspant/GCLLM/data')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     
@@ -197,6 +198,7 @@ def main():
     
     # Get list of models to process
     models = [config.model_name] if config.model_name else get_available_models()
+    config.programs_path = Path(os.path.join(config.save_path, config.shots_number, 'logic_problems'))
     
     print(f"Dataset: {config.dataset_name}")
     print(f"Models: {models}")

@@ -201,28 +201,6 @@ class LogicProgramRunner:
         else:
             self.logger.info(f"Generated {len(outputs)} examples.")
 
-def parse_args() -> ScriptConfig:
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--model-name', type=str, required=True)
-    parser.add_argument('--shots-number', type=str, default='2shots', choices=['0shots', '2shots', '5shots', 'baseline'])
-    parser.add_argument('--n-gpu-layers', type=int, default=-1)
-    parser.add_argument('--dataset-name', type=str, default='FOLIO')
-    parser.add_argument('--data-path', type=str, default='./data')
-    parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--starting-sample', type=int, default=0)
-    parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
-    parser.add_argument('--save-path', type=str, default='./outputs')
-    parser.add_argument('--timeout', type=int, default=300, help='Timeout in seconds for generation operations')
-    parser.add_argument('--start-time', default=None, type=str, help='Start time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
-    parser.add_argument('--force-unconstrained', action='store_true')
-    parser.add_argument('--force-constrained', action='store_true')
-    parser.add_argument('--force-json', action='store_true')
-    parser.add_argument('--verbose', action='store_true')
-    
-    return ScriptConfig(**vars(parser.parse_args()))
-
 def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     full_model_name = re.sub(r'-\d+-of-\d+', '', script_config.model_name)
     
@@ -262,6 +240,28 @@ def get_configs(script_config: ScriptConfig) -> Tuple[ScriptConfig, dict, dict]:
     
     return script_config, model_config, llama_cpp_config
 
+def parse_args() -> ScriptConfig:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model-name', type=str, required=True)
+    parser.add_argument('--shots-number', type=str, default='2shots', choices=['0shots', '2shots', '5shots', 'baseline'])
+    parser.add_argument('--n-gpu-layers', type=int, default=-1)
+    parser.add_argument('--dataset-name', type=str, default='FOLIO')
+    parser.add_argument('--data-path', type=str, default='/data/users/fraspant/GCLLM/data')
+    parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--starting-sample', type=int, default=0)
+    parser.add_argument('--models-path', type=str, default='/data/users/fraspant/LLMs')
+    parser.add_argument('--save-path', type=str, default='/data/users/fraspant/GCLLM/outputs')
+    parser.add_argument('--timeout', type=int, default=300, help='Timeout in seconds for generation operations')
+    parser.add_argument('--start-time', default=None, type=str, help='Start time in format dd-mm-yy:hh-mm-ss')
+    parser.add_argument('--stop-time', default=None, type=str, help='Stop time in format dd-mm-yy:hh-mm-ss')
+    parser.add_argument('--force-unconstrained', action='store_true')
+    parser.add_argument('--force-constrained', action='store_true')
+    parser.add_argument('--force-json', action='store_true')
+    parser.add_argument('--verbose', action='store_true')
+    
+    return ScriptConfig(**vars(parser.parse_args()))
+
 def extract_model_size(model_name):
     # Extract the size part (e.g., "8b" from "modelname2.0-8b-it")
     try:
@@ -292,7 +292,6 @@ if __name__ == '__main__':
             
     if re.search(r'-\d+b', args.model_name, re.I):
         remaining_models = [args.model_name]
-        
     else:
         remaining_models = [os.path.splitext(m)[0] for m in os.listdir('configs/models') if args.model_name in m]
         
