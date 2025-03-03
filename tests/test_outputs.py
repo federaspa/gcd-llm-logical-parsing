@@ -22,10 +22,10 @@ class TestOutputFiles(unittest.TestCase):
     def setUpClass(cls):
         """Set up test data once for all test methods."""
         # Default paths - can be overridden with environment variables
-        cls.save_path = os.getenv('SAVE_PATH', '/data/users/fraspant/GCLLM/outputs')
-        cls.data_path = os.getenv('DATA_PATH', '/data/users/fraspant/GCLLM/data')
-        cls.dataset_name = os.getenv('DATASET_NAME', 'FOLIO')
-        cls.shots = os.getenv('SHOTS', '2shots')
+        cls.save_path = os.getenv('SAVE_PATH', './outputs')
+        cls.data_path = os.getenv('DATA_PATH', './data')
+        cls.dataset_name = os.getenv('DATASET_NAME', 'GSM8K_symbolic')
+        cls.shots = os.getenv('SHOTS', '5shots')
         
         # Load model names from configs
         cls.model_names = get_model_names()
