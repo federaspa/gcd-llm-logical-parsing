@@ -1,0 +1,585 @@
+[
+    {
+        "id": 4,
+        "story_id": 1,
+        "context": [
+            "All employees who schedule a meeting with their customers will appear in the company today. ",
+            "Everyone who has lunch in the company schedules meetings with their customers. ",
+            "Employees will either have lunch in the company or have lunch at home.",
+            "If an employee has lunch at home, then he/she is working remotely from home.",
+            "All employees who are in other countries work remotely from home. ",
+            "No managers work remotely from home. ",
+            "James is either a manager and appears in the company today or neither a manager nor appears in the company today."
+        ],
+        "context_fol": [
+            "∀x (Meeting(x) → AppearInCompany(x))",
+            "∀x (LunchInCompany(x) → Meetings(x))",
+            "∀x (LunchInCompany(x) ⊕ LunchAtHome(x))",
+            "∀x (LunchAtHome(x) → WorkRemotelyFromHome(x))",
+            "∀x (InOtherCountries(x) → WorkRemotelyFromHome(x))",
+            "∀x (Manager(x) → ¬WorkRemotelyFromHome(x))",
+            "Manager(james) ⊕ ¬AppearInCompany(james)"
+        ],
+        "question": "James does not have lunch in the company.",
+        "question_fol": "¬LunchInCompany(james)",
+        "answer": "C",
+        "logic_predicates": [
+            "Meeting(x)",
+            "InOtherCountries(x)",
+            "AppearInCompany(x)",
+            "Manager(x)",
+            "LunchInCompany(x)",
+            "Meetings(x)",
+            "WorkRemotelyFromHome(x)",
+            "LunchAtHome(x)"
+        ]
+    },
+    {
+        "id": 12,
+        "story_id": 4,
+        "context": [
+            "A Japanese game company created the game the Legend of Zelda.",
+            "All games in the Top 10 list are made by Japanese game companies.",
+            "[BG] If a game sells more than one million copies, then it will be selected into the Top 10 list.",
+            "The Legend of Zelda sold more than one million copies."
+        ],
+        "context_fol": [
+            "∃x (Japanese(x) ∧ VideoGameCompany(x) ∧ Game(thelegendofzelda) ∧ Created(x, thelegendofzelda))",
+            "∀x ∀y (Game(x) ∧ InTop10(x) ∧ Created(x, y) → Japanese(y))",
+            "∀x (Game(x) ∧ SellsMoreThan(x, onemillioncopies) → Top10(x))",
+            "SellsMoreThan(thelegendofzelda, onemillioncopies)"
+        ],
+        "question": "The Legend of Zelda is in the Top 10 list.",
+        "question_fol": "Top10(thelegendofzelda)",
+        "answer": "A",
+        "logic_predicates": [
+            "Game(x)",
+            "VideoGameCompany(x)",
+            "SellsMoreThan(x, y)",
+            "Japanese(x)",
+            "Top10(x)",
+            "InTop10(x)",
+            "Created(x, y)"
+        ]
+    },
+    {
+        "id": 15,
+        "story_id": 5,
+        "context": [
+            "All squares have four sides.",
+            "All four-sided things are shapes. "
+        ],
+        "context_fol": [
+            "∀x (Square(x) → FourSides(x))",
+            "∀x (FourSides(x) → IsShape(x))"
+        ],
+        "question": "All squares are shapes.",
+        "question_fol": "∀x (Square(x) → IsShape(x))",
+        "answer": "A",
+        "logic_predicates": [
+            "Square(x)",
+            "FourSides(x)",
+            "IsShape(x)"
+        ]
+    },
+    {
+        "id": 16,
+        "story_id": 6,
+        "context": [
+            "All rabbits are cute. ",
+            "Some turtles exist. ",
+            "An animal is either a rabbit or a squirrel.",
+            "If something is skittish, then it is not still.",
+            "All squirrels are skittish.",
+            "Rock is still."
+        ],
+        "context_fol": [
+            "∀x (Rabbit(x) → Cute(x))",
+            "∃x (Turtle(x))",
+            "∀x (Rabbit(x) ∨ Squirrel(x))",
+            "∀x (Skittish(x) → ¬Still(x))",
+            "∀x (Squirrel(x) → Skittish(x))",
+            "Still(rock)"
+        ],
+        "question": "Rock is a turtle.",
+        "question_fol": "Turtle(rock)",
+        "answer": "C",
+        "logic_predicates": [
+            "Rabbit(x)",
+            "Skittish(x)",
+            "Turtle(x)",
+            "Squirrel(x)",
+            "Still(x)",
+            "Cute(x)"
+        ]
+    },
+    {
+        "id": 22,
+        "story_id": 7,
+        "context": [
+            "\"Stranger Things\" is a popular Netflix show.",
+            "If a Netflix show is popular, Karen will binge-watch it.",
+            "If and only if Karen binge-watches a Netflix show, she will download it.",
+            "Karen does not download \"Black Mirror\".",
+            "\"Black Mirror\" is a Netflix show.",
+            "If Karen binge-watches a Netflix show, she will share it to Lisa."
+        ],
+        "context_fol": [
+            "NetflixShow(strangerThings) ∧ Popular(strangerThings)",
+            "∀x ((NetflixShow(x) ∧ Popular(x)) → BingeWatch(karen, x))",
+            "∀x ((NetflixShow(x) ∧ BingeWatch(karen, x)) ↔ Download(karen, x))",
+            "¬Download(karen, blackMirror)",
+            "NetflixShow(blackMirror)",
+            "∀x ((NetflixShow(x) ∧ BingeWatch(karen, x)) → Share(x, lisa))"
+        ],
+        "question": "\"Black Mirror\" is popular.",
+        "question_fol": "Popular(blackMirror)",
+        "answer": "B",
+        "logic_predicates": [
+            "BingeWatch(x, y)",
+            "Popular(x)",
+            "NetflixShow(x)",
+            "Share(x, y)",
+            "Download(x, y)"
+        ]
+    },
+    {
+        "id": 24,
+        "story_id": 8,
+        "context": [
+            "Beijing is the capital of the People's Republic of China. ",
+            "Beijing is the world's most populous national capital city.",
+            "Beijing is located in Northern China.",
+            "Beijing hosted the 2008 Summer Olympics and 2008 Summer Paralympics Games.",
+            "Beijing has hosted both the Summer and Winter Olympics, along with the Summer and Winter Paralympics",
+            "Many of Beijing's 91 universities consistently rank among the best in the Asia-Pacific and the world."
+        ],
+        "context_fol": [
+            "CapitalOf(beijing, prx)",
+            "MostPopulousNationalCapitalCity(beijing)",
+            "InNorthernChina(beijing)",
+            "Hosted(beijing, summer2008olympic) ∧ Hosted(beijing, summer2008paralympicgames)",
+            "Hosted(beijing, summerolympic) ∧ Hosted(beijing, winterolympic) ∧ Hosted(beijing, summerparalympicgames)  ∧ Hosted(beijing, winterparalympicgames)",
+            "∃x (BeijingUniversity(x) ∧ ConsistentlyRankAmongTheBest(x))"
+        ],
+        "question": "Beijing has hosted both the 2008 Summer Olympics and a winter olympics.",
+        "question_fol": "Hosted(beijing, summer2008olympic) ∧ Hosted(beijing, winterolympic)",
+        "answer": "A",
+        "logic_predicates": [
+            "Hosted(x, y)",
+            "ConsistentlyRankAmongTheBest(x)",
+            "InNorthernChina(x)",
+            "MostPopulousNationalCapitalCity(x)",
+            "CapitalOf(x, y)",
+            "BeijingUniversity(x)"
+        ]
+    },
+    {
+        "id": 35,
+        "story_id": 11,
+        "context": [
+            "Diamond Mine is a professional wrestling stable, formed in WWE.",
+            "Roderick Strong leads Diamond Mine.",
+            "Diamond Mine includes the Creed Brothers, and Ivy Nile.",
+            "Imperium has a feud with Diamond Mine."
+        ],
+        "context_fol": [
+            "ProfessionalWrestlingStable(diamondmine) ∧ FormedIn(diamondmine, wwe)",
+            "Leads(roderickstrong, diamondmine)",
+            "Includes(diamondmine, creedbrothers) ∧ Includes(diamondmine, ivynile)",
+            "HasFeud(imperium, diamondmine)"
+        ],
+        "question": "Imperium doesn't have a feud with a professional wrestling stable that includes Ivy Nile.",
+        "question_fol": "∀x (ProfessionalWrestlingStable(x) ∧ Includes(x, ivynile) → ¬HasFeud(imperium, x))",
+        "answer": "B",
+        "logic_predicates": [
+            "HasFeud(x, y)",
+            "Leads(x, y)",
+            "Includes(x, y)",
+            "ProfessionalWrestlingStable(x)",
+            "FormedIn(x, y)"
+        ]
+    },
+    {
+        "id": 39,
+        "story_id": 13,
+        "context": [
+            "All of Zaha Hadid's design styles are timeless.",
+            "No mass product design is timeless.",
+            "Either Zaha Hadid's design style or Kelly Wearstler's design style. ",
+            "All of Kelly Wearstler's design styles are evocative.",
+            "All of Kelly Wearstler's design styles are dreamy.",
+            "If a design by Max is timeless, then a design by Max is a mass product design and evocative."
+        ],
+        "context_fol": [
+            "∀x (ZahaHadidDesignStyle(x) → Timeless(x))",
+            "∀x (MassProductDesign(x) → ¬Timeless(x))",
+            "∀x (ZahaHadidDesignStyle(x) ∨ KellyWearstlerDesignStyle(x)) ",
+            "∀x (KellyWearstlerDesignStyle(x) → Evocative(x))",
+            "∀x (KellyWearstlerDesignStyle(x) → Dreamy(x))",
+            "Timeless(aDesignByMax) → MassProductDesign(aDesignByMax) ∧ Evocative(aDesignByMax)"
+        ],
+        "question": "A design by Max is a mass product design.",
+        "question_fol": "MassProductDesign(aDesignByMax)",
+        "answer": "C",
+        "logic_predicates": [
+            "ZahaHadidDesignStyle(x)",
+            "KellyWearstlerDesignStyle(x)",
+            "Evocative(x)",
+            "Dreamy(x)",
+            "Timeless(x)",
+            "MassProductDesign(x)"
+        ]
+    },
+    {
+        "id": 53,
+        "story_id": 18,
+        "context": [
+            "All Romance languages are Indo-European languages.",
+            "The Romance languages are a language family.",
+            "All languages within a language family are related to each other.",
+            "French and Spanish are both Romance languages.",
+            "German is related to Spanish.",
+            "Basque is not related to any other language."
+        ],
+        "context_fol": [
+            "∀x (RomanceLanguage(x) → IndoEuropeanLanguage(x))",
+            "∀x (RomanceLanguage(x) → MemberOf(x, romancefamily))",
+            "∀x ∀y ∀z ((MemberOf(x, z) ∧ MemberOf(y, z)) → (Related(x, y) ∧ Related(y, x)))",
+            "RomanceLanguage(french) ∧ RomanceLanguage(spanish)",
+            "Related(german, spanish)",
+            "∀x (¬Related(basque, x))"
+        ],
+        "question": "German is a Romance language.",
+        "question_fol": "RomanceLanguage(german)",
+        "answer": "C",
+        "logic_predicates": [
+            "Related(x, y)",
+            "MemberOf(x, y)",
+            "RomanceLanguage(x)",
+            "IndoEuropeanLanguage(x)"
+        ]
+    },
+    {
+        "id": 57,
+        "story_id": 19,
+        "context": [
+            "Robert Lewandowski is a striker.",
+            "[BG] Strikers are soccer players.",
+            "Robert Lewandowski left Bayern Munchen.",
+            "[BG] If a player left a team they no longer play for that team."
+        ],
+        "context_fol": [
+            "IsStriker(robertLewandowski)",
+            "∀x (IsStriker(x) → IsSoccerPlayer(x))",
+            "LeftTeam(robertLewandowski, bayernMunchen)",
+            "∀x ∀y (LeftTeam(x, y) → ¬PlaysForTeam(x, y))"
+        ],
+        "question": "Robert Lewandowski is a star.",
+        "question_fol": "IsSoccerStar(robertLewandowski)",
+        "answer": "C",
+        "logic_predicates": [
+            "IsStriker(x)",
+            "IsSoccerPlayer(x)",
+            "PlaysForTeam(x, y)",
+            "LeftTeam(x, y)"
+        ]
+    },
+    {
+        "id": 99,
+        "story_id": 35,
+        "context": [
+            "A man is either kind or evil.",
+            "No ugly person is handsome.",
+            "All evil people are ugly.",
+            "All gentlemen are handsome.",
+            "All CEOs are gentlemen.",
+            "Harry is a gentleman."
+        ],
+        "context_fol": [
+            "∀x (Kind(x) ⊕ Evil(x))",
+            "∀x (Ugly(x) → ¬Handsome(x))",
+            "∀x (Evil(x) → Ugly(x))",
+            "∀x (Gentleman(x) → Handsome(x))",
+            "∀x (CEO(x) → Gentleman(x))",
+            "Gentleman(harry)"
+        ],
+        "question": "Harry is a CEO.",
+        "question_fol": "CEO(harry)",
+        "answer": "C",
+        "logic_predicates": [
+            "Handsome(x)",
+            "Evil(x)",
+            "Ugly(x)",
+            "Gentleman(x)",
+            "Kind(x)",
+            "CEO(x)"
+        ]
+    },
+    {
+        "id": 115,
+        "story_id": 41,
+        "context": [
+            "If a man is taller than another man, the taller one can block the other's shooting.",
+            "Michael is a man who is taller than everyone else in his class.",
+            "If person x is taller than person y, and person y is taller than person z, than x is taller than z",
+            "Peter is a man who is taller than Michael.",
+            "Michael can block any shooting from a person as long as the person does not jump when shooting.",
+            "Michael cannot block Windy's shooting.",
+            "Every shooter who can jump when shooting is a great shooter."
+        ],
+        "context_fol": [
+            "∀x ∀y (IsMan(x) ∧ IsMan(y) ∧ Taller(x, y) → CanBlock(x, y))",
+            "∀x (IsMan(x) ∧ SameClass(x, michael) ∧ ¬Be(x, michael) → Taller(michael, x))",
+            "∀x ∀y ∀z ((Taller(x, y) ∧ Taller(y, z)) → Taller(x, z))",
+            "IsMan(peter) ∧ Taller(peter, michael)",
+            "∀x (¬JumpWhenShooting(x) → CanBlock(michael, x))",
+            "¬CanBlock(michael, windy)",
+            "∀x (JumpWhenShooting(x) → GreatShooter(x))"
+        ],
+        "question": "Peter is shorter than a man in Michael's class.",
+        "question_fol": "∃x (IsMan(x) ∧ SameClass(x, michael) ∧ ¬Be(x, michael) ∧ ¬Taller(peter, x))",
+        "answer": "B",
+        "logic_predicates": [
+            "Taller(x, y)",
+            "GreatShooter(x)",
+            "JumpWhenShooting(x)",
+            "SameClass(x, y)",
+            "Be(x, y)",
+            "CanBlock(x, y)",
+            "IsMan(x)"
+        ]
+    },
+    {
+        "id": 126,
+        "story_id": 45,
+        "context": [
+            "All mammals are animals.",
+            "All monkeys are mammals. ",
+            "An animal is either a monkey or a bird.",
+            "All birds fly.",
+            "All animals breathe.",
+            "If something can fly, then it has wings.",
+            "If Rock is neither a fly nor a bird, then Rock neither flies nor breathes."
+        ],
+        "context_fol": [
+            "∀x  (Mammal (x)→  Animal (x))",
+            "∀x  (Monkey (x)→  Mammal (x))",
+            "∀x ( Monkey (x) ∨  Bird (x))",
+            "∀x  (Bird (x)→  Fly (x))",
+            "∀x  (Animal (x)→  Breathe (x))",
+            "∀x  (Fly (x)→  HaveWings (x))",
+            "¬ Fly (rock) ∧ ¬ Bird (rock) → ¬ Fly (rock) ∧ ¬ Breathe (rock) "
+        ],
+        "question": "Rock has wings.",
+        "question_fol": "HaveWings(rock)",
+        "answer": "A",
+        "logic_predicates": [
+            "Monkey(x)",
+            "HaveWings(x)",
+            "Bird(x)",
+            "Breathe(x)",
+            "Mammal(x)",
+            "Animal(x)",
+            "Fly(x)"
+        ]
+    },
+    {
+        "id": 134,
+        "story_id": 47,
+        "context": [
+            "[BG] Some mammals have teeth.",
+            "Platypus have no teeth.",
+            "Platypus are mammals. ",
+            "Humans have teeth."
+        ],
+        "context_fol": [
+            "∃x (Mammal(x) ∧ Have(x, teeth))",
+            "¬Have(platypus, teeth)",
+            "Mammal(platypus)",
+            "Have(humans, teeth)"
+        ],
+        "question": "Humans are mammals.",
+        "question_fol": "Mammal(humans)",
+        "answer": "C",
+        "logic_predicates": [
+            "Have(x, y)",
+            "Mammal(x)"
+        ]
+    },
+    {
+        "id": 146,
+        "story_id": 52,
+        "context": [
+            "All students are humans. ",
+            "If someone studies, then they are a student.",
+            "A person either studys or teaches.",
+            "No young person teaches.",
+            "Jerry neither teaches nor is a manager.",
+            "Rose is young or a student."
+        ],
+        "context_fol": [
+            "∀x (Student(x) → Human(x))",
+            "∀x (Study(x) → Student(x))",
+            "∀x (Study(x) ∨ Teach(x))",
+            "∀x (Young(x) → ¬Teach(x))",
+            "¬Teach(jerry) ∧ ¬Manager(jerry)",
+            "Young(rose) ∨ Student(rose)"
+        ],
+        "question": "Jerry is not young.",
+        "question_fol": "¬Young(jerry)",
+        "answer": "C",
+        "logic_predicates": [
+            "Manager(x)",
+            "Student(x)",
+            "Young(x)",
+            "Study(x)",
+            "Human(x)",
+            "Teach(x)"
+        ]
+    },
+    {
+        "id": 159,
+        "story_id": 56,
+        "context": [
+            "No students who work in the library are from the computer science department. ",
+            "All students who have part-time jobs offered by the university are students who work in the library. ",
+            "All students who take the database course are from the computer science department. ",
+            "All students instructed by professor David are taking the database course. ",
+            "All students working in the lab are instructed by professor David. ",
+            "James is a student working in the lab. ",
+            "Jack neither has a part-time job offered by the university nor works in the lab. "
+        ],
+        "context_fol": [
+            "∀x (WorkLibrary(x) → ¬ComputerScience(x))",
+            "∀x (PartTime(x) → WorkLibrary(x))",
+            "∀x (Database(x) → ComputerScience(x))",
+            "∀x (ProfessorDavid(x) → Database(x))",
+            "∀x (WorkInLab(x) → ProfessorDavid(x))",
+            "WorkInLab(james)",
+            "¬PartTime(jack) ∧ ¬WorkInLab(jack)"
+        ],
+        "question": "James either takes the database course or has a part-time job offered by the university.",
+        "question_fol": "Database(james) ⊕ PartTime(james)",
+        "answer": "A",
+        "logic_predicates": [
+            "WorkInLab(x)",
+            "ProfessorDavid(x)",
+            "Database(x)",
+            "ComputerScience(x)",
+            "PartTime(x)",
+            "WorkLibrary(x)"
+        ]
+    },
+    {
+        "id": 168,
+        "story_id": 60,
+        "context": [
+            "Heinrich Scmidt was a Nazi German politician. ",
+            "Heeinrich Scmidt was also a member of the Prussian State Parliament and the Nazi Reichstag."
+        ],
+        "context_fol": [
+            "From(heinrichScmidt, naziGermany) ∧ Politician(heinrichScmidt)",
+            "Member(heinrichScmidt, prussianStateParliament) ∧ Member(heinrichScmidt, naziReichstag)"
+        ],
+        "question": "Some Nazi German politician was part of both the Prussian State Parliament and the Nazi Reichstag.",
+        "question_fol": "∃x (From(x, naziGermany) ∧ Politician(x) ∧ Member(x, prussianStateParliament) ∧ Member(x, naziReichstag))",
+        "answer": "A",
+        "logic_predicates": [
+            "From(x, y)",
+            "Member(x, y)",
+            "Politician(x)"
+        ]
+    },
+    {
+        "id": 173,
+        "story_id": 62,
+        "context": [
+            "All people who eat salads regularly are very conscious about their health and eating habits.",
+            "All people who grew up in health-conscious childhood homes eat salads regularly.",
+            "All people who fulfill their nutritional daily intakes grew up in health-conscious childhood homes.",
+            "If people have good relationships with their parents, then they fulfill their nutritional daily intakes.",
+            "If people have good relationships with their parents, then they do not eat salads regularly.",
+            "If people visit the gym at least once a day, then they always fulfill their daily nutritional intakes.",
+            "It is either both true that Taylor grew up in a health-conscious childhood home and she has a good relationship with her parents, or it is true that Taylor neither grew up in a health-conscious childhood home nor has a good relationship with her parents."
+        ],
+        "context_fol": [
+            "∀x (Salad(x) → HealthyHabits(x))",
+            "∀x (HealthyChildhood(x) → Salad(x))",
+            "∀x (Nutritional(x) → HealthyChildhood(x))",
+            "∀x (GoodRelationship(x) → ¬HealthyHabits(x))",
+            "∀x (Gym(x) → Nutritional(x))",
+            "(HealthyChildhood(taylor) ∧ GoodRelationship(taylor)) ∨ ¬HealthyChildhood(taylor) ∧ ¬GoodRelationship(marcy)"
+        ],
+        "question": "Taylor eats salads regularly.",
+        "question_fol": "Salad(taylor)",
+        "answer": "C",
+        "logic_predicates": [
+            "GoodRelationship(x)",
+            "HealthyHabits(x)",
+            "Nutritional(x)",
+            "Salad(x)",
+            "Gym(x)",
+            "HealthyChildhood(x)"
+        ]
+    },
+    {
+        "id": 184,
+        "story_id": 66,
+        "context": [
+            "No one nice to animals is mean to animals.",
+            "Some grumpy people are mean to animals.",
+            "All animal lovers are nice to animals.",
+            "If someone owns a pet, then they love animals.",
+            "Tom is a pet owner."
+        ],
+        "context_fol": [
+            "∀x (Nice(x) → ¬Mean(x))",
+            "∃x (Grumpy(x) ∧ Mean(x))",
+            "∀x (AnimalLover(x) → Nice(x))",
+            "∀x (PetOwner(x) → AnimalLover(x))",
+            "PetOwner(tom)"
+        ],
+        "question": "If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover.",
+        "question_fol": "¬(Grumpy(tom) ∧ Mean(tom)) → ¬(Grumpy(tom) ∨ AnimalLover(tom))",
+        "answer": "B",
+        "logic_predicates": [
+            "Grumpy(x)",
+            "Mean(x)",
+            "Nice(x)",
+            "PetOwner(x)",
+            "AnimalLover(x)"
+        ]
+    },
+    {
+        "id": 197,
+        "story_id": 71,
+        "context": [
+            "If an animal barks, then Jane does not like it.",
+            "All dogs are animals that bark.",
+            "If an animal jumps, then Jane likes it.",
+            "If an animal has legs, then it jumps.",
+            "If an animal is terricolous, then it has legs. ",
+            "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+        ],
+        "context_fol": [
+            "∀x (Bark(x) → ¬Like(jane, x))",
+            "∀x (Dog(x) → Bark(x))",
+            "∀x (Jump(x) → Like(jane, x))",
+            "∀x (HaveLegs(x) → Jump(x))",
+            "∀x (Terricolous(x) → HaveLegs(x))",
+            "(¬Jump(kiki) ∧ ¬HaveLegs(kiki)) → (Terricolous(kiki) ∨ HaveLegs(kiki))"
+        ],
+        "question": "KiKi barks and is a dog.",
+        "question_fol": "Bark(kiki) ∧ Dog(kiki)",
+        "answer": "B",
+        "logic_predicates": [
+            "Dog(x)",
+            "Terricolous(x)",
+            "Jump(x)",
+            "Bark(x)",
+            "HaveLegs(x)",
+            "Like(x, y)"
+        ]
+    }
+]

@@ -1,0 +1,2550 @@
+[
+  {
+    "id": 1131,
+    "story_id": 406,
+    "context": [
+      "All people who regularly drink coffee are dependent on caffeine.",
+      "People either regularly drink coffee or joke about being addicted to caffeine.",
+      "No one who jokes about being addicted to caffeine is unaware that caffeine is a drug.",
+      "Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug.",
+      "If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student. "
+    ],
+    "context_fol": [
+      "∀x (Drinks(x) → Dependent(x))",
+      "∀x (Drinks(x) ⊕ Jokes(x))",
+      "∀x (Jokes(x) → ¬Unaware(x))",
+      "(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina))",
+      "¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina))"
+    ],
+    "question": "Rina is a person who jokes about being addicted to caffeine or unaware that caffeine is a drug.",
+    "question_fol": "Jokes(rina) ∨ Unaware(rina)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Dependent(x)",
+      "Unaware(x)",
+      "Jokes(x)",
+      "Student(x)",
+      "Drinks(x)"
+    ]
+  },
+  {
+    "id": 20,
+    "story_id": 8,
+    "context": [
+      "Miroslav Venhoda was a Czech choral conductor who specialized in the performance of Renaissance and Baroque music.",
+      "Any choral conductor is a musician.",
+      "Some musicians love music.",
+      "Miroslav Venhoda published a book in 1946 called Method of Studying Gregorian Chant."
+    ],
+    "context_fol": [
+      "Czech(miroslav) ∧ ChoralConductor(miroslav) ∧ Specialize(miroslav, renaissance) ∧ Specialize(miroslav, baroque)",
+      "∀x (ChoralConductor(x) → Musician(x))",
+      "∃x (Musician(x) → Love(x, music))",
+      "Book(methodOfStudyingGregorianChant) ∧ Author(miroslav, methodOfStudyingGregorianChant) ∧ Publish(methodOfStudyingGregorianChant, year1946)"
+    ],
+    "question": "Miroslav Venhoda loved music.",
+    "question_fol": "Love(miroslav, music)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Publish(x, y)",
+      "Book(x)",
+      "ChoralConductor(x)",
+      "Czech(x)",
+      "Love(x, y)",
+      "Author(x, y)",
+      "Specialize(x, y)",
+      "Musician(x)"
+    ]
+  },
+  {
+    "id": 1341,
+    "story_id": 463,
+    "context": [
+      "All eels are fish. ",
+      "No fish are plants. ",
+      "A thing is either a plant or animal.",
+      "Nothing that breathes is paper. ",
+      "All animals breathe.",
+      "If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal."
+    ],
+    "context_fol": [
+      "∀x  (Eel (x)→  Fish (x))",
+      "∀x  (Fish (x)→ ¬ Plant (x))",
+      "∀x ( Plant (x) ∨  Animal (x))",
+      "∀x  (Breathe (x)→ ¬ Paper (x))",
+      "∀x  (Animal (x)→  Breathe (x))",
+      " Eel (seaEel) ⊕ Plant (seaEel) → Eel (seaEel) ∨ Animal (seaEel) "
+    ],
+    "question": "Sea eel is an eel.",
+    "question_fol": "Eel(seaEel)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Eel(x)",
+      "Animal(x)",
+      "Fish(x)",
+      "Plant(x)",
+      "Breathe(x)",
+      "Paper(x)"
+    ]
+  },
+  {
+    "id": 1342,
+    "story_id": 463,
+    "context": [
+      "All eels are fish. ",
+      "No fish are plants. ",
+      "A thing is either a plant or animal.",
+      "Nothing that breathes is paper. ",
+      "All animals breathe.",
+      "If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal."
+    ],
+    "context_fol": [
+      "∀x  (Eel (x)→  Fish (x))",
+      "∀x  (Fish (x)→ ¬ Plant (x))",
+      "∀x ( Plant (x) ∨  Animal (x))",
+      "∀x  (Breathe (x)→ ¬ Paper (x))",
+      "∀x  (Animal (x)→  Breathe (x))",
+      " Eel (seaEel) ⊕ Plant (seaEel) → Eel (seaEel) ∨ Animal (seaEel) "
+    ],
+    "question": "Sea eel is a paper.",
+    "question_fol": "Paper(seaEel)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Eel(x)",
+      "Animal(x)",
+      "Fish(x)",
+      "Plant(x)",
+      "Breathe(x)",
+      "Paper(x)"
+    ]
+  },
+  {
+    "id": 393,
+    "story_id": 133,
+    "context": [
+      "The Blake McFall Company Building is a commercial warehouse listed on the National Register of Historic Places.",
+      "The Blake McFall Company Building was added to the National Register of Historic Places in 1990.",
+      "The Emmet Building is a five-story building in Portland, Oregon.",
+      "The Emmet Building was built in 1915.",
+      "The Emmet Building is another name for the Blake McFall Company Building.",
+      "John works at the Emmet Building."
+    ],
+    "context_fol": [
+      "∀x (Blake(x) → Building(x))",
+      "∀x (Blake(x) → Historic(x, year1990))",
+      "∀x (Emmet(x) → Building(x) ∧ FiveStory(x) ∧ Locate(x, portland))",
+      "∀x (Emmet(x) → Construct(x, year1915))",
+      "∀x (Emmet(x) ↔ Blake(x))",
+      "∃x (Emmet(x) ∧ Work(john, x))"
+    ],
+    "question": "A five-story building is built in 1915.",
+    "question_fol": "∃x (FiveStory(x) ∧ Construct(x, year1915))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Historic(x, y)",
+      "Blake(x)",
+      "FiveStory(x)",
+      "Work(x, y)",
+      "Locate(x, y)",
+      "Construct(x, y)",
+      "Building(x)",
+      "Emmet(x)"
+    ]
+  },
+  {
+    "id": 640,
+    "story_id": 226,
+    "context": [
+      "William Dickinson was a British politician who sat in the House of Commons",
+      "William Dickinson attended Westminster school for high school and then the University of Edinburgh.",
+      "The University of Edinburgh is a university located in the United Kingdom.",
+      "William Dickinson supported the Portland Whigs.",
+      "People who supported the Portland Whigs did not get a seat in the Parliament."
+    ],
+    "context_fol": [
+      "BritishPolitician(williamdickinson) ∧ SatInHouseOfCommons(williamdickinson)",
+      "Attended(williamdickinson, westminster) ∧ Highschool(westminster) ∧ Attended(williamdickinson, universityofedinburgh)",
+      "LocatedIn(universityofedinburgh, unitedkingdom) ∧ University(universityofedinburgh)",
+      "Supported(williamdickinson, portlandwhigs)",
+      "∀x (Supported(x, portlandwhigs) → ¬SeatInParliament(x))"
+    ],
+    "question": "William Dickinson did not get a seat in the Parliament.",
+    "question_fol": "¬SeatInParliament(williamdickinson)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "University(x)",
+      "BritishPolitician(x)",
+      "Highschool(x)",
+      "LocatedIn(x, y)",
+      "Attended(x, y)",
+      "SeatInParliament(x)",
+      "SatInHouseOfCommons(x)",
+      "Supported(x, y)"
+    ]
+  },
+  {
+    "id": 695,
+    "story_id": 247,
+    "context": [
+      "LanguageA is a universal language",
+      "If a universal language exists, then for every two people if they both know the same universal language they can communicate.",
+      "Katya cannot communicate with Danil.",
+      "Katya knows LanguageA. "
+    ],
+    "context_fol": [
+      "UniversalLanguage(languageA)",
+      "∀x ∀y (∃z (Know(x, z) ∧ Know(y, z) ∧ UniversalLanguage(z)) → Communicate(x, y))",
+      "Know(katya, languageA)",
+      "¬Communicate(katya, danil)"
+    ],
+    "question": "Danil knows LanguageA.",
+    "question_fol": "Know(danil, languageA)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Know(x, y)",
+      "Communicate(x, y)",
+      "UniversalLanguage(x)"
+    ]
+  },
+  {
+    "id": 1197,
+    "story_id": 422,
+    "context": [
+      "All customers who are subscribed to AMC List are available to watch 3 movies every week without any additional fees. ",
+      "Some customers go to cinemas every week",
+      "Customers either subscribe to AMC service or HBO service. ",
+      "Customers who prefer TV series more and will not watch TV series in cinemas.",
+      "All customers who subscribe to HBO services prefer TV series to movies. ",
+      "James watches TV series in cinemas. "
+    ],
+    "context_fol": [
+      "∀x (AMC(x) → ThreeMovies(x))",
+      "∃x (CinemaEveryWeek(x))",
+      "∀x (AMC(x) ∨ HBO(x))",
+      "∀x (PreferTVSeries(x) → ¬WatchTVInCinema(x))",
+      "∀x (HBO(x) → PreferTVSeries(x))",
+      "WatchTVInCinema(james)"
+    ],
+    "question": "James goes to cinemas every week.",
+    "question_fol": "CinemaEveryWeek(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "AMC(x)",
+      "WatchTVInCinema(x)",
+      "CinemaEveryWeek(x)",
+      "HBO(x)",
+      "PreferTVSeries(x)",
+      "ThreeMovies(x)"
+    ]
+  },
+  {
+    "id": 553,
+    "story_id": 193,
+    "context": [
+      "A La Liga soccer team ranks higher than another if it receives more points.",
+      "If two La Liga soccer teams recieve the same points, the team which recieves more points from the games between the two teams ranks higher.",
+      "Real Madrid and Barcelona are both La Liga soccer teams.",
+      "In La Liga 2021-2022, Real Madrid recieves 86 points and Barcelon recieves 73 points.",
+      "In La Liga 2021-2022, Real Madrid and Barcelona both recieve 3 points from the games between them."
+    ],
+    "context_fol": [
+      "∀x ∀y (LaLiga(x) ∧ LaLiga(y) ∧ MorePoints(x, y) → HigherRank(x, y))",
+      "∀x ∀y (LaLiga(x) ∧ LaLiga(y) ∧ ¬MorePoints(x, y) ∧ ¬MorePoints(y, x) ∧ MorePointsInGameBetween(x, y) → HigherRank(x, y))",
+      "LaLiga(realMadrid) ∧ LaLiga(barcelona)",
+      "MorePoints(realMadrid, barcelona)",
+      "¬MorePointsInGameBetween(realMadrid, barcelona) ∧ ¬MorePointsInGameBetween(barcelona, realMadrid)"
+    ],
+    "question": "In La Liga 2021-2022, Real Madrid ranks higher than Barcelona.",
+    "question_fol": "HigherRank(realMadrid, barcelona)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "LaLiga(x)",
+      "MorePointsInGameBetween(x, y)",
+      "HigherRank(x, y)",
+      "MorePoints(x, y)"
+    ]
+  },
+  {
+    "id": 251,
+    "story_id": 82,
+    "context": [
+      "Lawton Park is a neighbourhood in Seattle. ",
+      "All citizens of Lawton Park use the zip code 98199. ",
+      "Tom is a citizen of Lawton Park.",
+      "Daniel uses the zip code 98199. "
+    ],
+    "context_fol": [
+      "Neighbourhoodin(lawtonPark, seattle)",
+      "∀x (Citizenof(x, lawtonPark) → Usezipcode(x, number98199))",
+      "Citizenof(tom, lawtonPark)",
+      "Usezipcode(daniel, number98199)"
+    ],
+    "question": "Tom doesn't use the zip code 98199.",
+    "question_fol": "¬Usezipcode(tom, number98199)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Usezipcode(x, y)",
+      "Neighbourhoodin(x, y)",
+      "Citizenof(x, y)"
+    ]
+  },
+  {
+    "id": 262,
+    "story_id": 86,
+    "context": [
+      "If a legislator is found guilty of stealing government funds, they will be suspended from office.",
+      "Tiffany T. Alston was a legislator in Maryland's House of Delegates from 2011 to 2013.",
+      "Tiffany T. Alston was found guilty of stealing government funds in 2012."
+    ],
+    "context_fol": [
+      "∀x (IsLegislator(x) ∧ StealsFunds(x) → Suspended(x))",
+      "IsLegislator(tiffanyTAlston)",
+      "StealsFunds(tiffanyTAlston)"
+    ],
+    "question": "Tiffany T. Alston was suspended from the Maryland House of Delegates.",
+    "question_fol": "Suspended(tiffanyTAlston)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Suspended(x)",
+      "IsLegislator(x)",
+      "StealsFunds(x)"
+    ]
+  },
+  {
+    "id": 494,
+    "story_id": 171,
+    "context": [
+      "Some fish may sting.",
+      "Stonefish is a fish.",
+      "It stings to step on a stonefish.",
+      "Stonefish stings cause death if not treated.",
+      "To treat stonefish stings, apply heat to the affected area or use an antivenom."
+    ],
+    "context_fol": [
+      "∃x ∃y (Fish(x) → Sting(x,y))",
+      "Fish(stonefish)",
+      "∀x (StepOn(stonefish, x) → Sting(stonefish, x))",
+      "∀x (Sting(stonefish, x) ∧ ¬Treated(x) → CauseDeath(x))",
+      "∀x (Sting(stonefish, x) ∧ (ApplyHeat(x) ∨ UseAntivenom(x)) → Treated(x))"
+    ],
+    "question": "If you step on a stonefish and don’t use an antivenom, it will cause death.",
+    "question_fol": "∀x (StepOn(stonefish, x) ∧ ¬UseAntivenom(x) → CauseDeath(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Sting(x, y)",
+      "CauseDeath(x)",
+      "UseAntivenom(x)",
+      "Treated(x)",
+      "Fish(x)",
+      "StepOn(x, y)",
+      "ApplyHeat(x)"
+    ]
+  },
+  {
+    "id": 1178,
+    "story_id": 417,
+    "context": [
+      "Some monitors produced by LG have a type-c port.",
+      "If the monitor has a type-c port, then it is not produced by AOC.",
+      "All monitors in the library are produced by AOC. ",
+      "L-2021 is either in the library or has a type-c port.",
+      "L-2021 is either produced by AOC and produced by LG, or neither produced by AOC nor produced by LG."
+    ],
+    "context_fol": [
+      "∃x (LG(x) ∧ TypeC(x))",
+      "∀x (TypeC(x) → ¬AOC(x))",
+      "∀x (Library(x) → AOC(x))",
+      "Library(l2021) ⊕ TypeC(l2021) ",
+      "¬(AOC(l2021) ⊕ LG(l2021))"
+    ],
+    "question": "L-2021 is in the library.",
+    "question_fol": "Library(l2021)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "LG(x)",
+      "AOC(x)",
+      "TypeC(x)",
+      "Library(x)"
+    ]
+  },
+  {
+    "id": 1010,
+    "story_id": 377,
+    "context": [
+      "People eat meat regularly or are vegetation.",
+      "If people eat meat regularly, then they enjoy eating hamburgers and steaks.",
+      "All people who are vegetarian are conscious of the environment or their health.",
+      "If people are conscious about the environment or their health, then they do not go to fast food places often.",
+      "If people have busy schedules without time to cook, then they go to fast food places often.",
+      "If Jeremy does not both go to fast food places often and is conscious about the environment or their health, then he goes to fast food places often."
+    ],
+    "context_fol": [
+      "∀x (Meat(x) ∨ Vegetarian(x))",
+      "∀x (Meat(x) → Hamburgers(x))",
+      "∀x (Vegetarian(x) → Conscious(x))",
+      "∀x (Conscious(x) → ¬FastFood(x))",
+      "∀x (Busy(x) → FastFood(x))",
+      "¬(FastFood(jeremy) ∧ Conscious(jeremy)) → FastFood(jeremy)"
+    ],
+    "question": "Jeremy has a busy schedule without time to cook.",
+    "question_fol": "Busy(jeremy)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Busy(x)",
+      "Vegetarian(x)",
+      "FastFood(x)",
+      "Hamburgers(x)",
+      "Meat(x)",
+      "Conscious(x)"
+    ]
+  },
+  {
+    "id": 521,
+    "story_id": 180,
+    "context": [
+      "Sam is doing a project.",
+      "A project is written either in Rust or in Python.",
+      "If Sam does a project written in Python, he will not use a Mac.",
+      "Sam is using a Mac.",
+      "If Sam uses a Mac, he will play a song.",
+      "If a song is not \"Perfect\", Sam will never play it."
+    ],
+    "context_fol": [
+      "∃x (Project(x) ∧ Do(sam, x))",
+      " ∀x (Project(x) → (WrittenIn(x, python) ⊕ WrittenIn(x, rust)))",
+      " ∀x (Project(x) ∧ WrittenIn(x, python) ∧ Do(sam, x) → ¬Use(sam, mac))",
+      " Use(sam, mac)",
+      " ∃x (Use(sam, mac) → (Song(x) ∧ Play(sam, x)))",
+      " ∀x (¬Be(x, perfect) → ¬Play(sam, x))"
+    ],
+    "question": "The project Sam is doing is written in Rust.",
+    "question_fol": "∃x (Project(x) ∧ WrittenIn(x, rust) ∧ Do(sam, x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Use(x, y)",
+      "Play(x, y)",
+      "Project(x)",
+      "WrittenIn(x, y)",
+      "Be(x, y)",
+      "Do(x, y)",
+      "Song(x)"
+    ]
+  },
+  {
+    "id": 703,
+    "story_id": 254,
+    "context": [
+      "All rabbits have fur",
+      "Some pets are rabbits."
+    ],
+    "context_fol": [
+      "∀x (Rabbit(x) → HasFur(x))",
+      "∃x (Pet(x) ∧ Reptile(x))"
+    ],
+    "question": "Some pets do not have fur.",
+    "question_fol": "∃x (Pet(x) ∧ ¬HasFur(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "HasFur(x)",
+      "Reptile(x)",
+      "Pet(x)",
+      "Rabbit(x)"
+    ]
+  },
+  {
+    "id": 1390,
+    "story_id": 477,
+    "context": [
+      "All video applications are software.",
+      "All YouTube-related applications are video applications. ",
+      "An APP is either related to YouTube or Instagram.",
+      "All Instagram is entertainment. ",
+      "All software is programmed. ",
+      "All entertainments are interesting.",
+      "If something is interesting, then it is good.",
+      "TikTok is not good."
+    ],
+    "context_fol": [
+      "∀x (App(x) → Software(x))",
+      "∀x (Youtube(x) → App(x))",
+      "∀x (Youtube(x) ∨ Instagram(x))",
+      "∀x (Instagram(x) → Entertainment(x))",
+      "∀x (Software(x) → Program(x))",
+      "∀x (Entertainment(x) → Interesting(x))",
+      "∀x (Interesting(x) → Good(x))",
+      "¬Good(tiktok)"
+    ],
+    "question": "Tiktok is a program.",
+    "question_fol": "Program(tiktok)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Program(x)",
+      "Good(x)",
+      "App(x)",
+      "Instagram(x)",
+      "Interesting(x)",
+      "Youtube(x)",
+      "Entertainment(x)",
+      "Software(x)"
+    ]
+  },
+  {
+    "id": 317,
+    "story_id": 104,
+    "context": [
+      "Ordinary is an unincorporated community.",
+      "Located within Elliot County, Ordinary is on Kentucky Route 32.",
+      "Ordinary is located northwest of Sandy Hook."
+    ],
+    "context_fol": [
+      "UnincorporatedCommunity(ordinary)",
+      "In(ordinary, elliotcounty) ∧ On(ordinary, kentuckyroute32)",
+      "NorthwestOf(ordinary, sandyhook)"
+    ],
+    "question": "There are no unincorporated communities along Kentucky Route 32.",
+    "question_fol": "¬∃x (UnincorporatedCommunity(x) ∧ On(x, kentuckyroute32))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "UnincorporatedCommunity(x)",
+      "On(x, y)",
+      "In(x, y)",
+      "NorthwestOf(x, y)"
+    ]
+  },
+  {
+    "id": 926,
+    "story_id": 348,
+    "context": [
+      "All young adults go on a diet.",
+      "All college students are young adults.",
+      "All Yale students are college students.",
+      "Someone is either a Yale student or a Harvard student.",
+      "All Harvard students are diligent.",
+      "If Susan is a Harvard student, then she is a young adult.",
+      "If Susan is a Yale student, then she does not go on a diet."
+    ],
+    "context_fol": [
+      "∀x (YoungAdult(x) → GoOnDiet(x))",
+      "∀x (CollegeStudent(x) → YoungAdult(x))",
+      "∀x (YaleStudent(x) → CollegeStudent(x))",
+      "∀x (YaleStudent(x) ∨ HarvardStudent(x))",
+      "∀x (HarvardStudent(x) → Diligent(x))",
+      "HarvardStudent(susan) → YoungAdult(susan)",
+      "YaleStudent(susan) → ¬GoOnDiet(susan)"
+    ],
+    "question": "Susan is a college student.",
+    "question_fol": "CollegeStudent(susan)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "YoungAdult(x)",
+      "YaleStudent(x)",
+      "CollegeStudent(x)",
+      "Diligent(x)",
+      "HarvardStudent(x)",
+      "GoOnDiet(x)"
+    ]
+  },
+  {
+    "id": 918,
+    "story_id": 346,
+    "context": [
+      "All athletes are good at sports.",
+      "All Olympic gold medal winners are good athletes.",
+      "No scientists are good at sports.",
+      "All Nobel laureates are scientists.",
+      "Amy is good at sports or Amy is an Olympic gold medal winner.",
+      "If Amy is not a Nobel laureate, then Amy is not an Olympic gold medal winner."
+    ],
+    "context_fol": [
+      "∀x (Athlete(x) → GoodAtSports(x))",
+      "∀x (OlympicGoldMedalWinner(x) → Athlete(x))",
+      "∀x (Scientist(x) → ¬GoodAtSports(x))",
+      "∀x (NobelLaureate(x) → Scientist(x))",
+      "GoodAtSports(amy) ∨ OlympicGoldMedalWinner(amy)",
+      "¬NobelLaureate(amy) → ¬OlympicGoldMedalWinner(amy)"
+    ],
+    "question": "Amy is an athlete.",
+    "question_fol": "Athlete(amy)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Athlete(x)",
+      "Scientist(x)",
+      "NobelLaureate(x)",
+      "OlympicGoldMedalWinner(x)",
+      "GoodAtSports(x)"
+    ]
+  },
+  {
+    "id": 919,
+    "story_id": 346,
+    "context": [
+      "All athletes are good at sports.",
+      "All Olympic gold medal winners are good athletes.",
+      "No scientists are good at sports.",
+      "All Nobel laureates are scientists.",
+      "Amy is good at sports or Amy is an Olympic gold medal winner.",
+      "If Amy is not a Nobel laureate, then Amy is not an Olympic gold medal winner."
+    ],
+    "context_fol": [
+      "∀x (Athlete(x) → GoodAtSports(x))",
+      "∀x (OlympicGoldMedalWinner(x) → Athlete(x))",
+      "∀x (Scientist(x) → ¬GoodAtSports(x))",
+      "∀x (NobelLaureate(x) → Scientist(x))",
+      "GoodAtSports(amy) ∨ OlympicGoldMedalWinner(amy)",
+      "¬NobelLaureate(amy) → ¬OlympicGoldMedalWinner(amy)"
+    ],
+    "question": "Amy is neither a scientist nor an Olympic gold medal winner.",
+    "question_fol": "¬Scientist(amy) ∧ ¬OlympicGoldMedalWinner(amy)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Athlete(x)",
+      "Scientist(x)",
+      "NobelLaureate(x)",
+      "OlympicGoldMedalWinner(x)",
+      "GoodAtSports(x)"
+    ]
+  },
+  {
+    "id": 920,
+    "story_id": 346,
+    "context": [
+      "All athletes are good at sports.",
+      "All Olympic gold medal winners are good athletes.",
+      "No scientists are good at sports.",
+      "All Nobel laureates are scientists.",
+      "Amy is good at sports or Amy is an Olympic gold medal winner.",
+      "If Amy is not a Nobel laureate, then Amy is not an Olympic gold medal winner."
+    ],
+    "context_fol": [
+      "∀x (Athlete(x) → GoodAtSports(x))",
+      "∀x (OlympicGoldMedalWinner(x) → Athlete(x))",
+      "∀x (Scientist(x) → ¬GoodAtSports(x))",
+      "∀x (NobelLaureate(x) → Scientist(x))",
+      "GoodAtSports(amy) ∨ OlympicGoldMedalWinner(amy)",
+      "¬NobelLaureate(amy) → ¬OlympicGoldMedalWinner(amy)"
+    ],
+    "question": "If Amy is not an Olympic gold medal winner, then Amy is a Nobel laureate.",
+    "question_fol": "¬OlympicGoldMedalWinner(amy) → NobelLaureate(amy)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Athlete(x)",
+      "Scientist(x)",
+      "NobelLaureate(x)",
+      "OlympicGoldMedalWinner(x)",
+      "GoodAtSports(x)"
+    ]
+  },
+  {
+    "id": 1147,
+    "story_id": 409,
+    "context": [
+      "All fruits with the color red contain a large amount of vitamin C.",
+      "All apples are fruits with the color red.",
+      "All fruits containing a large amount of vitamin C are beneficial to people. ",
+      "No fruits that are beneficial to people are on a warning list.",
+      "If K is not beneficial to people and also not an apple, then it is a fruit with the color red."
+    ],
+    "context_fol": [
+      "∀x (RedFruit(x) → VC(x))",
+      "∀x (Apple(x) → RedFruit(x))",
+      "∀x (VC(x) → Benefit(x))",
+      "∀x (Benefit(x) → ¬WarningList(x))",
+      "¬(Benefit(k) ∧ Apple(k)) → RedFruit(k)"
+    ],
+    "question": "K is an apple.",
+    "question_fol": "Apple(k)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Apple(x)",
+      "VC(x)",
+      "Benefit(x)",
+      "WarningList(x)",
+      "RedFruit(x)"
+    ]
+  },
+  {
+    "id": 1148,
+    "story_id": 409,
+    "context": [
+      "All fruits with the color red contain a large amount of vitamin C.",
+      "All apples are fruits with the color red.",
+      "All fruits containing a large amount of vitamin C are beneficial to people. ",
+      "No fruits that are beneficial to people are on a warning list.",
+      "If K is not beneficial to people and also not an apple, then it is a fruit with the color red."
+    ],
+    "context_fol": [
+      "∀x (RedFruit(x) → VC(x))",
+      "∀x (Apple(x) → RedFruit(x))",
+      "∀x (VC(x) → Benefit(x))",
+      "∀x (Benefit(x) → ¬WarningList(x))",
+      "¬(Benefit(k) ∧ Apple(k)) → RedFruit(k)"
+    ],
+    "question": "K either contains a large amount of vitamin C or is on a warning list.",
+    "question_fol": "VC(k) ⊕ WarningList(k)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Apple(x)",
+      "VC(x)",
+      "Benefit(x)",
+      "WarningList(x)",
+      "RedFruit(x)"
+    ]
+  },
+  {
+    "id": 1149,
+    "story_id": 409,
+    "context": [
+      "All fruits with the color red contain a large amount of vitamin C.",
+      "All apples are fruits with the color red.",
+      "All fruits containing a large amount of vitamin C are beneficial to people. ",
+      "No fruits that are beneficial to people are on a warning list.",
+      "If K is not beneficial to people and also not an apple, then it is a fruit with the color red."
+    ],
+    "context_fol": [
+      "∀x (RedFruit(x) → VC(x))",
+      "∀x (Apple(x) → RedFruit(x))",
+      "∀x (VC(x) → Benefit(x))",
+      "∀x (Benefit(x) → ¬WarningList(x))",
+      "¬(Benefit(k) ∧ Apple(k)) → RedFruit(k)"
+    ],
+    "question": "K is either on a warning list or with the color red.",
+    "question_fol": "RedFruit(k) ⊕ WarningList(k)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Apple(x)",
+      "VC(x)",
+      "Benefit(x)",
+      "WarningList(x)",
+      "RedFruit(x)"
+    ]
+  },
+  {
+    "id": 1150,
+    "story_id": 409,
+    "context": [
+      "All fruits with the color red contain a large amount of vitamin C.",
+      "All apples are fruits with the color red.",
+      "All fruits containing a large amount of vitamin C are beneficial to people. ",
+      "No fruits that are beneficial to people are on a warning list.",
+      "If K is not beneficial to people and also not an apple, then it is a fruit with the color red."
+    ],
+    "context_fol": [
+      "∀x (RedFruit(x) → VC(x))",
+      "∀x (Apple(x) → RedFruit(x))",
+      "∀x (VC(x) → Benefit(x))",
+      "∀x (Benefit(x) → ¬WarningList(x))",
+      "¬(Benefit(k) ∧ Apple(k)) → RedFruit(k)"
+    ],
+    "question": "If K is either beneficial to people or on a warning list, then it is not red.",
+    "question_fol": "Benefit(k) ⊕ WarningList(k) → ¬RedFruit(k)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Apple(x)",
+      "VC(x)",
+      "Benefit(x)",
+      "WarningList(x)",
+      "RedFruit(x)"
+    ]
+  },
+  {
+    "id": 1207,
+    "story_id": 425,
+    "context": [
+      "Everyone working at Meta has a high income. ",
+      "If a person has a high income, then he/she will not take a bus to their destination.",
+      "People will either take a bus or drive to their destination. ",
+      "Everyone who has a car will choose to drive to their destination. ",
+      "No students drive to their destination. ",
+      "James has a car or works at Meta."
+    ],
+    "context_fol": [
+      "∀x (Meta(x) → HighIncome(x))",
+      "∀x (HighIncome(x) → ¬Bus(x))",
+      "∀x (Bus(x) ∨ Drive(x))",
+      "∀x (HaveCars(x) → Drive(x))",
+      "∀x (Student(x) → ¬Drive(x))",
+      "HaveCars(james) ∨ Meta(james)"
+    ],
+    "question": "James has a high income.",
+    "question_fol": "HighIncome(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "HighIncome(x)",
+      "Meta(x)",
+      "HaveCars(x)",
+      "Bus(x)",
+      "Student(x)",
+      "Drive(x)"
+    ]
+  },
+  {
+    "id": 1208,
+    "story_id": 425,
+    "context": [
+      "Everyone working at Meta has a high income. ",
+      "If a person has a high income, then he/she will not take a bus to their destination.",
+      "People will either take a bus or drive to their destination. ",
+      "Everyone who has a car will choose to drive to their destination. ",
+      "No students drive to their destination. ",
+      "James has a car or works at Meta."
+    ],
+    "context_fol": [
+      "∀x (Meta(x) → HighIncome(x))",
+      "∀x (HighIncome(x) → ¬Bus(x))",
+      "∀x (Bus(x) ∨ Drive(x))",
+      "∀x (HaveCars(x) → Drive(x))",
+      "∀x (Student(x) → ¬Drive(x))",
+      "HaveCars(james) ∨ Meta(james)"
+    ],
+    "question": "James does not have a high income.",
+    "question_fol": "¬HighIncome(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "HighIncome(x)",
+      "Meta(x)",
+      "HaveCars(x)",
+      "Bus(x)",
+      "Student(x)",
+      "Drive(x)"
+    ]
+  },
+  {
+    "id": 1209,
+    "story_id": 425,
+    "context": [
+      "Everyone working at Meta has a high income. ",
+      "If a person has a high income, then he/she will not take a bus to their destination.",
+      "People will either take a bus or drive to their destination. ",
+      "Everyone who has a car will choose to drive to their destination. ",
+      "No students drive to their destination. ",
+      "James has a car or works at Meta."
+    ],
+    "context_fol": [
+      "∀x (Meta(x) → HighIncome(x))",
+      "∀x (HighIncome(x) → ¬Bus(x))",
+      "∀x (Bus(x) ∨ Drive(x))",
+      "∀x (HaveCars(x) → Drive(x))",
+      "∀x (Student(x) → ¬Drive(x))",
+      "HaveCars(james) ∨ Meta(james)"
+    ],
+    "question": "James is a student.",
+    "question_fol": "Student(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "HighIncome(x)",
+      "Meta(x)",
+      "HaveCars(x)",
+      "Bus(x)",
+      "Student(x)",
+      "Drive(x)"
+    ]
+  },
+  {
+    "id": 1210,
+    "story_id": 425,
+    "context": [
+      "Everyone working at Meta has a high income. ",
+      "If a person has a high income, then he/she will not take a bus to their destination.",
+      "People will either take a bus or drive to their destination. ",
+      "Everyone who has a car will choose to drive to their destination. ",
+      "No students drive to their destination. ",
+      "James has a car or works at Meta."
+    ],
+    "context_fol": [
+      "∀x (Meta(x) → HighIncome(x))",
+      "∀x (HighIncome(x) → ¬Bus(x))",
+      "∀x (Bus(x) ∨ Drive(x))",
+      "∀x (HaveCars(x) → Drive(x))",
+      "∀x (Student(x) → ¬Drive(x))",
+      "HaveCars(james) ∨ Meta(james)"
+    ],
+    "question": "James drives to his destination or he is a student.",
+    "question_fol": "Drive(james) ∨ Student(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "HighIncome(x)",
+      "Meta(x)",
+      "HaveCars(x)",
+      "Bus(x)",
+      "Student(x)",
+      "Drive(x)"
+    ]
+  },
+  {
+    "id": 1202,
+    "story_id": 423,
+    "context": [
+      "Students either go to the park or go to the movies. ",
+      "No student who enjoys nature has free time during the weekend. ",
+      "All students who go to the movies enjoy nature. ",
+      "All students who do not have class during the weekend have free time during the weekend. ",
+      "All students not in summer camp do not have class during the weekend. ",
+      "James does not have class during the weekend."
+    ],
+    "context_fol": [
+      "∀x (Park(x) ⊕ Movies(x))",
+      "∀x (Nature(x) → ¬FreeTime(x))",
+      "∀x (Movies(x) → Nature(x))",
+      "∀x (NoClass(x) → FreeTime(x))",
+      "∀x (SummerCamp(x) → NoClass(x))",
+      "NoClass(james)"
+    ],
+    "question": "James is in summer camp.",
+    "question_fol": "SummerCamp(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Nature(x)",
+      "Movies(x)",
+      "NoClass(x)",
+      "SummerCamp(x)",
+      "Park(x)",
+      "FreeTime(x)"
+    ]
+  },
+  {
+    "id": 1203,
+    "story_id": 423,
+    "context": [
+      "Students either go to the park or go to the movies. ",
+      "No student who enjoys nature has free time during the weekend. ",
+      "All students who go to the movies enjoy nature. ",
+      "All students who do not have class during the weekend have free time during the weekend. ",
+      "All students not in summer camp do not have class during the weekend. ",
+      "James does not have class during the weekend."
+    ],
+    "context_fol": [
+      "∀x (Park(x) ⊕ Movies(x))",
+      "∀x (Nature(x) → ¬FreeTime(x))",
+      "∀x (Movies(x) → Nature(x))",
+      "∀x (NoClass(x) → FreeTime(x))",
+      "∀x (SummerCamp(x) → NoClass(x))",
+      "NoClass(james)"
+    ],
+    "question": "James goes to the park or is in summer camp.",
+    "question_fol": "Park(james) ∨ SummerCamp(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Nature(x)",
+      "Movies(x)",
+      "NoClass(x)",
+      "SummerCamp(x)",
+      "Park(x)",
+      "FreeTime(x)"
+    ]
+  },
+  {
+    "id": 713,
+    "story_id": 264,
+    "context": [
+      "No television stars are certified public accountants.",
+      "All certified public accountants have good business sense."
+    ],
+    "context_fol": [
+      "∀x (TelevisionStar(x) → ¬CertifiedPublicAccoutant(x))",
+      "∀x (CertifiedPublicAccoutant(x) → GoodBusinessSense(x))"
+    ],
+    "question": "All television stars have good business sense.",
+    "question_fol": "TelevisionStar(x) → GoodBusinessSense(x)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "GoodBusinessSense(x)",
+      "TelevisionStar(x)",
+      "CertifiedPublicAccoutant(x)"
+    ]
+  },
+  {
+    "id": 1174,
+    "story_id": 416,
+    "context": [
+      "Some students good at math are good at chemistry.",
+      "All students good at chemistry enjoy conducting experiments. ",
+      "All students that enjoy conducting experiments are good at planning. ",
+      "No student good at planning is awarded the Dean's List. ",
+      "James is either good at chemistry and awarded the Dean's List, or neither good at chemistry nor awarded the Dean's List."
+    ],
+    "context_fol": [
+      "∃x (Math(x) ∧ Chemistry(x))",
+      "∀x (Chemistry(x) → Experiment(x))",
+      "∀x (Experiment(x) → Planning(x))",
+      "∀x (Planning(x) → ¬Award(x))",
+      "¬(Chemistry(james) ⊕ Award(james))"
+    ],
+    "question": "James is good at planning.",
+    "question_fol": "Planning(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Math(x)",
+      "Planning(x)",
+      "Experiment(x)",
+      "Chemistry(x)",
+      "Award(x)"
+    ]
+  },
+  {
+    "id": 1175,
+    "story_id": 416,
+    "context": [
+      "Some students good at math are good at chemistry.",
+      "All students good at chemistry enjoy conducting experiments. ",
+      "All students that enjoy conducting experiments are good at planning. ",
+      "No student good at planning is awarded the Dean's List. ",
+      "James is either good at chemistry and awarded the Dean's List, or neither good at chemistry nor awarded the Dean's List."
+    ],
+    "context_fol": [
+      "∃x (Math(x) ∧ Chemistry(x))",
+      "∀x (Chemistry(x) → Experiment(x))",
+      "∀x (Experiment(x) → Planning(x))",
+      "∀x (Planning(x) → ¬Award(x))",
+      "¬(Chemistry(james) ⊕ Award(james))"
+    ],
+    "question": "James is either good at planning or good at math.",
+    "question_fol": "Planning(james) ⊕ Math(james)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Math(x)",
+      "Planning(x)",
+      "Experiment(x)",
+      "Chemistry(x)",
+      "Award(x)"
+    ]
+  },
+  {
+    "id": 69,
+    "story_id": 24,
+    "context": [
+      "If a Leetcode problem is at the easy level, then its AC rate is lower than 20 percent. ",
+      "All Leetcode problems that are recommended to novices are easy. ",
+      "A Leetode problem is either easy or hard.",
+      "Leetcode problems that are starred by more than 1 thousand users are hard.",
+      "2Sum is recommended to novices. ",
+      "4Sum is starred by more than 1 thousand users."
+    ],
+    "context_fol": [
+      "∀x (Easy(x) → LowerAC(x))",
+      "∀x (Recommended(x) → Easy(x))",
+      "∀x (Easy(x) ⊕ Hard(x))",
+      "∀x (Starred(x) → Hard(x))",
+      "Recommended(twosum) ",
+      "Starred(foursum)"
+    ],
+    "question": "2Sum is a Leetcode problem with an easy level.",
+    "question_fol": "Easy(twosum)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Easy(x)",
+      "Recommended(x)",
+      "Hard(x)",
+      "Starred(x)",
+      "LowerAC(x)"
+    ]
+  },
+  {
+    "id": 692,
+    "story_id": 244,
+    "context": [
+      "All rental cars cost the renter money.",
+      "Whenever Sarah goes to Vermont, Sarah drives there.",
+      "For someone who does not own a car to drive somewhere, they must either borrow a car or rent a car.",
+      "Sarah doesn’t own a car.",
+      "Sarah never borrows a car to go camping.",
+      "Sarah is going to go camping in Vermont this weekend.",
+      "To go camping somewhere, you must go to that place."
+    ],
+    "context_fol": [
+      "∀x (Rent(x, car) → Spend(x, money))",
+      "GoesTo(sarah, vermont) → DriveTo(sarah, vermont)",
+      "∀x ∀y (¬Own(x, car) ∧ DriveTo(x, y) → Borrow(x, car) ⊕ Rent(x, car))",
+      "¬Own(sarah, car)",
+      "∀x (Camping(sarah, x) → ¬(Borrow(sarah, car)))",
+      "Camping(sarah, vermont)",
+      "∀x ∀y (Camping(x, y) → GoesTo(x, y))"
+    ],
+    "question": "Sarah will spend money this weekend.",
+    "question_fol": "Spend(sarah, money)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Spend(x, y)",
+      "Borrow(x, y)",
+      "Rent(x, y)",
+      "DriveTo(x, y)",
+      "Own(x, y)",
+      "GoesTo(x, y)",
+      "Camping(x, y)"
+    ]
+  },
+  {
+    "id": 1013,
+    "story_id": 378,
+    "context": [
+      "All people who attend weddings are getting married or have friends who are getting married.",
+      "No preteens and other young children are getting married or have friends who are getting married.",
+      "If people enjoy celebrating life milestone events with other people, then they attend weddings.",
+      "If people are fond of large organized group functions, then they enjoy celebrating life milestone events with other people.",
+      "All people who are outgoing and very spirited are fond of large organized group functions.",
+      "If Carol is not both a pre-teen or other young child and attends weddings, then Carol is not getting married or has friends who are getting married.  "
+    ],
+    "context_fol": [
+      "∀x Weddings(x) → GettingMarried(x)",
+      "∀x PreTeen(x) → ¬GettingMarried(x)",
+      "∀x Celebrating(x) → Weddings(x)",
+      "∀x LargeGathering(x) → Celebrating(x)",
+      "∀x Outgoing(x) → LargeGathering(x)",
+      "¬(PreTeen(Carol) ∧ Weddings(Carol)) → ¬GettingMarried(Carol)"
+    ],
+    "question": "Carol is outgoing and very spirited.",
+    "question_fol": "Outgoing(Carol)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Celebrating(x)",
+      "Outgoing(x)",
+      "GettingMarried(x)",
+      "Weddings(x)",
+      "LargeGathering(x)",
+      "PreTeen(x)"
+    ]
+  },
+  {
+    "id": 1073,
+    "story_id": 395,
+    "context": [
+      "All Republicans are anti-abortion.",
+      "Either Republicans or Democrats. ",
+      "No Democrats are conservative.",
+      "Either conservative or liberal. ",
+      "A U.S government official is either conservative or a Republican."
+    ],
+    "context_fol": [
+      "∀x (Republicans(x) → Anti-abortion(x))",
+      " ∀x (Republicans(x) ∨ Democrats(x))",
+      " ∀x (Democrats(x) → ¬Conservative(x))",
+      " ∀x (Conservative(x) ∨ Liberal(x))",
+      " Conservative(USGovernmentOfficial) ⊕ Republicans(USGovernmentOfficial)"
+    ],
+    "question": "A U.S government official is a Democrat.",
+    "question_fol": "Democrats(USGovernmentOfficial)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "abortion(x)",
+      "Conservative(x)",
+      "Liberal(x)",
+      "Democrats(x)",
+      "Republicans(x)"
+    ]
+  },
+  {
+    "id": 714,
+    "story_id": 265,
+    "context": [
+      "All advocates of high tariff rates are Republicans.",
+      "Some Republicans are not conservatives."
+    ],
+    "context_fol": [
+      "∀x (AdvocateOfHighTariff(x) → Republican(x))",
+      "∃x (Republican(x) ∧ ¬Conservative(x))"
+    ],
+    "question": "Some conservatives are advocates of high tariff rates.",
+    "question_fol": "∃x (Republican(x) ∧ AdvocateOfHighTariff(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Republican(x)",
+      "Conservative(x)",
+      "AdvocateOfHighTariff(x)"
+    ]
+  },
+  {
+    "id": 886,
+    "story_id": 337,
+    "context": [
+      "No athletes are slow runners. ",
+      "All professional basketball players are athletes. ",
+      "All NBA players are professional basketball players. ",
+      "All Knicks players are NBA players. ",
+      "Jim is either not a professional basketball player or not a slow runner. "
+    ],
+    "context_fol": [
+      "∀x (Athlete(x) → ¬SlowRunner(x))",
+      "∀x (ProfessionalBasketballPlayer(x) → Athlete(x))",
+      "∀x (NBAPlayer(x) → ProfessionalBasketballPlayer(x))",
+      "∀x (KnicksPlayer(x) → NBAPlayer(x))",
+      "¬(ProfessionalBasketballPlayer(jim) ⊕ SlowRunner(jim))"
+    ],
+    "question": "Jim is a Knicks player.",
+    "question_fol": "KnicksPlayer(jim)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "ProfessionalBasketballPlayer(x)",
+      "Athlete(x)",
+      "KnicksPlayer(x)",
+      "NBAPlayer(x)",
+      "SlowRunner(x)"
+    ]
+  },
+  {
+    "id": 915,
+    "story_id": 345,
+    "context": [
+      "All kids love animals.",
+      "All toddlers are kids.",
+      "If someone loves animals, then they are not bad.",
+      "All pirates are bad.",
+      "If Nancy is not a pirate, then Nancy loves animals.",
+      "If Nancy is not a toddler, then Nancy is bad."
+    ],
+    "context_fol": [
+      "∀x (Kid(x) → LoveAnimals(x))",
+      "∀x (Toddler(x) → Kid(x))",
+      "∀x (LoveAnimals(x) → ¬Bad(x))",
+      "∀x (Pirate(x) → Bad(x))",
+      "¬Pirate(nancy) → LoveAnimals(nancy)",
+      "¬Toddler(nancy) → Bad(nancy)"
+    ],
+    "question": "Nancy is a pirate.",
+    "question_fol": "Pirate(nancy)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "LoveAnimals(x)",
+      "Toddler(x)",
+      "Kid(x)",
+      "Bad(x)",
+      "Pirate(x)"
+    ]
+  },
+  {
+    "id": 916,
+    "story_id": 345,
+    "context": [
+      "All kids love animals.",
+      "All toddlers are kids.",
+      "If someone loves animals, then they are not bad.",
+      "All pirates are bad.",
+      "If Nancy is not a pirate, then Nancy loves animals.",
+      "If Nancy is not a toddler, then Nancy is bad."
+    ],
+    "context_fol": [
+      "∀x (Kid(x) → LoveAnimals(x))",
+      "∀x (Toddler(x) → Kid(x))",
+      "∀x (LoveAnimals(x) → ¬Bad(x))",
+      "∀x (Pirate(x) → Bad(x))",
+      "¬Pirate(nancy) → LoveAnimals(nancy)",
+      "¬Toddler(nancy) → Bad(nancy)"
+    ],
+    "question": "Nancy is not a pirate or a toddler.",
+    "question_fol": "¬(Pirate(nancy) ∨ Toddler(nancy))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "LoveAnimals(x)",
+      "Toddler(x)",
+      "Kid(x)",
+      "Bad(x)",
+      "Pirate(x)"
+    ]
+  },
+  {
+    "id": 202,
+    "story_id": 68,
+    "context": [
+      "Lana Wilson directed After Tiller, The Departure, and Miss Americana.",
+      "If a film is directedy by a person, the person is a filmmaker.",
+      "After Tiller is a documentary.",
+      "The documentary is a type of films.",
+      "Lana Wilson is from Kirkland.",
+      "Kirkland is a US city.",
+      "If a person is from a city in a country, the person is from the country.",
+      "After Tiller is nominated for the Independent Spirit Award for Best Documentary."
+    ],
+    "context_fol": [
+      "DirectedBy(after_Tiller, lana_Wilson) ∧ DirectedBy(the_Departure, lana_Wilson) ∧ DirectedBy(miss_Americana, lana_Wilson)",
+      "∀x ∃y (DirectedBy(y, x) → Filmmaker(x))",
+      "IsDocumentary(after_Tiller)",
+      "∀x (IsDocumentary(x) → IsFilm(x))",
+      "FromCity(lana_Wilson, kirkland)",
+      "CityCountry(kirkland, us)",
+      "∀x ∀y ∀z (FromCity(x, y) ∧ CityCountry(y, z) → FromCountry(x, z))",
+      "Nomination(after_Tiller, the_Independent_Spirit_Award_for_Best_Documentary)"
+    ],
+    "question": "Lana Wilson is a US filmmaker.",
+    "question_fol": "FromCountry(lana_Wilson, us) ∧ Filmmaker(lana_Wilson)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "FromCountry(x, y)",
+      "IsFilm(x)",
+      "DirectedBy(x, y)",
+      "Nomination(x, y)",
+      "IsDocumentary(x)",
+      "Filmmaker(x)",
+      "FromCity(x, y)",
+      "CityCountry(x, y)"
+    ]
+  },
+  {
+    "id": 203,
+    "story_id": 68,
+    "context": [
+      "Lana Wilson directed After Tiller, The Departure, and Miss Americana.",
+      "If a film is directedy by a person, the person is a filmmaker.",
+      "After Tiller is a documentary.",
+      "The documentary is a type of films.",
+      "Lana Wilson is from Kirkland.",
+      "Kirkland is a US city.",
+      "If a person is from a city in a country, the person is from the country.",
+      "After Tiller is nominated for the Independent Spirit Award for Best Documentary."
+    ],
+    "context_fol": [
+      "DirectedBy(after_Tiller, lana_Wilson) ∧ DirectedBy(the_Departure, lana_Wilson) ∧ DirectedBy(miss_Americana, lana_Wilson)",
+      "∀x ∃y (DirectedBy(y, x) → Filmmaker(x))",
+      "IsDocumentary(after_Tiller)",
+      "∀x (IsDocumentary(x) → IsFilm(x))",
+      "FromCity(lana_Wilson, kirkland)",
+      "CityCountry(kirkland, us)",
+      "∀x ∀y ∀z (FromCity(x, y) ∧ CityCountry(y, z) → FromCountry(x, z))",
+      "Nomination(after_Tiller, the_Independent_Spirit_Award_for_Best_Documentary)"
+    ],
+    "question": "Miss Americana is not directed by a filmmaker from Kirkland.",
+    "question_fol": "¬DirectedBy(miss_Americana, lana_Wilson)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "FromCountry(x, y)",
+      "IsFilm(x)",
+      "DirectedBy(x, y)",
+      "Nomination(x, y)",
+      "IsDocumentary(x)",
+      "Filmmaker(x)",
+      "FromCity(x, y)",
+      "CityCountry(x, y)"
+    ]
+  },
+  {
+    "id": 730,
+    "story_id": 281,
+    "context": [
+      "All bears in zoos are not wild. ",
+      "Some bears are in zoos. "
+    ],
+    "context_fol": [
+      "∀x ((Bear(x) ∧ InZoo(x)) → ¬Wild(x))",
+      "∃x (Bear(x) ∧ InZoo(x)) "
+    ],
+    "question": "Not all bears are wild.",
+    "question_fol": "∃x (Bear(x) ∧ ¬Wild(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Bear(x)",
+      "Wild(x)",
+      "InZoo(x)"
+    ]
+  },
+  {
+    "id": 166,
+    "story_id": 56,
+    "context": [
+      "If a person is the leader of a country for life, that person is in a monarchy. ",
+      "Leaders are either a king or a queen.",
+      "Queens are female.",
+      "Kings are male. ",
+      "Elizabeth is a queen.",
+      "Elizabeth is a leader"
+    ],
+    "context_fol": [
+      "∀x (Leader(x) → InMonarchy(x))",
+      "∀x (Leader(x) → King(x) ⊕ Queen(x))",
+      "∀x (Queen(x) → Female(x))",
+      "∀x (King(x) → Male(x))",
+      "Queen(elizabeth)",
+      "Leader(elizabeth)"
+    ],
+    "question": "Elizabeth is a king.",
+    "question_fol": "King(elizabeth)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Leader(x)",
+      "Female(x)",
+      "Male(x)",
+      "King(x)",
+      "InMonarchy(x)",
+      "Queen(x)"
+    ]
+  },
+  {
+    "id": 981,
+    "story_id": 367,
+    "context": [
+      "If people make their own matcha teas every morning with ceremonial-grade matcha powder, then they do not wake up late and start their schedules past noon regularly.",
+      "If people live in California and attend yoga classes regularly, then they make their own matcha teas every morning with ceremonial-grade matcha powder.",
+      "If people work in the entertainment industry as high-profile celebrities, then they wake up late and start their schedules past noon regularly.",
+      "If people do not have regular 9-5 jobs, then they work in the entertainment industry as high-profile celebrities.",
+      "All people who prefer working at home over going to the office every day do not have regular 9-5 jobs.",
+      "Clay either both prefers to work at home over going to the office every day and makes his own matcha teas every morning with ceremonial-grade matcha powder, or he neither prefers to work at home over going to the office every day nor makes his own matcha teas every morning with ceremonial-grade matcha powder."
+    ],
+    "context_fol": [
+      "∀x (Matcha(x) → ¬Late(x))",
+      "∀x (California(x) → Matcha(x))",
+      "∀x (Celebrities(x) → Late(x))",
+      "∀x (Jobs(x) → Celebrities(x))",
+      "∀x (WorkHome(x) → Jobs(x))",
+      "(WorkHome(clay) ∧ Matcha(clay)) ⊕ (¬WorkHome(clay) ∧ ¬Matcha(clay))"
+    ],
+    "question": "Clay does not have a regular 9-5 job.",
+    "question_fol": "¬Jobs(clay)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Late(x)",
+      "Jobs(x)",
+      "WorkHome(x)",
+      "California(x)",
+      "Celebrities(x)",
+      "Matcha(x)"
+    ]
+  },
+  {
+    "id": 54,
+    "story_id": 19,
+    "context": [
+      "Thomas Barber was an English professional footballer.",
+      "Thomas Barber played in the Football League for Aston Villa.",
+      "Thomas Barber played as a half back and inside left.",
+      "Thomas Barber scored the winning goal in the 1913 FA Cup Final."
+    ],
+    "context_fol": [
+      "English(thomasBarber) ∧ ProfessionalFootballer(thomasBarber)",
+      "PlayedInTheFootballLeagueFor(thomasBarber, astonVilla)",
+      "PlayedAs(thomasBarber, aHalfBack) ∧ PlayedAs(thomasBarber, anInsideLeft)",
+      "ScoredTheWinningGoalIn(thomasBarber, facupfinal1913)"
+    ],
+    "question": "Thomas Barber played in the Football League for Bolton Wanderers",
+    "question_fol": "PlayedInTheFootballLeagueFor(thomasBarber, boltonWanderers)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "ProfessionalFootballer(x)",
+      "PlayedInTheFootballLeagueFor(x, y)",
+      "PlayedAs(x, y)",
+      "ScoredTheWinningGoalIn(x, y)",
+      "English(x)"
+    ]
+  },
+  {
+    "id": 467,
+    "story_id": 162,
+    "context": [
+      "If people play the instrument in the concert, then he is good at playing this kind of instrument.",
+      "Peter plays piano, violin, and saxophone.",
+      "Peter was invited to play piano at the concert hall.",
+      "Oliver and Peter were both invited to perform in the concert.",
+      "Oliver plays a different musical instrument from Peter in the concert."
+    ],
+    "context_fol": [
+      "∀y ∀x (PlayInConcert(y, x) → GoodAt(y, x))",
+      "Play(peter, piano) ∧Play(peter, violin)",
+      "PlayInConcert(peter, piano)",
+      "PlayerInConcert(peter) ∧ PlayerInConcert(oliver)",
+      "¬PlayInConcert(oliver, piano)"
+    ],
+    "question": "Oliver plays piano in the concert.",
+    "question_fol": "PlayInConcert(oliver, piano)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Play(x, y)",
+      "PlayInConcert(x, y)",
+      "PlayerInConcert(x)",
+      "GoodAt(x, y)"
+    ]
+  },
+  {
+    "id": 468,
+    "story_id": 162,
+    "context": [
+      "If people play the instrument in the concert, then he is good at playing this kind of instrument.",
+      "Peter plays piano, violin, and saxophone.",
+      "Peter was invited to play piano at the concert hall.",
+      "Oliver and Peter were both invited to perform in the concert.",
+      "Oliver plays a different musical instrument from Peter in the concert."
+    ],
+    "context_fol": [
+      "∀y ∀x (PlayInConcert(y, x) → GoodAt(y, x))",
+      "Play(peter, piano) ∧Play(peter, violin)",
+      "PlayInConcert(peter, piano)",
+      "PlayerInConcert(peter) ∧ PlayerInConcert(oliver)",
+      "¬PlayInConcert(oliver, piano)"
+    ],
+    "question": "Oliver plays violin in the concert.",
+    "question_fol": "PlayInConcert(oliver, violin)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Play(x, y)",
+      "PlayInConcert(x, y)",
+      "PlayerInConcert(x)",
+      "GoodAt(x, y)"
+    ]
+  },
+  {
+    "id": 1312,
+    "story_id": 454,
+    "context": [
+      "If something can go underwater, then it enjoys water.",
+      "All animals that can swim can go underwater.",
+      "Either an animal can swim or it can walk.",
+      "Animals that can walk travel on land.",
+      "Animals that enjoy water splash water around.",
+      "Every animal that travels on land enjoys basking in the sun.",
+      "George splashes water around and can swim.",
+      "Liam is either an animal that can walk and enjoys water, or is neither an animal that can walk nor enjoys water."
+    ],
+    "context_fol": [
+      "∀x (GoesUnderwater(x) → EnjoysWater(x))",
+      "∀x (CanSwim(x) → GoesUnderwater(x))",
+      "∀x (CanSwim(x) ∨ CanWalk(x))",
+      "∀x (CanWalk(x) → TravelsOnLand(x))",
+      "∀x (EnjoysWater(x) → Splashes(x))",
+      "∀x (TravelsOnLand(x) → EnjoysBasking(x))",
+      "Splashes(george) ∧ CanSwim(george)",
+      "(CanWalk(liam) ∧ EnjoysWater(liam)) ∨ (¬CanWalk(liam) ∧ ¬EnjoysWater(liam))"
+    ],
+    "question": "George enjoys basking in the sun.",
+    "question_fol": "EnjoysBasking(george)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "CanSwim(x)",
+      "TravelsOnLand(x)",
+      "Splashes(x)",
+      "CanWalk(x)",
+      "GoesUnderwater(x)",
+      "EnjoysWater(x)",
+      "EnjoysBasking(x)"
+    ]
+  },
+  {
+    "id": 1407,
+    "story_id": 481,
+    "context": [
+      "All dispensable things are environment-friendly. ",
+      "All woodware is dispensable.",
+      "All paper is woodware. ",
+      "No good things are bad. ",
+      "All environment-friendly things are good.",
+      "A worksheet is either paper or is environment-friendly."
+    ],
+    "context_fol": [
+      "∀x (Dispensable(x) → EnvironmentFriendly(x))",
+      "∀x (Woodware(x) → Dispensable(x))",
+      "∀x (Paper(x) → Woodware(x))",
+      "∀x (Good(x) → ¬Bad(x))",
+      "∀x (EnvironmentFriendly(x) → Good(x))",
+      "Paper(worksheet) ⊕ EnvironmentFriendly(worksheet)"
+    ],
+    "question": "A worksheet is dispensable.",
+    "question_fol": "Dispensable(worksheet)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Woodware(x)",
+      "Good(x)",
+      "Bad(x)",
+      "Dispensable(x)",
+      "EnvironmentFriendly(x)",
+      "Paper(x)"
+    ]
+  },
+  {
+    "id": 1409,
+    "story_id": 481,
+    "context": [
+      "All dispensable things are environment-friendly. ",
+      "All woodware is dispensable.",
+      "All paper is woodware. ",
+      "No good things are bad. ",
+      "All environment-friendly things are good.",
+      "A worksheet is either paper or is environment-friendly."
+    ],
+    "context_fol": [
+      "∀x (Dispensable(x) → EnvironmentFriendly(x))",
+      "∀x (Woodware(x) → Dispensable(x))",
+      "∀x (Paper(x) → Woodware(x))",
+      "∀x (Good(x) → ¬Bad(x))",
+      "∀x (EnvironmentFriendly(x) → Good(x))",
+      "Paper(worksheet) ⊕ EnvironmentFriendly(worksheet)"
+    ],
+    "question": "A worksheet is bad.",
+    "question_fol": "Bad(worksheet)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Woodware(x)",
+      "Good(x)",
+      "Bad(x)",
+      "Dispensable(x)",
+      "EnvironmentFriendly(x)",
+      "Paper(x)"
+    ]
+  },
+  {
+    "id": 1410,
+    "story_id": 481,
+    "context": [
+      "All dispensable things are environment-friendly. ",
+      "All woodware is dispensable.",
+      "All paper is woodware. ",
+      "No good things are bad. ",
+      "All environment-friendly things are good.",
+      "A worksheet is either paper or is environment-friendly."
+    ],
+    "context_fol": [
+      "∀x (Dispensable(x) → EnvironmentFriendly(x))",
+      "∀x (Woodware(x) → Dispensable(x))",
+      "∀x (Paper(x) → Woodware(x))",
+      "∀x (Good(x) → ¬Bad(x))",
+      "∀x (EnvironmentFriendly(x) → Good(x))",
+      "Paper(worksheet) ⊕ EnvironmentFriendly(worksheet)"
+    ],
+    "question": "A worksheet is not bad.",
+    "question_fol": "¬Bad(worksheet)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Woodware(x)",
+      "Good(x)",
+      "Bad(x)",
+      "Dispensable(x)",
+      "EnvironmentFriendly(x)",
+      "Paper(x)"
+    ]
+  },
+  {
+    "id": 702,
+    "story_id": 253,
+    "context": [
+      "No reptile has fur.",
+      "All snakes are reptiles."
+    ],
+    "context_fol": [
+      "∀x (Reptile(x) → ¬HasFur(x))",
+      "∀x (Snake(x) → Reptile(x))"
+    ],
+    "question": "Some snake has fur.",
+    "question_fol": "∃x (Snake(x) ∧ HasFur(snake))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "HasFur(x)",
+      "Snake(x)",
+      "Reptile(x)"
+    ]
+  },
+  {
+    "id": 178,
+    "story_id": 60,
+    "context": [
+      "All buildings in New Haven are low. ",
+      "All buildings managed by the Yale Housing are located in New Haven. ",
+      "All buildings in Manhattans are high. ",
+      "All buildings owned by Bloomberg are located in Manhattans. ",
+      "All buildings with the Bloomberg logo are owned by Bloomberg. ",
+      "Tower A is managed by the Yale Housing.",
+      "Tower B is with the Bloomberg logo."
+    ],
+    "context_fol": [
+      "∀x (Located(newhaven, x) → ¬High(x))",
+      "∀x (YaleHousing(x) → Located(newhaven, x))",
+      "∀x (Located(manhattans, x) → High(x))",
+      "∀x (Bloomberg(x) → Located(manhattans, x))",
+      "∀x (BloombergLogo(x) → Bloomberg(x))",
+      "YaleHousing(towera)",
+      "BloombergLogo(towerb)"
+    ],
+    "question": "Tower A is low.",
+    "question_fol": "Low(towera)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "High(x)",
+      "Bloomberg(x)",
+      "YaleHousing(x)",
+      "BloombergLogo(x)",
+      "Located(x, y)"
+    ]
+  },
+  {
+    "id": 1309,
+    "story_id": 453,
+    "context": [
+      "No cold-blooded animals are birds.",
+      "All reptiles are cold-blooded.",
+      "Either an animal is a bird or it eats other animals.",
+      "If an animal eats other animals, then it is a carnivore.",
+      "Ron is neither a cold-blooded animal nor a carnivore.",
+      "Henry is neither a carnivore nor a lizard."
+    ],
+    "context_fol": [
+      "∀x (ColdBlooded(x) → ¬Bird(x))",
+      "∀x (Reptile(x) → ColdBlooded(x))",
+      "∀x (Bird(x) ∨ EatOtherAnimals(x))",
+      "∀x (EatOtherAnimals(x) → Carnivore(x))",
+      "¬ColdBlooded(ron) ∧ ¬Carnivore(ron)",
+      "¬Carnivore(henry) ∧ ¬Lizard(henry)"
+    ],
+    "question": "Ron is a lizard.",
+    "question_fol": "Lizard(ron)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Carnivore(x)",
+      "Reptile(x)",
+      "Lizard(x)",
+      "Bird(x)",
+      "ColdBlooded(x)",
+      "EatOtherAnimals(x)"
+    ]
+  },
+  {
+    "id": 1310,
+    "story_id": 453,
+    "context": [
+      "No cold-blooded animals are birds.",
+      "All reptiles are cold-blooded.",
+      "Either an animal is a bird or it eats other animals.",
+      "If an animal eats other animals, then it is a carnivore.",
+      "Ron is neither a cold-blooded animal nor a carnivore.",
+      "Henry is neither a carnivore nor a lizard."
+    ],
+    "context_fol": [
+      "∀x (ColdBlooded(x) → ¬Bird(x))",
+      "∀x (Reptile(x) → ColdBlooded(x))",
+      "∀x (Bird(x) ∨ EatOtherAnimals(x))",
+      "∀x (EatOtherAnimals(x) → Carnivore(x))",
+      "¬ColdBlooded(ron) ∧ ¬Carnivore(ron)",
+      "¬Carnivore(henry) ∧ ¬Lizard(henry)"
+    ],
+    "question": "Either Henry is a reptile or Ron eats other animals.",
+    "question_fol": "Reptile(henry) ⊕ EatOtherAnimals(ron)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Carnivore(x)",
+      "Reptile(x)",
+      "Lizard(x)",
+      "Bird(x)",
+      "ColdBlooded(x)",
+      "EatOtherAnimals(x)"
+    ]
+  },
+  {
+    "id": 222,
+    "story_id": 73,
+    "context": [
+      "Ambiortus is a prehistoric bird genus.",
+      "Ambiorus Dementjevi is the only known species of Ambiortus.",
+      "The Mongol region was where Ambiorus Dementjevi lived.",
+      "Yevgeny Kurochkin was the discoverer of Ambiortus."
+    ],
+    "context_fol": [
+      "Prehistoric(ambiortus) ∧ BirdGenus(ambiortus)",
+      "∀x (Species(x, ambiortus) → AmbiortusDementjevi(x))",
+      "∀x (AmbiortusDementjevi(x) → Lived(x, mongolregion))",
+      "Discovered(yevgenykurochkin, ambiortus)"
+    ],
+    "question": "Yevgeny Kurochkin discovered a new bird genus.",
+    "question_fol": "∃x (BirdGenus(x) ∧ Discovered(yevgenykurochkin, x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Prehistoric(x)",
+      "BirdGenus(x)",
+      "Species(x, y)",
+      "Lived(x, y)",
+      "Discovered(x, y)",
+      "AmbiortusDementjevi(x)"
+    ]
+  },
+  {
+    "id": 1294,
+    "story_id": 448,
+    "context": [
+      "Everyone that uses a football can throw a football.",
+      "If someone plays football, then they use a football.",
+      "Either someone is a football player or a basketball player.",
+      "Every basketball player is tall.",
+      "Everyone that can throw a football can throw a football with a spiral.",
+      "If someone is tall, then they are in shape.",
+      "If Jack is neither tall nor a basketball player,  then Jack is neither tall nor can throw a football."
+    ],
+    "context_fol": [
+      "∀x (UseFootball(x) → ThrowFootball(x))",
+      "∀x (PlayFootball(x) → UseFootball(x))",
+      "∀x (BasketballPlayer(x) ∨ PlayFootball(x))",
+      "∀x (BasketballPlayer(x) → Tall(x))",
+      "∀x (ThrowFootball(x) → ThrowFootballSpiral(x))",
+      "∀x (Tall(x) → InShape(x))",
+      "¬Tall(jack) ∧ ¬BasketballPlayer(jack) → ¬Tall(jack) ∧ ¬ThrowFootball(jack)"
+    ],
+    "question": "Jack plays football.",
+    "question_fol": "PlayFootball(jack)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "InShape(x)",
+      "ThrowFootball(x)",
+      "ThrowFootballSpiral(x)",
+      "Tall(x)",
+      "PlayFootball(x)",
+      "BasketballPlayer(x)",
+      "UseFootball(x)"
+    ]
+  },
+  {
+    "id": 1295,
+    "story_id": 448,
+    "context": [
+      "Everyone that uses a football can throw a football.",
+      "If someone plays football, then they use a football.",
+      "Either someone is a football player or a basketball player.",
+      "Every basketball player is tall.",
+      "Everyone that can throw a football can throw a football with a spiral.",
+      "If someone is tall, then they are in shape.",
+      "If Jack is neither tall nor a basketball player,  then Jack is neither tall nor can throw a football."
+    ],
+    "context_fol": [
+      "∀x (UseFootball(x) → ThrowFootball(x))",
+      "∀x (PlayFootball(x) → UseFootball(x))",
+      "∀x (BasketballPlayer(x) ∨ PlayFootball(x))",
+      "∀x (BasketballPlayer(x) → Tall(x))",
+      "∀x (ThrowFootball(x) → ThrowFootballSpiral(x))",
+      "∀x (Tall(x) → InShape(x))",
+      "¬Tall(jack) ∧ ¬BasketballPlayer(jack) → ¬Tall(jack) ∧ ¬ThrowFootball(jack)"
+    ],
+    "question": "Jack is in shape.",
+    "question_fol": "InShape(jack)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "InShape(x)",
+      "ThrowFootball(x)",
+      "ThrowFootballSpiral(x)",
+      "Tall(x)",
+      "PlayFootball(x)",
+      "BasketballPlayer(x)",
+      "UseFootball(x)"
+    ]
+  },
+  {
+    "id": 7,
+    "story_id": 3,
+    "context": [
+      "Fort Ticonderoga is the current name for Fort Carillon.",
+      "Pierre de Rigaud de Vaudreuil built Fort Carillon.",
+      "Fort Carillon was located in New France.",
+      "New France is not in Europe."
+    ],
+    "context_fol": [
+      "CurrentName(fortticonderoga, fortcarillon)",
+      "Built(pierrederigauddevaudreuil, fortcarillon)",
+      "LocatedIn(fortcarillon, newfrance)",
+      "¬LocatedIn(newfrance, europe)"
+    ],
+    "question": "Pierre de Rigaud de Vaudreuil built a fort in New France.",
+    "question_fol": "Built(pierrederigauddevaudreuil, newfrance)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "LocatedIn(x, y)",
+      "CurrentName(x, y)",
+      "Built(x, y)"
+    ]
+  },
+  {
+    "id": 845,
+    "story_id": 328,
+    "context": [
+      "No soccer players are professional basketball players.",
+      "All NBA players are professional basketball players.",
+      "All defenders are soccer players.",
+      "All centerback players are defenders.",
+      "If Stephen Curry is an NBA player or a soccer player, then he is a professional basketball player."
+    ],
+    "context_fol": [
+      "¬(∃x (SoccerPlayer(x) ∧ ProfessionalBasketballPlayer(x)))",
+      "∀x (NBAPlayer(x) → ProfessionalBasketballPlayer(x))",
+      "∀x (Defender(x) → SoccerPlayer(x))",
+      "∀x (Centerback(x) → Defender(x))",
+      "(NBAPlayer(stephencurry) ⊕ SoccerPlayer(stephencurry)) → ProfessionalBasketballPlayer(stephencurry)"
+    ],
+    "question": "Stephen Curry is an NBA player.",
+    "question_fol": "NBAPlayer(stephencurry)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "ProfessionalBasketballPlayer(x)",
+      "Defender(x)",
+      "SoccerPlayer(x)",
+      "Centerback(x)",
+      "NBAPlayer(x)"
+    ]
+  },
+  {
+    "id": 1420,
+    "story_id": 484,
+    "context": [
+      "No songs are visual. ",
+      "All folk songs are songs. ",
+      "All videos are visual. ",
+      "All movies are videos.",
+      "All sci-fi movies are movies.",
+      "Inception is a sci-fi movie.",
+      "Mac is neither a folk song nor a sci-fi movie."
+    ],
+    "context_fol": [
+      "∀x (Song(x) → ¬Visual(x))",
+      "∀x (FolkSong(x) → Song(x))",
+      "∀x (Video(x) → Visual(x))",
+      "∀x (Movie(x) → Video(x))",
+      "∀x (ScifiMovie(x) → Movie(x))",
+      "ScifiMovie(inception)",
+      "¬FolkSong(mac) ∧ ¬ScifiMovie(mac)"
+    ],
+    "question": "Inception is a folk song.",
+    "question_fol": "FolkSong(inception)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Visual(x)",
+      "ScifiMovie(x)",
+      "FolkSong(x)",
+      "Movie(x)",
+      "Video(x)",
+      "Song(x)"
+    ]
+  },
+  {
+    "id": 1423,
+    "story_id": 484,
+    "context": [
+      "No songs are visual. ",
+      "All folk songs are songs. ",
+      "All videos are visual. ",
+      "All movies are videos.",
+      "All sci-fi movies are movies.",
+      "Inception is a sci-fi movie.",
+      "Mac is neither a folk song nor a sci-fi movie."
+    ],
+    "context_fol": [
+      "∀x (Song(x) → ¬Visual(x))",
+      "∀x (FolkSong(x) → Song(x))",
+      "∀x (Video(x) → Visual(x))",
+      "∀x (Movie(x) → Video(x))",
+      "∀x (ScifiMovie(x) → Movie(x))",
+      "ScifiMovie(inception)",
+      "¬FolkSong(mac) ∧ ¬ScifiMovie(mac)"
+    ],
+    "question": "Mac is a video.",
+    "question_fol": "Video(mac)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Visual(x)",
+      "ScifiMovie(x)",
+      "FolkSong(x)",
+      "Movie(x)",
+      "Video(x)",
+      "Song(x)"
+    ]
+  },
+  {
+    "id": 1066,
+    "story_id": 393,
+    "context": [
+      "All extroverts are overtly expressive.",
+      "People are either extroverts or introverts.",
+      "If someone is an introvert, then they are shy and reticent. ",
+      "No shy and reticent person likes to talk to strangers.",
+      "Jeff is not an extrovert and someone who likes to talk to strangers."
+    ],
+    "context_fol": [
+      "∀x (Extroverts(x) → OvertlyExpressive(x))",
+      " ∀x (Extroverts(x) ∨ Introverts(x)) ",
+      " ∀x (Introverts(x) → ShyAndReticentPerson(x))",
+      " ∀x (ShyAndReticentPerson(x) → ¬LikeToTalkToStrangers(x))",
+      " ¬Extroverts(jeff) ∧ ¬LikeToTalkToStrangers(jeff)"
+    ],
+    "question": "Jeff is overtly expressive and likes to talk to strangers.",
+    "question_fol": "OvertlyExpressive(jeff) ∧ LikeToTalkToStrangers(jeff)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "B",
+    "logic_predicates": [
+      "Extroverts(x)",
+      "OvertlyExpressive(x)",
+      "LikeToTalkToStrangers(x)",
+      "ShyAndReticentPerson(x)",
+      "Introverts(x)"
+    ]
+  },
+  {
+    "id": 1138,
+    "story_id": 408,
+    "context": [
+      "No low-scoring players are top players in the league.",
+      "Basketball players are either top players in the league or successfully shoot a high percentage of 3-pointers.",
+      "All players who successfully shoot a high percentage of 3-pointers are solid at shooting 2-pointers.",
+      "No players who are solid at shooting 2-pointers are bad at mid-range shots.",
+      "Candace is either a low-scoring player or successfully shoots a high percentage of 3-pointers."
+    ],
+    "context_fol": [
+      "∀x (LowScore(x) → ¬TopPlayer(x))",
+      "∀x (TopPlayer(x) ∨ ThreePointer(x))",
+      "∀x (ThreePointer(x) → TwoPointer(x))",
+      "∀x (TwoPointer(x) → ¬BadMid(x))",
+      "LowScore(candace) ⊕ ThreePointer(candace)"
+    ],
+    "question": "Candace is a top player in the league.",
+    "question_fol": "TopPlayer(candace)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "TopPlayer(x)",
+      "TwoPointer(x)",
+      "ThreePointer(x)",
+      "LowScore(x)",
+      "BadMid(x)"
+    ]
+  },
+  {
+    "id": 720,
+    "story_id": 271,
+    "context": [
+      "No plants are fungi.",
+      "Mushrooms are fungi."
+    ],
+    "context_fol": [
+      "∀x (Plant(x) → ¬Fungi(x))",
+      "∀x (Mushroom(x) → Fungi(x))"
+    ],
+    "question": "No plants are mushrooms.",
+    "question_fol": "¬∃x (Plant(x) ∧ Mushroom(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "Plant(x)",
+      "Mushroom(x)",
+      "Fungi(x)"
+    ]
+  },
+  {
+    "id": 740,
+    "story_id": 291,
+    "context": [
+      "No road is clean.",
+      "And some streets are roads."
+    ],
+    "context_fol": [
+      "∀x (Road(x) → ¬Clean(x))",
+      "∃x (Street(x) ∧ Road(x))"
+    ],
+    "question": "Some streets are clean",
+    "question_fol": "∃x (Street(x) ∧ Clean(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Street(x)",
+      "Road(x)",
+      "Clean(x)"
+    ]
+  },
+  {
+    "id": 356,
+    "story_id": 118,
+    "context": [
+      "Musicians have very busy lives.",
+      "Singh Kaur is a musician and famous.",
+      "If a musician is not famous, that musician will not make a lot of money.",
+      "A musician can be a singer or a writer."
+    ],
+    "context_fol": [
+      "∀x (Musician(x) → Busy(x))",
+      "Musician(singhKaur) ∧ Famous(singhKaur)",
+      "∀x (Musician(x) ∧ ¬Famous(x) → ¬MakeMoney(x))",
+      "∃x (Musician(x) ∧ Singer(x) ∨ Writer(x))"
+    ],
+    "question": "Singh Kaur makes a lot of money.",
+    "question_fol": "MakeMoney(singhKaur)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Famous(x)",
+      "Singer(x)",
+      "Busy(x)",
+      "Musician(x)",
+      "Writer(x)",
+      "MakeMoney(x)"
+    ]
+  },
+  {
+    "id": 733,
+    "story_id": 284,
+    "context": [
+      "Each building is tall. ",
+      "Everything tall has  height."
+    ],
+    "context_fol": [
+      "∀x (Building(x) → ¬Tall(x))",
+      "∀x (Tall(x) → HasHeight(x))"
+    ],
+    "question": "All buildings are magnificent.",
+    "question_fol": "∀x (Building(x) → Magnificent(x))",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Building(x)",
+      "Tall(x)",
+      "HasHeight(x)"
+    ]
+  },
+  {
+    "id": 376,
+    "story_id": 126,
+    "context": [
+      "A cat named Garfield, which is the main character of the film Garfield, is orange and fat and likes having lasagna. ",
+      "Garfield and Odie, who is another pet of Jon, share the same home. ",
+      "Garfield hates Odie.",
+      "A pet who hates the pet with whom he shares the same owner is childish and possessive.",
+      "Cats are pets. "
+    ],
+    "context_fol": [
+      "Cat(garfield) ∧ MainCharacterGarfield(garfield) ∧ BeOrange(garfield) ∧ BeFat(garfield) ∧ LikeLasagna(garfield)",
+      "Pet(garfield, jon) ∧ Pet(odie, jon) ∧ ShareHome(garfield, odie)",
+      "Hate(garfield, odie)",
+      "∀x ∀y ∃z (Pet(x, z) ∧ Pet(y, z) ∧ Hate(x, y) → BeChildish(x) ∧ BePossessive(x))",
+      "∀x ∃y (Cat(x) → Pet(x, y))"
+    ],
+    "question": "The main character of the film Garfield is childish and possessive.",
+    "question_fol": "BeChildish(garfield) ∧ BePossessive(garfield)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A",
+    "logic_predicates": [
+      "ShareHome(x, y)",
+      "LikeLasagna(x)",
+      "BeFat(x)",
+      "Hate(x, y)",
+      "BeOrange(x)",
+      "BeChildish(x)",
+      "Cat(x)",
+      "MainCharacterGarfield(x)",
+      "Pet(x, y)",
+      "BePossessive(x)"
+    ]
+  },
+  {
+    "id": 1377,
+    "story_id": 474,
+    "context": [
+      "All humans eat.",
+      "If something eats, then it is not a plant.",
+      "A thing is either plant or animal.",
+      "All goats are animals.",
+      "No dirt is an animal.",
+      "Hulu is a goat or a human."
+    ],
+    "context_fol": [
+      "∀x (Human(x) → Eat(x))",
+      "∀x (Eat(x) → ¬Plant(x))",
+      "∀x (Plant(x) ∨ Animal(x))",
+      "∀x (Goat(x) → Animal(x))",
+      "∀x (Dirt(x) → ¬Animal(x))",
+      "Goat(hulu) ∨ Human(hulu)"
+    ],
+    "question": "Hulu eats.",
+    "question_fol": "Eat(hulu)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "Human(x)",
+      "Dirt(x)",
+      "Eat(x)",
+      "Animal(x)",
+      "Goat(x)",
+      "Plant(x)"
+    ]
+  },
+  {
+    "id": 136,
+    "story_id": 47,
+    "context": [
+      "A controlled substance is a drug.",
+      "There exist both harmful and beneficial controlled substances.",
+      "If a child is exposed to a controlled substance, he or she is in chemical endangerment.",
+      "Chemical Endangerment is harmful. ",
+      "The Controlled Substances Act was an act passed in 1971.",
+      "Some Acts prevent harmful things."
+    ],
+    "context_fol": [
+      "∀x (ControlledSubstances(x) → Drugs(x))",
+      "∃x ∃x (ControlledSubstances(x) ∧ ControlledSubstances(y) ∧ Beneficial(x) ∧ Harmful(y))",
+      "∀x ∀y (ExposedToControlledSubstance(x, y) → ChemicalEndangerment(x))",
+      "∀x (ChemicalEndangerment(x) → Harmful(x))",
+      "PassedIn(controlledSubstancesAct, year1971) ∧ Act(controlledSubstancesAct)",
+      "∃x (Act(x) ∧ PreventsHarm(x))"
+    ],
+    "question": "The Controlled Substances Act prevents harmful things.",
+    "question_fol": "PreventsHarm(controlledSubstancesAct)",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "C",
+    "logic_predicates": [
+      "PassedIn(x, y)",
+      "Harmful(x)",
+      "PreventsHarm(x)",
+      "Beneficial(x)",
+      "Drugs(x)",
+      "ChemicalEndangerment(x)",
+      "Act(x)",
+      "ExposedToControlledSubstance(x, y)",
+      "ControlledSubstances(x)"
+    ]
+  }
+]
