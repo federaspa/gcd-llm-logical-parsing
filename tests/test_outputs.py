@@ -25,7 +25,7 @@ class TestOutputFiles(unittest.TestCase):
         cls.save_path = os.getenv('SAVE_PATH', './outputs')
         cls.data_path = os.getenv('DATA_PATH', './data')
         cls.dataset_name = os.getenv('DATASET_NAME', 'GSM8K_symbolic')
-        cls.shots = os.getenv('SHOTS', '5shots')
+        cls.shots = os.getenv('SHOTS_NUMBER', '5shots')
         
         # Load model names from configs
         cls.model_names = get_model_names()

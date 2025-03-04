@@ -21,7 +21,7 @@ fact ::= "\"" predicatestmt "\""
 # JSON structure for rules
 rules ::= "\"rules\":" ws "[" ws rulelist ws "],"
 rulelist ::= rule (ws "," ws rule)*
-rule ::= "\"" premise ">>>" conclusion "\""
+rule ::= "\"" premise ws ">>>" ws conclusion "\""
 
 # Premise part (can have multiple conditions joined by &&)
 premise ::= predicatestmt (ws "&&" ws predicatestmt)*
