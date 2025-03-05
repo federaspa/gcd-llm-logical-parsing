@@ -2,9 +2,10 @@ import sympy as sp
 from typing import Tuple, Dict
 
 class SymPy_Program:
-    def __init__(self, logic_program: str) -> None:
+    def __init__(self, logic_program: str, dataset_name='GSM8K_symbolic') -> None:
         self.logic_program = logic_program
         self.flag, self.formula_error = self.parse_logic_program()
+        self.dataset_name = dataset_name
 
     def parse_logic_program(self) -> Tuple[bool, str | None]:
         try:
