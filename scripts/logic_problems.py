@@ -17,10 +17,7 @@ from utils.utils import get_configs, get_models, parse_args, ScriptConfig
 class LogicProgramRunner:
     def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict, logger):
         self.config = script_config
-        self.generator = Model(script_config)
-        self.generator.setup_model(model_config, llama_cpp_config)
         self.save_file = self._prepare_save_file()
-        
         
         self.logger = logger
         
@@ -30,6 +27,10 @@ class LogicProgramRunner:
                 self.stop_time = datetime.strptime(self.config.stop_time, "%d-%m-%y:%H-%M-%S")
             except ValueError as e:
                 raise ValueError(f"Invalid stop_time format. Use dd-mm-yy:hh-mm-ss. Error: {str(e)}")
+
+    def _load_model(self):
+        self.generator = Model(script_config)
+        self.generator.setup_model(model_config, llama_cpp_config)
 
     def _check_time_limit(self) -> bool:
         """Check if we've reached the stop time"""
@@ -67,6 +68,8 @@ class LogicProgramRunner:
                 
             outputs = {sample['id']: sample for sample in saved_data}
             existing_ids = list(outputs.keys())
+            
+        sampled_dataset = [s for s in sampled_dataset if s['id'] not in existing_ids]
                 
         return sampled_dataset, outputs, existing_ids
 
@@ -106,26 +109,28 @@ class LogicProgramRunner:
             'generation_time': duration,
             'error_message': error_message
         }
-        
-
-        
 
     def run(self):
         
         raw_dataset, outputs, existing_ids = self._load_dataset()
         self.logger.info(f"Loaded {len(raw_dataset)} examples from {self.config.split} split.")
+        
+        if len(raw_dataset):
+            print("Loading model...")
+            self._load_model()
 
         # Process samples
         for i, sample in enumerate(pbar := tqdm(raw_dataset, total=len(raw_dataset), bar_format='{desc}: [{elapsed}<{remaining}, ' '{rate_fmt}{postfix}]]')):
             if self._check_time_limit():
                 break
             
-            # Get or create problem
-            if sample['id'] in existing_ids:
-                sample = outputs[sample['id']]
-                nl_problem = sample['nl_problem']
-            else:
-                nl_problem = sample
+            # # Get or create problem
+            # if sample['id'] in existing_ids:
+            #     sample = outputs[sample['id']]
+            #     nl_problem = sample['nl_problem']
+            # else:
+            #     nl_problem = sample
+            nl_problem = sample
             
             # Generate different versions of the problem
             output = {
@@ -235,11 +240,11 @@ if __name__ == '__main__':
                 
             except ValueError as e:
                 if "Failed to load model from file:" in str(e) or "Failed to create llama_context" in str(e):
-                    logger.warning(f'Failed to load model {model_name}, retrying in {retry_timeout/60} minutes')
-                    continue
+                    logger.warning(f'Failed to load model {model_name}')
+                    remaining_models.remove(model_name)
                 else:
-                    logger.error(f"ValueError for {model_name}: {str(e)}")
-                    notifier.send(f"ValueError for {model_name}: {str(e)}", 'Error')
+                    logger.error(f"ValueError for {model_name}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}")
+                    notifier.send(f"ValueError for {model_name}: {str(e)}\n\nTraceback:\n{traceback.format_exc()}", 'Error')
                     sys.exit(1) 
                 
             except KeyboardInterrupt:
