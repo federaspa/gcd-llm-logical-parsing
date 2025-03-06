@@ -1,0 +1,57 @@
+#### Wrap rules, facts, and query in a valid JSON ####
+root ::= "{" ws facts ws rules ws query ws "}"
+ws ::= | " " | "\n" [ \t]{0,5}
+rules ::= "\"rules\":" ws "[" ws rulelist ws "], "
+rulelist ::= "\"" RULE "\"" (ws "," ws "\"" RULE "\"")*
+facts ::= "\"facts\":" ws "[" ws factlist ws "], "
+factlist ::= "\"" FACT "\"" (ws "," ws "\"" FACT "\"")*
+query ::= "\"query\":" ws "\"" ATOM "\"" 
+
+#### ASP Program Elements ####
+RULE ::= ATOM " :- " BODY "."
+FACT ::= ATOM "."
+BODY ::= LITERAL (", " LITERAL){}
+LITERAL ::= ATOM | "not " ATOM
+
+#### Atoms and Terms ####
+ATOM ::= predicate | predicate "(" TERMS ")"
+TERMS ::= TERM | TERM ", " TERMS
+TERM ::= constant | variable | number | string | ARITHMETIC | AGGREGATE
+predicate ::= [a-z][a-zA-Z0-9_]*
+constant ::= [a-z][a-zA-Z0-9_]*
+variable ::= [A-Z][a-zA-Z0-9_]*
+number ::= [0-9]+ ("." [0-9]+)?
+string ::= "\"" [^"]* "\""
+
+#### Choice Rules ####
+RULE ::= CHOICE " :- " BODY "."
+CHOICE ::= "{" ws ATOM ("; " ATOM)* ws "}" | ATOM "; " ATOM ("; " ATOM)*
+RULE ::= WEIGHTED_CHOICE " :- " BODY "."
+WEIGHTED_CHOICE ::= "{" ws WEIGHTED_ATOM ("; " WEIGHTED_ATOM)* ws "}"
+WEIGHTED_ATOM ::= ATOM "=" number | ATOM "=" variable
+
+#### Arithmetic Expressions ####
+ARITHMETIC ::= TERM_A ARITH_TAIL{0,5}
+ARITH_TAIL ::= ARITH_OP TERM_A
+TERM_A ::= number | variable | "(" ARITHMETIC ")"
+ARITH_OP ::= " + " | " - " | " * " | " / " | " ** " | " \\ "
+
+#### Conditional Literals ####
+LITERAL ::= ATOM " : " BODY
+LITERAL ::= "not " ATOM " : " BODY
+
+#### Aggregates ####
+AGGREGATE ::= "#count{" ELEMENTS "}" | "#sum{" ELEMENTS "}" | "#max{" ELEMENTS "}" | "#min{" ELEMENTS "}"
+ELEMENTS ::= ELEMENT | ELEMENT "; " ELEMENTS
+ELEMENT ::= TERMS " : " BODY
+
+#### Comparison Operators ####
+ATOM ::= TERM COMP_OP TERM
+COMP_OP ::= " = " | " != " | " < " | " <= " | " > " | " >= "
+
+#### Built-in Functions ####
+TERM ::= "#abs(" TERM ")" | "#int(" TERM ")" | "#count{" ELEMENTS "}"
+
+#### Special Constructs ####
+ATOM ::= predicate "@" (number | variable)
+ATOM ::= predicate "$" (number | variable)
