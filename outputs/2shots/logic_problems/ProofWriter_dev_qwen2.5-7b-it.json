@@ -1,0 +1,64 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": "Bob is cold. Bob is quiet. Bob is red. Bob is smart. Charlie is kind. Charlie is quiet. Charlie is red. Charlie is rough. Dave is cold. Dave is kind. Dave is smart. Fiona is quiet. If something is quiet and cold then it is smart. Red, cold things are round. If something is kind and rough then it is red. All quiet things are rough. Cold, smart things are red. If something is rough then it is cold. All red things are rough. If Dave is smart and Dave is kind then Dave is quiet.",
+      "question": "Charlie is kind.",
+      "options": [
+        "A) True",
+        "B) False",
+        "C) Unknown"
+      ],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"facts\": [\n    \"cold(bob).\",\n    \"quiet(bob).\",\n    \"red(bob).\",\n    \"smart(bob).\",\n    \"kind(charlie).\",\n    \"quiet(charlie).\",\n    \"red(charlie).\",\n    \"rough(charlie).\",\n    \"cold(dave).\",\n    \"kind(dave).\",\n    \"smart(dave).\",\n    \"quiet(fiona).\"\n  ],\n  \"rules\": [\n    \"round(X) :- cold(X), red(X).\",\n    \"red(X) :- kind(X), rough(X).\",\n    \"rough(X) :- quiet(X).\",\n    \"red(X) :- smart(X), cold(X).\",\n    \"cold(X) :- rough(X).\",\n    \"rounder(X) :- red(X).\",\n    \"quiet(X) :- rounder(X).\",\n    \"smart(X) :- kind(X), not cold(X)\"\n  ],\n  \"query\": \"kind(charlie)\"\n}\n```",
+      "perplexity": 1.1585091352462769,
+      "generation_time": 42.754532,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"facts\": [\n    \"cold(bob).\",\n    \"quiet(bob).\",\n    \"red(bob).\",\n    \"smart(bob).\",\n    \"kind(charlie).\",\n    \"quiet(charlie).\",\n    \"red(charlie).\",\n    \"rough(charlie).\",\n    \"cold(dave).\",\n    \"kind(dave).\",\n    \"smart(dave).\",\n    \"quiet(fiona)\"\n  ],\n  \"rules\": [\n    \"round(X) :- cold(X), red(X).\",\n    \"red(X) :- kind(X), rough(X).\",\n    \"rough(X) :- quiet(X).\",\n    \"red(X) :- smart(X), cold(X).\",\n    \"cold(X) :- rough(X).\",\n    \"rounder(X) :- red(X).\",\n    \"quiet(X) :- rounder(X)\"\n  ],\n  \"query\": \"kind(charlie)\"\n}",
+      "perplexity": 1.263278841972351,
+      "generation_time": 43.175871,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"predicates\": [\n    \"Cold($x, $y, bool)\",\n    \"Quiet($x, bool)\",\n    \"Kind($x, bool)\",\n    \"Smart($x, bool)\",\n    \"Red($x, bool)\"\n  ],\n  \"facts\": [\n    \"Cold(X, False)\"],\n    \"rules\": [\n     \"Cold(X, True) && Quiet(X, True) && Smart(X, False) && Red(X, False) && Kind(X, False) && Red(X, True) && Cold(Y, False) && Red(Z, False) && Smart(W, False) && Quiet(V, True) && Kind(U, False) && Smart(T, False) && Red(S, False) && Smart(R, False) && Quiet(Q, True) && Red(P, False) && Cold(N, True) && Kind(M, True) && Smart(L, False) && Red(K, False) && Red(J, False) && Cold(I, True) && Kind(H, True) && Smart(G, False) && Red(F, False) && Quiet(E, True) && Kind(D, True) && Smart(C, False) && Red(B, False) && Cold(A, True) && Quiet(Z, True) && Kind(Y, True) && Smart(X, False) && Red(W, False) && Cold(V, True) && Quiet(U, True) && Kind(T, True) && Smart(S, False) && Red(R, False) && Smart(Q, False) && Quiet(P, True) && Kind(O, True) && Smart(N, False) && Red(M, False) && Cold(L, True) && Kind(K, True) && Smart(J, False) && Red(I, False) && Cold(H, True) && Kind(G, True) && Smart(F, False) && Red(E, False) && Quiet(D, True) && Kind(C, True) && Smart(B, False) && Red(A, False) && Cold(Z, True) && Quiet(Y, True) && Kind(X, True) && Smart(W, False) && Red(V, False) && Cold(U, True) && Quiet(T, True) && Kind(S, True) && Smart(R, False) && Red(Q, False) && Smart(P, False) && Quiet(O, True) && Kind(N, True) && Smart(M, False) && Red(L, False) && Cold(K, True) && Kind(J, True) && Smart(I, False) && Red(H, False) && Cold(G, True) && Kind(F, True) && Smart(E, False) && Red(D, False) && Quiet(C, True) && Kind(B, True) && Smart(A, False) && Red(Z, False) && Cold(Y, True) && Quiet(X, True) && Kind(W, True) && Smart(V, False) && Red(U, False) && Cold(T, True) && Quiet(S, True) && Kind(R, True) && Smart(Q, False) && Red(P, False) && Smart(O, False) && Quiet(N, True) && Kind(M, True) && Smart(L, False) && Red(K, False) && Cold(J, True) && Kind(I, True) && Smart(H, False) && Red(G, False) && Cold(F, True) && Kind(E, True) && Smart(D, False) && Red(C, False) && Quiet(B, True) && Kind(A, True) && Smart(Z, False) && Red(Y, False) && Cold(X, True) && Quiet(W, True) && Kind(V, True) && Smart(U, False) && Red(T, False) && Cold(S, True) && Quiet(R, True) && Kind(Q, True) && Smart(P, False) && Red(O, False) && Smart(N, False) && Quiet(M, True) && Kind(L, True) && Smart(K, False) && Red(J, False) && Cold(I, True) && Kind(H, True) && Smart(G, False) && Red(E, False) && Cold(D, True) && Kind(C, True) && Smart(B, False) && Red(A, False) && Quiet(Z, True) && Kind(Y, True) && Smart(X, False) && Red(W, False) && Cold(V, True) && Quiet(U, True) && Kind(T, True) && Smart(S, False) && Red(R, False) && Smart(Q, False) && Quiet(P, True) && Kind(O, True) && Smart(N, False) && Red(M, False) && Cold(L, True) && Kind(K, True) && Smart(J, False) && Red(I, False) && Cold(H, True) && Kind(G, True) && Smart(F,",
+      "perplexity": 1.5927828550338745,
+      "generation_time": 223.754256,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": "The cat eats the squirrel. The cat sees the squirrel. The cow eats the squirrel. The cow sees the cat. The rabbit is round. The rabbit sees the cat. The squirrel eats the rabbit. The squirrel is cold. The squirrel needs the rabbit. The squirrel sees the cat. If someone sees the cat and they are not green then they see the cow. If the rabbit is kind and the rabbit sees the squirrel then the squirrel needs the rabbit. Rough people are cold. If someone sees the rabbit then they are not round. If someone sees the squirrel and they are not green then they need the squirrel. If someone eats the cow then they see the rabbit. If someone eats the squirrel then they are rough. If someone is cold then they eat the cow.",
+      "question": "The cat is not round.",
+      "options": [
+        "A) True",
+        "B) False",
+        "C) Unknown"
+      ],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"facts\": [\n    \"eats(cat, squirrel).\",\n    \"sees(cat, squirrel).\",\n    \"eats(cow, squirrel).\",\n    \"sees(cow, cat).\",\n    \"round(rabbit).\",\n    \"sees(rabbit, cat).\",\n    \"eats(squirrel, rabbit).\",\n    \"cold(squirrel).\",\n    \"needs(squirrel, rabbit).\",\n    \"sees(squirrel, cat)\",\n  ],\n  \"rules\": [\n    \"sees(cow) :- sees(cat), not green(X).\",\n    \"kind(rabbit) -> needs(squirrel, rabbit) & sees(squirrel, rabbit).\",\n    \"cold(X) :- rough(X).\",\n    \"not round(X) :- sees(rabbit).\",\n    \"not green(Y) -> needs(squirrel, Y) & eats(Y, cow).\",\n    \"eats(cow, X) -> sees(rabbit).\",\n    \"rough(X) -> eats(squirrel, X).\",\n    \"cold(X) -> eats(X, cow)\"\n  ],\n  \"query\": \"not round(cat)\"\n}\n```",
+      "perplexity": 1.246156096458435,
+      "generation_time": 48.301169,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"facts\": [\n    \"eats(cat, squirrel).\",\n    \"sees(cat, squirrel).\",\n    \"eats(cow, squirrel).\",\n    \"sees(cow, cat).\",\n    \"round(rabbit).\",\n    \"sees(rabbit, cat).\",\n    \"eats(squirrel, rabbit).\",\n    \"cold(squirrel).\",\n    \"needs(squirrel, rabbit).\",\n    \"sees(squirrel, cat).\"\n  ],\n  \"rules\": [\n    \"sees(cow) :- sees(cat), not green. \",\n    \"kind(rabbit), sees(squirrel) -> needs(squirrel, rabbit). \",\n    \"cold(X) -> rough. \",\n    \"not round(X) :- sees(rabbit).\",\n    \"not round(X) :- eats(X, cow).\",\n    \"round(X) :- sees(cow).\",\n    \"eats(cow) :- sees(rabbit).\",\n    \"rough(X) :- eats(squirrel, X).\",\n    \"cold(X) -> eats(cow)\"\n  ],\n  \"query\": \"not round(cat)\"\n}",
+      "perplexity": 1.3052301406860352,
+      "generation_time": 52.355299,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"predicates\": [\n    \"CATAILS($x, $y, bool)\",\n    \"SEES($x, $y, bool)\"\n  ],\n  \"facts\": [\n    \"CATAILS(BOB, False)\", \"CATAILS(COW, False)\", \"CATAILS(RABBIT, True)\", \"CATAILS(SQUIRREL, False)\",\n    \"SEES(BOB, False)\"], \"rules\": [ \"SEES(X, True) && NOT(GREENPPLYTHATSEETHEX, True) && SEES(COW, True) && GREENPPLX(True, True) && GREENPPLYTHATSEETHECOW(False, False) && SEES(RABBIT, True) && NOT(ROUNDPPLYTHATHASEATSRCOW, True) && SEES(SQUIRREL, True) && NOT(GREENPPLX, True) && NEEDSQRITTERSQUIRRL(True, True) && GREENPPLLSEETHESQUIRRLETrueGTRLSEETHESCOTrueFalseFalseTrueTrueTrueTrueFalseTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrue",
+      "perplexity": 1.6994349956512451,
+      "generation_time": 224.070802,
+      "error_message": "max_tokens"
+    }
+  }
+]
