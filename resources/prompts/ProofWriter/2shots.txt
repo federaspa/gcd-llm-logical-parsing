@@ -1,12 +1,11 @@
-The task is to convert a natural language reasoning problem into logical form.
-First, identify the predicates required to build the logical formulas.
+The task is to convert a natural language reasoning problem into Answer Set Programming (ASP) format.
+First, identify the predicates required to build the ASP program.
 Then, convert all the facts and rules from the problem.
 Finally, convert the question into a query.
 Do not attempt to prove or disprove the conclusion, limit yourself to converting.
 You reply strictly in JSON format, with the following schema:
 """
 \{
-"predicates": [list of required predicates],
 "facts": [list of facts extracted from the problem],
 "rules": [list of rules extracted from the problem],
 "query": [query converted from the question]
@@ -24,53 +23,30 @@ NL conclusion:
 """
 Alex is not shy.
 """
-
-------
-
 {
-  "predicates": [
-    "Jompus($x, bool)",
-    "Fruity($x, bool)",
-    "Wumpus($x, bool)",
-    "Transparent($x, bool)",
-    "Tumpuses($x, bool)",
-    "Mean($x, bool)",
-    "Vumpuses($x, bool)",
-    "Cold($x, bool)",
-    "Yumpus($x, bool)",
-    "Orange($x, bool)",
-    "Numpus($x, bool)",
-    "Dull($x, bool)",
-    "Dumpus($x, bool)",
-    "Shy($x, bool)",
-    "Impuses($x, bool)",
-    "Rompus($x, bool)",
-    "Liquid($x, bool)",
-    "Zumpus($x, bool)"
-  ],
   "facts": [
-    "Tumpuses(Alex, True)"
+    "tumpus(alex)."
   ],
   "rules": [
-    "Jompus($x, True) >>> Fruity($x, True)",
-    "Jompus($x, True) >>> Wumpus($x, True)",
-    "Wumpus($x, True) >>> Transparent($x, False)",
-    "Wumpuses($x, True) >>> Tumpuses($x, True)",
-    "Tumpuses($x, True) >>> Mean($x, True)",
-    "Tumpuses($x, True) >>> Vumpuses($x, True)",
-    "Vumpuses($x, True) >>> Cold($x, True)",
-    "Vumpuses($x, True) >>> Yumpus($x, True)",
-    "Yumpus($x, True) >>> Orange($x, True)",
-    "Yumpus($x, True) >>> Numpus($x, True)",
-    "Numpus($x, True) >>> Dull($x, True)",
-    "Numpus($x, True) >>> Dumpus($x, True)",
-    "Dumpus($x, True) >>> Shy($x, False)",
-    "Impuses($x, True) >>> Shy($x, True)",
-    "Dumpus($x, True) >>> Rompus($x, True)",
-    "Rompus($x, True) >>> Liquid($x, True)",
-    "Rompus($x, True) >>> Zumpus($x, True)"
+    "fruity(X) :- jompus(X).",
+    "wumpus(X) :- jompus(X).",
+    "not transparent(X) :- wumpus(X).",
+    "tumpus(X) :- wumpus(X).",
+    "mean(X) :- tumpus(X).",
+    "vumpus(X) :- tumpus(X).",
+    "cold(X) :- vumpus(X).",
+    "yumpus(X) :- vumpus(X).",
+    "orange(X) :- yumpus(X).",
+    "numpus(X) :- yumpus(X).",
+    "dull(X) :- numpus(X).",
+    "dumpus(X) :- numpus(X).",
+    "not shy(X) :- dumpus(X).",
+    "shy(X) :- impus(X).",
+    "rompus(X) :- dumpus(X).",
+    "liquid(X) :- rompus(X).",
+    "zumpus(X) :- rompus(X)."
   ],
-  "query": "Shy(Alex, False)"
+  "query": "not shy(alex)"
 }
 
 ###
@@ -86,38 +62,26 @@ NL conclusion:
 """
 Erin is smart.
 """
-
-------
-
 {
-  "predicates": [
-    "Big($x, bool)",
-    "Red($x, bool)",
-    "Smart($x, bool)",
-    "Kind($x, bool)",
-    "Rough($x, bool)",
-    "White($x, bool)",
-    "Young($x, bool)"
-  ],
   "facts": [
-    "Big(Dave, True)",
-    "Red(Dave, True)",
-    "Smart(Erin, True)",
-    "Kind(Fiona, True)",
-    "Smart(Fiona, True)",
-    "Rough(Gary, True)",
-    "White(Gary, True)"
+  "big(dave).",
+  "red(dave).",
+  "smart(erin).",
+  "kind(fiona).",
+  "smart(fiona).",
+  "rough(gary).",
+  "white(gary)."
   ],
   "rules": [
-    "Young($x, True) >>> White($x, True)",
-    "Kind($x, True) && White($x, True) >>> Big($x, True)",
-    "Kind($x, True) >>> Young($x, True)",
-    "Young(Fiona, True) && Rough(Fiona, True) >>> Red(Fiona, True)",
-    "Big($x, True) >>> Rough($x, True)",
-    "Rough($x, True) && White($x, True) >>> Red($x, True)",
-    "Kind($x, True) && Big($x, False) >>> Red($x, True)"
+    "white(X) :- young(X).",
+    "big(X) :- kind(X), white(X).",
+    "young(X) :- kind(X).",
+    "red(fiona) :- young(fiona), rough(fiona).",
+    "rough(X) :- big(X).",
+    "red(X) :- rough(X), white(X).",
+    "red(X) :- kind(X), not big(X)."
   ],
-  "query": "Smart(Erin, True)"
+  "query": "smart(erin)"
 }
 
 ###
