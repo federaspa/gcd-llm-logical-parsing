@@ -1,7 +1,7 @@
 from typing import Optional
 from llama_cpp import LlamaGrammar, Llama
 from utils.template_manager import TemplateManager
-from utils.prompters import FOL_Prompter, SIN_Prompter, LD_Prompter
+from utils.prompters import FOL_Prompter, SIN_Prompter, LD_Prompter, LSAT_prompter
 import json
 import numpy as np
 from timeout_decorator import timeout
@@ -44,7 +44,8 @@ class Model:
         prompters = {
             'FOL': FOL_Prompter,
             'SIN': SIN_Prompter,
-            'LD': LD_Prompter
+            'LD': LD_Prompter,
+            'LSAT': LSAT_prompter
         }
         return prompters[self.template_manager.type](self.config)
 

@@ -1,0 +1,234 @@
+The task is to convert a natural language reasoning problem into Answer Set Programming (ASP) format.
+First, identify the predicates required to build the ASP program.
+Then, convert all the facts and rules and options from the problem.
+Finally, convert the question into a query.
+Do not attempt to prove or disprove the conclusion, limit yourself to converting.
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"facts": [list of facts extracted from the problem],
+"rules": [list of rules extracted from the problem],
+"rules": [list of options extracted from the problem],
+"query": [query converted from the question]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Context:
+"""
+Exactly six trade representatives negotiate a treaty: Klosnik, Londi, Manley, Neri, Osata, Poirier. There are exactly six chairs evenly spaced around a circular table. The chairs are numbered 1 through 6, with successively numbered chairs next to each other and chair number 1 next to chair number 6. Each chair is occupied by exactly one of the representatives. The following conditions apply: Poirier sits immediately next to Neri. Londi sits immediately next to Manley, Neri, or both. Klosnik does not sit immediately next to Manley. If Osata sits immediately next to Poirier, Osata does not sit immediately next to Manley.
+"""
+
+Question:
+"""
+Which one of the following seating arrangements of the six representatives in chairs 1 through 6 would NOT violate the stated conditions?
+"""
+
+Options: 
+"""
+A) Klosnik, Poirier, Neri, Manley, Osata, Londi
+B) Klosnik, Londi, Manley, Poirier, Neri, Osata
+C) Klosnik, Londi, Manley, Osata, Poirier, Neri
+D) Klosnik, Osata, Poirier, Neri, Londi, Manley
+E) Klosnik, Neri, Londi, Osata, Manley, Poirier
+"""
+
+------
+
+{
+  "facts": [
+    "person(klosnik).",
+    "person(londi).",
+    "person(manley).",
+    "person(neri).",
+    "person(osata).",
+    "person(poirier).",
+    "seat(1).",
+    "seat(2).",
+    "seat(3).",
+    "seat(4).",
+    "seat(5).",
+    "seat(6).",
+    "next(1, 2).",
+    "next(2, 3).",
+    "next(3, 4).",
+    "next(4, 5).",
+    "next(5, 6).",
+    "next(6, 1)."
+  ],
+  "rules": [
+    "1 { sits(P, S) : seat(S) } 1 :- person(P).",
+    "1 { sits(P, S) : person(P) } 1 :- seat(S).",
+    "adjacent(X, Y) :- next(X, Y).",
+    "adjacent(X, Y) :- next(Y, X).",
+    "adjacent(P1, P2) :- sits(P1, S1), sits(P2, S2), adjacent(S1, S2).",
+    ":- not adjacent(poirier, neri).",
+    ":- not adjacent(londi, manley), not adjacent(londi, neri).",
+    ":- adjacent(klosnik, manley).",
+    ":- adjacent(osata, poirier), adjacent(osata, manley)."
+  ],
+  "options": [
+    "option(a) :- sits(klosnik, 1), sits(poirier, 2), sits(neri, 3), sits(manley, 4), sits(osata, 5), sits(londi, 6).",
+    "option(b) :- sits(klosnik, 1), sits(londi, 2), sits(manley, 3), sits(poirier, 4), sits(neri, 5), sits(osata, 6).",
+    "option(c) :- sits(klosnik, 1), sits(londi, 2), sits(manley, 3), sits(osata, 4), sits(poirier, 5), sits(neri, 6).",
+    "option(d) :- sits(klosnik, 1), sits(osata, 2), sits(poirier, 3), sits(neri, 4), sits(londi, 5), sits(manley, 6).",
+    "option(e) :- sits(klosnik, 1), sits(neri, 2), sits(londi, 3), sits(osata, 4), sits(manley, 5), sits(poirier, 6)."
+  ],
+  "query": "answer(X) :- option(X), not invalid(X).",
+  "label": "B"
+}
+
+###
+
+Here's another example:
+
+Context:
+"""
+The Mammoth Corporation has just completed hiring nine new workers: Brandt, Calva, Duvall, Eberle, Fu, Garcia, Haga, Irving, and Jessup. Fu and Irving were hired on the same day as each other, and no one else was hired that day. Calva and Garcia were hired on the same day as each other, and no one else was hired that day. On each of the other days of hiring, exactly one worker was hired. Eberle was hired before Brandt. Haga was hired before Duvall. Duvall was hired after Irving but before Eberle. Garcia was hired after both Jessup and Brandt. Brandt was hired before Jessup.
+"""
+
+Question:
+"""
+Who were the last two workers to be hired?
+"""
+
+Options: 
+"""
+A) Eberle and Jessup
+B) Brandt and Garcia
+C) Brandt and Calva
+D) Garcia and Calva
+E) Jessup and Brandt
+"""
+
+------
+
+{
+  "facts": [
+    "worker(brandt).",
+    "worker(calva).",
+    "worker(duvall).",
+    "worker(eberle).",
+    "worker(fu).",
+    "worker(garcia).",
+    "worker(haga).",
+    "worker(irving).",
+    "worker(jessup).",
+    "day(1..9)."
+  ],
+  "rules": [
+    "1 { hired(W, D) : day(D) } 1 :- worker(W).",
+    "same_day(fu, irving).",
+    "same_day(calva, garcia).",
+    "same_day(X, Y) :- hired(X, D), hired(Y, D), X != Y.",
+    ":- same_day(X, Y), same_day(X, Z), Y != Z.",
+    ":- same_day(fu, irving), same_day(fu, W), W != irving, W != fu.",
+    ":- same_day(calva, garcia), same_day(calva, W), W != garcia, W != calva.",
+    "before(X, Y) :- hired(X, D1), hired(Y, D2), D1 < D2.",
+    ":- not before(eberle, brandt).",
+    ":- not before(haga, duvall).",
+    ":- not before(irving, duvall).",
+    ":- not before(duvall, eberle).",
+    ":- not before(jessup, garcia).",
+    ":- not before(brandt, garcia).",
+    ":- not before(brandt, jessup)."
+  ],
+  "options": [
+    "option(a) :- hired(eberle, D1), hired(jessup, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(b) :- hired(brandt, D1), hired(garcia, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(c) :- hired(brandt, D1), hired(calva, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(d) :- hired(garcia, D1), hired(calva, D2), D1 = D2, D1 = 9.",
+    "option(e) :- hired(jessup, D1), hired(brandt, D2), D1 > D2, D1 = 9, D2 = 8."
+  ],
+  "query": "answer(X) :- option(X), not invalid(X).",
+  "label": "D"
+}
+
+###
+
+Here's another example:
+
+Context:
+"""
+The members of a five-person committee will be selected from among three parents—F, G, and H—three students—K, L, and M—and four teachers—U, W, X, and Z. The selection of committee members will meet the following conditions: The committee must include exactly one student. F and H cannot both be selected. M and Z cannot both be selected. U and W cannot both be selected. F cannot be selected unless Z is also selected. W cannot be selected unless H is also selected.
+"""
+
+Question:
+"""
+Which one of the following is a pair of people who CANNOT both be selected?
+"""
+
+Options: 
+"""
+A) F and G
+B) F and M
+C) G and K
+D) H and L
+E) M and U
+"""
+
+------
+
+{
+  "facts": [
+    "parent(f).",
+    "parent(g).",
+    "parent(h).",
+    "student(k).",
+    "student(l).",
+    "student(m).",
+    "teacher(u).",
+    "teacher(w).",
+    "teacher(x).",
+    "teacher(z).",
+    "person(P) :- parent(P).",
+    "person(P) :- student(P).",
+    "person(P) :- teacher(P)."
+  ],
+
+  "rules": [
+    "{ selected(P) : person(P) } = 5.",
+    "1 { selected(S) : student(S) } 1.",
+    ":- selected(f), selected(h).",
+    ":- selected(m), selected(z).",
+    ":- selected(u), selected(w).",
+    ":- selected(f), not selected(z).",
+    ":- selected(w), not selected(h).",
+    "cannot_both(A,B) :- person(A), person(B), A != B, conflict(A,B).",
+    "conflict(f,h).",
+    "conflict(m,z).",
+    "conflict(u,w).",
+    "conflict(f,m) :- not selected(z).",
+    "conflict(m,f) :- not selected(z)."
+  ],
+
+  "options": [
+    "option(a) :- cannot_both(f,g).",
+    "option(b) :- cannot_both(f,m).",
+    "option(c) :- cannot_both(g,k).",
+    "option(d) :- cannot_both(h,l).",
+    "option(e) :- cannot_both(m,u)."
+  ],
+
+  "query": "answer(X) :- option(X), not invalid(X)."
+}
+
+###
+
+Now let's convert this problem to ASP:
+
+Context:
+"""
+[[nl_problem]]
+"""
+
+Question:
+"""
+[[nl_question]]
+"""
+
+Options:
+"""
+[[nl_options]]
+"""

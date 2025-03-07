@@ -1,0 +1,166 @@
+The task is to convert a natural language reasoning problem into Answer Set Programming (ASP) format.
+First, identify the predicates required to build the ASP program.
+Then, convert all the facts and rules and options from the problem.
+Finally, convert the question into a query.
+Do not attempt to prove or disprove the conclusion, limit yourself to converting.
+You reply strictly in JSON format, with the following schema:
+"""
+\{
+"facts": [list of facts extracted from the problem],
+"rules": [list of rules extracted from the problem],
+"rules": [list of options extracted from the problem],
+"query": [query converted from the question]
+\}
+"""
+
+Here's an example of how to perform the conversion:
+
+Context:
+"""
+The members of a five-person committee will be selected from among three parents—F, G, and H—three students—K, L, and M—and four teachers—U, W, X, and Z. The selection of committee members will meet the following conditions: The committee must include exactly one student. F and H cannot both be selected. M and Z cannot both be selected. U and W cannot both be selected. F cannot be selected unless Z is also selected. W cannot be selected unless H is also selected.
+"""
+
+Question:
+"""
+Which one of the following is a pair of people who CANNOT both be selected?
+"""
+
+Options: 
+"""
+A) F and G
+B) F and M
+C) G and K
+D) H and L
+E) M and U
+"""
+
+------
+
+{
+  "facts": [
+    "parent(f).",
+    "parent(g).",
+    "parent(h).",
+    "student(k).",
+    "student(l).",
+    "student(m).",
+    "teacher(u).",
+    "teacher(w).",
+    "teacher(x).",
+    "teacher(z).",
+    "person(P) :- parent(P).",
+    "person(P) :- student(P).",
+    "person(P) :- teacher(P)."
+  ],
+
+  "rules": [
+    "{ selected(P) : person(P) } = 5.",
+    "1 { selected(S) : student(S) } 1.",
+    ":- selected(f), selected(h).",
+    ":- selected(m), selected(z).",
+    ":- selected(u), selected(w).",
+    ":- selected(f), not selected(z).",
+    ":- selected(w), not selected(h).",
+    "cannot_both(A,B) :- person(A), person(B), A != B, conflict(A,B).",
+    "conflict(f,h).",
+    "conflict(m,z).",
+    "conflict(u,w).",
+    "conflict(f,m) :- not selected(z).",
+    "conflict(m,f) :- not selected(z)."
+  ],
+
+  "options": [
+    "option(a) :- cannot_both(f,g).",
+    "option(b) :- cannot_both(f,m).",
+    "option(c) :- cannot_both(g,k).",
+    "option(d) :- cannot_both(h,l).",
+    "option(e) :- cannot_both(m,u)."
+  ],
+
+  "query": "answer(X) :- option(X), not invalid(X)."
+}
+
+###
+
+Here's another example:
+
+Context:
+"""
+The Mammoth Corporation has just completed hiring nine new workers: Brandt, Calva, Duvall, Eberle, Fu, Garcia, Haga, Irving, and Jessup. Fu and Irving were hired on the same day as each other, and no one else was hired that day. Calva and Garcia were hired on the same day as each other, and no one else was hired that day. On each of the other days of hiring, exactly one worker was hired. Eberle was hired before Brandt. Haga was hired before Duvall. Duvall was hired after Irving but before Eberle. Garcia was hired after both Jessup and Brandt. Brandt was hired before Jessup.
+"""
+
+Question:
+"""
+Who were the last two workers to be hired?
+"""
+
+Options: 
+"""
+A) Eberle and Jessup
+B) Brandt and Garcia
+C) Brandt and Calva
+D) Garcia and Calva
+E) Jessup and Brandt
+"""
+
+------
+
+{
+  "facts": [
+    "worker(brandt).",
+    "worker(calva).",
+    "worker(duvall).",
+    "worker(eberle).",
+    "worker(fu).",
+    "worker(garcia).",
+    "worker(haga).",
+    "worker(irving).",
+    "worker(jessup).",
+    "day(1..9)."
+  ],
+  "rules": [
+    "1 { hired(W, D) : day(D) } 1 :- worker(W).",
+    "same_day(fu, irving).",
+    "same_day(calva, garcia).",
+    "same_day(X, Y) :- hired(X, D), hired(Y, D), X != Y.",
+    ":- same_day(X, Y), same_day(X, Z), Y != Z.",
+    ":- same_day(fu, irving), same_day(fu, W), W != irving, W != fu.",
+    ":- same_day(calva, garcia), same_day(calva, W), W != garcia, W != calva.",
+    "before(X, Y) :- hired(X, D1), hired(Y, D2), D1 < D2.",
+    ":- not before(eberle, brandt).",
+    ":- not before(haga, duvall).",
+    ":- not before(irving, duvall).",
+    ":- not before(duvall, eberle).",
+    ":- not before(jessup, garcia).",
+    ":- not before(brandt, garcia).",
+    ":- not before(brandt, jessup)."
+  ],
+  "options": [
+    "option(a) :- hired(eberle, D1), hired(jessup, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(b) :- hired(brandt, D1), hired(garcia, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(c) :- hired(brandt, D1), hired(calva, D2), D1 > D2, D1 = 9, D2 = 8.",
+    "option(d) :- hired(garcia, D1), hired(calva, D2), D1 = D2, D1 = 9.",
+    "option(e) :- hired(jessup, D1), hired(brandt, D2), D1 > D2, D1 = 9, D2 = 8."
+  ],
+  "query": "answer(X) :- option(X), not invalid(X).",
+  "label": "D"
+}
+
+###
+
+Now let's convert this problem to ASP:
+
+Context:
+"""
+[[nl_problem]]
+"""
+
+Question:
+"""
+[[nl_question]]
+"""
+
+Options:
+"""
+[[nl_options]]
+"""

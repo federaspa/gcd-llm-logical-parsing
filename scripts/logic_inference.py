@@ -10,10 +10,11 @@ from timeout_decorator import timeout, TimeoutError
 import sys
 import re
 
+from utils.utils import get_models
+
 from symbolic_solvers.fol_solver.prover9_solver import FOL_Prover9_Program
-from symbolic_solvers.z3_solver.sat_problem_solver import LSAT_Z3_Program
 from symbolic_solvers.math_solver.math_solver import SymPy_Program
-from symbolic_solvers.pyke_solver.pyke_solver import Pyke_Program
+from symbolic_solvers.asp_solver.clingo_solver import Clingo_Program
 
 @dataclass
 class InferenceConfig:
@@ -21,6 +22,7 @@ class InferenceConfig:
     shots_number: str
     dataset_name: str
     data_path: str
+    models_path: str
     split: str
     save_path: str
     self_refine_round: int = 0
@@ -29,12 +31,9 @@ class LogicProgram:
     """Wrapper class for handling logic program execution"""
     EXECUTOR_MAP = {
         'FOLIO': FOL_Prover9_Program,
-        'FOLIOv2': FOL_Prover9_Program,
-        'LogicNLI': FOL_Prover9_Program,
-        'AR-LSAT': LSAT_Z3_Program,
         'GSM8K_symbolic': SymPy_Program,
         'GSM8K': SymPy_Program,
-        'ProofWriter': Pyke_Program,
+        'ProofWriter': Clingo_Program
     }
 
     def __init__(self, dataset_name: str):
@@ -50,22 +49,32 @@ class LogicProgram:
         # Remove whitespace and parse
         return json.loads(cleaned_string.strip())
     
-    @staticmethod
-    def parse_reasoning(input_string: str) -> Dict:
+    def parse_baseline(self, input_string: str) -> Dict:
         """Parse and clean reasoning result"""
         # Remove markdown markers if present
         
-        
+        answer_match = re.search(r'\s*the final answer is\s*(.*)', input_string, re.I)
+        if answer_match:
+            answer_line = answer_match.group(1).strip()
 
-        answer_boxes = re.findall(r'\\boxed\{[A-Z]\}', input_string)
+            if self.executor_class == SymPy_Program:
+                number_match = re.search(r'\b\d+\b', answer_line)
+                if number_match:
+                    answer = float(number_match.group(0))
+                    return answer, 'success', ''
+                else:
+                    return 'N/A', 'No answer found', ''
             
-        if len(answer_boxes) != 1:
-            return 'N/A', 'parsing error', f'Expected 1 answer box, got {len(answer_boxes)}'
-        
-        answer = re.search(r'[A-Z]', answer_boxes[0]).group(0)
-        
-        # Remove whitespace and parse
-        return answer, 'success', ''
+            else:        
+                # Try to find multiple choice answers (A, B, C, D, E possibly with parentheses)
+                choice_match = re.search(r'\b([A-E](?:\)|\.)?)\b', answer_line, re.I)
+                if choice_match:
+                    answer = choice_match.group(1).replace(')', '').replace('.', '').upper()
+                    return answer, 'success', ''
+                else:
+                    return 'N/A', 'No answer found', ''
+        else:
+            return 'N/A', 'No answer found', ''
 
     @timeout(seconds=60)
     def execute(self, logic_problem: Dict) -> Tuple[str, str, str]:
@@ -120,8 +129,8 @@ class LogicInferenceEngine:
             try:
                 logic_problem = sample[problem_key]['raw']
                 
-                if self.config.model_name.endswith('r'):
-                    answer_pred, status, error = self.program_executor.parse_reasoning(logic_problem)
+                if self.config.shots_number == 'baseline':
+                    answer_pred, status, error = self.program_executor.parse_baseline(logic_problem)
                 
                 else:
                     answer_pred, status, error = self.program_executor.execute(logic_problem)
@@ -148,10 +157,9 @@ class LogicInferenceEngine:
         # Create save directory if it doesn't exist
         save_path = Path(self.config.save_path)
         save_path.mkdir(parents=True, exist_ok=True)
-        
-        # Load and process data
+
         outputs = self.load_logic_problems()
-        
+
         # Process each type of logic problem
         for key in ['logic_problem', 'logic_problem_json', 'logic_problem_gcd']:
             print(f'\n{key.capitalize()}')
@@ -160,7 +168,7 @@ class LogicInferenceEngine:
             print(f"Execution errors: {execution_errors}")
         
         # Save results
-        save_file = save_path / self._get_file_name()
+        save_file = save_path / Path(self.config.shots_number) / Path('logic_inference') / self._get_file_name()
         with open(save_file, 'w') as f:
             json.dump(outputs, f, indent=2, ensure_ascii=False)
         
@@ -178,26 +186,22 @@ def parse_args() -> InferenceConfig:
     parser = argparse.ArgumentParser()
     parser.add_argument('--shots-number', type=str, default='2shots', choices=['0shots', '2shots', '5shots', 'baseline'])
     # parser.add_argument('--programs-path', type=str, required=True)
-    parser.add_argument('--save-path', type=str, default='/data/users/fraspant/GCLLM/outputs')
+    parser.add_argument('--save-path', type=str, default='outputs')
     parser.add_argument('--model-name', type=str)
     parser.add_argument('--dataset-name', type=str, default='FOLIO')
-    parser.add_argument('--data-path', type=str, default='/data/users/fraspant/GCLLM/data')
+    parser.add_argument('--models-path', type=str, default='/home/fraspanti/LLMs')
+    parser.add_argument('--data-path', type=str, default='data')
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--self-refine-round', type=int, default=0)
     
     args = parser.parse_args()
     return InferenceConfig(**vars(args))
 
-def get_available_models(config_path: str = './configs/models') -> List[str]:
-    """Get list of available models from config directory"""
-    config_dir = Path(config_path)
-    return [f.stem for f in config_dir.glob('*.yml')]
-
 def main():
     config = parse_args()
     
     # Get list of models to process
-    models = [config.model_name] if config.model_name else get_available_models()
+    models = [config.model_name] if config.model_name else get_models(config.models_path)
     config.programs_path = Path(os.path.join(config.save_path, config.shots_number, 'logic_problems'))
     
     print(f"Dataset: {config.dataset_name}")

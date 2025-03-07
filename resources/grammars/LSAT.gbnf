@@ -1,0 +1,76 @@
+#### Wrap program components in a valid JSON structure ####
+root ::= "{" ws facts ws rules ws options ws query ws "}"
+ws ::= | " " | "\n" [ \t]{0,5}
+
+#### Main components ####
+facts ::= "\"facts\":" ws "[" ws factslist ws "],"
+factslist ::= "\"" FACT "\"" (ws "," ws "\"" FACT "\"")*
+rules ::= "\"rules\":" ws "[" ws ruleslist ws "],"
+ruleslist ::= "\"" RULE "\"" (ws "," ws "\"" RULE "\"")*
+options ::= "\"options\":" ws "[" ws optionslist ws "],"
+optionslist ::= "\"" OPTION "\"" (ws "," ws "\"" OPTION "\"")*
+query ::= "\"query\":" ws "\"" QUERY "\""
+
+#### Facts representation ####
+FACT ::= PREDICATE | SIMPLEASSIGNMENT
+PREDICATE ::= identifier "(" TERMS ")" "."
+SIMPLEASSIGNMENT ::= identifier "(" TERMS ")" " = " (number | STRING) "."
+TERMS ::= TERM (", " TERM)*
+TERM ::= identifier | number | STRING | VARIABLE
+
+#### Rules representation ####
+RULE ::= HEAD " :- " BODY "."
+HEAD ::= ATOM | DISJUNCTION
+DISJUNCTION ::= ATOM (" | " ATOM)*
+BODY ::= LITERAL (", " LITERAL)*
+LITERAL ::= ATOM | "not " ATOM | COMPARISON
+ATOM ::= identifier "(" TERMS ")" | identifier "(" TERMS ")" " = " (number | STRING | VARIABLE)
+COMPARISON ::= EXPRESSION COMPOP EXPRESSION
+
+#### Options representation ####
+OPTION ::= "option(" OPTIONLETTER ")" " :- " BODY "."
+OPTIONLETTER ::= "a" | "b" | "c" | "d" | "e" | "f"
+
+#### ASP-specific constructs ####
+CONSTRAINT ::= " :- " BODY "."
+CHOICE ::= "{" ATOM ("," ATOM)* "}" (number | VARIABLE) "."
+COUNT ::= "#count{" COUNTINGELEMENTS "}" COMPOP (number | VARIABLE)
+COUNTINGELEMENTS ::= COUNTINGELEMENT (", " COUNTINGELEMENT)*
+COUNTINGELEMENT ::= VARIABLE ("," VARIABLE)* ":" BODY
+
+#### Query representation ####
+QUERY ::= "answer(X) :- option(X), not invalid(X)."
+
+#### Expressions ####
+EXPRESSION ::= TERM | TERM ARITHOP EXPRESSION | "(" EXPRESSION ")"
+ARITHOP ::= " + " | " - " | " * " | " / " | " mod "
+COMPOP ::= " = " | " != " | " < " | " <= " | " > " | " >= "
+
+#### Basic elements ####
+identifier ::= [a-z][a-zA-Z0-9_]*
+VARIABLE ::= [A-Z][a-zA-Z0-9_]*
+number ::= [0-9]+
+STRING ::= "\"" [a-zA-Z0-9_]+ "\""
+
+#### Common ASP reasoning patterns ####
+# Ordering
+ORDERINGRULE ::= "pos(" identifier ", " VARIABLE ")" " :- " BODY "."
+NEXTRULE ::= "next(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+BEFORERULE ::= "before(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+AFTERRULE ::= "after(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+
+# Assignment
+ASSIGNMENTRULE ::= "assign(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+ALLOCATIONRULE ::= "alloc(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+BELONGSRULE ::= "belongs(" VARIABLE ", " VARIABLE ")" " :- " BODY "."
+
+# Exclusivity
+EXCLUSIVERULE ::= " :- " ATOM ", " ATOM ", " VARIABLE " != " VARIABLE "."
+DISTINCTRULE ::= " :- " ATOM ", " ATOM ", " VARIABLE " = " VARIABLE "."
+
+# Conditionals
+CONDITIONALRULE ::= ATOM " :- " ATOM ", " BODY "."
+
+# Option validation
+OPTIONCHECK ::= "invalid(" OPTIONLETTER ")" " :- " "option(" OPTIONLETTER "), " BODY "."
+OPTIONVALID ::= "valid(" OPTIONLETTER ")" " :- " "option(" OPTIONLETTER "), not invalid(" OPTIONLETTER ")."

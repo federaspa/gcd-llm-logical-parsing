@@ -1,0 +1,380 @@
+[
+  {
+    "id": 0,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "Which one of the following is a complete and accurate list of the children who must be among those assigned to shared lockers?",
+      "options": [
+        "A) Fred, Juan",
+        "B) Juan, Paul",
+        "C) Juan, Marc, Paul",
+        "D) Juan, Marc, Trisha",
+        "E) Juan, Nita, Trisha"
+      ],
+      "answer": "E"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(pauly).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"selected(L, B) :- lock(B), boy(B).\",\n    \"selected(L, G) :- lock(L), girl(G).\",\n    \"exactly_one_per_locker(L) :- lock(L), (selected_boy_or_girl_count_for_L_1 + selected_boy_or_girl_count_for_L_2 + 0) = 1.\",\n    \"one_person_per_child(C) :- child(C), exactly_one_person_for_C(1).\",\n    \"exactly_one_person_for_C(Count) :- (selected_locker_and_gender_for_C_boy + selected_locker_and_gender_for_C_girl) = Count, lock(L), girl(G), boy(B), C != G, C != B.\",\n    \"shared_locker(C) :- child(C), shared_locker_count_for_C(1).\",\n    \"not_shared_locker(C) :- child(C), not_shared_locker_count_for_C(0).\",\n    \"one_person_per_locker_and_gender(L, G) :- lock(L), girl(G), (selected_locker_and_gender_for_L_boy + selected_locker_and_gender_for_L_girl) = 1.\",\n    \"not_adjacent_lockers(L1, L2) :- lock(L1), lock(L2), abs(L1, L2) = 1.\",\n    \"assign(fred, 3) :- child(fred).\"\n  ],\n  \"options\": [\n    \"option(a) :- not adjacent_lockers(1, 5).\",\n    \"option(b) :- selected(4, rachel).\",\n    \"option(c) :- one_person_per_child(juan), shared_locker(juan).\",\n    \"option(d) :- not_shared_locker(rachel).\",\n    \"option(e) :- not_adjacent_lockers(2, 3).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.8212252855300903,
+      "generation_time": 106.01416,
+      "error_message": null
+    }
+  },
+  {
+    "id": 1,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If Trisha is assigned to locker 3 and Marc alone is assigned to locker 1, then which one of the following must be true?",
+      "options": [
+        "A) Juan is assigned to locker 4.",
+        "B) Juan is assigned to locker 5.",
+        "C) Paul is assigned to locker 2.",
+        "D) Rachel is assigned to locker 2.",
+        "E) Rachel is assigned to locker 5."
+      ],
+      "answer": "B"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(paul).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"assigned(L, C) :- lock(C), child(P), assign(P, L).\",\n    \"lock(1) :- true(1).\",\n    \"lock(2) :- true(2).\",\n    \"lock(3) :- true(3).\",\n    \"lock(4) :- true(4).\",\n    \"lock(5) :- true(5).\",\n    \"child(fred) :- boy(fred).\",\n    \"child(juan) :- boy(juan).\",\n    \"child(marc) :- boy(marc).\",\n    \"child(paul) :- boy(paul).\",\n    \"child(nita) :- girl(nita).\",\n    \"child(rachel) :- girl(rachel).\",\n    \"child(trisha) :- girl(trisha).\",\n    \"share(L, B1, G1, B2, G2) :- assigned(L, B), girl(G), not rachel(G), lock(L), boy(B1), boy(B2), girl(G1), girl(G2), share(B1, B2, G1, G2).\",\n    \"not_adjacent(L, L1, C1, C2) :- assigned(L, C), child(C1), adjacent(L, L1), lock(L1), not trisha(C2).\",\n    \"assign(P, 3) :- fred(P).\"\n  ],\n  \"options\": [\n    \"option(a) :- share(fred, juan, nita, marc, rachel).\",\n    \"option(b) :- share(juan, marc, nita, paul, trisha).\",\n    \"option(c) :- not share(marc, trisha, juan, rachel, nita).\",\n    \"option(d) :- assign(fred, 3), adjacent(1, 2), not share(nita, marc, rachel, juan, trisha).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.649359107017517,
+      "generation_time": 108.555052,
+      "error_message": null
+    }
+  },
+  {
+    "id": 2,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If the four boys are assigned to consecutively numbered lockers and Juan is assigned to locker 5, then which one of the following is a complete and accurate list of lockers each of which CANNOT be a shared locker?",
+      "options": [
+        "A) locker 2",
+        "B) locker 4",
+        "C) locker 1, locker 2",
+        "D) locker 1, locker 4",
+        "E) locker 2, locker 4"
+      ],
+      "answer": "D"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(paul).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"assigned(L, B) :- boy(B), assigned_to(B, L).\",\n    \"assigned(L, G) :- girl(G), assigned_to(G, L).\",\n    \"person(P) :- boy(P).\",\n    \"person(P) :- girl(P).\",\n    \"lockers(1, 5) :- locker(L).\",\n    \"assign_locker(X, Y) :- person(X), lockers(Y, Z), not assigned(Z, X).\",\n    \"assigned_to(Girls, Lockers) :- girl(Girls), lockers(Lockers, L).\",\n    \"one_per_person(X, Y) :- person(X), exactly_one(assn, assns, assign_locker, X, assn, assns, Y).\",\n    \"exactly_one(X, AsnSet, Pred, Obj1, Arg2, ObjN, Val) :- length(AsnSet, Len), Len = 1.\",\n    \"one_per_locker(Y, AsnSet) :- lockers(Lockers, L), exactly_one(locker, Lockers, assign_locker, Y, locker, Lockers, Val).\",\n    \"same_locker(X, Y) :- assigned_to(GirlsX, XLock), assigned_to(GirlsY, YLock), X != Y, XL = YL.\",\n    \"one_girl_per_locker(Y, AsnSet) :- lockers(Lockers, L), exactly_one(locker, Lockers, assign_locker, Y, locker, Lockers, Val).\",\n    \"conflict_juan_rachel(X1, X2) :- assigned_to(juan, X1), not same_locker(rachel, X2).\",\n    \"conflict_nita_trisha(LockX, LLockY) :- assigned_to(nita, LockX), lockers(LLL, Y), assigned_to(trisha, LLY), LL = YY.\",\n    \"before(XL, YL) :- assigned_to(juan, XL), assigned_to(rachel, YL).\",\n    \"conflict_fred_3(LockX) :- not same_locker(fred, LockX).\"\n  ],\n  \"options\": [\n    \"option(a) :- exactly_one(locker, L1s, assign_locker, fred, locker, L1s, Val), assigned_to(juan, L2), lockers(L2, X), before(X, Y), lockers(Y, YLock), not same_locker(fred, YLock).\",\n    \"option(b) :- exactly_one(locker, L1s, assign_locker, jordan, locker, L1s, Val), assigned_to(rachel, L2), lockers(L2, X), before(X, Y), lockers(Y, YLock), not same_locker(fred, YLock).\",\n    \"option(c) :- exactly_one(locker, L1s, assign_locker, marc, locker, L1s, Val), assigned_to(rachel, L2), lockers(L2, X), before(X, Y), lockers(Y, YLock), not same_locker(fred, YLock).\",\n    \"option(d) :- exactly_one(locker, L1s, assign_locker, paul, locker, L1s, Val), assigned_to(rachel, L2), lockers(L2, X), before(X, Y), lockers(Y, YLock), not same_locker(fred, YLock).\",\n    \"option(e) :- exactly_one(locker, L1s, assign_locker, nita, locker, L1s, Val), assigned_to(rachel, L2), lockers(L2, X), before(X, Y), lockers(Y, YLock), not same_locker(fred, YLock).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.6270477771759033,
+      "generation_time": 198.926102,
+      "error_message": null
+    }
+  },
+  {
+    "id": 3,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "Once Rachel has been assigned to a locker, what is the maximum number of different lockers each of which could be the locker to which Juan is assigned?",
+      "options": [
+        "A) one",
+        "B) two",
+        "C) three",
+        "D) four",
+        "E) five"
+      ],
+      "answer": "C"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(paul).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"assigned(L, C) :- lock(L), child(C).\",\n    \"one_child_per_locker(L) :- lock(L), 1 = count_assigned_to_locker_including_shared_children_of_both_gender_in_L.\",\n    \"one_locker_per_child(C) :- child(C), exactly_one_locker_assigned_including_shared_children_of_both_gender_in_C(A, L).\",\n    \"shared_locker(B1, B2) :- boy(B1), boy(B2), not one_locker_per_child(B1), not one_locker_per_child(B2).\",\n    \"exclusive_lockers(GirlA, GirlB) :- girl(GirlA), girl(GirlB), adjacent_lockers(LockA, LockB), assigned(LockA, B1), assigned(LockB, B2), boy(B1), boy(B2), not shared_locker(B1, B2).\",\n    \"conflict(Juan, Rachel) :- boy(Juan), girl(Rachel), not one_child_per_locker(4).\",\n    \"adjacent_lockers(L1, L2) :- lock(L1), lock(L2), abs(L2_L1) = 1.\",\n    \"abs(X) = Y :- X < 0, Y = (X * negative_one).\",\n    \"abs(X) = X :- not negation(Negative_X), Negative_X = (X * negative_one).\"\n  ],\n  \"options\": [\n    \"option(a) :- assigned(1, nita), adjacent_lockers(LockA, LockB), assigned(LockA, marc), assigned(LockB, juan).\",\n    \"option(b) :- assigned(2, rachel), adjacent_lockers(LockA, LockB), assigned(LockA, marc), assigned(LockB, paul).\",\n    \"option(c) :- assigned(3, nita), adjacent_lockers(LockA, LockB), assigned(LockA, marc), assigned(LockB, juan).\",\n    \"option(d) :- assigned(4, rachel), adjacent_lockers(LockA, LockB), assigned(LockA, marc), assigned(LockB, paul).\",\n    \"option(e) :- assigned(5, nita), adjacent_lockers(LockA, LockB), assigned(LockA, marc), assigned(LockB, juan).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.7333863973617554,
+      "generation_time": 130.442029,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If the first three lockers are assigned to girls, which one of the following must be true?",
+      "options": [
+        "A) Juan is assigned to locker 1.",
+        "B) Nita is assigned to locker 3.",
+        "C) Trisha is assigned to locker 1.",
+        "D) Juan is assigned to the same locker as Trisha.",
+        "E) Paul is assigned to the same locker as Trisha."
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(paul).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"selected(L, C) :- locker(L), child(C), exactly_one_child_per_locker(L).\",\n    \"exactly_one_child_per_locker(1) :- not shared_locker(juan).\",\n    \"shared_locker(rachel) :- selected(X, rachel), X != juan.\",\n    \"adjacent_lockers(L1, L2) :- locker(L1), locker(L2), abs(L1L2) = 1.\",\n    \"conflict(L, C1, C2) :- child(C1), child(C2), girl(C1), girl(C2), adjacent_lockers(L, L1), selected(L1, C1), not allowed_to_adjacent_locker(C2).\",\n    \"not_allowed_to_adjacent_locker(trisha) :- shared_locker(nita).\",\n    \"fixed_position(fred, 3) :- fixed_position(X, Y), X = fred, Y = 3.\"\n  ],\n  \"options\": [\n    \"option(a) :- selected(1, rachel), adjacent_lockers(1, L2), not allowed_to_adjacent_locker(trisha).\",\n    \"option(b) :- selected(5, trisha), shared_locker(nita).\",\n    \"option(c) :- selected(3, nita), adjacent_lockers(3, 4), fixed_position(fred, 3).\",\n    \"option(d) :- selected(2, rachel), not shared_locker(juan).\",\n    \"option(e) :- selected(1, trisha), allowed_to_adjacent_locker(rachel).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.709762692451477,
+      "generation_time": 93.429569,
+      "error_message": null
+    }
+  },
+  {
+    "id": 5,
+    "nl_problem": {
+      "context": "Four boys—Fred, Juan, Marc, and Paul—and three girls—Nita, Rachel, and Trisha—will be assigned to a row of five adjacent lockers, numbered consecutively 1 through 5, arranged along a straight wall. The following conditions govern the assignment of lockers to the seven children: Each locker must be assigned to either one or two children, and each child must be assigned to exactly one locker. Each shared locker must be assigned to one girl and one boy. Juan must share a locker, but Rachel cannot share a locker. Nita's locker cannot be adjacent to Trisha's locker. Fred must be assigned to locker 3.",
+      "question": "If lockers 1 and 2 are each assigned to one boy and are not shared lockers, then locker 4 must be assigned to",
+      "options": [
+        "A) Juan",
+        "B) Paul",
+        "C) Rachel",
+        "D) Juan and Nita",
+        "E) Marc and Trisha"
+      ],
+      "answer": "C"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"boy(fred).\",\n    \"boy(juan).\",\n    \"boy(marc).\",\n    \"boy(paul).\",\n    \"girl(nita).\",\n    \"girl(rachel).\",\n    \"girl(trisha).\"\n  ],\n  \"rules\": [\n    \"person(P) :- boy(P).\",\n    \"person(P) :- girl(P).\",\n    \"selected(L, P) :- person(P), L = 1, hired(P).\",\n    \"selected(L, P) :- person(P), L > 1, hired(P).\",\n    \"hired(Fred3, D2) :- D2 >= 2.\",\n    \"same_locker(B1, B2) :- selected(D1, B1), selected(D1, B2).\",\n    \"same_locker(G1, G2) :- selected(D1, G1), selected(D1, G2).\",\n    \"not_same_locker(NitaLock, TrishaLock) :- NitaLock = D1, TrishaLock = D1 + 1.\",\n    \"shared_locker(BG) :- same_locker(B, G), person(B), person(G).\",\n    \"conflict(JuanShared) :- shared_locker(Juan).\",\n    \"not_conflict(RachelShared) :- not shared_locker(rachel).\",\n    \"conflict(NitaNotAdjTrisha) :- NitaLock = D1, TrishaLock = D2, abs(D1, D2) = 1.\"\n  ],\n  \"options\": [\n    \"option(a) :- conflict(Fred3Juan), hired(fred, d1), hired(juan, d2), shared_locker(juan).\",\n    \"option(b) :- conflict(JuanShared), hired(juan, d1), hired(marc, d2), not same_locker(juan, marc).\",\n    \"option(c) :- conflict(Fred3Marc), hired(fred, 3), hired(marc, d1), shared_locker(marc).\",\n    \"option(d) :- conflict(MarcShared), hired(marc, d1), hired(paul, d2), not same_locker(marc, paul).\",\n    \"option(e) :- conflict(NitaNotAdjTrisha), hired(nita, D1), hired(trisha, D2), abs(D1, D2) = 1.\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.5418847799301147,
+      "generation_time": 117.797512,
+      "error_message": null
+    }
+  },
+  {
+    "id": 6,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "Which one of the following could be a complete and accurate list of the types of CDs that are on sale?",
+      "options": [
+        "A) new jazz, used jazz, used opera, used pop, new rap",
+        "B) new jazz, used pop, used rap, new soul",
+        "C) used opera, used pop, new rap, used rap",
+        "D) used opera, new pop, used pop, new soul",
+        "E) used jazz, used pop, new soul, used soul"
+      ],
+      "answer": "E"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(pop).\",\n    \"type(opera).\",\n    \"type(jazz).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"on_sale(used_pop) :- type(used), sub_type(pop).\",\n    \"not_on_sale(new_opera) :- type(new), sub_type(opera).\",\n    \"all_soul(on_sale_used_pop, on_sale_new_rap) :- on_sale_used_pop(NewPop), on_sale_new_rap(Rap), NewPop != Rap.\",\n    \"no_jazz_on_sale(all_jazz_on_sale, no_rap_if_all_on_sale) :- all_jazz_on_sale(Jazz1, Jazz2), no_rap_if_all_on_sale(Rap).\",\n    \"new_pop_on_sale(neither_jazz_on_sale) :- not on_sale_used_jazz(TypeJazz1, TypeJazz2).\",\n    \"no_soul(on_sale_new_rap, rap_on_sale_neither_jazz) :- on_sale_new_rap(NewRap), neither_jazz_on_sale(NoTypeJazz1, NoTypeJazz2).\"\n  ],\n  \"options\": [\n    \"option(a) :- all_soul(X, Y).\",\n    \"option(b) :- no_jazz_on_sale(A, B).\",\n    \"option(c) :- new_pop_on_sale(C).\",\n    \"option(d) :- no_soul(D, E).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.623128056526184,
+      "generation_time": 74.758998,
+      "error_message": null
+    }
+  },
+  {
+    "id": 7,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "If new soul is not on sale, then which one of the following must be true?",
+      "options": [
+        "A) New rap is not on sale.",
+        "B) New rap is on sale.",
+        "C) Used opera is not on sale.",
+        "D) At least one type of jazz is not on sale.",
+        "E) At least one type of pop is not on sale."
+      ],
+      "answer": "E"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(pop).\",\n    \"type(jazz).\",\n    \"type(operetta).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"on_sale(type, pop) :- used_pop_on_sale = true.\",\n    \"not_on_sale(type, operetta) :- new_operetta_on_sale = true.\",\n    \"all_soul_on_sale_if_both_pop_on_sale(type, jazz, type, pop, soul) :- on_sale(jazz), on_sale(pop).\",\n    \"no_rap_if_both_jazz_on_sale(type, rap, type, jazz) :- on_sale(jazz), on_sale(jazz).\",\n    \"new_pop_on_sale_if_neither_jazz_on_sale(type, jazz, pop, new_pop) :- not on_sale(jazz), not on_sale(jazz).\",\n    \"no_soul_if_rap_on_sale(type, rap, type, soul) :- on_sale(rap).\"\n  ],\n  \"options\": [\n    \"option(a) :- on_sale(pop1, D1), on_sale(pop2, D2), all_soul_on_sale = true.\",\n    \"option(b) :- not new_operetta_on_sale_1098765432108965432108965432109876543210896543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543",
+      "perplexity": 1.1899038553237915,
+      "generation_time": 229.652448,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 8,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "If both types of jazz are on sale, then which one of the following is the minimum number of types of new CDs that could be included in the sale?",
+      "options": [
+        "A) one",
+        "B) two",
+        "C) three",
+        "D) four",
+        "E) five"
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(pop).\",\n    \"type(operetta).\",\n    \"type(jazz).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"on_sale(new_pop) :- true(used_pop_on_sale).\",\n    \"not(on_sale_new_operetta) :- on_sale(new_operetta).\",\n    \"all_soul_on_sale_if_both_jazz_on_sale(j1, j2) :- on_sale(jazz), on_sale(jazz).\",\n    \"no_rap_on_sale_if_both_jazz_on_sale(j1, j2) :- on_sale(jazz), on_sale(jazz).\",\n    \"new_pop_on_sale_if_neither_jazz_type_on_sale(j1, j2) :- not(on_sale_jazz), not(on_sale_jazz).\",\n    \"no_soul_on_sale_if_rap_type_on_sale(r1, r2) :- on_sale(rap), true(used_rap).\"\n  ],\n  \"options\": [\n    \"option(a) :- on_sale(jazz1), on_sale(jazz2), all_soul_on_sale(jazz1, jazz2).\",\n    \"option(b) :- not(on_sale_new_operetta), used_pop_on_sale(true).\",\n    \"option(c) :- new_pop_on_sale_if_neither_jazz_type_on_sale(none, none).\",\n    \"option(d) :- no_rap_on_sale_if_both_jazz_on_sale(j1, j2), on_sale(rap).\",\n    \"option(e) :- no_soul_on_sale_if_rap_type_on_sale(r1, r2), used_rap(true).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.5785280466079712,
+      "generation_time": 83.264779,
+      "error_message": null
+    }
+  },
+  {
+    "id": 9,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "Which one of the following CANNOT be true?",
+      "options": [
+        "A) Neither type of opera and neither type of rap is on sale.",
+        "B) Neither type of jazz and neither type of opera is on sale.",
+        "C) Neither type of opera and neither type of soul is on sale.",
+        "D) Neither type of jazz and neither type of soul is on sale.",
+        "E) Neither type of jazz and neither type of rap is on sale."
+      ],
+      "answer": "D"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(jazz).\",\n    \"type(operetta).\",\n    \"type(pop).\",\n    \"type(rap).\",\n    \"type(soul).\",\n    \"sale(new_pop) = 1.\",\n    \"not_sale(new_operetta) = 1.\"\n  ],\n  \"rules\": [\n    \"if_sale_both(new_jazz, used_jazz) :- sale(both_jazz), not_sale(neither_jazz).\",\n    \"if_not_sale_both(new_rap, used_rap) :- sale(both_rap), not_sale(neither_rap).\",\n    \"if_neither_sale(jazz1, jazz2) :- type(jazz), not_sale(jazz1), not_sale(jazz2), sale(new_pop).\"\n  ],\n  \"options\": [\n    \"option(a) :- if_sale_both(f_jazz, u_jazz), if_not_sale_both(n_rap, u_rap), if_neither_sale(j_f1, j_f2), type(f_jazz), type(u_jazz), type(n_rap), not(typeNeither).\",\n    \"option(b) :- if_not_sale_both(n_pop, f_operetta), if_not_sale_both(n_jazz, f_rap), if_not_sale_both(n_soul, u_soul).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.8376212120056152,
+      "generation_time": 66.242976,
+      "error_message": null
+    }
+  },
+  {
+    "id": 10,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "If neither type of jazz is on sale, then each of the following must be true EXCEPT:",
+      "options": [
+        "A) Used opera is on sale.",
+        "B) New rap is not on sale.",
+        "C) Used rap is not on sale.",
+        "D) New soul is on sale.",
+        "E) Used soul is on sale."
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(pop).\",\n    \"type(operetta).\",\n    \"type(jazz).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"sale(type_pop, new) :- type(new), type(pop).\",\n    \"not_sale(type_operetta) :- sale(type_operetta, used).\",\n    \"all_soul_on_sale_if_both_pop_types_on_sale_and_used_type_new_pop_sold(sale_type_pop1, used_type_pop2) :- sale(type_pop, new), not_sale(type_pop, used), type(pop), type(pop).\",\n    \"no_rap_on_sale_if_both_jazz_types_on_sale(no_rap_sale_jazz1, no_rap_sale_jazz2) :- sale(type_jazz, used), sale(type_jazz, new), type(jazz), type(jazz).\",\n    \"new_pop_sold_if_neither_type_jazz_on_sale_and_new_type_used(new_pop_sold_no_jazz1, new_pop_sold_no_jazz2) :- not_sale(type_jazz, used), not_sale(type_jazz, new), sale(type_pop, used), sale(type_pop, new), type(pop).\",\n    \"no_soul_if_either_type_rap_on_sale(no_soul_with_rap1, no_soul_with_rap2) :- sale(type_rap, used), sale(type_rap, new), type(rap).\"\n  ],\n  \"options\": [\n    \"option(a) :- all_soul_on_sale_and_neither_pop_types_sold(sale_type_pop1, not_sale_type_pop2).\",\n    \"option(b) :- no_jazz_forbidden_if_both_pop_types_used(no_jazz_forbidden_pop1, no_jazz_forbidden_pop2) = 0.\",\n    \"option(c) :- new_operetta_sold_and_neither_rap_soul_on_sale(sale_type_operetta, not_sale_type_rap, not_sale_type_soul).\",\n    \"option(d) :- both_jazz_types_sold_and_no_new_pop(sold_type_jazz1, sold_type_jazz2, no_sales_type_pop).\",\n    \"option(e) :- new_rap_sold_and_neither_pop_soul_on_sale(sale_type_rap, not_sale_type_pop, not_sale_type_soul).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.7667516469955444,
+      "generation_time": 114.032482,
+      "error_message": null
+    }
+  },
+  {
+    "id": 11,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "If new soul is the only type of new CD on sale, then which one of the following CANNOT be true?",
+      "options": [
+        "A) Used jazz is not on sale.",
+        "B) Used opera is not on sale.",
+        "C) Used rap is not on sale.",
+        "D) Used soul is on sale.",
+        "E) Used soul is not on sale."
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(pop).\",\n    \"type(oper).\",\n    \"type(jazz).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"on_sale(type) :- type(pop), used_pop_on_sale(true).\",\n    \"not_on_sale(type) :- type(oper).\",\n    \"on_sale_all_soul_if_both_pop_on_sale(true, true) :- on_sale(pop, new), on_sale(pop, used).\",\n    \"on_sale_no_rap_if_both_jazz_on_sale(false, false) :- on_sale(jazz, new), on_sale(jazz, used).\",\n    \"on_sale_new_pop_if_neither_jazz_on_sale(true, false) :- not on_sale(jazz, new), not on_sale(jazz, used).\",\n    \"no_soul_if_either_rap_on_sale(false, true) :- or(on_sale, rap, both).\"\n  ],\n  \"options\": [\n    \"option(a) :- on_sale(pop, new), on_sale(pop, used), on_sale_all_soul_if_both_pop_on_sale(true, true).\",\n    \"option(b) :- not on_sale(jazz, new), not on_sale(jazz, used), on_sale_new_pop_if_neither_jazz_on_sale(true, false).\",\n    \"option(c) :- or(on_sale, rap, both), no_soul_if_either_rap_on_sale(false, true).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.4525136947631836,
+      "generation_time": 74.618765,
+      "error_message": null
+    }
+  },
+  {
+    "id": 12,
+    "nl_problem": {
+      "context": "A music store carries exactly ten types of CDs—both new and used of each of jazz, opera, pop, rap, and soul. The store is having a sale on some of these types of CDs. The following conditions must apply: Used pop is on sale; new opera is not. If both types of pop are on sale, then all soul is. If both types of jazz are on sale, then no rap is. If neither type of jazz is on sale, then new pop is. If either type of rap is on sale, then no soul is.",
+      "question": "If exactly four of the five types of used CDs are the only CDs on sale, then which one of the following could be true?",
+      "options": [
+        "A) Used jazz is not on sale.",
+        "B) Used opera is not on sale.",
+        "C) Used rap is not on sale.",
+        "D) Neither type of jazz is on sale.",
+        "E) Neither type of rap and neither type of soul is on sale."
+      ],
+      "answer": "C"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"type(jazz).\",\n    \"type(operetta).\",\n    \"type(pop).\",\n    \"type(rap).\",\n    \"type(soul).\"\n  ],\n  \"rules\": [\n    \"on_sale(type, sale) :- type = pop_used.\",\n    \"not_on_sale(type, sale) :- type = operetta_new.\",\n    \"all_types_pop_sale(on_sale, all_pop_sale) :- on_sale(pop_new), on_sale(pop_old).\",\n    \"no_rap_if_both_jazz_on_sale(sale1, sale2) :- on_sale(jazz_new, sale1), on_sale(jazz_old, sale2).\",\n    \"no_soul_if_neither_jazz_sold(not_in_sale1, not_in_sale2) :- type = jazz_new, not_on_sale(type, not_in_sale1), type = jazz_old, not_on_sale(type, not_in_sale2).\",\n    \"new_pop_if_no_jazz_sold(on_sale1, on_sale2) :- no_soul_if_neither_jazz_sold(not_in_sale1, not_in_sale2), not on_sale(jazz_new, on_sale1), not on_sale(jazz_old, on_sale2).\"\n  ],\n  \"options\": [\n    \"option(a) :- on_sale(pop_new, sale1), on_sale(pop_old, sale2).\",\n    \"option(b) :- no_rap_if_both_jazz_on_sale(sale1, sale2).\",\n    \"option(c) :- new_pop_if_no_jazz_sold(on_sale1, on_sale2).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.5370830297470093,
+      "generation_time": 79.120648,
+      "error_message": null
+    }
+  },
+  {
+    "id": 13,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "Which one of the following CANNOT be true of the week's tour schedule?",
+      "options": [
+        "A) The division that is toured on Monday is also toured on Tuesday.",
+        "B) The division that is toured on Monday is also toured on Friday.",
+        "C) The division that is toured on Tuesday is also toured on Thursday.",
+        "D) The division that is toured on Wednesday is also toured on Friday.",
+        "E) The division that is toured on Thursday is also toured on Friday."
+      ],
+      "answer": "C"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"day(mon).\",\n    \"day(tue).\",\n    \"day(wed).\",\n    \"day(thu).\",\n    \"day(fri).\",\n    \"division(op).\",\n    \"division(p).\",\n    \"division(s).\"\n  ],\n  \"rules\": [\n    \"hired(D, V) :- day(D), division(V).\",\n    \"count_hires(5) :- hired(D, V), div(D, V), D = mon, V != op.\",\n    \"count_hires(5) :- hired(D, V), div(D, V), D = tue, V != p.\",\n    \"count_hires(4) :- hired(D, s).\",\n    \"count_hires(3) :- hired(thu, s), not hired(fri, op).\",\n    \"count_hires(2) :- hired(tue, p), hired(wed, p).\",\n    \"count_hires(1) :- hired(D, V), div(D, V), D = thu, V != s.\",\n    \"conflict(mon, op) :- 0 < count_hires.\",\n    \"conflict(wed, p) :- 0 < count_hires.\",\n    \"conflict(thu, s) :- hired(thu, s).\",\n    \"conflict(fri, op) :- hired(thu, s), not conflict(op, p).\"\n  ],\n  \"options\": [\n    \"option(a) :- hired(D1, V1), hired(D2, V2), D1 = thu, V1 != s, D2 = fri, V2 != op.\",\n    \"option(b) :- hired(D1, V1), hired(D2, V2), D1 = tue, V1 != p, D2 = wed, V2 != p.\",\n    \"option(c) :- hired(D1, V1), hired(D2, V2), D1 = thu, V1 != s, D2 = fri, V2 != op.\",\n    \"option(d) :- hired(tue, p), hired(wed, p).\",\n    \"option(e) :- hired(thu, s), hired(fri, op).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.5588575601577759,
+      "generation_time": 110.045392,
+      "error_message": null
+    }
+  },
+  {
+    "id": 14,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "If in addition to the Sales division one other division is toured on two consecutive days, then it could be true of the week's tour schedule both that the",
+      "options": [
+        "A) Production division is toured on Monday and that the Operations division is toured on Thursday",
+        "B) Production division is toured on Tuesday and that the Sales division is toured on Wednesday",
+        "C) Operations division is toured on Tuesday and that the Production division is toured on Friday",
+        "D) Sales division is toured on Monday and that the Operations division is toured on Friday",
+        "E) Sales division is toured on Wednesday and that the Production division is toured on Friday"
+      ],
+      "answer": "B"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"day(mon).\",\n    \"day(tue).\",\n    \"day(wed).\",\n    \"day(thu).\",\n    \"day(fri).\"\n  ],\n  \"rules\": [\n    \"tour(D, O) :- day(D), division(O), tour_count = 0.\",\n    \"tour(D1, P) :- day(D1), not tour(D2, S), division(S), D2 < D1, division(P).\",\n    \"tour(tue, op) :- tour(wed, pr).\",\n    \"tour(thu, pr) :- tour(fri, sa).\",\n    \"division(op) :- 1 = 0.\",\n    \"division(pr) :- 2 = 0.\",\n    \"division(sa) :- 3 = 0.\"\n  ],\n  \"options\": [\n    \"option(a) :- tour(mon, op), tour(tue, pr), tour(wed, sa).\",\n    \"option(b) :- tour(mon, pr), tour(tue, op), tour(thu, sa).\",\n    \"option(c) :- tour(mon, sa), tour(tue, op), tour(fri, pr).\",\n    \"option(d) :- tour(tue, sa), tour(wed, pr), tour(thu, op).\",\n    \"option(e) :- tour(wed, sa), tour(thu, pr), tour(fri, op).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.5631251335144043,
+      "generation_time": 72.140153,
+      "error_message": null
+    }
+  },
+  {
+    "id": 15,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "If in the week's tour schedule the division that is toured on Tuesday is also toured on Friday, then for which one of the following days must a tour of the Production division be scheduled?",
+      "options": [
+        "A) Monday",
+        "B) Tuesday",
+        "C) Wednesday",
+        "D) Thursday",
+        "E) Friday"
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"division(operations).\",\n    \"division(product).\",\n    \"division(sales).\"\n  ],\n  \"rules\": [\n    \"selected(D) :- division(D), day(Day), selected_day(Day, D).\",\n    \"selected_day(Monday, operations) :- false_constraint(day_of_week, Monday, Operations).\",\n    \"selected_day(Wednesday, product) :- false_constraint(day_of_week, Wednesday, Product).\",\n    \"selected_day(Thursday, sales) :- at_least_two_consecutive_days(sales, Thursday), not selected(Friday, sales).\",\n    \"selected_day(Friday, operations) :- selected(Thursday, sales).\"\n  ],\n  \"options\": [\n    \"option(a) :- selected(day1, operations), selected(day2, product), selected(day3, sales), selected(day4, sales), day5 = false.\",\n    \"option(b) :- selected(day1, product), selected(day2, operations), selected(day3, sales), selected(day4, sales), day5 = false.\",\n    \"option(c) :- selected(day1, operations), selected(day2, sales), selected(day3, sales), selected(day4, product), day5 = false.\",\n    \"option(d) :- selected(day1, sales), selected(day2, operations), selected(day3, product), selected(day4, sales), day5 = false.\",\n    \"option(e) :- selected(day1, sales), selected(day2, operations), selected(day3, product), selected(day4, product), day5 = false.\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.4600317478179932,
+      "generation_time": 78.148221,
+      "error_message": null
+    }
+  },
+  {
+    "id": 16,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "If in the week's tour schedule the division that is toured on Monday is not the division that is toured on Tuesday, then which one of the following could be true of the week's schedule?",
+      "options": [
+        "A) A tour of the Sales division is scheduled for some day earlier in the week than is any tour of the Production division.",
+        "B) A tour of the Operations division is scheduled for some day earlier in the week than is any tour of the Production division.",
+        "C) The Sales division is toured on Monday.",
+        "D) The Production division is toured on Tuesday.",
+        "E) The Operations division is toured on Wednesday."
+      ],
+      "answer": "E"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"division(operations).\",\n    \"division(product).\",\n    \"division(sales).\",\n    \"day(monday).\",\n    \"day(tuesday).\",\n    \"day(wednesday).\",\n    \"day(thursday).\",\n    \"day(friday).\"\n  ],\n  \"rules\": [\n    \"selected(D) :- division(D), day(Day), selected(Day, D).\",\n    \"exactly_one_day_per_division(1) :- selected(operations).\",\n    \"exactly_one_day_per_division(2) :- selected(product).\",\n    \"exactly_one_day_per_division(3) :- selected(sales).\",\n    \"selected(monday, operations) :- not selected(wednesday, sales), not selected(thursday, sales).\",\n    \"selected(tuesday, product) :- exactly_two_consecutive_days(sales).\",\n    \"selected(friday, production) :- selected(thursday, sales).\"\n  ],\n  \"options\": [\n    \"option(a) :- selected(monday, operations), selected(wednesday, product), selected(thursday, sales), selected(friday, sales).\",\n    \"option(b) :- selected(tuesday, operations), selected(sunday, production), selected(thursday, sales), selected(friday, sales).\",\n    \"option(c) :- selected(monday, operations), selected(tuesday, product), selected(wednesday, sales), selected(saturday, sales).\",\n    \"option(d) :- selected(tuesday, operations), selected(friday, product), selected(sunday, sales), selected(thursday, sales).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.482146143913269,
+      "generation_time": 79.437002,
+      "error_message": null
+    }
+  },
+  {
+    "id": 17,
+    "nl_problem": {
+      "context": "During a single week, from Monday through Friday, tours will be conducted of a company's three divisions—Operations, Production, and Sales. Exactly five tours will be conducted that week, one each day. The schedule of tours for the week must conform to the following restrictions: Each division is toured at least once. The Operations division is not toured on Monday. The Production division is not toured on Wednesday. The Sales division is toured on two consecutive days, and on no other days. If the Operations division is toured on Thursday, then the Production division is toured on Friday.",
+      "question": "If in the week's tour schedule the division that is toured on Tuesday is also toured on Wednesday, then which one of the following must be true of the week's tour schedule?",
+      "options": [
+        "A) The Production division is toured on Monday.",
+        "B) The Operations division is toured on Tuesday.",
+        "C) The Sales division is toured on Wednesday.",
+        "D) The Sales division is toured on Thursday.",
+        "E) The Production division is toured on Friday."
+      ],
+      "answer": "A"
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"facts\": [\n    \"division(operations).\",\n    \"division(product).\",\n    \"division(sales).\"\n  ],\n  \"rules\": [\n    \"tour(D, D) :- division(D), day(X), X = monday.\",\n    \"not_tour(divisions, X) :- tour(divisions, Y), divisions != operations, not before(Y, X).\",\n    \"before(tuesday, wednesday) :- tour(operations, tuesday), tour(product, wednesday).\",\n    \"tour(sales, thursday) :- tour(sales, friday).\",\n    \"tour(sales, thursday) :- 2 = count_tour_sunday_friday.\",\n    \"count_tour(X1, X2, Count) :- day(Day), between(X1, Day, X2), tour(divisions, Day), division(divisions), not before(operations, tuesday).\",\n    \"count_tour(X1, X2, 0) :- count_tour(X1, X2, N), N = 0.\",\n    \"count_tour_sunday_friday(N) :- between(sunday, D1, friday), tour(divisions, D1), not before(operations, tuesday).\",\n    \"tour(Division, Day) :- division(Division), day(Day), count_tour(sunday, friday, N), N = 0.\"\n  ],\n  \"options\": [\n    \"option(a) :- tour(op, mon), tour(p, tue), tour(s, wed), not before(operations, tuesday).\",\n    \"option(b) :- tour(op, thu), tour(p, fri), count_tour_sunday_friday(N), N = 0.\",\n    \"option(c) :- tour(op, sun), tour(p, mon), count_tour_sunday_friday(N), N = 2.\",\n    \"option(d) :- not before(sales, thur).\",\n    \"option(e) :- not both_toured(operations, production).\"\n  ],\n  \"query\": \"answer(X) :- option(X), not invalid(X).\"\n}",
+      "perplexity": 1.9247018098831177,
+      "generation_time": 99.021797,
+      "error_message": null
+    }
+  }
+]

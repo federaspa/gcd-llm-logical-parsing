@@ -81,3 +81,20 @@ class LD_Prompter():
         problem = '\n'.join(sample['context'])
         question = sample['question'].strip()
         return self.template_manager.prompt_template.replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)
+    
+class LSAT_prompter():
+    def __init__(self, config: dict):
+        self.config = config
+        self.template_manager = TemplateManager(config)
+    
+    def build_grammar(self, template_key) -> str:
+        
+        if not self.template_manager.grammar_templates[template_key]:
+            return None
+                
+        return self.template_manager.grammar_templates[template_key]
+    
+    def format_prompt(self, sample: Dict) -> str:
+        problem = '\n'.join(sample['context'])
+        question = sample['question'].strip()
+        return self.template_manager.prompt_template.replace('[[nl_problem]]', problem).replace('[[nl_conclusion]]', question)

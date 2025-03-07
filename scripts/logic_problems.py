@@ -17,6 +17,8 @@ from utils.utils import get_configs, get_models, parse_args, ScriptConfig
 class LogicProgramRunner:
     def __init__(self, script_config: ScriptConfig, model_config: dict, llama_cpp_config: dict, logger):
         self.config = script_config
+        self.model_config = model_config
+        self.llama_cpp_config = llama_cpp_config
         self.save_file = self._prepare_save_file()
         
         self.logger = logger
@@ -29,8 +31,8 @@ class LogicProgramRunner:
                 raise ValueError(f"Invalid stop_time format. Use dd-mm-yy:hh-mm-ss. Error: {str(e)}")
 
     def _load_model(self):
-        self.generator = Model(script_config)
-        self.generator.setup_model(model_config, llama_cpp_config)
+        self.generator = Model(self.config)
+        self.generator.setup_model(self.model_config, self.llama_cpp_config)
 
     def _check_time_limit(self) -> bool:
         """Check if we've reached the stop time"""

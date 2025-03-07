@@ -4,7 +4,8 @@ class TemplateManager:
     DATASET_TYPES = {
         'FOLIO': 'FOL',
         'ProofWriter': 'LD',
-        'GSM8K_symbolic': 'SIN'
+        'GSM8K_symbolic': 'SIN',
+        'AR-LSAT': 'LSAT'
     }
 
     MODEL_TEMPLATES = {

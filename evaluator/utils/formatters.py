@@ -139,7 +139,11 @@ class ResultFormatter:
 
         shots = [[list(results[model][dataset].keys()) for model in models] for dataset in datasets]
         shots = [sublist for l in shots for sublist in l]
-        shots = sorted(list(set([shot for sublist in shots for shot in sublist])))
+        try:
+            shots = sorted(list(set([shot for sublist in shots for shot in sublist])))
+        except:
+            shots = list(set([shot for sublist in shots for shot in sublist]))
+        
         
         print(datasets)
         
@@ -157,7 +161,7 @@ class ResultFormatter:
             "\\hline",
             "& " + " & ".join([f"\\multicolumn{{{len(datasets)*len(shots)}}}{{cV}}{{\\textbf{{{dataset.replace('_', ' ')}}}}}" for dataset in datasets]) + "\\\\",
             "\\hline",
-            "& " + " & ".join([" & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shots]) for _ in datasets]) + "\\\\",
+            "& " + " & ".join([" & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}}}}}" for shot in shots]) for _ in datasets]) + "\\\\",
             "\\hline",
             # "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}}" for _ in shot_numbers]) + " \\\\ \\hline",
             "\\textbf{Model} & " + " & ".join(["\\textit{Unc.} & \\textit{Con.}" for _ in range(len(shots)*len(datasets))]) + " \\\\",

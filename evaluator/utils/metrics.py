@@ -10,11 +10,13 @@ class MetricsCalculator:
 
     @staticmethod
     def compute_metrics(samples, n):
+        
         parsable_samples = [s for s in samples if s['status'] != 'parsing error']
         executable_samples = [s for s in samples if s['status'] == 'success']
         
         gold_answers, predictions = AnswerParser.parse_answers(samples)
         correct_predictions = sum(g == p for g, p in zip(gold_answers, predictions))
+        
         
         metrics = {
             'accuracy': MetricsCalculator.compute_ratio(correct_predictions, n),
@@ -50,7 +52,6 @@ class MetricsCalculator:
     @staticmethod
     def evaluate_sample_groups(samples, n=0):        
         if len(samples) != n:
-            print(len(samples), '!=', n)
             return {
             'UNCONSTRAINED': {
             'accuracy': -1,
@@ -70,6 +71,7 @@ class MetricsCalculator:
             'json': [s['logic_problem_json'] for s in samples if 'logic_problem_json' in s],
             'fol': [s['logic_problem_gcd'] for s in samples if 'logic_problem_gcd' in s]
         }
+        
         
         metrics = {
             'UNCONSTRAINED': MetricsCalculator.compute_metrics(sample_groups['unconstrained'], n),

@@ -1,42 +1,28 @@
-# Root structure for JSON-wrapped logic problem
-root ::= "{" ws predicates ws facts ws rules ws query ws "}"
-
-# Whitespace handling
+#### Wrap rules, facts, and query in a valid JSON ####
+root ::= "{" ws "\"facts\":" ws "[" ws factlist ws "]," ws "\"rules\":" ws "[" ws rulelist ws "]," ws "\"query\":" ws "\"" QUERY "\"" ws "}"
 ws ::= | " " | "\n" [ \t]{0,5}
 
-# JSON structure for predicates
-predicates ::= "\"predicates\":" ws "[" ws predicatelist ws "],"
-predicatelist ::= predicate (ws "," ws predicate)*
-predicate ::= "\"" predicatedecl "\""
-predicatedecl ::= predicatename "($" paramlist ", bool)"
+#### Facts list ####
+factlist ::= | "\"" FACT "\"" (ws "," ws "\"" FACT "\""){0,30}
 
-# Parameter list for predicates
-paramlist ::= "x" | ("x" ", $" [y-z])
+#### Rules list ####
+rulelist ::= | "\"" RULE "\"" (ws "," ws "\"" RULE "\""){0,30}
 
-# JSON structure for facts
-facts ::= "\"facts\":" ws "[" ws factlist ws "],"
-factlist ::= fact (ws "," ws fact)*
-fact ::= "\"" predicatestmt "\""
+#### ASP Program Elements with specific constraints ####
+FACT ::= predicate "(" term ")."
+RULE ::= head " :- " body "."
+QUERY ::= simpleatom | "not " simpleatom
 
-# JSON structure for rules
-rules ::= "\"rules\":" ws "[" ws rulelist ws "],"
-rulelist ::= rule (ws "," ws rule)*
-rule ::= "\"" premise ws ">>>" ws conclusion "\""
+#### Head and Body structure ####
+head ::= simpleatom | "not " simpleatom
+body ::= literal | literal ", " literal | literal ", " literal ", " literal
+literal ::= simpleatom | "not " simpleatom
 
-# Premise part (can have multiple conditions joined by &&)
-premise ::= predicatestmt (ws "&&" ws predicatestmt)*
+#### Simple atom structure ####
+simpleatom ::= predicate "(" term ")" | predicate "(" term ", " term ")"
+predicate ::= [a-z][a-zA-Z0-9_]{0,15}
+term ::= variable | constant
 
-# Conclusion part (usually a single predicate statement)
-conclusion ::= predicatestmt
-
-# JSON structure for query
-query ::= "\"query\":" ws "\"" querystmt "\""
-querystmt ::= predicatestmt
-
-# Predicate statement structure
-predicatestmt ::= predicatename "(" entityname ", " booleanvalue ")"
-
-# Basic elements
-predicatename ::= [A-Z][a-zA-Z]*
-entityname ::= [A-Z][a-zA-Z]* | "$x" | "$y" | "$z"
-booleanvalue ::= "True" | "False"
+#### Basic terms ####
+variable ::= [A-Z][a-zA-Z0-9_]{0,10}
+constant ::= [a-z][a-zA-Z0-9_]{0,15}

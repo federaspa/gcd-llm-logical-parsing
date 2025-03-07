@@ -4,6 +4,7 @@ import json
 import os
 from utils.metrics import MetricsCalculator
 from utils.formatters import ResultFormatter
+from utils.utils import get_models
 
 num_samples = {
     'FOLIO': 204,
@@ -17,18 +18,14 @@ def main():
     parser.add_argument('--model-name', type=str)
     parser.add_argument('--dataset-name', type=str)
     parser.add_argument('--split', type=str, default='dev')
+    parser.add_argument('--models-path', type=str, default='/home/fraspanti/LLMs')
     parser.add_argument('--self-refine-round', type=int, default=0)
     parser.add_argument('--save-df', action='store_true', help='Save results as dataframe')
     parser.add_argument('--latex', action='store_true', help='Output results in LaTeX table format')
     parser.add_argument('--latex-split', action='store_true', help='Output results in two LaTeX tables')
     args = parser.parse_args()
     
-    if args.model_name:
-        model_names = [args.model_name]
-    else:
-        config_path = './configs/models'
-        model_names = [os.path.splitext(f)[0] for f in os.listdir(config_path) 
-                         if os.path.isfile(os.path.join(config_path, f))]
+    model_names = [args.model_name] if args.model_name else get_models(args.models_path)
         
     if args.dataset_name:
         dataset_names = [args.dataset_name]
@@ -36,7 +33,7 @@ def main():
         dataset_names = ['FOLIO', 'GSM8K_symbolic']
     
     all_results = {model:{} for model in model_names}
-    shot_numbers = [0, 2, 5]
+    shot_numbers = ["0shots", "2shots", "5shots"]
     for model_name in model_names:
         for dataset_name in dataset_names:
             model_results = {}
@@ -44,11 +41,11 @@ def main():
                 try:
                     prefix = f'self-refine-{args.self_refine_round}_' if args.self_refine_round > 0 else ''
                     filename = f'{prefix}{dataset_name}_{args.split}_{model_name}.json'
-                    result_file = os.path.join(args.result_path, f"{shot}shots", 'logic_inference', filename)
+                    result_file = os.path.join(args.result_path, f"{shot}", 'logic_inference', filename)
                     
-                                    
                     with open(result_file, 'r') as f:
                         samples = json.load(f)
+                        
                         
                     model_results[shot] = MetricsCalculator.evaluate_sample_groups(samples, num_samples[dataset_name])
                 
