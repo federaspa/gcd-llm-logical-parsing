@@ -9,7 +9,7 @@ from utils.utils import get_models
 num_samples = {
     'FOLIO': 204,
     'GSM8K_symbolic': 1000,
-    'ProofWriter': 340
+    'ProofWriter': 600
 }
 
 def main():
@@ -45,7 +45,6 @@ def main():
                     
                     with open(result_file, 'r') as f:
                         samples = json.load(f)
-                        
                         
                     model_results[shot] = MetricsCalculator.evaluate_sample_groups(samples, num_samples[dataset_name])
                 

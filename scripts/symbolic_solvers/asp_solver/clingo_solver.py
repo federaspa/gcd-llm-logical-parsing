@@ -12,11 +12,13 @@ class Clingo_Program:
         self.flag, self.formula_error = self.parse_logic_program(), ""
         self.dataset_name = dataset_name
         
-        self.answer_map = {
+        self.answer_mappings = {
             'ProntoQA': self.answer_map_prontoqa,
             'ProofWriter': self.answer_map_proofwriter,
             'LSAT': self.answer_map_lsat
         }
+        
+        self.answer_mapping = self.answer_mappings[dataset_name]
     
     def parse_logic_program(self) -> bool:
         """Parse the JSON ASP program."""
@@ -163,7 +165,7 @@ class Clingo_Program:
         
         # If query is provably true, return True
         if query_result:
-            return self.answer_map[self.dataset_name](True), ""
+            return self.answer_mapping(True), ""
         
         # Now try to prove the negation of the query
         negated_result = self._run_query(self.Query, True)
@@ -174,9 +176,9 @@ class Clingo_Program:
         is_unknown = not query_result and not negated_result
         
         if is_unknown:
-            return self.answer_map[self.dataset_name](None), ""
+            return self.answer_mapping(None), ""
         else:
-            return self.answer_map[self.dataset_name](not is_false), ""
+            return self.answer_mapping(not is_false), ""
     
     def _run_query(self, query: str, negated: bool = False) -> bool:
         """Run a query and determine if it's provable."""
