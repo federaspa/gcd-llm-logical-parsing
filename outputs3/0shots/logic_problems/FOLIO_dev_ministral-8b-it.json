@@ -5878,5 +5878,925 @@
       "generation_time": 53.158341,
       "error_message": null
     }
+  },
+  {
+    "id": 176,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The world championships is a sporting event.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"SportingEvent(x)\", \"LastOlympicGamesIn(y, z)\", \"WonMostMedalsAt(z, w)\"], // Predicates: SportingEvent, LastOlympicGamesIn, WonMostMedalsAt\n  \"fol_consts\": [[\"Tokyo\"], [\"United States\"]] ,// Constants: Tokyo (city), UnitedStates (country)\n  \"fol_rules\": [\n    \"∀x. OlympicGames(x) → SportingEvent(x)\", // Rule from BG1 and NL premises: If x is an Olympic Games, then it is a sporting event\n    \"Tokyo = LastOlympicGamesIn(Tokyo, z).\",   // Tokyo was the last Olympic games in some city (z)\n    \"∀y. City(y) ∧ y ≠ United States → ¬LastOlympicsWonBy(z, y)\",  // If a city is not the US and it's an actual city\n         // then no city other than Tokyo won at last Olympics.\n         // Note: This rule is to ensure the uniqueness of Tokyo as per BG2,\n    \"United States = WonMostMedalsAt(Tokyo, United States)\"   // The USA won most medals in Tokyo\n  ],\n  \"fol_conc\": [\n    \"∃y. WorldChampionships(y) → SportingEvent(y).\"      // There exists a world championships which is also a sporting event (NL Conclusion)\n  ]\n}\n```",
+      "perplexity": 2.516601324081421,
+      "generation_time": 57.170561,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"SportingEvent(X)\", \"LastOlympicGames(Y)\", \"MostMedalsWon(Z, W)\"],\n  \"fol_consts\": [\"Tokyo\", \"United States\", \"WorldChampionships\"],\n  \"fol_rules\": [\n    \"∀x (SportingEvent(x)) ∧ LastOlympicGames(Tokyo)\",\n    \"(∃y MostMedalsWon(United States, Tokyo))\",\n    \"∀z ∀w ((LastOlympicGames(z) → SportingEvent(z)) ⊕ WorldChampionships ≡ SportingEvent)\"\n  ],\n  \"fol_conc\": [\n     \"(SportingEvent(World Championships))\"\n   ]\n}",
+      "perplexity": 2.0269129276275635,
+      "generation_time": 31.223879,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"IsSportingEvent(x)\", \"HeldInCity(y, z)\", \"WonMedals(w, y)\"],  \"fol_consts\": [\"olympic\", \"tokyo\", \"unitedstates\"],  \"fol_rules\": [ \"∀x (IsSportingEvent(olympic))\",\n    \"∃y ∃z (HeldInCity(tokyo, z))\",\n    \"WonMedals(unitedstates, tokyo)\"],  \"fol_conc\": \"∃w ∀x (IsSportingEvent(w))\"\n}",
+      "perplexity": 2.941739320755005,
+      "generation_time": 27.412178,
+      "error_message": null
+    }
+  },
+  {
+    "id": 177,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The last Olympic games were not in Tokyo.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"IsSportingEvent\",\n    \"LastOlympicGamesIn\"\n  ],\n  \"fol_consts\": [\"Tokyo\", \"UnitedStates\"],\n  \"fol_rules\": [],\n  \"fol_conc\": []\n}",
+      "perplexity": 1.6227508783340454,
+      "generation_time": 9.704684,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"SportingEvent(x)\", \"LocationOfGames(y, x)\", \"CountryWinMostMedals(z, y)\"],\n  \"fol_consts\": [\"Olympic Games\", \"Tokyo\", \"United States\"],\n  \"fol_rules\": [\n    \"∃x (SportingEvent(Olympic Games))\",\n    \"(∀y ∀z ((LocationOfGames(y, z) → LocationOfGames(Tokyo, Tokyo))) & ¬(CountryWinMostMedals(United States, Tokyo)))\"\n  ],\n  \"fol_conc\": [\"¬((LocationOfGames(x, Olympic Games)) → (x = Tokyo))\"]\n}\n",
+      "perplexity": 2.0307490825653076,
+      "generation_time": 29.722492,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"SportingEvent(x)\",\n    \"InCity(x, y)\",\n    \"WonMedalsMost(y, z)\"\n  ], \"fol_consts\": [\"olympic\", \"tokyo\", \"unitedstates\"], \"fol_rules\": [ \"∀x (SportingEvent(x)) ∧ InCity(olympic, tokyo) → WonMedalsMost(unitedstates, olympic)\", \"InCity(tokyo, olympic)\"], \"fol_conc\": \"¬InCity(olympic, tokyo)\"\n}",
+      "perplexity": 1.777236819267273,
+      "generation_time": 26.02635,
+      "error_message": null
+    }
+  },
+  {
+    "id": 178,
+    "nl_problem": {
+      "context": [
+        "[BG] The Olympic games is a sporting event. ",
+        "The last Olympic games was in Tokyo.",
+        "The United States won the most medals in Tokyo. "
+      ],
+      "question": "The United States won the most medals in the last Olympic games.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"SportingEvent(X)\", \"LastOlympicGames(Y)\", \"MostMedalsIn(O, C)\" ],\n  \"fol_consts\": [[\"The Olympic games\", \"Tokyo\"], \"United States\"],\n  \"fol_rules\": [\n    \"∀X(SportingEvent(X) → ∃Y(LastOlympicGames(Y)))\",\n    \"SportingEvent(The Olympic games)\",\n    \"MostMedalsIn(Tokyo, UnitedStates)\"\n  ],\n  \"fol_conc\": [\"∃Y(MostMedalsIn(Tokyo,Y)) & LastOlympicGames(Y)\"]\n}",
+      "perplexity": 1.8274691104888916,
+      "generation_time": 23.976186,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"SportingEvent(x)\", \"LastOlympicGames(y)\", \"WonMostMedals(z, w)\"],\n  \"fol_consts\": [\"Tokyo\", \"UnitedStates\"],\n  \"fol_rules\": [\n    \"∀x. SportingEvent(Tokyo)\",\n    \"∃y. LastOlympicGames(y)\"\n  ],\n  \"fol_conc\": \"LastOlympicGames(Tokyo) ∧ WonMostMedals(UnitedStates, Tokyo)\"\n}",
+      "perplexity": 1.3474488258361816,
+      "generation_time": 22.096976,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"SportingEvent(x)\", \"LastOlympicGames(y)\", \"WonMostMedalsIn(z, w)\"],  \"fol_consts\": [\"bg\", \"tokyo\", \"unitedstates\"],  \"fol_rules\": [\n    \"∀x (SportingEvent(bg)) → ∃y (City(guilin) ∧ LastOlympicGames(y))\",\n    \"LastOlympicGames(tokyo)\",\n    \"WonMostMedalsIn(unitedstates, tokyo)\"\n],  \"fol_conc\": \"∃z ((SportingEvent(z) ∧ City(x)) → WonMostMedalsIn(bg, z))\"\n}",
+      "perplexity": 1.9074550867080688,
+      "generation_time": 30.246726,
+      "error_message": null
+    }
+  },
+  {
+    "id": 179,
+    "nl_problem": {
+      "context": [
+        "All horses have hooves.",
+        "No humans have hooves."
+      ],
+      "question": "Some humans are horses.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"HasHooves\",\n    \"IsHuman\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    {\n      \"predicate\": \"∀x (Horse(x) → HasHooves(x))\",\n      \"description\": \"All horses have hooves.\"\n    },\n    {\n      \"predicate\": \"∀y (Human(y) → ¬HasHooves(y))\",\n      \"description\": \"No humans have hooves.\"\n    }\n  ],\n  \"fol_conc\": [\n    \"{x} ∃y(Human(x) → Horse(x))\"\n  ]\n}\n```",
+      "perplexity": 1.4388601779937744,
+      "generation_time": 25.085183,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Horse(x)\", \"Human(y)\", \"HasHooves(z, w)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∀x (Horse(x) → ∃y HasHooves(x,y))\",\n    \"∀z(∃w Human(w)→¬HasHooves(z,w))\"\n  ],\n  \"fol_conc\": [\"∃u(Human(u) ∧ Horse(u))\"]\n}\n",
+      "perplexity": 1.5158203840255737,
+      "generation_time": 21.96469,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Horse(x)\",\n    \"Human(y)\"\n  ],  \"fol_consts\": [ \"hooves\" ],  \"fol_rules\": [\"∀x (Horse(x) → Hoofed(x))\", \"∃y (Human(y) ∧ ¬Hooved(y))\"],  \"fol_conc\": \"∃z (Human(z) ∨ Horse(z))\"\n}",
+      "perplexity": 2.891911268234253,
+      "generation_time": 18.991865,
+      "error_message": null
+    }
+  },
+  {
+    "id": 180,
+    "nl_problem": {
+      "context": [
+        "Susan flies to LGA airport.",
+        "The departure and arrival can not be the same airport.",
+        "John flies from LGA airport."
+      ],
+      "question": "Susan flies from LGA airport.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Flights\",\n    \"Airports\"\n  ],\n  \"fol_consts\": [\"Susan\", \"LGA\"],\n  \"fol_rules\": [\n    \"∀x (Flights(x, LGA) ∧ Airports(LGA)) → Flights(Susan, LGA)\",\n    \"∃y (Flights(y, y) → ¬Airports(y), Flights(John, x)→¬Airports(x), Flights(y,x)->not(Flights(x,y)))\",\n  ],\n  \"fol_conc\": [\n     \"Flights(Susan, LGA)\"\n   ]\n}",
+      "perplexity": 2.2386205196380615,
+      "generation_time": 25.184733,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"flies_to\", \"arrives_at\"],\n  \"fol_consts\": [\"Susan\", \"LGA_airport\", \"John\"],\n  \"fol_rules\": [\n    \"(∀x)(∃y)((flies_to(x, LGA_airport)) → (not(arrives_at(x, x))) )\",\n    \"(flies_from(LGA_airport) ∧ flies_to(John, LGA_airport))\"\n  ],\n  \"fol_conc\": [\n    \"(flies_to(Susan, LGA_airport))\"\n  ]\n}\n",
+      "perplexity": 1.6157400608062744,
+      "generation_time": 26.733606,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"FliesTo(agent, airport)\", \"IsSameAirport(a, b)\"],  \"fol_consts\": [\n    \"lga\", \"susie\"\n  ], \"fol_rules\": [ \"A152461740387679509407566953476518504877139703586267478442397409115150744443709017410777813863577678489345897794335994154852393001077463744634635150691138558850500568867465634198613110414924633754037694159705330354395775416599713394948637739847634630473279185734853157910353363054518103494630536863566870656317600831789029944353500114686009003106163907451951115113469894189933108404438784276784716605005156198076990594095118371841414096389308185015893772473304776908070440760181478935088796683389169945305481898157634821461153160136714556657563383387339056873055108611008777907833334028174438788881603390594868393747540103179136011347983960910074073238094056144030110031290173010134599602787109013698302618396586806965500757084544544549831490003084009444841460001020241946785995055564474665617478601547510458834102856691430097074070899386037940211056033783490250873749613558496399888011994778585647987460875047484685869574502651333394575445758688884549973153630416340747804",
+      "perplexity": 9.985465049743652,
+      "generation_time": 214.344887,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 181,
+    "nl_problem": {
+      "context": [
+        "Susan flies to LGA airport.",
+        "The departure and arrival can not be the same airport.",
+        "John flies from LGA airport."
+      ],
+      "question": "John flies to LGA airport.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"FlightsFrom(x, y)\",\n    \"FlightsTo(x, z)\"\n  ],\n  \"fol_consts\": [\n    \"Susan\",\n    \"John\",\n    \"LGA\"\n  ],\n  \"fol_rules\": [\n    \"∀x(FlightsFrom(Susan,x) → ¬(x=z)) ∧ (∃y(FlightsTo(y,z))) ∨ FightsFrom(x,y)\",\n    \"FlightsFrom(x,LGA)\"\n  ],\n  \"fol_conc\": [\n   \"¬(FlightsFrom(LGA, John))\"\n ]\n}",
+      "perplexity": 2.080559015274048,
+      "generation_time": 25.730977,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"fliesTo\", \"from\"],\n  \"fol_consts\": [\"Susan\", \"LGA\", \"John\"],\n  \"fol_rules\": [\n    \"∀x. (fliesTo(x, LGA) → ¬(from(x, LGA)))\",\n    \"∃y. fliesFrom(y, LGA)\"\n  ],\n  \"fol_conc\": \"(exists x.(fliesTo(x,LGA)) ∧ from(John,LGA))\"\n}\n",
+      "perplexity": 1.6867588758468628,
+      "generation_time": 22.149443,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Flights(x, y)\", \"SameAirport(x, y)\"],  \"fol_consts\": [\"x\", \"y\"],  \"fol_rules\": [ \"¬(∃z (Flights(z, z))) ∧ ¬((Flights(x, x)) → SameAirport(x, x))\", \"(Flights(y, y) → SameAirport(x, y))\"],  \"fol_conc\": \"(∀x ((Flights(x, x)) → (¬(SameAirport(x, x))) ∧ ¬((Flights(x, y)) → (SameAirport(x, x)))))\"\n}",
+      "perplexity": 3.259049415588379,
+      "generation_time": 30.754625,
+      "error_message": null
+    }
+  },
+  {
+    "id": 182,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "Tom is a grumpy person.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"nice_to_animals(x)\",\n    \"mean_to_animals(x)\",\n    \"animal_lovers(x)\",\n    \"owns_pet(x)\"\n  ],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x ( nice_to_animals(x) → ¬ mean_to_animals(x))\",\n    \"∃x grumpy(x) ∧ mean_to_animals(x)\",\n    \"∀x animal_lovers(x) → nice_to_animals(x)\"\n  ],\n  \"fol_conc\": [\n    \"Tom is a pet owner. ⇒ Tom loves animals.\",\n    \"Tom owns a pet ⊕ ¬ (grumpy(Tom))\"\n  ]\n}\n```",
+      "perplexity": 1.5931707620620728,
+      "generation_time": 31.14521,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"NiceToAnimals(x)\",\n    \"MeanToAnimals(x)\",\n    \"GrumpyPerson(x)\",\n    \"AnimalLover(x)\"\n  ],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"∀x ( NiceToAnimals(x) → ¬ MeanToAnimals(x))\",\n    \"∃y GrumpyPerson(y) ∧ MeanToAnimals(y)\",\n    \"∀z AnimalLover(z) → NiceToAnimals(z)\",\n    \"(PetOwner(Tom) → AnimalLover(Tom))\"\n  ],\n  \"fol_conc\": [\"GrumpyPerson(Tom)\"]\n}",
+      "perplexity": 1.3601065874099731,
+      "generation_time": 31.987404,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"NiceToAnimals(x)\", \"MeanToAnimals(x)\", \"GrumpyPerson(y)\", \"AnimalLover(z)\", \"OwnsPet(u)\"],  \"fol_consts\": [\"tom\"],  \"fol_rules\": [ \"∀x (NiceToAnimals(x) → ¬MeanToAnimals(x))\", \"∃y (GrumpyPerson(y) ∧ MeanToAnimals(y))\", \"∀z (AnimalLover(z) → NiceToAnimals(z))\", \"∀u (OwnsPet(u) → AnimalLover(u))\"],  \"fol_conc\": \"GrumpyPerson(tom)\"\n}",
+      "perplexity": 1.9710978269577026,
+      "generation_time": 30.90793,
+      "error_message": null
+    }
+  },
+  {
+    "id": 183,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "Tom is not a grumpy person and mean to animals.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"nice_to_animals(x)\",\n    \"mean_to_animals(x)\",\n    \"grumpy(x)\"\n  ],\n  \"fol_consts\": [\"tom\"],\n  \"fol_rules\": [\n    \"∀x (nice_to_animals(x) → ¬(mean_to_animals(x)))\",\n    \"∃y grumpy(y) ∧ mean_to_animals(y)\",\n    \"∀z animal_lovers(z) → nice_to_animals(z)\"\n  ],\n  \"fol_conc\": [\n    \"¬grumpy(tom) ∧ ¬(mean_to_animals(tom))\"\n  ]\n}",
+      "perplexity": 1.3023154735565186,
+      "generation_time": 27.460349,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"NiceToAnimal(X)\",\n    \"MeanToAnimal(X, Y)\", 1\n     ],\n  \"fol_consts\": [],\n\"fol_rules\":\n[\n  \"∀x. ( NiceToAnimals(x) → ¬( MeanToAnimal(x,Y)))\",\n  \"( ∃z.( Grumpy(z))→( MeanToAnimal(z,X)))\"\n],\n\"fol_conc\":\"¬Grumpiness(Tom) & ¬MeanTomToAnimals(X)\"\n}",
+      "perplexity": 3.9694817066192627,
+      "generation_time": 23.753028,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"NiceToAnimals(x)\", \"MeanToAnimals(x)\", \"GrumpyPerson(x)\", \"AnimalLover(x)\",\"OwnsPet(x)\" ,\"LovesAnimals(x)\"],  \"fol_consts\": [\"tom\"], \"fol_rules\": [\n    \"∀x (NiceToAnimals(x) → ¬MeanToAnimals(x))\",\n    \"∃y (GrumpyPerson(y) ∧ MeanToAnimals(y))\",\n    \"∀z (AnimalLover(z) → NiceToAnimals(z))\",\n    \"∀w ((OwnsPet(w) → LovesAnimals(w)))\"\n  ], \"fol_conc\": \"¬(GrumpyPerson(tom) ∨ MeanToAnimals(tom))\" }",
+      "perplexity": 1.827677845954895,
+      "generation_time": 36.726888,
+      "error_message": null
+    }
+  },
+  {
+    "id": 184,
+    "nl_problem": {
+      "context": [
+        "No one nice to animals is mean to animals.",
+        "Some grumpy people are mean to animals.",
+        "All animal lovers are nice to animals.",
+        "If someone owns a pet, then they love animals.",
+        "Tom is a pet owner."
+      ],
+      "question": "If Tom is not a grumpy person and mean to animals, then Tom is neither a grumpy person nor an Animal Lover.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"NiceToAnimals(X)\",\n    \"GrumpyPerson(X)\",\n    \"MeanToAnimals(X, Y)\",\n    \"AnimalLover(X)\"\n  ],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"(∀x) (NiceToAnimals(x) → ¬(MeanToAnimals(x)))\",\n    \"(∃x) (GrumpyPerson(x) ∧ MeanToAnimals(x))\",\n    \"(∀x) (AnimalLover(x) → NiceToAnimals(x))\",\n    \"OwnsPet(X)\",\n  ],\n  \"fol_conc\": [\n    \"((¬(GrumpyPerson(Tom))) ∨ ¬(MeanToAnimals(Tom, x))) → ((¬(GrumpyPerson(Tom))) ∧ (¬AnimalLover(Tom))\"\n  ]\n}\n```",
+      "perplexity": 1.572203516960144,
+      "generation_time": 35.98374,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"NiceToAnimals(x)\",\n    \"MeanToAnimals(x)\",\n    \"GrumpyPerson(y)\",\n    \"AnimalLover(z)\"\n  ],\n  \"fol_consts\": [\"Tom\"],\n  \"fol_rules\": [\n    \"(∀x)(NiceToAnimals(x) → ¬( MeanToAnimals(x)))\",\n    \"(∃y)(GrumpyPerson(y) ∧ (MeanToAnimals(y)))\",\n    \"(∀z)(AnimalLover(z) → NiceToAnimals(z))\"\n  ],\n  \"fol_conc\": [\n    \"((¬GrumpyPerson(Tom) ∧ ¬( MeanToAnimals(Tom))) → (~ GrumpyPerson(Tom) ∨ ~ AnimalLover(Tom)))\",\n    \"(∃y)(PetOwner(y) → (AnimalLover(z)))\"\n  ]\n}\n",
+      "perplexity": 1.5264256000518799,
+      "generation_time": 40.52769,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\n  \"NiceToAnimals(x)\",\n  \"MeanToAnimals(x)\",\n  \"GrumpyPerson(x)\",\n  \"AnimalLover(x)\"\n], \"fol_consts\": [\"tom\"], \"fol_rules\": [ \"∀x (NiceToAnimals(x) → ¬(MeannessToAnimals(x)))\", \"∃x (GrumpyPerson(x) ∧ MeanToAnimals(x))\",\n\"∀y (AnimalLover(y) → NiceToAnimals(y))\"], \"fol_conc\": \"¬((TomGrumpyAndMeanToAnimals(tom)) ↔ ¬(GrumpyOrAnimalLover(tom)))\"\n}",
+      "perplexity": 1.9541488885879517,
+      "generation_time": 31.3356,
+      "error_message": null
+    }
+  },
+  {
+    "id": 185,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Dani Shapiro is a novel writer.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n\"fol_preds\": [\"Podcast\", \"Novel\", \"PersonBornInCity\", \"AmericanWriter\", \"WrittenBy\", \"IsABookOf\"],\n\"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"Boston\", \"2003\"]\n,\n\"fol_rules\": [\n    {\"predicate\": \"NotPodcast(x)\", \"rule\": \"(x) ⊨ (Novel(x))\"},\n    {\"predicate\": \"PersonBornInCity(y, z)\", \"rule\": \"(y ∧ Boston(z)) → AmericanWriter(y)\"},\n    {\"predicate\": \"IsABookOf(w, y, z)\", \"rule\": \"(Novel(y) ∧ WrittenBy(y, w)) → AmericanWriter(w)\"}\n],\n\"fol_conc\": [\"AmericanWriter(DaniShapiro)\")\n}",
+      "perplexity": 1.9947048425674438,
+      "generation_time": 34.008288,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Podcast(x)\",\n    \"Novel(y)\",\n    \"Person(z)\",\n    \"BornInCity(z, w)\",\n    \"Writes(w, y)\",\n    \"WriterOfType(v, z, u)\",\n    \"CreatedBy(z, x)\"\n  ],\n  \"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"FamilySecrets\"],\n  \"fol_rules\": [\n    {\"rule_type\": \"negation\", \"predicate\": \"Podcast(x), Novel(y)\", \"body\": [], \"head\": []},\n    {\n     \"rule_type\": \"implication\",\n     \"predicate\": \"BornInCity(z, w)\",\n     \"body\": [\"Person(z)\"], \"head\": [{\"American(city)\": \"w\"}]\n    },\n    {\"rule_type\": \"implication\", \"predicate\": \"Novel(y), Writes(w, y)\", \"body\": [], \"head\": []},\n    {\"rule_type\": \"equivalence\",\n     \"predicate\": [\"DaniShapiro\", \"WriterOfType(v)\"],\n     \"body\": [\"American(city)\"], \"head\": [{\"Writes(z, v)\" : [\"z\"]}]\n  },\n   {\n     \"rule_type\": \"implication\",\n    \"predicate\":[\"FamilyHistory\", \"Novel(y), Writes(w, y)\", \"CreatedBy(DaniShapiro, w)\"],\n     \"body\": [], \"head\": [{\"DaniShapiro WriterOfType(v)\" : [\"z\"]}]\n   }\n  ],\n\"fol_conc\":\n[\n    {\"rule_type\": \"implication\",\n     \"predicate\":[\"FamilyHistory\", \"Novel(y), Writes(w, y)\", \"CreatedBy(DaniShapiro)\"],\n     \"body\": [], \"head\": [{\"Dani Shapiro WriterOfType(v)\" : [\"z\"]}]\n   }\n  ]\n}",
+      "perplexity": 2.0793113708496094,
+      "generation_time": 87.489617,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"Person(z)\", \"Writer(t, w)\", \"City(u, c)\", \"American(v)\",\n    \"Book(w1, b)\", \"WrittenBy(a, e)\", \"Year(e, n)\", \"Created(p, o)\",\"IsA(novelist)\", \"CitiesOf(a)\"],  \"fol_consts\": [\"danishapiro\", \"familyhistory\", \"familysecrets\",\n     \"boston\"], \"fol_rules\":\n    [\n     \"NotNovel(x)\",\n     \"AmericanPerson(t1, t2) → CitiesOf(u)\",\n     \"NoNovel(w1, b) ∧ Writer(v, w1) → NovelWriter(p, v)\"\n    ],  \"fol_conc\": \"DaniShapiro(ws, danishapiro)\"}",
+      "perplexity": 4.037509441375732,
+      "generation_time": 37.333221,
+      "error_message": null
+    }
+  },
+  {
+    "id": 186,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Family Secrets is a novel.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"WrittenBy(z, w)\", \"CreatedBy(a, b)\", \"AmericanCity(c)\", \"BornIn(d, e)\", \"WriterOf(f, g)\"],\n  \"fol_consts\": [\"FamilyHistory\", \"DaniShapiro\", \"Boston\", \"2003\", \"FamilySecrets\"],\n  \"fol_rules\": [\n    \"¬Podcast(x)\",\n    \"(∀x)(AmericanCity(c))→(BornIn(DaniShapiro, c) → American(DaniShapiro))\",\n    \"Novel(y), WrittenBy(writerOf(f,g)), NovelWriter(g)\"\n  ],\n  \"fol_conc\": [\"FamilySecrets is a novel\"]\n}\n```",
+      "perplexity": 1.9694467782974243,
+      "generation_time": 31.786961,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Podcast\", \"Novel\", \"PersonBornInCity\", \"WriterOfBook\", \"AmericanCity\", \"IsWrittenBy\", \"CreatedPodcast\"],\n  \"fol_consts\": [\"DaniShapiro\", \"FamilyHistory\", \"Boston\", \"2003\", \"FamilySecrets\"],\n  \"fol_rules\": [\n    {\"predicate\": \"Novel(x)\", \"entity\": \"x\"},\n    {\"predicate\": \"PersonBornInCity(x, y)\", \"entities\": [{\"name\": \"x\"}, {\"value\": \"American City\"}]},\n    {\"predicate\": \"WriterOfBook(y, z)\", \"entities\": [\"y\", \"z\"]}\n  ],\n  \"fol_conc\": [\n    {\n     \"{predicate}: Novel(FamilySecrets)\"\n    \t: { }\n    },\n  \"fol_rules\"\n] }",
+      "perplexity": 2.6092348098754883,
+      "generation_time": 40.143859,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"Writer(z, y)\", \"City(w, x)\", \"American(a)\", \"CreatedBy(b, c)\"],  \"fol_consts\": [ \"pod1\", \"book2\", \"danishapiro\", \"familyhistory\", \"familysecrets\" ],  \"fol_rules\":\n    [\n     \"IfPodcast(pod) → ¬Novel(pod)\",\n     \"IfCity(city, person) ∧ American(person)\",\n     \"IfNovel(novel) ∧ Writer(author, novel) → NovelWriter(author)\"\n    ],  \"fol_conc\": \"∀x (CreatedBy(x, familysecrets) → Novel(familysecrets))\"\n}",
+      "perplexity": 2.8734889030456543,
+      "generation_time": 33.540497,
+      "error_message": null
+    }
+  },
+  {
+    "id": 187,
+    "nl_problem": {
+      "context": [
+        "A podcast is not a novel.",
+        "[BG] If a person is born in American City, the person is American.",
+        "[BG] If a book is novel and it is written by a person, then the person is a novel writer.",
+        "Dani Shapiro is an American writer.",
+        "Family History is written by Dani Shapiro.",
+        "Family History is a novel written in 2003.",
+        "Dani Shapiro created a podcast called Family Secrets.",
+        "[BG] Boston is an American city."
+      ],
+      "question": "Dani Shapiro was born in Boston.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Podcast(x, y)\",\n    \"Novel(x)\"\n  ],\n  \"fol_consts\": [\n    \"Dani_Shapiro\",\n    \"Family_History\",\n    \"Boston\"\n  ],\n  \"fol_rules\": [\n    \"- Podcast(Dani_Shapiro, x) ∧ Novel(x) → ¬Podcast(x)\",\n    \"∃y (American_City(y) ∧ PersonBornInCity(Dani_Shapiro, y)) → AmericanPerson(Dani_Shapiro)\",\n    \"(Novel(Family_History) ∧ WrittenBy(Dani_Shapiro, Family_History)) → NovelWriter(Dani_Shapiro)\",\n    \"American(City(Boston))\"\n  ],\n  \"fol_conc\": [\n    \"∃x (PersonBornInCity(x, Boston))\n  ]\n}",
+      "perplexity": 1.6103549003601074,
+      "generation_time": 35.861351,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n  \"isPodcast(X)\",\n  \"notIsNovel(Y)\",\n  \"bornInCity(Z, W)\",\n  \"isAmerican(T)\",\n  \"writesBook(U, V)\",\n  \"novelWriter(W)\",\n  \"writtenBy(P, Q)\",\n  \"isNovel(R)\"\n],\n\"fol_consts\": [\n  \"podcast\",\n  \"familyHistory\"\n  ],\n\"fol_rules\": [\n  \"notIsPodcast(podcast) ∧ notIsNovel(novel)\",\n  \"bornInCity(person, boston) → isAmerican(person)\",\n  \"isNovel(book) ∧ writesBook(author, book) → novelWriter(author)\"\n],\n\"fol_conc\": \"bornInCity(daniShapiro, Boston)\"\n}",
+      "perplexity": 1.7444026470184326,
+      "generation_time": 36.659513,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"Podcast(x)\", \"Novel(y)\", \"Writer(z, y)\", \"American(city)\", \"PersonBornInCity(person, city)\", \"BookWrittenBy(author, book)\", \"IsA(a, b)\" ,\"CreatedPodcast(podcaster, podcast)\",\"YearPublished(book, year)\",\"Boston(boston)\",\"AmericanWriter(writer)\",\"NovelWritten(year, novel)\",\"FamilyHistory(familyhistory)\",\"FamilySecrets(podcast)\",\"DaniShapiro(danishapiro)\",\"Guilin(guilin)\", \"City(city)\"],  \"fol_consts\": [\"2003\"],  \"fol_rules\": [ \"¬Podcast(x, y)\", \"PersonBornInCity(person, city) ∧ American(city) → PersonAmerican(person)\", \"Novel(y) ∧ Writer(z, y) → NovelWriter(writer)\",\"DaniShapiro(danishapiro) ∧ FamilyHistory(familyhistory) ∨ DaniShapiro(danishapiro) ∧ CreatedPodcast(podcaster, podcasts) ∨ Boston(boston) ∧ PersonBornInCity(person, boston)\", \"Boston(boston) → American(city)\"],  \"fol_conc\": \"PersonBornInCity(dani, boston)\"\n}",
+      "perplexity": 2.191410541534424,
+      "generation_time": 59.871942,
+      "error_message": null
+    }
+  },
+  {
+    "id": 188,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeSizeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearsLargeSizeClothes(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬(BasketballPlayer(Yuri) ∧ ¬American(Yuri))\"\n  ]\n}\n```",
+      "perplexity": 1.1157599687576294,
+      "generation_time": 33.914487,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Player(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x (Player(x) ∧ ¬American(x))\",\n    \"∀y (Player(y) → Tall(y))\",\n    \"∀z (Tall(z) → WearsLargeShoes(z))\",\n    \"∀w (WearsLargeShoes(w) → WearsLargeClothes(w))\"\n  ],\n  \"fol_conc\": [\n    \"¬(Player(Yuri) ∧ Tall(Yuri))\"\n  ]\n}\n",
+      "perplexity": 1.197650671005249,
+      "generation_time": 36.539342,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Player(x)\",\n    \"NotAmerican(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(y, x)\"\n  ], \"fol_consts\": [\"yuri\"], \"fol_rules\": [ \"∀x (Player(x) → Tall(x))\", \"∀x (Tall(x) → ∃y (WearsLargeShoes(y, x)))\", \"∀x (NotAmerican(x) ↔ ¬(American(x)))\", \"∀x (Yuri(x) ↔ Player(x) ∧ NotAmerican(x))\"],  \"fol_conc\": \"¬Player(yuri)\"\n}",
+      "perplexity": 1.9712653160095215,
+      "generation_time": 29.957207,
+      "error_message": null
+    }
+  },
+  {
+    "id": 189,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is not an American basketball player.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeSizeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"(∃x) (BasketballPlayer(x) ∧ ¬(American(x)))\",\n    \"(∀x) ((BasketballPlayer(x)) → Tall(x))\",\n    \"(∀x) ((Tall(x)) → WearsLargeShoes(x))\",\n    \"(∀x) ((WearsLargeShoes(x)) → WearsLargeSizeClothes(x))\"\n  ],\n  \"fol_conc\": [\n    \"¬(BasketballPlayer(Yuri) ∧ American(Yuri))\"\n  ]\n}\n```",
+      "perplexity": 1.1937166452407837,
+      "generation_time": 34.175202,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(X)\",\n    \"American(X)\",\n    \"Tall(X)\",\n    \"WearsLargeShoes(X)\",\n    \"WearsLargeSizeClothes(X)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"(∃X)(BasketballPlayer(X) ∧ ¬American(X))\",\n    \"(∀X)(BasketballPlayer(X) → Tall(X))\",\n    \"(∀X)(Tall(X) → WearsLargeShoes(X))\",\n    \"(∀X)(WearsLargeShoes(X) → WearsLargeSizeClothes(X))\"\n  ],\n  \"fol_conc\": [\n    \"¬(BasketballPlayer(Yuri) ∧ American(Yuri))\"\n  ]\n}\n",
+      "perplexity": 1.112015724182129,
+      "generation_time": 38.347043,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"NotAmerican(x)\",\n    \"Tall(x)\",\n    \"WearLargeShoes(x)\",\n    \"WearLargeClothes(x)\"\n  ],  \"fol_consts\": [ \"yuri\", \"american\",\"largeclothes\"],  \"fol_rules\": [\n     \"NotBasketballPlayer(america) ∧ Tall(basketplayer) → WearLargeShoes(basketplayer)\",\n     \"NotWearLargeClothes(yuri)\"\n    ],  \"fol_conc\": \"∃y (BasketballPlayer(y) ∧ NotAmerican(y))\"\n}",
+      "perplexity": 2.5733022689819336,
+      "generation_time": 29.444274,
+      "error_message": null
+    }
+  },
+  {
+    "id": 190,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "Yuri is an American basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"NotAmerican(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeSizeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x ( BasketballPlayer(x) ∧ NotAmerican(x))\",\n    \"∀y (BasketballPlayer(y) → Tall(y))\",\n    \"∀z ((Tall(z) → WearsLargeShoes(z)))\",\n    \"∀w ((WearsLargeShoes(w) → WearsLargeSizeClothes(w)))\",\n    \"(¬ ∃u (WearsLargeSizeClothes(u)))\"\n  ],\n  \"fol_conc\": [\n    \"BasketballPlayer(Yuri)\",\n    \"NotAmerican(Yuri)\"\n  ]\n}\n```",
+      "perplexity": 1.3154951333999634,
+      "generation_time": 35.813741,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeSizeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬ American(x))\",\n    \"∀x BasketballPlayer(x) → Tall(x)\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearsLargeSizeClothes(x))\"\n  ],\n  \"fol_conc\": [\n    \"American(Yuri) ∧ BasketballPlayer(Yuri)\"\n  ]\n}",
+      "perplexity": 1.1743674278259277,
+      "generation_time": 36.000936,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeClothes(x)\"\n  ], \"fol_consts\": [\"yuri\"], \"fol_rules\": [ \"∃x (BasketballPlayer(x) ∧ ¬American(x))\", \"∀x (BasketballPlayer(x) → Tall(x))\", \"∀x (Tall(x) → WearsLargeShoes(x))\", \"∀x (WearsLargeShoes(x) → WearsLargeClothes(x))\" ], \"fol_conc\": \"∃y (BasketballPlayer(y) ∧ American(y) ∧ Tall(y))\"\n}",
+      "perplexity": 1.3041753768920898,
+      "generation_time": 35.694174,
+      "error_message": null
+    }
+  },
+  {
+    "id": 191,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri does not wear large shoes, then Yuri is an American basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WeaLargerSizeClothes(x)\"],\n  \"fol_consts\": [\"Yuri\", \"large_shoes_size\", \"large_clothe_size\"],\n  \"fol_rules\": [\n    \"∃x (BasketballPlayer(x)) ∧ ¬American(x)\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WeaLargerSizeClothes(x))\",\n    \"¬WeaLargerSizeClothes(Yuri)\"\n  ],\n  \"fol_conc\": [\n    \"(¬WeaLargerSizeClothes(Yuri) ∧ ¬BasketballPlayer(Yuri) ∨ American(BasketballPlayer(Yuri))) → BasketballPlayer(Yuri))\"\n  ]\n}\n```",
+      "perplexity": 1.4290251731872559,
+      "generation_time": 41.997669,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeClothes(x)\"\n  ],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearsLargeClothes(x))\",\n    \"¬WearsLargeClothes(Yuri)\"\n  ],\n  \"fol_conc\": [\n    \"(¬WearsLargeShoes(Yuri)→(BasketballPlayer(Yuri) ∧ American(Yuri)))\"\n  ]\n}",
+      "perplexity": 1.1041709184646606,
+      "generation_time": 42.506734,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargeSizeClothes(x)\"], \"fol_consts\": [\"yuri\"], \"fol_rules\": [\n    \"(∃x (BasketballPlayer(x)) ∧ ¬(American(x)))\",\n    \"(∀x (BasketballPlayer(x)) → Tall(x))\",\n    \"(Tall(x) → WearLargeShoes(x))\", \"(WearLargeShoes(x) → WearLargeSizeClothes(x))\", \"¬(WearLargeSizeClothes(yuri))\"], \"fol_conc\": \"((¬(WearLargeShoes(yuri))) → (BasketballPlayer(yuri) ∧ American(yuri)))\"\n}",
+      "perplexity": 1.538582682609558,
+      "generation_time": 37.592169,
+      "error_message": null
+    }
+  },
+  {
+    "id": 192,
+    "nl_problem": {
+      "context": [
+        "Some basketball players are not American.",
+        "All basketball players are tall.",
+        "If someone is tall, they wear large shoes.",
+        "If someone wears large shoes, they wear large-sized clothes.",
+        "Yuri does not wear large-size clothes."
+      ],
+      "question": "If Yuri is not an American basketball player, then Yuri is a basketball player.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearsLargeShoes(x)\", \"WearsLargeSizeClothes(x)\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x (BasketballPlayer(x) → Tall(x))\",\n    \"∀x (Tall(x) → WearsLargeShoes(x))\",\n    \"∀x (WearsLargeShoes(x) → WearsLargeSizeClothes(x))\"\n  ],\n  \"fol_conc\": [\n    \"(¬(BasketballPlayer(Yuri) ∧ American(Yuri))) → BasketballPlayer(Yuri)\"\n  ]\n}",
+      "perplexity": 1.1526905298233032,
+      "generation_time": 32.156889,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"BasketballPlayer(x)\", \"American(x)\", \"Tall(x)\", \"WearLargeShoes(x)\", \"WearLargeSizeClothes(x)\"],\n  \"fol_consts\": [\"Yuri\"],\n  \"fol_rules\": [\n    \"∃x(BasketballPlayer(x)) ∧ ¬(American(x)),\",\n    \"∀x(BasketballPlayer(x) → Tall(x)),\",\n    \"∀y(Tall(y) → WearLargeShoes(y)),\",\n    \"∀z(WearLargeShoes(z) → WearLargeSizeClothes(z))\"\n  ],\n  \"fol_conc\": [\"¬(American(Yuri) ∧ BasketballPlayer(Yuri)) → BasketballPlayer(Yuri)\"]\n}\n",
+      "perplexity": 1.2526370286941528,
+      "generation_time": 35.693072,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BasketballPlayer(x)\",\n    \"American(x)\",\n    \"Tall(x)\",\n    \"WearsLargeShoes(x)\",\n    \"WearsLargeClothes(x)\"\n  ], \"fol_consts\": [\"yuri\"], \"fol_rules\": [\n    \"∃x (BasketballPlayer(x) ∧ ¬American(x))\",\n    \"∀x ((BasketballPlayer(x) → Tall(x)))\",\n    \"∀x ((Tall(x) → WearsLargeShoes(x)))\",\n    \"∀x ((WearsLargeShoes(x) → WearsLargeClothes(x)))\",\n    \"¬WearsLargeClothes(yuri)\"\n  ], \"fol_conc\": \"(¬AmericanBasketballPlayer(yuri)) ⊕ BasketballPlayer(yuri)\"}",
+      "perplexity": 1.3654040098190308,
+      "generation_time": 38.719521,
+      "error_message": null
+    }
+  },
+  {
+    "id": 193,
+    "nl_problem": {
+      "context": [
+        "Events are either happy or sad.",
+        "At least one event is happy. "
+      ],
+      "question": "All events are sad.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"EventType\"\n  ],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    {\n      \"rule\": \"(∀x) (EventType(x, 'happy') ∨ EventType(x, 'sad'))\",\n      \"description\": \"Events are either happy or sad.\"\n    },\n    {\n      \"rule\": \"(∃x) (EventType(x, 'happy'))\"\n    }\n  ],\n  \"fol_conc\": [\n    {\n      \"conclusion\": \"(∀y) (EventType(y, 'sad'))\",\n      \"description\": \"All events are sad.\"\n    }\n  ]\n}\n```",
+      "perplexity": 1.311336636543274,
+      "generation_time": 27.451409,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"is_happy\", \"is_sad\"],\n  \"fol_consts\": [],\n  \"fol_rules\": [\n    \"\\u03C1 (∀x) \\u25B8\\u2640(is_happy(x)) → is_happy(x)\",\n    \"\\u03C1 (∃x) is_happy(x)\"\n  ],\n  \"fol_conc\": [\"\\u03A9 (∀x) is_sad(x)\"]\n}\n",
+      "perplexity": 2.048748016357422,
+      "generation_time": 23.201387,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"EventType(event, type)\",\"Happy(event)\", \"Sad(event)\"],  \"fol_consts\":[ \"event1\", \"event2\"],  \"fol_rules\":\n    [ \"(∃x ∀y (EventType(x, y)))\",\n     \"(∃x (Happy(x)))\",\n     \"(∃x ((¬(Happy(x)) → (Sad(x)))))\"\n   ],  \"fol_conc\": \"(∀x (Sad(x)))\"\n}",
+      "perplexity": 4.355635166168213,
+      "generation_time": 23.458432,
+      "error_message": null
+    }
+  },
+  {
+    "id": 194,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Steinhauer was not the winner of the 1992 du Maurier Classic.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Winner(Person, Tournament)\",\n    \"ParticipatedIn(Tournament, Person)\",\n    \"FromCountry(Person, Country)\",\n    \"OnLeaderboard(Tournament, Leaderboard)\"\n  ],\n  \"fol_consts\": [\"Steinhauer\", \"1992duMaurierClassic\"],\n  \"fol_rules\": [\n    \"∀P ∃T (Winner(P,T) → ParticipatedIn(P,T))\",\n    \"ParticipatedIn(Descampe, 1992duMaurierClassic)\",\n    \"(FromCountry(Descampe,'Belgium') → OnLeaderboard(1992duMaurierClassic, Descampe))\",\n    \"∀P ∃T (OnLeaderboard(T,P) → ParticipatedIn(P,T))\"\n  ],\n  \"fol_conc\": [\n    \"¬Winner(Steinhauer, Steinhauer)\"\n  ]\n}\n```",
+      "perplexity": 1.5095313787460327,
+      "generation_time": 37.482374,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Winner(tournament, person)\",\n    \"Participant(person, tournament)\",\n    \"LeaderboardPerson(tournament, person)\",\n    \"FromCountry(person, country)\"\n  ],\n  \"fol_consts\": [\"Steinhauer\", \"1992duMaurierClassic\"],\n  \"fol_rules\": [\n    \"∀x (Winner(1992duMaurierClassic, x) → Participant(x, 1992duMaurierClassic))\",\n    \"∃y ∃z LeaderboardPerson(1992duMaurierClassic, y) ∧ FromCountry(y, Belgium) ∧ (LeaderboardPerson(1992duMaurierClassic, z)\",\n    \"∀x LeaderboardPerson(tournament, x) → Participant(x, tournament)\"\n  ],\n  \"fol_conc\": [\n    \"¬Winner(1992duMaurierClassic, Steinhauer)\"\n  ]\n}\n",
+      "perplexity": 1.3455169200897217,
+      "generation_time": 46.389249,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Winner(x, y)\",\n    \"ParticipatedIn(x, z)\",\n    \"TieLeaderboard(y)\",\n    \"FromBelgium(z)\"\n  ], \"fol_consts\": [\"1992\", \"du\", \"classic\", \"steinhauer\"], \"fol_rules\": [ \"∀z (Winner(steinhauer, z) → ∃y (ParticipatedIn(x, y)))\", \"∃x (TieLeaderboard(z) → ∃w ((FromBelgium(w)) ⊕ ∃v (ParticipatedIn(v, z))))\", \"∃x (Descampe(x) → FromBelgium(steinhauer))\"], \"fol_conc\": \"¬Winner(1992, steinhauer)\" }",
+      "perplexity": 2.2256946563720703,
+      "generation_time": 36.059869,
+      "error_message": null
+    }
+  },
+  {
+    "id": 195,
+    "nl_problem": {
+      "context": [
+        "The winner of the 1992 du Maurier Classic was Steinhauer.",
+        "Steinhauer participated in the 1992 du Maurier Classic.",
+        "There was one six-way tie on the leaderboard and one person in the six-way tie was from Belgium.",
+        "Descampe is from Belgium and is on the leaderboard of the 1992 du Maurier Classic.",
+        "All people on the leaderboard of the 1992 du Maurier Classic participated in the 1992 du Maurier Classic."
+      ],
+      "question": "Descampe is in the six-way tie in the leaderboard of the 1992 du Maurier Classic.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Winner(Person, Year)\",\n    \"ParticipatedIn(Person, EventYear)\",\n    \"FromCountry(City, Person)\",\n    \"OnLeaderboard(PersonsList, Leaderboard)\",\n    \"Tied(TieType, Persons)\"\n  ],\n  \"fol_consts\": [\"Steinhauer\", \"1992\", \"Descampe\"],\n  \"fol_rules\": [\n      \"∀X ∃Y (Winner(X,Y) → ParticipatedIn(X, Y))\",\n      \"ParticipatedIn(steinhauer, 1992)\",\n      \"(OnLeaderboard([descamp], leaderboards_of_1992)→FromCountry(belgium, descamp))∧Tied(sixway, [descamp])\"\n    ],\n  \"fol_conc\": [\n     \"Descampe ∈ sixway_tie_in_leaderboard(1992)\"\n   ]\n}",
+      "perplexity": 2.3452930450439453,
+      "generation_time": 37.320905,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"Winner\", \"ParticipatedIn\", \"SixWayTie\", \"FromBelgium\", \"OnLeaderboard\"],\n  \"fol_consts\": [\"Steinhauer\", \"Descampe\"],\n  \"fol_rules\": [\n    \"∀x (Winner(x, 1992DuMaurierClassic) → ParticipatedIn(Steinhauer, x))\",\n    \"ParticipatedIn(x, 1992DuMaurierClassic)\",\n    \"SixWayTie(yourself, yourself, leaderboard_1992DuMaurierClassic)\",\n    \"FromBelgium(Descampe) ∧ OnLeaderboard(Descampe, leaderboard_1992DuMaurierClassic)\"\n  ],\n  \"fol_conc\": \"∃x (SixWayTie(x, yourself, leaderboard_1992DuMaurierClassic))\"\n}\n",
+      "perplexity": 1.5074597597122192,
+      "generation_time": 43.158634,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Winner(x, y)\",\n    \"ParticipatedIn(y, z)\",\n    \"OnLeaderboard(z, x)\",\n    \"FromBelgium(w)\"\n  ], \"fol_consts\": [\"steinhauer\", \"descampe\"], \"fol_rules\": [ \"∀x (Winner(1992dumaurierclassic, steinhauer))\",\n\"ParticipatedIn(1992dumaurierclassic, steinhauer)\",\n\"ThereWasOneSixWayTieOnLeaderboard(x)\", \"ThereIsOnePersonFromBelgium(y) ∧ OnLeaderboard(z, y) ∧ ParticipatedIn(z, 1992dumaurierclassic) ∨ FromBelgium(steinhauer)\",\n\"DescampeFromBelgium(descampe)\"], \"fol_conc\": \"∃x (OnSixWayTie(x))\"\n}",
+      "perplexity": 2.156949996948242,
+      "generation_time": 40.143973,
+      "error_message": null
+    }
+  },
+  {
+    "id": 196,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi is terricolous.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n\"fol_preds\": [\n  \"Barks(x)\",\n  \"Dogs(y)\",\n  \"Likes(z, x)\",\n  \"Animals(w)\"\n],\n\"fol_consts\": [],\n\"fol_rules\": [\n  \"∀x (Animal(x) → ∃y Barks(x))\",\n  \"∀z ∀w ((Barks(w) → ¬ Likes(z,w)))\"\n],\n\"fol_conc\": []\n}\n```",
+      "perplexity": 2.2133991718292236,
+      "generation_time": 17.864457,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"barks(x)\",\n    \"likes_animal(Jane, x)\",\n    \"is_dog(x)\",\n    \"jumps(x)\",\n    \"has_legs(x)\",\n    \"terricolous(x)\"\n  ],\n  \"fol_consts\": [\"Jane\", \"KiKi\"],\n  \"fol_rules\": [\n    \"∀x (barks(x) → ¬likes_animal(Jane, x))\",\n    \"∃y is_dog(y)\",\n    \"∀z ((jumps(z)) ∧ likes_animal(Jane, z))\",\n    \"∀w ((has_legs(w)) → jumps(w))\",\n    \"∀v (terricolous(v) → has_legs(v))\"\n  ],\n  \"fol_conc\": [\n    \"terricolous(KiKi)\"\n  ]\n}\n",
+      "perplexity": 1.3197927474975586,
+      "generation_time": 39.733823,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Animal(x)\",\n    \"Barks(y, x)\",\n    \"Likes(z, y)\",\n    \"Dog(a)\",\n    \"Jumps(b, c)\",\n    \"HasLegs(d, e)\",\n    \"Terricolous(f, g)\"\n  ],  \"fol_consts\": [\"x\", \"y\", \"z\"], \"fol_rules\": [\n     \"(∀w ∃v (Barks(v, w) → ¬Likes(w, v)))\",\n     \"(∀u (Dog(u) → Barks(x, u)))\",\n    \"(∀p (Jumps(q, p) → Likes(p, q)))\",\n   \"((∀r (HasLegs(s, r) → Jumps(r, t))) ∧ ¬(Terricolous(g, h) → HasLegs(i, j)))\"\n  ], \"fol_conc\": \"(∃k (Terricolous(k)))\"}",
+      "perplexity": 2.264662742614746,
+      "generation_time": 44.889432,
+      "error_message": null
+    }
+  },
+  {
+    "id": 197,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi barks and is a dog.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"barks\", \"likes\", \"is_dog\", \"jumps\", \"has_legs\", \"terricolous\"],\n  \"fol_consts\": [\"Jane\", \"KiKi\"],\n  \"fol_rules\": [\n    \"(∀x)(barks(x) → ¬(likes(Jane, x)))\",\n    \"(∀x)((is_dog(x)) → (animal(x) ∧ barks(x)))\",\n    \"(∀x)(jumps(x) → likes(Jane, x))\",\n    \"(∀x)(has_legs(x) → jumps(x))\",\n    \"(∀x)(terricolous(x) → has_legs(x))\"\n  ],\n  \"fol_conc\": [\"(barks(KiKi) ∧ is_dog(KiKi))\"]\n}\n```",
+      "perplexity": 1.18895423412323,
+      "generation_time": 33.885474,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n  \"Barks(x)\",\n  \"Likes(x, y)\",\n  \"IsDog(x)\",\n  \"Jumps(x)\",\n  \"HasLegs(x)\",\n  \"Terricolous(x)\"\n],\n\"fol_consts\": [\"Jane\", \"KiKi\"],\n\"fol_rules\": [\n  \"∀x(Barks(x) → ¬ Likes(Jane, x))\",\n  \"∀y(IsDog(y) ∧ Barks(y))\",\n  \"∀z(Jumps(z) → Likes(Jane, z))\",\n  \"∀w(HasLegs(w) → Jumps(w))\",\n  \"∀v(Terricolous(v) → HasLegs(v))\"\n],\n\"fol_conc\": [\n  \"(Barks(KiKi) ∧ IsDog(KiKi))\"\n]\n}\n",
+      "perplexity": 1.2780460119247437,
+      "generation_time": 39.314832,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Barks(x)\",\n    \"LikesJane(x, y)\",\n    \"Dog(x)\",\n    \"Animal(x)\",\n    \"Jumps(x)\",\n    \"HasLegs(x)\",\n    \"Terricolous(x)\"\n  ], \"fol_consts\": [\"kiiki\", \"jane\"], \"fol_rules\": [\n     \"∀x (Barks(x) → ¬LikesJane(jane, x))\",\n     \"∀y (Dog(y) ∧ Barks(y))\",\n     \"∀z (Animal(z) ∧ Jumps(z) → LikesJane(jane, z))\",\n     \"∀w (Animal(w) ∧ HasLegs(w) → Jumps(w))\",\n     \"∀v (Terricolous(v) → HasLegs(v))\"\n   ], \"fol_conc\": \"Barks(kiiki) ∨ Dog(kiiki)\"\n}",
+      "perplexity": 1.5363363027572632,
+      "generation_time": 42.936457,
+      "error_message": null
+    }
+  },
+  {
+    "id": 198,
+    "nl_problem": {
+      "context": [
+        "If an animal barks, then Jane does not like it.",
+        "All dogs are animals that bark.",
+        "If an animal jumps, then Jane likes it.",
+        "If an animal has legs, then it jumps.",
+        "If an animal is terricolous, then it has legs. ",
+        "If KiKi neither jumps nor has legs, then KiKi is terricolous or has legs."
+      ],
+      "question": "KiKi neither barks nor is a dog.",
+      "options": [],
+      "answer": "A"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"likes(x, y)\",\n    \"barks(y)\",\n    \"is_dog(z)\"\n  ],\n  \"fol_consts\": [\"Jane\", \"KiKi\"],\n  \"fol_rules\": [\n    \"(∀x)(barks(x) → ¬(likes(Jane,x)))\",\n    \"(∀y)(is_dog(y) → barks(y))\",\n    \"(∀z)((jumps(z))→ (likes(Jane,z)))\",\n    \"(∀w)((has_legs(w))→ jumps(w))\",\n    \"(∀v)((terricolous(v)) → has_legs(v))\"\n  ],\n  \"fol_conc\": [\n    \"(¬barks(KiKi) ∧ ¬is_dog(KiKi))\"\n  ]\n}\n```",
+      "perplexity": 1.4687190055847168,
+      "generation_time": 33.679262,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Animal(x)\",\n    \"Barks(x)\",\n    \"Likes_animal(y, z)\", 0\n    ],\n    \"fol_consts\": [\"Jane\", \"KiKi\"],\n\"fol_rules\": [\n    \"∀x (Animal(x) → Barks(x))\",\n    \"∃y ∀z ((Loves(Jane,z)), Loves_animal(z,x)\",\n    \"∀x Animal(x) → (Bark(x)→ ¬likes_animal(Jane, x)\"\n],\n\"fol_conc\": [\n  \"¬Barks(KiKi), ¬Dog(KiKi)\"\n]\n}",
+      "perplexity": 2.6986196041107178,
+      "generation_time": 30.422565,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"Barks(x)\", \"LikesJane(y, x)\", \"IsDog(x)\", \"Jumps(x)\", \"HasLegs(x)\", \"Terricolous(x)\"],  \"fol_consts\": [\"kiiki\", \"jane\"],  \"fol_rules\": [ \"∀x (Barks(x) → ¬LikesJane(jane, x))\",\n  \"∃y ∀z ((IsDog(z) ∧ Barks(z)) → LikesJane(y, z))\",\n  \"∀x (Jumps(x) → LikesJane(jane, x))\",\n  \"∀x (HasLegs(x) → Jumps(x))\",\n  \"∀x (Terricolous(x) → HasLegs(x))\"],  \"fol_conc\": \"(¬Barks(kiiki) ∧ ¬IsDog(kiiki))\" }",
+      "perplexity": 1.868140459060669,
+      "generation_time": 42.301554,
+      "error_message": null
+    }
+  },
+  {
+    "id": 199,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "No one playing for Nautico is Brazilian.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn\",\n    \"CommonlyKnownAs\",\n    \"IsAFootballPlayerWhoWasLoanedOutTo\",\n    \"IsBrazilian\",\n    \"PlaysForClub\",\n    \"ClubAlongWith\"\n  ],\n  \"fol_consts\": [\n    \"ailton_silva\", \"braga\", \"nautico\", \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"∀x(BornIn(x, 1995) ∧ CommonlyKnownAs(ailton_silva))\",\n    \"∃y(IsAFootballPlayerWhoWasLoanedOutTo(y, braga) ∧ CommonlyKnownAs(ailton_silva))\",\n    \"∀x((PlaysForClub(x, nautico) → IsBrazilian(x)))\"\n  ],\n  \"fol_conc\": [\n    \"¬∃y(IsAFootballPlayerWhoWasLoanedOutTo(y, braga) ∧ PlaysForClub(y, nautico))\"\n  ]\n}\n```",
+      "perplexity": 1.46659517288208,
+      "generation_time": 43.573947,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"BornIn\", \"IsKnownAs\", \"FootballPlayerOf\", \"LoanedOutTo\", \"Brazilian\", \"PlaysFor\"],\n  \"fol_consts\": [\n    \"Ailton\",\n    \"Silva\",\n    \"1995-04-23\" ],\n  \"fol_rules\": [\n     \"?x. BornIn(x, '1995') ∧ IsKnownAs(x, ?y) → FootballPlayerOf(Ailton)\",\n     \"?z. LoanedOutTo(z, Ailton) ∧ PlaysFor(Nautico, z)\"\n    ],\n  \"fol_conc\": [\"∃x. (PlaysFor(Nautico, x))→¬Brazilian(x)\"]\n}",
+      "perplexity": 2.436722755432129,
+      "generation_time": 35.79882,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n\"fol_preds\": [\"IsBornIn(x, y)\", \"KnownAs(y, z)\", \"PlayerForClub(x, z)\", \"LoanedTo(x, w)\", \"BrazillianFootballer(z)\",\n\t\"PlayForClub(w, x)\",\"FootballClub(v)\"],  \"fol_consts\":\n[\"ailton\", \"1995\", \"braga\", \"nautico\", \"fluminense\"],  \"fol_rules\": [\"∀x (IsBornIn(ailton, 1995))\",\n\t\"∃y ∀z ((KnownAs(y, z) → PlayerForClub(x, z)))\",\"∃w (LoanedTo(aileon, braga))\",\n\t\"∃v (PlayForClub(nautico, aileon))\", \"∀x (FootballClub(braga))\",\n\t\"∀z ((KnownAs(z, x) → BrazillianFootballer(x)))\",\"∀y ∀w ((FootballClub(w) ∧ PlayForClub(y, w)))\"],  \"fol_conc\": \"NotPlayingForNautico(ailton)\"\n}",
+      "perplexity": 2.661839485168457,
+      "generation_time": 52.201868,
+      "error_message": null
+    }
+  },
+  {
+    "id": 200,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva foes not play for a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn\",\n    \"IsKnownAs\",\n    \"FootballPlayer\",\n    \"LoanedTo\",\n    \"Brazilian\",\n    \"PlaysFor\",\n    \"Club\"\n  ],\n  \"fol_consts\": [\"AiltonSilva\", \"1995\", \"Braga\", \"Nautico\", \"Fluminense\"],\n  \"fol_rules\": [\n    \"∀x (BornIn(x, y) → IsKnownAs(y))\",\n    \"∃y (IsKnownAs(AiltonSilva) ∧ FootballPlayer(AiltonSilva) ∨ LoanedTo(AiltonSilva, Braga))\"\n  ],\n  \"fol_conc\": [\n    \"(PlaysFor(AiltonSilva, x) → Club(x))\",\n    \"¬∃x (PlaysFor(AiltonSilva, x))\"\n  ]\n}",
+      "perplexity": 1.4407073259353638,
+      "generation_time": 36.575395,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn\",\n    \"IsKnownAs\",\n    \"FootballPlayer\",\n    \"LoanedOutTo\",\n    \"BrazillianFootballer\",\n    \"PlaysFor\",\n    \"Club\"\n  ],\n  \"fol_consts\": [\"AiltonSilva\", \"1995\", \"Braga\", \"Nautico\"],\n  \"fol_rules\": [\n    \"∀x (BornIn(x, '1995')) → FootballPlayer(AiltonSilva)\",\n    \"FootballPlayer(AiltonSilva) ∧ LoanedOutTo(Braga) → PlaysFor(Nautico)\",\n    \"PlaysFor(Nautico) ⊕ Club(Nautico)\"\n  ],\n  \"fol_conc\": [\n    \"∀x (FootballPlayer(x)) → ¬Club(Fluminense) → x ≠ AiltonSilva\"\n  ]\n}\n",
+      "perplexity": 1.502040147781372,
+      "generation_time": 42.537866,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn(y, m)\", \"KnownAs(x, z)\",\n    \"IsPlayerOf(x, y)\", \"LoanedTo(x, z)\",\n    \"FootballerFromCountry(x, country)\",\n    \"PlayForClub(x, club)\"\n  ], \"fol_consts\":\n  [\"1995\", \"ailton\", \"braga\", \"nautico\",\n   \"fluminense\"], \"fol_rules\": [\n     \"BornIn(ailton, 1995)\", \"KnownAs(ailton, ailton)\",\n    \"IsPlayerOf(ailton, braga) ∨ IsPlayerOf(braga, nailton)\",\n     \"LoanedTo(ailton, braga)\",\n   \"FootballerFromCountry(ailton, brazil)\"], \"fol_conc\": \"¬PlayForClub(ailton, club)\"\n}",
+      "perplexity": 2.0676980018615723,
+      "generation_time": 39.560577,
+      "error_message": null
+    }
+  },
+  {
+    "id": 201,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton was not loaned out to a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\"BornIn\", \"CommonlyKnownAs\", \"FootballPlayerOfClub\", \"LoanedOutTo\"],\n  \"fol_consts\": [\"AiltonSilva\", \"1995\", \"Braga\", \"Nautico\", \"Fluminense\"],\n  \"fol_rules\": [\n    \"∀x (BornIn(x, y) ∧ CommonlyKnownAs(y))\",\n    \"∃y(FootballPlayerOfClub(AiltonSilva, x)) → LoanedOutTo(x)\",\n    \"(LoanedOutTo(Nautico) ∨ LoanedOutTo(Braga))\"\n  ],\n  \"fol_conc\": [\n    \"¬∃x (FootballPlayerOfClub(AiltonSilva, x))\"\n  ]\n}\n```",
+      "perplexity": 1.5918108224868774,
+      "generation_time": 32.708783,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n\"fol_preds\": [\n  \"BornIn\",\n  \"KnownAs\",\n  \"FootballPlayer\",\n  \"LoanedOutTo\",\n  \"Brazillian\",\n  \"PlaysFor\",\n  \"IsAClub\"\n],\n\"fol_consts\": [\"Ailton\", \"1995\", \"Braga\", \"Nautico\"],\n\"fol_rules\": [\n    \"∀x (BornIn(x, '1995') ∧ KnownAs(x, 'Ailton'))\",\n    \"FootballPlayer('Ailton') → LoanedOutTo('Ailton', 'Braga')\",\n    \"∃y ((PlaysFor('Ailton', y) & IsAClub(y)) ∧ (KnownAs('Nautico', 'Fluminense')))\",\n    \"IsAClub(Nautico)\"\n],\n\"fol_conc\": [\n  \"(¬LoanedOutTo(Ailton, x))\"\n]\n}\n",
+      "perplexity": 1.6963222026824951,
+      "generation_time": 43.697539,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornInYear(x, y)\",\n    \"IsKnownAs(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanedOutToClub(x, club)\",\n    \"Brazilian(x)\",\n    \"PlaysForTeam(x, team)\"\n  ], \"fol_consts\": [\"1995\", \"ailton\"], \"fol_rules\": [\n     \"∀x (BornInYear(ailton, 1995) ∧ IsKnownAs(ailton, ailton))\",\n     \"∃y (FootballPlayer(y) → LoanedOutToClub(y, braga))\",\n    \"∃z (PlaysForTeam(zilao, nautico))\",\n   \"∀x (Nautico(x) ∧ Braga(x))\",\n  \"∃w (Fluminense(w))\"\n], \"fol_conc\": \"(¬(LoanedOutToClub(ailton, x)))\"\n}",
+      "perplexity": 2.097822904586792,
+      "generation_time": 44.125916,
+      "error_message": null
+    }
+  },
+  {
+    "id": 202,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva played for Fluminense.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornInYear(x, y)\",\n    \"IsKnownAs(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanedOutToClub(y, z)\",\n    \"BrazillianFootballer(z)\",\n    \"PlaysForClub(w, x)\",\n    \"SameTeamWith(v, w)\"\n  ],\n  \"fol_consts\": [\n    \"AiltonSilva\",\n    \"Braga\",\n    \"Nautico\"\n  ],\n  \"fol_rules\": [\n    {\n      \"predicate\": \"BornInYear(AiltonSilva, y)\",\n      \"constant\": [\"1995\"]\n    },\n    {\n      \"predicate\": \"IsKnownAs(x, AiltonSilva)\"\n    },\n    {\n      \"predicate\": \"FootballPlayer(AiltonSilva)\"\n    },\n    {\n      \"predicate\": \"LoanedOutToClub(AiltonSilva, Braga)\",\n      \"constant\": [\"Ailton\"]\n    },\n    {\n      \"predicate\": \"BrazillianFootballer(Nautico)\"\n    },\n    {\n      \"predicate\": \"PlaysForClub(x, Ailton)\"\n    },\n    {\n      \"predicate\": \"SameTeamWith(AiltonSilva, Nautico)\",\n      \"constant\": [\"Braga\"]\n    }\n  ],\n  \"fol_conc\": [\n    {\"predicate\": \"FootballPlayer(y)\", \"quantifier\": \"∃\", \"consts\": [[\"Ailton\"], [\"Fluminense\"]]}\n  ]\n}",
+      "perplexity": 1.582158088684082,
+      "generation_time": 62.14973,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"Player(x)\",\n    \"BornInYear(x, y)\",\n    \"LoanedToClub(x, z)\",\n    \"BrazilianFootballer(x)\",\n    \"PlaysForClub(x, w)\"\n  ],\n  \"fol_consts\": [\"Ailton\", \"1995\", \"Braga\", \"Nautico\"],\n  \"fol_rules\": [\n    \"∀x (Player(x) ∧ BornInYear(Ailton, '1995'))\",\n    \"∃y Player(y)\",\n    \"LoanedToClub(Ailton, Braga)\"\n  ],\n  \"fol_conc\": [\n    \"PlaysForClub(Ailton, Fluminense)\"\n  ]\n}\n",
+      "perplexity": 1.5217450857162476,
+      "generation_time": 33.378319,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornInYear(x, y)\",\n    \"IsCommonlyKnownAs(x, z)\",\n    \"PlayedForFootballClub(x, y)\"\n  ], \"fol_consts\": [\"ailton\", \"1995\", \"braga\", \"nautico\", \"fluminense\"], \"fol_rules\": [\n    \"∀x ∃y (BornInYear(ailton, y) → IsCommonlyKnownAs(x, ailton))\",\n    \"(IsCommonlyKnownAs(ailton, braga) ∧ PlayedForFootballClub(ailton, nautico) → BornInYear(nautico, 1995))\"\n  ], \"fol_conc\": \"∃x (PlayedForFootballClub(x, fluminense) → IsCommonlyKnownAs(ailton, x))\" }",
+      "perplexity": 1.888704538345337,
+      "generation_time": 40.245748,
+      "error_message": null
+    }
+  },
+  {
+    "id": 203,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva was loaned out to a football club.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornInYear(X, Y)\",\n    \"CommonlyKnownAs(X, Z)\",\n    \"FootballPlayerOf(X)\",\n    \"LoanedOutTo(X, Club)\",\n    \"Brazilian(X)\"\n  ],\n  \"fol_consts\": [\"Ailton\", \"Silva\"],\n  \"fol_rules\": [\n    \"∀X(∃Y(BornInYear(Ailton,X) ∧ CommonlyKnownAs(X,Ailton)))\",\n    \"FootballPlayerOf(Ailton)\",\n    \"LoanedOutTo(Ailton, Braga)\",\n    \"∀X(City(X))\"\n  ],\n  \"fol_conc\": [\n    \"∃Z(FootballClub(Z) → LoanedOutTo(Ailton, Z))\"\n  ]\n}\n```",
+      "perplexity": 1.6357438564300537,
+      "generation_time": 32.726936,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\"BornIn\", \"IsKnownAs\", \"LoanedOutTo\", \"FootballPlayer\", \"BrazillianFootballer\", \"PlaysFor\"],\n  \"fol_consts\": [\n    \"AiltonSilva\",\n    \"1995\",\n    \"Braga\",\n    \"Nautico\"\n  ],\n  \"fol_rules\": [\n    \"∀x (BornIn(x, '1995') ∧ IsKnownAs(x, 'Ailton')) → FootballPlayer(AiltonSilva)\",\n    \"FootballPlayer(AiltonSilva) ∧ LoanedOutTo(AiltonSilva, Braga)\"\n  ],\n  \"fol_conc\": [\"∃x (IsKnownAs(x, AiltonSilva) ∧ FootballClub(Braga))\"]\n}\n",
+      "perplexity": 1.4531488418579102,
+      "generation_time": 37.924077,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\"BornIn(x, y)\", \"IsKnownAs(x, z)\", \"FootballPlayerOf(x)\", \"LoanedOutTo(x, w)\", \"Brazilian(y)\", \"Club(w)\"],  \"fol_consts\": [\"1995\", \"ailton\", \"braga\", \"nautico\"],  \"fol_rules\": [ \"AiltonBornIn(1995) ∧ IsKnownAs(ailton, ailton)\",\n    \"AiltonIsFootballPlayerOf(braga)\"],  \"fol_conc\": \"(∃x (LoanedOutTo(x, braga)))\"\n}",
+      "perplexity": 3.0461318492889404,
+      "generation_time": 30.197011,
+      "error_message": null
+    }
   }
 ]
