@@ -26404,5 +26404,599 @@
       "generation_time": 15.516929,
       "error_message": null
     }
+  },
+  {
+    "id": 4896,
+    "nl_problem": {
+      "context": [],
+      "question": "Valeria operates the cash register exactly nine times as fast as her less-experienced colleague Tara. Daily, Tara processes 52 customers. What is the total weekly production for the two if they work all days of the week?",
+      "options": [],
+      "answer": 3640.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"valeria_speed = 9 * Tara_speed\",\n        \"Tara_daily_customers = 52\"\n    ],\n    \"question\": \"(Valeria_speed * 7 + Tara_daily_customers * 7)\"\n}\n```",
+      "perplexity": 1.2988170385360718,
+      "generation_time": 12.446089,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"Tara_customers_per_day = 52\",\n     \"Valeria_speed_ratio = 9\"\n    ],\n    \"question\": \"(Tara_customers_per_day + (Tara_customers_per_day * Valeria_speed_ratio)) * 7\"\n}",
+      "perplexity": 3.3725240230560303,
+      "generation_time": 14.752828,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 9\",\n     \"tara_customers_per_day = 52\",\n     \"valeria_speed_ratio = a * tara_customers_per_day\",\n     \"total_days_in_week = 7\"\n    ], \n    \"question\": \"(tara_customers_per_day + valeria_speed_ratio) * total_days_in_week\"\n}",
+      "perplexity": 3.229785680770874,
+      "generation_time": 18.578442,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4901,
+    "nl_problem": {
+      "context": [],
+      "question": "A new bacteria infects 20 people. Every day, each infected person infects 5 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 4320.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 20\",\n        \"infection_rate_per_person = 5\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (1 + infection_rate_per_person) ** days)\"\n}\n```",
+      "perplexity": 1.1079633235931396,
+      "generation_time": 13.893776,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 20\",\n     \"b = 5\",\n     \"c = 3\"\n    ],\n    \"question\": \"(a * (pow(b, c)))\"\n}",
+      "perplexity": 4.798375129699707,
+      "generation_time": 10.708668,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 20\",\n     \"rate_of_infection_per_person = 5\",\n     \"days = 3\"\n    ], \n    \"question\": \"(a * powerate_of_infection_per_person_days)\"\n}",
+      "perplexity": 7.923588752746582,
+      "generation_time": 12.427921,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4903,
+    "nl_problem": {
+      "context": [],
+      "question": "A new infection infects 17 people. Every day, each infected person infects 2 others. How many people are infected after 4 days?",
+      "options": [],
+      "answer": 1377.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 17\",\n        \"infection_rate_per_person = 2\",\n        \"days = 4\"\n    ],\n    \"question\": \"(initial_infections * (pow(infection_rate_per_person, days))) - initial_infections\"\n}\n```",
+      "perplexity": 1.1505368947982788,
+      "generation_time": 14.794802,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n\t\"initial_infections = 17\",\n\t\"infection_rate_per_person = 2\",\n\t\"days = 4\"\n    ],\n    \"question\": \"(initial_infections * (infection_rate_per_person ** days))\"\n}",
+      "perplexity": 2.811166763305664,
+      "generation_time": 13.568097,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a0 = 17\",\n     \"a1 = a0 * (2 * 1)\",\n     \"a2 = a1 * (2 * 1)\",\n     \"a3 = a2 * (2 * 1)\",\n     \"a4 = a3 * (2 * 1)\"\n    ], \n    \"question\": \"a4\"\n}",
+      "perplexity": 3.2523086071014404,
+      "generation_time": 18.666698,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4905,
+    "nl_problem": {
+      "context": [],
+      "question": "A new infection infects 5 people. Every day, each infected person infects 3 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 320.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 5\",\n        \"infection_rate_per_person = 3\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (1 + infection_rate_per_person) ** days - initial_infections)\"\n}\n```",
+      "perplexity": 1.1643797159194946,
+      "generation_time": 14.021063,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"x1 = 5\",\n     \"infection_rate_per_person = 3\",\n     \"days = 3\"\n    ],\n    \"question\": \"(x1 * (infection_rate_per_person ** days))\"\n}",
+      "perplexity": 5.103213310241699,
+      "generation_time": 12.432431,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 5\",\n     \"b = 3\",\n     \"c = 3\"\n    ], \n    \"question\": \"(a * (pow_b_c)) * pow_b_c * pow_b_c\"\n}",
+      "perplexity": 8.719240188598633,
+      "generation_time": 12.525839,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4917,
+    "nl_problem": {
+      "context": [],
+      "question": "A new bacteria infects 5 people. Every day, each infected person infects 6 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 1715.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infected = 5\",\n        \"infection_rate_per_person = 6\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infected * (1 + infection_rate_per_person) ^ days - initial_infected)\"\n}\n```",
+      "perplexity": 1.225978970527649,
+      "generation_time": 14.333827,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 5\",\n     \"b = 6\",\n     \"c = 3\"\n    ],\n    \"question\": \"(a * (pow(b, c)))\"\n}",
+      "perplexity": 5.118675231933594,
+      "generation_time": 10.478252,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n\t\"initial_infections = 5\",\n\t\"infection_rate_per_person = 6\",\n\t\"days = 3\"\n    ], \n    \"question\": \"(initial_infections * (infection_rate_per_person + 1) / infection_rate_per_person) - initial_infections\"\n}",
+      "perplexity": 4.341064453125,
+      "generation_time": 15.87346,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4919,
+    "nl_problem": {
+      "context": [],
+      "question": "A new virus infects 19 people. Every day, each infected person infects 5 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 4104.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 19\",\n        \"infection_rate_per_person = 5\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (pow((1 + infection_rate_per_person), days)) - initial_infections)\"\n}\n```",
+      "perplexity": 1.1639069318771362,
+      "generation_time": 14.781712,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"B0 = 19\",\n     \"growth_factor = 5\",\n     \"days = 3\"\n    ],\n    \"question\": \"(B0 * (growth_factor ^ days))\"\n}",
+      "perplexity": 4.998610019683838,
+      "generation_time": 11.807971,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n\t\"initial_infections = 19\",\n\t\"infection_rate_per_person = 5\",\n\t\"days = 3\"\n    ], \n    \"question\": \"(initial_infections * (infection_rate_per_person + 1) * days)\"\n}",
+      "perplexity": 4.369872570037842,
+      "generation_time": 14.191609,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4925,
+    "nl_problem": {
+      "context": [],
+      "question": "A new infection infects 9 people. Every day, each infected person infects 6 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 3087.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infected = 9\",\n        \"infection_rate_per_person = 6\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infected * (1 + infection_rate_per_person) ** days)\"\n}\n```",
+      "perplexity": 1.1520828008651733,
+      "generation_time": 13.219736,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 9\",\n     \"b = 6\",\n     \"c = 3\"\n    ],\n    \"question\": \"(a * (pow(b, c))) - a\"\n}",
+      "perplexity": 5.754007339477539,
+      "generation_time": 10.753708,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 9\",\n     \"b = 6\",\n     \"c = 3\"\n    ], \n    \"question\": \"(a * (pow_b_c_minus_1)) / (b - 1)\"\n}",
+      "perplexity": 7.472702503204346,
+      "generation_time": 12.343187,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4932,
+    "nl_problem": {
+      "context": [],
+      "question": "A new infection infects 7 people. Every day, each infected person infects 3 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 448.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 7\",\n        \"infection_rate_per_person = 3\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (1 + infection_rate_per_person) ** days)\"\n}\n```",
+      "perplexity": 1.1856518983840942,
+      "generation_time": 13.82855,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"initial_infections = 7\",\n     \"infection_rate_per_person = 3\",\n     \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (infection_rate_per_person ** days))\"\n}",
+      "perplexity": 4.57832145690918,
+      "generation_time": 12.945259,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"initial_infections = 7\",\n     \"infection_rate_per_person = 3\",\n     \"days = 3\"\n    ], \n    \"question\": \"(initial_infections * (infection_rate_per_person + 1) + initial_infections * pow_infections) / (pow_infections - 1)\"\n}",
+      "perplexity": 9.600123405456543,
+      "generation_time": 17.803603,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4936,
+    "nl_problem": {
+      "context": [],
+      "question": "A new virus infects 18 people. Every day, each infected person infects 4 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 2250.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 18\",\n        \"infection_rate_per_person = 4\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (pow((1 + infection_rate_per_person), days) - 1) / infection_rate_per_person)\"\n}\n```",
+      "perplexity": 1.1505954265594482,
+      "generation_time": 15.953321,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n\t\"initial_infected = 18\",\n\t\"infection_rate_per_person = 4\",\n\t\"days = 3\"\n    ],\n    \"question\": \"(initial_infected * (infection_rate_per_person ** days))\"\n}",
+      "perplexity": 2.548720598220825,
+      "generation_time": 13.721129,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a0 = 18\",\n     \"rate_of_infection = 4\",\n     \"days = 3\"\n    ], \n    \"question\": \"(a0 + (a0 * rate_of_infection) + ((a0 * rate_of_infection) * rate_of_infection)) - a0\"\n}",
+      "perplexity": 3.7201669216156006,
+      "generation_time": 17.287076,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4940,
+    "nl_problem": {
+      "context": [],
+      "question": "A new virus infects 11 people. Every day, each infected person infects 3 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 704.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 11\",\n        \"infection_rate_per_person = 3\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (pow(infection_rate_per_person, days) - 1)) / (infection_rate_per_person - 1)\"\n}\n```",
+      "perplexity": 1.226732850074768,
+      "generation_time": 16.273271,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a0 = 11\",\n     \"new_infections_per_person_per_day = 3\",\n     \"days = 3\"\n    ],\n    \"question\": \"(a0 + (a0 * new_infections_per_person_per_day) * days)\"\n}",
+      "perplexity": 3.6262404918670654,
+      "generation_time": 15.267941,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 11\",\n     \"b = 3\",\n     \"c = 3\"\n    ], \n    \"question\": \"(a * (pow_b_c))\"}",
+      "perplexity": 13.458762168884277,
+      "generation_time": 10.824618,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4946,
+    "nl_problem": {
+      "context": [],
+      "question": "A new parasite infects 6 people. Every day, each infected person infects 4 others. How many people are infected after 3 days?",
+      "options": [],
+      "answer": 750.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"initial_infections = 6\",\n        \"infection_rate_per_person = 4\",\n        \"days = 3\"\n    ],\n    \"question\": \"(initial_infections * (1 + infection_rate_per_person) ^ days - initial_infections)\"\n}\n```",
+      "perplexity": 1.159157156944275,
+      "generation_time": 13.956694,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 6\",\n     \"b = 4\",\n     \"c = 3\"\n    ],\n    \"question\": \"(a * (1 + b) ^ c)\"\n}",
+      "perplexity": 5.714420318603516,
+      "generation_time": 10.500471,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"x0 = 6\",\n     \"daily_infections_per_person = 4\",\n     \"days = 3\"\n    ], \n    \"question\": \"(x0 + (daily_infections_per_person * x0) + (daily_infections_per_person * daily_infections_per_x0)) - x0\"\n}",
+      "perplexity": 4.067534923553467,
+      "generation_time": 17.397976,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4954,
+    "nl_problem": {
+      "context": [],
+      "question": "If Pavel eats 2 eggs a day for 45 days and then increases it to 6 eggs a day for 95 days, how many dozens of eggs will Pavel need for 140 days?",
+      "options": [],
+      "answer": 55.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_first_period = 2\",\n        \"days_first_period = 45\",\n        \"eggs_per_day_second_period = 6\",\n        \"days_second_period = 95\"\n    ],\n    \"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n}\n```",
+      "perplexity": 1.0624685287475586,
+      "generation_time": 19.116323,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a1 = 2\",\n     \"d1 = 45\",\n     \"a2 = 6\",\n     \"d2 = 95\"\n    ],\n    \"question\": \"(a1 * d1 + a2 * d2) / 12\"\n}",
+      "perplexity": 3.1820759773254395,
+      "generation_time": 15.1054,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a_day1 = 2\",\n     \"a_day2 = 6\",\n     \"days1 = 45\",\n     \"days2 = 95\"\n    ], \n    \"question\":\"(((a_day1 * days1) + (a_day2 * days2)) / 12)\"\n}",
+      "perplexity": 3.8406808376312256,
+      "generation_time": 16.868848,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4958,
+    "nl_problem": {
+      "context": [],
+      "question": "If Jin eats 2 eggs a day for 33 days and then increases it to 6 eggs a day for 91 days, how many dozens of eggs will Jin need for 124 days?",
+      "options": [],
+      "answer": 51.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_first_period = 2\",\n        \"days_first_period = 33\",\n        \"eggs_per_day_second_period = 6\",\n        \"days_second_period = 91\"\n    ],\n    \"question\": \"((eggs_per_day_first_period * days_first_period) + (eggs_per_day_second_period * days_second_period)) / 12\"\n}\n```",
+      "perplexity": 1.0270310640335083,
+      "generation_time": 20.486321,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a1 = 2 * 33\",\n     \"a2 = 6 * 91\",\n     \"total_eggs = a1 + a2\",\n     \"dozens_of_eggs = total_eggs / 12\"\n    ],\n    \"question\": \"(2 * 33 + 6 * 91) / 12\"\n}",
+      "perplexity": 2.3760275840759277,
+      "generation_time": 20.140349,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a1 = 2 * 33\",\n     \"a2 = 6 * 91\",\n     \"total_eggs = a1 + a2\"\n    ], \n    \"question\": \"(total_eggs / 12) * 1\"\n}",
+      "perplexity": 3.9175193309783936,
+      "generation_time": 14.618599,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4959,
+    "nl_problem": {
+      "context": [],
+      "question": "If Aisha eats 4 eggs a day for 24 days and then increases it to 6 eggs a day for 46 days, how many dozens of eggs will Aisha need for 70 days?",
+      "options": [],
+      "answer": 31.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_1 = 4\",\n        \"days_1 = 24\",\n        \"eggs_per_day_2 = 6\",\n        \"days_2 = 46\"\n    ],\n    \"question\": \"((eggs_per_day_1 * days_1) + (eggs_per_day_2 * days_2)) / 12\"\n}\n```",
+      "perplexity": 1.0303133726119995,
+      "generation_time": 20.323873,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"aisha_eggs_first_period = 4 * 24\",\n     \"aisha_eggs_second_period = 6 * 46\"\n    ],\n    \"question\": \"(aisha_eggs_first_period + aisha_eggs_second_period) / 12\"\n}",
+      "perplexity": 3.131160259246826,
+      "generation_time": 15.421079,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"aisha_eggs_first_period = 4 * 24\",\n     \"aisha_eggs_second_period = 6 * 46\"\n    ], \n    \"question\": \"(aisha_eggs_first_period + aisha_eggs_second_period) / 12\"\n}",
+      "perplexity": 3.7017133235931396,
+      "generation_time": 16.197795,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4971,
+    "nl_problem": {
+      "context": [],
+      "question": "If Isabella eats 5 eggs a day for 36 days and then increases it to 6 eggs a day for 86 days, how many dozens of eggs will Isabella need for 122 days?",
+      "options": [],
+      "answer": 58.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"daily_eggs_first_period = 5\",\n        \"days_first_period = 36\",\n        \"daily_eggs_second_period = 6\",\n        \"days_second_period = 86\"\n    ],\n    \"question\": \"(daily_eggs_first_period * days_first_period + daily_eggs_second_period * days_second_period) / 12\"\n}\n```",
+      "perplexity": 1.0740530490875244,
+      "generation_time": 18.370859,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 5 * 36\",\n     \"d = (86 / 12) + ((a / 12))\",\n     \"eggs_needed = a + d\"\n    ],\n    \"question\": \"(eggs_needed / 12)\"\n}",
+      "perplexity": 6.560153484344482,
+      "generation_time": 15.070413,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 5 * 36\",\n     \"c = 6 * 86\",\n     \"d = a + c\"\n    ], \n    \"question\": \"(d / 12)\"\n}",
+      "perplexity": 6.078151702880859,
+      "generation_time": 11.71443,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4973,
+    "nl_problem": {
+      "context": [],
+      "question": "If Winnie eats 4 eggs a day for 60 days and then increases it to 5 eggs a day for 96 days, how many dozens of eggs will Winnie need for 156 days?",
+      "options": [],
+      "answer": 60.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_first_period = 4\",\n        \"days_first_period = 60\",\n        \"eggs_per_day_second_period = 5\",\n        \"days_second_period = 96\"\n    ],\n    \"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n}\n```",
+      "perplexity": 1.0656403303146362,
+      "generation_time": 19.489311,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 4 * 60\",\n     \"b = 5 * 96\"\n    ],\n    \"question\": \"(a + b) / 12\"\n}",
+      "perplexity": 6.23079252243042,
+      "generation_time": 10.739095,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a1 = 4 * 60\",\n     \"a2 = 5 * 96\",\n     \"total_eggs = a1 + a2\"\n    ], \n    \"question\": \"(total_eggs / 12)\"\n}",
+      "perplexity": 4.070035934448242,
+      "generation_time": 14.181597,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4980,
+    "nl_problem": {
+      "context": [],
+      "question": "If Sophia eats 3 eggs a day for 109 days and then increases it to 5 eggs a day for 33 days, how many dozens of eggs will Sophia need for 142 days?",
+      "options": [],
+      "answer": 41.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_initial = 3\",\n        \"days_initial = 109\",\n        \"eggs_per_day_final = 5\",\n        \"days_final = 33\"\n    ],\n    \"question\": \"(eggs_per_day_initial * days_initial + eggs_per_day_final * days_final) / 12\"\n}\n```",
+      "perplexity": 1.107520341873169,
+      "generation_time": 17.795371,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 3 * 109\",\n     \"c = 5 * 33\"\n    ],\n    \"question\": \"(a + c) / 12\"\n}",
+      "perplexity": 5.904538631439209,
+      "generation_time": 10.903476,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n\t\"sophia_eggs_first_period = 3 * 109\",\n\t\"sophia_eggs_second_period = 5 * 33\",\n\t\"total_days = 142\"\n    ], \n    \"question\": \"(sophia_eggs_first_period + sophia_eggs_second_period) / 12\"\n}",
+      "perplexity": 2.2773208618164062,
+      "generation_time": 19.204269,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4981,
+    "nl_problem": {
+      "context": [],
+      "question": "If Tariq eats 2 eggs a day for 105 days and then increases it to 6 eggs a day for 41 days, how many dozens of eggs will Tariq need for 146 days?",
+      "options": [],
+      "answer": 38.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_first_period = 2\",\n        \"days_first_period = 105\",\n        \"eggs_per_day_second_period = 6\",\n        \"days_second_period = 41\"\n    ],\n    \"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n}\n```",
+      "perplexity": 1.0672353506088257,
+      "generation_time": 19.260811,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n\t\"eggs_per_day_first_period = 2\",\n\t\"days_first_period = 105\",\n\t\"eggs_per_day_second_period = 6\",\n\t\"days_second_period = 41\"\n    ],\n    \"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n}",
+      "perplexity": 1.9347829818725586,
+      "generation_time": 20.755111,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a1 = 2 * 105\",\n     \"a2 = 6 * 41\",\n     \"total_eggs = a1 + a2\"\n    ], \n    \"question\": \"(total_eggs / 12)\"\n}",
+      "perplexity": 4.003655433654785,
+      "generation_time": 14.323731,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4985,
+    "nl_problem": {
+      "context": [],
+      "question": "If Zahra eats 5 eggs a day for 102 days and then increases it to 6 eggs a day for 67 days, how many dozens of eggs will Zahra need for 169 days?",
+      "options": [],
+      "answer": 76.0
+    },
+    "logic_problem": {
+      "raw": "\n\\{\n\"data\": [\n    \"eggs_per_day_first_period = 5\",\n    \"days_first_period = 102\",\n    \"eggs_per_day_second_period = 6\",\n    \"days_second_period = 67\"\n],\n\"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n\\}",
+      "perplexity": 1.1073925495147705,
+      "generation_time": 18.022535,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"Eggs_per_day_first_period = 5\",\n     \"Days_first_period = 102\",\n     \"Eggs_per_day_second_period = 6\",\n     \"Days_second_period = 67\"\n    ],\n    \"question\": \"(Eggs_per_day_first_period * Days_first_period + Eggs_per_day_second_period * Days_second_period) / 12\"\n}",
+      "perplexity": 2.4478557109832764,
+      "generation_time": 21.4714,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"user_egg_daily_amount1 = 5\",\n     \"user_days1 = 102\",\n     \"user_egg_daily_amount2 = 6\",\n     \"user_days2 = 67\"\n    ], \n    \"question\": \"((user_egg_daily_amount1 * user_days1 + user_egg_daily_amount2 * user_days2) / 12)\"\n}",
+      "perplexity": 2.907924175262451,
+      "generation_time": 20.069889,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4997,
+    "nl_problem": {
+      "context": [],
+      "question": "If Oscar eats 2 eggs a day for 42 days and then increases it to 6 eggs a day for 68 days, how many dozens of eggs will Oscar need for 110 days?",
+      "options": [],
+      "answer": 41.0
+    },
+    "logic_problem": {
+      "raw": "\n\\{\n\"data\": [\n    \"eggs_per_day_first_period = 2\",\n    \"days_first_period = 42\",\n    \"eggs_per_day_second_period = 6\",\n    \"days_second_period = 68\"\n],\n\"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n\\}",
+      "perplexity": 1.1089500188827515,
+      "generation_time": 17.78226,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a = 2 * 42\",\n     \"c = 6 * 68\"\n    ],\n    \"question\": \"(a + c) / 12\"\n}",
+      "perplexity": 6.146132946014404,
+      "generation_time": 10.885536,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a_day_eggs = 2\",\n     \"forty_two_days = 42 * a_day_eggs\",\n     \"sixty_eight_days = 68 * 6\",\n     \"total_days = forty_two_days + sixty_eight_days\"\n    ], \n    \"question\": \"(a_day_eggs * total_days) / 12\"\n}",
+      "perplexity": 3.0790183544158936,
+      "generation_time": 19.77425,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4998,
+    "nl_problem": {
+      "context": [],
+      "question": "If Leon eats 2 eggs a day for 108 days and then increases it to 6 eggs a day for 46 days, how many dozens of eggs will Leon need for 154 days?",
+      "options": [],
+      "answer": 41.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"eggs_per_day_first_period = 2\",\n        \"days_first_period = 108\",\n        \"eggs_per_day_second_period = 6\",\n        \"days_second_period = 46\"\n    ],\n    \"question\": \"(eggs_per_day_first_period * days_first_period + eggs_per_day_second_period * days_second_period) / 12\"\n}\n```",
+      "perplexity": 1.1050162315368652,
+      "generation_time": 19.279634,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"a_day_1 = 2 * 108\",\n     \"a_day_2 = 6 * 46\"\n    ],\n    \"question\": \"(a_day_1 + a_day_2) / 12\"\n}",
+      "perplexity": 3.557101249694824,
+      "generation_time": 14.22147,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n\t\"days1 = 108\",\n\t\"eggs_per_day_1 = 2\",\n\t\"days2 = 46\",\n\t\"eggs_per_day_2 = 6\",\n\t\"total_days = days1 + days2\"\n    ], \n    \"question\": \"(days1 * eggs_per_day_1 + days2 * eggs_per_day_2) / 12\"\n}",
+      "perplexity": 2.14334774017334,
+      "generation_time": 22.096271,
+      "error_message": null
+    }
+  },
+  {
+    "id": 4999,
+    "nl_problem": {
+      "context": [],
+      "question": "If Diego eats 2 eggs a day for 46 days and then increases it to 4 eggs a day for 106 days, how many dozens of eggs will Diego need for 152 days?",
+      "options": [],
+      "answer": 43.0
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n    \"data\": [\n        \"days1 = 46\",\n        \"eggs_per_day1 = 2\",\n        \"days2 = 106\",\n        \"eggs_per_day2 = 4\",\n        \"total_days = days1 + days2\"\n    ],\n    \"question\": \"((days1 * eggs_per_day1) + (days2 * eggs_per_day2)) / 12\"\n}\n```",
+      "perplexity": 1.0582869052886963,
+      "generation_time": 20.756227,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n    \"data\": [\n     \"daily_eggs_first_period = 2\",\n     \"days_first_period = 46\",\n     \"daily_eggs_second_period = 4\",\n     \"days_second_period = 106\"\n    ],\n    \"question\": \"(daily_eggs_first_period * days_first_period + daily_eggs_second_period * days_second_period) / 12\"\n}",
+      "perplexity": 2.3608293533325195,
+      "generation_time": 19.999206,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n    \"data\": [\n     \"a = 2 * 46\",\n     \"c = 4 * 106\"\n    ], \n    \"question\": \"(a + c) / 12\"\n}",
+      "perplexity": 7.378365516662598,
+      "generation_time": 10.924158,
+      "error_message": null
+    }
   }
 ]
