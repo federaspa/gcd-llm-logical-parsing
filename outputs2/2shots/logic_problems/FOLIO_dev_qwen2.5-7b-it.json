@@ -6633,5 +6633,170 @@
       "generation_time": 47.667582,
       "error_message": null
     }
+  },
+  {
+    "id": 199,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "No one playing for Nautico is Brazilian.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornInYear(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\"\n  ],\n  \"fol_consts\": [\n    \"aitlon silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aitlon silva, ailton)\",\n    \"BornInYear(aitlon silva, 1995)\",\n    \"FootballPlayer(aitlon)\",\n    \"LoanOutTo(aitlon, braga)\",\n    \"Brazillian(aitlon)\",\n    \"PlaysFor(aitlon, nautico)\",\n    \"∀x (Nautico = y → FootballClub(y))\",\n    \"Braga = z ∧ ∀y (FootballPlayer(x) ∧ LoanOutTo(x, z) → PlaysFor(x, w))\"\n  ],\n  \"fol_conc\": \"¬∃x (PlaysFor(x, nautico) ∧ Brazillian(x))\"\n}\n```",
+      "perplexity": 1.281815767288208,
+      "generation_time": 47.505226,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornInYear(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\"\n  ],\n  \"fol_consts\": [\n    \"aitлон_silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aitлон_silva, ailton)\",\n    \"BornInYear(aitlon_silva, 1995)\",\n    \"FootballPlayer(aitlon_silva)\",\n    \"LoanOutTo(aitlon_silva, braga)\",\n    \"Brazillian(aitlon_silva) ∧ PlaysFor(aitlon_silva, nautico)\"\n  ],\n  \"fol_conc\": \"¬∃x (PlaysFor(x, nautico) → Brazillian(x))\"\n}",
+      "perplexity": 1.3640636205673218,
+      "generation_time": 46.763326,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn(x, y)\",\n    \"KnownAs(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanedTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\"\n  ], \n  \"fol_consts\": [ \"ailton\", \"silva\", \"1995\", \"braga\", \"nautico\", \"fluminense\" ], \n  \"fol_rules\": [\n    \"KnownAs(ailton, ailton)\",\n    \"FootballPlayer(ailton) ∧ LoanedTo(ailton, braga)\",\n    \"Brazillian(ailton) ∧ FootballPlayer(ailton) ∧ PlaysFor(ailton, nautico)\",\n    \"PlaysFor(x, y) ∧ (FootballClub(y)) → Brazillian(z)\", \"ButZIsNotGivenHereSoWeCannotDeriveThisRuleDirectlyFromPremisesAndNeedToAssumeNoOnePlayingForNauticoIsBrazilianAsConclusionImpliesThatStatementIsTrueForAllPlayersOfNauticoWithoutExplicitDefinitionInRulesSetForBrazillianPlayerConditionOnNauticoTeamSpecificallyHenceTheFollowingFinalConjectureCanBeDerivedThroughLogicalImplicationBasedOnGivenPremisesAndDesiredConclusionButNotDirectlyDefinedHereAsRuleSetDoesnTContainSuchAConstraintOrInformationToDeriveItSoWeStateOurGoalInFOLFormulationInsteadOfDefiningARuleThatWouldNeverHappenIfNoOnePlayingForNauticoIsBrazilianWhichCanBeStatedAsBelowFinalStatementBasedOnDesiredConclusionNotDirectlyDefinedHereButImpliedByGivenPremisesAndGoalInNLContextButClearlyExpressedThroughLogicalImplicationToDeriveOurDesiredFOLConcInThisScenarioWeUseTheFactThatNoOnePlayingForNauticoIsBrazilianCanBeStatedAsFollowingStatementBasedOnDesiredConclusionWhichIsnTDefinedDirectlyHereButImpliedByGivenPremisesAndGoalInNLContextHenceTheFinalFormulationWouldBeThatOfOurDesiredConclusionNotExplicitlyDefinedAsARuleHereButClearlyExpressedThroughLogicalImplicationToDeriveItFromGivenPremisesAndDesiredConclusionBasedOnThisUnderstandingWeCanStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyInFOLContextWhichIsImpliedByGivenInfoAndGoalInNLContextButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalInNLButNotExplicitlyDefinedAsARuleHereHenceFinalFormulationWouldBeThatOfOurDesiredConclusionStatedThroughLogicalImplicationBasedOnGivenPremisesAndGoalInNLContextToDeriveItFromTheGivenInformationWeStateTheFollowingConcInsteadOfDefiningARuleForItDirectlyHereWhichIsImpliedByTheGivenInfoAndGoalIn",
+      "perplexity": 1.9837857484817505,
+      "generation_time": 215.835897,
+      "error_message": "max_tokens"
+    }
+  },
+  {
+    "id": 200,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva foes not play for a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, club)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, club)\",\n    \"IsFC(x)\"\n  ],\n  \"fol_consts\": [\n    \"Ailton Silva\",\n    \"1995\",\n    \"Braga\",\n    \"Nautico\",\n    \"Fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(Ailton Silva, Ailton)\",\n    \"BornIn(Ailton Silva, 1995)\",\n    \"FootballPlayer(Ailton Silva)\",\n    \"LoanOutTo(Ailton Silva, Braga)\",\n    \"Brazillian(Ailton Silva)\",\n    \"PlaysFor(Ailton Silva, Nautico)\",\n    \"IsFC(Braga)\",\n    \"IsFC(Nautico)\",\n    \"IsFC(Fluminense)\"\n  ],\n  \"fol_conc\": \"¬PlaysFor(Ailton Silva, x)\"\n}\n```",
+      "perplexity": 1.0880388021469116,
+      "generation_time": 41.922658,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanTo(x, club)\",\n    \"PlaysFor(x, club)\",\n    \"Brazillian(x)\",\n    \"ClubAlongWith(x1, x2)\"\n  ],\n  \"fol_consts\": [\n    \"ailton silva\",\n    \"ailton\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(ailton silva, ailton)\",\n    \"BornIn(ailton silva, 1995)\",\n    \"FootballPlayer(ailton)\",\n    \"LoanTo(ailton, braga)\",\n    \"Brazillian(ailton silva)\",\n    \"PlaysFor(ailton silva, nautico)\",\n    \"ClubAlongWith(nautico, braga)\"\n  ],\n  \"fol_conc\": \"¬PlaysFor(ailton silva, x)\"\n}",
+      "perplexity": 1.279597520828247,
+      "generation_time": 48.740894,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"PlayerOf(x, team)\",\n    \"LoanOut(x, to, team)\",\n    \"Brazillian(x)\",\n    \"FootballClub(y)\"\n  ], \n  \"fol_consts\": [\n    \"aiton\",\n    \"silva\", \"1995\", \"braga\", \"nautico\", \"fluminense\"\n  ], \n  \"fol_rules\": [\n    \"KnownAs(aiton, ailton)\",\n    \"BornIn(aiton, 1995)\",\n    \"PlayerOf(aiton, nautico)\",\n    \"LoanOut(aiton, to, braga)\",\n    \"Brazillian(aiton)\",\n    \"FootballClub(nautico)\",\n    \"FootballClub(braga)\",\n    \"FootballClub(fluminense)\"\n  ], \n  \"fol_conc\": \"¬PlayerOf(aiton, x)\" }",
+      "perplexity": 1.6560320854187012,
+      "generation_time": 42.92749,
+      "error_message": null
+    }
+  },
+  {
+    "id": 201,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton was not loaned out to a football club.",
+      "options": [],
+      "answer": "B"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornInYear(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\",\n    \"IsFC(x)\"\n  ],\n  \"fol_consts\": [\n    \"aiton_silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aiton_silva, ailton)\",\n    \"BornInYear(aiton_silva, 1995)\",\n    \"FootballPlayer(aiton_silva)\",\n    \"LoanOutTo(aiton_silva, braga)\",\n    \"Brazillian(aiton_silva) ∧ PlaysFor(aiton_silva, nautico)\",\n    \"(IsFC(braga) ∨ IsFC(nautico))\",\n    \"IsFC(fluminense)\"\n  ],\n  \"fol_conc\": \"¬LoanOutTo(aiton_silva, x) ∨ ¬IsFC(x)\"\n}\n```",
+      "perplexity": 1.1329470872879028,
+      "generation_time": 47.447535,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn(x, y)\",\n    \"KnownAs(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\",\n    \"IsFC(x)\"\n  ],\n  \"fol_consts\": [\n    \"aiton_silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aiton_silva, ailton)\",\n    \"FootballPlayer(aiton_silva) ∧ LoanOutTo(aiton_silva, braga)\",\n    \"Brazillian(aiton_silva) ∧ PlaysFor(aiton_silva, nautico)\",\n    \"(IsFC(braga) ∨ IsFC(nautico))\",\n    \"IsFC(fluminense)\"\n  ],\n  \"fol_conc\": \"¬LoanOutTo(aiton_silva, y) ∨ ¬IsFC(y)\"\n}",
+      "perplexity": 1.2321938276290894,
+      "generation_time": 49.33883,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, club)\",\n    \"Nationality(x, country)\",\n    \"PlaysFor(x, team)\"\n  ], \n  \"fol_consts\": [ \"ailton\", \"silva\", \"1995\", \"braga\", \"nautico\", \"fluminense\" ], \n  \"fol_rules\": [\n    \"KnownAs(ailton, ailton)\",\n    \"BornIn(ailton, 1995)\", \"FootballPlayer(ailton)\", \"LoanOutTo(ailton, braga)\",\n    \"Nationality(ailton, brazilian)\",\n    \"PlaysFor(ailton, nautico)\",\n    \"∀x (Nautico(x) ⊕ Braga(y)) → FootballClub(x)\",\n    \"FootballClub(fluminense)\"\n  ], \n  \"fol_conc\": \"¬LoanOutTo(ailton, fluminense)\" }",
+      "perplexity": 1.7439874410629272,
+      "generation_time": 46.188569,
+      "error_message": null
+    }
+  },
+  {
+    "id": 202,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva played for Fluminense.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanTo(x, club1, club2)\",\n    \"PlaysFor(x, club)\",\n    \"Brazillian(x)\",\n    \"IsClub(y)\"\n  ],\n  \"fol_consts\": [\n    \"aiton silva\",\n    \"ailton\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aiton silva, ailton)\",\n    \"BornIn(aiton silva, 1995)\",\n    \"FootballPlayer(aiton silva)\",\n    \"LoanTo(aiton silva, braga, nautico)\",\n    \"PlaysFor(aiton silva, nautico)\",\n    \"IsClub(braga)\",\n    \"IsClub(nautico)\",\n    \"IsClub(fluminense)\"\n  ],\n  \"fol_conc\": \"PlaysFor(aiton silva, fluminense)\"\n}\n```",
+      "perplexity": 1.1538410186767578,
+      "generation_time": 44.551874,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanedTo(x, club)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, team)\",\n    \"IsClub(y)\"\n  ],\n  \"fol_consts\": [\n    \"aiton silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aiton silva, ailton)\",\n    \"BornIn(aiton silva, 1995)\",\n    \"FootballPlayer(aiton silva)\",\n    \"LoanedTo(aiton silva, braga)\",\n    \"Brazillian(aiton silva)\",\n    \"PlaysFor(aiton silva, nautico)\",\n    \"(IsClub(braga) ∧ IsClub(nautico))\",\n    \"IsClub(fluminense)\"\n  ],\n  \"fol_conc\": \"∃x (FootballPlayer(x) ∧ PlaysFor(x, fluminense))\"\n}",
+      "perplexity": 1.3250356912612915,
+      "generation_time": 51.02016,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanTo(x, club)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, team)\",\n    \"IsClub(y)\"\n  ], \n  \"fol_consts\": [ \"ailton\", \"silva\", \"1995\", \"braga\", \"nautico\", \"fluminense\" ], \n  \"fol_rules\": [\n    \"KnownAs(ailton, silva)\",\n    \"BornIn(silva, 1995)\",\n    \"FootballPlayer(silva) ∧ LoanTo(silva, braga)\",\n    \"Brazillian(silva) ∧ FootballPlayer(silva) ∧ PlaysFor(silva, nautico)\",\n    \"IsClub(braga) ∨ IsClub(nautico) ∨ IsClub(fluminense)\"\n  ], \n  \"fol_conc\": \"PlaysFor(silva, fluminense)\" }",
+      "perplexity": 1.6809730529785156,
+      "generation_time": 46.561747,
+      "error_message": null
+    }
+  },
+  {
+    "id": 203,
+    "nl_problem": {
+      "context": [
+        "Ailton Silva, born in 1995, is commonly known as Ailton.",
+        "Ailton is a football player who was loaned out to Braga.",
+        "Ailton Silva is a Brazillian footballer who plays for Nautico.",
+        "Nautico is a football club along with Braga.",
+        "Fluminense is a football club."
+      ],
+      "question": "Ailton Silva was loaned out to a football club.",
+      "options": [],
+      "answer": "C"
+    },
+    "logic_problem": {
+      "raw": "\n```json\n{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornIn(x, year)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, club)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, club)\",\n    \"IsFootballClub(x)\"\n  ],\n  \"fol_consts\": [\n    \"aiton silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"KnownAs(aiton silva, ailton)\",\n    \"BornIn(aiton silva, 1995)\",\n    \"FootballPlayer(aiton silva)\",\n    \"LoanOutTo(aiton silva, braga)\",\n    \"Brazillian(aiton silva)\",\n    \"PlaysFor(aiton silva, nautico)\",\n    \"IsFootballClub(braga)\",\n    \"IsFootballClub(nautico)\",\n    \"IsFootballClub(fluminense)\"\n  ],\n  \"fol_conc\": \"∃x (IsFootballClub(x) ∧ LoanOutTo(aiton silva, x))\"\n}\n```",
+      "perplexity": 1.0627180337905884,
+      "generation_time": 46.567931,
+      "error_message": null
+    },
+    "logic_problem_json": {
+      "raw": "{\n  \"fol_preds\": [\n    \"BornIn(x, y)\",\n    \"KnownAs(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\",\n    \"IsFC(x)\"\n  ],\n  \"fol_consts\": [\n    \"aiton_silva\",\n    \"1995\",\n    \"braga\",\n    \"nautico\",\n    \"fluminense\"\n  ],\n  \"fol_rules\": [\n    \"BornIn(aiton_silva, 1995)\",\n    \"KnownAs(aiton_silva, 'Ailton')\",\n    \"FootballPlayer(aiton_silva) ∧ LoanOutTo(aiton_silva, braga)\",\n    \"Brazillian(aiton_silva) ∧ FootballPlayer(aiton_silva) ∧ PlaysFor(aiton_silva, nautico)\",\n    \"IsFC(braga) ∨ IsFC(nautico)\"\n  ],\n  \"fol_conc\": \"LoanOutTo(aiton_silva, x) ∧ IsFC(x)\"\n}",
+      "perplexity": 1.2216848134994507,
+      "generation_time": 53.024247,
+      "error_message": null
+    },
+    "logic_problem_gcd": {
+      "raw": "{\n  \"fol_preds\": [\n    \"KnownAs(x, y)\",\n    \"BornInYear(x, y)\",\n    \"FootballPlayer(x)\",\n    \"LoanOutTo(x, y)\",\n    \"Brazillian(x)\",\n    \"PlaysFor(x, y)\",\n    \"IsFC(x)\"\n  ], \n  \"fol_consts\": [\n    \"aiton\",\n    \"1995\", \"braga\", \"nautico\", \"fluminense\"\n  ], \n  \"fol_rules\": [\n    \"KnownAs(aiton, ailton)\",\n    \"BornInYear(aiton, 1995)\",\n    \"FootballPlayer(aiton)\",\n    \"LoanOutTo(aiton, braga)\",\n    \"Brazillian(aiton)\",\n    \"PlaysFor(aiton, nautico)\",\n    \"IsFC(braga)\", \"IsFC(nautico)\", \"IsFC(fluminense)\"\n  ], \n  \"fol_conc\": \"∃y (LoanOutTo(aiton, y) ∧ IsFC(y))\"\n}",
+      "perplexity": 1.5342929363250732,
+      "generation_time": 46.932328,
+      "error_message": null
+    }
   }
 ]
