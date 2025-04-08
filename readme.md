@@ -1,55 +1,83 @@
-##  Getting Started
+# Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers
 
-**System Requirements:**
+This repository contains the code for the paper "Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers." It enables the evaluation of large language models (LLMs) on logical reasoning tasks using grammar-constrained decoding.
 
-* **Python**: `version 3.11`
+## System Requirements
 
-###  Installation
+- **Python**: version 3.11
+- **Dependencies**: Install with `pip install -r requirements.txt`
 
-<h4>From <code>source</code></h4>
+## Supported Models
 
-1. Clone the thesis_project repository:
->
-> ```console
-> $ git clone https://github.com/federaspa/thesis_project.git
-> ```
->
-2. Change to the project directory:
-> ```console
-> $ cd thesis_project
-> ```
->
-3. Install the dependencies:
-> ```console
-> $ pip install -r requirements.txt
-> ```
-4. Download the Q6_K.gguf version of the desired open-source LLM for refinement in `GCD/llms`, for example
->```console
->$ GCD/llms/llama-2-7b.Q6_K.gguf
->```
-4. Download and compile Prover9 into `models/symbolic_solvers/Prover9`, following https://www.cs.unm.edu/~mccune/prover9/manual/2009-11A/
+The following LLM families are supported:
+- `gemma2`
+- `llama3.1`
+- `llama3.2` 
+- `mistral`
+- `ministral`
+- `qwen2.5`
 
-###  Usage
+## Setup and Reproduction
 
-<h4>From <code>source</code></h4>
+### 1. Download Models
 
-1. Extract examples from train split
-> ```console
-> $ python models/examples_extractor.py --dataset_name FOLIO
-> ```
-2. Extract predicates for CFG grammar update
-> ```console
-> python models/logic_predicates.py --dataset_name FOLIO
-> ```
-3. Extract logic programs
-> ```console
-> python models/logic_program.py --dataset_name FOLIO
-> ```
-4. Refine logic programs. Pass `--gcd` to make use of grammar-constrained decoding. To use GPU acceleartion, set `--n-gpu-layers` to a number greater than 0, or to `-1` to pass all model's layers to the GPU.
-> ```console
-> python models/self_refinement.py --dataset_name FOLIO  --maximum_rounds 3 --gcd --n_gpu_layers 0
-> ```
-5. Run Prover9 inference 
-> ```console
-> python models/logic_inference.py --dataset_name FOLIO  --self_refine_round 3 
-> ```
+Download GGUF versions of any supported LLM and place them in an accessible directory. The file structure should be:
+
+```
+[model_directory]/
+├── gemma2/
+│   ├── gemma2-2b.gguf
+│   ├── gemma2-9b.gguf
+│   └── gemma2-27b.gguf
+├── llama3.1/
+│   ├── llama3.1-8b.gguf
+│   └── llama3.1-70b.gguf
+└── ...
+```
+
+### 2. Install Symbolic Solvers
+
+For FOLIO dataset evaluation, Prover9 is required:
+1. Download and compile Prover9 from https://www.cs.unm.edu/~mccune/prover9/manual/2009-11A/
+2. Place the compiled binaries in `scripts/symbolic_solvers/Prover9/bin/`
+
+### 3. Generate Logical Programs
+
+Run the `logic_problems.py` script to generate logical representations from natural language problems:
+
+```bash
+python scripts/logic_problems.py --dataset_name FOLIO --shots_number 2shots --model_name [model_name] --models_path [path_to_models]
+```
+
+Options:
+- `--shots_number`: Choose from `0shots`, `2shots`, `5shots`, `baseline`
+- `--dataset_name`: Set to `FOLIO` for first-order logic or `GSM8K_symbolic` for arithmetic tasks
+- `--model_name`: Specific model to use (e.g., `gemma2-9b`)
+- `--models_path`: Directory containing the downloaded models
+
+### 4. Run Symbolic Inference
+
+Process the generated logical representations through symbolic solvers:
+
+```bash
+python scripts/logic_inference.py --dataset_name FOLIO --shots_number 2shots --model_name [model_name]
+```
+
+### 5. Evaluate Results
+
+Calculate accuracy and coverage metrics for the inference results:
+
+```bash
+python evaluator/evaluation.py --result-path outputs --model_name [model_name] --dataset_name FOLIO --split dev
+```
+
+Additional options:
+- `--save-df`: Save results as a dataframe
+- `--latex`: Output results in LaTeX table format
+
+## Citation
+
+If you use this code for your research, please cite our paper:
+```
+[Citation information will be added after publication]
+```
