@@ -2,7 +2,7 @@
 
 **System Requirements:**
 
-* **Python**: `version 3.12`
+* **Python**: `version 3.11`
 
 ###  Installation
 
