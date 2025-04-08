@@ -39,7 +39,7 @@ Download GGUF versions of any supported LLM and place them in an accessible dire
 
 For FOLIO dataset evaluation, Prover9 is required:
 1. Download and compile Prover9 from https://www.cs.unm.edu/~mccune/prover9/manual/2009-11A/
-2. Place the compiled binaries in `scripts/symbolic_solvers/Prover9/bin/`
+2. Place the compiled binaries in `scripts/symbolic_solvers/Prover9/`
 
 ### 3. Generate Logical Programs
 
