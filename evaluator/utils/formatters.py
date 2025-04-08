@@ -144,15 +144,6 @@ class ResultFormatter:
         except:
             shots = list(set([shot for sublist in shots for shot in sublist]))
         
-        
-        print(datasets)
-        
-        # # Determine the number of shots dynamically
-        # try:
-        #     shot_numbers = sorted(next(iter(results.values())).keys())
-        # except:
-        #     shot_numbers = next(iter(results.values())).keys()
-                    
         # Create LaTeX table header
         base_lines = [
             "\\begin{table*}[t]",
@@ -171,32 +162,6 @@ class ResultFormatter:
         
         accuracy_lines, coverage_lines = base_lines.copy(), base_lines.copy()
         
-        # coverage_lines = [
-        #     "\\begin{table*}[t]",
-        #     "\\centering",
-        #     "\\begin{tabular}{|lV" + "V".join(["cc" for _ in range(len(shots)*len(datasets))]) + "|}",
-        #     "\\hline",
-        #     "& " + " & ".join([f"\\multicolumn{{{len(datasets)*len(shots)}}}{{cV}}{{\\textbf{{{dataset}}}}}" for dataset in datasets]) + "\\\\",
-        #     "\\hline",
-        #     "& " + " & ".join([" & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shots]) for _ in datasets]) + "\\\\",
-        #     "\\hline",
-        #     # "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}}" for _ in shot_numbers]) + " \\\\ \\hline",
-        #     "\\textbf{Model} & " + " & ".join(["\\textit{Unc.} & \\textit{Con.}" for _ in range(len(shots)*len(datasets))]) + " \\\\",
-        #     "\\hline"
-        # ]
-        # coverage_lines = [
-        #     "\\begin{table*}[t]",
-        #     "\\centering",
-        #     "\\begin{tabular}{|lV" + "V".join(["cc" for _ in shot_numbers]) + "|}",
-        #     "\\hline",
-        #     "& " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
-        #     "& " + " & ".join([f"\\multicolumn{{2}}{{cV}}{{\\textbf{{{shot}-shots}}}}" for shot in shot_numbers]) + " \\\\ \\hline",
-        #     # "\\textbf{Model} & " + " & ".join(["\\multicolumn{2}{c|}{\\textbf{Accuracy}}" for _ in shot_numbers]) + " \\\\ \\hline",
-        #     "\\textbf{Model} & " + " & ".join(["\\textit{Unc.} & \\textit{Const.}" for _ in shot_numbers]) + " \\\\",
-        #     "\\hline"
-        # ]
-        
-
         try:
             sorted_results = sorted(results.items())
         except:

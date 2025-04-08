@@ -35,6 +35,12 @@ class LogicProgram:
         'GSM8K': SymPy_Program,
         'ProofWriter': Clingo_Program
     }
+    
+    num_samples = {
+        'FOLIO': 204,
+        'GSM8K_symbolic': 1000,
+        'ProofWriter': 600
+    }
 
     def __init__(self, dataset_name: str):
         if dataset_name not in self.EXECUTOR_MAP:
@@ -116,6 +122,34 @@ class LogicInferenceEngine:
             dataset = json.load(f)
         print(f"Loaded {len(dataset)} examples from {self.config.split} split.")
         return dataset
+    
+    def check_existing_results(self) -> bool:
+        """Check if the save file already contains the expected number of samples"""
+        save_file = Path(self.config.save_path) / Path(self.config.shots_number) / Path('logic_inference') / self._get_file_name()
+        
+        # If the file doesn't exist, we need to run inference
+        if not save_file.exists():
+            return False
+        
+        try:
+            with open(save_file, 'r') as f:
+                existing_data = json.load(f)
+            
+            # Check if the dataset has an expected sample count
+            expected_samples = LogicProgram.num_samples.get(self.config.dataset_name)
+            if expected_samples is None:
+                # If we don't know the expected count, run inference to be safe
+                return False
+            
+            # Check if the existing data has the expected number of samples
+            if len(existing_data) >= expected_samples:
+                print(f"Found existing results with {len(existing_data)}/{expected_samples} samples. Skipping inference.")
+                return True
+            
+            return False
+        except (json.JSONDecodeError, Exception) as e:
+            print(f"Error checking existing results: {e}")
+            return False
 
     def process_samples(self, samples: List[Dict], problem_key: str) -> Tuple[int, int]:
         """Process a batch of samples for a specific problem type"""
@@ -157,7 +191,11 @@ class LogicInferenceEngine:
         # Create save directory if it doesn't exist
         save_path = Path(self.config.save_path)
         save_path.mkdir(parents=True, exist_ok=True)
-
+        
+        # Check if results already exist with expected sample count
+        if self.check_existing_results():
+            return
+            
         outputs = self.load_logic_problems()
 
         # Process each type of logic problem
