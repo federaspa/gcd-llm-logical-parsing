@@ -1,6 +1,6 @@
 # Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers
 
-This repository contains the code for the paper "Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers." It enables the evaluation of large language models (LLMs) on logical reasoning tasks using grammar-constrained decoding.
+This repository contains the code for the paper "Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers."
 
 ## System Requirements
 
