@@ -79,5 +79,12 @@ Additional options:
 
 If you use this code for your research, please cite our paper:
 ```
-[Citation information will be added after publication]
+@inproceedings{
+raspanti2025grammarconstrained,
+title={Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers},
+author={Federico Raspanti and Tanir {\"O}z{\c{c}}elebi and Mike Holenderski},
+booktitle={ACL 2025 Industry Track},
+year={2025},
+url={https://openreview.net/forum?id=J6UT4EPHwc}
+}
 ```
